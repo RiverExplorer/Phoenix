@@ -1,0 +1,30 @@
+PROTO		=	/usr/local
+
+CFLAGS		+=	-O -I/usr/include/tirpc
+
+SOURCES.h	=	rpc_parse.h \
+			rpc_scan.h \
+			rpc_util.h
+
+SOURCES.c	=	rpc_clntout.c \
+			rpc_cout.c \
+			rpc_hout.c \
+			rpc_main.c \
+			rpc_parse.c \
+			rpc_sample.c \
+			rpc_scan.c \
+			rpc_svcout.c \
+			rpc_tblout.c \
+			rpc_util.c
+
+OBJECTS		=	$(SOURCES.c:.c=.o)
+
+rpcgen++ : $(OBJECTS)
+	$(CC) -O -o $@ $(OBJECTS)
+	-rm -f $(PROTO)/bin/rpcgen++
+	strip rpcgen++
+	cp rpcgen++ $(PROTO)/bin
+
+clean :
+	$(RM) -f $(OBJECTS) rpcgen++
+

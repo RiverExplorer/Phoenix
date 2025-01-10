@@ -13,6 +13,7 @@
 
 # Compiled Dynamic libraries
 *.so
+lib*.so.*
 *.dylib
 *.dll
 
@@ -30,3 +31,12 @@
 *.exe
 *.out
 *.app
+
+# Temporary Files
+LOG*
+BuildTemp
+GeneratedFromXDR
+GeneratedDocs
+Old
+cscope.out
+\#*

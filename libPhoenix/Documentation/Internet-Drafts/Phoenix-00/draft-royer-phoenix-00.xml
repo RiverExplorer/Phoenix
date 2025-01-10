@@ -1,0 +1,216 @@
+<?xml version="1.0" encoding="utf-8"?>
+<?xml-model href="rfc7991bis.rnc"?>  <!-- Required for schema validation and schema-aware editing -->
+<!-- <?xml-stylesheet type="text/xsl" href="rfc2629.xslt" ?> -->
+<!-- This third-party XSLT can be enabled for direct transformations in XML processors, including most browsers -->
+
+
+<!DOCTYPE rfc [
+  <!ENTITY nbsp    "&#160;">
+  <!ENTITY zwsp   "&#8203;">
+  <!ENTITY nbhy   "&#8209;">
+  <!ENTITY wj     "&#8288;">
+]>
+<rfc
+  xmlns:xi="http://www.w3.org/2001/XInclude"
+  category="info"
+  docName="draft-royer-phoenix-00"
+  ipr="trust200902"
+  obsoletes=""
+  updates=""
+  submissionType="IETF"
+  xml:lang="en"
+  version="3">
+  <front>
+    <title abbrev="Phoenix: Lemonaid Risen Again">Phoenix: Lemonaid Risen Again</title>
+    <seriesInfo name="Internet-Draft" value="draft-royer-phoenix-00"/>
+   
+    <author fullname="Doug Royer" initials="DM" role="editor" surname="Royer">
+      <organization>RiverExplorer Games LLC</organization>
+      <address>
+        <postal>
+          <!-- Reorder these if your country does things differently -->
+          <street>848 N. Rainbow Blvd #1120</street>
+          <city>Las Vegas</city>
+          <region>Nevada</region>
+          <code>89107</code>
+          <country>USA</country>
+          <!-- Uses two letter country code -->
+        </postal>        
+        <phone>1+714-989-6135</phone>
+        <email>DouglasRoyer@gmail.com</email>  
+        <!-- Can have more than one <email> element -->
+        <uri>https://RiverExplorer.games</uri>
+      </address>
+    </author>
+   
+    <date year="2025"/>
+    <area>General</area>
+    <workgroup>Internet Engineering Task Force</workgroup>
+    <keyword>imap</keyword>
+    <keyword>pop</keyword>
+    <keyword>smtp</keyword>
+    <keyword>mime</keyword>
+    <abstract>
+      <xi:include href="Abstract.xml"/>
+    </abstract>
+  </front>
+
+  <middle>
+    
+    <section>
+      <name>Introduction</name>
+      <xi:include href="Introduction.xml"/>
+			
+      <section>
+        <name>Requirements Language</name>
+        <t>The key words "MUST", "MUST NOT", "REQUIRED", "SHALL",
+          "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT
+          RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be
+          interpreted as described in BCP 14 <xref target="RFC2119"/>
+          <xref target="RFC8174"/> when, and only when, they appear in
+          all capitals, as shown here.</t>
+      </section>
+      <!-- [CHECK] The 'Requirements Language' section is optional -->
+
+    </section>
+    
+    <section>
+      <name>Terms and Definition used in this proposal</name>
+      <t>
+				The follwing is a list of terms with their definitions as
+				used in this specification.
+			</t>
+      <xi:include href="Definitions.xml"/>
+    </section>
+
+		<section anchor="COMMANDS">
+			<name>Commands Overview</name>
+
+			<section anchor="ADMIN_CMD">
+				<name>Administration Commands</name>
+				<section>
+					<name>Administration Commands Overview</name>
+					<xi:include href="AdminOverview.xml"/>
+				</section>
+			</section>
+
+			<section anchor="AUTH_CMD">
+				<name>Authentication Commands</name>
+				<section>
+					<name>Authentication Commands Overview</name>
+					<xi:include href="AuthOverview.xml"/>
+				</section>
+			</section>
+
+			<section anchor="FILECMD">
+				<name>Protocol</name>
+				<section>
+					<name>Basic File and Folder Operations</name>
+					<xi:include href="BasicFileOps.xml"/>
+				</section>
+			</section>
+
+			<section anchor="PROTO_CMD">
+				<name>Protocol Specific Commands</name>
+				<section>
+					<name>Protocol Specific Commands Overview</name>
+					<xi:include href="ProtoOverview.xml"/>
+				</section>
+			</section>
+
+		</section>
+
+		<section anchor="WIREPROTOCOL">
+			<name>Over the Wire Protocol Description</name>
+			
+			<section anchor="PROTOCOL">
+				<name>Over the Wire Protocol</name>
+				<section>
+					<name>Over the Wire Protocol Overview</name>
+					<xi:include href="ProtocolTop.xml"/>
+				</section>
+			</section>
+			
+		</section>
+		
+    <section anchor="IANA">
+    <!-- All drafts are required to have an IANA considerations section. See RFC 8126 for a guide.-->
+      <name>IANA Considerations</name>
+      <t>This memo includes no request to IANA. [CHECK]</t>
+    </section>
+    
+    <section anchor="Security">
+      <!-- All drafts are required to have a security considerations section. See RFC 3552 for a guide. -->
+      <name>Security Considerations</name>
+      <t>This document should not affect the security of the Internet. [CHECK]</t>
+    </section>
+    
+    <!-- NOTE: The Acknowledgements and Contributors sections are at the end of this template -->
+  </middle>
+
+  <back>
+    <references>
+      <name>References</name>
+      <references>
+        <name>Normative References</name>
+        
+        <xi:include href="https://bib.ietf.org/public/rfc/bibxml/reference.RFC.2119.xml"/>
+        <xi:include href="https://bib.ietf.org/public/rfc/bibxml/reference.RFC.8174.xml"/>
+        <!-- The recommended and simplest way to include a well known reference -->
+        
+      </references>
+ 
+      <references>
+        <name>Informative References</name>
+       
+        <reference anchor="exampleRefMin">
+        <!-- [REPLACE/DELETE] Example minimum reference -->
+          <front>
+            <title>Title [REPLACE]</title>
+            <author initials="Initials [REPLACE]" surname="Surname [REPLACE]">
+              <organization/>
+            </author>
+            <date year="2006"/>
+            <!-- [CHECK] -->
+          </front>
+        </reference>
+
+        <reference anchor="exampleRefOrg" target="http://www.example.com/">
+        <!-- [REPLACE/DELETE] Example reference written by an organization not a person -->
+          <front>
+            <title>Title [REPLACE]</title>
+            <author>
+              <organization>Organization [REPLACE]</organization>
+            </author>
+            <date year="1984"/>
+            <!-- [CHECK] -->
+          </front>
+        </reference>       
+       
+      </references>
+    </references>
+
+    <xi:include href="AdminBinaryValues.xml"/>
+
+    <xi:include href="AuthBinaryValues.xml"/>
+
+    <xi:include href="FileBinaryValues.xml"/>
+
+    <xi:include href="ProtocolBinaryValues.xml"/>
+
+    <section anchor="Acknowledgements" numbered="false">
+      <!-- [REPLACE/DELETE] an Acknowledgements section is optional -->
+      <name>Acknowledgements</name>
+      <t>This template uses extracts from templates written by Pekka Savola, Elwyn Davies and 
+        Henrik Levkowetz. [REPLACE]</t>
+    </section>
+    
+    <section anchor="Contributors" numbered="false">
+      <!-- [REPLACE/DELETE] a Contributors section is optional -->
+      <name>Contributors</name>
+      <t>Thanks to all of the contributors. [REPLACE]</t>
+      <!-- [CHECK] it is optional to add a <contact> record for some or all contributors -->
+    </section>
+    
+ </back>
+</rfc>

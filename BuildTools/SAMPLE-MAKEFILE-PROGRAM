@@ -1,0 +1,34 @@
+#
+# Phoenix © 2025 by Douglas Mark Royer (A.K.A. RiverExplorer) is licensed under CC BY 4.0
+#
+
+#
+
+# Version of this program/library
+#
+VERSION			= 0.0.1
+
+# TOP of the build tree where BuildTools/Make... files exist
+#
+TOP					= ..
+
+# What to call this program.
+# And what the include/RiverExplorer/$(TARGET) header directory will be.
+#
+TARGET			= FILL_IN
+
+CPPFLAGS				+= 
+
+NOW = $(shell date +%Y%m%dT%H%M%S)
+
+LINUX_CPPFLAGS	+=
+
+include ../BuildTools/Makefile.top
+
+SOURCES.cpp = 
+SOURCES.hpp = 
+
+W64_LIBS			+= -lwsock32
+LIBS					+= 
+
+include ../BuildTools/Makefile.bottom

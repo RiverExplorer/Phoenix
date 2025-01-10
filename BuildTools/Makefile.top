@@ -1,0 +1,448 @@
+#
+# Phoenix © 2025 by Douglas Mark Royer (A.K.A. RiverExplorer) is licensed under CC BY 4.0
+#
+#
+#
+# "make LinuxDebug" -> builds Linux Debug build
+# "make W64Debug" -> builds Windows Debug build
+# "make AndroidDebug" -> builds Android Debug build
+#
+# "make LinuxRelease" -> builds Linux release build
+# "make W64Release" -> builds Windows release build
+# "make AndroidRelease" -> builds Android release build
+#
+# "make LinuxTcov" -> builds Linux test coverage build
+# "make W64Tcov" -> builds Windows test coverage build
+# "make AndroidTcov" -> builds Android test coverage build
+#
+# "make" -> builds all.
+#
+.SUFFIXES:	.x .h .c .o .cpp .l .ypp
+
+####
+### SET "TOP" and "VERSION" IN YOUR MAKEFILE, BEFORE INCLUDING THIS FILE
+###
+### TOP -> of your build tree.
+### VERSION -> The version of your product. It will appear in library names.
+###
+###
+### TARGET Set this to the name of the final object.
+### For libraries, leave OFF the .a, .so, .dll, ...
+### For exacutables the final program name.
+####
+# SET TOP
+#  example: TOP			= ../..
+#
+# SET VERSION
+#  example: VERSION	=		0.0.1
+#
+# SET TARGET
+# Or for library (NO FILE extension)
+#  example: TARGET		= libMyLibrary
+#
+TARGET.Release  =		$(TARGET)
+TARGET.Debug		=		$(TARGET)
+TARGET.Tcov			=		$(TARGET)
+
+####
+### HEADER FILES
+####
+
+LINUX_INSTALL_DIR					= /usr/local/Phoenix/Linux
+LINUX_INSTALL_DIR.Release	= $(LINUX_INSTALL_DIR)/Release
+LINUX_INSTALL_DIR.Debug		= $(LINUX_INSTALL_DIR)/Debug
+LINUX_INSTALL_DIR.Tcov		= $(LINUX_INSTALL_DIR)/Tcov
+
+LINUX_INCLUDE_DIR.Release	= $(LINUX_INSTALL_DIR.Release)/include
+LINUX_INCLUDE_DIR.Debug		= $(LINUX_INSTALL_DIR.Release)/include
+LINUX_INCLUDE_DIR.Tcov		= $(LINUX_INSTALL_DIR.Release)/include
+
+W64_INSTALL_DIR						= /usr/local/Phoenix/W64
+W64_INSTALL_DIR.Release		= $(W64_INSTALL_DIR)/Release
+W64_INSTALL_DIR.Debug			= $(W64_INSTALL_DIR)/Debug
+W64_INSTALL_DIR.Tcov			= $(W64_INSTALL_DIR)Tcov
+
+W64_INCLUDE_DIR.Release		= $(W64_INSTALL_DIR.Release)/include
+W64_INCLUDE_DIR.Debug			= $(W64_INSTALL_DIR.Release)/include
+W64_INCLUDE_DIR.Tcov			= $(W64_INSTALL_DIR.Release)/include
+
+ANDROID_INSTALL_DIR					= /usr/local/Phoenix/Linux
+ANDROID_INSTALL_DIR.Release	= $(ANDROID_INSTALL_DIR)/Release
+ANDROID_INSTALL_DIR.Debug		= $(ANDROID_INSTALL_DIR)/Debug
+ANDROID_INSTALL_DIR.Tcov		= $(ANDROID_INSTALL_DIR)/Tcov
+
+ANDROID_INCLUDE_DIR.Release	= $(ANDROID_INSTALL_DIR.Release)/include
+ANDROID_INCLUDE_DIR.Debug		= $(ANDROID_INSTALL_DIR.Release)/include
+ANDROID_INCLUDE_DIR.Tcov		= $(ANDROID_INSTALL_DIR.Release)/include
+
+# Where temporary files will be placed inside the build directory.
+BUILD_DIR	= BuildTemp
+
+##
+LINUX_CC				= gcc
+LINUX_CXX				= g++
+LINUX_STRIP			= strip
+
+CXX_VERSION			= -std=c++17
+
+W64_CC					= x86_64-w64-mingw32-gcc
+W64_CXX					= x86_64-w64-mingw32-g++
+W64_STRIP				= x86_64-w64-mingw32-strip
+
+ANDROID_CC			= ~doug/Android/android-ndk-r26/toolchains/llvm/prebuilt/linux-x86_64/bin/aarch64-linux-android34-clang
+ANDROID_CXX			=~doug/Android/android-ndk-r26/toolchains/llvm/prebuilt/linux-x86_64/bin/aarch64-linux-android34-clang++
+ANDROID_STRIP		= ~/Android/android-ndk-r26/toolchains/llvm/prebuilt/linux-x86_64/bin/llvm-strip
+
+LINUX_TARGET.Release = $(BUILD_DIR)/Linux/Release/bin/$(TARGET.Release)
+LINUX_TARGET.Debug = $(BUILD_DIR)/Linux/Debug/bin/$(TARGET.Debug)
+LINUX_TARGET.Tcov = $(BUILD_DIR)/Linux/Tcov/bin/$(TARGET.Tcov)
+
+W64_TARGET.Release = $(BUILD_DIR)/W64/Release/bin/$(TARGET.Release).exe
+W64_TARGET.Debug = $(BUILD_DIR)/W64/Debug/bin/$(TARGET.Debug).exe
+W64_TARGET.Tcov = $(BUILD_DIR)/W64/Tcov/bin/$(TARGET.Tcov).exe
+
+ANDROID_TARGET.Release = $(BUILD_DIR)/Android/Release/bin/$(TARGET.Release)
+ANDROID_TARGET.Debug = $(BUILD_DIR)/Android/Debug/bin/$(TARGET.Debug)
+ANDROID_TARGET.Tcov = $(BUILD_DIR)/Android/Tcov/bin/$(TARGET.Tcov)
+
+# C++ source files.
+#
+SOURCES.cpp			+=
+SOURCES.hpp			+=
+
+ANDROID_SOURCES.cpp	+=
+ANDROID_SOURCES.hpp	+=
+
+LINUX_SOURCES.cpp	+=
+LINUX_SOURCES.hpp	+=
+
+W64_SOURCES.cpp	+=
+W64_SOURCES.hpp	+=
+
+# C header files.
+#
+SOURCES.c				+=
+SOURCES.h				+=
+
+ANDROID_SOURCES.c	+=
+ANDROID_SOURCES.h	+=
+
+LINUX_SOURCES.c	+=
+LINUX_SOURCES.h	+=
+
+W64_SOURCES.c		+=
+W64_SOURCES.h		+=
+
+# RPCGEN input files.
+#
+RPCTEN					= rpcgen
+SOURCES.x				+=	
+
+XDR_GENERATED.h		+=	$(SOURCES.x:.x=.h)
+XDR_GENERATED.cpp	+=	$(SOURCES.x:.x=.cpp)
+
+# When needed, the xdr dispatch file.
+#
+XDR_DISPATCH.c	=
+
+# The RPCGEN generated files, these are source files.
+#
+XDR_GENERATED_ALL.cpp			=	\
+													$(addprefix $(BUILD_DIR)/Generated/,$(XDR_GENERATED.cpp)) \
+													$(addprefix $(BUILD_DIR)/Generated/,$(XDR_DISPATCH.cpp))
+
+SOURCES.c += $(XDR_GENERATED_ALL.c)
+SOURCES.cpp += $(XDR_GENERATED_ALL.cpp)
+
+# All of the RPCGEN generated header files.
+#
+LINUX_XDR_GENERATED_ALL.h			=	\
+													$(addprefix $(LINUX_INCLUDE_DIR)/,$(XDR_GENERATED.h))
+LINUX_XDR_GENERATED_ALL.hpp			=	\
+													$(addprefix $(LINUX_INCLUDE_DIR)/,$(XDR_GENERATED.hpp))
+SOURCES.h += $(XDR_GENERATED_ALL.h)
+SOURCES.hpp += $(XDR_GENERATED_ALL.hpp)
+
+W64_XDR_GENERATED_ALL.h			=	\
+													$(addprefix $(W64_INCLUDE_DIR)/,$(XDR_GENERATED.h))
+
+W64_XDR_GENERATED_ALL.hpp			=	\
+													$(addprefix $(W64_INCLUDE_DIR)/,$(XDR_GENERATED.hpp))
+
+ANDROID_XDR_GENERATED_ALL.h			=	\
+													$(addprefix $(ANDROID_INCLUDE_DIR)/,$(XDR_GENERATED.h))
+
+ANDROID_XDR_GENERATED_ALL.hpp			=	\
+													$(addprefix $(ANDROID_INCLUDE_DIR)/,$(XDR_GENERATED.hpp))
+
+# All of the RPCGEN files.
+#
+XDR_GENERATED.all				=	\
+													$(XDR_GENERATED_ALL.h) \
+													$(XDR_GENERATED_ALL.hpp) \
+													$(XDR_GENERATED_ALL.c) \
+													$(XDR_GENERATED_ALL.cpp)
+
+# All of the object files that will need to be built.
+# For the 'release' target
+#
+LINUX_OBJECTS.Release	=	\
+				$(addprefix $(BUILD_DIR)/Linux/Release/, $(SOURCES.x:.x=.o)) \
+				$(addprefix $(BUILD_DIR)/Linux/Release/, $(LINUX_SOURCES.cpp:.cpp=.o)) \
+				$(addprefix $(BUILD_DIR)/Linux/Release/, $(LINUX_SOURCES.c:.c=.o)) \
+				$(addprefix $(BUILD_DIR)/Linux/Release/, $(SOURCES.cpp:.cpp=.o)) \
+				$(addprefix $(BUILD_DIR)/Linux/Release/, $(SOURCES.c:.c=.o))
+
+W64_OBJECTS.Release	=	\
+				$(addprefix $(BUILD_DIR)/W64/Release/, $(SOURCES.x:.x=.o)) \
+				$(addprefix $(BUILD_DIR)/W64/Release/, $(W64_SOURCES.cpp:.cpp=.o)) \
+				$(addprefix $(BUILD_DIR)/W64/Release/, $(W64_SOURCES.c:.c=.o)) \
+				$(addprefix $(BUILD_DIR)/W64/Release/, $(SOURCES.cpp:.cpp=.o)) \
+				$(addprefix $(BUILD_DIR)/W64/Release/, $(SOURCES.c:.c=.o))
+
+ANDROID_OBJECTS.Release	=	\
+				$(addprefix $(BUILD_DIR)/Android/Release/, $(SOURCES.x:.x=.o)) \
+				$(addprefix $(BUILD_DIR)/Android/Release/, $(ANDROID_SOURCES.cpp:.cpp=.o)) \
+				$(addprefix $(BUILD_DIR)/Android/Release/, $(ANDROID_SOURCES.c:.c=.o)) \
+				$(addprefix $(BUILD_DIR)/Android/Release/, $(SOURCES.cpp:.cpp=.o)) \
+				$(addprefix $(BUILD_DIR)/Android/Release/, $(SOURCES.c:.c=.o))
+
+# All of the object files that will need to be built.
+# For the 'debug' target
+#
+LINUX_OBJECTS.Debug	= \
+				$(addprefix $(BUILD_DIR)/Linux/Debug/, $(SOURCES.x:.x=.o)) \
+				$(addprefix $(BUILD_DIR)/Linux/Debug/, $(LINUX_SOURCES.cpp:.cpp=.o)) \
+				$(addprefix $(BUILD_DIR)/Linux/Debug/, $(LINUX_SOURCES.c:.c=.o)) \
+				$(addprefix $(BUILD_DIR)/Linux/Debug/, $(SOURCES.cpp:.cpp=.o)) \
+				$(addprefix $(BUILD_DIR)/Linux/Debug/, $(SOURCES.c:.c=.o))
+
+W64_OBJECTS.Debug	= \
+				$(addprefix $(BUILD_DIR)/W64/Debug/, $(SOURCES.x:.x=.o)) \
+				$(addprefix $(BUILD_DIR)/W64/Debug/, $(W64_SOURCES.cpp:.cpp=.o)) \
+				$(addprefix $(BUILD_DIR)/W64/Debug/, $(W64_SOURCES.c:.c=.o)) \
+				$(addprefix $(BUILD_DIR)/W64/Debug/, $(SOURCES.cpp:.cpp=.o)) \
+				$(addprefix $(BUILD_DIR)/W64/Debug/, $(SOURCES.c:.c=.o))
+
+ANDROID_OBJECTS.Debug	= \
+				$(addprefix $(BUILD_DIR)/Android/Debug/, $(SOURCES.x:.x=.o)) \
+				$(addprefix $(BUILD_DIR)/Android/Debug/, $(ANDROID_SOURCES.cpp:.cpp=.o)) \
+				$(addprefix $(BUILD_DIR)/Android/Debug/, $(ANDROID_SOURCES.c:.c=.o)) \
+				$(addprefix $(BUILD_DIR)/Android/Debug/, $(SOURCES.cpp:.cpp=.o)) \
+				$(addprefix $(BUILD_DIR)/Android/Debug/, $(SOURCES.c:.c=.o))
+
+# All of the object files that will need to be built.
+# For the 'tcov' target
+#
+LINUX_OBJECTS.Tcov	= \
+				$(addprefix $(BUILD_DIR)/Linux/Tcov/, $(SOURCES.x:.x=.o)) \
+				$(addprefix $(BUILD_DIR)/Linux/Tcov/, $(LINUX_SOURCES.cpp:.cpp=.o)) \
+				$(addprefix $(BUILD_DIR)/Linux/Tcov/, $(LINUX_SOURCES.c:.c=.o)) \
+				$(addprefix $(BUILD_DIR)/Linux/Tcov/, $(SOURCES.cpp:.cpp=.o)) \
+				$(addprefix $(BUILD_DIR)/Linux/Tcov/, $(SOURCES.c:.c=.o))
+
+W64_OBJECTS.Tcov	= \
+				$(addprefix $(BUILD_DIR)/W64/Tcov/, $(SOURCES.x:.x=.o)) \
+				$(addprefix $(BUILD_DIR)/W64/Tcov/, $(W64_SOURCES.cpp:.cpp=.o)) \
+				$(addprefix $(BUILD_DIR)/W64/Tcov/, $(W64_SOURCES.c:.c=.o)) \
+				$(addprefix $(BUILD_DIR)/W64/Tcov/, $(SOURCES.cpp:.cpp=.o)) \
+				$(addprefix $(BUILD_DIR)/W64/Tcov/, $(SOURCES.c:.c=.o))
+
+ANDROID_OBJECTS.Tcov	= \
+				$(addprefix $(BUILD_DIR)/Android/Tcov/, $(SOURCES.x:.x=.o)) \
+				$(addprefix $(BUILD_DIR)/Android/Tcov/, $(ANDROID_SOURCES.cpp:.cpp=.o)) \
+				$(addprefix $(BUILD_DIR)/Android/Tcov/, $(ANDROID_SOURCES.c:.c=.o)) \
+				$(addprefix $(BUILD_DIR)/Android/Tcov/, $(SOURCES.cpp:.cpp=.o)) \
+				$(addprefix $(BUILD_DIR)/Android/Tcov/, $(SOURCES.c:.c=.o))
+
+# We added the RPCGEN directory, as much here needs it.
+#
+
+# Flags common to all builds.
+#
+COMMON_CPPFLAGS		+= \
+									$(CPPFLAGS) \
+									-I. \
+									-I$(BUILD_DIR)/Generated \
+									-IGeneratedFromXDR
+
+# Flags common to all LINUX builds
+#
+LINUX_CPPFLAGS		+= \
+							-DLINUX \
+							$(COMMON_CPPFLAGS) \
+							$(LINUX_INCLUDE_DIR)
+
+# Flags for LINUX Release builds.
+#
+LINUX_CPPFLAGS.Release += \
+							-DRELEASE \
+							-I$(LINUX_INSTALL_DIR.Release)/include \
+							-I$(LINUX_INSTALL_DIR.Release)/include/$(TARGET.Release) \
+							-I$(BUILD_DIR)/Linux/Release/include
+											 
+# Flags for LINUX Debug builds.
+#
+LINUX_CPPFLAGS.Debug += \
+							-DDEBUG \
+							-I$(LINUX_INSTALL_DIR.Debug)/include \
+							-I$(LINUX_INSTALL_DIR.Debug)/include/$(TARGET.Debug) \
+							-I$(BUILD_DIR)/Linux/Debug/include
+
+# Flags for LINUX Tcov builds.
+#
+LINUX_CPPFLAGS.Tcov += \
+							-DTCOV -DDEBUG \
+							-I$(LINUX_INSTALL_DIR.Tcov)/include \
+							-I$(LINUX_INSTALL_DIR.Tcov)/include/$(TARGET.Tcov) \
+							-I$(BUILD_DIR)/Linux/Tcov/include
+
+# Flags common to all WINDOWS builds
+#
+W64_CPPFLAGS	+= \
+							-D__MINGW32__ \
+							-U__linux__ \
+							-DW64 \
+							$(COMMON_CPPFLAGS) \
+							$(W64_INCLUDE_DIR)
+
+# Flags for WINDOWS Release builds.
+#
+W64_CPPFLAGS.Release += \
+							-DRELEASE \
+							-I$(W64_INSTALL_DIR.Release)/include \
+							-I$(W64_INSTALL_DIR.Release)/include/$(TARGET.Release) \
+							-I$(BUILD_DIR)/W64/Release \
+										 
+# Flags for WINDOWS Debug builds.
+#
+W64_CPPFLAGS.Debug += \
+							-DDEBUG \
+							-I$(W64_INSTALL_DIR.Debug)/include \
+							-I$(W64_INSTALL_DIR.Debug)/include/$(TARGET.Debug) \
+							-I$(BUILD_DIR)/W64/Debug
+
+# Flags for WINDOWS Tcov builds.
+#
+W64_CPPFLAGS.Tcov += \
+							-DTCOV -DDEBUG \
+							-I$(W64_INSTALL_DIR.Tcov)/include \
+							-I$(W64_INSTALL_DIR.Tcov)/include/$(TARGET.Tcov) \
+							-I$(BUILD_DIR)/W64/Tcov
+
+# Flags common to all ANDROID builds
+#
+ANDROID_CPPFLAGS += \
+							-DANDROID \
+							$(COMMON_CPPFLAGS) \
+							$(ANDROID_INCLUDE_DIR)
+
+ANDROID_CPPFLAGS.Release += \
+							-DRELEASE \
+							-I$(ANDROID_INSTALL_DIR.Release)/include \
+							-I$(ANDROID_INSTALL_DIR.Release)/include/$(TARGET.Release) \
+							-I$(BUILD_DIR)/Android/Release
+												 
+# Flags common to all ANDROID Debug builds
+#
+ANDROID_CPPFLAGS.Debug += \
+							-DDEBUG \
+							-I$(ANDROID_INSTALL_DIR.Debug)/include \
+							-I$(ANDROID_INSTALL_DIR.Debug)/include/$(TARGET.Debug) \
+							-I$(BUILD_DIR)/Android/Debug
+
+# Flags common to all ANDROID Tcov builds
+#
+ANDROID_CPPFLAGS.Tcov += \
+							-DTCOV -DDEBUG \
+							-I$(ANDROID_INSTALL_DIR.Tcov)/include \
+							-I$(ANDROID_INSTALL_DIR.Tcov)/include/$(TARGET.Tcov) \
+							-I$(BUILD_DIR)/Android/Tcov
+
+#
+COMMON_COMPILE_FLAGS	= \
+							-pthread \
+							-fPIC \
+							-Wall \
+							-Wextra \
+							-Wshadow \
+							-Wpointer-arith \
+							-Wcast-align \
+							-Wwrite-strings \
+							-Wconversion
+
+LINUX_CFLAGS.Debug			= $(COMMON_COMPILE_FLAGS) -ggdb
+LINUX_CFLAGS.Tcov				= $(COMMON_COMPILE_FLAGS) -ggdb -fprofile-arcs -ftest-coverage
+LINUX_CFLAGS.Release		= $(COMMON_COMPILE_FLAGS) -O2
+LINUX_CXXFLAGS.Debug		= $(COMMON_COMPILE_FLAGS) $(CXX_VERSION) -ggdb
+LINUX_CXXFLAGS.Tcov			= $(COMMON_COMPILE_FLAGS) $(CXX_VERSION) -ggdb -fprofile-arcs -ftest-coverage
+LINUX_CXXFLAGS.Release	= $(COMMON_COMPILE_FLAGS) $(CXX_VERSION) -O2
+LINUX_LDFLAGS.Debug			= $(COMMON_COMPILE_FLAGS) -ggdb
+LINUX_LDFLAGS.Tcov			= $(COMMON_COMPILE_FLAGS) -ggdb -fprofile-arcs -ftest-coverage
+LINUX_LDFLAGS.Release		= $(COMMON_COMPILE_FLAGS) -O2
+
+W64_CFLAGS.Debug				= $(COMMON_COMPILE_FLAGS) -ggdb
+W64_CFLAGS.Tcov					= $(COMMON_COMPILE_FLAGS) -ggdb -fprofile-arcs -ftest-coverage
+W64_CFLAGS.Tcov					= $(COMMON_COMPILE_FLAGS) -ggdb -fprofile-arcs -ftest-coverage
+W64_CFLAGS.Release			= $(COMMON_COMPILE_FLAGS) -O2
+W64_CXXFLAGS.Debug			= $(COMMON_COMPILE_FLAGS) $(CXX_VERSION) -ggdb
+W64_CXXFLAGS.Tcov				= $(COMMON_COMPILE_FLAGS) $(CXX_VERSION) -ggdb -fprofile-arcs -ftest-coverage
+W64_CXXFLAGS.Release		= $(COMMON_COMPILE_FLAGS) $(CXX_VERSION) -O2
+W64_LDFLAGS.Debug				= $(COMMON_COMPILE_FLAGS) -ggdb
+W64_LDFLAGS.Tcov				= $(COMMON_COMPILE_FLAGS) -ggdb -fprofile-arcs -ftest-coverage -lgcov
+W64_LDFLAGS.Release			= $(COMMON_COMPILE_FLAGS) -O2
+
+ANDROID_CFLAGS.Debug		= $(COMMON_COMPILE_FLAGS) -ggdb
+ANDROID_CFLAGS.Tcov			= $(COMMON_COMPILE_FLAGS) -ggdb -fprofile-arcs -ftest-coverage
+ANDROID_CFLAGS.Release	= $(COMMON_COMPILE_FLAGS) -O2
+ANDROID_CXXFLAGS.Debug	= $(COMMON_COMPILE_FLAGS) $(CXX_VERSION) -ggdb
+ANDROID_CXXFLAGS.Tcov		= $(COMMON_COMPILE_FLAGS) $(CXX_VERSION) -ggdb -fprofile-arcs -ftest-coverage
+ANDROID_CXXFLAGS.Release= $(COMMON_COMPILE_FLAGS) $(CXX_VERSION) -O2
+ANDROID_LDFLAGS.Debug		= $(COMMON_COMPILE_FLAGS) -ggdb
+ANDROID_LDFLAGS.Tcov		= $(COMMON_COMPILE_FLAGS) -ggdb -fprofile-arcs -ftest-coverage
+ANDROID_LDFLAGS.Release	= $(COMMON_COMPILE_FLAGS) -O2
+
+LINUX_LDFLAGS.Release	+= \
+										-L$(LINUX_INSTALL_DIR.Release)/lib \
+										-Wl,-rpath=$(LINUX_INSTALL_DIR.Release)/lib
+
+LINUX_LDFLAGS.Debug		+= \
+										-L$(LINUX_INSTALL_DIR.Debug)/lib \
+										-Wl,-rpath=$(LINUX_INSTALL_DIR.Debug)/lib \
+										-Wl,-rpath=$(LINUX_INSTALL_DIR.Release)/lib
+
+LINUX_LDFLAGS.Tcov		+= \
+										-L$(LINUX_INSTALL_DIR.Tcov)/lib \
+										-Wl,-rpath=$(LINUX_INSTALL_DIR.Tcov)/lib \
+										-Wl,-rpath=$(LINUX_INSTALL_DIR.Debug)/lib \
+										-Wl,-rpath=$(LINUX_INSTALL_DIR.Release)/lib
+
+W64_LDFLAGS.Release	+= \
+										-L$(W64_INSTALL_DIR.Release)/lib \
+										-Wl,-rpath=$(W64_INSTALL_DIR.Release)/lib
+
+W64_LDFLAGS.Debug		+= \
+										-L$(W64_INSTALL_DIR.Debug)/lib \
+										-Wl,-rpath=$(W64_INSTALL_DIR.Debug)/lib \
+										-Wl,-rpath=$(W64_INSTALL_DIR.Release/lib
+
+W64_LDFLAGS.Tcov		+= \
+										-L$(W64_INSTALL_DIR.Tcov)/lib \
+										-Wl,-rpath=$(W64_INSTALL_DIR.Tcov)/lib \
+										-Wl,-rpath=$(W64_INSTALL_DIR.Debug)/lib \
+										-Wl,-rpath=$(W64_INSTALL_Dir.Release/lib
+
+ANDROID_LDFLAGS.Release	+= \
+										-L$(ANDROID_INSTALL_DIR.Releaes)/lib \
+										-Wl,-rpath=$(ANDROID_INSTALL_DIR.Release)/lib
+
+ANDROID_LDFLAGS.Debug		+= \
+										-L$(ANDROID_INSTALL_DIR.Debug)/lib \
+										-Wl,-rpath=$(ANDROID_INSTALL_DIR.Debug)/lib \
+										-Wl,-rpath=$(ANDROID_INSTALL_DIR.Release)/lib
+
+ANDROID_LDFLAGS.Tcov		+= \
+										-L$(ANDROID_INSTALL_DIR.Tcov)/lib \
+										-Wl,-rpath=$(ANDROID_INSTALL_DIR.Tcov)/lib \
+										-Wl,-rpath=$(ANDROID_INSTALL_DIR.Debug)/lib \
+										-Wl,-rpath=$(ANDROID_INSTALL_DIR.Release)/lib

@@ -1,0 +1,91 @@
+<section anchor="ADMINBINARYVALUES_APPENDIX">
+	<name>Administrative Enumerated Binary Values</name>
+	<t>
+		Phoenix is a binary protocol.
+		Each value is sent as an unsigned 32-bit integer in xdr format.
+	</t>
+	<t>
+		The values for the commands are arbitrary and were assigned
+		as created. There is no plan or origination to the numbers.
+		There is no priority or superiority to any value.
+		The table is sorted by name, not value.
+	</t>
+	<t>
+		The values are not unique. They are only unique within the context
+		in which they are used.
+	</t>
+	<t>
+		Some of these values are reused for other commands.
+		For example USER_CREATE is both an (a) AUTH capability reply
+		informing the user that they have permission to create a
+		user with the (b) USER_CREATE command.
+	</t>
+	<t>
+		Some values may be reused if they are parameter arguments
+		to other commands.
+		For example xxxxxx.
+	</t>
+	<table>
+    <thead>
+      <tr>
+				<th>Decimal Value</th>
+				<th>Command / Capability Name</th>
+				<th>Brief Description.</th>
+			</tr>
+    </thead>
+    <tbody>
+      <tr>
+				<td>x</td>
+				<td>USER_CERT</td>
+				<td>Manage a users certificate.</td>
+			</tr>
+      <tr>
+				<td>x</td>
+				<td>USER_CREATE</td>
+				<td>
+					<t>
+					When sent in a capability reply USER_CREATE informs the
+					user that they have permission to create users.
+					</t>
+					<t>
+						When sent as a command the USER_CREATE instructs
+						the other endpoint to create a named user.
+					</t>
+				</td>
+			</tr>
+      <tr>
+				<td>x</td>
+				<td>USER_DELETE</td>
+				<td>Delete a user.</td>
+			</tr>
+      <tr>
+				<td>x</td>
+				<td>USER_LIST</td>
+				<td>List users and their capabilities.</td>
+			</tr>
+      <tr>
+				<td>x</td>
+				<td>USER_PERMISSIONS</td>
+				<td>Update user permissions.</td>
+			</tr>
+      <tr>
+				<td>x</td>
+				<td>USER_RENAME</td>
+				<td>Rename a user.</td>
+			</tr>
+      <tr>
+				<td>x</td>
+				<td>USER_RESET</td>
+				<td>
+					Used to coordinate resetting a users authentication information.
+				</td>
+			</tr>
+      <tr>
+				<td>4294967296</td>
+				<td>Reserved for future expansion.</td>
+				<td>4294967296 has a hex value of: 0xffffffff </td>
+			</tr>
+    </tbody>
+</table>
+
+</section>

@@ -1,0 +1,761 @@
+<?xml version="1.0" encoding="utf-8"?>
+<?xml-model href="rfc7991bis.rnc"?>  <!-- Required for schema validation and schema-aware editing -->
+<!-- <?xml-stylesheet type="text/xsl" href="rfc2629.xslt" ?> -->
+<!-- This third-party XSLT can be enabled for direct transformations in XML processors, including most browsers -->
+
+
+<!DOCTYPE rfc [
+  <!ENTITY nbsp    "&#160;">
+  <!ENTITY zwsp   "&#8203;">
+  <!ENTITY nbhy   "&#8209;">
+  <!ENTITY wj     "&#8288;">
+]>
+<rfc
+  xmlns:xi="http://www.w3.org/2001/XInclude"
+  category="info"
+  docName="draft-royer-phoenix-00"
+  ipr="trust200902"
+  obsoletes=""
+  updates=""
+  submissionType="IETF"
+  xml:lang="en"
+  version="3">
+  <front>
+    <title abbrev="Phoenix: Lemonaid Risen Again">Phoenix: Lemonaid Risen Again</title>
+    <seriesInfo name="Internet-Draft" value="draft-royer-phoenix-00"/>
+   
+    <author fullname="Doug Royer" initials="DM" role="editor" surname="Royer">
+      <organization>RiverExplorer Games LLC</organization>
+      <address>
+        <postal>
+          <!-- Reorder these if your country does things differently -->
+          <street>848 N. Rainbow Blvd #1120</street>
+          <city>Las Vegas</city>
+          <region>Nevada</region>
+          <code>89107</code>
+          <country>USA</country>
+          <!-- Uses two letter country code -->
+        </postal>        
+        <phone>1+714-989-6135</phone>
+        <email>DouglasRoyer@gmail.com</email>  
+        <!-- Can have more than one <email> element -->
+        <uri>https://RiverExplorer.games</uri>
+      </address>
+    </author>
+   
+    <date year="2025"/>
+    <area>General</area>
+    <workgroup>Internet Engineering Task Force</workgroup>
+    <keyword>imap</keyword>
+    <keyword>pop</keyword>
+    <keyword>smtp</keyword>
+    <keyword>mime</keyword>
+    <abstract>
+      <t>
+	Email and MIME messages account for one the largest volumes of data on the
+	internet.
+	The transfer of these MIME message has not had a major updated in decades.
+	Part of the reason is that it is very important data and altering it
+	takes a great deal of care and planning.
+</t>
+<t>
+	Another major concern is security and authentication.
+	This proposal allows for existing autnentication to continue to work.
+</t>
+<t>
+	This is a MIME message transport that can facilitate
+	the transfer of any kind of MIME message. Including email, calendaring,
+	and text, image, or multimedia MIME messages.
+	It can transfer multipart and simple MIME messages.
+</t>
+<t>
+	The POP and IMAP protocols are overly chatty and now that the Internet
+	can handle 8-bit transfers, there is no need for the overly complex
+	text handling of messages.
+</t>
+<t>
+	This proposal includes a sample implementation.
+	Which also includes a gateway from this proposal to existing system.
+	Thunderbid and Outlook plugins are part of the sample implementation.
+</t>
+
+    </abstract>
+  </front>
+
+  <middle>
+    
+    <section>
+      <name>Introduction</name>
+      <t>
+	On the Internet, just about everything is a MIME object and there are
+	many ways to transport MIME.
+	This document specifies a new application level MIME transport mechanism
+	and protocol.
+	This document does not specify any new or changed MIME types.
+</t>
+<t>
+	Transporting MIME objects is generally done in one of two ways:
+	(1) Broadcasting, (2) Polling.
+	Both methods often require some form of authentication, registration,
+	and selecting of the desired material.
+	These selection processes are essentially a form of remote folder management.
+	In some cases you can only select what is provided, and in others
+	you have some or a lot of control over the remote folders.
+</t>
+<t>
+	In addition to other functions, this specification defines a remote
+	and local folder management.
+	This remote folder management is common with many type of very popular
+	protocols.
+	This design started by looking at the very popular IMAP and POP protocols.
+</t>
+<t>
+	An additional task is transporting the perhaps very large MIME objects.
+	Some MIME objects are so large that some devices may 
+	default to looking at only at parts of the MIME object.
+	An example is an email message with one or more very large attachments, where
+	the device may default to not download the large attachment without a
+	specific request from the user.
+</t>
+<t>
+	Some objects are transported as blocks of data with a known and fixed size.
+	These are often transported with some kind of search, get, and put commands.
+	In effect these are folder and file commands
+</t>
+<t>	
+	Other MIME objects are transported in streams of data with an unspecified
+	size,	such as streaming music, audio, or video.
+	This specification describes how to use existing protocols to 
+	facilitate the data streaming.
+	And again, these are folder and file commands.
+</t>
+<t>
+	A MIME object can be a simple object, or it may contain many multipart
+	sections of small to huge size.
+	These sections can be viewed as files in the containing MIME object.
+</t>
+<t>
+	By implementing this specification application developers can
+	use the techniques to manage local and remote files and folders.
+	Remote email or files are the same thing in this specification.
+	The sections of MIME object with multipart sections are viewed as files
+	in the MIME object.
+	You can interact with the entire folder, or just the files withing it.
+</t>
+<t>
+	MIME object have meta data, and they are called headers.
+	Files and folders have meta data, and they are called file attributes.
+	This specification does not mandate any meta data, it allows for
+	a consistent transport of existing meta data.
+</t>
+<t>
+	File and folder meta data is a complex task that can involve
+	access control lists and permissions.
+	This specification defines a mechanism to transport this meta data,
+	it does not define the meta data.
+</t>
+<t>
+	And this specification provides for the ability to define both
+	protocol extensions and the creating of finer control for specific
+	needs that may evolve.
+</t>
+<t>
+	This examples compares current folder and file manipulations
+	to how it can be used in this protocol with email.
+</t>
+<ul>
+	<li>
+		You can search for file names.
+		You can search sender, subject, and more.
+	</li>
+	<li>
+		You can search for file contents.
+		You can search for email message contents.
+	</li>
+	<li>
+		You can create, delete, and modify files.
+		You can create, delete, and modify email messages.
+	</li>
+	<li>
+		You can create, delete, and modify folders.
+		You can create, delete, and modify email folders.
+	</li>
+</ul>
+<t>
+	What this specification defines:
+</t>
+<ul>
+	<li>
+		How to use existing authentication implementations or use new ones.
+	</li>
+	<li>
+		This specification describes a standard way to perform file operations
+		that are remote to the application and agnostic to
+		purpose of data being transported.
+	</li>
+	<li>
+		Specifies a way to migrate from some existing protocols to Phoenix.
+		Provides links to sample implementations.
+	</li>
+</ul>
+
+			
+      <section>
+        <name>Requirements Language</name>
+        <t>The key words "MUST", "MUST NOT", "REQUIRED", "SHALL",
+          "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT
+          RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be
+          interpreted as described in BCP 14 <xref target="RFC2119"/>
+          <xref target="RFC8174"/> when, and only when, they appear in
+          all capitals, as shown here.</t>
+      </section>
+      <!-- [CHECK] The 'Requirements Language' section is optional -->
+
+    </section>
+    
+    <section>
+      <name>Terms and Definition used in this proposal</name>
+      <t>
+				The follwing is a list of terms with their definitions as
+				used in this specification.
+			</t>
+        <dl newline="true">
+    <!-- Omit newline="true" if you want each definition to start on the sa\
+me line as the corresponding term -->
+		<dt>ADMIN_CMD</dt>
+		<dd>
+			Administrative and auditing operations.
+			These allow for authorized users to configure, query logs, errors,
+			and possibly user activity.
+		</dd>
+		<dt>AUTH_CMD</dt>
+		<dd>
+			Authentication and authorization operations.
+			These operations authenticate users and verity their authorization
+			access.
+		</dd>
+		<dt>CMD</dt>
+		<dd>
+			A protocol operation.
+			They are broken down into, ADMIN_CMD, AUTH_CMD, FILE_CMD, and PROTO_CMD.
+		</dd>
+    <dt>Command</dt>
+    <dd>
+			Each packet contains a command.
+			This command is also in the reply to the command.
+			Not all commands have a reply.
+			These are called a CMD.
+		</dd>
+		<dt>FILE_CMD</dt>
+		<dd>
+			File and folder operations.
+			This include creating, getting, modifying, deleting, moving,
+			and renaming files.
+		</dd>
+    <dt>Media Type</dt>
+    <dd>
+			Each MIME object has a media type that identifies the
+			content of the object.
+			This specification does not add, remove, or alter any MIME media type;
+		</dd>
+    <dt>MIME</dt>
+    <dd>
+			This protocol transports MIME objects.
+			This specification does not remove or alter any MIME objects;
+		</dd>
+    <dt>Parameter</dt>
+    <dd>
+			Most CMD have values that are associated with it.
+			These are called parameters.
+			For example, the create folder CMD has the name of the new
+			folder to be created as a parameter.
+			
+			When the parameter itself has values, then these CMD parameters
+			are called PROTO_CMD, because they have their own protocol.
+		</dd>
+    <dt>PROTO_CMD</dt>
+    <dd>
+			Specific protocols may have commands specific to their needs.
+			These are calls a PROTO_CMD.
+			An example might be extracting a specific attachment type and
+			its data out of a MIME object.
+			This could be a PROTO_CMD parameter to the FILE_CMD.
+		</dd>
+    <dt>XDR</dt>
+    <dd>
+			RFC-4506 specifies a standard and compatible way to transfer
+			binary information.
+			This protocol uses XDR to transmit the CMDs and replies.
+			The MIME data is transported as XDR opaque, as in unmodified.
+		</dd>
+  </dl>
+
+    </section>
+
+		<section anchor="COMMANDS">
+			<name>Commands Overview</name>
+
+			<section anchor="ADMIN_CMD">
+				<name>Administration Commands</name>
+				<section>
+					<name>Administration Commands Overview</name>
+					<t>
+	Administrative command can be used to configure, audit, and manage
+	the remote endpoint.
+	Administrative command can be used to configure, audit, and manage
+	user acess.
+</t>
+<section anchor="ADMIN_CAPABILITY">
+	<name>Capability Name</name>
+	<t>
+		Implementations that support any ADMIN_CMD include ADMIN_CMD
+		in the post authenication CAPABILITY list.
+	</t>
+	<t>
+		Implementations MUST NOT send a ADMIN_CMD capability
+		in the pre authorization CAPABILITY list.
+	</t>
+	<t>
+		When a user has been authenticated, as part of the affermative
+		reply, the ADMIN_CAPABILITY will be included in the reply
+		when the user has administrative permissions.
+	</t>
+	<t>
+		The ADMIN_CAPABILITY reply will then be followed by
+		the list of ADMIN commands the user is allowed to perform.
+		For example, if a user only has permission to only view user lists, then
+		only the USER_LIST ADMIN capibility will be provided.
+	</t>
+</section>
+<section anchor="ADMIN_USER">
+	<name>Administration of users.</name>
+	<t>
+		The following operations are defined for user administration.
+	</t>
+	<table>
+    <thead>
+      <tr><th>Command and Capability Name</th><th>Brief Description.</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>USER_CREATE</td><td>Create a new user.</td></tr>
+      <tr><td>USER_DELETE</td><td>Delete a user.</td></tr>
+      <tr><td>USER_RENAME</td><td>Rename a user.</td></tr>
+      <tr><td>USER_LIST</td><td>List users and their capabilities.</td></tr>
+      <tr><td>USER_PERMISSIONS</td><td>Update user permissions.</td></tr>
+    </tbody>
+</table>
+
+</section>
+
+				</section>
+			</section>
+
+			<section anchor="AUTH_CMD">
+				<name>Authentication Commands</name>
+				<section>
+					<name>Authentication Commands Overview</name>
+					<t>
+	TODO
+</t>
+
+				</section>
+			</section>
+
+			<section anchor="FILECMD">
+				<name>Protocol</name>
+				<section>
+					<name>Basic File and Folder Operations</name>
+					<t>
+	The file operations (FileOp) have protocol names.
+	Here are their protocol names and a breif description.
+</t>
+<table>
+	<thead>
+		<tr><th>Op Name</th><th>Brief Description.</th></tr>
+	</thead>
+	<tbody>
+		<tr><td>FOLDER_CREATE</td><td>Create a new folder.</td></tr>
+		<tr><td>FOLDER_COPY</td><td>Copy a folder.</td></tr>
+		<tr><td>FOLDER_DELETE</td><td>Delete a folder.</td></tr>
+		<tr><td>FOLDER_RENAME</td><td>Rename a folder.</td></tr>
+		<tr><td>FOLDER_MOVE</td><td>Move a folder.</td></tr>
+		<tr><td>FOLDER_SHARE</td><td>Share a folder.</td></tr>
+		<tr><td>FOLDER_LIST</td><td>List folders and files.</td></tr>
+		
+		<tr><td>FILE_GET</td><td>Get a known existing file.</td></tr>
+		<tr><td>FILE_CREATE</td><td>Create a new file.</td></tr>
+		<tr><td>FILE_MODIFY</td><td>Modify the contents of an existing file.</td></tr>
+		<tr><td>FILE_SHARE</td><td>Share a file.</td></tr>
+	</tbody>
+</table>
+
+				</section>
+			</section>
+
+			<section anchor="PROTO_CMD">
+				<name>Protocol Specific Commands</name>
+				<section>
+					<name>Protocol Specific Commands Overview</name>
+					<t>
+	TODO
+</t>
+
+				</section>
+			</section>
+
+		</section>
+
+		<section anchor="WIREPROTOCOL">
+			<name>Over the Wire Protocol Description</name>
+			
+			<section anchor="PROTOCOL">
+				<name>Over the Wire Protocol</name>
+				<section>
+					<name>Over the Wire Protocol Overview</name>
+					<t>
+	TODO
+</t>
+
+				</section>
+			</section>
+			
+		</section>
+		
+    <section anchor="IANA">
+    <!-- All drafts are required to have an IANA considerations section. See RFC 8126 for a guide.-->
+      <name>IANA Considerations</name>
+      <t>This memo includes no request to IANA. [CHECK]</t>
+    </section>
+    
+    <section anchor="Security">
+      <!-- All drafts are required to have a security considerations section. See RFC 3552 for a guide. -->
+      <name>Security Considerations</name>
+      <t>This document should not affect the security of the Internet. [CHECK]</t>
+    </section>
+    
+    <!-- NOTE: The Acknowledgements and Contributors sections are at the end of this template -->
+  </middle>
+
+  <back>
+    <references>
+      <name>References</name>
+      <references>
+        <name>Normative References</name>
+        
+        <xi:include href="https://bib.ietf.org/public/rfc/bibxml/reference.RFC.2119.xml"/>
+        <xi:include href="https://bib.ietf.org/public/rfc/bibxml/reference.RFC.8174.xml"/>
+        <!-- The recommended and simplest way to include a well known reference -->
+        
+      </references>
+ 
+      <references>
+        <name>Informative References</name>
+       
+        <reference anchor="exampleRefMin">
+        <!-- [REPLACE/DELETE] Example minimum reference -->
+          <front>
+            <title>Title [REPLACE]</title>
+            <author initials="Initials [REPLACE]" surname="Surname [REPLACE]">
+              <organization/>
+            </author>
+            <date year="2006"/>
+            <!-- [CHECK] -->
+          </front>
+        </reference>
+
+        <reference anchor="exampleRefOrg" target="http://www.example.com/">
+        <!-- [REPLACE/DELETE] Example reference written by an organization not a person -->
+          <front>
+            <title>Title [REPLACE]</title>
+            <author>
+              <organization>Organization [REPLACE]</organization>
+            </author>
+            <date year="1984"/>
+            <!-- [CHECK] -->
+          </front>
+        </reference>       
+       
+      </references>
+    </references>
+
+    <section anchor="ADMINBINARYVALUES_APPENDIX">
+	<name>Administrative Enumerated Binary Values</name>
+	<t>
+		Phoenix is a binary protocol.
+		Each value is sent as an unsigned 32-bit integer in xdr format.
+	</t>
+	<t>
+		The values for the commands are arbitrary and were assigned
+		as created. There is no plan or origination to the numbers.
+		There is no priority or superiority to any value.
+		The table is sorted by name, not value.
+	</t>
+	<t>
+		The values are not unique. They are only unique within the context
+		in which they are used.
+	</t>
+	<t>
+		Some of these values are reused for other commands.
+		For example USER_CREATE is both an (a) AUTH capability reply
+		informing the user that they have permission to create a
+		user with the (b) USER_CREATE command.
+	</t>
+	<t>
+		Some values may be reused if they are parameter arguments
+		to other commands.
+		For example xxxxxx.
+	</t>
+	<table>
+    <thead>
+      <tr>
+				<th>Decimal Value</th>
+				<th>Command / Capability Name</th>
+				<th>Brief Description.</th>
+			</tr>
+    </thead>
+    <tbody>
+      <tr>
+				<td>x</td>
+				<td>USER_CERT</td>
+				<td>Manage a users certificate.</td>
+			</tr>
+      <tr>
+				<td>x</td>
+				<td>USER_CREATE</td>
+				<td>
+					<t>
+					When sent in a capability reply USER_CREATE informs the
+					user that they have permission to create users.
+					</t>
+					<t>
+						When sent as a command the USER_CREATE instructs
+						the other endpoint to create a named user.
+					</t>
+				</td>
+			</tr>
+      <tr>
+				<td>x</td>
+				<td>USER_DELETE</td>
+				<td>Delete a user.</td>
+			</tr>
+      <tr>
+				<td>x</td>
+				<td>USER_LIST</td>
+				<td>List users and their capabilities.</td>
+			</tr>
+      <tr>
+				<td>x</td>
+				<td>USER_PERMISSIONS</td>
+				<td>Update user permissions.</td>
+			</tr>
+      <tr>
+				<td>x</td>
+				<td>USER_RENAME</td>
+				<td>Rename a user.</td>
+			</tr>
+      <tr>
+				<td>x</td>
+				<td>USER_RESET</td>
+				<td>
+					Used to coordinate resetting a users authentication information.
+				</td>
+			</tr>
+      <tr>
+				<td>4294967296</td>
+				<td>Reserved for future expansion.</td>
+				<td>4294967296 has a hex value of: 0xffffffff </td>
+			</tr>
+    </tbody>
+</table>
+
+</section>
+
+
+    <section anchor="AUTHBINARYVALUES_APPENDIX">
+	<name>Authentication Enumerated Binary Values</name>
+	<t>
+		Phoenix is a binary protocol.
+		Each value is sent as an unsigned 32-bit integer in xdr format.
+	</t>
+	<t>
+		The values for the commands are arbitrary and were assigned
+		as created. There is no plan or origination to the numbers.
+		There is no priority or superiority to any value.
+		The table is sorted by name, not value.
+	</t>
+	<t>
+		The values are not unique. They are only unique within the context
+		in which they are used.
+	</t>
+	<t>
+		Some of these values are reused for other commands.
+		For example USER_CREATE is both an (a) AUTH capability reply
+		informing the user that they have permission to create a
+		user with the (b) USER_CREATE command.
+	</t>
+	<t>
+		Some values may be reused if they are parameter arguments
+		to other commands.
+		For example xxxxxx.
+	</t>
+	<table>
+    <thead>
+      <tr>
+				<th>Decimal Value</th>
+				<th>Command / Capability Name</th>
+				<th>Brief Description.</th>
+			</tr>
+    </thead>
+    <tbody>
+      <tr>
+				<td>x</td>
+				<td>AUTH_TODO</td>
+				<td>xxx.</td>
+			</tr>
+      <tr>
+				<td>xxx</td>
+				<td>AUTH_xxx</td>
+				<td>xxx.</td>
+			</tr>
+      <tr>
+				<td>4294967296</td>
+				<td>Reserved for future expansion.</td>
+				<td>4294967296 has a hex value of: 0xffffffff </td>
+			</tr>
+    </tbody>
+</table>
+
+</section>
+
+
+    <section anchor="BINARYBINARYVALUES_APPENDIX">
+	<name>File and Folder Enumerated Binary Values</name>
+	<t>
+		Phoenix is a binary protocol.
+		Each value is sent as an unsigned 32-bit integer in xdr format.
+	</t>
+	<t>
+		The values for the commands are arbitrary and were assigned
+		as created. There is no plan or origination to the numbers.
+		There is no priority or superiority to any value.
+		The table is sorted by name, not value.
+	</t>
+	<t>
+		The values are not unique. They are only unique within the context
+		in which they are used.
+	</t>
+	<t>
+		Some of these values are reused for other commands.
+		For example USER_CREATE is both an (a) AUTH capability reply
+		informing the user that they have permission to create a
+		user with the (b) USER_CREATE command.
+	</t>
+	<t>
+		Some values may be reused if they are parameter arguments
+		to other commands.
+		For example xxxxxx.
+	</t>
+	<table>
+    <thead>
+      <tr>
+				<th>Decimal Value</th>
+				<th>Command / Capability Name</th>
+				<th>Brief Description.</th>
+			</tr>
+    </thead>
+    <tbody>
+      <tr>
+				<td>x</td>
+				<td>FILE_TODO</td>
+				<td>xxx.</td>
+			</tr>
+      <tr>
+				<td>xxx</td>
+				<td>FILE_xxx</td>
+				<td>xxx.</td>
+			</tr>
+      <tr>
+				<td>4294967296</td>
+				<td>Reserved for future expansion.</td>
+				<td>4294967296 has a hex value of: 0xffffffff </td>
+			</tr>
+    </tbody>
+</table>
+
+</section>
+
+
+    <section anchor="PROTOCOLBINARYVALUES_APPENDIX">
+	<name>Protocol Enumerated Binary Values</name>
+	<t>
+		Phoenix is a binary protocol.
+		Each value is sent as an unsigned 32-bit integer in xdr format.
+	</t>
+	<t>
+		The values for the commands are arbitrary and were assigned
+		as created. There is no plan or origination to the numbers.
+		There is no priority or superiority to any value.
+		The table is sorted by name, not value.
+	</t>
+	<t>
+		The values are not unique. They are only unique within the context
+		in which they are used.
+	</t>
+	<t>
+		Some of these values are reused for other commands.
+		For example USER_CREATE is both an (a) AUTH capability reply
+		informing the user that they have permission to create a
+		user with the (b) USER_CREATE command.
+	</t>
+	<t>
+		Some values may be reused if they are parameter arguments
+		to other commands.
+		For example xxxxxx.
+	</t>
+	<table>
+    <thead>
+      <tr>
+				<th>Decimal Value</th>
+				<th>Command / Capability Name</th>
+				<th>Brief Description.</th>
+			</tr>
+    </thead>
+    <tbody>
+      <tr>
+				<td>x</td>
+				<td>PROTO_TODO</td>
+				<td>xxx.</td>
+			</tr>
+      <tr>
+				<td>xxx</td>
+				<td>PROTO_xxx</td>
+				<td>xxx.</td>
+			</tr>
+      <tr>
+				<td>4294967296</td>
+				<td>Reserved for future expansion.</td>
+				<td>4294967296 has a hex value of: 0xffffffff </td>
+			</tr>
+    </tbody>
+</table>
+
+</section>
+
+
+    <section anchor="Acknowledgements" numbered="false">
+      <!-- [REPLACE/DELETE] an Acknowledgements section is optional -->
+      <name>Acknowledgements</name>
+      <t>This template uses extracts from templates written by Pekka Savola, Elwyn Davies and 
+        Henrik Levkowetz. [REPLACE]</t>
+    </section>
+    
+    <section anchor="Contributors" numbered="false">
+      <!-- [REPLACE/DELETE] a Contributors section is optional -->
+      <name>Contributors</name>
+      <t>Thanks to all of the contributors. [REPLACE]</t>
+      <!-- [CHECK] it is optional to add a <contact> record for some or all contributors -->
+    </section>
+    
+ </back>
+</rfc>
+  

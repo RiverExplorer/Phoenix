@@ -1,0 +1,55 @@
+<section anchor="AUTHBINARYVALUES_APPENDIX">
+	<name>Authentication Enumerated Binary Values</name>
+	<t>
+		Phoenix is a binary protocol.
+		Each value is sent as an unsigned 32-bit integer in xdr format.
+	</t>
+	<t>
+		The values for the commands are arbitrary and were assigned
+		as created. There is no plan or origination to the numbers.
+		There is no priority or superiority to any value.
+		The table is sorted by name, not value.
+	</t>
+	<t>
+		The values are not unique. They are only unique within the context
+		in which they are used.
+	</t>
+	<t>
+		Some of these values are reused for other commands.
+		For example USER_CREATE is both an (a) AUTH capability reply
+		informing the user that they have permission to create a
+		user with the (b) USER_CREATE command.
+	</t>
+	<t>
+		Some values may be reused if they are parameter arguments
+		to other commands.
+		For example xxxxxx.
+	</t>
+	<table>
+    <thead>
+      <tr>
+				<th>Decimal Value</th>
+				<th>Command / Capability Name</th>
+				<th>Brief Description.</th>
+			</tr>
+    </thead>
+    <tbody>
+      <tr>
+				<td>x</td>
+				<td>AUTH_TODO</td>
+				<td>xxx.</td>
+			</tr>
+      <tr>
+				<td>xxx</td>
+				<td>AUTH_xxx</td>
+				<td>xxx.</td>
+			</tr>
+      <tr>
+				<td>4294967296</td>
+				<td>Reserved for future expansion.</td>
+				<td>4294967296 has a hex value of: 0xffffffff </td>
+			</tr>
+    </tbody>
+</table>
+
+</section>

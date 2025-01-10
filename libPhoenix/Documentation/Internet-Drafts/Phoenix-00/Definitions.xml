@@ -1,0 +1,70 @@
+  <dl newline="true">
+    <!-- Omit newline="true" if you want each definition to start on the sa\
+me line as the corresponding term -->
+		<dt>ADMIN_CMD</dt>
+		<dd>
+			Administrative and auditing operations.
+			These allow for authorized users to configure, query logs, errors,
+			and possibly user activity.
+		</dd>
+		<dt>AUTH_CMD</dt>
+		<dd>
+			Authentication and authorization operations.
+			These operations authenticate users and verity their authorization
+			access.
+		</dd>
+		<dt>CMD</dt>
+		<dd>
+			A protocol operation.
+			They are broken down into, ADMIN_CMD, AUTH_CMD, FILE_CMD, and PROTO_CMD.
+		</dd>
+    <dt>Command</dt>
+    <dd>
+			Each packet contains a command.
+			This command is also in the reply to the command.
+			Not all commands have a reply.
+			These are called a CMD.
+		</dd>
+		<dt>FILE_CMD</dt>
+		<dd>
+			File and folder operations.
+			This include creating, getting, modifying, deleting, moving,
+			and renaming files.
+		</dd>
+    <dt>Media Type</dt>
+    <dd>
+			Each MIME object has a media type that identifies the
+			content of the object.
+			This specification does not add, remove, or alter any MIME media type;
+		</dd>
+    <dt>MIME</dt>
+    <dd>
+			This protocol transports MIME objects.
+			This specification does not remove or alter any MIME objects;
+		</dd>
+    <dt>Parameter</dt>
+    <dd>
+			Most CMD have values that are associated with it.
+			These are called parameters.
+			For example, the create folder CMD has the name of the new
+			folder to be created as a parameter.
+			
+			When the parameter itself has values, then these CMD parameters
+			are called PROTO_CMD, because they have their own protocol.
+		</dd>
+    <dt>PROTO_CMD</dt>
+    <dd>
+			Specific protocols may have commands specific to their needs.
+			These are calls a PROTO_CMD.
+			An example might be extracting a specific attachment type and
+			its data out of a MIME object.
+			This could be a PROTO_CMD parameter to the FILE_CMD.
+		</dd>
+    <dt>XDR</dt>
+    <dd>
+			RFC-4506 specifies a standard and compatible way to transfer
+			binary information.
+			This protocol uses XDR to transmit the CMDs and replies.
+			The MIME data is transported as XDR opaque, as in unmodified.
+		</dd>
+  </dl>
