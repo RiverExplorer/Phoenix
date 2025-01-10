@@ -1,3 +1,8 @@
+
+To view the protocol documentation (work in progress):
+
+    https://riverexplorer.games/Phoenix/
+
 Email and MIME messages account for one the largest volumes of data on the
 internet.
 The transfer of these MIME message has not had a major updated in decades.
