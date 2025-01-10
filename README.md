@@ -19,3 +19,6 @@ text handling of messages.
 This proposal includes a sample implementation.
 Which also includes a gateway from this proposal to existing system.
 Thunderbid and Outlook plugins are part of the sample implementation.
+
+Many years ago I was asked by the IETF to see if I could revamp IMAP and POP.
+Just now I am getting to it.
