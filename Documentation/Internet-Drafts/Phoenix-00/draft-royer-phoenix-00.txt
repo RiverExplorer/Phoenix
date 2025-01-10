@@ -4,14 +4,16 @@
 
 Internet Engineering Task Force                           DM. Royer, Ed.
 Internet-Draft                                   RiverExplorer Games LLC
-Intended status: Informational                            9 January 2025
-Expires: 13 July 2025
+Intended status: Informational                           10 January 2025
+Expires: 14 July 2025
 
 
                      Phoenix: Lemonaid Risen Again
                          draft-royer-phoenix-00
 
 Abstract
+
+   NOTE: This is just getting started, not ready for submission yet.
 
    Email and MIME messages account for one the largest volumes of data
    on the internet.  The transfer of these MIME message has not had a
@@ -45,20 +47,23 @@ Status of This Memo
    working documents as Internet-Drafts.  The list of current Internet-
    Drafts is at https://datatracker.ietf.org/drafts/current/.
 
+
+
+
+
+
+
+Royer                     Expires 14 July 2025                  [Page 1]
+
+Internet-Draft        Phoenix: Lemonaid Risen Again         January 2025
+
+
    Internet-Drafts are draft documents valid for a maximum of six months
    and may be updated, replaced, or obsoleted by other documents at any
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-
-
-
-Royer                     Expires 13 July 2025                  [Page 1]
-
-Internet-Draft        Phoenix: Lemonaid Risen Again         January 2025
-
-
-   This Internet-Draft will expire on 13 July 2025.
+   This Internet-Draft will expire on 14 July 2025.
 
 Copyright Notice
 
@@ -101,18 +106,16 @@ Table of Contents
    Appendix C.  File and Folder Enumerated Binary Values . . . . . .  11
    Appendix D.  Protocol Enumerated Binary Values  . . . . . . . . .  12
    Acknowledgements  . . . . . . . . . . . . . . . . . . . . . . . .  13
-   Contributors  . . . . . . . . . . . . . . . . . . . . . . . . . .  13
-   Author's Address  . . . . . . . . . . . . . . . . . . . . . . . .  13
 
 
 
-
-
-
-Royer                     Expires 13 July 2025                  [Page 2]
+Royer                     Expires 14 July 2025                  [Page 2]
 
 Internet-Draft        Phoenix: Lemonaid Risen Again         January 2025
 
+
+   Contributors  . . . . . . . . . . . . . . . . . . . . . . . . . .  13
+   Author's Address  . . . . . . . . . . . . . . . . . . . . . . . .  13
 
 1.  Introduction
 
@@ -162,10 +165,7 @@ Internet-Draft        Phoenix: Lemonaid Risen Again         January 2025
 
 
 
-
-
-
-Royer                     Expires 13 July 2025                  [Page 3]
+Royer                     Expires 14 July 2025                  [Page 3]
 
 Internet-Draft        Phoenix: Lemonaid Risen Again         January 2025
 
@@ -221,7 +221,7 @@ Internet-Draft        Phoenix: Lemonaid Risen Again         January 2025
 
 
 
-Royer                     Expires 13 July 2025                  [Page 4]
+Royer                     Expires 14 July 2025                  [Page 4]
 
 Internet-Draft        Phoenix: Lemonaid Risen Again         January 2025
 
@@ -277,7 +277,7 @@ Internet-Draft        Phoenix: Lemonaid Risen Again         January 2025
 
 
 
-Royer                     Expires 13 July 2025                  [Page 5]
+Royer                     Expires 14 July 2025                  [Page 5]
 
 Internet-Draft        Phoenix: Lemonaid Risen Again         January 2025
 
@@ -333,7 +333,7 @@ Internet-Draft        Phoenix: Lemonaid Risen Again         January 2025
 
 
 
-Royer                     Expires 13 July 2025                  [Page 6]
+Royer                     Expires 14 July 2025                  [Page 6]
 
 Internet-Draft        Phoenix: Lemonaid Risen Again         January 2025
 
@@ -389,7 +389,7 @@ Internet-Draft        Phoenix: Lemonaid Risen Again         January 2025
 
 
 
-Royer                     Expires 13 July 2025                  [Page 7]
+Royer                     Expires 14 July 2025                  [Page 7]
 
 Internet-Draft        Phoenix: Lemonaid Risen Again         January 2025
 
@@ -445,7 +445,7 @@ Internet-Draft        Phoenix: Lemonaid Risen Again         January 2025
 
 
 
-Royer                     Expires 13 July 2025                  [Page 8]
+Royer                     Expires 14 July 2025                  [Page 8]
 
 Internet-Draft        Phoenix: Lemonaid Risen Again         January 2025
 
@@ -501,7 +501,7 @@ Appendix A.  Administrative Enumerated Binary Values
 
 
 
-Royer                     Expires 13 July 2025                  [Page 9]
+Royer                     Expires 14 July 2025                  [Page 9]
 
 Internet-Draft        Phoenix: Lemonaid Risen Again         January 2025
 
@@ -557,7 +557,7 @@ Appendix B.  Authentication Enumerated Binary Values
 
 
 
-Royer                     Expires 13 July 2025                 [Page 10]
+Royer                     Expires 14 July 2025                 [Page 10]
 
 Internet-Draft        Phoenix: Lemonaid Risen Again         January 2025
 
@@ -613,7 +613,7 @@ Appendix C.  File and Folder Enumerated Binary Values
 
 
 
-Royer                     Expires 13 July 2025                 [Page 11]
+Royer                     Expires 14 July 2025                 [Page 11]
 
 Internet-Draft        Phoenix: Lemonaid Risen Again         January 2025
 
@@ -669,7 +669,7 @@ Appendix D.  Protocol Enumerated Binary Values
 
 
 
-Royer                     Expires 13 July 2025                 [Page 12]
+Royer                     Expires 14 July 2025                 [Page 12]
 
 Internet-Draft        Phoenix: Lemonaid Risen Again         January 2025
 
@@ -725,4 +725,4 @@ Author's Address
 
 
 
-Royer                     Expires 13 July 2025                 [Page 13]
+Royer                     Expires 14 July 2025                 [Page 13]

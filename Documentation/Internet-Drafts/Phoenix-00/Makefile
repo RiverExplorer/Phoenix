@@ -45,16 +45,19 @@ $(TARGET.txt) : $(SOURCES.xml)
 	$(CPP) $(TOPDOC.xml) > tmp.xml
 	xml2rfc tmp.xml
 	mv tmp.txt $@
+	scp $@ riverexplorer.games:~/public_html/Phoenix
 
 $(TARGET.pdf) : $(SOURCES.xml)
 	$(CPP) $(TOPDOC.xml) > tmp.xml
 	xml2rfc --pdf tmp.xml
 	mv tmp.pdf $@
+	scp $@ riverexplorer.games:~/public_html/Phoenix
 
 $(TARGET.html): $(SOURCES.xml)
 	$(CPP) $(TOPDOC.xml) > tmp.xml
 	xml2rfc --html tmp.xml
 	mv tmp.html $@
+	scp $@ riverexplorer.games:~/public_html/Phoenix
 
 clean :
 	$(RM) tmp.*
