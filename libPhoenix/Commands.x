@@ -206,3 +206,31 @@ struct  CmdPacket
 %{
 %extern bool xdr_bool_t(XDR * xdrs, bool_t * BValue);
 %}
+
+#ifdef RPC_HDR
+/**
+ * 64 bit network to host byte order conversion.
+ *
+ * @param NetValue A uint64_t value in network byte order.
+ *
+ * @return A uint64_t value in host order
+ */
+#endif
+%namespace RiverExplorer::Phoenix
+%{
+%extern uint64_t ntohll(uint64_t NetValue);
+%}
+
+#ifdef RPC_HDR
+/**
+ * 64 bit host to network byte order conversion.
+ *
+ * @param HostValue A uint64_t value in host byte order.
+ *
+ * @return A uint64_t value in network byte order.
+ */
+#endif
+%namespace RiverExplorer::Phoenix
+%{
+%extern uint64_t htonll(uint64_t NetValue);
+%}

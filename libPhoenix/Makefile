@@ -13,7 +13,7 @@ TOP						= ..
 
 TESTSUBDIRS		= Tests
 SUBDIRS				=
-DOCDIRS				= Documentation
+#DOCDIRS				= Documentation
 
 # What to call this program.
 # And what the include/$(VENDER)/$(TARGET) header directory will be.
@@ -72,6 +72,7 @@ SOURCES.cpp = \
 	CppTimeout.cpp \
 	CppUpdateMessage.cpp \
 	IO.cpp \
+	Iov.cpp \
 	Misc.cpp \
 	PhoenixEvent.cpp \
 	Register.cpp \
@@ -106,6 +107,7 @@ SOURCES.hpp += \
 	CppCommands.hpp \
 	CppMime.hpp \
 	IO.hpp \
+	Iov.hpp \
 	PhoenixClient.hpp \
 	PhoenixEvent.hpp \
 	PhoenixServer.hpp \
@@ -156,9 +158,6 @@ LIBS							+= -ltirpc -lssl -lcrypto -lz
 
 include $(TOP)/BuildTools/Makefile.bottom.lib
 
-docs:
-	(cd Documentation ; make)
-
 SubDirs ::
 	for D in $(SUBDIRS); do \
 		cd $$D ; $(MAKE) $(MAKECMDGOALS); \
@@ -167,6 +166,3 @@ SubDirs ::
 clean::
 	$(RM) LOG* \#*#
 	$(RM) -r GeneratedFromXDR
-	for D in $(DOCDIRS); do \
-		(cd $$D ; $(MAKE) clean); \
-	done

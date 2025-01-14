@@ -15,7 +15,7 @@
 namespace RiverExplorer::Phoenix
 {
 	/**
-	 * @class CmdRegister CppRegister.hpp <RiverExplorer/Phoenix/CppRegister.hpp>
+	 * @class CmdRegister Register.hpp <RiverExplorer/Phoenix/Register.hpp>
 	 *
 	 * -Register a method that handles a specific command.
 	 * -Dispatch incomming packets to the correct function.
@@ -94,7 +94,7 @@ namespace RiverExplorer::Phoenix
 		 * A new packet came in, here is it, call
 		 * the associated routine.
 		 *
-		 * @param Connection The active connection to the remote end.
+		 * @param Fd The file descriptor it came in on.
 		 *
 		 * @param Pkt The packet received.
 		 */

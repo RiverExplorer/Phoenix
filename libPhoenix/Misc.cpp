@@ -14,4 +14,22 @@ namespace RiverExplorer::Phoenix
 	{
 		return(xdr_int(xdrs, Val));
 	}
+
+	uint64_t htonll(uint64_t val)
+	{
+    if (__BYTE_ORDER == __BIG_ENDIAN) {
+			return (val);
+		} else {
+			return __bswap_64(val);
+		}
+	}
+
+	uint64_t ntohll(uint64_t val)
+	{
+    if (__BYTE_ORDER == __BIG_ENDIAN) {
+			return (val);
+		}  else {
+			return __bswap_64(val);
+		}
+	}
 }

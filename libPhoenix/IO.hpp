@@ -5,9 +5,11 @@
 #ifdef BUILDING_LIBPHOENIX
 #include "Commands.hpp"
 #include "CmdNotSupported.hpp"
+#include "Iov.hpp"
 #else
 #include <RiverExplorer/Phoenix/Commands.hpp>
 #include <RiverExplorer/Phoenix/CmdNotSupported.hpp>
+#include <RiverExplorer/Phoenix/Iov.hpp>
 #endif
 
 #include <map>
@@ -68,27 +70,9 @@ namespace RiverExplorer::Phoenix
 			ActiveConnection * Connection;
 
 			/**
-			 * What to send.
-			 * When Vecs is nullptr or VecCount is zero, this is everyting to send.
-			 * When Vecs is not nullptr, only send the data from what is in Vecs.
+			 * The data to send.
 			 */
-			CmdPacket		*	WhatToSend;
-
-			/**
-			 * List of iovec sutable for writev().
-			 */
-			iovec				*	Vecs;
-
-			/**
-			 * List of iovec that are mmap() entries.
-			 * One for each entry in Vecs.
-			 */
-			bool				*	IsMmap;
-			
-			/**
-			 * Number of entries in Vecs.
-			 */
-			uint64_t			VecCount;
+			Iov									DataToSend;
 
 			/**
 			 * SendPacket - Default Constructor.
@@ -97,10 +81,6 @@ namespace RiverExplorer::Phoenix
 
 			/**
 			 * SendPacket - Destructor.
-			 * When Vecs is non-nullptr, this destructor deletes each
-			 * iovec entry contents, then deletes the array.
-			 * For each Vecs entry that has an associated IsMmap entry
-			 * that is true, the data is unmap().
 			 */
 			~SendPacket();
 		};
@@ -110,6 +90,8 @@ namespace RiverExplorer::Phoenix
 		 * The version coped Blob, so the caller
 		 * must delete their own data.
 		 *
+		 * Converts the data to an inline XDR blob.
+		 *
 		 * @param Fd The file descriptor to send to.
 		 *
 		 * @param ID The command ID to use.
@@ -118,7 +100,7 @@ namespace RiverExplorer::Phoenix
 		 *
 		 * @param Blob The already XDR encoded blob to send.
 		 *
-		 * @param BlobLenght The number of octets in Blob.
+		 * @param BlobLength The number of octets in Blob.
 		 */
 		static void QOutbound(int Fd,
 													CommandID ID,
@@ -135,10 +117,6 @@ namespace RiverExplorer::Phoenix
 		 * @param Fd The file descriptor to send to.
 		 *
 		 * @param Vecs An array of VecCount iovec objects to send.
-		 *
-		 * @param IsMmapped An array of booleans, one for each entry
-		 * in Vecs. When true, the iovec entry is mmap()'ed. When false
-		 * it is allocaed.
 		 *
 		 * @param VecCount The number of iovec objects.
 		 */
@@ -158,10 +136,6 @@ namespace RiverExplorer::Phoenix
 		 *
 		 * @param Vecs An array of VecCount iovec objects to send.
 		 *
-		 * @param IsMmapped An array of booleans, one for each entry
-		 * in Vecs. When true, the iovec entry is mmap()'ed. When false
-		 * it is allocaed.
-		 *
 		 * @param VecCount The number of iovec objects.
 		 */
 		static void QOutbound(int Fd,
@@ -179,12 +153,6 @@ namespace RiverExplorer::Phoenix
 		 * Pre-processes it, then calls _Dispatch().
 		 */
 		static void				_Listener();
-
-		/**
-		 * This thread takes prepared packets and sends them out.
-		 * Started as a thread
-		 */
-		static void				_Dispatcher();
 		
 		/**
 		 * A list of commands we issued, and do not have a reply yet.
@@ -197,23 +165,6 @@ namespace RiverExplorer::Phoenix
 		 * Keeps only one hand in the pot at a time.
 		 */
 		static std::mutex _CommandsWeIssuedMutex;
-
-		/**
-		 * A queue of packets that are ready to be sent.
-		 */
-		static std::deque<SendPacket*> _PacketsToSend;
-
-		/**
-		 * A mutex lock for PacketsToSend.
-		 * Keeps only one hand in the pot at a time.
-		 */
-		static std::mutex _PacketsToSendMutex;
-
-		/**
-		 * This is the thread that run to dispatch received CmdPacket objects.
-		 * At this time, it is a singleton.
-		 */
-		static std::thread 	_DispatchThread;
 	
 		/**
 		 * This is the thread that run listens for active data
@@ -231,7 +182,12 @@ namespace RiverExplorer::Phoenix
 		 * Keeps only one hand in the pot at a time.
 		 */
 		static std::mutex _ActiveConnectionsMutex;
-	
+
+		/**
+		 * Cleanup for exit.
+		 */
+		static void _Cleanup();
+		
 	};
 }
 

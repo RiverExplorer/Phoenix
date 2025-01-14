@@ -9,5 +9,6 @@ Public :
 
 clean:
 	$(RM) -r Generated/*
+	$(RM) Warning-*
 
 

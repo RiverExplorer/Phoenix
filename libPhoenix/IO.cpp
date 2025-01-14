@@ -9,7 +9,10 @@
  *
  * -Sends out outgoing data.
  */
-#include <Register.hpp>
+#include "Register.hpp"
+#include "Server.hpp"
+#include "Iov.hpp"
+#include "Commands.hpp"
 
 #ifndef W64
 #include <sys/socket.h>
@@ -36,31 +39,9 @@ namespace RiverExplorer::Phoenix
 	std::mutex IO::_CommandsWeIssuedMutex;
 
 	/**
-	 * A semaphore to signal something was put into _PacketsToSend.
-	 */
-	static sem_t	_PacketToSendSem;
-	
-	/**
-	 * A queue of packets that are ready to be sent.
-	 */
-	std::deque<IO::SendPacket*> IO::_PacketsToSend;
-
-	/**
-	 * A mutex lock for PacketsToSend.
-	 * Keeps only one hand in the pot at a time.
-	 */
-	std::mutex IO::_PacketsToSendMutex;
-
-	/**
 	 * Set true when the dispatch and listen threads have been started.
 	 */
 	static bool ThreadsInited = false;
-	
-	/**
-	 * This is the thread that run to dispatch received CmdPacket objects.
-	 * At this time, it is a singleton.
-	 */
-	std::thread	IO::_DispatchThread;
 	
 	/**
 	 * This is the thread that run listens for active data
@@ -81,21 +62,25 @@ namespace RiverExplorer::Phoenix
 
 	IO::IO()
 	{
+		FILE * Fp = Server::GetLogFp();
+		
 		// Start these if they are not started.
 		//
 		if (!ThreadsInited) {
-			_DispatchThread = std::thread(IO::_Dispatcher);
-#ifdef DEBUG
-		fprintf(stdout, "_DispatchThread thread started\n");
-#endif
-		
 			_ListenerThread = std::thread(IO::_Listener);
 #ifdef DEBUG
-		fprintf(stdout, "_ListenerThread thread started\n");
+			fprintf(Fp, "_ListenerThread thread started\n");
 #endif
 		}
 
+		atexit(_Cleanup);
+
 		return;
+	}
+
+	void
+	IO::_Cleanup()
+	{
 	}
 	
 	bool
@@ -121,32 +106,6 @@ namespace RiverExplorer::Phoenix
 		
 	}
 
-	// This method runs in its own thread.
-	// 
-	void
-	IO::_Dispatcher()
-	{
-		// Take packets out of _PacketsToSend, and send them.
-		//
-		SendPacket	* Pkt = nullptr;
-
-		do {
-			sem_wait(&_PacketToSendSem);
-			
-			_PacketsToSendMutex.lock();
-			if (_PacketsToSend.size() > 0) {
-				Pkt = _PacketsToSend.front();
-				_PacketsToSend.pop_front();
-
-				
-			}
-			_PacketsToSend.push_back(Pkt);
-			_PacketsToSendMutex.unlock();
-		} while (1);
-		
-		return;		
-	}
-
 	void
 	IO::_Listener()
 	{
@@ -155,7 +114,7 @@ namespace RiverExplorer::Phoenix
 		return;
 	}
 
-	// This version ov QOutbound copies the data.
+	// This version of QOutbound copies the data.
 	//
 	void
 	IO::QOutbound(int Fd,
@@ -164,27 +123,60 @@ namespace RiverExplorer::Phoenix
 								uint8_t * Blob,
 								uint64_t BlobLength)
 	{
-
 		std::map<int,ActiveConnection*>::iterator  AIt;
 
 		AIt = _ActiveConnections.find(Fd);
 		if (AIt != _ActiveConnections.end()) {
-			SendPacket * Pkt = new SendPacket();
-
-			Pkt->Connection = AIt->second;
 
 			SendPacket  * Packet = new SendPacket();
-			Packet->WhatToSend = new CmdPacket();
-			Packet->WhatToSend->Cmd = Cmd;
-			Packet->WhatToSend->ID = ID;
-			Packet->WhatToSend->Data.Data = new char[BlobLength];
-			memcpy(Packet->WhatToSend->Data.Data, Blob, BlobLength);
-			Packet->WhatToSend->Data.Len = (uint32_t)BlobLength;
-				
-			_PacketsToSendMutex.lock();
-			_PacketsToSend.push_back(Packet);
-			sem_post(&_PacketToSendSem);
-			_PacketsToSendMutex.unlock();
+
+			Packet->Connection = AIt->second;
+
+			// The first Iov blob, is the total length
+			// of the XDR data.
+			//
+			// With this version of QOutbound(), the resut
+			// length is easy to calculate.
+			//
+			// sizeof(ID) + sizeof(Cmd) + BlobLength as uint32_t.
+			//
+			uint64_t HeaderLength = sizeof(uint32_t) + sizeof(uint32_t) + sizeof(uint32_t);
+			uint64_t TotalLength = HeaderLength + BlobLength;
+			uint8_t * Header = new uint8_t[HeaderLength];
+			XDR Xdr;
+
+			xdrmem_create(&Xdr, (char*)Header, (u_int)HeaderLength, XDR_ENCODE);
+
+			if (xdr_CommandID(&Xdr, &ID)) {
+				if (xdr_Command_e(&Xdr, &Cmd)) {
+					// We do not need to XDR encode or copy the opaque data.
+					// So we send its length, then the opaque data.
+					// The blob is already ready.
+					//
+					if (xdr_uint64_t(&Xdr, &BlobLength)) {
+						Packet->DataToSend.Add(TotalLength);
+						Packet->DataToSend.Add(Header, HeaderLength, false);
+						Packet->DataToSend.Add(Blob, BlobLength, false);
+						
+						Server::Send(Packet);
+					} else {
+						PhoenixEvent::InvokeMessage(Fd,
+																				PhoenixEvent::LogError_s,
+																				"IO.cpp:QOutbound:Unable to xdr_uint32_t()\n");
+						delete Packet;
+					}
+				} else {
+					PhoenixEvent::InvokeMessage(Fd,
+																			PhoenixEvent::LogError_s,
+																			"IO.cpp:QOutbound:Unable to xdr_Command_e()\n");
+					delete Packet;
+				}
+			} else {
+				PhoenixEvent::InvokeMessage(Fd,
+																		PhoenixEvent::LogError_s,
+																		"IO.cpp:QOutbound:Unable to xdr_CommandID()\n");
+				delete Packet;
+			}
 		}
 
 		return;
@@ -193,10 +185,6 @@ namespace RiverExplorer::Phoenix
 	IO::SendPacket::SendPacket()
 	{
 		Connection = nullptr;
-		WhatToSend = nullptr;
-		Vecs = nullptr;
-		IsMmap = nullptr;
-		VecCount = 0;
 
 		return;
 	}
@@ -207,28 +195,6 @@ namespace RiverExplorer::Phoenix
 			delete Connection;
 			Connection = nullptr;
 		}
-
-		if (WhatToSend != nullptr) {
-			delete WhatToSend;
-			WhatToSend = nullptr;
-		}
-
-		if (Vecs != nullptr) {
-			for (uint64_t i = 0; i < VecCount; i++) {
-				if (IsMmap[i]) {
-					munmap(Vecs[i].iov_base, Vecs[i].iov_len);
-				} else {
-					delete[] (uint8_t*)Vecs[i].iov_base;
-				}
-				Vecs[i].iov_base = nullptr;
-				Vecs[i].iov_len = 0;
-			}
-			delete[] Vecs;
-			Vecs = nullptr;
-			delete[] IsMmap;
-			IsMmap = nullptr;
-		}
-		VecCount = 0;
 
 		return;
 	}

@@ -9,6 +9,11 @@
 	takes a great deal of care and planning.
 </t>
 <t>
+	This application transport can also transfer non-MIME data.
+	It can be used as an XDR transport, or for opaue data (blobs of
+	known or unknown data) transport.
+</t>
+<t>
 	Another major concern is security and authentication.
 	This proposal allows for existing autnentication to continue to work.
 </t>
