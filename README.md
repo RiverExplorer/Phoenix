@@ -6,7 +6,20 @@ See the LICENSE file.
 
 To view the protocol documentation (work in progress):
 
-    https://riverexplorer.games/Phoenix/
+ The Internet draft (html):
+	https://github.com/RiverExplorer/Phoenix/tree/main/Documentation/Internet-Drafts/Phoenix-00.html
+	
+ The Internet draft (PDF):
+	https://github.com/RiverExplorer/Phoenix/tree/main/Documentation/Internet-Drafts/Phoenix-00.pdf
+	
+ The Internet draft (text):
+	https://github.com/RiverExplorer/Phoenix/tree/main/Documentation/Internet-Drafts/Phoenix-00.txt
+
+ The sample implemenation public API:
+ <TODO>
+
+ The sample implemenation internals and public API:
+ <TODO>
 
 Email and MIME messages account for one the largest volumes of data on the
 internet.
