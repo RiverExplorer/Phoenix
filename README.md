@@ -1,6 +1,9 @@
 
 Phoenix © 2025 by Douglas Mark Royer (A.K.A. RiverExplorer) is licensed under CC BY 4.0
 
+This Phoenix code is copyright and free to use.
+See the LICENSE file.
+
 To view the protocol documentation (work in progress):
 
     https://riverexplorer.games/Phoenix/
