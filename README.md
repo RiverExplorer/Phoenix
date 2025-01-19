@@ -1,4 +1,5 @@
 
+
 Phoenix © 2025 by Douglas Mark Royer (A.K.A. RiverExplorer) is licensed under CC BY 4.0
 
 This Phoenix code is copyright and free to use.
@@ -8,15 +9,15 @@ To view the protocol documentation (work in progress):
 
  The Internet draft (html):
 
-https://github.com/RiverExplorer/Phoenix/tree/main/Documentation/Internet-Drafts/Phoenix-00.html
-	
+https://github.com/RiverExplorer/Phoenix/blob/main/Documentation/Internet-Drafts/Phoenix-00/draft-royer-phoenix-00.html
+
  The Internet draft (PDF):
 
-https://github.com/RiverExplorer/Phoenix/tree/main/Documentation/Internet-Drafts/Phoenix-00.pdf
-	
+https://github.com/RiverExplorer/Phoenix/blob/main/Documentation/Internet-Drafts/Phoenix-00/draft-royer-phoenix-00.pdf
+
  The Internet draft (text):
 
-https://github.com/RiverExplorer/Phoenix/tree/main/Documentation/Internet-Drafts/Phoenix-00.txt
+https://github.com/RiverExplorer/Phoenix/blob/main/Documentation/Internet-Drafts/Phoenix-00/draft-royer-phoenix-00.txt
 
  The sample implemenation public API:
  <TODO>
