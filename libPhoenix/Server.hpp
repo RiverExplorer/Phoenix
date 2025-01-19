@@ -3,15 +3,19 @@
  * RiverExplorer is a trademark of RiverExplorer Games LLC
  */
 
-#ifndef _RIVEREXPLORER_PHOENIX_POLLIO_HPP_
-#define _RIVEREXPLORER_PHOENIX_POLLIO_HPP_
+#ifndef _RIVEREXPLORER_PHOENIX_SERVER_HPP_
+#define _RIVEREXPLORER_PHOENIX_SERVER_HPP_
 
 #ifdef BUILDING_LIBPHOENIX
 #include "IO.hpp"
 #include "PhoenixEvent.hpp"
+#include "Certs.hpp"
+#include "IPPeer.hpp"
 #else
 #include <RiverExplorer/Phoenix/IO.hpp>
 #include <RiverExplorer/Phoenix/PhoenixEvent.hpp>
+#include <RiverExplorer/Phoenix/Certs.hpp>
+#include <RiverExplorer/Phoenix/IPPeer.hpp>
 #endif
 
 #ifndef W64
@@ -27,6 +31,10 @@
 #include <set>
 #include <vector>
 
+#include <openssl/ssl.h>
+#include <openssl/bio.h>
+#include <openssl/err.h>
+
 namespace RiverExplorer::Phoenix
 {
 	/**
@@ -36,6 +44,7 @@ namespace RiverExplorer::Phoenix
 	 *
 	 * The server invokes these PhoenixEvents:                                  
 	 *
+	 * - Server::ClientBlocked_s as "ServerClientBlocked".
 	 * - Server::ClientDisconnected_s as "ServerClientDisconected".
 	 * - Server::LoggingMessage_s as "ServerLoggingMessage".
 	 * - Server::NewClientConnection_s as "ServerNewClientConnection".
@@ -46,6 +55,44 @@ namespace RiverExplorer::Phoenix
 	class Server
 	{
 	public:
+
+
+		/**
+		 * @addtogroup PhoenixEvent
+		 * Contains the string "ServerClientBlocked" PhoenixEvent.
+		 *
+		 * All callbacks registered for this PhoenixEvent will be
+		 * called when the Server has determined that this
+		 * client should be blocked. It will be called from
+		 * the server library at the time all NewClientConnected
+		 * PhoenixEvents have been called.
+		 * 
+		 * This is the name of an PhoenixEvent that callers
+		 * can register for with the Server to be informed
+		 * that a client was blocked.
+		 *
+		 * The callback is supplied with the socket file descriptor
+		 * of the incoming connection and Data is set to
+		 * point to the associated (PeerInfo*).
+		 */
+		static const char * const ClientBlocked_s;
+
+		/**
+		 * @addtogroup PhoenixEvent
+		 * Contains the string "ServerClientDisconnected" PhoenixEvent.
+		 *
+		 * All callbacks registered for this PhoenixEvent will be
+		 * called when a client disconnects, or when the server
+		 * disconnects a client. The callback is called after
+		 * the socket connection has been terminated.
+		 * 
+		 * This is the name of an PhoenixEvent that callers
+		 * can register for with the Server.
+		 *
+		 * The callback is supplied with the socket file descriptor
+		 * of the incoming connection.
+		 */
+		static const char * const ClientDisconnected_s;
 
 		/**
 		 * @addtogroup PhoenixEvent
@@ -88,25 +135,13 @@ namespace RiverExplorer::Phoenix
 		 * they would register for this PhoenixEvent
 		 * and have the callback return true when okay,
 		 * or false if the IP should be blocked.
+		 *
+		 * @note
+		 * If any of the callbacks registered for this event
+		 * return false, then the servers invoks a "ServerClientBlocked"
+		 * PhoenixEvent.
 		 */
 		static const char * const NewClientConnection_s;
-
-		/**
-		 * @addtogroup PhoenixEvent
-		 * Contains the string "ServerClientDisconnected" PhoenixEvent.
-		 *
-		 * All callbacks registered for this PhoenixEvent will be
-		 * called when a client disconnects, or when the server
-		 * disconnects a client. The callback is called after
-		 * the socket connection has been terminated.
-		 * 
-		 * This is the name of an PhoenixEvent that callers
-		 * can register for with the Server.
-		 *
-		 * The callback is supplied with the socket file descriptor
-		 * of the incoming connection.
-		 */
-		static const char * const ClientDisconnected_s;
 
 		/**
 		 * @addtogroup PhoenixEvent
@@ -241,18 +276,52 @@ namespace RiverExplorer::Phoenix
 		static bool	Send(IO::SendPacket * Pkt);
 
 		/**
-		 * Peer address.
+		 * Client Map.
+		 *
+		 * Map a file desciptor to the connection information.
+		 * This is the data associated with a file descriptor.		 
 		 */
-		struct PeerInfo
+		struct ClientInfo
 		{
-			union {
-				in_addr	ipv4;
-				in6_addr ipv6;
-			} Addr;
-			//sockaddr  Addr;
-			socklen_t AddrLen;
-		};
+			/**
+			 * Our connection details, including SSL/TLS
+			 */
+			Cert								OurConnection;
 			
+			/**
+			 * Their connection details, including SSL/TLS
+			 */
+			Cert								TheirConnection;
+
+			/**
+			 * The peer IP information.
+			 */
+			IPPeer							Peer;
+
+			/**
+			 * Inbound Data. It arrives in XDR encoded format.
+			 */
+			Iov									InboundData;
+			std::mutex					InboundDataMutex;
+			
+			/**
+			 * Outbound data is XDR encoded, then stored in blobs
+			 * in the _SendData map, by outbound socket file descriptor.
+			 */
+			Iov									OutboundData;
+			std::mutex					OutboundDataMutex;
+
+			/**
+			 * ClientInfo - Default Constructor.
+			 */
+			ClientInfo();
+
+			/**
+			 * ClientInfo - Destructor.
+			 */
+			~ClientInfo();
+		};
+
 		/**
 		 * Get the peer address for a file descriptor.
 		 *
@@ -260,46 +329,131 @@ namespace RiverExplorer::Phoenix
 		 *
 		 * @return The peer address, or nullptr when not known.
 		 */
-		const PeerInfo * GetPeer(int FdToGet);
-		
+		const IPPeer * GetPeer(int FdToGet);
 			
-			/**
-			 * @addtogroup PhoenixEvent
-			 * The ID for the Server "Ready" PhoenixEvent.
-			 */
-			static PhoenixEvent::EventID	ReadyID;
+		/**
+		 * @addtogroup PhoenixEvent
+		 * The ID for the Server "ServerReady" PhoenixEvent.
+		 *
+		 * When the registered callback is called, nothing
+		 * is supplied in the optional Data.
+		 *
+		 * @return The Phoenix::EventID that identifies a "ServerReady" message.
+		 */
+		static PhoenixEvent::EventID	ReadyID();
 
-			/**
-			 * @addtogroup PhoenixEvent
-			 * The ID for the Server "NewClientConnection" PhoenixEvent.
-			 */
-			static PhoenixEvent::EventID	NewClientConnectionID;
+		/**
+		 * @addtogroup PhoenixEvent
+		 * The ID for the Server "ServerNewClientConnection" PhoenixEvent.
+		 *
+		 * When the registered callback is called, a PeerInfo
+		 * is supplied in the optional Data.
+		 *
+		 * @return The Phoenix::EventID that identifies a "ServerNewClientConnectio+n"
+		 * message.
+		 */
+		static PhoenixEvent::EventID	NewClientConnectionID();
 
-			/**
-			 * @addtogroup PhoenixEvent
-			 * The ID for the Server "ClientDisconnected" PhoenixEvent.
-			 */
-			static PhoenixEvent::EventID	ClientDisconnectedID;
-
-			/**
-			 * @addtogroup PhoenixEvent
-			 * The ID for the Server "LoggingMessage" PhoenixEvent.
-			 */
-			static PhoenixEvent::EventID	LoggingMessageID;
-
-			/**
-			 * @addtogroup PhoenixEvent
-			 * The ID for the Server "ShuttingDown" PhoenixEvent.
-			 */
-			static PhoenixEvent::EventID	ShuttingDownID;
+		/**
+		 * @addtogroup PhoenixEvent
+		 * The ID for the Server "ServerClientDisconnected" PhoenixEvent.
+		 *
+		 * When the registered callback is called, nothing
+		 * is supplied in the optional Data.
+		 *
+		 * @return The Phoenix::EventID that identifies a "ServerClientDisconnected"
+		 * message.
+		 */
+		static PhoenixEvent::EventID	ClientDisconnectedID();
 			
-			/**
-			 * @addtogroup PhoenixEvent
-			 * The ID for the Server "ErrorOnFd" PhoenixEvent.
-			 */
-			static PhoenixEvent::EventID	ErrorOnFdID;
+		/**
+		 * @addtogroup PhoenixEvent
+		 * The ID for the Server "ServerClientBlocked" PhoenixEvent.
+		 *
+		 * When the registered callback is called, nothing
+		 * is supplied in the optional Data.
+		 *
+		 * @return The Phoenix::EventID that identifies a "ServerClientBlocked"
+		 * message.
+		 */
+		static PhoenixEvent::EventID	ClientBlockedID();
+
+		/**
+		 * @addtogroup PhoenixEvent
+		 * The ID for the Server "ServerLoggingMessage" PhoenixEvent.
+		 *
+		 * When the registered callback is called, A (char*)
+		 * is supplied in the optional Data that is the message.
+		 *
+		 * @return The Phoenix::EventID that identifies a "ServerLoggingMessage"
+		 * message.
+		 */
+		static PhoenixEvent::EventID	LoggingMessageID();
+
+		/**
+		 * @addtogroup PhoenixEvent
+		 * The ID for the Server "ServerShuttingDown" PhoenixEvent.
+		 *
+		 * When the registered callback is called, nothing
+		 * is supplied in the optional Data.
+		 *
+		 * @return The Phoenix::EventID that identifies a "ServerShuttingDown"
+		 * message.
+		 */
+		static PhoenixEvent::EventID	ShuttingDownID();
+			
+		/**
+		 * @addtogroup PhoenixEvent
+		 * The ID for the Server "ServerErrorOnFd" PhoenixEvent.
+		 *
+		 * When the registered callback is called, Data
+		 * may have a (char*) message, or be nullptr.
+		 */
+		static PhoenixEvent::EventID	ErrorOnFdID();
 
 	private:
+
+		/**
+		 * @addtogroup PhoenixEvent
+		 * The ID for the Server "Ready" PhoenixEvent.
+		 */
+		static PhoenixEvent::EventID	_ClientBlockedID;
+
+		/**
+		 * @addtogroup PhoenixEvent
+		 * The ID for the Server "Ready" PhoenixEvent.
+		 */
+		static PhoenixEvent::EventID	_ReadyID;
+
+		/**
+		 * @addtogroup PhoenixEvent
+		 * The ID for the Server "NewClientConnection" PhoenixEvent.
+		 */
+		static PhoenixEvent::EventID	_NewClientConnectionID;
+
+		/**
+		 * @addtogroup PhoenixEvent
+		 * The ID for the Server "ClientDisconnected" PhoenixEvent.
+		 */
+		static PhoenixEvent::EventID	_ClientDisconnectedID;
+
+		/**
+		 * @addtogroup PhoenixEvent
+		 * The ID for the Server "LoggingMessage" PhoenixEvent.
+		 */
+		static PhoenixEvent::EventID	_LoggingMessageID;
+
+		/**
+		 * @addtogroup PhoenixEvent
+		 * The ID for the Server "ShuttingDown" PhoenixEvent.
+		 */
+		static PhoenixEvent::EventID	_ShuttingDownID;
+			
+		/**
+		 * @addtogroup PhoenixEvent
+		 * The ID for the Server "ErrorOnFd" PhoenixEvent.
+		 */
+		static PhoenixEvent::EventID	_ErrorOnFdID;
 
 		/**
 		 * Called each time Server::Event::InvokeMessage() is called.
@@ -388,8 +542,26 @@ namespace RiverExplorer::Phoenix
 			 */
 			static bool Invoke(int Fd, PhoenixEvent::EventID ID, const char * Msg = nullptr);
 
-		private:
+			/**
+			 * @addtogroup PhoenixEvent
+			 * This method calls DispatchCallbaks in the base class.
+			 * Just a convenience wrapper that takes (char*) and not (void*).
+			 *
+			 * @param Fd The associated file descriptor, or (-1)
+			 * if not associated with a file descriptor.
+			 *
+			 * @param EventID The ID of the event being invoked.
+			 *
+			 * @param Peer The associated PeerInfo.
+			 *
+			 * @return true for most calls.
+			 * May return false for NewClientConnection, if the
+			 * callback is telling the server to block this connection.
+			 */
+			static bool Invoke(int Fd, PhoenixEvent::EventID ID, const IPPeer * Peer);
 
+		private:
+		
 			/**
 			 * @addtogroup PhoenixEvent
 			 * Server Event - Constructor.
@@ -431,7 +603,7 @@ namespace RiverExplorer::Phoenix
 		/**
 		 * The number of file descriptors we are currently handling.
 		 */
-		static nfds_t	_NumberEntries;
+		static nfds_t	_FdMax;
 
 		/**
 		 * The array needed by poll(2).
@@ -441,8 +613,24 @@ namespace RiverExplorer::Phoenix
 		/**
 		 * Break out of poll(), then it reloads the list of file
 		 * descriptors to use.
+		 *
+		 * It does this by writing a 'F' to the _WakeUpPoll file
+		 * descriptor.
 		 */
 		static void	_ReloadPoll();
+
+		/**
+		 * Break out of poll(), because one or more requested
+		 * events are being updated. And if there happens
+		 * to be FD changes, does a _ReloadPoll().
+		 *
+		 * This was created to keep poll() from POLLOUT events
+		 * releasing poll() when there was no data to be sent.
+		 *
+		 * It does this by writing a 'E' to the _WakeUpPoll file
+		 * descriptor.
+		 */
+		 static void _UpdatePollEvents();
 
 		/**
 		 * Used by _ReloadPoll().
@@ -457,10 +645,31 @@ namespace RiverExplorer::Phoenix
 		static std::set<int>	_RemoveFds;
 
 		/**
-		 * The way we pause poll() is to write to its '_InterruptPollFd'
-		 * The handler for that Fd waits.
+		 * The mutex for _RemoveFds and _NewFds.
 		 */
-		static int	_InterruptPollFd;
+		static std::mutex			_FdMutex;
+
+		/**
+		 * Close down and free stuf for client on FD
+		 *
+		 * @param Fd The associated file descriptor.
+		 */
+		static void			_Shutdown(int Fd);
+		
+		/**
+		 * The way we pause poll() is to write to its '_WakeUpPoll'
+		 * The handler for that Fd waits.
+		 *
+		 * If you write a 'F', it will update the file descriptor list.
+		 *
+		 * If you write a 'E', it will update its events list and not
+		 * go through the rebuild FD list by default. It will look
+		 * to see if the add or remove list is empty, if they are not empty
+		 * it is the same as 'F'.
+		 *
+		 * If yo write a 'B', it will do 'E' and 'F'.
+		 */
+		static int	_WakeUpPoll;
 
 		/**
 		 * All logs go to this FILE pointer.
@@ -476,17 +685,6 @@ namespace RiverExplorer::Phoenix
 		static int	_ListenFd;
 		static sockaddr_in6	_ServerAddress; // Works with IPv4 and IPv6
 		static int	_Backlog;
-
-		static std::map<int,PeerInfo*> _Peers;
-		
-		/**
-		 * Outbound data is XDR encoded, then stored in blobs
-		 * in the _SendData map, by outbound socket file descriptor.
-		 */
-		static std::map<int, Iov*> _OutboundData;
-		static std::mutex _OutboundDataMutex;
-		static std::map<int, Iov*> _InboundData;
-		static std::mutex _InboundDataMutex;
 
 		/**
 		 * A wrapper for write().
@@ -508,4 +706,4 @@ namespace RiverExplorer::Phoenix
 
 	};
 }
-#endif // _RIVEREXPLORER_PHOENIX_POLLIO_HPP_
+#endif // _RIVEREXPLORER_PHOENIX_SERVER_HPP_

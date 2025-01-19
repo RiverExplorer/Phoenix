@@ -1,21 +1,16 @@
 /**
  * @mainpage Phoenix
+ * @copyright Phoenix (C) 2025 by Douglas Mark Royer (A.K.A. RiverExplorer&trade;) is licensed under CC BY 4.0.
  *
- * @author Douglas Mark Royer (RiverExplorer)
+ * RiverExplorer is a trademark of RiverExplorer Games LLC.
  *
- * @date 2025-JAN-11
+ * <a href="https://RiverExplorer.games">https://RiverExplorer.games</a>
  *
- * @version 1.0.0
- *
- * <center>@copyright Phoenix (C) 2025 by Douglas Mark Royer (A.K.A. RiverExplorer&trade;) is licensed under CC BY 4.0.</center>
- *
- * <center>RiverExplorer is a trademark of RiverExplorer Games LLC.</center>
- * <center><a href="https://RiverExplorer.games">https://RiverExplorer.games</a></center>
  * <center><h1>Phoenix: Lemonade Risen Again</h1></center>
+ *
  * Here you will find the overview of this project (A) Design Overview, (B) Design goals, (C) Sample Implementation design goals. (D) Protocol Overview (E) Protocol Details.
  * 
- * <ol type="A">
- * 	<li>Overview:
+ * - Overview:
  * 		IMAP and POP are text based protocols developed back when many parts
  * 		of the Internet were 7-bits and slow 1200 to 56k baud connections. 
  * 
@@ -29,7 +24,7 @@
  * 		- The fetching of MIME messages from some kind of local or remote store.
  * 	</li>
  * 		
- * 	<li>Design goals:
+ * - Design goals:
  * 		<ul>
  * 			<li>Authentication:
  * 				This protocol leverages on existing authentication methods.</li>
@@ -83,7 +78,7 @@
  * 			</li>
  * 		</ul>
  * 	</li>
- * 	<li>Sample Implementation:
+ *  - Sample Implementation:
  * 		<ul>
  * 			<li>Server Store Design Goals:
  * 				<ul>
@@ -108,7 +103,7 @@
  * 				</ul>
  * 			</li>
  * 		</ul>
- * 	<li>Protocol Overview:
+ * 	- Protocol Overview:
  * 		<ul>
  * 			<li>Bidirectional Protocol:
  * 				The protocol itself is a bidirectional protocol.
@@ -131,7 +126,10 @@
  * 			</li>
  * 		</ul>
  * 	</li>
- * 	<li>Protocol Details:
+ * - Protocol Details:
  * 	</li>
- * </ol>
+ *
+ * @author Douglas Mark Royer (RiverExplorer)
+ * @date 2025-JAN-11
+ * @version 1.0.0
  */

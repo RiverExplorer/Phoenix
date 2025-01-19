@@ -1,3 +1,6 @@
+/**                                                                             * Phoenix (C) 2025 by Douglas Mark Royer (A.K.A. RiverExplorer) is licensed under CC BY 4.0
+ * RiverExplorer is a trademark of RiverExplorer Games LLC.
+ */
 
 /**
  * -This code takes received packets and dispatches them
@@ -68,6 +71,7 @@ namespace RiverExplorer::Phoenix
 		//
 		if (!ThreadsInited) {
 			_ListenerThread = std::thread(IO::_Listener);
+			_ListenerThread.detach();
 #ifdef DEBUG
 			fprintf(Fp, "_ListenerThread thread started\n");
 #endif
@@ -162,19 +166,19 @@ namespace RiverExplorer::Phoenix
 					} else {
 						PhoenixEvent::InvokeMessage(Fd,
 																				PhoenixEvent::LogError_s,
-																				"IO.cpp:QOutbound:Unable to xdr_uint32_t()\n");
+																				"IO.cpp:QOutbound:Unable to xdr_uint32_t()");
 						delete Packet;
 					}
 				} else {
 					PhoenixEvent::InvokeMessage(Fd,
 																			PhoenixEvent::LogError_s,
-																			"IO.cpp:QOutbound:Unable to xdr_Command_e()\n");
+																			"IO.cpp:QOutbound:Unable to xdr_Command_e()");
 					delete Packet;
 				}
 			} else {
 				PhoenixEvent::InvokeMessage(Fd,
 																		PhoenixEvent::LogError_s,
-																		"IO.cpp:QOutbound:Unable to xdr_CommandID()\n");
+																		"IO.cpp:QOutbound:Unable to xdr_CommandID()");
 				delete Packet;
 			}
 		}

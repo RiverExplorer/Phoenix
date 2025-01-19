@@ -219,6 +219,14 @@ namespace RiverExplorer::Phoenix
 			ID = ByNameIt->second->ID;
 		}
 
+		if (Msg != nullptr) {
+			std::string Msg2 = Msg;
+
+			if (Msg2.back() != '\n') {
+				Msg2 += '\n';
+			}
+			Msg = Msg2.c_str();
+		} 
 		return(DispatchCallbacks(Fd, ID, (void*)Msg));
 	}
 	

@@ -52,6 +52,7 @@ SOURCES.c =
 # are not prefixed with Cpp.
 #
 SOURCES.cpp = \
+	Certs.cpp \
 	CppAcl.cpp \
 	CppAddMessage.cpp \
 	CppAuthenticate.cpp \
@@ -73,6 +74,7 @@ SOURCES.cpp = \
 	CppUpdateMessage.cpp \
 	IO.cpp \
 	Iov.cpp \
+	IPPeer.cpp \
 	Misc.cpp \
 	PhoenixEvent.cpp \
 	Register.cpp \
@@ -104,15 +106,17 @@ SOURCES.x = \
 	Email.x
 
 SOURCES.hpp += \
+	Certs.hpp \
 	CppCommands.hpp \
 	CppMime.hpp \
 	IO.hpp \
 	Iov.hpp \
+	IPPeer.hpp \
 	PhoenixClient.hpp \
 	PhoenixEvent.hpp \
 	PhoenixServer.hpp \
 	Register.hpp \
-	Server.hpp \
+	Server.hpp
 
 SOURCES.h		+=
 

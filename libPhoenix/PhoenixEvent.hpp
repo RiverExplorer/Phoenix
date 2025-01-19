@@ -1,3 +1,10 @@
+/**
+ * Phoenix (C) 2025 by Douglas Mark Royer (A.K.A. RiverExplorer) is licensed under CC BY 4.0.
+ * RiverExplorer is a trademark of RiverExplorer Games LLC.
+ */
+
+#ifndef _RIVEREXPLOER_PHOENIX_PHOENIXEVENT_HPP_
+#define _RIVEREXPLOER_PHOENIX_PHOENIXEVENT_HPP_
 
 #include <string>
 #include <stdint.h>
@@ -408,3 +415,4 @@ namespace RiverExplorer::Phoenix
 	};
 
 }
+#endif // _RIVEREXPLOER_PHOENIX_PHOENIXEVENT_HPP_

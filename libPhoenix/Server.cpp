@@ -1,10 +1,7 @@
 /**
- * Phoenix (C) 2025 by Douglas Mark Royer (A.K.A. RiverExplorer) is licensed under CC BY 4.0 
+ * Phoenix (C) 2025 by Douglas Mark Royer (A.K.A. RiverExplorer) is licensed under CC BY 4.0
+ * RiverExplorer is a trademark of RiverExplorer Games LLC
  */
-//
-// Get poll(): POLLRDHUP
-//
-
 #include "Server.hpp"
 #include "Register.hpp"
 
@@ -41,7 +38,6 @@
 
 namespace RiverExplorer::Phoenix
 {
-
 	/**
 	 * We use TOML (toml++) for our configuration file.
 	 */
@@ -52,8 +48,9 @@ namespace RiverExplorer::Phoenix
 		"ListenBacklog = 10\n";
 
 	// List of peer IP, by socket file descriptor.
+	// An array of _FdMax ClientInfo objects.
 	//
-	std::map<int,Server::PeerInfo*>		Server::_Peers;
+	static Server::ClientInfo	**		Clients;
 
 	// List of file descriptors to remove from poll() next time it wakes up.
 	//
@@ -63,21 +60,24 @@ namespace RiverExplorer::Phoenix
 	//
 	std::set<int>						Server::_NewFds;
 
+	// Mutext for _RemoveFds and _NewFds.
+	//
+	std::mutex							Server::_FdMutex;
+
 	// Only one instance of the server.
 	//
 	Server								*	Server::Instance = nullptr;
 
 	// Number of poll() file descriptors it is working with.
 	//
-	nfds_t									Server::_NumberEntries = 0;
-
+	nfds_t									Server::_FdMax = 0;
 	// List of poll() file descriptors it is working with.
 	//
 	struct pollfd					*	Server::_Entries = nullptr;
 
 	// To wake up poll() write 1 byte to this file descriptor.
 	//
-	int											Server::_InterruptPollFd;
+	int											Server::_WakeUpPoll;
 
 	// This is the socket file descriptor that accepts incomming connections.
 	// Set by listen();
@@ -105,22 +105,18 @@ namespace RiverExplorer::Phoenix
 	//
 	sem_t										_WorkThreadReady;
 
-	// List of data to send out, by outbound socket file descriptor.
+	// List of file descriptors to have POLLIN added to their poll() events.
 	//
-	std::map<int,Iov*>		Server::_OutboundData;
-
-	// Mutex lock for _SendData.
+	std::set<int>					AddPollIn;
+	
+	// List of file descriptors to have POLLIN removed from their poll() events.
 	//
-	std::mutex						Server::_OutboundDataMutex;
+	std::set<int>					RemovePollIn;
 
-	// List of data to being received, by outbound socket file descriptor.
+	// Mutex for AddPollIn and RemovePollIn
 	//
-	std::map<int,Iov*>		Server::_InboundData;
-
-	// Mutex lock for _ReceiveData.
-	//
-	std::mutex						Server::_InboundDataMutex;
-
+	std::mutex						PollInMutex;
+	
 	// The name of the FIFO used to wake up poll().
 	//
 	static char						Fifo[PATH_MAX];
@@ -132,6 +128,7 @@ namespace RiverExplorer::Phoenix
 	// These are the names of PhoenixEvent events.
 	// The event names are strings. You register with a name and get a random ID back.
 	//
+	const char * const			Server::ClientBlocked_s = "ServerClientBlocked";
 	const char * const			Server::ClientDisconnected_s = "ServerClientDisconnected";
 	const char * const			Server::LoggingMessage_s = "ServerLoggingMessage";
 	const char * const			Server::NewClientConnection_s = "ServerNewClientConnection";
@@ -141,15 +138,16 @@ namespace RiverExplorer::Phoenix
 
 	// The randomly assigned PhoenixEvent ID's used when calling PhoenixEvent::Invoke().
 	//
-	PhoenixEvent::EventID		Server::ClientDisconnectedID = 0;
-	PhoenixEvent::EventID		Server::LoggingMessageID = 0;
-	PhoenixEvent::EventID		Server::NewClientConnectionID = 0;
-	PhoenixEvent::EventID		Server::ReadyID = 0;
-	PhoenixEvent::EventID		Server::ShuttingDownID = 0;
-	PhoenixEvent::EventID		Server::ErrorOnFdID = 0;
+	PhoenixEvent::EventID		Server::_ClientBlockedID = 0;
+	PhoenixEvent::EventID		Server::_ClientDisconnectedID = 0;
+	PhoenixEvent::EventID		Server::_LoggingMessageID = 0;
+	PhoenixEvent::EventID		Server::_NewClientConnectionID = 0;
+	PhoenixEvent::EventID		Server::_ReadyID = 0;
+	PhoenixEvent::EventID		Server::_ShuttingDownID = 0;
+	PhoenixEvent::EventID		Server::_ErrorOnFdID = 0;
 
 	int64_t
-	Server::_NetWrite(int Fd, Iov * IovData)
+		Server::_NetWrite(int Fd, Iov * IovData)
 	{
 		int64_t	Results = 0;
 		
@@ -188,9 +186,9 @@ namespace RiverExplorer::Phoenix
 				} else if (errno == EBADF) {
 					// Bad file descriptor.
 					//
-					_Event::Invoke(Fd, ErrorOnFdID,
+					_Event::Invoke(Fd, ErrorOnFdID(),
 												 "Server.cpp:_NetWrite:ERROR:EBANF:Closed socket.\n");
-					_Event::Invoke(Fd, ClientDisconnectedID,
+					_Event::Invoke(Fd, ClientDisconnectedID(),
 												 "Server.cpp:_NetWrite:ERROR:EBANF:Closed socket.\n");
 					RemoveFd(Fd);
 					Results = -1;
@@ -200,9 +198,9 @@ namespace RiverExplorer::Phoenix
 					//
 					RemoveFd(Fd);
 					Results = -1;
-					_Event::Invoke(Fd, ErrorOnFdID,
+					_Event::Invoke(Fd, ErrorOnFdID(),
 												 "Server.cpp:_NetWrite:ERROR:EPIPE:Closed socket.\n");
-					_Event::Invoke(Fd, ClientDisconnectedID,
+					_Event::Invoke(Fd, ClientDisconnectedID(),
 												 "Server.cpp:_NetWrite:ERROR:EPIPE:Closed socket.\n");
 				}
 			}
@@ -218,15 +216,34 @@ namespace RiverExplorer::Phoenix
 	{
 		fflush(Server::_LogFp);
 		
-		close(_InterruptPollFd);
+		close(_WakeUpPoll);
 		unlink(Fifo);
 
 		return;
 	}
+
 	
 	Server::Server()
 		{
 			if (Instance == nullptr) {
+				_FdMax = sysconf(_SC_OPEN_MAX);
+				
+				Clients = new ClientInfo*[_FdMax];
+				_Entries = new struct pollfd[_FdMax];
+
+				for (nfds_t i = 0; i < _FdMax; i++) {
+					_Entries[i].fd = -1;
+					_Entries[i].events = 0;
+					_Entries[i].revents = 0;
+				}
+				
+				// Ignore SIGPIPE
+				//
+				struct sigaction SigPipe;
+				SigPipe.sa_handler = SIG_IGN;
+				SigPipe.sa_flags = 0;
+				sigaction(SIGPIPE, &SigPipe, nullptr);
+				
 				std::string	HomeDirectory;
 			
 				Instance = this;
@@ -263,12 +280,12 @@ namespace RiverExplorer::Phoenix
 
 				// We don't use them.
 				//
-				fclose(stdin);
-				fclose(stdout);
+				//fclose(stdin);
+				//fclose(stdout);
 
 				// Where we write logs and messages.
 				//
-				fclose(stderr);
+				//fclose(stderr);
 #ifndef W64
 				// User ~/.config/RiverExplorer/Phoenix.conf
 				//
@@ -346,10 +363,10 @@ namespace RiverExplorer::Phoenix
 					
 						snprintf(Buf,
 										 sizeof(Buf),
-										 "Could not parse configuration file: %s: error: %s\n",
+										 "Could not parse configuration file: %s: error: %s",
 										 ConfigFile.c_str(),
 										 SErr.c_str());
-						_Event::Invoke(-1, LoggingMessageID, Buf);
+						_Event::Invoke(-1, LoggingMessageID(), Buf);
 					}
 				
 				} else {
@@ -362,25 +379,26 @@ namespace RiverExplorer::Phoenix
 					atexit(_Cleanup);
 				}
 				
-				_InterruptPollFd = open(Fifo, O_RDWR);
+				_WakeUpPoll = open(Fifo, O_RDWR);
 				sem_init(&_WorkThreadReady, 0, 0);
 
 				// Register the server PhoenixEvent names.
 				//
-				ReadyID = PhoenixEvent::Register(Ready_s, nullptr);
-				NewClientConnectionID = PhoenixEvent::Register(NewClientConnection_s, nullptr);
-				ClientDisconnectedID = PhoenixEvent::Register(ClientDisconnected_s, nullptr);
-				ShuttingDownID = PhoenixEvent::Register(ShuttingDown_s, nullptr);
-				ErrorOnFdID = PhoenixEvent::Register(ErrorOnFd_s, nullptr);
+				_ReadyID = PhoenixEvent::Register(Ready_s, nullptr);
+				_ClientBlockedID = PhoenixEvent::Register(ClientBlocked_s, nullptr);
+				_NewClientConnectionID = PhoenixEvent::Register(NewClientConnection_s, nullptr);
+				_ClientDisconnectedID = PhoenixEvent::Register(ClientDisconnected_s, nullptr);
+				_ShuttingDownID = PhoenixEvent::Register(ShuttingDown_s, nullptr);
+				_ErrorOnFdID = PhoenixEvent::Register(ErrorOnFd_s, nullptr);
 			
 				// Register to listen for _Event::InvokeMessage().
 				//
-				PhoenixEvent::Register(LoggingMessage_s, _LogMessage);
+				_LoggingMessageID = PhoenixEvent::Register(LoggingMessage_s, _LogMessage);
 
 				// Register for new client connections and validate their IP.
 				//
 				PhoenixEvent::Register(NewClientConnection_s, _ValidateIP);
-				_Event::Invoke(-1, ReadyID, (char*)nullptr);
+				_Event::Invoke(-1, ReadyID(), (char*)nullptr);
 			
 			}
 			// else - ignore us!
@@ -404,46 +422,51 @@ namespace RiverExplorer::Phoenix
 	//
 	std::thread *
 		Server::Start(uint16_t Port, const char * Device)
-		{
-			std::thread * Results = nullptr;
+	{
+		std::thread * Results = nullptr;
 
-			char On = 1;
+		char On = 1;
 
-			IOInstance = new IO();
+		IOInstance = new IO();
 		
-			memset(&_ServerAddress, 0, sizeof(_ServerAddress));
+		memset(&_ServerAddress, 0, sizeof(_ServerAddress));
 
-			_ListenFd = socket(AF_INET6, SOCK_STREAM, 0);
-			setsockopt(_ListenFd, SOL_SOCKET, SO_REUSEADDR, &On, sizeof(On));
-
-			_ServerAddress.sin6_family = AF_INET6;
-			_ServerAddress.sin6_addr = in6addr_any;
-			_ServerAddress.sin6_port = htons(Port);
-
-			if (Device != nullptr && Device[0] != '\0') {
-				struct ifreq ifr;
-				strncpy(ifr.ifr_name, Device, IFNAMSIZ - 1 );
-
-				if (setsockopt(_ListenFd,
-											 SOL_SOCKET,
-											 SO_BINDTODEVICE,
-											 &ifr,
-											 sizeof(ifr) < 0)) {
-					// ERROR.
-				}
-			}
-			bind(_ListenFd, (struct sockaddr*)&_ServerAddress, sizeof(_ServerAddress));
-			AddFd(_InterruptPollFd);
-			AddFd(_ListenFd);
-			_WorkThread = std::thread(_Work);
-			Results = &_WorkThread;
-#ifdef DEBUG
-			_Event::Invoke(-1, LoggingMessageID, "DEBUG:_Work thread started\n");
-#endif
-			sem_wait(&_WorkThreadReady);
-
-			return(Results);
+		_ListenFd = socket(AF_INET6, SOCK_STREAM, 0);
+		if (_ListenFd < 0) {
+			fprintf(stderr, "ERROR::Server.cpp:Start():socket() return (-1)\n");
+			exit(1);
 		}
+		setsockopt(_ListenFd, SOL_SOCKET, SO_REUSEADDR, &On, sizeof(On));
+
+		_ServerAddress.sin6_family = AF_INET6;
+		_ServerAddress.sin6_addr = in6addr_any;
+		_ServerAddress.sin6_port = htons(Port);
+
+		if (Device != nullptr && Device[0] != '\0') {
+			struct ifreq ifr;
+			strncpy(ifr.ifr_name, Device, IFNAMSIZ - 1 );
+
+			if (setsockopt(_ListenFd,
+										 SOL_SOCKET,
+										 SO_BINDTODEVICE,
+										 &ifr,
+										 sizeof(ifr) < 0)) {
+				// ERROR.
+			}
+		}
+		bind(_ListenFd, (struct sockaddr*)&_ServerAddress, sizeof(_ServerAddress));
+		AddFd(_WakeUpPoll);
+		AddFd(_ListenFd);
+		_WorkThread = std::thread(_Work);
+		_WorkThread.detach();
+		Results = &_WorkThread;
+#ifdef DEBUG
+		_Event::Invoke(-1, LoggingMessageID(), "DEBUG:_Work thread started\n");
+#endif
+		sem_wait(&_WorkThreadReady);
+
+		return(Results);
+	}
 
 	bool
 		Server::Send(IO::SendPacket * Pkt)
@@ -485,52 +508,293 @@ namespace RiverExplorer::Phoenix
 
 		return;
 	}
+	
+	void
+	Server::_Shutdown(int Fd)
+	{
+		shutdown(Fd, SHUT_RDWR);
+		close(Fd);
 
+		return;
+	}
+	
 	// This runs as a thread.
 	//
 	void
 		Server::_Work()
 	{
+		char On = 1;
 
 		// Start listening for incomming connections.
 		//
 		listen(_ListenFd, _Backlog);
 
-		// We always have at least 2 entriese to listen to.
-		// Listen() and the interrupt FD.
-		//
-		_NumberEntries = 2;
-		_Entries = new struct pollfd[1];
+		SSL_load_error_strings();
+		ERR_load_crypto_strings();
+		OpenSSL_add_all_algorithms();
+		SSL_library_init();
 
 		// Add _ListenFd to the entries.
 		//
-		_Entries[0].fd = _ListenFd;
-		_Entries[0].events = POLLIN;
+		_Entries[_ListenFd].fd = _ListenFd;
+		_Entries[_ListenFd].events = POLLIN;
 			
-		// Add _InterruptPollFd to the entries.
-		// _InterruptPollFd is used by other threads
+		// Add _WakeUpPoll to the entries.
+		// _WakeUpPoll is used by other threads
 		// to break out of poll() and re-read the fd list.
 		//
-		_Entries[1].fd = _InterruptPollFd;
-		_Entries[1].events = POLLIN;
+		_Entries[_WakeUpPoll].fd = _WakeUpPoll;
+		_Entries[_WakeUpPoll].events = POLLIN;
 			
 		sem_post(&_WorkThreadReady);
 		
+		std::set<int>::iterator It;
+		uint8_t				Buffer[1024];
+		int						ToRead = 0;
+		int						DidRead = 0;
+		
 		do {
 
-			if (_NumberEntries > 0 && _Entries != nullptr) {
-				int Count = poll(_Entries, _NumberEntries, -1);
+			// Check SSL first. Skip stdin, stdout, and stderr.
+			//
+			for (nfds_t Fd = 3; Fd < _FdMax; Fd++) {
 
-				if (Count > 0) {
-					for (nfds_t Offset = 0; Offset < _NumberEntries; Offset++) {
+				if (_Entries[Fd].fd == -1) {
+					// This FD not currently active.
+					//
+					continue;
+				}
 
- 						int REvents = _Entries[Offset].revents;
-						int RFd = _Entries[Offset].fd;
+				if ((int)Fd == _WakeUpPoll) {
+					// No SSL on _WakUpPoll pipe
+					//
+					continue;
+				}
+
+				if ((int)Fd == _ListenFd) {
+					// No SSL on _ListenFd.
+					//
+					continue;
+				}
+
+				// Create or get the SSL info for this fd.
+				//
+				if (Clients[Fd] == nullptr) {
+					// It is a new client connection.
+					//
+					Clients[Fd] = new ClientInfo();
+				}
+
+				// Create or get the Inbound buffer for this fd.
+				//
+				if (Clients[Fd]->InboundData.TotalLength == 0) {
+					// Then Inbound TotalLength will be zero,
+					// so we will know it is a new packet when we
+					// get any data.
+					//
+					// New packet, just get the total length for now.
+					//
+					ToRead = sizeof(uint64_t);
+
+				} else {
+					ToRead = sizeof(Buffer);
+				}
+
+				// If NOT a new packet.
+				//
+				if (Clients[Fd]->InboundData.TotalLength != 0) {
+					// How much do we need to finish this packet?
+					//
+					/**
+					 * @todo fix for LARGE data sizes.
+					 */
+					ToRead = (int)Clients[Fd]->InboundData.TotalLength
+						- (int)Clients[Fd]->InboundData.ProcessedCount;
+
+					// Cap to size of Buffer.
+					//
+					if (ToRead > (int)sizeof(Buffer)) {
+						ToRead = sizeof(Buffer);
+					}
+				}
+
+				// Read (a) The total length uint64_t for the new packets.
+				// Or (b) The total amount we still need.
+				// And (c) But not more than sizeof(Buffer)
+				//
+				DidRead = Clients[Fd]->OurConnection.Read(Buffer, ToRead);
+
+				if (DidRead <= 0) {
+					int Err = Clients[Fd]->OurConnection.GetError(ToRead);
+
+					// Erase any previous poll() results.
+					//
+					_Entries[Fd].revents = 0;
+
+					if (Err == SSL_ERROR_WANT_READ) {
+						// This means check for a POLLIN on this FD.
+						//
+						_Entries[Fd].events |= POLLIN;
+						
+					} else {
+						// SSL does not want data, so don't
+						// check for POLLIN. (??)
+						//
+						_Entries[Fd].events ^= POLLIN;
+					}
+					
+				} else {
+
+					// We got data in the SSL pipe, store in
+					// the FD's input buffer. It may be less
+					//  than what we expected.
+					//
+					if (Clients[Fd]->InboundData.TotalLength == 0) {
+						// Is a new packet, so transfer over sizeof(uint64_t)
+						// octets and un-xdr them.
+						// For a new packet, we set the read amount to
+						// sizeof(uint64_t).
+						//
+						if (DidRead == sizeof(uint64_t)) {
+							uint64_t	NTotal;
+
+							memcpy(&NTotal, Buffer, sizeof(uint64_t));
+							Clients[Fd]->InboundData.TotalLength = ntohll(NTotal);
+							DidRead -= (int)sizeof(uint64_t);
+
+							if (DidRead == 0) {
+								// I think it will always be zero at this point.
+								//
+								continue;
+							}
+
+						} else {
+							// ERROR - now what?
+							// We are a new packet, and did not get the
+							// total length.
+							//
+							/**
+							 * @todo Figure out what to do with incomplete total length.
+							 */
+							continue;
+						}
+								
+					} else {
+						// Was not a new packet.
+						// The rest goes into the input buffer.
+						//
+						// We capped the read to be equal to or
+						// less than what we need, so
+						// transfer over all of it.
+						//
+						/**
+						 * @todo Fix for LARGE data sizes.
+						 */
+						uint8_t	* Tmp = new uint8_t[DidRead];
+
+						memcpy(Tmp, Buffer, DidRead);
+
+						// Add to the input buffer for this FD.
+						//
+						Clients[Fd]->InboundData.Add(Tmp, DidRead, false);
+
+						// Update the got count.
+						//
+						Clients[Fd]->InboundData.ProcessedCount += DidRead;
+
+						// If we got what we need ...
+						//
+						if (Clients[Fd]->InboundData.ProcessedCount
+								== Clients[Fd]->InboundData.TotalLength) {
+							
+							// We have 100% of this packet.
+							//
+							// We are done with this packet.
+							// We have all of the XDR data for this packet.
+							// It is in 1 or more iovec's.
+							// And the total size of the RAW XDR data
+							// is Partial->TotalSize.
+							//
+							// Consolidate it into one blob, cleanup the partial data.
+							// Then put it on the to be processed Q.
+							//
+							/**
+							 * @todo deal with MASSIVE packets.
+							 */
+							uint8_t * Data;
+							uint8_t	*	DataPtr = Data = new uint8_t[Clients[Fd]->InboundData.TotalLength];
+							uint64_t	Got = 0;
+							uint8_t * OneBlob = Clients[Fd]->InboundData.Take(Got);
+
+							while (OneBlob != nullptr) {
+								memcpy(DataPtr, OneBlob, Got);
+								DataPtr += Got;
+								OneBlob = Clients[Fd]->InboundData.Take(Got);
+							}
+							
+							// Data contans the incomming packet in XDR format.
+							// DataLenght is the length of the packet.
+							//
+							CmdPacket *	Pkt = new CmdPacket();
+							XDR					Xdrs;
+
+							// WHAT ABOUT MASSIVE DATA IN THE PACKETS ???
+							//
+							xdrmem_create(&Xdrs,
+														(char*)Data,
+														(u_int)Clients[Fd]->InboundData.TotalLength,
+														XDR_DECODE);
+
+							// Decode the XDR data and dispatch the correct code.
+							//
+							if (xdr_CmdPacket(&Xdrs, Pkt)) {
+								Register::Dispatch((int)Fd, Pkt);
+							} else {
+								PhoenixEvent::InvokeMessage((int)Fd, PhoenixEvent::LogError_s,
+																						"Server.cpp:poll():xdr_CmdPacket() failed.");
+							}
+
+							// Clear out the inbound data, await more.
+							//
+							Clients[Fd]->InboundData.Clear();
+
+							// Free internal data.
+							//
+							xdr_free((xdrproc_t)xdr_CmdPacket, &Pkt);
+
+							// Delete the XDR data.
+							//
+							delete[] Data;
+
+							// Destroy the XDR object.
+							//
+							xdr_destroy(&Xdrs);
+						}
+					}
+				}
+			} // End of for(...) ... doing SSL_read()...
+
+			// At this point, all client connections that
+			// need SSL I/O have POLLIN set.
+			//
+			int Count = poll(_Entries, _FdMax, -1);
+
+			if (Count > 0) {
+				// Skip stdin, stdout, and stderr
+				//
+				for (nfds_t Fd = 3; Fd < _FdMax; Fd++) {
+
+					if (_Entries[Fd].fd != -1 ) {
+						int REvents = _Entries[Fd].revents;
 						
 						if (REvents > 0) {
+
+							// WAKE UP POLL ...
+							//
 							// If the what to poll for list has changed ...
 							//
-							if (RFd == _InterruptPollFd) {
+							if ((int)Fd == _WakeUpPoll) {
+								Count--;
 								std::set<int>::iterator	SetIt;
 								char TossMe;
 
@@ -538,126 +802,81 @@ namespace RiverExplorer::Phoenix
 								// so that _Entries and _NumberEntries
 								// could be updated. Then go back to work.
 								//
-								read(_InterruptPollFd, &TossMe, 1);
+								read(_WakeUpPoll, &TossMe, 1);
 
-								nfds_t NewTotal = _NumberEntries + _NewFds.size() - _RemoveFds.size();
-
-								SetIt = _NewFds.find(_ListenFd);
-								if (SetIt != _NewFds.end()) {
-									NewTotal--;
-									_NewFds.erase(SetIt);
-								}
-								
-								SetIt = _NewFds.find(_InterruptPollFd);
-								if (SetIt != _NewFds.end()) {
-									NewTotal--;
-									_NewFds.erase(SetIt);
-								}
-								
-								struct pollfd * NewList = new pollfd[NewTotal];
-
-								int											NewOffset = 0;
-								nfds_t									OldOffset;
-								std::map<int,PeerInfo*>::iterator	PeerIt;
-
-								// Go through the current list, and remove the ones
-								// that are to be removed.
+								// Check and update: add POLLIN, and remove POLLIN
 								//
-								for (OldOffset = 0; OldOffset < _NumberEntries; OldOffset++) {
-									SetIt = _RemoveFds.find(_Entries[OldOffset].fd);
-									if (SetIt != _RemoveFds.end()) {
-										// Shutdown and close the socket.
-										//
-										shutdown(_Entries[OldOffset].fd, SHUT_RDWR);
-										close(_Entries[OldOffset].fd);
+								if (TossMe == 'E'|| TossMe == 'B') {
+									std::set<int>::iterator	EIt;
+									
+									// Go throug the existing list and update events
+									// to remove POLLIN.
+									//
+									PollInMutex.lock();
+									
+									for (EIt = RemovePollIn.begin()
+												 ; EIt != RemovePollIn.end()
+												 ; EIt++) {
 
-										// Remove inbound or outbound data for this file descriptor.
-										//
-										std::map<int,Iov*>::iterator PIt;
-
-										_InboundDataMutex.lock();
-										PIt = _InboundData.find(_Entries[OldOffset].fd);
-										Iov * IData = nullptr;
-
-										if (PIt != _InboundData.end()) {
-											IData = PIt->second;
-											delete IData;
-											_InboundData.erase(PIt);
-										}
-										_InboundDataMutex.unlock();
-
-										_OutboundDataMutex.lock();
-										PIt = _OutboundData.find(_Entries[OldOffset].fd);
-										if (PIt != _OutboundData.end()) {
-											IData = PIt->second;
-											delete IData;
-											_OutboundData.erase(PIt);
-										}
-										_OutboundDataMutex.unlock();
-										
-										// Remove it from the remove list.
-										//
-										_RemoveFds.erase(SetIt);
-										PeerIt = _Peers.find(_Entries[OldOffset].fd);
-										if (PeerIt != _Peers.end()) {
-											
-											// Wipe out data (security).
-											//
-											memset(PeerIt->second, 0, sizeof(struct sockaddr));
-
-											// Remove it from the list of peers.
-											//
-											delete PeerIt->second;
-											PeerIt->second = nullptr; // (Security)
-											_Peers.erase(PeerIt);
-										}
-
-									} else {
-										// It has not been removed, copy it to the new poll() list.
-										//
-										NewList[NewOffset].fd = _Entries[OldOffset].fd;
-										NewList[NewOffset].events = _Entries[OldOffset].events;
-										NewList[NewOffset++].revents = _Entries[OldOffset].revents;
+										_Entries[*EIt].events ^= POLLIN;
+										_Entries[*EIt].revents = 0;
 									}
-								}
-
-								// Add any new file descriptors to the poll() list.
-								//
-								for (SetIt = _NewFds.begin(); SetIt != _NewFds.end(); SetIt++) {
-
-									if (*SetIt == -1) {
-										continue;
-									}
-
-									NewList[NewOffset].fd = *SetIt;
+									RemovePollIn.clear();
+									
+									// Go throug the existing list and update events
+									// to add POLLIN.
+									//
+									for (EIt = AddPollIn.begin()
+												 ; EIt != AddPollIn.end()
+												 ; EIt++) {
 #ifdef _GNU_SOURCE
-									NewList[NewOffset].events = POLLIN | POLLOUT | POLLRDHUP | POLLHUP | POLLERR;
+										_Entries[*EIt].events = POLLIN | POLLRDHUP | POLLHUP | POLLERR;
 #else
-									NewList[NewOffset].events = POLLIN | POLLOUT | POLLHUP | POLLERR;
+										_Entries[*EIt].events = POLLIN | POLLHUP | POLLERR;
 #endif
-									NewList[NewOffset++].revents = 0;
+										_Entries[*EIt].revents = 0;
+
+										// We have something to poll.
+										//
+									}
+									AddPollIn.clear();
+									
+									PollInMutex.unlock();
 								}
-								_NewFds.clear(); // Empty the set of new file descriptors.
 
-								// We use (-1) so that any Fd's found, are invalid.
-								// Zero (0) would be stdin.
+								// If only update File descriptors
+								// Or update Both.
 								//
-								memset(_Entries, (char)-1, _NumberEntries);	// Invalidate the old data (security).
-								delete[] _Entries;
-								_Entries = NewList;
-								_NumberEntries = NewTotal;
+								if (TossMe == 'F' || TossMe == 'B') {
+									_FdMutex.lock();
 
-								// Go back to work.
-								//
-								continue;
+									// Remove any that are to be removed.
+									//
+									for (SetIt = _RemoveFds.begin()
+												 ; SetIt != _RemoveFds.end()
+												 ; SetIt++) {
+										
+										_Entries[*SetIt].fd = -1;
+									}
+									_RemoveFds.clear(); // Empty the set of new file descriptors.
 
-							} else if (RFd == _ListenFd) {
+									// Add any that are to be added.
+									//
+									for (SetIt = _NewFds.begin()
+												 ; SetIt != _NewFds.end()
+												 ; SetIt++) {
+										
+										_Entries[*SetIt].fd = *SetIt;
+									}
+									_NewFds.clear(); // Empty the set of new file descriptors.
+									_FdMutex.unlock();
+								}
+
+							} else if ((int)Fd == _ListenFd) {
+								Count--;
 
 								// New activity on the listen() file descriptor.
 								//
-								PeerInfo * Info = new PeerInfo();
-
-								memset(Info, 0, sizeof(*Info));
 
 								// Get the file descriptor for the new connection.
 								//
@@ -666,292 +885,124 @@ namespace RiverExplorer::Phoenix
 								// The Addr is a union of ipv4 and ipv6, so show
 								// we can handle the larger ipv6 address and both will work.
 								//
-								Info->AddrLen = sizeof(in6_addr);
-								NewFd = accept(_ListenFd, (sockaddr*)&Info->Addr.ipv6, &Info->AddrLen);
+								IPPeer Tmp;
+
+								Tmp.AddrLen = sizeof(in6_addr);
+								NewFd = accept(_ListenFd,
+															 (sockaddr*)&Tmp.Addr.IpV6,
+															 &Tmp.AddrLen);
 								
-								// Log the new connection.
-								//
-								char IP[INET6_ADDRSTRLEN];
 
-								// The first object in in6_addr and in4_addr is sa_family.
-								// I just need to family.
-								//
-								inet_ntop(((sockaddr*)&Info->Addr.ipv4)->sa_family, &Info->Addr, IP, sizeof(IP));
+								if (NewFd < 0) {
+									fprintf(stderr, "ERROR::Server.cpp:Start():accept() return (-1)\n");
+									continue; // Something went wrong!
+								}
+								setsockopt(NewFd, SOL_SOCKET, SO_REUSEADDR, &On, sizeof(On));
 
-								// Set to non-blocking.
-								//
-								int OldFlags = fcntl(NewFd, F_GETFL, 0);
+								if (Clients[NewFd] != nullptr) {
+									delete Clients[NewFd];
+								}
+								if (_Event::Invoke(NewFd, NewClientConnectionID(),
+																	 &Tmp)) {
+
+									// Set to non-blocking.
+									// Get old flags, add O_NONBLOCK and set.
+									//
+									int OldFlags = fcntl(NewFd, F_GETFL, 0);
 								
-								fcntl(NewFd, F_SETFL, OldFlags | O_NONBLOCK);
-								
-								_Event::InvokeNewClientConnection(NewFd, Info);
+									fcntl(NewFd, F_SETFL, OldFlags | O_NONBLOCK);
 
-								// Save the peer info.
-								// Add the new file descriptor to the add list.
+									// Make room for the new client data.
+									//
+									Clients[NewFd] = new ClientInfo();
+
+									// Copy over the remote peer address
+									// into the new client data.
+									//
+									Clients[NewFd]->Peer =  Tmp;
+
+									// Tell poll() to add a new FD.
+									// 
+									AddFd(NewFd);
+
+								} else {
+									// When any NewClientConnection PhoenixEvent callback
+									// returns false, then this clinet was blocked for some
+									// reason.
+									//
+									Clients[NewFd] = nullptr;
+									_Event::Invoke(NewFd, ClientBlockedID(), &Tmp);
+									shutdown(NewFd, SHUT_RDWR);
+									close(NewFd);
+								}
+
+								// Get SSL running on the new port.
 								//
-								_Peers.insert(std::make_pair(NewFd, Info));
-								AddFd(NewFd);
-
+								/**@todo GET correct cert or generate a new one */
+								Clients[NewFd]->OurConnection.Generate();
+								Clients[NewFd]->OurConnection.Accept(NewFd, _LogFp);
+								
 								// Go back to work.
 								//
-								continue;
-							}
-
-							// Something to do...
-							//
-							// If we got here if there is a POLLIN or POLLOUT data.
-							//
-							for (nfds_t i = 0; i < _NumberEntries; i++) {
-
-								if (_Entries[i].fd > -1) {
-
-									// Is there data for us to read?
-									//
-									if ((_Entries[i].revents & POLLIN) > 0) {
-										int Fd = _Entries[i].fd;
-
-#ifdef DEBUG
-										_Event::InvokeMessage(Fd, "DEBUG:Poll() got POLLIN.");
-#endif										
-										
-										// How many octets can we read?
-										//
-										int				CanRead = 0;
-										
-										ioctl(Fd, FIONREAD, &CanRead);
-
-										if (CanRead == 0) {
-											// Remote end has disconnected.
-											//
-											Server::_Event::Invoke(Fd, Server::ErrorOnFdID,
-																						 "Serve.cpp::poll():Zero read, closing FD");
-											Server::_Event::InvokeClientDisconnected(Fd);
-											RemoveFd(Fd);
-
-											// No more processing for this Fd.
-											//
-											continue; // Go back to poll()
-										}
-
-										//
-										// Looks like we have data to read.
-										//
-
-										// Get any partial packet data that might exist for
-										// this file descriptor.
-										//
-										Iov * IOData = nullptr;
-										std::map<int,Iov*>::iterator VIt;
-										VIt = _InboundData.find(Fd);
-
-										bool NewPacket = false;
-										
-										// Look for existing partial data for the file descriptor.
-										//
-										if (VIt == _InboundData.end()) {
-											// None, start collecting a new packet.
-											//
-											IOData = new Iov();
-											NewPacket = true;
-											_InboundData.insert(std::make_pair(Fd,IOData));
-											
-										} else {
-											// Yep, continue collecting for this file descriptor.
-											//
-											IOData = VIt->second;
-										}
-
-										// The first uint64_t of a new packet
-										// is the total packet length in network byte order.
-										//
-										if (NewPacket) {
-											if (CanRead < (int)sizeof(uint64_t)) {
-												// This is a new packet and we need all of
-												// the first uint64_t octets, go back and wait.
-												//
-												continue; // As in go back to poll().
-											}
-
-											// We are taking sizeof(uint64_t).
-											//
-											CanRead -= (int)sizeof(uint64_t);
-
-											// The data arrives in network byte order.
-											//
-											uint64_t	NTotalLen;
-											
-											ssize_t Res = read(Fd, &NTotalLen, sizeof(uint64_t));
-
-											if (Res == -1) {
-												if (errno == EAGAIN || errno == EWOULDBLOCK || errno == EINTR) {
-													continue;	// Go back to poll().
-
-												} else if (errno == EBADF) {
-													RemoveFd(Fd);
-													continue; // Go back to poll().
-												}
-											}
-											
-											// Swap if needed network byte order to
-											// host byte order.
-											//
-											IOData->TotalLength = ntohll(NTotalLen);
-										}
-
-										// Sill more? (We may have took some above.)
-										//
-										if (CanRead > 0) {
-											// In addition to getting partial packets,
-											// we might get multiple packets, check here.
-											//
-											// Calculate the total collected so far. ...
-											//
-											size_t	Have = IOData->ProcessedCount;
-
-											if ((Have + CanRead) > IOData->TotalLength) {
-												// The rest belong to the next packet.
-												//
-												CanRead = (int)((size_t)IOData->TotalLength - (int)Have);
-											}
-
-											// Allocate what we can or should read.
-											//
-											uint8_t * ReadBuf = new uint8_t[CanRead];
-
-											ssize_t Res = read(Fd, ReadBuf, CanRead);
-											
-											if (Res == -1) {
-												if (errno == EAGAIN || errno == EWOULDBLOCK || errno == EINTR) {
-													continue;	// Go back to poll().
-
-												} else if (errno == EBADF) {
-													RemoveFd(Fd);
-													continue; // Go back to poll().
-												}
-											}
-
-											if (Res > 0) {
-												IOData->Add(ReadBuf, Res, false);
-												IOData->ProcessedCount += Res;
-
-
-												// If done with this packet.
-												//
-												if (IOData->ProcessedCount == IOData->TotalLength) {
-													// We are done with this packet.
-													// We have all of the XDR data for this packet.
-													// It is in 1 or more iovec's.
-													// And the total size of the RAW XDR data is Partial->TotalSize.
-													//
-													// Consolidate it into one blob, cleanup the partial data.
-													// Then put it on the to be processed Q.
-													//
-													uint8_t * Data;
-													uint8_t	*	DataPtr = Data = new uint8_t[IOData->TotalLength];
-													//uint64_t	DataLength = IOData->TotalLength;
-													uint64_t	Got = 0;
-													uint8_t * OneBlob = IOData->Take(Got);
-
-													while (OneBlob != nullptr) {
-														memcpy(DataPtr, OneBlob, Got);
-														DataPtr += Got;
-														OneBlob = IOData->Take(Got);
-													}
-													IOData->Clear();
-
-													// Data contans the incomming packet in XDR format.
-													// DataLenght is the length of the packet.
-													//
-													CmdPacket Pkt;
-													XDR Xdrs;
-												
-													xdrmem_create(&Xdrs,
-																				(char*)Data,
-																				(u_int)IOData->TotalLength,
-																				XDR_DECODE);
-
-													// Decode the XDR data and dispatch the correct code.
-													//
-													if (xdr_CmdPacket(&Xdrs, &Pkt)) {
-														Register::Dispatch(Fd, &Pkt);
-													} else {
-														PhoenixEvent::InvokeMessage(Fd, PhoenixEvent::LogError_s,
-																												"Server.cpp:poll():xdr_CmdPacket() failed.\n");
-													}
-
-													// Free internal data.
-													//
-													xdr_free((xdrproc_t)xdr_CmdPacket, &Pkt);
-
-													// Delete the XDR data.
-													//
-													delete[] Data;
-
-													// Destroy the XDR object.
-													//
-													xdr_destroy(&Xdrs);
-												}
-											}
-										}
-									}
-
-									// Can we write data?
-									//
-									if ((_Entries[i].revents & POLLOUT) > 0) {
-
-										// The data we get, is already XDR encoded and ready to be sent.
-										//
-										int Fd = _Entries[i].fd;
-										ssize_t OctetsWrote = 0;
-										std::map<int,Iov*>::iterator VIt;
-										Iov * IOData = nullptr;
-
-										VIt = _OutboundData.find(Fd);
-
-										// If we reach the end, then we have nothing to write - done.
-										//
-										if (VIt != _OutboundData.end()) {
-											IOData = VIt->second;
-											OctetsWrote = _NetWrite(Fd, IOData);
-
-											if (OctetsWrote == -1) {
-												// Something went wrong, _NetWrite() logged it.
-												// Remove this Fd from the list.
-												//
-												RemoveFd(Fd);
-												continue; // To poll().
-											}
-										}
-									}
-								}
-
-								if ((_Entries[i].revents & POLLHUP) > 0) {
-									_Event::Invoke(_Entries[i].fd,
-																 ErrorOnFdID,
-																 "Server.cpp:poll():Closed socket:POLLHUP.\n");
-									RemoveFd(_Entries[i].fd);
-									continue; // To poll().
-								}
-								if ((_Entries[i].revents & POLLRDHUP) > 0) {
-									_Event::Invoke(_Entries[i].fd,
-																 ErrorOnFdID,
-																 "Server.cpp:poll():Closed socket:POLLRDHUP.\n");
-									RemoveFd(_Entries[i].fd);
-									continue; // To poll().
-								}
-								if ((_Entries[i].revents & POLLERR) > 0) {
-									_Event::Invoke(_Entries[i].fd,
-																 ErrorOnFdID,
-																 "Server.cpp:poll():Closed socket:POLLERR.\n");
-									RemoveFd(_Entries[i].fd);
-									continue; // To poll().
-								}
 							}
 						}
 					}
+
+					// If there is still more to do.
+					// Listen and WakeUp may have taken one.
+					//
+					if (Count > 0) {
+						bool DidSomething = false;
+						
+						// Something to do...
+						//
+						// If we got here if there is a POLLIN or POLLOUT data.
+						//
+						// We skip stdin, stdout, and stderr.
+						//
+
+						// Is there data for us to read?
+						//
+						if ((_Entries[Fd].revents & POLLIN) > 0) {
+							DidSomething = true;
+#ifdef DEBUG
+							_Event::Invoke((int)Fd,
+														 LoggingMessageID(),
+														 "DEBUG:Poll() got POLLIN.");
+#endif
+							// Let SSL_READ read some.
+							//
+						}
+								
+						if ((_Entries[Fd].revents & POLLHUP) > 0) {
+							DidSomething = true;
+							_Event::Invoke((int)Fd,
+														 ErrorOnFdID(),
+														 "Server.cpp:poll():Closed socket:POLLHUP.\n");
+							RemoveFd(_Entries[Fd].fd);
+						}
+						if ((_Entries[Fd].revents & POLLRDHUP) > 0) {
+							DidSomething = true;
+							_Event::Invoke((int)Fd,
+														 ErrorOnFdID(),
+														 "Server.cpp:poll():Closed socket:POLLRDHUP.\n");
+							RemoveFd(_Entries[Fd].fd);
+						}
+						if ((_Entries[Fd].revents & POLLERR) > 0) {
+							DidSomething = true;
+							_Event::Invoke((int)Fd,
+														 ErrorOnFdID(),
+														 "Server.cpp:poll():Closed socket:POLLERR.\n");
+							RemoveFd(_Entries[Fd].fd);
+						}
+
+						if (DidSomething) {
+							Count--;
+						}
+						_Entries[Fd].revents = 0;
+					}
 				}
 			}
-			
 		} while (1);
 
 		/*NOTREACHED*/
@@ -963,9 +1014,37 @@ namespace RiverExplorer::Phoenix
 	{
 		// Cause poll() to wake up and notice it should update..
 		//
-		char ToWrite = 'r';
+		char ToWrite = 'F';
+
+		if (_NewFds.size() > 0) {
+			ToWrite = 'B'; // So it does both.
+		}
 		
-		write(_InterruptPollFd, &ToWrite, 1);
+		if (_RemoveFds.size() > 0) {
+			ToWrite = 'B'; // So it does both.
+		}
+		
+		write(_WakeUpPoll, &ToWrite, 1);
+
+		return;
+	}
+
+	void
+	Server::_UpdatePollEvents()
+	{
+		// Cause poll() to wake up and notice it should update..
+		//
+		char ToWrite = 'E';
+
+		if (_NewFds.size() > 0) {
+			ToWrite = 'B'; // So it does both.
+		}
+		
+		if (_RemoveFds.size() > 0) {
+			ToWrite = 'B'; // So it does both.
+		}
+		
+		write(_WakeUpPoll, &ToWrite, 1);
 
 		return;
 	}
@@ -975,12 +1054,19 @@ namespace RiverExplorer::Phoenix
 	{
 		const char * CData = (char*)Data;
 
-		if (Fd > -1) {
-			fprintf(_LogFp, "File Descriptor: %d, %s", Fd, CData);
-		} else {
-			fprintf(_LogFp, "%s", CData);
+		if (CData != nullptr) {
+			std::string SData = CData;
+
+			if (SData.back() != '\n') {
+				SData += '\n';
+			}
+			if (Fd > -1) {
+				fprintf(_LogFp, "File Descriptor: %d, %s", Fd, SData.c_str());
+			} else {
+				fprintf(_LogFp, "%s", SData.c_str());
+			}
+			fflush(_LogFp);
 		}
-		fflush(_LogFp);
 
 		return(true);
 	}
@@ -992,6 +1078,12 @@ namespace RiverExplorer::Phoenix
 	}
 
 	bool
+	Server::_Event::Invoke(int Fd, PhoenixEvent::EventID ID, const IPPeer * Peer)
+	{
+		return(DispatchCallbacks(Fd, ID, (void*) Peer));
+	}
+
+	bool
 	Server::_Event::Invoke(int Fd, PhoenixEvent::EventID ID, const char * Data)
 	{
 		return(DispatchCallbacks(Fd, ID, (void*)Data));
@@ -1000,11 +1092,65 @@ namespace RiverExplorer::Phoenix
 	bool
 	Server::_ValidateIP(int Fd, PhoenixEvent::EventID ID, void * VPeer)
 	{
-		PeerInfo * Peer = (PeerInfo*)VPeer;
+		IPPeer * Peer = (IPPeer*)VPeer;
 		
 		/**@todo add IP checking, and return false if should block the IP.*/
 		
 		return(true);
 	}
 
-}
+	PhoenixEvent::EventID
+		Server::ReadyID()
+	{
+		return(_ReadyID);
+	}
+	
+	PhoenixEvent::EventID
+		Server::NewClientConnectionID()
+	{
+		return(_NewClientConnectionID);
+	}
+		
+  PhoenixEvent::EventID
+		Server::ClientDisconnectedID()
+	{
+		return(_ClientDisconnectedID);
+	}
+	
+	PhoenixEvent::EventID
+		Server::ClientBlockedID()
+	{
+		return(_ClientBlockedID);
+	}
+
+	PhoenixEvent::EventID
+		Server::LoggingMessageID()
+	{
+		return(_LoggingMessageID);
+	}
+	
+	PhoenixEvent::EventID
+		Server::ShuttingDownID()
+	{
+		return(_ShuttingDownID);
+	}
+	
+	PhoenixEvent::EventID
+		Server::ErrorOnFdID()
+	{
+		return(_ErrorOnFdID);
+	}
+
+	Server::ClientInfo::ClientInfo()
+	{
+
+		return;
+	}
+
+	Server::ClientInfo::~ClientInfo()
+	{
+					 
+		return;
+	}
+	
+} // End RiverExplorer::Phoenix namespace
