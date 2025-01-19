@@ -7,13 +7,16 @@ See the LICENSE file.
 To view the protocol documentation (work in progress):
 
  The Internet draft (html):
-	https://github.com/RiverExplorer/Phoenix/tree/main/Documentation/Internet-Drafts/Phoenix-00.html
+
+https://github.com/RiverExplorer/Phoenix/tree/main/Documentation/Internet-Drafts/Phoenix-00.html
 	
  The Internet draft (PDF):
-	https://github.com/RiverExplorer/Phoenix/tree/main/Documentation/Internet-Drafts/Phoenix-00.pdf
+
+https://github.com/RiverExplorer/Phoenix/tree/main/Documentation/Internet-Drafts/Phoenix-00.pdf
 	
  The Internet draft (text):
-	https://github.com/RiverExplorer/Phoenix/tree/main/Documentation/Internet-Drafts/Phoenix-00.txt
+
+https://github.com/RiverExplorer/Phoenix/tree/main/Documentation/Internet-Drafts/Phoenix-00.txt
 
  The sample implemenation public API:
  <TODO>
