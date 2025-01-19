@@ -4,11 +4,11 @@
 
 Internet Engineering Task Force                           DM. Royer, Ed.
 Internet-Draft                                   RiverExplorer Games LLC
-Intended status: Informational                           10 January 2025
-Expires: 14 July 2025
+Intended status: Informational                           19 January 2025
+Expires: 23 July 2025
 
 
-                     Phoenix: Lemonaid Risen Again
+                     Phoenix: Lemonade Risen Again
                          draft-royer-phoenix-00
 
 Abstract
@@ -20,6 +20,10 @@ Abstract
    major updated in decades.  Part of the reason is that it is very
    important data and altering it takes a great deal of care and
    planning.
+
+   This application transport can also transfer non-MIME data.  It can
+   be used as an XDR transport, or for opaue data (blobs of known or
+   unknown data) transport.
 
    Another major concern is security and authentication.  This proposal
    allows for existing autnentication to continue to work.
@@ -49,13 +53,9 @@ Status of This Memo
 
 
 
-
-
-
-
-Royer                     Expires 14 July 2025                  [Page 1]
+Royer                     Expires 23 July 2025                  [Page 1]
 
-Internet-Draft        Phoenix: Lemonaid Risen Again         January 2025
+Internet-Draft        Phoenix: Lemonade Risen Again         January 2025
 
 
    Internet-Drafts are draft documents valid for a maximum of six months
@@ -63,7 +63,7 @@ Internet-Draft        Phoenix: Lemonaid Risen Again         January 2025
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 14 July 2025.
+   This Internet-Draft will expire on 23 July 2025.
 
 Copyright Notice
 
@@ -85,37 +85,34 @@ Table of Contents
      1.1.  Requirements Language . . . . . . . . . . . . . . . . . .   4
    2.  Terms and Definition used in this proposal  . . . . . . . . .   5
    3.  Commands Overview . . . . . . . . . . . . . . . . . . . . . .   6
-     3.1.  Administration Commands . . . . . . . . . . . . . . . . .   6
+     3.1.  Administration Commands (AdminCmd)  . . . . . . . . . . .   6
        3.1.1.  Administration Commands Overview  . . . . . . . . . .   6
      3.2.  Authentication Commands . . . . . . . . . . . . . . . . .   7
        3.2.1.  Authentication Commands Overview  . . . . . . . . . .   7
      3.3.  Protocol  . . . . . . . . . . . . . . . . . . . . . . . .   7
        3.3.1.  Basic File and Folder Operations  . . . . . . . . . .   7
-     3.4.  Protocol Specific Commands  . . . . . . . . . . . . . . .   8
-       3.4.1.  Protocol Specific Commands Overview . . . . . . . . .   8
-   4.  Over the Wire Protocol Description  . . . . . . . . . . . . .   8
-     4.1.  Over the Wire Protocol  . . . . . . . . . . . . . . . . .   8
-       4.1.1.  Over the Wire Protocol Overview . . . . . . . . . . .   8
-   5.  IANA Considerations . . . . . . . . . . . . . . . . . . . . .   8
-   6.  Security Considerations . . . . . . . . . . . . . . . . . . .   9
-   7.  References  . . . . . . . . . . . . . . . . . . . . . . . . .   9
-     7.1.  Normative References  . . . . . . . . . . . . . . . . . .   9
-     7.2.  Informative References  . . . . . . . . . . . . . . . . .   9
-   Appendix A.  Administrative Enumerated Binary Values  . . . . . .   9
-   Appendix B.  Authentication Enumerated Binary Values  . . . . . .  10
-   Appendix C.  File and Folder Enumerated Binary Values . . . . . .  11
-   Appendix D.  Protocol Enumerated Binary Values  . . . . . . . . .  12
-   Acknowledgements  . . . . . . . . . . . . . . . . . . . . . . . .  13
+     3.4.  Protocol Commands . . . . . . . . . . . . . . . . . . . .   8
+       3.4.1.  Protocol Overview . . . . . . . . . . . . . . . . . .   8
+   4.  Over the Wire Protocol Detail . . . . . . . . . . . . . . . .  10
+   5.  IANA Considerations . . . . . . . . . . . . . . . . . . . . .  13
+   6.  Security Considerations . . . . . . . . . . . . . . . . . . .  13
+   7.  References  . . . . . . . . . . . . . . . . . . . . . . . . .  13
+     7.1.  Normative References  . . . . . . . . . . . . . . . . . .  13
+     7.2.  Informative References  . . . . . . . . . . . . . . . . .  14
+   Appendix A.  Administrative Enumerated Binary Values  . . . . . .  14
+   Appendix B.  Authentication Enumerated Binary Values  . . . . . .  15
+   Appendix C.  File and Folder Enumerated Binary Values . . . . . .  16
+   Appendix D.  Protocol Enumerated Binary Values  . . . . . . . . .  17
+   Acknowledgements  . . . . . . . . . . . . . . . . . . . . . . . .  18
+   Contributors  . . . . . . . . . . . . . . . . . . . . . . . . . .  18
+   Author's Address  . . . . . . . . . . . . . . . . . . . . . . . .  18
 
 
 
-Royer                     Expires 14 July 2025                  [Page 2]
+Royer                     Expires 23 July 2025                  [Page 2]
 
-Internet-Draft        Phoenix: Lemonaid Risen Again         January 2025
+Internet-Draft        Phoenix: Lemonade Risen Again         January 2025
 
-
-   Contributors  . . . . . . . . . . . . . . . . . . . . . . . . . .  13
-   Author's Address  . . . . . . . . . . . . . . . . . . . . . . . .  13
 
 1.  Introduction
 
@@ -161,16 +158,19 @@ Internet-Draft        Phoenix: Lemonaid Risen Again         January 2025
    email or files are the same thing in this specification.  The
    sections of MIME object with multipart sections are viewed as files
    in the MIME object.  You can interact with the entire folder, or just
-   the files withing it.
+   the files within it.
 
 
 
-Royer                     Expires 14 July 2025                  [Page 3]
+
+
+
+Royer                     Expires 23 July 2025                  [Page 3]
 
-Internet-Draft        Phoenix: Lemonaid Risen Again         January 2025
+Internet-Draft        Phoenix: Lemonade Risen Again         January 2025
 
 
-   MIME object have meta data, and they are called headers.  Files and
+   MIME objects have meta data, and they are called headers.  Files and
    folders have meta data, and they are called file attributes.  This
    specification does not mandate any meta data, it allows for a
    consistent transport of existing meta data.
@@ -182,13 +182,13 @@ Internet-Draft        Phoenix: Lemonaid Risen Again         January 2025
 
    And this specification provides for the ability to define both
    protocol extensions and the creating of finer control for specific
-   needs that may evolve.
+   commands that may evolve over time.
 
    This examples compares current folder and file manipulations to how
    it can be used in this protocol with email.
 
-   *  You can search for file names.  You can search sender, subject,
-      and more.
+   *  You can search for file names.  You can search email for: sender,
+      subject, and more.
 
    *  You can search for file contents.  You can search for email
       message contents.
@@ -221,37 +221,39 @@ Internet-Draft        Phoenix: Lemonaid Risen Again         January 2025
 
 
 
-Royer                     Expires 14 July 2025                  [Page 4]
+Royer                     Expires 23 July 2025                  [Page 4]
 
-Internet-Draft        Phoenix: Lemonaid Risen Again         January 2025
+Internet-Draft        Phoenix: Lemonade Risen Again         January 2025
 
 
 2.  Terms and Definition used in this proposal
 
-   The follwing is a list of terms with their definitions as used in
+   The following is a list of terms with their definitions as used in
    this specification.
 
-   ADMIN_CMD
-      Administrative and auditing operations.  These allow for
-      authorized users to configure, query logs, errors, and possibly
-      user activity.
+   AdminCmd
+      A general term for any administrative command.  Administrative and
+      auditing operations.  This list includes commands for authorized
+      users to configure, query logs, errors, possibly user activity.
 
-   AUTH_CMD
-      Authentication and authorization operations.  These operations
-      authenticate users and verity their authorization access.
+   AuthCmd
+      A general term for any authentication command.  Authentication and
+      authorization operations.  These operations authenticate users and
+      verity their authorization access.
 
    CMD
-      A protocol operation.  They are broken down into, ADMIN_CMD,
-      AUTH_CMD, FILE_CMD, and PROTO_CMD.
+      A specific protocol operation, or command.  They are broken down
+      into, AdminCmd, AuthCmd, FileCmd, and ProtoCmd.
 
-   Command
+   Command, CMD
       Each packet contains a command.  This command is also in the reply
       to the command.  Not all commands have a reply.  These are called
-      a CMD.
+      a CMD or command.
 
-   FILE_CMD
-      File and folder operations.  This include creating, getting,
-      modifying, deleting, moving, and renaming files.
+   FileCmd
+      A general term for any file command.  File and folder operations.
+      This include creating, getting, modifying, deleting, moving, and
+      renaming files.
 
    Media Type
       Each MIME object has a media type that identifies the content of
@@ -262,35 +264,60 @@ Internet-Draft        Phoenix: Lemonaid Risen Again         January 2025
       This protocol transports MIME objects.  This specification does
       not remove or alter any MIME objects;
 
-   Parameter
-      Most CMD have values that are associated with it.  These are
-      called parameters.  For example, the create folder CMD has the
-      name of the new folder to be created as a parameter.  When the
-      parameter itself has values, then these CMD parameters are called
-      PROTO_CMD, because they have their own protocol.
-
-   PROTO_CMD
-      Specific protocols may have commands specific to their needs.
-      These are calls a PROTO_CMD.  An example might be extracting a
-      specific attachment type and its data out of a MIME object.  This
-      could be a PROTO_CMD parameter to the FILE_CMD.
+   Packet
+      A packet is a blob of data that has a header (its length) followed
+      by a Phoenix command with all of its values and parameters.
+      Packets flow in both directions and asynchronously.  Commands can
+      be sent while still waiting for other replies.  Each endpoint may
+      send commands to the other endpoint without having to be prompted
+      to send information.
 
 
 
-Royer                     Expires 14 July 2025                  [Page 5]
+
+
+
+Royer                     Expires 23 July 2025                  [Page 5]
 
-Internet-Draft        Phoenix: Lemonaid Risen Again         January 2025
+Internet-Draft        Phoenix: Lemonade Risen Again         January 2025
 
+
+   Parameter
+      Most commands have values that are associated with them.  These
+      values are called parameters.  For example, the create folder
+      command has the name of the new folder to be created as a
+      parameter.
+
+   ProtoCmd
+      A general term for all protocol commands.  This also includes
+      commands that do not fall into one of the other catagories
+      described here in this definistions section.
+
+   SEQ, Command Sequence, CMD_SEQ
+      Each command has a unique identifier, a sequence number.  All
+      replies to a command include the same sequence number as the
+      original command.  In this way replies can be matched up with
+      their original command.
+
+   SSL
+      For the purpose of this specification, SSL is interchangable with
+      TLS.  This document uses the term TLS.  The sample implementation
+      uses both SSL and TLS because the legacy UNIX, Linux, Windows, and
+      OpenSSL code uses the term SSL as well as TLS.
+
+   TLS
+      A way of securely transporting data over the Internet.  See RFC-
+      xxxx.
 
    XDR
       RFC-4506 specifies a standard and compatible way to transfer
-      binary information.  This protocol uses XDR to transmit the CMDs
-      and replies.  The MIME data is transported as XDR opaque, as in
-      unmodified.
+      binary information.  This protocol uses XDR to transmit a command,
+      its values and any parameters and replies.  The MIME data, the
+      payload, is transported as XDR opaque, and is unmodified.
 
 3.  Commands Overview
 
-3.1.  Administration Commands
+3.1.  Administration Commands (AdminCmd)
 
 3.1.1.  Administration Commands Overview
 
@@ -302,6 +329,14 @@ Internet-Draft        Phoenix: Lemonaid Risen Again         January 2025
 
    Implementations that support any ADMIN_CMD include ADMIN_CMD in the
    post authenication CAPABILITY list.
+
+
+
+
+Royer                     Expires 23 July 2025                  [Page 6]
+
+Internet-Draft        Phoenix: Lemonade Risen Again         January 2025
+
 
    Implementations MUST NOT send a ADMIN_CMD capability in the pre
    authorization CAPABILITY list.
@@ -318,25 +353,6 @@ Internet-Draft        Phoenix: Lemonaid Risen Again         January 2025
 3.1.1.2.  Administration of users.
 
    The following operations are defined for user administration.
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-Royer                     Expires 14 July 2025                  [Page 6]
-
-Internet-Draft        Phoenix: Lemonaid Risen Again         January 2025
-
 
    +=============================+====================================+
    | Command and Capability Name | Brief Description.                 |
@@ -373,25 +389,9 @@ Internet-Draft        Phoenix: Lemonaid Risen Again         January 2025
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-Royer                     Expires 14 July 2025                  [Page 7]
+Royer                     Expires 23 July 2025                  [Page 7]
 
-Internet-Draft        Phoenix: Lemonaid Risen Again         January 2025
+Internet-Draft        Phoenix: Lemonade Risen Again         January 2025
 
 
        +===============+==========================================+
@@ -422,33 +422,296 @@ Internet-Draft        Phoenix: Lemonaid Risen Again         January 2025
 
                                  Table 2
 
-3.4.  Protocol Specific Commands
+3.4.  Protocol Commands
 
-3.4.1.  Protocol Specific Commands Overview
+3.4.1.  Protocol Overview
 
-   TODO
+   This protocol connects two endpoints over a network and facilitates
+   the secure and authorized transfer of MIME objects.
 
-4.  Over the Wire Protocol Description
+   The endpoint that initiates the connection is called the client.  The
+   endpoint that is connected to, is called the server.  The client is
+   the protocol authority, and the server responds to client commands as
+   configured or instructed by the client.
 
-4.1.  Over the Wire Protocol
+   After the connection is successful and authenticated, ether endpoint
+   may send commands to the other endpoint.  When the server initiates
+   an unsolicited command, it could be a any kind of notification or
+   message for the client side application or the user.  It could be
+   reporting errors or updates to previous client initiated commands.
 
-4.1.1.  Over the Wire Protocol Overview
 
-   TODO
+
+
+
+
+Royer                     Expires 23 July 2025                  [Page 8]
+
+Internet-Draft        Phoenix: Lemonade Risen Again         January 2025
+
+
+   All commands initiated from the client have even numbered command
+   sequence numbers.  All commands initiated from the server have odd
+   numbered command sequence numbers.
+
+   Some commands expect a command reply.  Other commands do not expect a
+   command reply.  An example of a command that expects a reply is the
+   ping command.  An example of a command that does not expect a reply
+   is the keep-alive command.  Conceptually their are two kinds of
+   commands: (a) Directive commands, and (b) Request commands.  These
+   are not specific protocol entities, these concepts will be used to
+   describe the expected behavior when one of these are transmitted.
+
+   A directive type command expects the other endpoint to process the
+   command and possibly reply with some results.  An example could be:
+   Send me an index of my emails in my InBox.  The client would expect a
+   result.  Another example is a bye command, once sent, no reply is
+   expected.
+
+   A request type command may or might not have any reply.  For example,
+   a keep-alive command is a request to not timeout and has no reply.
+   And a send new email notifications command would expect zero or more
+   replies and it would not require them, as they might not happen.
+
+3.4.1.1.  Packet Overview
+
+   All commands are sent in a packet.  A packet has two parts, the
+   packet header and the packet body.
+
+   The packet header has one value, the total length of the packet
+   header, packet body, and payload sent as an unsigned 64-bit integer
+   in network byte order.  The length does not include its own length.
+   It is the total length that follows the length value.
+
+   The packet body is divided into three parts: (1) Command sequence
+   (SEQ), (2) The Command (CMD), and (3) The command specific data
+   (Payload).
+
+   (1) The Command SEQ is a 32-bit unsigned integer sent in network byte
+   order.  This SEQ is an even number when initiated from the client,
+   and an odd number when initiated from the server.
+
+   The first SEQ value sent from the client is zero (0) and is
+   incremented by two each time.
+
+   The first SEQ value sent from the server is one (1) and is
+   incremented by two each time.
+
+
+
+
+
+Royer                     Expires 23 July 2025                  [Page 9]
+
+Internet-Draft        Phoenix: Lemonade Risen Again         January 2025
+
+
+   In the event an endpoint command SEQ reaches its maximum value, then
+   its numbering starts over at zero (0) for the client and one (1) for
+   the server.  An implementation must keep track of outstanding
+   commands and not accidentally re-issue the same SEQ that may still
+   get replies from the other endpoint.
+
+   (2) The command is a predefined enumerated 32-bit unsigned integer
+   sent in network byte order.  The value (in hex) 0xFFFFFFFF is
+   reserved for extensions if the 32-bit range is exhausted.
+
+   (3) The payload has no predefined length, other what what is
+   specified for the CMD in the packet.  It could be zero to vary large
+   in size.  It could be opaque data, or it could be data that is XDR
+   encoded.  The contents are specific to the CMD in the packet.
+
+3.4.1.1.1.  Packet Reply Overview
+
+   All replies to a command are also a command packet.  They contain the
+   same command SEQ and command as the original packet.  The endpoint
+   recognizes it is a reply because (a) the command SEQ matches one that
+   is waiting a reply.  And (b) When the client gets an even numbered
+   SEQ, it can only be a reply.  And when the server gets an odd
+   numbered SEQ, it can only be a reply.
+
+   Some commands have zero to many replies.  Each of these multiple
+   replies contains the same SEQ as the original command.  An example,
+   the client sends a request to be notified when new email arrives and
+   uses command SEQ 20.  Each time a new email arrives, a reply will be
+   sent from the server with a command SEQ of 20.  And over time, the
+   client may get many with a SEQ of 20 as new emails arrive on the
+   server.
+
+4.  Over the Wire Protocol Detail
+
+   This section specifies the details of what is transmitted over the
+   network.
+
+   All protocol data transmitted between the endpoints is sent in
+   network byte order.
+
+   All payload data transmitted between the endpoints is sent in
+   original format.  The payload consent is seen as an opaque blob of
+   data within a command packet.
+
+
+
+
+
+
+
+
+Royer                     Expires 23 July 2025                 [Page 10]
+
+Internet-Draft        Phoenix: Lemonade Risen Again         January 2025
+
+
+   When a command packet is received by ether endpoint it: (1) Checks
+   the command sequence number to determine if it is a reply or not.
+   (2) If it is a reply, it looks at the command and dispatches it to
+   the implementations commands reply code.  (3) If is not a reply, it
+   looks at the command and dispatches it to the implementations command
+   code.
+
+   A command and all of its replies, use the same format as described
+   here.
+
+   A packet has a 64-bit unsigned integer in network byte order that is
+   set to the octet count of all of the data that follows this length
+   value.  The shortest packet is 16 octets in size, with a length value
+   set to 8.  With 8 octets for the length, and 8 octets for the packet.
+
+   Followed by a 32-bit unsigned integer in network byte order that is
+   the command sequence number.
+
+   Followed by a 32-bit unsigned integer in network byte order that is
+   the command.
+
+   Followed by zero or more octets of payload data.
+
+   There is no space, padding, or line endings between the parts of the
+   packet.  The payload is sent without any modification and is not
+   encoded or transformed in any way.  A packet is shown here vertically
+   only to aid in readability.
+
+   +-----------------------------------------------------------------+
+   | ...64-bit.unsigned.integer.length ..............................|
+   +-----------------------------------------------------------------+
+   | ...32-bit.unsigned.command.SEQ...|
+   +----------------------------------+
+   | ...32-bit.unsigned.command.CMD...|
+   +----------------------------------+
+   | payload.....
+
+   The payload size and format varies for each command.  The details of
+   the payload content, and the format of that content, is described in
+   each specific CMD section.
+
+   An implementation can send, receive, and dispatch packets within its
+   implementation by looking at the length, SEQ, and CMD, then passing
+   the payload to code that can handle that payload.
+
+   - Read in a 64-bit value.  - Convert the value from network byte
+   order, to host byte order.  This is the total length of the data that
+   follows.  - Read in length octets into the packet payload.  - Get the
+
+
+
+Royer                     Expires 23 July 2025                 [Page 11]
+
+Internet-Draft        Phoenix: Lemonade Risen Again         January 2025
+
+
+   32-bit value in the payload, it is the SEQ in network byte order.  -
+   Convert the SEQ from network byte order, to host byte order.  - Get
+   another 32-bit value in the payload, it is the CMD in network byte
+   order.  - Convert the CMD from network byte order, to host byte
+   order.  - Dispatch the CMD with SEQ and all of the data that follows
+   to implementation
+
+   The following is pseudo code that explains how processing incoming
+   XDR data can be handled:
+
+     // Where:
+     //  uint64_t, is a 64-bit unsigned integer.
+     //  uint32_t, is a 32-bit unsigned integer.
+     //  uint8_t *, is a pointer to 8-bit data.
+     //  XDR, is an XDR object.
+     //
+     //  CmdPacket, is an object that represents all commands
+     //  and replies.
+     //
+     //  NOTE: See the sample implementation.
+     //
+     uint64_t   NetLength;
+     uint64_t   PacketLength;
+     uint8_t *  Data;
+     uint8_t *  DataPointer;
+     XDR        Xdr;
+     CmdPacket  Packet;
+
+     // Read the length and convert to host byte order.
+     //
+     read(FromClientSocket, &NetLength, sizeof(uint64_t));
+     PacketLength = ntohll(NetLength);
+
+     // Allocate PacketLength data, and read it.
+     //
+     Data = new uint8_t[PacketLength]
+     DataPointer = Data;
+
+     // Initialize the XDR deserializer.
+     //
+     xdrmem_create(&Xdr, Data, PacketLength, XDR_DECODE);
+
+     // Decode the received data into a Packet.
+     //
+     if (xdr_CmdPacket(&Xdr, &Packet)) {
+
+       // If the lowest bit is set, it is an odd number.
+       //
+
+
+
+Royer                     Expires 23 July 2025                 [Page 12]
+
+Internet-Draft        Phoenix: Lemonade Risen Again         January 2025
+
+
+       if (Packet.Sequence & 0x01) {
+         SequenceIsEvenNumber = false;
+       } else {
+         SequenceIsEvenNumber = true;
+       }
+
+       // The client sends even numbered sequences, and the server
+       // sends the same even numbers sequence in the reply to
+       // the command.
+       //
+       // If a client gets an odd numbered sequence, it is a command
+       // from the other endpoint.
+       //
+       // The server sends odd numbered sequences, and the client
+       // sends the same odd numbers sequence in the reply to
+       // the command.
+       //
+       // If a server gets an even numbered sequence, it is a
+       // command from theother endpoint.
+       //
+       if (WeAreTheClient) {
+         if (SequenceIsEvenNumber) {
+           DispatchReply(Packet);
+         } else {
+           DispatchCommandFromOtherEndpoint(Packet);
+         }
+       } else {
+         if (SequenceIsEvenNumber) {
+           DispatchCommandFromOtherEndpoint(Packet);
+         } else {
+           DispatchReply(Packet);
+         }
+       }
+     }
 
 5.  IANA Considerations
 
    This memo includes no request to IANA.  [CHECK]
-
-
-
-
-
-
-Royer                     Expires 14 July 2025                  [Page 8]
-
-Internet-Draft        Phoenix: Lemonaid Risen Again         January 2025
-
 
 6.  Security Considerations
 
@@ -458,6 +721,14 @@ Internet-Draft        Phoenix: Lemonaid Risen Again         January 2025
 7.  References
 
 7.1.  Normative References
+
+
+
+
+Royer                     Expires 23 July 2025                 [Page 13]
+
+Internet-Draft        Phoenix: Lemonade Risen Again         January 2025
+
 
    [RFC2119]  Bradner, S., "Key words for use in RFCs to Indicate
               Requirement Levels", BCP 14, RFC 2119,
@@ -501,9 +772,18 @@ Appendix A.  Administrative Enumerated Binary Values
 
 
 
-Royer                     Expires 14 July 2025                  [Page 9]
+
+
+
+
+
+
+
+
+
+Royer                     Expires 23 July 2025                 [Page 14]
 
-Internet-Draft        Phoenix: Lemonaid Risen Again         January 2025
+Internet-Draft        Phoenix: Lemonade Risen Again         January 2025
 
 
    +============+==================+==================================+
@@ -557,9 +837,9 @@ Appendix B.  Authentication Enumerated Binary Values
 
 
 
-Royer                     Expires 14 July 2025                 [Page 10]
+Royer                     Expires 23 July 2025                 [Page 15]
 
-Internet-Draft        Phoenix: Lemonaid Risen Again         January 2025
+Internet-Draft        Phoenix: Lemonade Risen Again         January 2025
 
 
    Some of these values are reused for other commands.  For example
@@ -613,9 +893,9 @@ Appendix C.  File and Folder Enumerated Binary Values
 
 
 
-Royer                     Expires 14 July 2025                 [Page 11]
+Royer                     Expires 23 July 2025                 [Page 16]
 
-Internet-Draft        Phoenix: Lemonaid Risen Again         January 2025
+Internet-Draft        Phoenix: Lemonade Risen Again         January 2025
 
 
    +===============+===========================+======================+
@@ -669,9 +949,9 @@ Appendix D.  Protocol Enumerated Binary Values
 
 
 
-Royer                     Expires 14 July 2025                 [Page 12]
+Royer                     Expires 23 July 2025                 [Page 17]
 
-Internet-Draft        Phoenix: Lemonaid Risen Again         January 2025
+Internet-Draft        Phoenix: Lemonade Risen Again         January 2025
 
 
 Acknowledgements
@@ -725,4 +1005,4 @@ Author's Address
 
 
 
-Royer                     Expires 14 July 2025                 [Page 13]
+Royer                     Expires 23 July 2025                 [Page 18]
