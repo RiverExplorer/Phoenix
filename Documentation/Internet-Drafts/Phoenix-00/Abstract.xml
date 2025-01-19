@@ -30,6 +30,7 @@
 </t>
 <t>
 	This proposal includes a sample implementation.
+	(<eref target="https://github.com/RiverExplorer/Phoenix"/>)
 	Which also includes a gateway from this proposal to existing system.
 	Thunderbid and Outlook plugins are part of the sample implementation.
 </t>
