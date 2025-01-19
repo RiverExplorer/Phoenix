@@ -9,7 +9,7 @@ To view the protocol documentation (work in progress):
 
  The Internet draft (html):
 
-https://github.com/RiverExplorer/Phoenix/blob/main/Documentation/Internet-Drafts/Phoenix-00/draft-royer-phoenix-00.html
+https://htmlpreview.github.io/?https://github.com/RiverExplorer/Phoenix/blob/main/Documentation/Internet-Drafts/Phoenix-00/draft-royer-phoenix-00.html
 
  The Internet draft (PDF):
 
