@@ -7,23 +7,25 @@ See the LICENSE file.
 
 To view the protocol documentation (work in progress):
 
- The Internet draft (html):
-
-https://htmlpreview.github.io/?https://github.com/RiverExplorer/Phoenix/blob/main/Documentation/Internet-Drafts/Phoenix-00/draft-royer-phoenix-00.html
-
  The Internet draft (PDF):
 
 https://github.com/RiverExplorer/Phoenix/blob/main/Documentation/Internet-Drafts/Phoenix-00/draft-royer-phoenix-00.pdf
+
+ The Internet draft (html):
+
+https://htmlpreview.github.io/?https://github.com/RiverExplorer/Phoenix/blob/main/Documentation/Internet-Drafts/Phoenix-00/draft-royer-phoenix-00.html
 
  The Internet draft (text):
 
 https://github.com/RiverExplorer/Phoenix/blob/main/Documentation/Internet-Drafts/Phoenix-00/draft-royer-phoenix-00.txt
 
  The sample implemenation public API:
- <TODO>
+
+ TODO
 
  The sample implemenation internals and public API:
- <TODO>
+
+ TODO
 
 Email and MIME messages account for one the largest volumes of data on the
 internet.
