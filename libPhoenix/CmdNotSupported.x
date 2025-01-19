@@ -34,3 +34,8 @@
 %{
 %extern CmdPacket * NewNotSupported(CommandID ID);
 %}
+struct NotSupported
+{
+	CmdPacket Cmd;
+};
+

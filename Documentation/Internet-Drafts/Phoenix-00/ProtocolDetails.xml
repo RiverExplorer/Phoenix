@@ -1,0 +1,167 @@
+<t>
+	All protocol data transmitted between the endpoints is sent in
+	network byte order.
+</t>
+<t>
+	All payload data transmitted between the endpoints is sent
+	in original format.
+	The payload consent is seen as an opaque blob of data within
+	a command packet.
+</t>
+<t>
+	When a command packet is received by ether endpoint it:
+	(1) Checks the command sequence number to determine if it is a reply
+	or not.
+	(2) If it is a reply, it looks at the command and dispatches
+	it to the implementations commands reply code.
+	(3) If is not a reply, it looks at the command and dispatches
+	it to the implementations command code.
+</t>
+<t>
+	A command and all of its replies, use the same format as
+	described here.
+</t>
+<t>
+	A packet has a 64-bit unsigned integer in network byte
+	order that is set to the octet count of all of the
+	data that follows this length value.
+	The shortest packet is 16 octets in size, with
+	a length value set to 8. With 8 octets for the length, and 8 octets
+	for the packet.
+</t>
+<t>
+	Followed by a 32-bit unsigned integer in network byte
+	order that is the command sequence number.
+</t>
+<t>
+	Followed by a 32-bit unsigned integer in network byte
+	order that is the command.
+</t>
+<t>
+	Followed by zero or more octets of payload data.
+</t>
+<t>
+	There is no space, padding, or line endings between the parts
+	of the packet.
+	The payload is sent without any modification and is not
+	encoded or transformed in any way.
+	A packet is shown here vertically only
+	to aid in readability.
+</t>
+
+<artset>
+  <artwork type="ascii-art">
++-----------------------------------------------------------------+
+| ...64-bit.unsigned.integer.length ..............................|
++-----------------------------------------------------------------+
+| ...32-bit.unsigned.command.SEQ...|
++----------------------------------+
+| ...32-bit.unsigned.command.CMD...|
++----------------------------------+
+| payload.....
+
+	</artwork>
+</artset>
+<t>
+	The payload size and format varies for each command.
+	The details of the payload content, and the format
+	of that content, is described in each specific CMD section.
+</t>
+<t>
+	An implementation can send, receive, and dispatch packets within
+	its implementation by looking at the length, SEQ, and CMD, then
+	passing the payload to code that can handle that payload.
+</t>
+<t>
+	- Read in a 64-bit value.
+	- Convert the value from network byte order, to host byte order. This is the
+	total length of the data that follows.
+	- Read in length octets into the packet payload.
+	- Get the 32-bit value in the payload, it is the SEQ in network byte order.
+	- Convert the SEQ from network byte order, to host byte order.
+	- Get another 32-bit value in the payload, it is the CMD in network byte order.
+	- Convert the CMD from network byte order, to host byte order.
+	- Dispatch the CMD with SEQ and all of the data that follows
+	to implementation 
+</t>
+<t>
+	The following is pseudo code that explains how processing incoming XDR
+	data can be handled:
+</t>
+<sourcecode>
+<![CDATA[
+  // Where:
+  //  uint64_t, is a 64-bit unsigned integer.
+  //  uint32_t, is a 32-bit unsigned integer.
+  //  uint8_t *, is a pointer to 8-bit data.
+  //  XDR, is an XDR object.
+  //
+  //  CmdPacket, is an object that represents all commands
+  //  and replies.
+  //
+  //  NOTE: See the sample implementation.
+  //
+  uint64_t   NetLength;
+  uint64_t   PacketLength;
+  uint8_t *  Data;
+  uint8_t *  DataPointer;
+  XDR        Xdr;
+  CmdPacket  Packet;
+  
+  // Read the length and convert to host byte order.
+  //
+  read(FromClientSocket, &NetLength, sizeof(uint64_t));
+  PacketLength = ntohll(NetLength);
+
+  // Allocate PacketLength data, and read it.
+  //
+  Data = new uint8_t[PacketLength]
+  DataPointer = Data;
+
+  // Initialize the XDR deserializer.
+  //
+  xdrmem_create(&Xdr, Data, PacketLength, XDR_DECODE);
+
+  // Decode the received data into a Packet.
+  //
+  if (xdr_CmdPacket(&Xdr, &Packet)) {
+
+    // If the lowest bit is set, it is an odd number.
+    //
+    if (Packet.Sequence & 0x01) {
+      SequenceIsEvenNumber = false;
+    } else {
+      SequenceIsEvenNumber = true;
+    }
+
+    // The client sends even numbered sequences, and the server
+    // sends the same even numbers sequence in the reply to
+    // the command.
+    //
+    // If a client gets an odd numbered sequence, it is a command 
+    // from the other endpoint.
+    //
+    // The server sends odd numbered sequences, and the client
+    // sends the same odd numbers sequence in the reply to
+    // the command.
+    //
+    // If a server gets an even numbered sequence, it is a
+    // command from theother endpoint.
+    //
+    if (WeAreTheClient) {
+      if (SequenceIsEvenNumber) {
+        DispatchReply(Packet);
+      } else {
+        DispatchCommandFromOtherEndpoint(Packet);
+      }
+    } else {
+      if (SequenceIsEvenNumber) {
+        DispatchCommandFromOtherEndpoint(Packet);
+      } else {
+        DispatchReply(Packet);
+      }
+    }
+  }
+]]>
+</sourcecode>
+

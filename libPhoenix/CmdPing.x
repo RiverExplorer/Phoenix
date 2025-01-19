@@ -18,5 +18,6 @@
 #endif
 struct Ping
 {
+	CmdPacket Cmd;
 	bool_t	WithReply;
 };

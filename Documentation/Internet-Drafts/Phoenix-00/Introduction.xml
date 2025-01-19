@@ -52,10 +52,10 @@
 	Remote email or files are the same thing in this specification.
 	The sections of MIME object with multipart sections are viewed as files
 	in the MIME object.
-	You can interact with the entire folder, or just the files withing it.
+	You can interact with the entire folder, or just the files within it.
 </t>
 <t>
-	MIME object have meta data, and they are called headers.
+	MIME objects have meta data, and they are called headers.
 	Files and folders have meta data, and they are called file attributes.
 	This specification does not mandate any meta data, it allows for
 	a consistent transport of existing meta data.
@@ -69,7 +69,7 @@
 <t>
 	And this specification provides for the ability to define both
 	protocol extensions and the creating of finer control for specific
-	needs that may evolve.
+	commands that may evolve over time.
 </t>
 <t>
 	This examples compares current folder and file manipulations
@@ -78,7 +78,7 @@
 <ul>
 	<li>
 		You can search for file names.
-		You can search sender, subject, and more.
+		You can search email for: sender, subject, and more.
 	</li>
 	<li>
 		You can search for file contents.

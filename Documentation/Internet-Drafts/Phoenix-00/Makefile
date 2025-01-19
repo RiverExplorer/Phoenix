@@ -19,9 +19,9 @@ SOURCES.xml = \
 	FileOverview.xml \
 	Introduction.xml \
 	Definitions.xml \
-	ProtoOverview.xml \
 	ProtocolBinaryValues.xml \
-	ProtocolTop.xml
+	ProtocolDetails.xml \
+	ProtocolOverview.xml
 
 TOPDOC.xml	= $(TITLE)-$(VERSION).xml
 
@@ -33,7 +33,7 @@ TARGET.pdf	=	$(TITLE)-$(VERSION).pdf
 
 CPP = $(TOP)/MyTools/SimpleCpp
 
-all : $(TARGET.txt) $(TARGET.pdf) $(TARGET.html)
+all : $(TARGET.html) $(TARGET.pdf) $(TARGET.txt)
 
 txt : $(TARGET.txt)
 

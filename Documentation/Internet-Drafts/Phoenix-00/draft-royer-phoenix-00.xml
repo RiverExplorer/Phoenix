@@ -21,7 +21,7 @@
   xml:lang="en"
   version="3">
   <front>
-    <title abbrev="Phoenix: Lemonaid Risen Again">Phoenix: Lemonaid Risen Again</title>
+    <title abbrev="Phoenix: Lemonade Risen Again">Phoenix: Lemonade Risen Again</title>
     <seriesInfo name="Internet-Draft" value="draft-royer-phoenix-00"/>
    
     <author fullname="Doug Royer" initials="DM" role="editor" surname="Royer">
@@ -77,7 +77,7 @@
     <section>
       <name>Terms and Definition used in this proposal</name>
       <t>
-				The follwing is a list of terms with their definitions as
+				The following is a list of terms with their definitions as
 				used in this specification.
 			</t>
       <xi:include href="Definitions.xml"/>
@@ -87,7 +87,7 @@
 			<name>Commands Overview</name>
 
 			<section anchor="ADMIN_CMD">
-				<name>Administration Commands</name>
+				<name>Administration Commands (AdminCmd)</name>
 				<section>
 					<name>Administration Commands Overview</name>
 					<xi:include href="AdminOverview.xml"/>
@@ -111,26 +111,19 @@
 			</section>
 
 			<section anchor="PROTO_CMD">
-				<name>Protocol Specific Commands</name>
-				<section>
-					<name>Protocol Specific Commands Overview</name>
-					<xi:include href="ProtoOverview.xml"/>
-				</section>
+				<name>Protocol Commands</name>
+				<xi:include href="ProtocolOverview.xml"/>
 			</section>
 
 		</section>
 
-		<section anchor="WIREPROTOCOL">
-			<name>Over the Wire Protocol Description</name>
-			
-			<section anchor="PROTOCOL">
-				<name>Over the Wire Protocol</name>
-				<section>
-					<name>Over the Wire Protocol Overview</name>
-					<xi:include href="ProtocolTop.xml"/>
-				</section>
-			</section>
-			
+		<section anchor="WIREPROTOCOLDETAIL">
+			<name>Over the Wire Protocol Detail</name>
+			<t>
+				This section specifies the details of what is
+				transmitted over the network.
+			</t>
+			<xi:include href="ProtocolDetails.xml"/>
 		</section>
 		
     <section anchor="IANA">

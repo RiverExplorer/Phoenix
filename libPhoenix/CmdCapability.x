@@ -60,6 +60,7 @@
 
 struct Capability
 {
+	CmdPacket Cmd;
 	KeyString Known<>;
 };
 

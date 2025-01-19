@@ -1,3 +1,60 @@
 <t>
-	TODO
+	All protocol data transmitted between the endpoints is sent in
+	network byte order.
 </t>
+<t>
+	All payload data transmitted between the endpoints is sent
+	in original format.
+	The payload consent is seen as an opaque blob of data within
+	a command packet.
+</t>
+<t>
+	When a command packet is received by ether endpoint it:
+	(1) Checks the command sequence number to determine if it is a reply
+	or not.
+	(2) If it is a reply, it looks at the command and dispatches
+	it to the implementations commands reply code.
+	(3) If is not a reply, it looks at the command and dispatches
+	it to the implementations command code.
+</t>
+<t>
+	A packet has a 64-bit unsigned integer in network byte
+	order that is set to the octet count of all of the
+	data that follows this length value.
+	The shortest packet is 16 octets in size, with
+	a length value set to 8. With 8 octets for the length, and 8 octest
+	for the packet.
+</t>
+<t>
+	Followed by a 32-bit unsigned integer in network byte
+	order that is the command sequence number.
+</t>
+<t>
+	Followed by a 32-bit unsigned integer in network byte
+	order that is the command.
+</t>
+<t>
+	Followed by zero or more octets of payload data.
+</t>
+<t>
+	There is no space, padding, or line endings between the parts
+	of the packet.
+	The payload is sent without any modification and is not
+	encoded or transformed in any way.
+	It is shown here vertically only to aid in readability.
+</t>
+
+<artset>
+  <artwork type="ascii-art">
++-----------------------------------------------------------------+
+| ...64-bit.unsigned.integer.length ..............................|
++-----------------------------------------------------------------+
+| ...32-bit.unsigned.command.SEQ...|
++----------------------------------+
+| ...32-bit.unsigned.command.CMD...|
++----------------------------------+
+| payload.....
+
+
+	</artwork>
+</artset>

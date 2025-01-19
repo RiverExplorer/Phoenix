@@ -132,9 +132,8 @@ typedef uint64_t CommandID;
 #endif
 struct  CmdPacket
 {
-	CommandID ID;
+	CommandID Sequence;
 	Command_e Cmd;
-	opaque		Data<>;
 };
 
 #ifdef RPC_HDR
@@ -146,7 +145,6 @@ struct  CmdPacket
 % * reply expected.
 % */
 #endif
-
 
 #ifdef RPC_HDR
 %/**

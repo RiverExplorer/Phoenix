@@ -1,0 +1,133 @@
+<section>
+	<name>Protocol Overview</name>
+	<t>
+		This protocol connects two endpoints over a network and facilitates
+		the secure and authorized transfer of MIME objects.
+	</t>
+	<t>
+		The endpoint that initiates the connection is called the client.
+		The endpoint that is connected to, is called the server.
+		The client is the protocol authority, and the server responds
+		to client commands as configured or instructed by the client.
+	</t>
+	<t>
+		After the connection is successful and authenticated, ether endpoint
+		may send commands to the other endpoint.
+		When the server initiates an unsolicited command, it could be a
+		any kind of notification or message for the client side application
+		or the user. It could be reporting errors or updates to
+		previous client initiated commands.
+	</t>
+	<t>
+		All commands initiated from the client have even
+		numbered command sequence numbers.
+		
+		All commands initiated from the server have odd
+		numbered command sequence numbers.
+	</t>
+	<t>
+		Some commands expect a command reply.
+		Other commands do not expect a command reply.
+		An example of a command that expects a reply is the ping command.
+		An example of a command that does not expect a reply is the keep-alive
+		command.
+		Conceptually their are two kinds of commands:
+		(a) Directive commands, and (b) Request commands.
+		These are not specific protocol entities, these concepts will
+		be used to describe the expected behavior when one of these
+		are transmitted.
+	</t>
+	<t>
+		A directive type command expects the other endpoint to process
+		the command and possibly reply with some results.
+		An example could be: Send me an index of my emails in my InBox.
+		The client would expect a result.
+		Another example is a bye command, once sent, no reply is expected.
+	</t>
+	<t>
+		A request type command may or might not have any reply.
+		For example, a keep-alive command is a request to not
+		timeout and has no reply.
+		And a send new email notifications command would expect
+		zero or more replies and it would not require them, as they
+		might not happen.
+	</t>
+	<section anchor="PACKETOVERVIEW">
+		<name>Packet Overview</name>
+		<t>
+			All commands are sent in a packet.
+			A packet has two parts, the packet header and the packet body.
+		</t>
+		<t>
+			The packet header has one value, the total length
+			of the packet header, packet body, and payload sent as an
+			unsigned 64-bit integer	in network byte order.
+			The length does not include its own length.
+			It is the total length that follows the length value.
+		</t>
+		<t>
+			The packet body is divided into three parts: (1) Command sequence (SEQ),
+			(2) The Command (CMD), and (3) The command specific data (Payload).
+		</t>
+		<t>
+			(1) The Command SEQ is a 32-bit unsigned integer sent
+			in network byte order.
+			This SEQ is an even number when initiated from the client,
+			and an odd number when initiated from the server.
+		</t>
+		<t>
+			The first SEQ value sent from the client is zero (0) and is
+			incremented by two each time.
+		</t>
+		<t>
+			The first SEQ value sent from the server is one (1) and is
+			incremented by two each time.
+		</t>
+		<t>
+			In the event an endpoint command SEQ reaches its maximum value,
+			then its numbering starts over at zero (0) for the client
+			and one (1) for the server.
+			An implementation must keep track of outstanding commands
+			and not accidentally re-issue the same SEQ that may still
+			get replies from the other endpoint.
+		</t>
+		<t>
+			(2) The command is a predefined enumerated 32-bit unsigned
+			integer sent in network byte order.
+			The value (in hex) 0xFFFFFFFF is reserved for extensions
+			if the 32-bit range is exhausted.
+		</t>
+		<t>
+			(3) The payload has no predefined length, other what
+			what is specified for the CMD in the packet.
+			It could be zero to vary large in size.
+			It could be opaque data, or it could be data that
+			is XDR encoded.
+			The contents are specific to the CMD in the packet.
+		</t>
+		<section anchor="PACKETREPLYOVERVIEW">
+			<name>Packet Reply Overview</name>
+			<t>
+				All replies to a command are also a command packet.
+				They contain the same command SEQ and command
+				as the original packet.
+				The endpoint recognizes it is a reply because (a) the
+				command SEQ matches one that is waiting a reply. And (b)
+				When the client gets an even numbered SEQ, it can only
+				be a reply. And when the server gets an odd numbered
+				SEQ, it can only be a reply.
+			</t>
+			<t>
+				Some commands have zero to many replies.
+				Each of these multiple replies contains the same SEQ as the
+				original command. An example, the client sends a request
+				to be notified when new email arrives and uses command
+				SEQ 20. Each time a new email arrives, a reply will
+				be sent from the server with a command SEQ of 20.
+				And over time, the client may get many with a SEQ of 20
+				as new emails arrive on the server.
+			</t>
+		</section>
+	</section>
+
+</section>

@@ -64,6 +64,7 @@
 #endif
 struct AuthMD5
 {
+	CmdPacket Cmd;
 	string Account<>;
 	string Md5Password<>;
 };

@@ -1,32 +1,36 @@
   <dl newline="true">
     <!-- Omit newline="true" if you want each definition to start on the sa\
 me line as the corresponding term -->
-		<dt>ADMIN_CMD</dt>
+		<dt>AdminCmd</dt>
 		<dd>
+			A general term for any administrative command.
 			Administrative and auditing operations.
-			These allow for authorized users to configure, query logs, errors,
-			and possibly user activity.
+			This list includes commands for authorized users to configure,
+			query logs, errors,	possibly user activity.
 		</dd>
-		<dt>AUTH_CMD</dt>
+		<dt>AuthCmd</dt>
 		<dd>
+			A general term for any authentication command.
 			Authentication and authorization operations.
 			These operations authenticate users and verity their authorization
 			access.
 		</dd>
 		<dt>CMD</dt>
 		<dd>
-			A protocol operation.
-			They are broken down into, ADMIN_CMD, AUTH_CMD, FILE_CMD, and PROTO_CMD.
+			A specific protocol operation, or command.
+			They are broken down into, AdminCmd, AuthCmd, FileCmd,
+			and ProtoCmd.
 		</dd>
-    <dt>Command</dt>
+    <dt>Command, CMD</dt>
     <dd>
 			Each packet contains a command.
 			This command is also in the reply to the command.
 			Not all commands have a reply.
-			These are called a CMD.
+			These are called a CMD or command.
 		</dd>
-		<dt>FILE_CMD</dt>
+		<dt>FileCmd</dt>
 		<dd>
+			A general term for any file command.
 			File and folder operations.
 			This include creating, getting, modifying, deleting, moving,
 			and renaming files.
@@ -42,29 +46,59 @@ me line as the corresponding term -->
 			This protocol transports MIME objects.
 			This specification does not remove or alter any MIME objects;
 		</dd>
+		<dt>Packet</dt>
+		<dd>
+			A packet is a blob of data that has a header (its length)
+			followed	by a Phoenix command with all
+			of its values and parameters.
+
+			Packets flow in both directions and asynchronously.
+			Commands can be sent while still waiting for other replies.
+
+			Each endpoint may send commands to the other endpoint without
+			having to be prompted to send information.
+		</dd>
     <dt>Parameter</dt>
     <dd>
-			Most CMD have values that are associated with it.
-			These are called parameters.
-			For example, the create folder CMD has the name of the new
+			Most commands have values that are associated with them.
+			These values are called parameters.
+			For example, the create folder command has the name of the new
 			folder to be created as a parameter.
-			
-			When the parameter itself has values, then these CMD parameters
-			are called PROTO_CMD, because they have their own protocol.
 		</dd>
-    <dt>PROTO_CMD</dt>
+    <dt>ProtoCmd</dt>
     <dd>
-			Specific protocols may have commands specific to their needs.
-			These are calls a PROTO_CMD.
-			An example might be extracting a specific attachment type and
-			its data out of a MIME object.
-			This could be a PROTO_CMD parameter to the FILE_CMD.
+			A general term for all protocol commands.
+			This also includes commands that do not fall into one of
+			the other catagories described here in this definistions section.
+		</dd>
+    <dt>SEQ, Command Sequence, CMD_SEQ</dt>
+		<dd>
+			Each command has a unique identifier, a sequence number.
+			All replies to a command include the same sequence number
+			as the original command.
+			In this way replies can be matched up with their original command.
+		</dd>
+		<dt>SSL</dt>
+		<dd>
+			For the purpose of this specification, SSL is interchangable
+			with TLS.
+			This document uses the term TLS.
+			The sample implementation uses both SSL and TLS because
+			the legacy UNIX, Linux, Windows, and OpenSSL code
+			uses the term SSL as well as TLS.
+		</dd>
+		<dt>TLS</dt>
+		<dd>
+			A way of securely transporting data over the Internet.
+			See RFC-xxxx.
 		</dd>
     <dt>XDR</dt>
     <dd>
 			RFC-4506 specifies a standard and compatible way to transfer
 			binary information.
-			This protocol uses XDR to transmit the CMDs and replies.
-			The MIME data is transported as XDR opaque, as in unmodified.
+			This protocol uses XDR to transmit a command, its values
+			and any parameters and replies.
+			The MIME data, the payload, is transported as XDR opaque,
+			and is unmodified.
 		</dd>
   </dl>
