@@ -4,11 +4,9 @@
 %*/
 %
 %#ifdef BUILDING_LIBPHOENIX
-%#include "Commands.hpp"
-%#include "KeyString.hpp"
+%#include "Types.hpp"
 %#else
-%#include <RiverExplorer/Phoenix/Commands.hpp>
-%#include <RiverExplorer/Phoenix/KeyString.hpp>
+%#include <RiverExplorer/Phoenix/Types.hpp>
 %#endif
 
 #ifdef RPC_HDR
@@ -58,10 +56,9 @@
 % */
 #endif
 
-struct Capability
+class Capability
 {
-	CmdPacket Cmd;
-	KeyString Known<>;
+	StringType	Supported<>;
 };
 
 #ifdef RPC_HDR
@@ -151,4 +148,3 @@ enum Acls_e
 	NamedListRW_t,
 	NamedListRO_t
 };
-

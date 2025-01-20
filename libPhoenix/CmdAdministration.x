@@ -11,22 +11,20 @@
 
 #ifdef RPC_HDR
 %/**
-% * The Timeout Command ...
+% * The Administratoin Command ...
 % */
 #endif
-struct Timeout
+class Administration
 {
-	int foo;
-	/**@todo implement*/
+	int Todo;
 };
 
 #ifdef RPC_HDR
 %/**
-% * The Timeout Reply Command ...
+% * The Administratoin Reply Command ...
 % */
 #endif
-struct TimeoutReply
+class AdministrationReply
 {
-	int foo;
-	/**@todo implement*/
+	int Todo;
 };

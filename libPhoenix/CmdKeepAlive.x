@@ -10,23 +10,19 @@
 %#endif
 
 #ifdef RPC_HDR
-%/**
-% * The Timeout Command ...
-% */
+%extern const char * const KeepAliveWasReceived;
 #endif
-struct Timeout
-{
-	int foo;
-	/**@todo implement*/
-};
-
+#ifdef RPC_XDR
+%const char * const KeepAliveWasReceived  = "KeepAliveWasReceived";
+#endif
 #ifdef RPC_HDR
 %/**
-% * The Timeout Reply Command ...
+% * The KeepAlive command sends a packet to the remote endpoint.
+% *
+% * There is no reply to a KeepAlive command.
 % */
 #endif
-struct TimeoutReply
+struct KeepAlive
 {
 	int foo;
-	/**@todo implement*/
 };

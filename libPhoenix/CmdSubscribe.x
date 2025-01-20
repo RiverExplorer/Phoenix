@@ -1,21 +1,32 @@
 %/**
-%* Phoenix (C) 2025 by Douglas Mark Royer (A.K.A. RiverExplorer) is licensed under CC BY 4.0                                                                   
-%* RiverExplorer is a trademark of RiverExplorer Games LLC                      
-%*/
+% * Phoenix (C) 2025 by Douglas Mark Royer (A.K.A. RiverExplorer) is licensed under CC BY 4.0                                                                   
+% * RiverExplorer is a trademark of RiverExplorer Games LLC                      
+% */
 %
 %#ifdef BUILDING_LIBPHOENIX
-%#include "Commands.hpp"
+%#include "Types.hpp"
 %#else
-%#include <RiverExplorer/Phoenix/Commands.hpp>
+%#include <RiverExplorer/Phoenix/Types.hpp>
 %#endif
 
 #ifdef RPC_HDR
 %/**
-% * The Subscribe_Cmd ...
+% * The Subscribe Command ...
 % */
 #endif
 struct Subscribe
 {
-	CmdPacket Cmd;
+	int Foo;
+	/**@todo implement*/
+};
+
+#ifdef RPC_HDR
+%/**
+% * The Subscribe Reply Command ...
+% */
+#endif
+struct SubscribeReply
+{
+	int Foo;
 	/**@todo implement*/
 };

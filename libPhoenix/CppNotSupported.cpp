@@ -11,14 +11,12 @@ der CC BY 4.0
 namespace RiverExplorer::Phoenix
 {
 	CmdPacket *
-	NewNotSupported(CommandID ID)
+	NewNotSupported(CommandSequence ID)
 	{
 		CmdPacket * Results = new CmdPacket();
 
-		Results->ID = ID;
-		Results->Cmd = NotSupported_Cmd;
-		Results->Data.Len = 0;
-		Results->Data.Data = nullptr;
+		Results->Sequence = ID;
+		Results->Data.Cmd = NotSupported_Cmd;
 
 		return(Results);
 	}

@@ -37,8 +37,9 @@ Abstract
    Internet can handle 8-bit transfers, there is no need for the overly
    complex text handling of messages.
 
-   This proposal includes a sample implementation.  Which also includes
-   a gateway from this proposal to existing system.  Thunderbid and
+   This proposal includes a sample implementation.
+   (https://github.com/RiverExplorer/Phoenix) Which also includes a
+   gateway from this proposal to existing system.  Thunderbid and
    Outlook plugins are part of the sample implementation.
 
 Status of This Memo
@@ -46,10 +47,9 @@ Status of This Memo
    This Internet-Draft is submitted in full conformance with the
    provisions of BCP 78 and BCP 79.
 
-   Internet-Drafts are working documents of the Internet Engineering
-   Task Force (IETF).  Note that other groups may also distribute
-   working documents as Internet-Drafts.  The list of current Internet-
-   Drafts is at https://datatracker.ietf.org/drafts/current/.
+
+
+
 
 
 
@@ -57,6 +57,11 @@ Royer                     Expires 23 July 2025                  [Page 1]
 
 Internet-Draft        Phoenix: Lemonade Risen Again         January 2025
 
+
+   Internet-Drafts are working documents of the Internet Engineering
+   Task Force (IETF).  Note that other groups may also distribute
+   working documents as Internet-Drafts.  The list of current Internet-
+   Drafts is at https://datatracker.ietf.org/drafts/current/.
 
    Internet-Drafts are draft documents valid for a maximum of six months
    and may be updated, replaced, or obsoleted by other documents at any
@@ -82,30 +87,25 @@ Copyright Notice
 Table of Contents
 
    1.  Introduction  . . . . . . . . . . . . . . . . . . . . . . . .   3
-     1.1.  Requirements Language . . . . . . . . . . . . . . . . . .   4
+     1.1.  Requirements Language . . . . . . . . . . . . . . . . . .   5
    2.  Terms and Definition used in this proposal  . . . . . . . . .   5
    3.  Commands Overview . . . . . . . . . . . . . . . . . . . . . .   6
      3.1.  Administration Commands (AdminCmd)  . . . . . . . . . . .   6
-       3.1.1.  Administration Commands Overview  . . . . . . . . . .   6
-     3.2.  Authentication Commands . . . . . . . . . . . . . . . . .   7
-       3.2.1.  Authentication Commands Overview  . . . . . . . . . .   7
-     3.3.  Protocol  . . . . . . . . . . . . . . . . . . . . . . . .   7
-       3.3.1.  Basic File and Folder Operations  . . . . . . . . . .   7
+       3.1.1.  Administration Commands Overview  . . . . . . . . . .   7
+     3.2.  Authentication Commands . . . . . . . . . . . . . . . . .   8
+       3.2.1.  Authentication Commands Overview  . . . . . . . . . .   8
+     3.3.  Protocol  . . . . . . . . . . . . . . . . . . . . . . . .   8
+       3.3.1.  Basic File and Folder Operations  . . . . . . . . . .   8
      3.4.  Protocol Commands . . . . . . . . . . . . . . . . . . . .   8
        3.4.1.  Protocol Overview . . . . . . . . . . . . . . . . . .   8
    4.  Over the Wire Protocol Detail . . . . . . . . . . . . . . . .  10
    5.  IANA Considerations . . . . . . . . . . . . . . . . . . . . .  13
-   6.  Security Considerations . . . . . . . . . . . . . . . . . . .  13
-   7.  References  . . . . . . . . . . . . . . . . . . . . . . . . .  13
-     7.1.  Normative References  . . . . . . . . . . . . . . . . . .  13
+   6.  Security Considerations . . . . . . . . . . . . . . . . . . .  14
+   7.  References  . . . . . . . . . . . . . . . . . . . . . . . . .  14
+     7.1.  Normative References  . . . . . . . . . . . . . . . . . .  14
      7.2.  Informative References  . . . . . . . . . . . . . . . . .  14
    Appendix A.  Administrative Enumerated Binary Values  . . . . . .  14
    Appendix B.  Authentication Enumerated Binary Values  . . . . . .  15
-   Appendix C.  File and Folder Enumerated Binary Values . . . . . .  16
-   Appendix D.  Protocol Enumerated Binary Values  . . . . . . . . .  17
-   Acknowledgements  . . . . . . . . . . . . . . . . . . . . . . . .  18
-   Contributors  . . . . . . . . . . . . . . . . . . . . . . . . . .  18
-   Author's Address  . . . . . . . . . . . . . . . . . . . . . . . .  18
 
 
 
@@ -113,6 +113,12 @@ Royer                     Expires 23 July 2025                  [Page 2]
 
 Internet-Draft        Phoenix: Lemonade Risen Again         January 2025
 
+
+   Appendix C.  File and Folder Enumerated Binary Values . . . . . .  16
+   Appendix D.  Protocol Enumerated Binary Values  . . . . . . . . .  17
+   Acknowledgements  . . . . . . . . . . . . . . . . . . . . . . . .  18
+   Contributors  . . . . . . . . . . . . . . . . . . . . . . . . . .  18
+   Author's Address  . . . . . . . . . . . . . . . . . . . . . . . .  18
 
 1.  Introduction
 
@@ -156,12 +162,6 @@ Internet-Draft        Phoenix: Lemonade Risen Again         January 2025
    By implementing this specification application developers can use the
    techniques to manage local and remote files and folders.  Remote
    email or files are the same thing in this specification.  The
-   sections of MIME object with multipart sections are viewed as files
-   in the MIME object.  You can interact with the entire folder, or just
-   the files within it.
-
-
-
 
 
 
@@ -169,6 +169,10 @@ Royer                     Expires 23 July 2025                  [Page 3]
 
 Internet-Draft        Phoenix: Lemonade Risen Again         January 2025
 
+
+   sections of MIME object with multipart sections are viewed as files
+   in the MIME object.  You can interact with the entire folder, or just
+   the files within it.
 
    MIME objects have meta data, and they are called headers.  Files and
    folders have meta data, and they are called file attributes.  This
@@ -211,13 +215,9 @@ Internet-Draft        Phoenix: Lemonade Risen Again         January 2025
    *  Specifies a way to migrate from some existing protocols to
       Phoenix.  Provides links to sample implementations.
 
-1.1.  Requirements Language
 
-   The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT",
-   "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and
-   "OPTIONAL" in this document are to be interpreted as described in BCP
-   14 [RFC2119] [RFC8174] when, and only when, they appear in all
-   capitals, as shown here.
+
+
 
 
 
@@ -225,6 +225,14 @@ Royer                     Expires 23 July 2025                  [Page 4]
 
 Internet-Draft        Phoenix: Lemonade Risen Again         January 2025
 
+
+1.1.  Requirements Language
+
+   The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT",
+   "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and
+   "OPTIONAL" in this document are to be interpreted as described in BCP
+   14 [RFC2119] [RFC8174] when, and only when, they appear in all
+   capitals, as shown here.
 
 2.  Terms and Definition used in this proposal
 
@@ -264,14 +272,6 @@ Internet-Draft        Phoenix: Lemonade Risen Again         January 2025
       This protocol transports MIME objects.  This specification does
       not remove or alter any MIME objects;
 
-   Packet
-      A packet is a blob of data that has a header (its length) followed
-      by a Phoenix command with all of its values and parameters.
-      Packets flow in both directions and asynchronously.  Commands can
-      be sent while still waiting for other replies.  Each endpoint may
-      send commands to the other endpoint without having to be prompted
-      to send information.
-
 
 
 
@@ -281,6 +281,14 @@ Royer                     Expires 23 July 2025                  [Page 5]
 
 Internet-Draft        Phoenix: Lemonade Risen Again         January 2025
 
+
+   Packet
+      A packet is a blob of data that has a header (its length) followed
+      by a Phoenix command with all of its values and parameters.
+      Packets flow in both directions and asynchronously.  Commands can
+      be sent while still waiting for other replies.  Each endpoint may
+      send commands to the other endpoint without having to be prompted
+      to send information.
 
    Parameter
       Most commands have values that are associated with them.  These
@@ -319,6 +327,17 @@ Internet-Draft        Phoenix: Lemonade Risen Again         January 2025
 
 3.1.  Administration Commands (AdminCmd)
 
+
+
+
+
+
+
+Royer                     Expires 23 July 2025                  [Page 6]
+
+Internet-Draft        Phoenix: Lemonade Risen Again         January 2025
+
+
 3.1.1.  Administration Commands Overview
 
    Administrative command can be used to configure, audit, and manage
@@ -329,14 +348,6 @@ Internet-Draft        Phoenix: Lemonade Risen Again         January 2025
 
    Implementations that support any ADMIN_CMD include ADMIN_CMD in the
    post authenication CAPABILITY list.
-
-
-
-
-Royer                     Expires 23 July 2025                  [Page 6]
-
-Internet-Draft        Phoenix: Lemonade Risen Again         January 2025
-
 
    Implementations MUST NOT send a ADMIN_CMD capability in the pre
    authorization CAPABILITY list.
@@ -370,6 +381,19 @@ Internet-Draft        Phoenix: Lemonade Risen Again         January 2025
 
                                  Table 1
 
+
+
+
+
+
+
+
+
+Royer                     Expires 23 July 2025                  [Page 7]
+
+Internet-Draft        Phoenix: Lemonade Risen Again         January 2025
+
+
 3.2.  Authentication Commands
 
 3.2.1.  Authentication Commands Overview
@@ -382,17 +406,6 @@ Internet-Draft        Phoenix: Lemonade Risen Again         January 2025
 
    The file operations (FileOp) have protocol names.  Here are their
    protocol names and a breif description.
-
-
-
-
-
-
-
-Royer                     Expires 23 July 2025                  [Page 7]
-
-Internet-Draft        Phoenix: Lemonade Risen Again         January 2025
-
 
        +===============+==========================================+
        | Op Name       | Brief Description.                       |
@@ -429,6 +442,14 @@ Internet-Draft        Phoenix: Lemonade Risen Again         January 2025
    This protocol connects two endpoints over a network and facilitates
    the secure and authorized transfer of MIME objects.
 
+
+
+
+Royer                     Expires 23 July 2025                  [Page 8]
+
+Internet-Draft        Phoenix: Lemonade Risen Again         January 2025
+
+
    The endpoint that initiates the connection is called the client.  The
    endpoint that is connected to, is called the server.  The client is
    the protocol authority, and the server responds to client commands as
@@ -439,16 +460,6 @@ Internet-Draft        Phoenix: Lemonade Risen Again         January 2025
    an unsolicited command, it could be a any kind of notification or
    message for the client side application or the user.  It could be
    reporting errors or updates to previous client initiated commands.
-
-
-
-
-
-
-Royer                     Expires 23 July 2025                  [Page 8]
-
-Internet-Draft        Phoenix: Lemonade Risen Again         January 2025
-
 
    All commands initiated from the client have even numbered command
    sequence numbers.  All commands initiated from the server have odd
@@ -487,6 +498,14 @@ Internet-Draft        Phoenix: Lemonade Risen Again         January 2025
    (SEQ), (2) The Command (CMD), and (3) The command specific data
    (Payload).
 
+
+
+
+Royer                     Expires 23 July 2025                  [Page 9]
+
+Internet-Draft        Phoenix: Lemonade Risen Again         January 2025
+
+
    (1) The Command SEQ is a 32-bit unsigned integer sent in network byte
    order.  This SEQ is an even number when initiated from the client,
    and an odd number when initiated from the server.
@@ -496,15 +515,6 @@ Internet-Draft        Phoenix: Lemonade Risen Again         January 2025
 
    The first SEQ value sent from the server is one (1) and is
    incremented by two each time.
-
-
-
-
-
-Royer                     Expires 23 July 2025                  [Page 9]
-
-Internet-Draft        Phoenix: Lemonade Risen Again         January 2025
-
 
    In the event an endpoint command SEQ reaches its maximum value, then
    its numbering starts over at zero (0) for the client and one (1) for
@@ -543,16 +553,6 @@ Internet-Draft        Phoenix: Lemonade Risen Again         January 2025
    This section specifies the details of what is transmitted over the
    network.
 
-   All protocol data transmitted between the endpoints is sent in
-   network byte order.
-
-   All payload data transmitted between the endpoints is sent in
-   original format.  The payload consent is seen as an opaque blob of
-   data within a command packet.
-
-
-
-
 
 
 
@@ -561,6 +561,13 @@ Royer                     Expires 23 July 2025                 [Page 10]
 
 Internet-Draft        Phoenix: Lemonade Risen Again         January 2025
 
+
+   All protocol data transmitted between the endpoints is sent in
+   network byte order.
+
+   All payload data transmitted between the endpoints is sent in
+   original format.  The payload consent is seen as an opaque blob of
+   data within a command packet.
 
    When a command packet is received by ether endpoint it: (1) Checks
    the command sequence number to determine if it is a reply or not.
@@ -603,13 +610,6 @@ Internet-Draft        Phoenix: Lemonade Risen Again         January 2025
    the payload content, and the format of that content, is described in
    each specific CMD section.
 
-   An implementation can send, receive, and dispatch packets within its
-   implementation by looking at the length, SEQ, and CMD, then passing
-   the payload to code that can handle that payload.
-
-   - Read in a 64-bit value.  - Convert the value from network byte
-   order, to host byte order.  This is the total length of the data that
-   follows.  - Read in length octets into the packet payload.  - Get the
 
 
 
@@ -618,6 +618,13 @@ Royer                     Expires 23 July 2025                 [Page 11]
 Internet-Draft        Phoenix: Lemonade Risen Again         January 2025
 
 
+   An implementation can send, receive, and dispatch packets within its
+   implementation by looking at the length, SEQ, and CMD, then passing
+   the payload to code that can handle that payload.
+
+   - Read in a 64-bit value.  - Convert the value from network byte
+   order, to host byte order.  This is the total length of the data that
+   follows.  - Read in length octets into the packet payload.  - Get the
    32-bit value in the payload, it is the SEQ in network byte order.  -
    Convert the SEQ from network byte order, to host byte order.  - Get
    another 32-bit value in the payload, it is the CMD in network byte
@@ -660,13 +667,6 @@ Internet-Draft        Phoenix: Lemonade Risen Again         January 2025
      //
      xdrmem_create(&Xdr, Data, PacketLength, XDR_DECODE);
 
-     // Decode the received data into a Packet.
-     //
-     if (xdr_CmdPacket(&Xdr, &Packet)) {
-
-       // If the lowest bit is set, it is an odd number.
-       //
-
 
 
 Royer                     Expires 23 July 2025                 [Page 12]
@@ -674,6 +674,12 @@ Royer                     Expires 23 July 2025                 [Page 12]
 Internet-Draft        Phoenix: Lemonade Risen Again         January 2025
 
 
+     // Decode the received data into a Packet.
+     //
+     if (xdr_CmdPacket(&Xdr, &Packet)) {
+
+       // If the lowest bit is set, it is an odd number.
+       //
        if (Packet.Sequence & 0x01) {
          SequenceIsEvenNumber = false;
        } else {
@@ -713,14 +719,8 @@ Internet-Draft        Phoenix: Lemonade Risen Again         January 2025
 
    This memo includes no request to IANA.  [CHECK]
 
-6.  Security Considerations
 
-   This document should not affect the security of the Internet.
-   [CHECK]
 
-7.  References
-
-7.1.  Normative References
 
 
 
@@ -729,6 +729,15 @@ Royer                     Expires 23 July 2025                 [Page 13]
 
 Internet-Draft        Phoenix: Lemonade Risen Again         January 2025
 
+
+6.  Security Considerations
+
+   This document should not affect the security of the Internet.
+   [CHECK]
+
+7.  References
+
+7.1.  Normative References
 
    [RFC2119]  Bradner, S., "Key words for use in RFCs to Indicate
               Requirement Levels", BCP 14, RFC 2119,
@@ -769,15 +778,6 @@ Appendix A.  Administrative Enumerated Binary Values
 
    Some values may be reused if they are parameter arguments to other
    commands.  For example xxxxxx.
-
-
-
-
-
-
-
-
-
 
 
 

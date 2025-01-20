@@ -84,13 +84,16 @@ SOURCES.x = \
 	CmdAcl.x \
 	CmdAddMessage.x \
 	CmdAuthenticate.x \
+	CmdAdministration.x \
 	CmdCapability.x \
 	CmdCloseFolder.x \
 	CmdCopyMessage.x \
 	CmdCreateFolder.x \
 	CmdDeleteFolder.x \
 	CmdExpunge.x \
+	CmdFolder.x \
 	CmdGetMessage.x \
+	CmdKeepAlive.x \
 	CmdListFolders.x \
 	CmdNotSupported.x \
 	CmdPing.x \
@@ -101,9 +104,10 @@ SOURCES.x = \
 	CmdTimeout.x \
 	CmdUpdateMessage.x \
 	Commands.x \
+	Email.x \
 	KeyString.x \
 	Mime.x \
-	Email.x
+	Types.x
 
 SOURCES.hpp += \
 	Certs.hpp \

@@ -1,12 +1,12 @@
 %/**
-%* Phoenix (C) 2025 by Douglas Mark Royer (A.K.A. RiverExplorer) is licensed under CC BY 4.0                                                                   
-%* RiverExplorer is a trademark of RiverExplorer Games LLC                      
-%*/
+% * Phoenix (C) 2025 by Douglas Mark Royer (A.K.A. RiverExplorer) is licensed under CC BY 4.0                                                                   
+% * RiverExplorer is a trademark of RiverExplorer Games LLC                      
+% */
 %
 %#ifdef BUILDING_LIBPHOENIX
-%#include "Commands.hpp"
+%#include "Types.hpp"
 %#else
-%#include <RiverExplorer/Phoenix/Commands.hpp>
+%#include <RiverExplorer/Phoenix/Types.hpp>
 %#endif
 
 #ifdef RPC_HDR
@@ -14,8 +14,7 @@
 % * The Acl_Cmd ...
 % */
 #endif
-struct Acl
+class Acl
 {
-	CmdPacket Cmd;
-	/**@todo implement*/
+	int Todo;
 };

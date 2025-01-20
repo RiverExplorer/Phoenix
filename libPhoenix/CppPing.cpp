@@ -17,31 +17,38 @@ namespace RiverExplorer::Phoenix
 	CppPing::Callback(int Fd, CmdPacket * Pkt, XDR * ReadXdrs)
 	{
 		bool Results = false;
-		Ping	APing;
-		
-		if (xdr_Ping(ReadXdrs, &APing)) {
-			if (APing.WithReply) {
-				// Send a ping with the same CommandID back.
-				// With 'WithReply' set to false.
-				//
-				APing.WithReply = false;
-				XDR Mem;
-				uint64_t Size = sizeof(Ping) * 2;
-				char * Chunk = new char[Size];
 
-				xdrmem_create(&Mem, Chunk, (int)Size, XDR_ENCODE);
-				
-				// This signature of QOutbound() copies what it needs.
-				//
-				IO::QOutbound(Fd,	Pkt->ID, Ping_Cmd, (uint8_t*)Chunk, Size);
-				xdr_free((xdrproc_t)xdr_Ping, Chunk);
-				delete[] Chunk;
-				xdr_destroy(&Mem);
-				Results = true;
-			}
+		CmdPacket * Reply = NewPing(Pkt->Sequence);
+		
+		XDR WriteXdrs;
+		uint64_t BlobSize = sizeof(*Reply) * 2;
+		char * Blob = new char[BlobSize];
+
+		xdrmem_create(&WriteXdrs, Blob, (int)BlobSize, XDR_ENCODE);
+			
+		if (xdr_CmdPacket(&WriteXdrs, Reply)) {
+			// The data blob is XDR formatted, ready to send.
+			// This method copies the data before returning.
+			// It is for small amounts of data.
+			//
+			IO::QOutbound(Fd,	(uint8_t*)Blob, xdr_getpos(&WriteXdrs));
+
+			xdr_free((xdrproc_t)xdr_CmdPacket, Reply);
+			xdr_destroy(&WriteXdrs);
+			delete[] Blob;
+			Results = true;
 		}
 		
 		return(Results);
 	}
-	
+
+	CmdPacket * NewPing(CommandSequence Seq)
+	{
+		CmdPacket	*	Results = new CmdPacket();
+
+		Results->Sequence = Seq;
+		Results->Data.Cmd = Ping_Cmd;
+
+		return(Results);
+	}
 }

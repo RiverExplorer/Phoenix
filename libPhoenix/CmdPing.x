@@ -1,23 +1,48 @@
 %/**
-%* Phoenix (C) 2025 by Douglas Mark Royer (A.K.A. RiverExplorer) is licensed under CC BY 4.0                                                                   
-%* RiverExplorer is a trademark of RiverExplorer Games LLC                      
-%*/
+% * Phoenix (C) 2025 by Douglas Mark Royer (A.K.A. RiverExplorer) is licensed under CC BY 4.0                                                                   
+% * RiverExplorer is a trademark of RiverExplorer Games LLC                      
+% */
 %
 %#ifdef BUILDING_LIBPHOENIX
-%#include "Commands.hpp"
+%#include "Types.hpp"
 %#else
-%#include <RiverExplorer/Phoenix/Commands.hpp>
+%#include <RiverExplorer/Phoenix/Types.hpp>
 %#endif
 
 #ifdef RPC_HDR
 %/**
-% * The Ping_Cmd sends a tiny packet to the remote endpoint.
-% * When WithReply is true, then the remote endpoint replies
-% * with the same command ID and a Ping_Cmd with WithReply set to false.
+% * The Ping command sends a packet to the remote endpoint.
+% * The other endpoint does a PingReply with no data.
+% *
+% * The reply is required.
 % */
 #endif
-struct Ping
+class Ping
 {
-	CmdPacket Cmd;
-	bool_t	WithReply;
+	int foo;
 };
+
+#ifdef RPC_HDR
+%/**
+% * The Ping Reply command sends a packet to the remote endpoint.
+% * The other endpoint does a PingReply with no data.
+% *
+% * The reply is required.
+% */
+#endif
+class PingReply
+{
+	int foo;
+};
+
+#ifdef RPC_HDR
+%/**
+% * @return a new Ping CmdPacket.
+% */
+#endif
+%namespace RiverExplorer::Phoenix
+%{
+%class CmdPacket;
+%extern CmdPacket * NewPing(CommandSequence Seq);
+%}
+

@@ -4,9 +4,9 @@
 %*/
 %
 %#ifdef BUILDING_LIBPHOENIX
-%#include "Commands.hpp"
+%#include "Types.hpp"
 %#else
-%#include <RiverExplorer/Phoenix/Commands.hpp>
+%#include <RiverExplorer/Phoenix/Types.hpp>
 %#endif
 
 #ifdef RPC_HDR
@@ -16,6 +16,5 @@
 #endif
 struct Closefolder
 {
-	CmdPacket Cmd;
-	/**@todo implement*/
+	int foo;
 };

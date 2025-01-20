@@ -33,7 +33,7 @@ namespace RiverExplorer::Phoenix
 	 * A list of commands we issued, and do not have a reply yet.
 	 * Commands that do not get a reply, are not added.
 	 */
-	std::map<CommandID, CmdPacket*> IO::_CommandsWeIssued;
+	std::map<CommandSequence, CmdPacket*> IO::_CommandsWeIssued;
 
 	/**
 	 * Mutex lock for CommandsWeIssued.
@@ -119,11 +119,10 @@ namespace RiverExplorer::Phoenix
 	}
 
 	// This version of QOutbound copies the data.
+	// The data is already in XDR format, ready to send.
 	//
 	void
 	IO::QOutbound(int Fd,
-								CommandID ID,
-								Command_e Cmd,
 								uint8_t * Blob,
 								uint64_t BlobLength)
 	{
@@ -140,47 +139,19 @@ namespace RiverExplorer::Phoenix
 			// of the XDR data.
 			//
 			// With this version of QOutbound(), the resut
-			// length is easy to calculate.
+			// length is easy to calculate. It is BlobLength.
 			//
-			// sizeof(ID) + sizeof(Cmd) + BlobLength as uint32_t.
-			//
-			uint64_t HeaderLength = sizeof(uint32_t) + sizeof(uint32_t) + sizeof(uint32_t);
-			uint64_t TotalLength = HeaderLength + BlobLength;
-			uint8_t * Header = new uint8_t[HeaderLength];
+			uint64_t Len = sizeof(uint64_t) + BlobLength;
+			uint8_t * RawData = new uint8_t[Len];
 			XDR Xdr;
 
-			xdrmem_create(&Xdr, (char*)Header, (u_int)HeaderLength, XDR_ENCODE);
+			Packet->DataToSend.Add(htonll(sizeof(uint64_t)));
 
-			if (xdr_CommandID(&Xdr, &ID)) {
-				if (xdr_Command_e(&Xdr, &Cmd)) {
-					// We do not need to XDR encode or copy the opaque data.
-					// So we send its length, then the opaque data.
-					// The blob is already ready.
-					//
-					if (xdr_uint64_t(&Xdr, &BlobLength)) {
-						Packet->DataToSend.Add(TotalLength);
-						Packet->DataToSend.Add(Header, HeaderLength, false);
-						Packet->DataToSend.Add(Blob, BlobLength, false);
+			// This version copies data.
+			//
+			Packet->DataToSend.Add(Blob, BlobLength, false);
 						
-						Server::Send(Packet);
-					} else {
-						PhoenixEvent::InvokeMessage(Fd,
-																				PhoenixEvent::LogError_s,
-																				"IO.cpp:QOutbound:Unable to xdr_uint32_t()");
-						delete Packet;
-					}
-				} else {
-					PhoenixEvent::InvokeMessage(Fd,
-																			PhoenixEvent::LogError_s,
-																			"IO.cpp:QOutbound:Unable to xdr_Command_e()");
-					delete Packet;
-				}
-			} else {
-				PhoenixEvent::InvokeMessage(Fd,
-																		PhoenixEvent::LogError_s,
-																		"IO.cpp:QOutbound:Unable to xdr_CommandID()");
-				delete Packet;
-			}
+			Server::Send(Packet);
 		}
 
 		return;

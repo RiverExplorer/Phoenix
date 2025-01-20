@@ -4,9 +4,9 @@
 %*/
 %
 %#ifdef BUILDING_LIBPHOENIX
-%#include "Commands.hpp"
+%#include "Types.hpp"
 %#else
-%#include <RiverExplorer/Phoenix/Commands.hpp>
+%#include <RiverExplorer/Phoenix/Types.hpp>
 %#endif
 
 #ifdef RPC_HDR
@@ -64,7 +64,17 @@
 #endif
 struct AuthMD5
 {
-	CmdPacket Cmd;
 	string Account<>;
 	string Md5Password<>;
 };
+
+struct Authenticate
+{
+	AuthMD5	Md5;
+};
+
+struct AuthenticateReply
+{
+	bool_t	Accepted;
+};
+

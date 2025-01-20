@@ -10,7 +10,7 @@ der CC BY 4.0
 namespace RiverExplorer::Phoenix
 {
 	int
-	xdr_CommandID(XDR * xdrs, CommandID * ID)
+	xdr_CommandID(XDR * xdrs, CommandSequence * ID)
 	{
 		return(xdr_uint64_t(xdrs, ID));
 	}

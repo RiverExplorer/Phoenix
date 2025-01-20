@@ -91,26 +91,21 @@ namespace RiverExplorer::Phoenix
 
 		/**
 		 * Queue packet for outbound transmission.
-		 * The version coped Blob, so the caller
-		 * must delete their own data.
-		 *
-		 * Converts the data to an inline XDR blob.
+		 * This version can handle mmap() and non mmap() iovsections.
+		 * Each mmap() iovec is munmap(), and each non-mmap() iovec
+		 * is deleted after being sent.
 		 *
 		 * @param Fd The file descriptor to send to.
 		 *
-		 * @param ID The command ID to use.
+		 * @param Blob The XDR encoded blob.
 		 *
-		 * @param Cmd The command to send.
+		 * @param BlobSize The sizeof the XDR encoded Blob.
 		 *
-		 * @param Blob The already XDR encoded blob to send.
-		 *
-		 * @param BlobLength The number of octets in Blob.
+		 * @note
+		 * Use this one for small packets, it copies the data before
+		 * sending.
 		 */
-		static void QOutbound(int Fd,
-													CommandID ID,
-													Command_e Cmd,
-													uint8_t * Blob,
-													uint64_t BlobLength);
+		static void QOutbound(int Fd, uint8_t * Blob, uint64_t BlobSize);
 
 		/**
 		 * Queue packet for outbound transmission.
@@ -123,30 +118,13 @@ namespace RiverExplorer::Phoenix
 		 * @param Vecs An array of VecCount iovec objects to send.
 		 *
 		 * @param VecCount The number of iovec objects.
+		 *
+		 * @note
+		 * Use this one for large packets, it does not copy the
+		 * data before sending, the caller must clean up.
+		 * The data can not be cleaned up until the packet is transmitted.
 		 */
 		static void QOutbound(int Fd, iovec * Vecs, uint64_t VecCount);
-
-		/**
-		 * Queue packet for outbound transmission.
-		 * This version can handle mmap() and non mmap() iovsections.
-		 * Each mmap() iovec is munmap(), and each non-mmap() iovec
-		 * is deleted after being sent.
-		 *
-		 * @param Fd The file descriptor to send to.
-		 *
-		 * @param ID The command ID to use.
-		 *
-		 * @param Cmd The command to send.
-		 *
-		 * @param Vecs An array of VecCount iovec objects to send.
-		 *
-		 * @param VecCount The number of iovec objects.
-		 */
-		static void QOutbound(int Fd,
-													CommandID ID,
-													Command_e Cmd,
-													iovec * Vecs,
-													uint64_t VecCount);
 
 	private:
 
@@ -162,7 +140,7 @@ namespace RiverExplorer::Phoenix
 		 * A list of commands we issued, and do not have a reply yet.
 		 * Commands that do not get a reply, are not added.
 		 */
-		static std::map<CommandID, CmdPacket*> _CommandsWeIssued;
+		static std::map<CommandSequence, CmdPacket*> _CommandsWeIssued;
 
 		/**
 		 * Mutex lock for CommandsWeIssued.

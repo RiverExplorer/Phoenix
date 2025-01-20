@@ -1,7 +1,7 @@
 %/**
-%* Phoenix (C) 2025 by Douglas Mark Royer (A.K.A. RiverExplorer) is licensed under CC BY 4.0                                                                   
-%* RiverExplorer is a trademark of RiverExplorer Games LLC                      
-%*/
+% * Phoenix (C) 2025 by Douglas Mark Royer (A.K.A. RiverExplorer) is licensed under CC BY 4.0                                                                   
+% * RiverExplorer is a trademark of RiverExplorer Games LLC                      
+% */
 %
 
 #ifdef RPC_HDR
@@ -10,11 +10,11 @@
 % * The "C" routines return a bool_t, the C++ API return a bool.
 % */
 %#ifdef BUILDING_LIBPHOENIX
-%#include "Commands.hpp"
+%#include "Types.hpp"
 %#include "KeyString.hpp"
 %#include "Mime.hpp"
 %#else
-%#include <RiverExplorer/Phoenix/Commands.hpp>
+%#include <RiverExplorer/Phoenix/Types.hpp>
 %#include <RiverExplorer/Phoenix/KeyString.hpp>
 %#include <RiverExplorer/Phoenix/Mime.hpp>
 %#endif

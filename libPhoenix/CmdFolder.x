@@ -11,11 +11,16 @@
 
 #ifdef RPC_HDR
 %/**
-% * The GetMessage_Cmd ...
 % */
 #endif
-struct GetMessage
+
+struct Folder
 {
 	int foo;
-	/**@todo implement*/
 };
+
+struct FolderReply
+{
+	int foo;
+};
+
