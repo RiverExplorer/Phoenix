@@ -2,3 +2,5 @@
 
  RiverExplorer is a trademark of RiverExplorer Games LLC
 
+ This Phoenix code is copyright and free to use.
+

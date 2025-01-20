@@ -10,5 +10,5 @@ SimpleCpp : $(OBJECTS)
 	$(CXX) -g $(OBJECTS) -o $@
 
 clean:
-	$(RM) $(OBJECTS)
+	$(RM) $(OBJECTS) SimpleCpp
 

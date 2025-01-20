@@ -1,5 +1,5 @@
 
-all : Internal Public
+all : Internal Public ID
 
 Internal :
 	doxygen Doxyfile-All
@@ -7,8 +7,14 @@ Internal :
 Public :
 	doxygen Doxyfile-API
 
+ID :
+	(cd MyTools;make)
+	(cd Internet-Drafts/Phoenix-00;make)
+
 clean:
-	$(RM) -r Generated/*
+	$(RM) -r GeneratedDocs/*
 	$(RM) Warning-*
+	(cd MyTools;make clean)
+	(cd Internet-Drafts/Phoenix-00;make clean)
 
 
