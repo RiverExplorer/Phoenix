@@ -587,9 +587,11 @@ pdeclaration(char *name, declaration *dec, int tab, char *separator)
 
   tabify(fout, tab);
 
-  if (streq(dec->type, name) && !dec->prefix) {
-    f_print(fout, "class ");
-  }
+	if (dec->rel != REL_ARRAY) {
+		if (streq(dec->type, name) && !dec->prefix) {
+			f_print(fout, "class ");
+		}
+	}
 
   if (streq(dec->type, "string")) {
     f_print(fout, "char *%s", dec->name);

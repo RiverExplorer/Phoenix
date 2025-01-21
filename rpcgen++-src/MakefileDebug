@@ -1,6 +1,6 @@
-PROTO		=	/Proto
+PROTO		=	/usr/local
 
-CFLAGS		+=	-g
+CFLAGS		+=	-g -I/usr/include/tirpc
 
 SOURCES.h	=	rpc_parse.h \
 			rpc_scan.h \
