@@ -105,7 +105,7 @@ namespace RiverExplorer::Phoenix
 		 * Use this one for small packets, it copies the data before
 		 * sending.
 		 */
-		static void QOutbound(int Fd, uint8_t * Blob, uint64_t BlobSize);
+		static void QOutbound(int Fd, uint8_t * Blob, uint32_t BlobSize);
 
 		/**
 		 * Queue packet for outbound transmission.
@@ -124,7 +124,7 @@ namespace RiverExplorer::Phoenix
 		 * data before sending, the caller must clean up.
 		 * The data can not be cleaned up until the packet is transmitted.
 		 */
-		static void QOutbound(int Fd, iovec * Vecs, uint64_t VecCount);
+		static void QOutbound(int Fd, iovec * Vecs, uint32_t VecCount);
 
 	private:
 

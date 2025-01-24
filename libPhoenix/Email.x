@@ -1,8 +1,14 @@
-%/**
-% * Phoenix (C) 2025 by Douglas Mark Royer (A.K.A. RiverExplorer) is licensed under CC BY 4.0                                                                   
-% * RiverExplorer is a trademark of RiverExplorer Games LLC                      
-% */
-%
+
+const FLAG_SEEN				= 0x0001;
+const FLAG_ANSWERED		= 0x0002;
+const FLAG_FLAGGED		= 0x0004;
+const FLAG_DELETED		= 0x0008;
+const FLAG_DRAFT			= 0x0010;
+const FLAG_FORWARDED	= 0x0040;
+const FLAG_MDNSENT		= 0x0080;
+const FLAG_JUNK				= 0x0100;
+const FLAG_NOTJUNK		= 0x0200;
+const FLAG_PHISHING		= 0x0400;
 
 #ifdef RPC_HDR
 %/**
@@ -11,11 +17,11 @@
 % */
 %#ifdef BUILDING_LIBPHOENIX
 %#include "Types.hpp"
-%#include "KeyString.hpp"
+%#include "MetaData.hpp"
 %#include "Mime.hpp"
 %#else
 %#include <RiverExplorer/Phoenix/Types.hpp>
-%#include <RiverExplorer/Phoenix/KeyString.hpp>
+%#include <RiverExplorer/Phoenix/MetaData.hpp>
 %#include <RiverExplorer/Phoenix/Mime.hpp>
 %#endif
 %#include <string>
@@ -25,7 +31,7 @@
 
 #ifdef RPC_HDR
 %/**
-% * EMail headers are a vector of KeyString.
+% * EMail headers are a vector of MetaData.
 % *
 % * Some examples:
 % * @verbatim
@@ -41,7 +47,7 @@
 % * This is a container to transport them.
 % */
 #endif
-typedef KeyString EMailHeader;
+typedef MetaData EMailHeader;
 typedef EMailHeader EMailHeaders<>;
 
 #ifdef RPC_HDR
@@ -67,10 +73,10 @@ typedef MimeBodyPart EMailBodyParts<>;
 % *
 % * @return The number of matches.
 % * Returns zero (0) when none are found.
-% * Returns ((uint64_t)-1) when Obj or Key are NULL.
+% * Returns ((uint32_t)-1) when Obj or Key are NULL.
 % */
 %namespace RiverExplorer::Phoenix{
-%extern uint64_t * EMail_HasHeader(EMailHeaders * Headers, const char * Key);
+%extern uint32_t * EMail_HasHeader(EMailHeaders * Headers, const char * Key);
 %}
 #endif
  
@@ -101,10 +107,10 @@ typedef MimeBodyPart EMailBodyParts<>;
 % * @param Headers The Headers that is being processed.
 % *
 % * @return The number of EMailHeader in Headers.
-% * Returns ((uint64_t)-1) when Headers is NULL.
+% * Returns ((uint32_t)-1) when Headers is NULL.
 % */
 %namespace RiverExplorer::Phoenix{
-%extern uint64_t EMail_GetHeaderCount(EMailHeaders * Headers);
+%extern uint32_t EMail_GetHeaderCount(EMailHeaders * Headers);
 %}
 #endif
 
@@ -122,7 +128,7 @@ typedef MimeBodyPart EMailBodyParts<>;
 % * Returns NULL when Which is not a valid index.
 % */
 %namespace RiverExplorer::Phoenix{
-%extern EMailHeader * EMail_GetHeaderByIndex(EMailHeaders * Headers, uint64_t Which);
+%extern EMailHeader * EMail_GetHeaderByIndex(EMailHeaders * Headers, uint32_t Which);
 %}
 #endif
 
@@ -202,7 +208,7 @@ typedef MimeBodyPart EMailBodyParts<>;
 %  *
 %  * @return The number of body parts.
 %	 */
-% const uint64_t Count() const;
+% const uint32_t Count() const;
 %
 % /**
 %  * Get the body parts.
@@ -225,7 +231,7 @@ typedef MimeBodyPart EMailBodyParts<>;
 %  * @note
 %  * Do not delete the results.
 %	 */
-% const MimeBodyPart * Body(uint64_t nTh) const;
+% const MimeBodyPart * Body(uint32_t nTh) const;
 %
 % /**
 %	 * This ID is used as a transport ID between
@@ -247,7 +253,7 @@ typedef MimeBodyPart EMailBodyParts<>;
 %	 * to uniquely identify this message in their system that is
 %	 * separate from this ID.
 %	 */
-% uint64_t ID() const;
+% uint32_t ID() const;
 %
 % /**
 %  * Messages in a message store have an ID.
@@ -268,7 +274,7 @@ typedef MimeBodyPart EMailBodyParts<>;
 %	 * to uniquely identify this message in their system that is
 %	 * separate from this ID.
 %	 */
-% void ID(uint64_t StoreID) const;
+% void ID(uint32_t StoreID) const;
 %};
 %} // End namespace EMail
 %#endif // class

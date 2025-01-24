@@ -1,9 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<?xml-model href="rfc7991bis.rnc"?>  <!-- Required for schema validation and schema-aware editing -->
-<!-- <?xml-stylesheet type="text/xsl" href="rfc2629.xslt" ?> -->
-<!-- This third-party XSLT can be enabled for direct transformations in XML processors, including most browsers -->
-
-
+<?xml-model href="rfc7991bis.rnc"?>
 <!DOCTYPE rfc [
   <!ENTITY nbsp    "&#160;">
   <!ENTITY zwsp   "&#8203;">
@@ -33,7 +29,7 @@
           <city>Las Vegas</city>
           <region>Nevada</region>
           <code>89107</code>
-          <country>USA</country>
+          <country>US</country>
           <!-- Uses two letter country code -->
         </postal>        
         <phone>1+714-989-6135</phone>
@@ -50,6 +46,8 @@
     <keyword>pop</keyword>
     <keyword>smtp</keyword>
     <keyword>mime</keyword>
+    <keyword>lemonade</keyword>
+    <keyword>phoenix</keyword>
     <abstract>
       <xi:include href="Abstract.xml"/>
     </abstract>
@@ -84,35 +82,133 @@
     </section>
 
 		<section anchor="COMMANDS">
-			<name>Commands Overview</name>
+			<name>Commands Summary</name>
+			<t>
+				The endpoint that initiates the connection is called the client.
+        The endpoint that is connected to, is called the server.
+        The client is the protocol authority, and the server responds
+        to client commands as configured or instructed by the client.
+      </t>
 
-			<section anchor="ADMIN_CMD">
-				<name>Administration Commands (AdminCmd)</name>
-				<section>
-					<name>Administration Commands Overview</name>
-					<xi:include href="AdminOverview.xml"/>
-				</section>
+			<t>
+				This section provides an overview of the basic commands.
+				Each command has a detailed section in this specification.
+			</t>
+			<t>
+				When a command is sent to the remote endpoint and received,
+				the remote endpoint determines if the connection is authenticated
+				or authorized to perform the command.
+				If not supported, or not authorized, a NotSupported command
+				is send as a reply.
+				The NotSupported command sent back has the same Sequence number 
+				that was in the original command.
+			</t>
+			<t>
+				Many commands are only valid after authentication.
+			</t>
+			<t>
+				When the client connects to a server it immediately sends
+				its pre authentication capabilities to the server.
+				Or an Auth command.
+			</t>
+			<t>
+				When the server gets a new connection followed by
+				a pre authentication capability command, it immediately sends
+				its pre authentication capabilities to the client.
+			</t>
+			<t>
+				When the client and server have had a relationship, the
+				client may send an Auth Command to initiate the authorization
+				and does not send its pre authentication capability list
+				to the server.
+				It then waits for the Auth reply from the server.
+			</t>
+			<ul>
+				<li>
+					If the client gets an Auth reply that is positive,
+					it sends its post authentication capability list to the server.
+				</li>
+				<li>
+					If the client gets an Auth reply that is negative,
+					it sends its pre authentication
+					capability list to the server.
+				</li>
+			</ul>
+			<t>
+				When a servers first received packet is a Auth command,
+				It processes the Auth command and sends the Auth reply.
+			</t>
+			<ul>
+				<li>
+					If the Auth reply is positive, then it also sends it
+					post authentication capability list.
+				</li>
+				<li>
+					If the Auth reply is negative, then it sends its
+					pre authentication capability list to the client.
+				</li>
+			</ul>
+
+			<t>
+				A server may automatically send its pre authentication
+				capability list to the client upon initial connection.
+				Or it may wait to see if it gets a pre authentication
+				capability list, or an Auth command.
+			</t>
+			<t>
+				If the client sends an Auth command as its first packet,
+				it may get the pre authentication capability from the server
+				before the Auth reply. Simply process both.
+			</t>
+			
+			<section anchor="PROTO_SUMMARY">
+				<name>Protocol Commands Summary</name>
+				<xi:include href="ProtocolSummary.xml"/>
 			</section>
 
-			<section anchor="AUTH_CMD">
-				<name>Authentication Commands</name>
-				<section>
-					<name>Authentication Commands Overview</name>
-					<xi:include href="AuthOverview.xml"/>
-				</section>
+			<section anchor="ADMIN_SUMMARY">
+				<name>Administration Commands Summary</name>
+				<xi:include href="AdminSummary.xml"/>
+			</section>
+				
+			<section anchor="AUTH_SUMMARY">
+				<name>Authentication Commands Summary</name>
+				<xi:include href="AuthSummary.xml"/>
 			</section>
 
-			<section anchor="FILECMD">
-				<name>Protocol</name>
-				<section>
-					<name>Basic File and Folder Operations</name>
-					<xi:include href="BasicFileOps.xml"/>
-				</section>
+			<section anchor="CALENDAR_SUMMARY">
+				<name>Calendar Commands Summary</name>
+				<xi:include href="CalendarSummary.xml"/>
 			</section>
 
-			<section anchor="PROTO_CMD">
-				<name>Protocol Commands</name>
-				<xi:include href="ProtocolOverview.xml"/>
+			<section anchor="CAPABILITY_SUMMARY">
+				<name>Capability Commands Summary</name>
+				<xi:include href="CapabilitySummary.xml"/>
+			</section>
+
+			<section anchor="EMAIL_SUMMARY">
+				<name>EMail Commands Summary</name>
+				<xi:include href="EMailSummary.xml"/>
+			</section>
+
+			<section anchor="FOLDER_SUMMARY">
+				<name>File and Folder Commands Summary</name>
+				<xi:include href="FolderSummary.xml"/>
+			</section>
+
+			<section anchor="KEEPALIVE_SUMMARY">
+				<name>KeepAlive Command Summary</name>
+				<xi:include href="KeepAliveSummary.xml"/>
+			</section>
+
+			<section anchor="PING_SUMMARY">
+				<name>Ping Command Summary</name>
+				<xi:include href="PingSummary.xml"/>
+			</section>
+
+			<section anchor="SMIME_SUMMARY">
+				<name>S/MIME Commands Summary</name>
+				<xi:include href="SMimeSummary.xml"/>
 			</section>
 
 		</section>
@@ -191,11 +287,12 @@
 
     <xi:include href="ProtocolBinaryValues.xml"/>
 
+    <xi:include href="RpcgenSpecification.xml"/>
+
     <section anchor="Acknowledgements" numbered="false">
       <!-- [REPLACE/DELETE] an Acknowledgements section is optional -->
-      <name>Acknowledgements</name>
-      <t>This template uses extracts from templates written by Pekka Savola, Elwyn Davies and 
-        Henrik Levkowetz. [REPLACE]</t>
+      <name>Acknowledgments</name>
+      <t></t>
     </section>
     
     <section anchor="Contributors" numbered="false">

@@ -697,7 +697,7 @@ namespace RiverExplorer::Phoenix
 		 * Returns (-1) If the socket is invalid for any reason and this
 		 * should not be attempted again.
 		 */
-		static int64_t		_NetWrite(int Fd, Iov * IovData);
+		static int32_t		_NetWrite(int Fd, Iov * IovData);
 		
 		/**
 		 * The thread that we use to send out data.

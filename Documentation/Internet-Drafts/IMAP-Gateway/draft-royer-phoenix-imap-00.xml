@@ -1,0 +1,518 @@
+<?xml version="1.0" encoding="utf-8"?>
+<?xml-model href="rfc7991bis.rnc"?>
+<!DOCTYPE rfc [
+<!ENTITY nbsp    "&#160;">
+<!ENTITY zwsp   "&#8203;">
+<!ENTITY nbhy   "&#8209;">
+<!ENTITY wj     "&#8288;">
+]>
+<rfc
+		xmlns:xi="http://www.w3.org/2001/XInclude"
+		category="info"
+		docName="draft-royer-phoenix-imap-00"
+		ipr="trust200902"
+		obsoletes=""
+		updates=""
+		submissionType="IETF"
+		xml:lang="en"
+		version="3">
+  <front>
+    <title abbrev="Phoenix IMAP Study and Gateway"></title>
+    <seriesInfo name="Internet-Draft" value="draft-royer-phoenix-imap-00"/>
+		
+    <author fullname="Doug Royer" initials="DM" role="editor" surname="Royer">
+      <organization>RiverExplorer Games LLC</organization>
+      <address>
+        <postal>
+          <street>848 N. Rainbow Blvd #1120</street>
+          <city>Las Vegas</city>
+          <region>Nevada</region>
+          <code>89107</code>
+          <country>US</country>
+        </postal>        
+        <phone>1+714-989-6135</phone>
+        <email>DouglasRoyer@gmail.com</email>  
+        <uri>https://RiverExplorer.games</uri>
+      </address>
+    </author>
+		
+    <date year="2025"/>
+    <area>General</area>
+    <workgroup>Internet Engineering Task Force</workgroup>
+		<keyword>imap</keyword>
+    <keyword>mime</keyword>
+    <keyword>lemonade</keyword>
+    <keyword>phoenix</keyword>
+    <abstract>
+      <t>
+				This is a study of IMAP 4rev2 and a specification describing
+				how to make a gateway that accepts Phoenix clients
+				and connects to IMAP servers.
+			</t>
+    </abstract>
+		
+  </front>
+
+  <middle>
+    
+    <section>
+      <name>Introduction</name>
+      <t>
+				IMAP may be the most popular email fetching protocol in the world.
+				more .... todo
+			</t>
+      
+      <section>
+        <name>Requirements Language</name>
+        <t>The key words "MUST", "MUST NOT", "REQUIRED", "SHALL",
+        "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT
+        RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be
+        interpreted as described in BCP 14 <xref target="RFC2119"/>
+        <xref target="RFC8174"/> when, and only when, they appear in
+        all capitals, as shown here.</t>
+      </section>
+      <!-- [CHECK] The 'Requirements Language' section is optional -->
+
+    </section>
+    
+    <section>
+      <name>IMAP Commands</name>
+			<section>
+				<name>IMAP and Phoenix Commands</name>
+				<t>
+					This table summarizes the IMAP and the Phoenix equivalent command
+				</t>
+				<t>
+					NOTE: Phoenix is a binary protocol, so the symbolic
+					names are shown, not their numerical value.
+				</t>
+				<t>
+					NOTE: In Phoenix a mailbox is called a folder.
+				</t>
+				<t>
+					NOTE: In Phoenix a message is called a file.
+				</t>
+				<table>
+					<thead>
+						<tr>
+							<th>IMAP</th>
+							<th>Phoenix</th>
+							<th>Breif Comment</th>
+						</tr>
+					</thead>
+					<tbody>
+
+						<tr>
+							<td>CAPABILITY</td><td>CAPABILITY</td>
+							<td>
+								<t>
+									Phoenix has CAPABILITY, done a little
+									differently.
+								</t>
+								
+								<t>
+									With a Phoenix server, as soon as a client connection
+									is made, a pre-authentication capability
+									command is sent to the client.
+								</t>
+								
+								<t>
+									With a Phoenix client, as soon as the connection
+									is established, a pre-authentication capability
+									command is sent to the server.
+								</t>
+								
+								<t>
+									The client capabilities is more of a
+									registration and IMAP ENABLE process, than a
+									capability list.
+									This specification is about an IMAP/POP3 like
+									capability (registration) called EMAIL.
+								</t>
+							</td>
+						</tr>
+						
+						<tr>
+							<td>NOOP</td><td></td>
+							<td>
+								<t>
+									Notifications from the Phoenix server are automatic
+									once the Phoenix server registers for them.
+									No equivalent needed.
+								</t>
+								<t>
+									When in EMAIL mode (this specification),
+									new message notifications are automatic.
+								</t>
+							</td>
+						</tr>
+						
+						<tr>
+							<td>IDLE</td><td></td>
+							<td>
+								<t>
+									Notifications from the Phoenix server are automatic
+									once the Phoenix server registers for them.
+									No equivalent needed.
+								</t>
+								<t>
+									When in EMAIL mode (this specification),
+									new message notifications are automatic.
+								</t>
+							</td>
+						</tr>
+						
+						<tr>
+							<td>LOGOUT</td><td>BYE</td>
+							<td>
+								<t>
+									When sent from a Phoenix client,
+									the Phoenix server logs out the user and terminates the
+									connection.
+									The Phoenix client is responsible for ensuring that
+									command replies that are important
+									have been received before sending a BYE command.
+								</t>
+								<t>
+									When sent from the Phoenix server, it means the
+									server is shutting down and no further
+									data will follow. The server then terminates
+									the connection.
+								</t>
+							</td>
+						</tr>
+
+						<tr>
+							<td>LOGIN</td><td>AUTH</td>
+							<td>
+								The IMAP LOGIN command has exact
+								equivalents in Phoenix.
+							</td>
+						</tr>
+
+						<tr>
+							<td>AUTHENTICATE</td><td>TODO - check</td>
+							<td>
+								<t>
+									It looks compatable, looking ..
+								</t>
+							</td>
+						</tr>
+
+						<tr>
+							<td>STARTTLS</td><td></td>
+							<td>
+								<t>
+									Phoenix is only transmitted over a secure
+									connection, so it has no need for a STARTTLS
+									command.
+								</t>
+							</td>
+						</tr>
+						<tr>
+							<td>LIST</td><td>FOLDER_LIST</td>
+							<td>
+								<t>
+									The FOLDER_LIST can list the entire
+									hierarchy, or the details of a
+									folder, or message, or all.
+								</t>
+								<t>
+									The FOLDER_LIST command with no parameters
+									returns the hierarchy of folders
+									from the root.
+									Plus it provides some information about
+									each folder.
+								</t>
+								<t>
+									The FOLDER_LIST command can also add
+									a parameter that returns index information
+									about each message, including, the status
+									and size, and other information.
+									This can be done for the entire tree,
+									or specific folders.
+								</t>
+								<t>
+									This associated folder and message data is called
+									meta information in Phoenix.
+								</t>
+								<t>
+									In addition, the FOLDER_LIST can add a parameter
+									that is a set of header names that it wants
+									back for each message (perhaps Subject, From, ...)
+									So the client can get back the entire hierarchy
+									of folders, and sufficient message information
+									to display its initial information to a user.
+									This also includes ID's that can be used
+									to fetch any random message or part of a message,
+									or its headers.
+									All in one command, and one reply.
+								</t>
+							</td>
+						</tr>
+						<tr>
+							<td>CREATE</td><td>FOLDER_CREATE</td>
+							<td>
+								Functionally the same.
+							</td>
+						</tr>
+						<tr>
+							<td>DELETE</td><td>FOLDER_DELETE</td>
+							<td>
+								Functionally the same.
+							</td>
+						</tr>
+						<tr>
+							<td>RENAME</td><td>FOLDER_RENAME</td>
+							<td>
+								Functionally the same.
+							</td>
+						</tr>
+						<tr>
+							<td>SUBSCRIBE</td><td>SUBSCRIBE</td>
+							<td>
+								Phoenix supports a subscribe, but it is
+								not used with EMAIL.
+								With Phoenix email notifications are automatic.
+							</td>
+						</tr>
+						<tr>
+							<td>EXAMINE</td><td></td>
+							<td>
+								With Phoenix the FOLDER_LIST command provides
+								what is needed to later use the folder.
+							</td>
+						</tr>
+						<tr>
+							<td>SELECT</td><td></td>
+							<td>
+								<t>
+									With Phoenix, there is no need for an open like
+									command.
+									You perform operations on folders and files (messages).
+									Messages are marked are read or deleted
+									by FILE_GET and FILE_DELETE.
+								</t>
+								<t>
+									The client can change the status of a file
+									by sending a META command, to change
+									the meta information about a file or folder.
+								</t>
+							</td>
+						</tr>
+						<tr>
+							<td>UNSELECT</td><td></td>
+							<td>
+								<t>
+									With Phoenix, there is no need for an open like
+									command. So no unselect (close) command.
+								</t>
+							</td>
+						</tr>
+						<tr>
+							<td>FETCH</td><td>FILE_GET</td>
+							<td>
+								With FILE_GET, you can one or more
+								messages. And one or more parts of a message.
+								The FOLDER_LIST command can optionally
+								provide handles that can be used to fetch
+								parts of messages.
+							</td>
+						</tr>
+						<tr>
+							<td>STORE</td><td>META</td>
+							<td>
+								The META command can get and alter the meta
+								information about a file or folder.
+							</td>
+						</tr>
+						<tr>
+							<td>COPY</td><td>FILE_COPY</td>
+							<td>
+								They perform the same operation.
+							</td>
+						</tr>
+						<tr>
+							<td>APPEND</td><td>FILE_CREATE</td>
+							<td>
+								They perform the same operation.
+							</td>
+						</tr>
+						<tr>
+							<td>SEARCH</td><td>SEARCH</td>
+							<td>
+								They perform the same operation.
+								Different semantics.
+							</td>
+						</tr>
+						<tr>
+							<td>UID FETCH</td><td>FILE_GET</td>
+							<td>
+								The Phoenix FILE_GET can get a message
+								by ID (UID) or message sequence numbers.
+								The default is by ID (UID).
+							</td>
+						</tr>
+						<tr>
+							<td>UID STORE</td><td>META</td>
+							<td>
+								The Phoenix META can change the status
+								of messages by ID (UID) or message sequence numbers.
+								The default is by ID (UID).
+							</td>
+						</tr>
+						<tr>
+							<td>UID COPY</td><td>FILE_COPY</td>
+							<td>
+								The Phoenix FILE_COPY can copy a message
+								by ID (UID) or message sequence numbers.
+								The default is by ID (UID).
+							</td>
+						</tr>
+						<tr>
+							<td>UID APPEND</td><td>FILE_CREATE</td>
+							<td>
+								The Phoenix FILE_CREATE can create a message
+								by ID (UID) or message sequence numbers.
+								The default is by ID (UID).
+							</td>
+						</tr>
+						<tr>
+							<td>UID SEARCH</td><td>SEARCH</td>
+							<td>
+								The Phoenix SEARCH can search messages
+								by ID (UID) or message sequence numbers.
+								The default is by ID (UID).
+							</td>
+						</tr>
+						<tr>
+							<td>EXPUNGE</td><td>EXPUNGE</td>
+							<td>
+								Functionally equivelant.
+							</td>
+						</tr>
+						<tr>
+							<td>CLOSE</td><td></td>
+							<td>
+								In Phoenix, you perform operations on a folder
+								or file.
+								It is never really opened or closed.
+							</td>
+							<td>
+							</td>
+						</tr>
+						<tr>
+							<td>ENABLE</td><td></td>
+							<td>
+								Done in Phoenix with the CAPABILTY command.
+							</td>
+							<td>
+							</td>
+						</tr>
+						<tr>
+							<td>UNSUBSCRIBE</td><td></td>
+							<td>
+								Phoenxi has an UNSUBSCRIBE command, but
+								it is not used with EMAIL.
+							</td>
+							<td>
+							</td>
+						</tr>
+						<tr>
+							<td>NAMESPACE</td><td></td>
+							<td>
+								<t>
+									Phoenix uses the Rigistration/capability
+									to enable or disable other protocols.
+								</t>
+								<t>
+									Phoenix uses ACL (Access Control Lists) to
+									determine if a folder or file is shared,
+									public, or private.
+								</t>
+							</td>
+						</tr>
+						<tr>
+							<td>STATUS</td><td>META</td>
+							<td>
+								META does the same a STATUS, and more.
+							</td>
+						</tr>
+					</tbody>
+				</table>
+			</section>					
+		</section>   
+		<section anchor="IANA">
+			<!-- All drafts are required to have an IANA considerations section. See RFC 8126 for a guide.-->
+			<name>IANA Considerations</name>
+			<t>This memo includes no request to IANA. [CHECK]</t>
+		</section>
+
+		<section anchor="Security">
+			<!-- All drafts are required to have a security considerations section. See RFC 3552 for a guide. -->
+			<name>Security Considerations</name>
+			<t>This document should not affect the security of the Internet. [CHECK]</t>
+		</section>
+
+		<!-- NOTE: The Acknowledgements and Contributors sections are at the end of this template -->
+	</middle>
+
+	<back>
+		<references>
+			<name>References</name>
+
+			<references>
+				<name>Normative References</name>
+				<xi:include href="https://bib.ietf.org/public/rfc/bibxml/reference.RFC.2119.xml"/>
+				<xi:include href="https://bib.ietf.org/public/rfc/bibxml/reference.RFC.8174.xml"/>
+				<!-- The recommended and simplest way to include a well known reference -->
+			</references>
+
+			<references>
+				<name>Informative References</name>
+				<reference anchor="exampleRefMin">
+					<!-- [REPLACE/DELETE] Example minimum reference -->
+					<front>
+						<title>Title [REPLACE]</title>
+						<author initials="Initials [REPLACE]" surname="Surname [REPLACE]">
+							<organization/>
+						</author>
+						<date year="2006"/>
+						<!-- [CHECK] -->
+					</front>
+				</reference>
+
+				<reference anchor="exampleRefOrg" target="http://www.example.com/">
+					<!-- [REPLACE/DELETE] Example reference written by an organization not a person -->
+					<front>
+						<title>Title [REPLACE]</title>
+						<author>
+							<organization>Organization [REPLACE]</organization>
+						</author>
+						<date year="2025"/>
+					</front>
+				</reference>       
+
+			</references>
+		</references>
+
+		<section>
+			<name>Appendix 1 [REPLACE/DELETE]</name>
+			<t>This becomes an Appendix [REPLACE]</t>
+		</section>
+
+		<section anchor="Acknowledgements" numbered="false">
+			<!-- [REPLACE/DELETE] an Acknowledgements section is optional -->
+			<name>Acknowledgments</name>
+			<t></t>
+		</section>
+
+		<section anchor="Contributors" numbered="false">
+			<!-- [REPLACE/DELETE] a Contributors section is optional -->
+			<name>Contributors</name>
+			<t>Thanks to all of the contributors. [REPLACE]</t>
+			<!-- [CHECK] it is optional to add a <contact> record for some or all contributors -->
+		</section>
+		
+	</back>
+</rfc>

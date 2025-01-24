@@ -57,18 +57,14 @@ SOURCES.cpp = \
 	CppAddMessage.cpp \
 	CppAuthenticate.cpp \
 	CppCapability.cpp \
-	CppCloseFolder.cpp \
 	CppCopyMessage.cpp \
-	CppCreateFolder.cpp \
-	CppDeleteFolder.cpp \
 	CppExpunge.cpp \
 	CppGetMessage.cpp \
-	CppListFolders.cpp \
+	CppMime.cpp \
+	CppMimeHeaders.cpp \
 	CppNotSupported.cpp \
 	CppPing.cpp \
-	CppRenameFolder.cpp \
 	CppSearch.cpp \
-	CppSelectFolder.cpp \
 	CppSubscribe.cpp \
 	CppTimeout.cpp \
 	CppUpdateMessage.cpp \
@@ -86,26 +82,20 @@ SOURCES.x = \
 	CmdAuthenticate.x \
 	CmdAdministration.x \
 	CmdCapability.x \
-	CmdCloseFolder.x \
 	CmdCopyMessage.x \
-	CmdCreateFolder.x \
-	CmdDeleteFolder.x \
 	CmdExpunge.x \
 	CmdFolder.x \
 	CmdGetMessage.x \
 	CmdKeepAlive.x \
-	CmdListFolders.x \
 	CmdNotSupported.x \
 	CmdPing.x \
-	CmdRenameFolder.x \
 	CmdSearch.x \
-	CmdSelectFolder.x \
 	CmdSubscribe.x \
 	CmdTimeout.x \
 	CmdUpdateMessage.x \
 	Commands.x \
 	Email.x \
-	KeyString.x \
+	MetaData.x \
 	Mime.x \
 	Types.x
 
@@ -113,6 +103,7 @@ SOURCES.hpp += \
 	Certs.hpp \
 	CppCommands.hpp \
 	CppMime.hpp \
+	CppTypes.hpp \
 	IO.hpp \
 	Iov.hpp \
 	IPPeer.hpp \

@@ -1,0 +1,135 @@
+<t>
+	The file operations (FileOp) have protocol names.
+	Here are their protocol names and a breif description.
+</t>
+<t>
+	Implementations are not required to support any or all of these
+	commands.
+</t>
+<t>
+	
+</t>
+<table>
+	<thead>
+		<tr><th>Op Name</th><th>Brief Description.</th></tr>
+	</thead>
+	<tbody>
+		<tr>
+			<td>FOLDER_CAPABILITY</td>
+			<td>
+				When sent as a command, request the list of
+				folder commands supported.
+				When sent as a reply, includes the list of
+				folder commands supported.
+			</td>
+		</tr>
+		<tr>
+			<td>FOLDER_CREATE</td>
+			<td>
+				Create a new folder.
+				Also the name of the capability for this permission.
+			</td>
+		</tr>
+		<tr>
+			<td>FOLDER_COPY</td>
+			<td>
+				Copy a folder.
+				Also the name of the capability for this permission.
+			</td>
+		</tr>
+		<tr>
+			<td>FOLDER_DELETE</td>
+			<td>
+				Delete a folder.
+				Also the name of the capability for this permission.
+			</td>
+		</tr>
+		<tr>
+			<td>FOLDER_RENAME</td>
+			<td>
+				Rename a folder.
+				Also the name of the capability for this permission.
+			</td>
+		</tr>
+		<tr>
+			<td>FOLDER_MOVE</td>
+			<td>
+				Move a folder.
+				Also the name of the capability for this permission.
+			</td>
+		</tr>
+		<tr>
+			<td>FOLDER_SHARE</td>
+			<td>
+				Share a folder.
+				Also the name of the capability for this permission.
+			</td>
+		</tr>
+		<tr>
+			<td>FOLDER_LIST</td>
+			<td>
+				List folders and files.
+				Also the name of the capability for this permission.
+			</td>
+		</tr>
+		
+		<tr>
+			<td>FILE_CREATE</td>
+			<td>
+				Create a new file.
+				Also the name of the capability for this permission.
+			</td>
+		</tr>
+
+		<tr>
+			<td>FILE_COPY</td>
+			<td>
+				Copy a file.
+				Also the name of the capability for this permission.
+			</td>
+		</tr>
+
+		<tr>
+			<td>FILE_DELETE</td>
+			<td>
+				Delete a file.
+				Also the name of the capability for this permission.
+			</td>
+		</tr>
+		<tr>
+			<td>FILE_RENAME</td>
+			<td>
+				Rename a file.
+				Also the name of the capability for this permission.
+			</td>
+		</tr>
+		<tr>
+			<td>FILE_MOVE</td>
+			<td>
+				Move a file.
+				Also the name of the capability for this permission.
+			</td>
+		</tr>
+		<tr>
+			<td>FILE_SHARE</td>
+			<td>
+				Share a file.
+				Also the name of the capability for this permission.
+			</td>
+		</tr>
+		<tr>
+			<td>FILE_GET</td>
+			<td>
+				Get a file.
+				Also the name of the capability for this permission.
+			</td>
+		</tr>
+		<tr>
+			<td>FILE_MODIFY</td>
+			<td>
+				Modify the contents of an existing file.
+				Also the name of the capability for this permission.
+			</td>
+		</tr>
+	</tbody>
+</table>

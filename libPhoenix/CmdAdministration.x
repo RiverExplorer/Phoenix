@@ -1,13 +1,27 @@
-%/**
-% * Phoenix (C) 2025 by Douglas Mark Royer (A.K.A. RiverExplorer) is licensed under CC BY 4.0                                                                   
-% * RiverExplorer is a trademark of RiverExplorer Games LLC                      
-% */
-%
 %#ifdef BUILDING_LIBPHOENIX
 %#include "Types.hpp"
 %#else
 %#include <RiverExplorer/Phoenix/Types.hpp>
 %#endif
+
+#ifdef RPC_HDR
+%/**
+% * The Administratoin Commands
+% */
+#endif
+enum AdministrativeCommands_e
+{
+	USER_CREATE = 0,
+	USER_DELETE = 1,
+	USER_RENAME = 2,
+	USER_LIST = 3,
+	USER_PERMISSIONS = 4,
+	SERVER_SHUTDOWN = 5,
+	SERVER_LOGS = 6,
+	SERVER_KICK_USER = 7,
+	SERVER_MANAGE_BANS = 8,
+	SERVER_VIEW_STATS = 9
+};
 
 #ifdef RPC_HDR
 %/**

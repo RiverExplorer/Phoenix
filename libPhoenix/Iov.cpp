@@ -24,7 +24,7 @@ namespace RiverExplorer::Phoenix
 	}
 
 	void
-	Iov::Add(uint8_t * Data, uint64_t Len, bool IsMMapped)
+	Iov::Add(uint8_t * Data, uint32_t Len, bool IsMMapped)
 	{
 		Blob * NewBlob = new Blob(Data, Len, IsMMapped);
 
@@ -34,18 +34,18 @@ namespace RiverExplorer::Phoenix
 	}
 
 	void
-	Iov::Add(uint64_t Value)
+	Iov::Add(uint32_t Value)
 	{
-		uint64_t  * Data = new uint64_t(Value);
+		uint32_t  * Data = new uint32_t(Value);
 		
-		Blob * NewBlob = new Blob((uint8_t*)Data, sizeof(uint64_t), false);
+		Blob * NewBlob = new Blob((uint8_t*)Data, sizeof(uint32_t), false);
 
 		_Q.push_back(NewBlob);
 
 		return;		
 	}
 
-	Iov::Blob::Blob(uint8_t * NewData, uint64_t NewLen, bool NewIsMMapped)
+	Iov::Blob::Blob(uint8_t * NewData, uint32_t NewLen, bool NewIsMMapped)
 	{
 		if (NewData != nullptr && NewLen > 0) {
 			OriginalData = NewData;
@@ -109,7 +109,7 @@ namespace RiverExplorer::Phoenix
 	}
 	
 	uint8_t *
-	Iov::Take(uint64_t & Len)
+	Iov::Take(uint32_t & Len)
 	{
 		uint8_t * Results = nullptr;
 
@@ -122,7 +122,7 @@ namespace RiverExplorer::Phoenix
 	}
 
 	void
-	Iov::WeUsed(uint64_t Used)
+	Iov::WeUsed(uint32_t Used)
 	{
 		Blob * B = _Q.front();
 

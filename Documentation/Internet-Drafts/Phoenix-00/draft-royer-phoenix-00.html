@@ -49,6 +49,8 @@
 <meta content="pop" name="keyword">
 <meta content="smtp" name="keyword">
 <meta content="mime" name="keyword">
+<meta content="lemonade" name="keyword">
+<meta content="phoenix" name="keyword">
 <meta content="draft-royer-phoenix-00" name="ietf.draft">
 <!-- Generator version information:
   xml2rfc 3.23.2
@@ -1254,7 +1256,7 @@ li > p:last-of-type:only-child {
 </tr></thead>
 <tfoot><tr>
 <td class="left">Royer</td>
-<td class="center">Expires 23 July 2025</td>
+<td class="center">Expires 25 July 2025</td>
 <td class="right">[Page]</td>
 </tr></tfoot>
 </table>
@@ -1267,12 +1269,12 @@ li > p:last-of-type:only-child {
 <dd class="internet-draft">draft-royer-phoenix-00</dd>
 <dt class="label-published">Published:</dt>
 <dd class="published">
-<time datetime="2025-01-19" class="published">19 January 2025</time>
+<time datetime="2025-01-21" class="published">21 January 2025</time>
     </dd>
 <dt class="label-intended-status">Intended Status:</dt>
 <dd class="intended-status">Informational</dd>
 <dt class="label-expires">Expires:</dt>
-<dd class="expires"><time datetime="2025-07-23">23 July 2025</time></dd>
+<dd class="expires"><time datetime="2025-07-25">25 July 2025</time></dd>
 <dt class="label-authors">Author:</dt>
 <dd class="authors">
 <div class="author">
@@ -1335,7 +1337,7 @@ li > p:last-of-type:only-child {
         time. It is inappropriate to use Internet-Drafts as reference
         material or to cite them other than as "work in progress."<a href="#section-boilerplate.1-3" class="pilcrow">¶</a></p>
 <p id="section-boilerplate.1-4">
-        This Internet-Draft will expire on 23 July 2025.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
+        This Internet-Draft will expire on 25 July 2025.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="copyright">
@@ -1376,39 +1378,53 @@ li > p:last-of-type:only-child {
             <p id="section-toc.1-1.2.1" class="keepWithNext"><a href="#section-2" class="auto internal xref">2</a>.  <a href="#name-terms-and-definition-used-i" class="internal xref">Terms and Definition used in this proposal</a></p>
 </li>
           <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.3">
-            <p id="section-toc.1-1.3.1"><a href="#section-3" class="auto internal xref">3</a>.  <a href="#name-commands-overview" class="internal xref">Commands Overview</a></p>
+            <p id="section-toc.1-1.3.1"><a href="#section-3" class="auto internal xref">3</a>.  <a href="#name-commands-summary" class="internal xref">Commands Summary</a></p>
 <ul class="compact toc ulBare ulEmpty">
 <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.3.2.1">
-                <p id="section-toc.1-1.3.2.1.1"><a href="#section-3.1" class="auto internal xref">3.1</a>.  <a href="#name-administration-commands-adm" class="internal xref">Administration Commands (AdminCmd)</a></p>
+                <p id="section-toc.1-1.3.2.1.1"><a href="#section-3.1" class="auto internal xref">3.1</a>.  <a href="#name-protocol-commands-summary" class="internal xref">Protocol Commands Summary</a></p>
 <ul class="compact toc ulBare ulEmpty">
 <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.3.2.1.2.1">
-                    <p id="section-toc.1-1.3.2.1.2.1.1"><a href="#section-3.1.1" class="auto internal xref">3.1.1</a>.  <a href="#name-administration-commands-ove" class="internal xref">Administration Commands Overview</a></p>
+                    <p id="section-toc.1-1.3.2.1.2.1.1"><a href="#section-3.1.1" class="auto internal xref">3.1.1</a>.  <a href="#name-packet-summary" class="internal xref">Packet Summary</a></p>
+</li>
+                  <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.3.2.1.2.2">
+                    <p id="section-toc.1-1.3.2.1.2.2.1"><a href="#section-3.1.2" class="auto internal xref">3.1.2</a>.  <a href="#name-packet-reply-summary" class="internal xref">Packet Reply Summary</a></p>
 </li>
                 </ul>
 </li>
               <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.3.2.2">
-                <p id="section-toc.1-1.3.2.2.1"><a href="#section-3.2" class="auto internal xref">3.2</a>.  <a href="#name-authentication-commands" class="internal xref">Authentication Commands</a></p>
+                <p id="section-toc.1-1.3.2.2.1"><a href="#section-3.2" class="auto internal xref">3.2</a>.  <a href="#name-administration-commands-sum" class="internal xref">Administration Commands Summary</a></p>
 <ul class="compact toc ulBare ulEmpty">
 <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.3.2.2.2.1">
-                    <p id="section-toc.1-1.3.2.2.2.1.1"><a href="#section-3.2.1" class="auto internal xref">3.2.1</a>.  <a href="#name-authentication-commands-ove" class="internal xref">Authentication Commands Overview</a></p>
+                    <p id="section-toc.1-1.3.2.2.2.1.1"><a href="#section-3.2.1" class="auto internal xref">3.2.1</a>.  <a href="#name-administration-capability-d" class="internal xref">Administration Capability Definitions</a></p>
+</li>
+                  <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.3.2.2.2.2">
+                    <p id="section-toc.1-1.3.2.2.2.2.1"><a href="#section-3.2.2" class="auto internal xref">3.2.2</a>.  <a href="#name-administration-of-users" class="internal xref">Administration of users.</a></p>
 </li>
                 </ul>
 </li>
               <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.3.2.3">
-                <p id="section-toc.1-1.3.2.3.1"><a href="#section-3.3" class="auto internal xref">3.3</a>.  <a href="#name-protocol" class="internal xref">Protocol</a></p>
-<ul class="compact toc ulBare ulEmpty">
-<li class="compact toc ulBare ulEmpty" id="section-toc.1-1.3.2.3.2.1">
-                    <p id="section-toc.1-1.3.2.3.2.1.1"><a href="#section-3.3.1" class="auto internal xref">3.3.1</a>.  <a href="#name-basic-file-and-folder-opera" class="internal xref">Basic File and Folder Operations</a></p>
-</li>
-                </ul>
+                <p id="section-toc.1-1.3.2.3.1"><a href="#section-3.3" class="auto internal xref">3.3</a>.  <a href="#name-authentication-commands-sum" class="internal xref">Authentication Commands Summary</a></p>
 </li>
               <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.3.2.4">
-                <p id="section-toc.1-1.3.2.4.1"><a href="#section-3.4" class="auto internal xref">3.4</a>.  <a href="#name-protocol-commands" class="internal xref">Protocol Commands</a></p>
-<ul class="compact toc ulBare ulEmpty">
-<li class="compact toc ulBare ulEmpty" id="section-toc.1-1.3.2.4.2.1">
-                    <p id="section-toc.1-1.3.2.4.2.1.1"><a href="#section-3.4.1" class="auto internal xref">3.4.1</a>.  <a href="#name-protocol-overview" class="internal xref">Protocol Overview</a></p>
+                <p id="section-toc.1-1.3.2.4.1"><a href="#section-3.4" class="auto internal xref">3.4</a>.  <a href="#name-calendar-commands-summary" class="internal xref">Calendar Commands Summary</a></p>
 </li>
-                </ul>
+              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.3.2.5">
+                <p id="section-toc.1-1.3.2.5.1"><a href="#section-3.5" class="auto internal xref">3.5</a>.  <a href="#name-capability-commands-summary" class="internal xref">Capability Commands Summary</a></p>
+</li>
+              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.3.2.6">
+                <p id="section-toc.1-1.3.2.6.1"><a href="#section-3.6" class="auto internal xref">3.6</a>.  <a href="#name-email-commands-summary" class="internal xref">EMail Commands Summary</a></p>
+</li>
+              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.3.2.7">
+                <p id="section-toc.1-1.3.2.7.1"><a href="#section-3.7" class="auto internal xref">3.7</a>.  <a href="#name-file-and-folder-commands-su" class="internal xref">File and Folder Commands Summary</a></p>
+</li>
+              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.3.2.8">
+                <p id="section-toc.1-1.3.2.8.1"><a href="#section-3.8" class="auto internal xref">3.8</a>.  <a href="#name-keepalive-command-summary" class="internal xref">KeepAlive Command Summary</a></p>
+</li>
+              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.3.2.9">
+                <p id="section-toc.1-1.3.2.9.1"><a href="#section-3.9" class="auto internal xref">3.9</a>.  <a href="#name-ping-command-summary" class="internal xref">Ping Command Summary</a></p>
+</li>
+              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.3.2.10">
+                <p id="section-toc.1-1.3.2.10.1"><a href="#section-3.10" class="auto internal xref">3.10</a>. <a href="#name-s-mime-commands-summary" class="internal xref">S/MIME Commands Summary</a></p>
 </li>
             </ul>
 </li>
@@ -1445,13 +1461,57 @@ li > p:last-of-type:only-child {
             <p id="section-toc.1-1.11.1"><a href="#appendix-D" class="auto internal xref">Appendix D</a>.  <a href="#name-protocol-enumerated-binary-" class="internal xref">Protocol Enumerated Binary Values</a></p>
 </li>
           <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.12">
-            <p id="section-toc.1-1.12.1"><a href="#appendix-E" class="auto internal xref"></a><a href="#name-acknowledgements" class="internal xref">Acknowledgements</a></p>
+            <p id="section-toc.1-1.12.1"><a href="#appendix-E" class="auto internal xref">Appendix E</a>.  <a href="#name-rpcgen-protocol-specificati" class="internal xref">RPCGEN protocol specification</a></p>
+<ul class="compact toc ulBare ulEmpty">
+<li class="compact toc ulBare ulEmpty" id="section-toc.1-1.12.2.1">
+                <p id="section-toc.1-1.12.2.1.1"><a href="#appendix-E.1" class="auto internal xref">E.1</a>.  <a href="#name-rpcgen-acl" class="internal xref">RPCGEN - Acl</a></p>
+</li>
+              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.12.2.2">
+                <p id="section-toc.1-1.12.2.2.1"><a href="#appendix-E.2" class="auto internal xref">E.2</a>.  <a href="#name-rpcgen-administration" class="internal xref">RPCGEN - Administration</a></p>
+</li>
+              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.12.2.3">
+                <p id="section-toc.1-1.12.2.3.1"><a href="#appendix-E.3" class="auto internal xref">E.3</a>.  <a href="#name-rpcgen-authenticate" class="internal xref">RPCGEN - Authenticate</a></p>
+</li>
+              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.12.2.4">
+                <p id="section-toc.1-1.12.2.4.1"><a href="#appendix-E.4" class="auto internal xref">E.4</a>.  <a href="#name-rpcgen-capability" class="internal xref">RPCGEN - Capability</a></p>
+</li>
+              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.12.2.5">
+                <p id="section-toc.1-1.12.2.5.1"><a href="#appendix-E.5" class="auto internal xref">E.5</a>.  <a href="#name-rpcgen-folder" class="internal xref">RPCGEN - Folder</a></p>
+</li>
+              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.12.2.6">
+                <p id="section-toc.1-1.12.2.6.1"><a href="#appendix-E.6" class="auto internal xref">E.6</a>.  <a href="#name-rpcgen-keepalive" class="internal xref">RPCGEN - KeepAlive</a></p>
+</li>
+              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.12.2.7">
+                <p id="section-toc.1-1.12.2.7.1"><a href="#appendix-E.7" class="auto internal xref">E.7</a>.  <a href="#name-rpcgen-notsupported" class="internal xref">RPCGEN - NotSupported</a></p>
+</li>
+              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.12.2.8">
+                <p id="section-toc.1-1.12.2.8.1"><a href="#appendix-E.8" class="auto internal xref">E.8</a>.  <a href="#name-rpcgen-ping" class="internal xref">RPCGEN - Ping</a></p>
+</li>
+              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.12.2.9">
+                <p id="section-toc.1-1.12.2.9.1"><a href="#appendix-E.9" class="auto internal xref">E.9</a>.  <a href="#name-rpcgen-commands" class="internal xref">RPCGEN - Commands</a></p>
+</li>
+              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.12.2.10">
+                <p id="section-toc.1-1.12.2.10.1"><a href="#appendix-E.10" class="auto internal xref">E.10</a>. <a href="#name-rpcgen-email" class="internal xref">RPCGEN - EMail</a></p>
+</li>
+              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.12.2.11">
+                <p id="section-toc.1-1.12.2.11.1"><a href="#appendix-E.11" class="auto internal xref">E.11</a>. <a href="#name-rpcgen-mime" class="internal xref">RPCGEN - MIME</a></p>
+</li>
+              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.12.2.12">
+                <p id="section-toc.1-1.12.2.12.1"><a href="#appendix-E.12" class="auto internal xref">E.12</a>. <a href="#name-rpcgen-phoenix" class="internal xref">RPCGEN - Phoenix</a></p>
+</li>
+              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.12.2.13">
+                <p id="section-toc.1-1.12.2.13.1"><a href="#appendix-E.13" class="auto internal xref">E.13</a>. <a href="#name-rpcgen-types" class="internal xref">RPCGEN - Types</a></p>
+</li>
+            </ul>
 </li>
           <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.13">
-            <p id="section-toc.1-1.13.1"><a href="#appendix-F" class="auto internal xref"></a><a href="#name-contributors" class="internal xref">Contributors</a></p>
+            <p id="section-toc.1-1.13.1"><a href="#appendix-F" class="auto internal xref"></a><a href="#name-acknowledgments" class="internal xref">Acknowledgments</a></p>
 </li>
           <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.14">
-            <p id="section-toc.1-1.14.1"><a href="#appendix-G" class="auto internal xref"></a><a href="#name-authors-address" class="internal xref">Author's Address</a></p>
+            <p id="section-toc.1-1.14.1"><a href="#appendix-G" class="auto internal xref"></a><a href="#name-contributors" class="internal xref">Contributors</a></p>
+</li>
+          <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.15">
+            <p id="section-toc.1-1.15.1"><a href="#appendix-H" class="auto internal xref"></a><a href="#name-authors-address" class="internal xref">Author's Address</a></p>
 </li>
         </ul>
 </nav>
@@ -1698,288 +1758,248 @@ li > p:last-of-type:only-child {
 </section>
 <div id="COMMANDS">
 <section id="section-3">
-      <h2 id="name-commands-overview">
-<a href="#section-3" class="section-number selfRef">3. </a><a href="#name-commands-overview" class="section-name selfRef">Commands Overview</a>
+      <h2 id="name-commands-summary">
+<a href="#section-3" class="section-number selfRef">3. </a><a href="#name-commands-summary" class="section-name selfRef">Commands Summary</a>
       </h2>
-<div id="ADMIN_CMD">
-<section id="section-3.1">
-        <h3 id="name-administration-commands-adm">
-<a href="#section-3.1" class="section-number selfRef">3.1. </a><a href="#name-administration-commands-adm" class="section-name selfRef">Administration Commands (AdminCmd)</a>
-        </h3>
-<section id="section-3.1.1">
-          <h4 id="name-administration-commands-ove">
-<a href="#section-3.1.1" class="section-number selfRef">3.1.1. </a><a href="#name-administration-commands-ove" class="section-name selfRef">Administration Commands Overview</a>
-          </h4>
-<p id="section-3.1.1-1">
- Administrative command can be used to configure, audit, and manage
- the remote endpoint.
- Administrative command can be used to configure, audit, and manage
- user acess.<a href="#section-3.1.1-1" class="pilcrow">¶</a></p>
-<div id="ADMIN_CAPABILITY">
-<section id="section-3.1.1.1">
-            <h5 id="name-capability-name">
-<a href="#section-3.1.1.1" class="section-number selfRef">3.1.1.1. </a><a href="#name-capability-name" class="section-name selfRef">Capability Name</a>
-            </h5>
-<p id="section-3.1.1.1-1">
- Implementations that support any ADMIN_CMD include ADMIN_CMD
- in the post authenication CAPABILITY list.<a href="#section-3.1.1.1-1" class="pilcrow">¶</a></p>
-<p id="section-3.1.1.1-2">
- Implementations MUST NOT send a ADMIN_CMD capability
- in the pre authorization CAPABILITY list.<a href="#section-3.1.1.1-2" class="pilcrow">¶</a></p>
-<p id="section-3.1.1.1-3">
- When a user has been authenticated, as part of the affermative
- reply, the ADMIN_CAPABILITY will be included in the reply
- when the user has administrative permissions.<a href="#section-3.1.1.1-3" class="pilcrow">¶</a></p>
-<p id="section-3.1.1.1-4">
- The ADMIN_CAPABILITY reply will then be followed by
- the list of ADMIN commands the user is allowed to perform.
- For example, if a user only has permission to only view user lists, then
- only the USER_LIST ADMIN capibility will be provided.<a href="#section-3.1.1.1-4" class="pilcrow">¶</a></p>
-</section>
-</div>
-<div id="ADMIN_USER">
-<section id="section-3.1.1.2">
-            <h5 id="name-administration-of-users">
-<a href="#section-3.1.1.2" class="section-number selfRef">3.1.1.2. </a><a href="#name-administration-of-users" class="section-name selfRef">Administration of users.</a>
-            </h5>
-<p id="section-3.1.1.2-1">
- The following operations are defined for user administration.<a href="#section-3.1.1.2-1" class="pilcrow">¶</a></p>
-<table class="center" id="table-1">
-              <caption><a href="#table-1" class="selfRef">Table 1</a></caption>
-<thead>
-                <tr>
-                  <th class="text-left" rowspan="1" colspan="1">Command and Capability Name</th>
-                  <th class="text-left" rowspan="1" colspan="1">Brief Description.</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr>
-                  <td class="text-left" rowspan="1" colspan="1">USER_CREATE</td>
-                  <td class="text-left" rowspan="1" colspan="1">Create a new user.</td>
-                </tr>
-                <tr>
-                  <td class="text-left" rowspan="1" colspan="1">USER_DELETE</td>
-                  <td class="text-left" rowspan="1" colspan="1">Delete a user.</td>
-                </tr>
-                <tr>
-                  <td class="text-left" rowspan="1" colspan="1">USER_RENAME</td>
-                  <td class="text-left" rowspan="1" colspan="1">Rename a user.</td>
-                </tr>
-                <tr>
-                  <td class="text-left" rowspan="1" colspan="1">USER_LIST</td>
-                  <td class="text-left" rowspan="1" colspan="1">List users and their capabilities.</td>
-                </tr>
-                <tr>
-                  <td class="text-left" rowspan="1" colspan="1">USER_PERMISSIONS</td>
-                  <td class="text-left" rowspan="1" colspan="1">Update user permissions.</td>
-                </tr>
-              </tbody>
-            </table>
-</section>
-</div>
-</section>
-</section>
-</div>
-<div id="AUTH_CMD">
-<section id="section-3.2">
-        <h3 id="name-authentication-commands">
-<a href="#section-3.2" class="section-number selfRef">3.2. </a><a href="#name-authentication-commands" class="section-name selfRef">Authentication Commands</a>
-        </h3>
-<section id="section-3.2.1">
-          <h4 id="name-authentication-commands-ove">
-<a href="#section-3.2.1" class="section-number selfRef">3.2.1. </a><a href="#name-authentication-commands-ove" class="section-name selfRef">Authentication Commands Overview</a>
-          </h4>
-<p id="section-3.2.1-1">
- TODO<a href="#section-3.2.1-1" class="pilcrow">¶</a></p>
-</section>
-</section>
-</div>
-<div id="FILECMD">
-<section id="section-3.3">
-        <h3 id="name-protocol">
-<a href="#section-3.3" class="section-number selfRef">3.3. </a><a href="#name-protocol" class="section-name selfRef">Protocol</a>
-        </h3>
-<section id="section-3.3.1">
-          <h4 id="name-basic-file-and-folder-opera">
-<a href="#section-3.3.1" class="section-number selfRef">3.3.1. </a><a href="#name-basic-file-and-folder-opera" class="section-name selfRef">Basic File and Folder Operations</a>
-          </h4>
-<p id="section-3.3.1-1">
- The file operations (FileOp) have protocol names.
- Here are their protocol names and a breif description.<a href="#section-3.3.1-1" class="pilcrow">¶</a></p>
-<table class="center" id="table-2">
-            <caption><a href="#table-2" class="selfRef">Table 2</a></caption>
-<thead>
-              <tr>
-                <th class="text-left" rowspan="1" colspan="1">Op Name</th>
-                <th class="text-left" rowspan="1" colspan="1">Brief Description.</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td class="text-left" rowspan="1" colspan="1">FOLDER_CREATE</td>
-                <td class="text-left" rowspan="1" colspan="1">Create a new folder.</td>
-              </tr>
-              <tr>
-                <td class="text-left" rowspan="1" colspan="1">FOLDER_COPY</td>
-                <td class="text-left" rowspan="1" colspan="1">Copy a folder.</td>
-              </tr>
-              <tr>
-                <td class="text-left" rowspan="1" colspan="1">FOLDER_DELETE</td>
-                <td class="text-left" rowspan="1" colspan="1">Delete a folder.</td>
-              </tr>
-              <tr>
-                <td class="text-left" rowspan="1" colspan="1">FOLDER_RENAME</td>
-                <td class="text-left" rowspan="1" colspan="1">Rename a folder.</td>
-              </tr>
-              <tr>
-                <td class="text-left" rowspan="1" colspan="1">FOLDER_MOVE</td>
-                <td class="text-left" rowspan="1" colspan="1">Move a folder.</td>
-              </tr>
-              <tr>
-                <td class="text-left" rowspan="1" colspan="1">FOLDER_SHARE</td>
-                <td class="text-left" rowspan="1" colspan="1">Share a folder.</td>
-              </tr>
-              <tr>
-                <td class="text-left" rowspan="1" colspan="1">FOLDER_LIST</td>
-                <td class="text-left" rowspan="1" colspan="1">List folders and files.</td>
-              </tr>
-              <tr>
-                <td class="text-left" rowspan="1" colspan="1">FILE_GET</td>
-                <td class="text-left" rowspan="1" colspan="1">Get a known existing file.</td>
-              </tr>
-              <tr>
-                <td class="text-left" rowspan="1" colspan="1">FILE_CREATE</td>
-                <td class="text-left" rowspan="1" colspan="1">Create a new file.</td>
-              </tr>
-              <tr>
-                <td class="text-left" rowspan="1" colspan="1">FILE_MODIFY</td>
-                <td class="text-left" rowspan="1" colspan="1">Modify the contents of an existing file.</td>
-              </tr>
-              <tr>
-                <td class="text-left" rowspan="1" colspan="1">FILE_SHARE</td>
-                <td class="text-left" rowspan="1" colspan="1">Share a file.</td>
-              </tr>
-            </tbody>
-          </table>
-</section>
-</section>
-</div>
-<div id="PROTO_CMD">
-<section id="section-3.4">
-        <h3 id="name-protocol-commands">
-<a href="#section-3.4" class="section-number selfRef">3.4. </a><a href="#name-protocol-commands" class="section-name selfRef">Protocol Commands</a>
-        </h3>
-<section id="section-3.4.1">
-          <h4 id="name-protocol-overview">
-<a href="#section-3.4.1" class="section-number selfRef">3.4.1. </a><a href="#name-protocol-overview" class="section-name selfRef">Protocol Overview</a>
-          </h4>
-<p id="section-3.4.1-1">
- This protocol connects two endpoints over a network and facilitates
- the secure and authorized transfer of MIME objects.<a href="#section-3.4.1-1" class="pilcrow">¶</a></p>
-<p id="section-3.4.1-2">
+<p id="section-3-1">
  The endpoint that initiates the connection is called the client.
- The endpoint that is connected to, is called the server.
- The client is the protocol authority, and the server responds
- to client commands as configured or instructed by the client.<a href="#section-3.4.1-2" class="pilcrow">¶</a></p>
-<p id="section-3.4.1-3">
+        The endpoint that is connected to, is called the server.
+        The client is the protocol authority, and the server responds
+        to client commands as configured or instructed by the client.<a href="#section-3-1" class="pilcrow">¶</a></p>
+<p id="section-3-2">
+ This section provides an overview of the basic commands.
+ Each command has a detailed section in this specification.<a href="#section-3-2" class="pilcrow">¶</a></p>
+<p id="section-3-3">
+ When a command is sent to the remote endpoint and received,
+ the remote endpoint determines if the connection is authenticated
+ or authorized to perform the command.
+ If not supported, or not authorized, a NotSupported command
+ is send as a reply.
+ The NotSupported command sent back has the same Sequence number 
+ that was in the original command.<a href="#section-3-3" class="pilcrow">¶</a></p>
+<p id="section-3-4">
+ Many commands are only valid after authentication.<a href="#section-3-4" class="pilcrow">¶</a></p>
+<p id="section-3-5">
+ When the client connects to a server it immediately sends
+ its pre authentication capabilities to the server.
+ Or an Auth command.<a href="#section-3-5" class="pilcrow">¶</a></p>
+<p id="section-3-6">
+ When the server gets a new connection followed by
+ a pre authentication capability command, it immediately sends
+ its pre authentication capabilities to the client.<a href="#section-3-6" class="pilcrow">¶</a></p>
+<p id="section-3-7">
+ When the client and server have had a relationship, the
+ client may send an Auth Command to initiate the authorization
+ and does not send its pre authentication capability list
+ to the server.
+ It then waits for the Auth reply from the server.<a href="#section-3-7" class="pilcrow">¶</a></p>
+<ul class="normal">
+<li class="normal" id="section-3-8.1">
+ If the client gets an Auth reply that is positive,
+ it sends its post authentication capability list to the server.<a href="#section-3-8.1" class="pilcrow">¶</a>
+</li>
+        <li class="normal" id="section-3-8.2">
+ If the client gets an Auth reply that is negative,
+ it sends its pre authentication
+ capability list to the server.<a href="#section-3-8.2" class="pilcrow">¶</a>
+</li>
+      </ul>
+<p id="section-3-9">
+ When a servers first received packet is a Auth command,
+ It processes the Auth command and sends the Auth reply.<a href="#section-3-9" class="pilcrow">¶</a></p>
+<ul class="normal">
+<li class="normal" id="section-3-10.1">
+ If the Auth reply is positive, then it also sends it
+ post authentication capability list.<a href="#section-3-10.1" class="pilcrow">¶</a>
+</li>
+        <li class="normal" id="section-3-10.2">
+ If the Auth reply is negative, then it sends its
+ pre authentication capability list to the client.<a href="#section-3-10.2" class="pilcrow">¶</a>
+</li>
+      </ul>
+<p id="section-3-11">
+ A server may automatically send its pre authentication
+ capability list to the client upon initial connection.
+ Or it may wait to see if it gets a pre authentication
+ capability list, or an Auth command.<a href="#section-3-11" class="pilcrow">¶</a></p>
+<p id="section-3-12">
+ If the client sends an Auth command as its first packet,
+ it may get the pre authentication capability from the server
+ before the Auth reply. Simply process both.<a href="#section-3-12" class="pilcrow">¶</a></p>
+<div id="PROTO_SUMMARY">
+<section id="section-3.1">
+        <h3 id="name-protocol-commands-summary">
+<a href="#section-3.1" class="section-number selfRef">3.1. </a><a href="#name-protocol-commands-summary" class="section-name selfRef">Protocol Commands Summary</a>
+        </h3>
+<p id="section-3.1-1">
+ In addition to the protocols listed in this specification.
+ Additional protocols and commands can be added in the future.
+ They must follow the same framework listed here.<a href="#section-3.1-1" class="pilcrow">¶</a></p>
+<p id="section-3.1-2">
+ This protocol connects two endpoints over a network and facilitates
+ the secure and authorized transfer of MIME objects.<a href="#section-3.1-2" class="pilcrow">¶</a></p>
+<p id="section-3.1-3">
+ This is a binary protocol.
+ The payload can be anything, text or binary.
+ This protocol was designed to reduce the number of back and forth
+ requests and replies between the client and server.
+ By using XDR as the format for transferring binary control
+ information it is portable to any computer architecture.
+ Appendix XXX has the rpcgen definition for the protocol
+ defined in this specification.<a href="#section-3.1-3" class="pilcrow">¶</a></p>
+<p id="section-3.1-4">
  After the connection is successful and authenticated, ether endpoint
  may send commands to the other endpoint.
  When the server initiates an unsolicited command, it could be a
  any kind of notification or message for the client side application
  or the user. It could be reporting errors or updates to
- previous client initiated commands.<a href="#section-3.4.1-3" class="pilcrow">¶</a></p>
-<p id="section-3.4.1-4">
+ previous client initiated commands.<a href="#section-3.1-4" class="pilcrow">¶</a></p>
+<p id="section-3.1-5">
  All commands initiated from the client have even
  numbered command sequence numbers.
  
  All commands initiated from the server have odd
- numbered command sequence numbers.<a href="#section-3.4.1-4" class="pilcrow">¶</a></p>
-<p id="section-3.4.1-5">
+ numbered command sequence numbers.<a href="#section-3.1-5" class="pilcrow">¶</a></p>
+<p id="section-3.1-6">
  Some commands expect a command reply.
  Other commands do not expect a command reply.
  An example of a command that expects a reply is the ping command.
  An example of a command that does not expect a reply is the keep-alive
  command.
- Conceptually their are two kinds of commands:
- (a) Directive commands, and (b) Request commands.
- These are not specific protocol entities, these concepts will
- be used to describe the expected behavior when one of these
- are transmitted.<a href="#section-3.4.1-5" class="pilcrow">¶</a></p>
-<p id="section-3.4.1-6">
+ Conceptually there are two kinds of commands:<a href="#section-3.1-6" class="pilcrow">¶</a></p>
+<span class="break"></span><dl class="dlParallel" id="section-3.1-7">
+          <dt id="section-3.1-7.1">Directive commands:</dt>
+          <dd style="margin-left: 1.5em" id="section-3.1-7.2">
  A directive type command expects the other endpoint to process
  the command and possibly reply with some results.
  An example could be: Send me an index of my emails in my InBox.
  The client would expect a result.
- Another example is a bye command, once sent, no reply is expected.<a href="#section-3.4.1-6" class="pilcrow">¶</a></p>
-<p id="section-3.4.1-7">
+ Another example is a bye command, once sent, no reply is expected.<a href="#section-3.1-7.2" class="pilcrow">¶</a>
+</dd>
+          <dd class="break"></dd>
+<dt id="section-3.1-7.3">Request commands:</dt>
+          <dd style="margin-left: 1.5em" id="section-3.1-7.4">
  A request type command may or might not have any reply.
  For example, a keep-alive command is a request to not
  timeout and has no reply.
  And a send new email notifications command would expect
  zero or more replies and it would not require them, as they
- might not happen.<a href="#section-3.4.1-7" class="pilcrow">¶</a></p>
-<div id="PACKETOVERVIEW">
-<section id="section-3.4.1.1">
-            <h5 id="name-packet-overview">
-<a href="#section-3.4.1.1" class="section-number selfRef">3.4.1.1. </a><a href="#name-packet-overview" class="section-name selfRef">Packet Overview</a>
-            </h5>
-<p id="section-3.4.1.1-1">
+ might not happen.<a href="#section-3.1-7.4" class="pilcrow">¶</a>
+</dd>
+        <dd class="break"></dd>
+</dl>
+<p id="section-3.1-8">
+ These are not specific protocol entities, these concepts will
+ be used to describe the expected behavior when one of these
+ are transmitted.<a href="#section-3.1-8" class="pilcrow">¶</a></p>
+<div id="PACKET_SUMMARY">
+<section id="section-3.1.1">
+          <h4 id="name-packet-summary">
+<a href="#section-3.1.1" class="section-number selfRef">3.1.1. </a><a href="#name-packet-summary" class="section-name selfRef">Packet Summary</a>
+          </h4>
+<p id="section-3.1.1-1">
  All commands are sent in a packet.
- A packet has two parts, the packet header and the packet body.<a href="#section-3.4.1.1-1" class="pilcrow">¶</a></p>
-<p id="section-3.4.1.1-2">
+ A packet has two parts:<a href="#section-3.1.1-1" class="pilcrow">¶</a></p>
+<ol start="1" type="1" class="normal type-1" id="section-3.1.1-2">
+ <li id="section-3.1.1-2.1">The packet header.<a href="#section-3.1.1-2.1" class="pilcrow">¶</a>
+</li>
+            <li id="section-3.1.1-2.2">The packet body.<a href="#section-3.1.1-2.2" class="pilcrow">¶</a>
+</li>
+          </ol>
+<p id="section-3.1.1-3">
  The packet header has one value, the total length
- of the packet header, packet body, and payload sent as an
+ of the packet body, and payload sent as an
  unsigned 64-bit integer in network byte order.
  The length does not include its own length.
- It is the total length that follows the length value.<a href="#section-3.4.1.1-2" class="pilcrow">¶</a></p>
-<p id="section-3.4.1.1-3">
- The packet body is divided into three parts: (1) Command sequence (SEQ),
- (2) The Command (CMD), and (3) The command specific data (Payload).<a href="#section-3.4.1.1-3" class="pilcrow">¶</a></p>
-<p id="section-3.4.1.1-4">
- (1) The Command SEQ is a 32-bit unsigned integer sent
+ It is the total length that follows the length value.<a href="#section-3.1.1-3" class="pilcrow">¶</a></p>
+<p id="section-3.1.1-4">
+ The packet body is divided into three parts:<a href="#section-3.1.1-4" class="pilcrow">¶</a></p>
+<ol start="1" type="1" class="normal type-1" id="section-3.1.1-5">
+ <li id="section-3.1.1-5.1">Command sequence (SEQ).<a href="#section-3.1.1-5.1" class="pilcrow">¶</a>
+</li>
+            <li id="section-3.1.1-5.2">The Command (CMD).<a href="#section-3.1.1-5.2" class="pilcrow">¶</a>
+</li>
+            <li id="section-3.1.1-5.3">The command specific data (Payload).<a href="#section-3.1.1-5.3" class="pilcrow">¶</a>
+</li>
+          </ol>
+<div id="SEQ">
+<section id="section-3.1.1.1">
+            <h5 id="name-command-sequence-number-seq">
+<a href="#section-3.1.1.1" class="section-number selfRef">3.1.1.1. </a><a href="#name-command-sequence-number-seq" class="section-name selfRef">Command Sequence Number (SEQ)</a>
+            </h5>
+<p id="section-3.1.1.1-1">
+ The Command SEQ is a 32-bit unsigned integer sent
  in network byte order.
  This SEQ is an even number when initiated from the client,
- and an odd number when initiated from the server.<a href="#section-3.4.1.1-4" class="pilcrow">¶</a></p>
-<p id="section-3.4.1.1-5">
+ and an odd number when initiated from the server.<a href="#section-3.1.1.1-1" class="pilcrow">¶</a></p>
+<p id="section-3.1.1.1-2">
  The first SEQ value sent from the client is zero (0) and is
- incremented by two each time.<a href="#section-3.4.1.1-5" class="pilcrow">¶</a></p>
-<p id="section-3.4.1.1-6">
+ incremented by two each time.<a href="#section-3.1.1.1-2" class="pilcrow">¶</a></p>
+<p id="section-3.1.1.1-3">
  The first SEQ value sent from the server is one (1) and is
- incremented by two each time.<a href="#section-3.4.1.1-6" class="pilcrow">¶</a></p>
-<p id="section-3.4.1.1-7">
+ incremented by two each time.<a href="#section-3.1.1.1-3" class="pilcrow">¶</a></p>
+<p id="section-3.1.1.1-4">
  In the event an endpoint command SEQ reaches its maximum value,
  then its numbering starts over at zero (0) for the client
  and one (1) for the server.
  An implementation must keep track of outstanding commands
  and not accidentally re-issue the same SEQ that may still
- get replies from the other endpoint.<a href="#section-3.4.1.1-7" class="pilcrow">¶</a></p>
-<p id="section-3.4.1.1-8">
- (2) The command is a predefined enumerated 32-bit unsigned
+ get replies from the other endpoint.<a href="#section-3.1.1.1-4" class="pilcrow">¶</a></p>
+</section>
+</div>
+<div id="COMMAND">
+<section id="section-3.1.1.2">
+            <h5 id="name-the-command-cmd">
+<a href="#section-3.1.1.2" class="section-number selfRef">3.1.1.2. </a><a href="#name-the-command-cmd" class="section-name selfRef">The Command (CMD)</a>
+            </h5>
+<p id="section-3.1.1.2-1">
+ The command is a predefined enumerated 32-bit unsigned
  integer sent in network byte order.
  The value (in hex) 0xFFFFFFFF is reserved for extensions
- if the 32-bit range is exhausted.<a href="#section-3.4.1.1-8" class="pilcrow">¶</a></p>
-<p id="section-3.4.1.1-9">
- (3) The payload has no predefined length, other what
+ if the 32-bit range is exhausted.<a href="#section-3.1.1.2-1" class="pilcrow">¶</a></p>
+</section>
+</div>
+<div id="PAYLOAD">
+<section id="section-3.1.1.3">
+            <h5 id="name-the-payload-payload">
+<a href="#section-3.1.1.3" class="section-number selfRef">3.1.1.3. </a><a href="#name-the-payload-payload" class="section-name selfRef">The Payload (Payload)</a>
+            </h5>
+<p id="section-3.1.1.3-1">
+ The payload has no predefined length, other what
  what is specified for the CMD in the packet.
  It could be zero to vary large in size.
  It could be opaque data, or it could be data that
  is XDR encoded.
- The contents are specific to the CMD in the packet.<a href="#section-3.4.1.1-9" class="pilcrow">¶</a></p>
-<div id="PACKETREPLYOVERVIEW">
-<section id="section-3.4.1.1.1">
-              <h6 id="name-packet-reply-overview">
-<a href="#section-3.4.1.1.1" class="section-number selfRef">3.4.1.1.1. </a><a href="#name-packet-reply-overview" class="section-name selfRef">Packet Reply Overview</a>
-              </h6>
-<p id="section-3.4.1.1.1-1">
+ The contents are specific to the CMD specified in
+ the in the packet body.<a href="#section-3.1.1.3-1" class="pilcrow">¶</a></p>
+</section>
+</div>
+</section>
+</div>
+<div id="PACKET_REPLY_SUMMARY">
+<section id="section-3.1.2">
+          <h4 id="name-packet-reply-summary">
+<a href="#section-3.1.2" class="section-number selfRef">3.1.2. </a><a href="#name-packet-reply-summary" class="section-name selfRef">Packet Reply Summary</a>
+          </h4>
+<p id="section-3.1.2-1">
  All replies to a command are also a command packet.
  They contain the same command SEQ and command
  as the original packet.
- The endpoint recognizes it is a reply because (a) the
- command SEQ matches one that is waiting a reply. And (b)
+ The endpoint recognizes it is a reply because:<a href="#section-3.1.2-1" class="pilcrow">¶</a></p>
+<ul class="normal">
+<li class="normal" id="section-3.1.2-2.1">
+ The command SEQ matches one that is waiting a reply.<a href="#section-3.1.2-2.1" class="pilcrow">¶</a>
+</li>
+            <li class="normal" id="section-3.1.2-2.2">
  When the client gets an even numbered SEQ, it can only
- be a reply. And when the server gets an odd numbered
- SEQ, it can only be a reply.<a href="#section-3.4.1.1.1-1" class="pilcrow">¶</a></p>
-<p id="section-3.4.1.1.1-2">
+ be a reply.<a href="#section-3.1.2-2.2" class="pilcrow">¶</a>
+</li>
+            <li class="normal" id="section-3.1.2-2.3">
+ When the server gets an odd numbered
+ SEQ, it can only be a reply.<a href="#section-3.1.2-2.3" class="pilcrow">¶</a>
+</li>
+          </ul>
+<p id="section-3.1.2-3">
  Some commands have zero to many replies.
  Each of these multiple replies contains the same SEQ as the
  original command. An example, the client sends a request
@@ -1987,12 +2007,479 @@ li > p:last-of-type:only-child {
  SEQ 20. Each time a new email arrives, a reply will
  be sent from the server with a command SEQ of 20.
  And over time, the client may get many with a SEQ of 20
- as new emails arrive on the server.<a href="#section-3.4.1.1.1-2" class="pilcrow">¶</a></p>
+ as new emails arrive on the server.<a href="#section-3.1.2-3" class="pilcrow">¶</a></p>
 </section>
 </div>
 </section>
 </div>
+<div id="ADMIN_SUMMARY">
+<section id="section-3.2">
+        <h3 id="name-administration-commands-sum">
+<a href="#section-3.2" class="section-number selfRef">3.2. </a><a href="#name-administration-commands-sum" class="section-name selfRef">Administration Commands Summary</a>
+        </h3>
+<p id="section-3.2-1">
+ Implementations are not required to implement any ADMIN command.
+ A client will know the server supports one or more ADMIN
+ commands when it gets its post authentication capability command
+ from the server.<a href="#section-3.2-1" class="pilcrow">¶</a></p>
+<p id="section-3.2-2">
+ Administrative command can be used to configure, audit, and manage
+ the remote endpoint.
+ Administrative command can be used to configure, audit, and manage
+ user access.<a href="#section-3.2-2" class="pilcrow">¶</a></p>
+<div id="ADMIN_CAP">
+<section id="section-3.2.1">
+          <h4 id="name-administration-capability-d">
+<a href="#section-3.2.1" class="section-number selfRef">3.2.1. </a><a href="#name-administration-capability-d" class="section-name selfRef">Administration Capability Definitions</a>
+          </h4>
+<p id="section-3.2.1-1">
+ Implementations MUST NOT send the ADMIN capability
+ in the pre authorization CAPABILITY list.<a href="#section-3.2.1-1" class="pilcrow">¶</a></p>
+<p id="section-3.2.1-2">
+ Implementations that support any administration command
+ MAY include ADMIN capability in the post authentication CAPABILITY list.
+ An implementation may decide that only specified and
+ authorized users may issue administrative commands and
+ send only those authenticated users the ADMIN capability.<a href="#section-3.2.1-2" class="pilcrow">¶</a></p>
+<p id="section-3.2.1-3">
+ The ADMIN capability include the list of ADMIN commands the user is
+ allowed to perform.
+ For example, if a user only has permission to only view user lists, then
+ only the USER_LIST ADMIN capability will be provided.<a href="#section-3.2.1-3" class="pilcrow">¶</a></p>
+<p id="section-3.2.1-4">
+ The capability name is also the command name to use
+ when invoking that capability.<a href="#section-3.2.1-4" class="pilcrow">¶</a></p>
+<p id="section-3.2.1-5">
+ When a user attempts to send a commmand they are not authorized
+ to send, the remote endpoint will reply with a NotSupported command
+ with its sequence number set to the sequence number from offending
+ command.<a href="#section-3.2.1-5" class="pilcrow">¶</a></p>
 </section>
+</div>
+<div id="ADMIN_USER">
+<section id="section-3.2.2">
+          <h4 id="name-administration-of-users">
+<a href="#section-3.2.2" class="section-number selfRef">3.2.2. </a><a href="#name-administration-of-users" class="section-name selfRef">Administration of users.</a>
+          </h4>
+<p id="section-3.2.2-1">
+ The following operations are defined for administration.<a href="#section-3.2.2-1" class="pilcrow">¶</a></p>
+<table class="center" id="table-1">
+            <caption><a href="#table-1" class="selfRef">Table 1</a></caption>
+<thead>
+              <tr>
+                <th class="text-left" rowspan="1" colspan="1">Command and Capability Name</th>
+                <th class="text-left" rowspan="1" colspan="1">Brief Description.</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td class="text-left" rowspan="1" colspan="1">USER_CREATE</td>
+                <td class="text-left" rowspan="1" colspan="1">
+ May create a new user.
+ And also the command to create a user.
+ </td>
+              </tr>
+              <tr>
+                <td class="text-left" rowspan="1" colspan="1">USER_DELETE</td>
+                <td class="text-left" rowspan="1" colspan="1">
+ May delete a user.
+ And the command to delete a user.
+ </td>
+              </tr>
+              <tr>
+                <td class="text-left" rowspan="1" colspan="1">USER_RENAME</td>
+                <td class="text-left" rowspan="1" colspan="1">
+ May rename a user.
+ And the command to rename a user.
+ </td>
+              </tr>
+              <tr>
+                <td class="text-left" rowspan="1" colspan="1">USER_LIST</td>
+                <td class="text-left" rowspan="1" colspan="1">
+ May list users and their capabilities.
+ And the command to list users.
+ </td>
+              </tr>
+              <tr>
+                <td class="text-left" rowspan="1" colspan="1">USER_PERMISSIONS</td>
+                <td class="text-left" rowspan="1" colspan="1">
+ May update other users permissions.
+ And the command to view and set user permissions.
+ </td>
+              </tr>
+              <tr>
+                <td class="text-left" rowspan="1" colspan="1">SERVER_SHUTDOWN</td>
+                <td class="text-left" rowspan="1" colspan="1">
+ May shutdown the server.
+ And the command to shutdown the server.
+ </td>
+              </tr>
+              <tr>
+                <td class="text-left" rowspan="1" colspan="1">SERVER_LOGS</td>
+                <td class="text-left" rowspan="1" colspan="1">
+ May view the server logs.
+ And the command to view server logs.
+ </td>
+              </tr>
+              <tr>
+                <td class="text-left" rowspan="1" colspan="1">SERVER_KICK_USER</td>
+                <td class="text-left" rowspan="1" colspan="1">
+ May logout a user. And limit when they can use the server again.
+ And the command to kick and limit a user.
+ </td>
+              </tr>
+              <tr>
+                <td class="text-left" rowspan="1" colspan="1">SERVER_MANAGE_BANS</td>
+                <td class="text-left" rowspan="1" colspan="1">
+ May manage IP and user bans.
+ And the command to manage ban users an IP addresses.
+ </td>
+              </tr>
+              <tr>
+                <td class="text-left" rowspan="1" colspan="1">SERVER_VIEW_STATS</td>
+                <td class="text-left" rowspan="1" colspan="1">
+ May view server statistics.
+ And the command to view statistics.
+ </td>
+              </tr>
+              <tr>
+                <td class="text-left" rowspan="1" colspan="1">SERVER_CONFIGURE</td>
+                <td class="text-left" rowspan="1" colspan="1">
+ May configure the server. If sent with a VIEW_ONLY
+ parameter, then the user may only view the configuration
+ information.
+ And the command to view and alter the server configuration
+ information.
+ </td>
+              </tr>
+            </tbody>
+          </table>
+</section>
+</div>
+</section>
+</div>
+<div id="AUTH_SUMMARY">
+<section id="section-3.3">
+        <h3 id="name-authentication-commands-sum">
+<a href="#section-3.3" class="section-number selfRef">3.3. </a><a href="#name-authentication-commands-sum" class="section-name selfRef">Authentication Commands Summary</a>
+        </h3>
+<p id="section-3.3-1">
+ TODO<a href="#section-3.3-1" class="pilcrow">¶</a></p>
+</section>
+</div>
+<div id="CALENDAR_SUMMARY">
+<section id="section-3.4">
+        <h3 id="name-calendar-commands-summary">
+<a href="#section-3.4" class="section-number selfRef">3.4. </a><a href="#name-calendar-commands-summary" class="section-name selfRef">Calendar Commands Summary</a>
+        </h3>
+<p id="section-3.4-1">
+ These command are based on iCalendar and iTIp.<a href="#section-3.4-1" class="pilcrow">¶</a></p>
+</section>
+</div>
+<div id="CAPABILITY_SUMMARY">
+<section id="section-3.5">
+        <h3 id="name-capability-commands-summary">
+<a href="#section-3.5" class="section-number selfRef">3.5. </a><a href="#name-capability-commands-summary" class="section-name selfRef">Capability Commands Summary</a>
+        </h3>
+<p id="section-3.5-1">
+ This section<a href="#section-3.5-1" class="pilcrow">¶</a></p>
+</section>
+</div>
+<div id="EMAIL_SUMMARY">
+<section id="section-3.6">
+        <h3 id="name-email-commands-summary">
+<a href="#section-3.6" class="section-number selfRef">3.6. </a><a href="#name-email-commands-summary" class="section-name selfRef">EMail Commands Summary</a>
+        </h3>
+<p id="section-3.6-1">
+ These commands allow for the fetching and submission
+ of EMail messages<a href="#section-3.6-1" class="pilcrow">¶</a></p>
+</section>
+</div>
+<div id="FOLDER_SUMMARY">
+<section id="section-3.7">
+        <h3 id="name-file-and-folder-commands-su">
+<a href="#section-3.7" class="section-number selfRef">3.7. </a><a href="#name-file-and-folder-commands-su" class="section-name selfRef">File and Folder Commands Summary</a>
+        </h3>
+<p id="section-3.7-1">
+ The file operations (FileOp) have protocol names.
+ Here are their protocol names and a breif description.<a href="#section-3.7-1" class="pilcrow">¶</a></p>
+<p id="section-3.7-2">
+ Implementations are not required to support any or all of these
+ commands.<a href="#section-3.7-2" class="pilcrow">¶</a></p>
+<p id="section-3.7-3"></p>
+<table class="center" id="table-2">
+          <caption><a href="#table-2" class="selfRef">Table 2</a></caption>
+<thead>
+            <tr>
+              <th class="text-left" rowspan="1" colspan="1">Op Name</th>
+              <th class="text-left" rowspan="1" colspan="1">Brief Description.</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td class="text-left" rowspan="1" colspan="1">FOLDER_CAPABILITY</td>
+              <td class="text-left" rowspan="1" colspan="1">
+ When sent as a command, request the list of
+ folder commands supported.
+ When sent as a reply, includes the list of
+ folder commands supported.
+ </td>
+            </tr>
+            <tr>
+              <td class="text-left" rowspan="1" colspan="1">FOLDER_CREATE</td>
+              <td class="text-left" rowspan="1" colspan="1">
+ Create a new folder.
+ Also the name of the capability for this permission.
+ </td>
+            </tr>
+            <tr>
+              <td class="text-left" rowspan="1" colspan="1">FOLDER_COPY</td>
+              <td class="text-left" rowspan="1" colspan="1">
+ Copy a folder.
+ Also the name of the capability for this permission.
+ </td>
+            </tr>
+            <tr>
+              <td class="text-left" rowspan="1" colspan="1">FOLDER_DELETE</td>
+              <td class="text-left" rowspan="1" colspan="1">
+ Delete a folder.
+ Also the name of the capability for this permission.
+ </td>
+            </tr>
+            <tr>
+              <td class="text-left" rowspan="1" colspan="1">FOLDER_RENAME</td>
+              <td class="text-left" rowspan="1" colspan="1">
+ Rename a folder.
+ Also the name of the capability for this permission.
+ </td>
+            </tr>
+            <tr>
+              <td class="text-left" rowspan="1" colspan="1">FOLDER_MOVE</td>
+              <td class="text-left" rowspan="1" colspan="1">
+ Move a folder.
+ Also the name of the capability for this permission.
+ </td>
+            </tr>
+            <tr>
+              <td class="text-left" rowspan="1" colspan="1">FOLDER_SHARE</td>
+              <td class="text-left" rowspan="1" colspan="1">
+ Share a folder.
+ Also the name of the capability for this permission.
+ </td>
+            </tr>
+            <tr>
+              <td class="text-left" rowspan="1" colspan="1">FOLDER_LIST</td>
+              <td class="text-left" rowspan="1" colspan="1">
+ List folders and files.
+ Also the name of the capability for this permission.
+ </td>
+            </tr>
+            <tr>
+              <td class="text-left" rowspan="1" colspan="1">FILE_CREATE</td>
+              <td class="text-left" rowspan="1" colspan="1">
+ Create a new file.
+ Also the name of the capability for this permission.
+ </td>
+            </tr>
+            <tr>
+              <td class="text-left" rowspan="1" colspan="1">FILE_COPY</td>
+              <td class="text-left" rowspan="1" colspan="1">
+ Copy a file.
+ Also the name of the capability for this permission.
+ </td>
+            </tr>
+            <tr>
+              <td class="text-left" rowspan="1" colspan="1">FILE_DELETE</td>
+              <td class="text-left" rowspan="1" colspan="1">
+ Delete a file.
+ Also the name of the capability for this permission.
+ </td>
+            </tr>
+            <tr>
+              <td class="text-left" rowspan="1" colspan="1">FILE_RENAME</td>
+              <td class="text-left" rowspan="1" colspan="1">
+ Rename a file.
+ Also the name of the capability for this permission.
+ </td>
+            </tr>
+            <tr>
+              <td class="text-left" rowspan="1" colspan="1">FILE_MOVE</td>
+              <td class="text-left" rowspan="1" colspan="1">
+ Move a file.
+ Also the name of the capability for this permission.
+ </td>
+            </tr>
+            <tr>
+              <td class="text-left" rowspan="1" colspan="1">FILE_SHARE</td>
+              <td class="text-left" rowspan="1" colspan="1">
+ Share a file.
+ Also the name of the capability for this permission.
+ </td>
+            </tr>
+            <tr>
+              <td class="text-left" rowspan="1" colspan="1">FILE_GET</td>
+              <td class="text-left" rowspan="1" colspan="1">
+ Get a file.
+ Also the name of the capability for this permission.
+ </td>
+            </tr>
+            <tr>
+              <td class="text-left" rowspan="1" colspan="1">FILE_MODIFY</td>
+              <td class="text-left" rowspan="1" colspan="1">
+ Modify the contents of an existing file.
+ Also the name of the capability for this permission.
+ </td>
+            </tr>
+          </tbody>
+        </table>
+</section>
+</div>
+<div id="KEEPALIVE_SUMMARY">
+<section id="section-3.8">
+        <h3 id="name-keepalive-command-summary">
+<a href="#section-3.8" class="section-number selfRef">3.8. </a><a href="#name-keepalive-command-summary" class="section-name selfRef">KeepAlive Command Summary</a>
+        </h3>
+<p id="section-3.8-1">
+ The KeepAlive command is sent to the server from the client.
+ It requests the server not time out.
+ The server may honor or ignore the request.<a href="#section-3.8-1" class="pilcrow">¶</a></p>
+<p id="section-3.8-2">
+ The Phoenix protocol is designed to transfer data and a server
+ may handle a small subsets of what is possible.
+ Which is why the server decides what is an important command
+ while determining idle timeout.<a href="#section-3.8-2" class="pilcrow">¶</a></p>
+<p id="section-3.8-3">
+ When the server sends the post authentication capabilities to the
+ client, it includes an IdleTimeout capability that includes the
+ number of seconds it allows for idle time.
+ If no significant action has been taken by the client, as determined
+ by the server, in that time the server may timeout and close the connection.<a href="#section-3.8-3" class="pilcrow">¶</a></p>
+<p id="section-3.8-4">
+ The KeepAlive command tells the server that the client wishes the
+ server not to time out as long as a KeepAlive or other command
+ is sent to the server before IdleTimeout seconds have passed.<a href="#section-3.8-4" class="pilcrow">¶</a></p>
+<p id="section-3.8-5">
+ An IdleTimeout capability can be a positive number, zero, or
+ a negative number.<a href="#section-3.8-5" class="pilcrow">¶</a></p>
+<ul class="normal">
+<li class="normal" id="section-3.8-6.1">
+ A positive number is the maximum idle time in seconds before the server
+ terminates the connection.<a href="#section-3.8-6.1" class="pilcrow">¶</a>
+</li>
+          <li class="normal" id="section-3.8-6.2">
+ When the IdleTimeout is zero (0), the server does not timeout.<a href="#section-3.8-6.2" class="pilcrow">¶</a>
+</li>
+          <li class="normal" id="section-3.8-6.3">
+ When the IdleTimeout is less than zero (&lt; 0), it means it ignores
+ KeepAlive and it will idle out in the absolute value of the IdleTimeout
+ value in seconds.
+ For example, a value of (-300) means it will ignore KeepAlive
+ and timeout when the server determines nothing significant has
+ happened in 5 minutes (300 seconds).<a href="#section-3.8-6.3" class="pilcrow">¶</a>
+</li>
+        </ul>
+<p id="section-3.8-7">
+ Servers that are not threaded or can not reply to simultaneous
+ or overlapping commands, MUST set their IdleTimeout to zero (0)
+ or a negative number.<a href="#section-3.8-7" class="pilcrow">¶</a></p>
+<p id="section-3.8-8">
+ Clients MUST NOT send KeepAlive commands to a server
+ that has an IdleTimeout of zero (0) or negative (&lt; 0).<a href="#section-3.8-8" class="pilcrow">¶</a></p>
+<p id="section-3.8-9">
+ Clients MUST NOT send KeepAlive commands to the server until
+ at least 75% of the idle time has passed since the last
+ command has been sent to the server.<a href="#section-3.8-9" class="pilcrow">¶</a></p>
+<p id="section-3.8-10">
+ A server may terminate a connection if the server implementation
+ determines that KeepAlive commands are arriving to quickly.<a href="#section-3.8-10" class="pilcrow">¶</a></p>
+</section>
+</div>
+<div id="PING_SUMMARY">
+<section id="section-3.9">
+        <h3 id="name-ping-command-summary">
+<a href="#section-3.9" class="section-number selfRef">3.9. </a><a href="#name-ping-command-summary" class="section-name selfRef">Ping Command Summary</a>
+        </h3>
+<p id="section-3.9-1">
+ The ping command only sent when the client implementation
+ has determined it has waited too long for a command reply.
+ The ping command is only initiated from the client.
+ It is not valid for the server to send a ping command to a client.<a href="#section-3.9-1" class="pilcrow">¶</a></p>
+<p id="section-3.9-2">
+ The ping command MUST NOT be the first command sent to the server.
+ It should only be sent when the client implementation determines
+ it has waited too long for a reply.<a href="#section-3.9-2" class="pilcrow">¶</a></p>
+<p id="section-3.9-3">
+ If the server supports the ping command, then a PING capability
+ is sent in the pre authentication capability command.<a href="#section-3.9-3" class="pilcrow">¶</a></p>
+<p id="section-3.9-4">
+ Sometimes servers are unavailable and can go down.
+ A server could be down for maintenance, or in a shutdown mode.
+ It might limit the number of simultaneous connections.
+ It might be very busy.
+ The packets might not be making it to the server because of
+ network issues.<a href="#section-3.9-4" class="pilcrow">¶</a></p>
+<p id="section-3.9-5">
+ When a ping command is received by the server:<a href="#section-3.9-5" class="pilcrow">¶</a></p>
+<ul class="normal">
+<li class="normal" id="section-3.9-6.1">
+ When the server did not send PING capability to the client.
+ Then the server replies with a NotSupported packet
+ with the sequence number the same as in the ping command.<a href="#section-3.9-6.1" class="pilcrow">¶</a>
+</li>
+          <li class="normal" id="section-3.9-6.2">
+ When the server has not yet received an authentication
+ command, the server replies with a NotSupported packet
+ with the sequence number the same as in the ping command.<a href="#section-3.9-6.2" class="pilcrow">¶</a>
+</li>
+          <li class="normal" id="section-3.9-6.3">
+ When the server has received an authentication command,
+ and has not yet replied to an authentication command.
+ Then the server sends a ping reply, with the same sequence
+ number that was in the ping command.
+ This could happen when the client implementation had determined it
+ has waited too long for an authentication reply.<a href="#section-3.9-6.3" class="pilcrow">¶</a>
+</li>
+          <li class="normal" id="section-3.9-6.4">
+ When the client is authenticated,
+ and when the server is available for processing commands.
+ Then the server replies with a ping reply with the same sequence number.
+ This could happen when the client implementation had determined it
+ has waited too long for an expected reply.<a href="#section-3.9-6.4" class="pilcrow">¶</a>
+</li>
+        </ul>
+<p id="section-3.9-7">
+ If the server is alive and not available, the server
+ will reply with a NotSupported command, with its sequence
+ number set to the sequence number in the ping command.<a href="#section-3.9-7" class="pilcrow">¶</a></p>
+<p id="section-3.9-8">
+ If a connected and authenticated client has been waiting for a reply
+ or for some other reason needs to determine if the server is still
+ available. It can send a ping command.
+ If the server is still available, it sends a ping reply.
+ If it is no longer available for any reason, it sends a NotSupported
+ reply.<a href="#section-3.9-8" class="pilcrow">¶</a></p>
+<p id="section-3.9-9">
+ Endpoints MUST NOT send a ping command if they are awaiting
+ the results of a previously sent ping command.<a href="#section-3.9-9" class="pilcrow">¶</a></p>
+<p id="section-3.9-10">
+ Endpoints MUST NOT send more than two ping commands per minute.<a href="#section-3.9-10" class="pilcrow">¶</a></p>
+<p id="section-3.9-11">
+ Clients and servers must give priority to ping commands.
+ If possible, reply as soon as it receives the command.<a href="#section-3.9-11" class="pilcrow">¶</a></p>
+<p id="section-3.9-12">
+ The server MAY consider too many ping commands as a malfunctioning
+ or malicious client and terminate the connection.<a href="#section-3.9-12" class="pilcrow">¶</a></p>
+<p id="section-3.9-13">
+ Servers that are not threaded or can not reply to simultaneous
+ or overlapping commands, MUST NOT include PING in
+ their capability command.<a href="#section-3.9-13" class="pilcrow">¶</a></p>
+</section>
+</div>
+<div id="SMIME_SUMMARY">
+<section id="section-3.10">
+        <h3 id="name-s-mime-commands-summary">
+<a href="#section-3.10" class="section-number selfRef">3.10. </a><a href="#name-s-mime-commands-summary" class="section-name selfRef">S/MIME Commands Summary</a>
+      </h3>
 </section>
 </div>
 </section>
@@ -2463,25 +2950,1604 @@ li > p:last-of-type:only-child {
       </table>
 </section>
 </div>
-<div id="Acknowledgements">
+<div id="RPCGEN_SPEC_APPENDIX">
 <section id="appendix-E">
-      <h2 id="name-acknowledgements">
-<a href="#name-acknowledgements" class="section-name selfRef">Acknowledgements</a>
+      <h2 id="name-rpcgen-protocol-specificati">
+<a href="#appendix-E" class="section-number selfRef">Appendix E. </a><a href="#name-rpcgen-protocol-specificati" class="section-name selfRef">RPCGEN protocol specification</a>
       </h2>
-<p id="appendix-E-1">This template uses extracts from templates written by Pekka Savola, Elwyn Davies and 
-        Henrik Levkowetz. [REPLACE]<a href="#appendix-E-1" class="pilcrow">¶</a></p>
+<p id="appendix-E-1">
+ The following is the extendable RPCGEN specification for the Phoenix
+ protocol defined in this document.<a href="#appendix-E-1" class="pilcrow">¶</a></p>
+<div id="CmdAcl_X">
+<section id="appendix-E.1">
+        <h3 id="name-rpcgen-acl">
+<a href="#appendix-E.1" class="section-number selfRef">E.1. </a><a href="#name-rpcgen-acl" class="section-name selfRef">RPCGEN - Acl</a>
+        </h3>
+<div class="lang-c++ sourcecode" id="appendix-E.1-1">
+<pre>%#ifdef BUILDING_LIBPHOENIX
+%#include "Types.hpp"
+%#else
+%#include &lt;RiverExplorer/Phoenix/Types.hpp&gt;
+%#endif
+
+#ifdef RPC_HDR
+%/**
+% * The Acl_Cmd ...
+% */
+#endif
+class Acl
+{
+        int Todo;
+};
+</pre><a href="#appendix-E.1-1" class="pilcrow">¶</a>
+</div>
+</section>
+</div>
+<div id="CmdAdministration_X">
+<section id="appendix-E.2">
+        <h3 id="name-rpcgen-administration">
+<a href="#appendix-E.2" class="section-number selfRef">E.2. </a><a href="#name-rpcgen-administration" class="section-name selfRef">RPCGEN - Administration</a>
+        </h3>
+<div class="lang-c++ sourcecode" id="appendix-E.2-1">
+<pre>%#ifdef BUILDING_LIBPHOENIX
+%#include "Types.hpp"
+%#else
+%#include &lt;RiverExplorer/Phoenix/Types.hpp&gt;
+%#endif
+
+#ifdef RPC_HDR
+%/**
+% * The Administratoin Commands
+% */
+#endif
+enum AdministrativeCommands_e
+{
+        USER_CREATE = 0,
+        USER_DELETE = 1,
+        USER_RENAME = 2,
+        USER_LIST = 3,
+        USER_PERMISSIONS = 4,
+        SERVER_SHUTDOWN = 5,
+        SERVER_LOGS = 6,
+        SERVER_KICK_USER = 7,
+        SERVER_MANAGE_BANS = 8,
+        SERVER_VIEW_STATS = 9
+};
+
+#ifdef RPC_HDR
+%/**
+% * The Administratoin Command ...
+% */
+#endif
+class Administration
+{
+        int Todo;
+};
+
+#ifdef RPC_HDR
+%/**
+% * The Administratoin Reply Command ...
+% */
+#endif
+class AdministrationReply
+{
+        int Todo;
+};
+</pre><a href="#appendix-E.2-1" class="pilcrow">¶</a>
+</div>
+</section>
+</div>
+<div id="CmdAuthenticate_X">
+<section id="appendix-E.3">
+        <h3 id="name-rpcgen-authenticate">
+<a href="#appendix-E.3" class="section-number selfRef">E.3. </a><a href="#name-rpcgen-authenticate" class="section-name selfRef">RPCGEN - Authenticate</a>
+        </h3>
+<div class="breakable lang-c++ sourcecode" id="appendix-E.3-1">
+<pre>%
+%#ifdef BUILDING_LIBPHOENIX
+%#include "Types.hpp"
+%#else
+%#include &lt;RiverExplorer/Phoenix/Types.hpp&gt;
+%#endif
+
+#ifdef RPC_HDR
+%/**
+% * Authentication is initiated by the endpoing doing the inital
+% * connection, to the endpoint it is connecting to.
+% *
+% * The start of the authentication process take one of two
+% * directions:
+% *
+% * (1) New account, new client, or new authentication mechanism being
+% * attempted.
+% *
+% * (2) - Existing account from a previously used client using a
+% * previously known to work (from the clients point of view) authentication
+% * mechanism.
+% *
+% * New is divided up into (1.a) unknown or new account or (1.b) known account.
+% *
+% * (1.a) New, known account:
+% * Just after the network connection is made, the client sends its
+% * pre authentication capabilities to the server, then waits
+% * for the pre authentication capabilities packet to arrive from
+% * the server. The server supplied pre authentication packet includes
+% * the authentication mechanisms it suppots.
+% *
+% * (1.b) New, unknown account:
+% * Starts off like (a), then checks the servers capability set for
+% * "allow-new-accounts". If provided, then the sign-up procedure is
+% * followed. (sign-up documentation below). Followed by an authentication
+% * to verify it worked.
+% *
+% * If "allow-new-accounts" is not provided, then the account information
+% * must be aquired by methods external to this protocol.
+% *
+% * @note
+% * Allowing new users to sign up using this protocol can be site
+% * specific and may include procedures external to this protocol
+% * such as visiting web sites or other external verification processes.
+% *
+% * @note
+% * For security and anti-junk user accounts, many site may choose not enable
+% * "allow-new-accounts". For servers internal to orginazations or on secure
+% * networks this might be enabled.
+% *
+% * (2) Existing or known:
+% * Just after the network connection is made, the client sends its
+% * pre authentication capabilities to the server. Then without
+% * waiting sends any first step authentication data to the server.
+% * These are two separate packets each unique and independent.
+% *
+% * In both cases:
+% * Authentication proceeds.
+% */
+#endif
+struct AuthMD5
+{
+        string Account&lt;&gt;;
+        string Md5Password&lt;&gt;;
+};
+
+struct Authenticate
+{
+        AuthMD5 Md5;
+};
+
+struct AuthenticateReply
+{
+        bool_t  Accepted;
+};
+
+</pre><a href="#appendix-E.3-1" class="pilcrow">¶</a>
+</div>
+</section>
+</div>
+<div id="CmdCapability_X">
+<section id="appendix-E.4">
+        <h3 id="name-rpcgen-capability">
+<a href="#appendix-E.4" class="section-number selfRef">E.4. </a><a href="#name-rpcgen-capability" class="section-name selfRef">RPCGEN - Capability</a>
+        </h3>
+<div class="breakable lang-c++ sourcecode" id="appendix-E.4-1">
+<pre>%
+%#ifdef BUILDING_LIBPHOENIX
+%#include "Types.hpp"
+%#else
+%#include &lt;RiverExplorer/Phoenix/Types.hpp&gt;
+%#endif
+
+#ifdef RPC_HDR
+%/**
+% * The Capability command informs the other endpoint about
+% * its capabilities.
+% *
+% * This is done once at connection time.
+% * And once after authentication is successful.
+% * All other attempts will get a NotSupported_Cmd reply.
+% *
+% * A single capability is a string key, and a string value.
+% * The value for each capability is described in its own
+% * section.
+% *
+% * A capability value may contain one or more values, each separated
+% * as defined in the capability description.
+% * It is suggested that a comma (HEX 2C) be used. Except when
+% * that would complicate the capability value.
+% * In all cases, the capability value is defined separately for
+% * each capability.
+% *
+% * If the capability list does not include the capability name,
+% * then it is not supported.
+% *
+% * If the reply contains the capability name, then
+% * its associated value will be used to determine the
+% * extent of its support.
+% *
+% * Capability keys MUST BE processed in all lower case.
+% * If a capability arrives in upper or mixed case,
+% * the receiver MUST covert then check to see if that is
+% * valid. This prevents capabilities with the same name
+% * and varying case from being used.
+% *
+% * Capability values SHOULD BE in all lower case.
+% * Except when the capability itself contains values
+% * that must be upper or mixed case.
+% *
+% * Capabilties that have a boolean value, SHOULD use
+% * 'true' or 'false' and not 'yes', 'no' or other variations of true or false.
+% *
+% * Capabilties that have a enabled or disabled value, SHOULD use
+% * 'enabled' or 'disabled' and not 'yes', 'no' or other variations of
+% * enabled or disabled.
+% *
+% */
+#endif
+
+class Capability
+{
+        ArrayOfStrings  Supported&lt;&gt;;
+};
+
+#ifdef RPC_HDR
+%/**
+% * Capability FolderCapabilities_e Capabilities that
+% * apply to folder or directories.
+% *
+% * Folder capabilites should not be provided in pre-authentication
+% * capability packets.
+% *
+% * @note
+% * Not call capabilities are applicable to all endpoints, files,
+% * folders, users, or specific commands. Read the associated
+% * command and capability specifications to understand each
+% * operation.
+% *
+% * The capability specifies the endpoing is capable of the
+% * function. It may be further restriced by who is authenticated
+% * or acess control lists (ACLs) on specific associated items.
+% *
+% * &lt;ul&gt;
+% * &lt;li&gt;CanList: Has a key of "canlist" and has a boolean value.
+% * -When true, then a list of files and folders can be accessed.
+% * -When false, then only already known named files and folders can be accessed.
+% * &lt;/li&gt;
+% *
+% * &lt;li&gt;CanSubscribe: Has a key value of "cansubscribe" and has
+% * a boolean value.
+% * -When true, then this server supports unsolicited push notifcations.
+% * -When false, then no unsolicited push notifcations can not be sent
+% * from this endpoint.
+% * &lt;/li&gt;
+% *
+% * &lt;li&gt;CanCreate: Has a key value of "cancreate" and has a boolean value.
+% * -When true, then this endpoint supports creating folders.
+% * -When false, this endpoint does not support creating folders.
+% * &lt;li&gt;
+% *
+% * &lt;li&gt;CanRemove: Has a key value of "canremove" and has a boolean value.
+% * -When true, this endpoint supports removing folders.
+% * -When fales, this endpoint does not support removing foldres.
+% * &lt;li&gt;
+% *
+% * &lt;li&gt;CanRename: Has a key value of "canrename" and has a boolean value.
+% * When true, this endpoint supports renaming folders.
+% * When false, this endpoint does not support renaming folders.
+% * &lt;li&gt;
+% *
+% * &lt;li&gt;CanCopy: Has a key value of "cancopy" and has a boolean value.
+% * When true, this endpoint supports copying folders.
+% * When false, this endpoint does not support copying folders.
+% * &lt;li&gt;
+% *
+% * &lt;li&gt;CanSearch: Has a key value of "cansearch" and has a boolean value.
+% * When true, this endpoint supports searching folders names using posix regex expressions
+% * When false, this endpoint does not support searching folders.
+% * &lt;li&gt;
+% *
+% * &lt;li&gt;Acls: Has a key value of 'acls' and has a string value.
+% * When supplied, the endpoint supports at least one acl type.
+% * The types currely defined in the Acls_e enumeration.
+% */
+#endif
+
+enum FolderCapabilities_e
+{
+        CanList,
+        CanSubscribe,
+        CanCreate,
+        CanRemove,
+        CanAppend,
+        CanRename,
+        CanUpdate,
+        CanCopy,
+        CanSearch,
+        Acls
+};
+
+enum Acls_e
+{
+        OwnerRW_t,
+        OwnerRO_t,
+        GroupRW_t,
+        GroupRO_t,
+        OtherRW_t,
+        OtherRO_t,
+        NamedListRW_t,
+        NamedListRO_t
+};
+</pre><a href="#appendix-E.4-1" class="pilcrow">¶</a>
+</div>
+</section>
+</div>
+<div id="CmdFolder_X">
+<section id="appendix-E.5">
+        <h3 id="name-rpcgen-folder">
+<a href="#appendix-E.5" class="section-number selfRef">E.5. </a><a href="#name-rpcgen-folder" class="section-name selfRef">RPCGEN - Folder</a>
+        </h3>
+<div class="breakable lang-c++ sourcecode" id="appendix-E.5-1">
+<pre>%
+%#ifdef BUILDING_LIBPHOENIX
+%#include "Types.hpp"
+%#include "MetaData.hpp"
+%#else
+%#include &lt;RiverExplorer/Phoenix/Types.hpp&gt;
+%#include &lt;RiverExplorer/Phoenix/MetaData.hpp&gt;
+%#endif
+
+#ifdef RPC_HDR
+%/**
+% */
+#endif
+
+enum Folder_e
+{
+        FolderCreate_Cmd = 0,
+        FolderCreateReply_Cmd = 1,
+        FolderCopy_Cmd = 2,
+        FolderCopyReply_Cmd = 3,
+        FolderDelete_Cmd = 4,
+        FolderDeleteReply_Cmd = 5,
+        FolderRename_Cmd = 6,
+        FolderRenameReply_Cmd = 7,
+        FolderMove_Cmd = 8,
+        FolderMoveReply_Cmd = 9,
+        FolderShare_Cmd = 10,
+        FolderShareReply_Cmd = 11,
+        FolderList_Cmd = 12,
+        FolderListReply_Cmd = 13,
+        FileCreate_Cmd = 14,
+        FileCreateReply_Cmd = 15,
+        FileCopy_Cmd = 16,
+        FileCopyReply_Cmd = 17,
+        FileDelete_Cmd = 18,
+        FileDeleteReply_Cmd = 19,
+        FileRename_Cmd = 20,
+        FileRenameReply_Cmd = 21,
+        FileMove_Cmd = 22,
+        FileMoveReply_Cmd = 23,
+        FileShare_Cmd = 24,
+        FileShareReply_Cmd = 25,
+        FileGet_Cmd = 26,
+        FileGetReply_Cmd = 27
+};
+
+#ifdef RPC_HDR
+%/**
+% * @class FolderCreate CmdFolder.hpp &lt;RiverExplorer/Phoenix/CmdFolder.hpp&gt;
+% * @addtogroup Folder
+% *
+% * The full path is the path from the top of the users virtual
+% * home folder, and includes the folder name.
+% *
+% * The path separator is the '/' (UTF-8 value 0x2f) character.
+% *
+% * The root folder is "/".
+% */
+#endif
+class FolderCreate
+{
+        string  FullPath&lt;&gt;;
+};
+
+#ifdef RPC_HDR
+%/**
+% * @class FolderCreateReply CmdFolder.hpp &lt;RiverExplorer/Phoenix/CmdFolder.hpp&gt;
+% * @addtogroup Folder
+% * The reply for CreateFolder, Success is set to true if the
+% * folder was created. Otherwise it is set to false.
+% */
+#endif
+class FolderCreateReply
+{
+        bool_t  Success;
+};
+
+#ifdef RPC_HDR
+%/**
+% * @class FolderCopyr CmdFolder.hpp &lt;RiverExplorer/Phoenix/CmdFolder.hpp&gt;
+% * @addtogroup Folder
+% *
+% * The full original path is the path from the top of the users virtual
+% * home folder, and includes the folder name. And names
+% * the folder to copy from.
+% *
+% * The full destination path is the path from the top of the users virtual
+% * home folder, and includes the folder name.
+% * And names the folder that will have a copy of FullOriginalPath
+% * placed into.
+% *
+% * When recursive is false, only the contents are copied
+% * and not any directories.
+% *
+% * When recursive is true, the contents are copied
+% * and recursively copies all directories in the original path directories
+% * to the new destination.
+% *
+% * The path separator is the '/' (UTF-8 value 0x2f) character.
+% *
+% * The root folder is "/".
+% */
+#endif
+class FolderCopy
+{
+        string  FullOriginalPath&lt;&gt;;
+        string  FullDestinationPath&lt;&gt;;
+        bool_t  Recursive;
+};
+
+#ifdef RPC_HDR
+%/**
+% * @class FolderCopyReply CmdFolder.hpp &lt;RiverExplorer/Phoenix/CmdFolder.hpp&gt;
+% * @addtogroup Folder
+% *
+% * The reply for CopyFolder, Success is set to true if the
+% * folder was copied into FillToPath. Otherwise it is set to false.
+% *
+% * A false indicates that nothing was copied.
+% * A true indicates that everything was copied.
+% *
+% * Must fail and leave the original structure in place
+% * on any failure, and return false.
+% */
+#endif
+class FolderCopyReply
+{
+        bool_t  Success;
+};
+
+class FolderDelete
+{
+        int todo;
+};
+
+class FolderDeleteReply
+{
+        int todo;
+};
+
+class FolderRename
+{
+        int todo;
+};
+
+class FolderRenameReply
+{
+        int todo;
+};
+
+class FolderMove
+{
+        int todo;
+};
+
+class FolderMoveReply
+{
+        int todo;
+};
+
+class FolderShare
+{
+        int todo;
+};
+
+class FolderShareReply
+{
+        int todo;
+};
+
+class FolderList
+{
+        int todo;
+};
+
+class FolderListReply
+{
+        int todo;
+};
+
+class FileCreate
+{
+        int todo;
+};
+
+class FileCreateReply
+{
+        int todo;
+};
+
+class FileCopy
+{
+        int todo;
+};
+
+class FileCopyReply
+{
+        int todo;
+};
+
+class FileDelete
+{
+        int todo;
+};
+
+class FileDeleteReply
+{
+        int todo;
+};
+
+class FileRename
+{
+        int todo;
+};
+
+class FileRenameReply
+{
+        int todo;
+};
+
+class FileMove
+{
+        int todo;
+};
+
+class FileMoveReply
+{
+        int todo;
+};
+
+class FileShare
+{
+        int todo;
+};
+
+class FileShareReply
+{
+        int todo;
+};
+
+class FileGet
+{
+        int todo;
+};
+
+class FileGetReply
+{
+        int todo;
+};
+
+union FolderCmdData switch (Folder_e FCmd)
+{
+ case FolderCreate_Cmd:
+         FolderCreate * FolderCreateFolder;
+
+ case FolderCopy_Cmd:
+         FolderCopy * FolderCopyData;
+
+ case FolderDelete_Cmd:
+         FolderDelete * FolderDeleteData;
+
+ case FolderRename_Cmd:
+         FolderRename * FolderRenameData;
+
+ case FolderMove_Cmd:
+         FolderMove * FolderMoveData;
+
+ case FolderShare_Cmd:
+         FolderShare * FolderShareData;
+
+ case FolderList_Cmd:
+         FolderList * FolderListData;
+
+ case FileCreate_Cmd:
+         FileCreate * FileCreateData;
+
+ case FileCopy_Cmd:
+         FileCopy * FileCopyData;
+
+ case FileDelete_Cmd:
+         FileDelete * FileDeleteData;
+
+ case FileRename_Cmd:
+         FileRename * FileRenameData;
+
+ case FileMove_Cmd:
+         FileMove * FileMoveData;
+
+ case FileShare_Cmd:
+         FileShare * FileShareData;
+
+ case FileGet_Cmd:
+         FileGet * FileGetData;
+
+};
+
+union FolderReplyData switch (Folder_e FCmd)
+{
+ case FolderCreateReply_Cmd:
+         FolderCreateReply * FolderCreateReplyData;
+
+ case FolderCopyReply_Cmd:
+         FolderCopyReply * FolderCopyReplyData;
+
+ case FolderDeleteReply_Cmd:
+         FolderDeleteReply * FolderDeleteReplyData;
+
+ case FolderRenameReply_Cmd:
+         FolderRenameReply * FolderRenameReplyData;
+
+ case FolderMoveReply_Cmd:
+         FolderMoveReply * FolderMoveReplyData;
+
+ case FolderShareReply_Cmd:
+         FolderShareReply * FolderShareReplyData;
+
+ case FolderListReply_Cmd:
+         FolderListReply * FolderListReplyData;
+
+ case FileCreateReply_Cmd:
+         FileCreateReply * FileCreateReplyData;
+
+ case FileCopyReply_Cmd:
+         FileCopyReply * FileCopyReplyData;
+
+ case FileDeleteReply_Cmd:
+         FileDeleteReply * FileDeleteReplyData;
+
+ case FileRenameReply_Cmd:
+         FileRenameReply * FileRenameReplyData;
+
+ case FileMoveReply_Cmd:
+         FileMoveReply * FileMoveReplyData;
+
+ case FileShareReply_Cmd:
+         FileShareReply * FileShareReplyData;
+
+ case FileGetReply_Cmd:
+         FileGetReply * FileGetReplyData;
+
+};
+
+
+#ifdef RPC_HDR
+%/**
+% * An XML representation of a file, not the
+% * contents, but the information about the file.
+% *
+% * - Meta: Is an array of MetaData.
+% * - Name: This is the name excluding the path.
+% * - Size: This is the full size of the file.
+% * The FLAG_... symbols are symbolic names
+% */
+#endif
+
+class FileInformation
+{
+        MetaData        Meta&lt;&gt;;
+        string          Name&lt;&gt;;
+        uint64_t        Size;
+        uint32_t        FlagBits;
+};
+
+#ifdef RPC_HDR
+%/**
+% * An XML representation of a folder
+% *
+% * - Meta: Is an array of MetaData.
+% * - Name: This is the name excluding the path.
+% * - Folders: An array of information about folders within this folder.
+% * - Files: An array of information about files in this folder.
+% */
+#endif
+class FolderInformation
+{
+        MetaData                Meta&lt;&gt;;
+        string                  Name&lt;&gt;;
+        FolderInformation       Folders&lt;&gt;;
+        FileInformation         Files&lt;&gt;;
+};
+
+class Folder
+{
+        FolderCmdData Data;
+};
+
+class FolderReply
+{
+        FolderReplyData Data;
+};
+</pre><a href="#appendix-E.5-1" class="pilcrow">¶</a>
+</div>
+</section>
+</div>
+<div id="CmdKeeyAlive_X">
+<section id="appendix-E.6">
+        <h3 id="name-rpcgen-keepalive">
+<a href="#appendix-E.6" class="section-number selfRef">E.6. </a><a href="#name-rpcgen-keepalive" class="section-name selfRef">RPCGEN - KeepAlive</a>
+        </h3>
+<div class="lang-c++ sourcecode" id="appendix-E.6-1">
+<pre>%
+%#ifdef BUILDING_LIBPHOENIX
+%#include "Types.hpp"
+%#else
+%#include &lt;RiverExplorer/Phoenix/Types.hpp&gt;
+%#endif
+
+#ifdef RPC_HDR
+%/**
+% * The KeepAlive command sends a packet to the remote endpoint.
+% *
+% * There is no reply to a KeepAlive command.
+% */
+#endif
+struct KeepAlive
+{
+        int foo;
+};
+</pre><a href="#appendix-E.6-1" class="pilcrow">¶</a>
+</div>
+</section>
+</div>
+<div id="CmdNotSupported_X">
+<section id="appendix-E.7">
+        <h3 id="name-rpcgen-notsupported">
+<a href="#appendix-E.7" class="section-number selfRef">E.7. </a><a href="#name-rpcgen-notsupported" class="section-name selfRef">RPCGEN - NotSupported</a>
+        </h3>
+<div class="lang-c++ sourcecode" id="appendix-E.7-1">
+<pre>%
+%#ifdef BUILDING_LIBPHOENIX
+%#include "Types.hpp"
+%#else
+%#include &lt;RiverExplorer/Phoenix/Types.hpp&gt;
+%#endif
+
+#ifdef RPC_HDR
+%/**
+% * Not supported. This is sent back to the initiating endpoint
+% * when this endpoint does not support the command sent.
+% *
+% * @note
+% * There is no data associated with a NotSupported_Cmd, only the
+% * CmdPacket is sent.
+% */
+#endif
+
+struct NotSupported
+{
+        int foo;
+};
+
+struct NotSupportedReply
+{
+        int foo;
+};
+
+</pre><a href="#appendix-E.7-1" class="pilcrow">¶</a>
+</div>
+</section>
+</div>
+<div id="CmdPing_X">
+<section id="appendix-E.8">
+        <h3 id="name-rpcgen-ping">
+<a href="#appendix-E.8" class="section-number selfRef">E.8. </a><a href="#name-rpcgen-ping" class="section-name selfRef">RPCGEN - Ping</a>
+        </h3>
+<div class="lang-c++ sourcecode" id="appendix-E.8-1">
+<pre>%
+%#ifdef BUILDING_LIBPHOENIX
+%#include "Types.hpp"
+%#else
+%#include &lt;RiverExplorer/Phoenix/Types.hpp&gt;
+%#endif
+
+#ifdef RPC_HDR
+%/**
+% * The Ping command sends a packet to the remote endpoint.
+% * The other endpoint does a PingReply with no data.
+% *
+% * The reply is required.
+% */
+#endif
+class Ping
+{
+        int foo;
+};
+
+#ifdef RPC_HDR
+%/**
+% * The Ping Reply command sends a packet to the remote endpoint.
+% * The other endpoint does a PingReply with no data.
+% *
+% * The reply is required.
+% */
+#endif
+class PingReply
+{
+        int foo;
+};
+
+#ifdef RPC_HDR
+%/**
+% * @return a new Ping CmdPacket.
+% */
+#endif
+%namespace RiverExplorer::Phoenix
+%{
+%class CmdPacket;
+%extern CmdPacket * NewPing(CommandSequence Seq);
+%}
+
+</pre><a href="#appendix-E.8-1" class="pilcrow">¶</a>
+</div>
+</section>
+</div>
+<div id="Commands_X">
+<section id="appendix-E.9">
+        <h3 id="name-rpcgen-commands">
+<a href="#appendix-E.9" class="section-number selfRef">E.9. </a><a href="#name-rpcgen-commands" class="section-name selfRef">RPCGEN - Commands</a>
+        </h3>
+<div class="breakable lang-c++ sourcecode" id="appendix-E.9-1">
+<pre>
+%#ifdef BUILDING_LIBPHOENIX
+%#include "CppTypes.hpp"
+%#else
+%#include &lt;RiverExplorer/Phoenix/CppTypes.hpp&gt;
+%#endif
+
+#ifdef RPC_HDR
+%/**
+% * Command_e: An enumerated list of fetch commands.
+% * &lt;ul&gt;
+% * &lt;li&gt;
+% *     Admin_Cmd - The packet contains an administrative command.
+% * &lt;/li&gt;
+% * &lt;li&gt;
+% *     AdminReply_Cmd - The packet contains an administrative command reply.
+% * &lt;/li&gt;
+% * &lt;li&gt;
+% *     Auth_Cmd - The packet contains an authentication command.
+% * &lt;/li&gt;
+% * &lt;li&gt;
+% *     AuthReply_Cmd - The packet contains an authentication command reply.
+% * &lt;/li&gt;
+% * &lt;li&gt;
+% *     Capability_Cmd - The packet contains a capability command.
+% * A Capability_Cmd has no reply.
+% * &lt;/li&gt;
+% * &lt;li&gt;
+% *     Folder_Cmd - The packet contains a folder command.
+% * &lt;/li&gt;
+% * &lt;li&gt;
+% *     FolderReply_Cmd - The packet contains a folder command reply.
+% * &lt;/li&gt;
+% * &lt;li&gt;
+% * The NotSupported_Cmd is sent back to
+% * the remote endpoint when it sends a command
+% * that is not supported.
+% * It can be because of access control list,
+% * out of sequence, or other error.
+% * A Capability_Cmd has no reply.
+% * &lt;/li&gt;
+% * &lt;li&gt;
+% *     Ping_Cmd - The packet contains a pint command reply.
+% * The reply to a ping is the same packet back.
+% * &lt;/li&gt;
+% * &lt;li&gt;
+% *     Proto_Cmd - The packet contains a protocol command.
+% * A protocol command is an extension command not built int
+% * the core Phoenix protocol.
+% * &lt;/li&gt;
+% * &lt;li&gt;
+% *     ProtoReply_Cmd - The packet contains a protocol command reply.
+% * &lt;/li&gt;
+% * &lt;li&gt;
+% *     Reserved_Cmd - In the unlikely event that 2^32 commands
+% * are ever created, this is an escape to allow more.
+% * &lt;/li&gt;
+% * &lt;/ul&gt;
+% *
+% */
+#endif
+enum Command_e
+{
+        Admin_Cmd = 1,
+        AdminReply_Cmd = 2,
+        Auth_Cmd = 3,
+        AuthReply_Cmd = 4,
+        Capability_Cmd = 5,
+        Folder_Cmd = 6,
+        FolderReply_Cmd = 7,
+        NotSupported_Cmd = 8,
+        Ping_Cmd = 9,
+        Proto_Cmd = 10,
+        ProtoReply_Cmd = 11,
+        Reserved_Cmd = 0xffffffff
+};
+
+#ifdef RPC_HDR
+%/**
+% * The transport top level is simple.
+% * You can Send() a packet and get a packet back.
+% * Or you send a notification that receives nothing back.
+% * Or you send a broadcast message to all interested participants, with no
+% * reply expected.
+% */
+#endif
+
+#ifdef RPC_HDR
+
+%#ifdef BUILDING_LIBPHOENIX
+%#include "CmdAcl.hpp"
+%#include "CmdAddMessage.hpp"
+%#include "CmdAuthenticate.hpp"
+%#include "CmdAdministration.hpp"
+%#include "CmdCapability.hpp"
+%#include "CmdCopyMessage.hpp"
+%#include "CmdFolder.hpp"
+%#include "CmdExpunge.hpp"
+%#include "CmdGetMessage.hpp"
+%#include "CmdKeepAlive.hpp"
+%#include "CmdNotSupported.hpp"
+%#include "CmdPing.hpp"
+%#include "CmdSearch.hpp"
+%#include "CmdSubscribe.hpp"
+%#include "CmdTimeout.hpp"
+%#include "CmdUpdateMessage.hpp"
+%#include "Commands.hpp"
+%#else
+%#include &lt;RiverExplorer/Phoenix/CmdAcl.hpp&gt;
+%#include &lt;RiverExplorer/Phoenix/CmdAddMessage.hpp&gt;
+%#include &lt;RiverExplorer/Phoenix/CmdAuthenticate.hpp&gt;
+%#include &lt;RiverExplorer/Phoenix/CmdAdministration.hpp&gt;
+%#include &lt;RiverExplorer/Phoenix/CmdCapability.hpp&gt;
+%#include &lt;RiverExplorer/Phoenix/CmdCopyMessage.hpp&gt;
+%#include &lt;RiverExplorer/Phoenix/CmdFolder.hpp&gt;
+%#include &lt;RiverExplorer/Phoenix/CmdExpunge.hpp&gt;
+%#include &lt;RiverExplorer/Phoenix/CmdGetMessage.hpp&gt;
+%#include &lt;RiverExplorer/Phoenix/CmdKeepAlive.hpp&gt;
+%#include &lt;RiverExplorer/Phoenix/CmdNotSupported.hpp&gt;
+%#include &lt;RiverExplorer/Phoenix/CmdPing.hpp&gt;
+%#include &lt;RiverExplorer/Phoenix/CmdSearch.hpp&gt;
+%#include &lt;RiverExplorer/Phoenix/CmdSubscribe.hpp&gt;
+%#include &lt;RiverExplorer/Phoenix/CmdTimeout.hpp&gt;
+%#include &lt;RiverExplorer/Phoenix/CmdUpdateMessage.hpp&gt;
+%#include &lt;RiverExplorer/Phoenix/Commands.hpp&gt;
+%#endif
+#endif
+
+union CmdData switch (Command_e Cmd)
+{
+ case Admin_Cmd:
+         Administration *       AdminData;
+
+ case AdminReply_Cmd:
+         AdministrationReply *  AdminReplyData;
+
+ case Auth_Cmd:
+         Authenticate           *       AuthData;
+
+ case AuthReply_Cmd:
+         AuthenticateReply              *       AuthReplyData;
+
+ case Capability_Cmd:
+         Capability             *       CapabilityData;
+
+ case Folder_Cmd:
+         Folder *       FolderData;
+
+ case FolderReply_Cmd:
+         FolderReply    *       FolderReplyData;
+
+ case NotSupported_Cmd:
+         void;
+
+ case Ping_Cmd:
+         void;
+
+};
+
+#ifdef RPC_HDR
+%/**
+% * Set the callback for a command.
+% *
+% * @param Cmd The command being registered.
+% *
+% * @param Callback The user supplied callback function.
+% *
+% * @note
+% * It is is recommended that each registered callback be thread safe.
+% */
+%namespace RiverExplorer::Phoenix
+%{
+%extern bool Register_Cmd(Command_e Cmd, CommandCallback * Callback);
+%}
+#endif
+
+#ifdef RPC_HDR
+%/**
+% * Set the callback for a command.
+% *
+% * @param Cmd The command being registered.
+% *
+% * @param Callback The user supplied callback function.
+% *
+% * @note
+% * It is is recommended that each registered callback be thread safe.
+% */
+%namespace RiverExplorer::Phoenix
+%{
+%extern bool Register_Cmd(Command_e Cmd, CommandCallback * Callback);
+%}
+#endif
+
+#ifdef RPC_HDR
+%/**
+% * A command consists of:
+% * - The enumerated command (Command_e),
+% * - An XDR opaque object (length + data).
+% * The XDR opaque data was prepared by the Cmd specific code
+% * and is set into place for transport.
+% */
+#endif
+struct  CmdPacket
+{
+        CommandSequence Sequence;
+  CmdData Data;
+};
+
+</pre><a href="#appendix-E.9-1" class="pilcrow">¶</a>
+</div>
+</section>
+</div>
+<div id="Email_X">
+<section id="appendix-E.10">
+        <h3 id="name-rpcgen-email">
+<a href="#appendix-E.10" class="section-number selfRef">E.10. </a><a href="#name-rpcgen-email" class="section-name selfRef">RPCGEN - EMail</a>
+        </h3>
+<div class="breakable lang-c++ sourcecode" id="appendix-E.10-1">
+<pre>
+const FLAG_SEEN                         = 0x0001;
+const FLAG_ANSWERED             = 0x0002;
+const FLAG_FLAGGED              = 0x0004;
+const FLAG_DELETED              = 0x0008;
+const FLAG_DRAFT                        = 0x0010;
+const FLAG_FORWARDED    = 0x0040;
+const FLAG_MDNSENT              = 0x0080;
+const FLAG_JUNK                         = 0x0100;
+const FLAG_NOTJUNK              = 0x0200;
+const FLAG_PHISHING             = 0x0400;
+
+#ifdef RPC_HDR
+%/**
+% * @note
+% * The "C" routines return a bool_t, the C++ API return a bool.
+% */
+%#ifdef BUILDING_LIBPHOENIX
+%#include "Types.hpp"
+%#include "MetaData.hpp"
+%#include "Mime.hpp"
+%#else
+%#include &lt;RiverExplorer/Phoenix/Types.hpp&gt;
+%#include &lt;RiverExplorer/Phoenix/MetaData.hpp&gt;
+%#include &lt;RiverExplorer/Phoenix/Mime.hpp&gt;
+%#endif
+%#include &lt;string&gt;
+%#include &lt;vector&gt;
+
+#endif
+
+#ifdef RPC_HDR
+%/**
+% * EMail headers are a vector of MetaData.
+% *
+% * Some examples:
+% * @verbatim
+% *
+% * From: RiverExplorer.USexample.com
+% * To: CEO@example.com
+% * Subject: The holidays!
+% *
+% * @endverbatim
+% *
+% * @note
+% * This does not define new or alter existing header types.
+% * This is a container to transport them.
+% */
+#endif
+typedef MetaData EMailHeader;
+typedef EMailHeader EMailHeaders&lt;&gt;;
+
+#ifdef RPC_HDR
+%
+%/**
+% * An email is a vector of MimeBodyPart
+% *
+% * @note
+% * This does not define new or alter existing mime or email headers.
+% * This is a container to transport them.
+% */
+#endif
+typedef MimeBodyPart EMailBodyParts&lt;&gt;;
+
+#ifdef RPC_HDR
+%
+%/**
+% * Check for the existence of a specific Header.
+% *
+% * @param Headers The Headers that is being processed.
+% *
+% * @param Key The header name being looked for.
+% *
+% * @return The number of matches.
+% * Returns zero (0) when none are found.
+% * Returns ((uint64_t)-1) when Obj or Key are NULL.
+% */
+%namespace RiverExplorer::Phoenix{
+%extern uint64_t * EMail_HasHeader(EMailHeaders * Headers, const char * Key);
+%}
+#endif
+
+#ifdef RPC_HDR
+%
+%/**
+% * Get a specific Header.
+% *
+% * @param Headers The Headers that is being processed.
+% *
+% * @param Key The header name being looked for.
+% *
+% * @return A vector of the matches.
+% * Will return zero (0) or more matches, in the original order.
+% * Will return NULL of Obj or Key are NULL.
+% * Will return NULL when Key is not found.
+% */
+%namespace RiverExplorer::Phoenix{
+%extern EMailHeader  * EMail_GetHeader(EMailHeaders * Headers, const char * Key);
+%}
+#endif
+
+#ifdef RPC_HDR
+%
+%/**
+% * Headers count.
+% *
+% * @param Headers The Headers that is being processed.
+% *
+% * @return The number of EMailHeader in Headers.
+% * Returns ((uint64_t)-1) when Headers is NULL.
+% */
+%namespace RiverExplorer::Phoenix{
+%extern uint64_t EMail_GetHeaderCount(EMailHeaders * Headers);
+%}
+#endif
+
+#ifdef RPC_HDR
+%
+%/**
+% * Headers iterator.
+% *
+% * @param Headers The Headers that is being processed.
+% *
+% * @param Which The header to get, the first is zero (0).
+% *
+% * @return A pointer to the EMailHeader.
+% * Returns NULL when Headers or Key is NULL.
+% * Returns NULL when Which is not a valid index.
+% */
+%namespace RiverExplorer::Phoenix{
+%extern EMailHeader * EMail_GetHeaderByIndex(EMailHeaders * Headers, uint64_t Which);
+%}
+#endif
+
+#ifdef RPC_HDR
+%
+%/**
+% * Common headers names.
+% */
+%namespace RiverExplorer::Phoenix{
+%extern const char * Date_s;                    /** "Date" */
+%extern const char * From_s;                    /** "From" */
+%extern const char * Subject_s;         /** "Subject" */
+%extern const char * To_s;                              /** "To" */
+%}
+#endif
+
+#ifdef RPC_HDR
+#ifdef __cplusplus
+} // End extern "C"
+%
+#endif
+%#ifdef __cplusplus
+%namespace RiverExplorer::Phoenix::EMail {
+%class Message
+%{
+% public:
+%
+%       /**
+%        * Message - Default Destructor.
+%        */
+%       Message();
+%
+%       /**
+%  * Message - Destructor.
+%  */
+%
+%       /**
+%  * Get the headers.
+%        *
+%        * @return All of the headers.
+%  */
+%       EMailHeaders * Headers() const;
+%
+% /**
+%  * Add a header.
+%  *
+%  * @param NewHeader The new header to add.
+%  */
+%  void Add(EMailHeader &amp; NewHeader);
+%
+% /**
+%  * Add a header.
+%  *
+%  * @param Key The new header to add.
+%  *
+%  * @param Value The new header value to add.
+%  */
+%  void Add(std::string Key, std::string Value);
+%
+% /**
+%  * Get the named header.
+%  *
+%  * @param Key The new header to add.
+%  *
+%        * @return A vector of all the matches. It will contain
+%        * zero or more entries.
+%  *
+%  * @note
+%  * You MUST delete result when finished or you will have
+%        * a memory leak. You MUST NOT delete the
+%        * entries in the vector, they are still in the email message.
+%  */
+%  std::vector&lt;const EMailHeader*&gt;      * Header(std::string Key);
+%
+% /**
+%  * Get the number of body parts.
+%  *
+%  * @return The number of body parts.
+%        */
+% const uint64_t Count() const;
+%
+% /**
+%  * Get the body parts.
+%  *
+%  * @return The body parts.
+%  *
+%  * @note
+%  * Do not delete the results.
+%        */
+% const MimeBodyPart * Body() const;
+%
+% /**
+%  * Get the nTh body part.
+%  *
+%  * @param nTh Which to get, first is zero (0).
+%  *
+%  * @return The body part.
+%  * Returns nullptr when nTh does not exist.
+%  *
+%  * @note
+%  * Do not delete the results.
+%        */
+% const MimeBodyPart * Body(uint64_t nTh) const;
+%
+% /**
+%        * This ID is used as a transport ID between
+%        * endpoints to uniquely identify this message for this
+%        * account on this server.
+%        *
+%        * @return The message ID For this message.
+%        * A return value of zero (0) indicates that this message
+%  * does not have an ID.
+%        *
+%        * @note
+%        * This is NOT the 'Message-ID' in email headers.
+%        * This is the ID that uniquely identifies this message to endpoints.
+%        *
+%        * @note
+%        * This ID is unique to the server or message provider and might
+%        * not be unique on the client side.
+%        * Implementations may wish to provide their own local ID
+%        * to uniquely identify this message in their system that is
+%        * separate from this ID.
+%        */
+% uint64_t ID() const;
+%
+% /**
+%  * Messages in a message store have an ID.
+%  * This sets the message ID for this message.
+%        *
+%        * @param TransportID The transport ID to associate with this message.
+%        * A value of zero (0) indicates that this message
+%  * does not have an ID.
+%        *
+%        * @note
+%        * This is NOT the 'Message-ID' in email headers.
+%        * This is the ID that uniquely identifies this message to endpoints.
+%        *
+%        * @note
+%        * This ID is unique to the server or message provider and might
+%        * not be unique on the client side.
+%        * Implementations may wish to provide their own local ID
+%        * to uniquely identify this message in their system that is
+%        * separate from this ID.
+%        */
+% void ID(uint64_t StoreID) const;
+%};
+%} // End namespace EMail
+%#endif // class
+#endif // RPC_HDR
+</pre><a href="#appendix-E.10-1" class="pilcrow">¶</a>
+</div>
+</section>
+</div>
+<div id="Mime_X">
+<section id="appendix-E.11">
+        <h3 id="name-rpcgen-mime">
+<a href="#appendix-E.11" class="section-number selfRef">E.11. </a><a href="#name-rpcgen-mime" class="section-name selfRef">RPCGEN - MIME</a>
+        </h3>
+<div class="breakable lang-c++ sourcecode" id="appendix-E.11-1">
+<pre>
+#ifdef RPC_HDR
+%/**
+% * @note
+% * The "C" routines return a bool_t, the C++ API return a bool.
+% */
+%#ifdef BUILDING_LIBPHOENIX
+%#include "MetaData.hpp"
+%#else
+%#include &lt;RiverExplorer/Phoenix/MetaData.hpp&gt;
+%#endif
+%
+%/**
+% * A MediaType is a string pair as defined
+% * at https://www.iana.org/assignments/media-types/media-types.xhtml
+% *
+% * Some examples:
+% * @verbatim
+% *
+% * text/html
+% * application/pdf
+% * audio/ogg
+% * image/png
+% * multipart/mixed
+% *
+% * @endverbatim
+% *
+% * Would have a Key of 'From' and a value of 'RiverExplorer.US@gmail.com'.
+% *
+% * @note
+% * This does not define new or alter existing IANA media types.
+% * This is a containter to transport them.
+% */
+#endif
+typedef MetaData MediaType;
+
+#ifdef RPC_HDR
+%/**
+% * A MIME header is a key/string value.
+% */
+#endif
+typedef MetaData MimeHeader;
+
+#ifdef RPC_HDR
+%/**
+% * Headers is an array of MimeHeader.
+% *
+% * Example:
+% * @verbatim
+% *
+% * From: RiverExplorer.US@example.com
+% * To: CEO@example.com
+% *
+% * @endverbatim
+% *
+% * @note
+% * This does not define new or alter existing mime or email headers.
+% * This is a containter to transport them.
+% */
+#endif
+typedef MimeHeader MimeHeaders&lt;&gt;;
+
+#ifdef RPC_HDR
+%
+%/**
+% * A MIME object. Has a MediaType, MimeHeaders and data.
+% *
+% * To use:
+% *
+% * @code
+% *
+% * MimeBodyPart        * TheMimeBodyPart;
+% *
+% * // ...however you fill in or get the MimeBodyPart object data ...
+% * //
+% * TheMimeBodyPart = GetTheData();
+% *
+% * uint64_t            Length;
+% * const char* TheMediaType = MimeBodyPart_GetMediaType(TheMimeBodyPart);
+% * uint8_t             * Data = MimeBodyPart_GetData(TheMimeBodyPart, &amp;Length);
+% * ...
+% *
+% * // At this point, you have the media-type, Data, and length
+% * // of the data.
+% *
+% * @endcode
+% */
+#endif
+
+#ifdef RPC_HDR
+%/**
+%       * - Type: The media-type of the object.
+% * @note
+% * Media-type is not duplicated in Headers.
+% *
+%       * - Headers: The MIME headers.
+% *
+% * - Data: The data itself.
+% * The data is a binary blob without any encoding.
+% */
+#endif
+struct MimeBodyPart
+{
+        MediaType               Type;
+        MimeHeaders Headers;
+        IoVec                           Data;
+};
+</pre><a href="#appendix-E.11-1" class="pilcrow">¶</a>
+</div>
+</section>
+</div>
+<div id="Phoenix_X">
+<section id="appendix-E.12">
+        <h3 id="name-rpcgen-phoenix">
+<a href="#appendix-E.12" class="section-number selfRef">E.12. </a><a href="#name-rpcgen-phoenix" class="section-name selfRef">RPCGEN - Phoenix</a>
+        </h3>
+<div class="lang-c++ sourcecode" id="appendix-E.12-1">
+<pre>/**
+ * These are just used below to make the 'program' values
+ * more readable.
+ */
+#define PhoenixProgramNumber 1
+#define PhoenixProgramVersion 1
+#define PhoenixSendPacket 1
+#define PhoenixNotifyPacket 2
+#define PhoenixBroadcastPacket 3
+
+program PhoenixProgram
+{
+        version PhoenixVersion
+        {
+                CmdPacket Send(CmdPacket) = PhoenixSendPacket;
+                void Notifiy(CmdPacket) = PhoenixNotifyPacket;
+                void Broadcast(CmdPacket) = PhoenixBoradcastPacket;
+
+        } = PhoenixProgramVersion;
+} = PhoenixProgramNumber;
+</pre><a href="#appendix-E.12-1" class="pilcrow">¶</a>
+</div>
+</section>
+</div>
+<div id="Types_X">
+<section id="appendix-E.13">
+        <h3 id="name-rpcgen-types">
+<a href="#appendix-E.13" class="section-number selfRef">E.13. </a><a href="#name-rpcgen-types" class="section-name selfRef">RPCGEN - Types</a>
+        </h3>
+<div class="breakable lang-c++ sourcecode" id="appendix-E.13-1">
+<pre>#ifdef RPC_HDR
+/**
+ * The orignal RPCGEN was "C" only, RPCGEN++ is "C++".
+ * C useed bool_t, and C++ uses bool.
+ * So this is a wrapper.
+ *
+ * @param xdrs An initialized XDR object.
+ *
+ * @param BValue The address of the bool_t object.
+ *
+ * @return false if failed.
+ */
+%namespace RiverExplorer::Phoenix
+%{
+%extern bool xdr_bool_t(XDR * xdrs, bool_t * BValue);
+%}
+#endif
+
+#ifdef RPC_HDR
+%/**
+% * Each command sent, has a command identifier, and a sequence.
+% * Each reply to a command has the same CommandID and sequence.
+% */
+#endif
+typedef uint64_t CommandSequence;
+
+#ifdef RPC_HDR
+%/**
+% * An array of strings.
+% */
+#endif
+typedef string StringType&lt;&gt;;
+
+#ifdef RPC_HDR
+%/**
+% * An array of strings.
+% */
+#endif
+typedef StringType ArrayOfStrings&lt;&gt;;
+
+
+#ifdef RPC_HDR
+%/**
+% * An object to data objects, some of which might
+% * be memory mapped.
+% *
+% * - IsMMapped: When true, Data was memory mapped and not allocated.
+% * When false, Data was allocated.
+% *
+% * - Len The number of octets in Data.
+% *
+% * - Data A pointer to the data.
+% */
+#endif
+class IovVec
+{
+        bool_t          IsMMapped;
+        uint64_t        Len;
+        uint8_t * Data;
+};
+
+
+
+</pre><a href="#appendix-E.13-1" class="pilcrow">¶</a>
+</div>
+</section>
+</div>
+</section>
+</div>
+<div id="Acknowledgements">
+<section id="appendix-F">
+      <h2 id="name-acknowledgments">
+<a href="#name-acknowledgments" class="section-name selfRef">Acknowledgments</a>
+      </h2>
+<p id="appendix-F-1"></p>
 </section>
 </div>
 <div id="Contributors">
-<section id="appendix-F">
+<section id="appendix-G">
       <h2 id="name-contributors">
 <a href="#name-contributors" class="section-name selfRef">Contributors</a>
       </h2>
-<p id="appendix-F-1">Thanks to all of the contributors. [REPLACE]<a href="#appendix-F-1" class="pilcrow">¶</a></p>
+<p id="appendix-G-1">Thanks to all of the contributors. [REPLACE]<a href="#appendix-G-1" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="authors-addresses">
-<section id="appendix-G">
+<section id="appendix-H">
       <h2 id="name-authors-address">
 <a href="#name-authors-address" class="section-name selfRef">Author's Address</a>
       </h2>

@@ -1,7 +1,3 @@
-%/**
-% * Phoenix (C) 2025 by Douglas Mark Royer (A.K.A. RiverExplorer) is licensed under CC BY 4.0                                                                   
-% * RiverExplorer is a trademark of RiverExplorer Games LLC                      
-% */
 %
 %#ifdef BUILDING_LIBPHOENIX
 %#include "Types.hpp"
@@ -19,22 +15,6 @@
 % * CmdPacket is sent.
 % */
 #endif
-
-#ifdef RPC_HDR
-%/**
-% * Make a new CmdPacket that can be sent back to
-% * the original endpoint.
-% *
-% * @param ID The ID of the command not supported.
-% *
-% * @return The new packet, ready to send.
-% */
-#endif
-%namespace RiverExplorer::Phoenix
-%{
-%class CmdPacket;
-%extern CmdPacket * NewNotSupported(CommandSequence ID);
-%}
 
 struct NotSupported
 {

@@ -29,7 +29,8 @@
 #
 
 SUBDIRS	= \
-	SimpleStart
+	SimpleStart \
+	ParseOnly
 
 all : Android Linux W64
 

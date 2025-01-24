@@ -146,14 +146,14 @@ namespace RiverExplorer::Phoenix
 	PhoenixEvent::EventID		Server::_ShuttingDownID = 0;
 	PhoenixEvent::EventID		Server::_ErrorOnFdID = 0;
 
-	int64_t
+	int32_t
 		Server::_NetWrite(int Fd, Iov * IovData)
 	{
-		int64_t	Results = 0;
+		int32_t	Results = 0;
 		
 		// Get a pointer to the next Blob.
 		//
-		uint64_t	Len = 0;
+		uint32_t	Len = 0;
 		
 		uint8_t * Data = IovData->Take(Len);
 
@@ -163,7 +163,7 @@ namespace RiverExplorer::Phoenix
 			Results = write(Fd, Data, Len);
 
 			if (Results > 0) {
-				if (Results == (int64_t)Len) {
+				if (Results == (int32_t)Len) {
 					// We are done with this Blob.
 					//
 					IovData->WeUsed(Len); // We took it all.
@@ -650,17 +650,17 @@ namespace RiverExplorer::Phoenix
 					//  than what we expected.
 					//
 					if (Clients[Fd]->InboundData.TotalLength == 0) {
-						// Is a new packet, so transfer over sizeof(uint64_t)
+						// Is a new packet, so transfer over sizeof(uint32_t)
 						// octets and un-xdr them.
 						// For a new packet, we set the read amount to
-						// sizeof(uint64_t).
+						// sizeof(uint32_t).
 						//
-						if (DidRead == sizeof(uint64_t)) {
-							uint64_t	NTotal;
+						if (DidRead == sizeof(uint32_t)) {
+							uint32_t	NTotal;
 
 							memcpy(&NTotal, Buffer, sizeof(uint64_t));
 							Clients[Fd]->InboundData.TotalLength = ntohll(NTotal);
-							DidRead -= (int)sizeof(uint64_t);
+							DidRead -= (int)sizeof(uint32_t);
 
 							if (DidRead == 0) {
 								// I think it will always be zero at this point.
@@ -723,7 +723,7 @@ namespace RiverExplorer::Phoenix
 							 */
 							uint8_t * Data;
 							uint8_t	*	DataPtr = Data = new uint8_t[Clients[Fd]->InboundData.TotalLength];
-							uint64_t	Got = 0;
+							uint32_t	Got = 0;
 							uint8_t * OneBlob = Clients[Fd]->InboundData.Take(Got);
 
 							while (OneBlob != nullptr) {

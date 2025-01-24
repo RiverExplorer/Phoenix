@@ -1,12 +1,8 @@
-%/**
-% * Phoenix (C) 2025 by Douglas Mark Royer (A.K.A. RiverExplorer) is licensed under CC BY 4.0                                                                   
-% * RiverExplorer is a trademark of RiverExplorer Games LLC                      
-% */
 
 %#ifdef BUILDING_LIBPHOENIX
-%#include "Types.hpp"
+%#include "CppTypes.hpp"
 %#else
-%#include <RiverExplorer/Phoenix/Types.hpp>
+%#include <RiverExplorer/Phoenix/CppTypes.hpp>
 %#endif
 
 #ifdef RPC_HDR
@@ -90,34 +86,6 @@ enum Command_e
 #endif
 
 #ifdef RPC_HDR
-/**
- * 64 bit network to host byte order conversion.
- *
- * @param NetValue A uint64_t value in network byte order.
- *
- * @return A uint64_t value in host order
- */
-%namespace RiverExplorer::Phoenix
-%{
-%extern uint64_t ntohll(uint64_t NetValue);
-%}
-#endif
-
-#ifdef RPC_HDR
-/**
- * 64 bit host to network byte order conversion.
- *
- * @param HostValue A uint64_t value in host byte order.
- *
- * @return A uint64_t value in network byte order.
- */
-%namespace RiverExplorer::Phoenix
-%{
-%extern uint64_t htonll(uint64_t NetValue);
-%}
-#endif
-
-#ifdef RPC_HDR
 
 %#ifdef BUILDING_LIBPHOENIX
 %#include "CmdAcl.hpp"
@@ -125,20 +93,14 @@ enum Command_e
 %#include "CmdAuthenticate.hpp"
 %#include "CmdAdministration.hpp"
 %#include "CmdCapability.hpp"
-%#include "CmdCloseFolder.hpp"
 %#include "CmdCopyMessage.hpp"
-%#include "CmdCreateFolder.hpp"
-%#include "CmdDeleteFolder.hpp"
-%#include "CmdExpunge.hpp"
 %#include "CmdFolder.hpp"
+%#include "CmdExpunge.hpp"
 %#include "CmdGetMessage.hpp"
 %#include "CmdKeepAlive.hpp"
-%#include "CmdListFolders.hpp"
 %#include "CmdNotSupported.hpp"
 %#include "CmdPing.hpp"
-%#include "CmdRenameFolder.hpp"
 %#include "CmdSearch.hpp"
-%#include "CmdSelectFolder.hpp"
 %#include "CmdSubscribe.hpp"
 %#include "CmdTimeout.hpp"
 %#include "CmdUpdateMessage.hpp"
@@ -149,20 +111,14 @@ enum Command_e
 %#include <RiverExplorer/Phoenix/CmdAuthenticate.hpp>
 %#include <RiverExplorer/Phoenix/CmdAdministration.hpp>
 %#include <RiverExplorer/Phoenix/CmdCapability.hpp>
-%#include <RiverExplorer/Phoenix/CmdCloseFolder.hpp>
 %#include <RiverExplorer/Phoenix/CmdCopyMessage.hpp>
-%#include <RiverExplorer/Phoenix/CmdCreateFolder.hpp>
-%#include <RiverExplorer/Phoenix/CmdDeleteFolder.hpp>
-%#include <RiverExplorer/Phoenix/CmdExpunge.hpp>
 %#include <RiverExplorer/Phoenix/CmdFolder.hpp>
+%#include <RiverExplorer/Phoenix/CmdExpunge.hpp>
 %#include <RiverExplorer/Phoenix/CmdGetMessage.hpp>
 %#include <RiverExplorer/Phoenix/CmdKeepAlive.hpp>
-%#include <RiverExplorer/Phoenix/CmdListFolders.hpp>
 %#include <RiverExplorer/Phoenix/CmdNotSupported.hpp>
 %#include <RiverExplorer/Phoenix/CmdPing.hpp>
-%#include <RiverExplorer/Phoenix/CmdRenameFolder.hpp>
 %#include <RiverExplorer/Phoenix/CmdSearch.hpp>
-%#include <RiverExplorer/Phoenix/CmdSelectFolder.hpp>
 %#include <RiverExplorer/Phoenix/CmdSubscribe.hpp>
 %#include <RiverExplorer/Phoenix/CmdTimeout.hpp>
 %#include <RiverExplorer/Phoenix/CmdUpdateMessage.hpp>

@@ -124,7 +124,7 @@ namespace RiverExplorer::Phoenix
 	void
 	IO::QOutbound(int Fd,
 								uint8_t * Blob,
-								uint64_t BlobLength)
+								uint32_t BlobLength)
 	{
 		std::map<int,ActiveConnection*>::iterator  AIt;
 
@@ -141,7 +141,7 @@ namespace RiverExplorer::Phoenix
 			// With this version of QOutbound(), the resut
 			// length is easy to calculate. It is BlobLength.
 			//
-			uint64_t Len = sizeof(uint64_t) + BlobLength;
+			uint32_t Len = sizeof(uint32_t) + BlobLength;
 			uint8_t * RawData = new uint8_t[Len];
 			XDR Xdr;
 

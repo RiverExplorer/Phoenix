@@ -1,0 +1,84 @@
+<section anchor="RPCGEN_SPEC_APPENDIX">
+	<name>RPCGEN protocol specification</name>
+	<t>
+		The following is the extendable RPCGEN specification for the Phoenix
+		protocol defined in this document.
+	</t>
+	<section anchor="CmdAcl_X">
+		<name>RPCGEN - Acl</name>
+		<sourcecode name="CmdAcl.x" src="CmdAcl.x" type="c++" >
+		</sourcecode>
+	</section>
+	<section anchor="CmdAdministration_X">
+		<name>RPCGEN - Administration</name>
+		<sourcecode name="CmdAdministration.x" src="CmdAdministration.x" type="c++" >
+		</sourcecode>
+	</section>
+
+	<section anchor="CmdAuthenticate_X">
+		<name>RPCGEN - Authenticate</name>
+		<sourcecode name="CmdAuthenticate.x" src="CmdAuthenticate.x" type="c++" >
+		</sourcecode>
+	</section>
+
+	<section anchor="CmdCapability_X">
+		<name>RPCGEN - Capability</name>
+		<sourcecode name="CmdCapability.x" src="CmdCapability.x" type="c++" >
+		</sourcecode>
+	</section>
+
+	<section anchor="CmdFolder_X">
+		<name>RPCGEN - Folder</name>
+		<sourcecode name="CmdFolder.x" src="CmdFolder.x" type="c++" >
+		</sourcecode>
+	</section>
+
+	<section anchor="CmdKeeyAlive_X">
+		<name>RPCGEN - KeepAlive</name>
+		<sourcecode name="CmdKeepAlive.x" src="CmdKeepAlive.x" type="c++" >
+		</sourcecode>
+	</section>
+
+	<section anchor="CmdNotSupported_X">
+		<name>RPCGEN - NotSupported</name>
+		<sourcecode name="CmdNotSupported.x" src="CmdNotSupported.x" type="c++" >
+		</sourcecode>
+	</section>
+
+	<section anchor="CmdPing_X">
+		<name>RPCGEN - Ping</name>
+		<sourcecode name="CmdPing.x" src="CmdPing.x" type="c++" >
+		</sourcecode>
+	</section>
+
+	<section anchor="Commands_X">
+		<name>RPCGEN - Commands</name>
+		<sourcecode name="Commands.x" src="Commands.x" type="c++" >
+		</sourcecode>
+	</section>
+
+	<section anchor="Email_X">
+		<name>RPCGEN - EMail</name>
+		<sourcecode name="Email.x" src="Email.x" type="c++" >
+		</sourcecode>
+	</section>
+
+	<section anchor="Mime_X">
+		<name>RPCGEN - MIME</name>
+		<sourcecode name="Mime.x" src="Mime.x" type="c++" >
+		</sourcecode>
+	</section>
+
+	<section anchor="Phoenix_X">
+		<name>RPCGEN - Phoenix</name>
+		<sourcecode name="Phoenix.x" src="Phoenix.x" type="c++" >
+		</sourcecode>
+	</section>
+
+	<section anchor="Types_X">
+		<name>RPCGEN - Types</name>
+		<sourcecode name="Types.x" src="Types.x" type="c++" >
+		</sourcecode>
+	</section>
+
+</section>

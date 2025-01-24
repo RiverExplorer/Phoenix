@@ -4,8 +4,8 @@
 
 Internet Engineering Task Force                           DM. Royer, Ed.
 Internet-Draft                                   RiverExplorer Games LLC
-Intended status: Informational                           19 January 2025
-Expires: 23 July 2025
+Intended status: Informational                           21 January 2025
+Expires: 25 July 2025
 
 
                      Phoenix: Lemonade Risen Again
@@ -53,7 +53,7 @@ Status of This Memo
 
 
 
-Royer                     Expires 23 July 2025                  [Page 1]
+Royer                     Expires 25 July 2025                  [Page 1]
 
 Internet-Draft        Phoenix: Lemonade Risen Again         January 2025
 
@@ -68,7 +68,7 @@ Internet-Draft        Phoenix: Lemonade Risen Again         January 2025
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 23 July 2025.
+   This Internet-Draft will expire on 25 July 2025.
 
 Copyright Notice
 
@@ -89,36 +89,56 @@ Table of Contents
    1.  Introduction  . . . . . . . . . . . . . . . . . . . . . . . .   3
      1.1.  Requirements Language . . . . . . . . . . . . . . . . . .   5
    2.  Terms and Definition used in this proposal  . . . . . . . . .   5
-   3.  Commands Overview . . . . . . . . . . . . . . . . . . . . . .   6
-     3.1.  Administration Commands (AdminCmd)  . . . . . . . . . . .   6
-       3.1.1.  Administration Commands Overview  . . . . . . . . . .   7
-     3.2.  Authentication Commands . . . . . . . . . . . . . . . . .   8
-       3.2.1.  Authentication Commands Overview  . . . . . . . . . .   8
-     3.3.  Protocol  . . . . . . . . . . . . . . . . . . . . . . . .   8
-       3.3.1.  Basic File and Folder Operations  . . . . . . . . . .   8
-     3.4.  Protocol Commands . . . . . . . . . . . . . . . . . . . .   8
-       3.4.1.  Protocol Overview . . . . . . . . . . . . . . . . . .   8
-   4.  Over the Wire Protocol Detail . . . . . . . . . . . . . . . .  10
-   5.  IANA Considerations . . . . . . . . . . . . . . . . . . . . .  13
-   6.  Security Considerations . . . . . . . . . . . . . . . . . . .  14
-   7.  References  . . . . . . . . . . . . . . . . . . . . . . . . .  14
-     7.1.  Normative References  . . . . . . . . . . . . . . . . . .  14
-     7.2.  Informative References  . . . . . . . . . . . . . . . . .  14
-   Appendix A.  Administrative Enumerated Binary Values  . . . . . .  14
-   Appendix B.  Authentication Enumerated Binary Values  . . . . . .  15
+   3.  Commands Summary  . . . . . . . . . . . . . . . . . . . . . .   7
+     3.1.  Protocol Commands Summary . . . . . . . . . . . . . . . .   8
+       3.1.1.  Packet Summary  . . . . . . . . . . . . . . . . . . .   9
+       3.1.2.  Packet Reply Summary  . . . . . . . . . . . . . . . .  10
+     3.2.  Administration Commands Summary . . . . . . . . . . . . .  11
+       3.2.1.  Administration Capability Definitions . . . . . . . .  11
+       3.2.2.  Administration of users.  . . . . . . . . . . . . . .  11
+     3.3.  Authentication Commands Summary . . . . . . . . . . . . .  13
+     3.4.  Calendar Commands Summary . . . . . . . . . . . . . . . .  13
+     3.5.  Capability Commands Summary . . . . . . . . . . . . . . .  13
+     3.6.  EMail Commands Summary  . . . . . . . . . . . . . . . . .  13
+     3.7.  File and Folder Commands Summary  . . . . . . . . . . . .  13
+     3.8.  KeepAlive Command Summary . . . . . . . . . . . . . . . .  14
+     3.9.  Ping Command Summary  . . . . . . . . . . . . . . . . . .  15
+     3.10. S/MIME Commands Summary . . . . . . . . . . . . . . . . .  17
+   4.  Over the Wire Protocol Detail . . . . . . . . . . . . . . . .  17
+   5.  IANA Considerations . . . . . . . . . . . . . . . . . . . . .  20
 
 
 
-Royer                     Expires 23 July 2025                  [Page 2]
+Royer                     Expires 25 July 2025                  [Page 2]
 
 Internet-Draft        Phoenix: Lemonade Risen Again         January 2025
 
 
-   Appendix C.  File and Folder Enumerated Binary Values . . . . . .  16
-   Appendix D.  Protocol Enumerated Binary Values  . . . . . . . . .  17
-   Acknowledgements  . . . . . . . . . . . . . . . . . . . . . . . .  18
-   Contributors  . . . . . . . . . . . . . . . . . . . . . . . . . .  18
-   Author's Address  . . . . . . . . . . . . . . . . . . . . . . . .  18
+   6.  Security Considerations . . . . . . . . . . . . . . . . . . .  20
+   7.  References  . . . . . . . . . . . . . . . . . . . . . . . . .  20
+     7.1.  Normative References  . . . . . . . . . . . . . . . . . .  20
+     7.2.  Informative References  . . . . . . . . . . . . . . . . .  20
+   Appendix A.  Administrative Enumerated Binary Values  . . . . . .  20
+   Appendix B.  Authentication Enumerated Binary Values  . . . . . .  22
+   Appendix C.  File and Folder Enumerated Binary Values . . . . . .  23
+   Appendix D.  Protocol Enumerated Binary Values  . . . . . . . . .  24
+   Appendix E.  RPCGEN protocol specification  . . . . . . . . . . .  25
+     E.1.  RPCGEN - Acl  . . . . . . . . . . . . . . . . . . . . . .  25
+     E.2.  RPCGEN - Administration . . . . . . . . . . . . . . . . .  25
+     E.3.  RPCGEN - Authenticate . . . . . . . . . . . . . . . . . .  26
+     E.4.  RPCGEN - Capability . . . . . . . . . . . . . . . . . . .  28
+     E.5.  RPCGEN - Folder . . . . . . . . . . . . . . . . . . . . .  31
+     E.6.  RPCGEN - KeepAlive  . . . . . . . . . . . . . . . . . . .  39
+     E.7.  RPCGEN - NotSupported . . . . . . . . . . . . . . . . . .  40
+     E.8.  RPCGEN - Ping . . . . . . . . . . . . . . . . . . . . . .  41
+     E.9.  RPCGEN - Commands . . . . . . . . . . . . . . . . . . . .  41
+     E.10. RPCGEN - EMail  . . . . . . . . . . . . . . . . . . . . .  46
+     E.11. RPCGEN - MIME . . . . . . . . . . . . . . . . . . . . . .  52
+     E.12. RPCGEN - Phoenix  . . . . . . . . . . . . . . . . . . . .  54
+     E.13. RPCGEN - Types  . . . . . . . . . . . . . . . . . . . . .  54
+   Acknowledgments . . . . . . . . . . . . . . . . . . . . . . . . .  56
+   Contributors  . . . . . . . . . . . . . . . . . . . . . . . . . .  56
+   Author's Address  . . . . . . . . . . . . . . . . . . . . . . . .  56
 
 1.  Introduction
 
@@ -142,6 +162,14 @@ Internet-Draft        Phoenix: Lemonade Risen Again         January 2025
    An additional task is transporting the perhaps very large MIME
    objects.  Some MIME objects are so large that some devices may
    default to looking at only at parts of the MIME object.  An example
+
+
+
+Royer                     Expires 25 July 2025                  [Page 3]
+
+Internet-Draft        Phoenix: Lemonade Risen Again         January 2025
+
+
    is an email message with one or more very large attachments, where
    the device may default to not download the large attachment without a
    specific request from the user.
@@ -162,14 +190,6 @@ Internet-Draft        Phoenix: Lemonade Risen Again         January 2025
    By implementing this specification application developers can use the
    techniques to manage local and remote files and folders.  Remote
    email or files are the same thing in this specification.  The
-
-
-
-Royer                     Expires 23 July 2025                  [Page 3]
-
-Internet-Draft        Phoenix: Lemonade Risen Again         January 2025
-
-
    sections of MIME object with multipart sections are viewed as files
    in the MIME object.  You can interact with the entire folder, or just
    the files within it.
@@ -197,6 +217,15 @@ Internet-Draft        Phoenix: Lemonade Risen Again         January 2025
    *  You can search for file contents.  You can search for email
       message contents.
 
+
+
+
+
+Royer                     Expires 25 July 2025                  [Page 4]
+
+Internet-Draft        Phoenix: Lemonade Risen Again         January 2025
+
+
    *  You can create, delete, and modify files.  You can create, delete,
       and modify email messages.
 
@@ -214,17 +243,6 @@ Internet-Draft        Phoenix: Lemonade Risen Again         January 2025
 
    *  Specifies a way to migrate from some existing protocols to
       Phoenix.  Provides links to sample implementations.
-
-
-
-
-
-
-
-Royer                     Expires 23 July 2025                  [Page 4]
-
-Internet-Draft        Phoenix: Lemonade Risen Again         January 2025
-
 
 1.1.  Requirements Language
 
@@ -253,6 +271,17 @@ Internet-Draft        Phoenix: Lemonade Risen Again         January 2025
       A specific protocol operation, or command.  They are broken down
       into, AdminCmd, AuthCmd, FileCmd, and ProtoCmd.
 
+
+
+
+
+
+
+Royer                     Expires 25 July 2025                  [Page 5]
+
+Internet-Draft        Phoenix: Lemonade Risen Again         January 2025
+
+
    Command, CMD
       Each packet contains a command.  This command is also in the reply
       to the command.  Not all commands have a reply.  These are called
@@ -271,16 +300,6 @@ Internet-Draft        Phoenix: Lemonade Risen Again         January 2025
    MIME
       This protocol transports MIME objects.  This specification does
       not remove or alter any MIME objects;
-
-
-
-
-
-
-Royer                     Expires 23 July 2025                  [Page 5]
-
-Internet-Draft        Phoenix: Lemonade Risen Again         January 2025
-
 
    Packet
       A packet is a blob of data that has a header (its length) followed
@@ -307,6 +326,18 @@ Internet-Draft        Phoenix: Lemonade Risen Again         January 2025
       original command.  In this way replies can be matched up with
       their original command.
 
+
+
+
+
+
+
+
+Royer                     Expires 25 July 2025                  [Page 6]
+
+Internet-Draft        Phoenix: Lemonade Risen Again         January 2025
+
+
    SSL
       For the purpose of this specification, SSL is interchangable with
       TLS.  This document uses the term TLS.  The sample implementation
@@ -323,137 +354,84 @@ Internet-Draft        Phoenix: Lemonade Risen Again         January 2025
       its values and any parameters and replies.  The MIME data, the
       payload, is transported as XDR opaque, and is unmodified.
 
-3.  Commands Overview
-
-3.1.  Administration Commands (AdminCmd)
-
-
-
-
-
-
-
-Royer                     Expires 23 July 2025                  [Page 6]
-
-Internet-Draft        Phoenix: Lemonade Risen Again         January 2025
-
-
-3.1.1.  Administration Commands Overview
-
-   Administrative command can be used to configure, audit, and manage
-   the remote endpoint.  Administrative command can be used to
-   configure, audit, and manage user acess.
-
-3.1.1.1.  Capability Name
-
-   Implementations that support any ADMIN_CMD include ADMIN_CMD in the
-   post authenication CAPABILITY list.
-
-   Implementations MUST NOT send a ADMIN_CMD capability in the pre
-   authorization CAPABILITY list.
-
-   When a user has been authenticated, as part of the affermative reply,
-   the ADMIN_CAPABILITY will be included in the reply when the user has
-   administrative permissions.
-
-   The ADMIN_CAPABILITY reply will then be followed by the list of ADMIN
-   commands the user is allowed to perform.  For example, if a user only
-   has permission to only view user lists, then only the USER_LIST ADMIN
-   capibility will be provided.
-
-3.1.1.2.  Administration of users.
-
-   The following operations are defined for user administration.
-
-   +=============================+====================================+
-   | Command and Capability Name | Brief Description.                 |
-   +=============================+====================================+
-   | USER_CREATE                 | Create a new user.                 |
-   +-----------------------------+------------------------------------+
-   | USER_DELETE                 | Delete a user.                     |
-   +-----------------------------+------------------------------------+
-   | USER_RENAME                 | Rename a user.                     |
-   +-----------------------------+------------------------------------+
-   | USER_LIST                   | List users and their capabilities. |
-   +-----------------------------+------------------------------------+
-   | USER_PERMISSIONS            | Update user permissions.           |
-   +-----------------------------+------------------------------------+
-
-                                 Table 1
-
-
-
-
-
-
-
-
-
-Royer                     Expires 23 July 2025                  [Page 7]
-
-Internet-Draft        Phoenix: Lemonade Risen Again         January 2025
-
-
-3.2.  Authentication Commands
-
-3.2.1.  Authentication Commands Overview
-
-   TODO
-
-3.3.  Protocol
-
-3.3.1.  Basic File and Folder Operations
-
-   The file operations (FileOp) have protocol names.  Here are their
-   protocol names and a breif description.
-
-       +===============+==========================================+
-       | Op Name       | Brief Description.                       |
-       +===============+==========================================+
-       | FOLDER_CREATE | Create a new folder.                     |
-       +---------------+------------------------------------------+
-       | FOLDER_COPY   | Copy a folder.                           |
-       +---------------+------------------------------------------+
-       | FOLDER_DELETE | Delete a folder.                         |
-       +---------------+------------------------------------------+
-       | FOLDER_RENAME | Rename a folder.                         |
-       +---------------+------------------------------------------+
-       | FOLDER_MOVE   | Move a folder.                           |
-       +---------------+------------------------------------------+
-       | FOLDER_SHARE  | Share a folder.                          |
-       +---------------+------------------------------------------+
-       | FOLDER_LIST   | List folders and files.                  |
-       +---------------+------------------------------------------+
-       | FILE_GET      | Get a known existing file.               |
-       +---------------+------------------------------------------+
-       | FILE_CREATE   | Create a new file.                       |
-       +---------------+------------------------------------------+
-       | FILE_MODIFY   | Modify the contents of an existing file. |
-       +---------------+------------------------------------------+
-       | FILE_SHARE    | Share a file.                            |
-       +---------------+------------------------------------------+
-
-                                 Table 2
-
-3.4.  Protocol Commands
-
-3.4.1.  Protocol Overview
-
-   This protocol connects two endpoints over a network and facilitates
-   the secure and authorized transfer of MIME objects.
-
-
-
-
-Royer                     Expires 23 July 2025                  [Page 8]
-
-Internet-Draft        Phoenix: Lemonade Risen Again         January 2025
-
+3.  Commands Summary
 
    The endpoint that initiates the connection is called the client.  The
    endpoint that is connected to, is called the server.  The client is
    the protocol authority, and the server responds to client commands as
    configured or instructed by the client.
+
+   This section provides an overview of the basic commands.  Each
+   command has a detailed section in this specification.
+
+   When a command is sent to the remote endpoint and received, the
+   remote endpoint determines if the connection is authenticated or
+   authorized to perform the command.  If not supported, or not
+   authorized, a NotSupported command is send as a reply.  The
+   NotSupported command sent back has the same Sequence number that was
+   in the original command.
+
+   Many commands are only valid after authentication.
+
+   When the client connects to a server it immediately sends its pre
+   authentication capabilities to the server.  Or an Auth command.
+
+   When the server gets a new connection followed by a pre
+   authentication capability command, it immediately sends its pre
+   authentication capabilities to the client.
+
+   When the client and server have had a relationship, the client may
+   send an Auth Command to initiate the authorization and does not send
+   its pre authentication capability list to the server.  It then waits
+   for the Auth reply from the server.
+
+
+
+
+
+Royer                     Expires 25 July 2025                  [Page 7]
+
+Internet-Draft        Phoenix: Lemonade Risen Again         January 2025
+
+
+   *  If the client gets an Auth reply that is positive, it sends its
+      post authentication capability list to the server.
+
+   *  If the client gets an Auth reply that is negative, it sends its
+      pre authentication capability list to the server.
+
+   When a servers first received packet is a Auth command, It processes
+   the Auth command and sends the Auth reply.
+
+   *  If the Auth reply is positive, then it also sends it post
+      authentication capability list.
+
+   *  If the Auth reply is negative, then it sends its pre
+      authentication capability list to the client.
+
+   A server may automatically send its pre authentication capability
+   list to the client upon initial connection.  Or it may wait to see if
+   it gets a pre authentication capability list, or an Auth command.
+
+   If the client sends an Auth command as its first packet, it may get
+   the pre authentication capability from the server before the Auth
+   reply.  Simply process both.
+
+3.1.  Protocol Commands Summary
+
+   In addition to the protocols listed in this specification.
+   Additional protocols and commands can be added in the future.  They
+   must follow the same framework listed here.
+
+   This protocol connects two endpoints over a network and facilitates
+   the secure and authorized transfer of MIME objects.
+
+   This is a binary protocol.  The payload can be anything, text or
+   binary.  This protocol was designed to reduce the number of back and
+   forth requests and replies between the client and server.  By using
+   XDR as the format for transferring binary control information it is
+   portable to any computer architecture.  Appendix XXX has the rpcgen
+   definition for the protocol defined in this specification.
 
    After the connection is successful and authenticated, ether endpoint
    may send commands to the other endpoint.  When the server initiates
@@ -465,50 +443,68 @@ Internet-Draft        Phoenix: Lemonade Risen Again         January 2025
    sequence numbers.  All commands initiated from the server have odd
    numbered command sequence numbers.
 
-   Some commands expect a command reply.  Other commands do not expect a
-   command reply.  An example of a command that expects a reply is the
-   ping command.  An example of a command that does not expect a reply
-   is the keep-alive command.  Conceptually their are two kinds of
-   commands: (a) Directive commands, and (b) Request commands.  These
-   are not specific protocol entities, these concepts will be used to
-   describe the expected behavior when one of these are transmitted.
-
-   A directive type command expects the other endpoint to process the
-   command and possibly reply with some results.  An example could be:
-   Send me an index of my emails in my InBox.  The client would expect a
-   result.  Another example is a bye command, once sent, no reply is
-   expected.
-
-   A request type command may or might not have any reply.  For example,
-   a keep-alive command is a request to not timeout and has no reply.
-   And a send new email notifications command would expect zero or more
-   replies and it would not require them, as they might not happen.
-
-3.4.1.1.  Packet Overview
-
-   All commands are sent in a packet.  A packet has two parts, the
-   packet header and the packet body.
-
-   The packet header has one value, the total length of the packet
-   header, packet body, and payload sent as an unsigned 64-bit integer
-   in network byte order.  The length does not include its own length.
-   It is the total length that follows the length value.
-
-   The packet body is divided into three parts: (1) Command sequence
-   (SEQ), (2) The Command (CMD), and (3) The command specific data
-   (Payload).
 
 
-
-
-Royer                     Expires 23 July 2025                  [Page 9]
+Royer                     Expires 25 July 2025                  [Page 8]
 
 Internet-Draft        Phoenix: Lemonade Risen Again         January 2025
 
 
-   (1) The Command SEQ is a 32-bit unsigned integer sent in network byte
+   Some commands expect a command reply.  Other commands do not expect a
+   command reply.  An example of a command that expects a reply is the
+   ping command.  An example of a command that does not expect a reply
+   is the keep-alive command.  Conceptually there are two kinds of
+   commands:
+
+   Directive commands:  A directive type command expects the other
+      endpoint to process the command and possibly reply with some
+      results.  An example could be: Send me an index of my emails in my
+      InBox.  The client would expect a result.  Another example is a
+      bye command, once sent, no reply is expected.
+
+   Request commands:  A request type command may or might not have any
+      reply.  For example, a keep-alive command is a request to not
+      timeout and has no reply.  And a send new email notifications
+      command would expect zero or more replies and it would not require
+      them, as they might not happen.
+
+   These are not specific protocol entities, these concepts will be used
+   to describe the expected behavior when one of these are transmitted.
+
+3.1.1.  Packet Summary
+
+   All commands are sent in a packet.  A packet has two parts:
+
+   1.  The packet header.
+
+   2.  The packet body.
+
+   The packet header has one value, the total length of the packet body,
+   and payload sent as an unsigned 64-bit integer in network byte order.
+   The length does not include its own length.  It is the total length
+   that follows the length value.
+
+   The packet body is divided into three parts:
+
+   1.  Command sequence (SEQ).
+
+   2.  The Command (CMD).
+
+   3.  The command specific data (Payload).
+
+3.1.1.1.  Command Sequence Number (SEQ)
+
+   The Command SEQ is a 32-bit unsigned integer sent in network byte
    order.  This SEQ is an even number when initiated from the client,
    and an odd number when initiated from the server.
+
+
+
+
+Royer                     Expires 25 July 2025                  [Page 9]
+
+Internet-Draft        Phoenix: Lemonade Risen Again         January 2025
+
 
    The first SEQ value sent from the client is zero (0) and is
    incremented by two each time.
@@ -522,23 +518,31 @@ Internet-Draft        Phoenix: Lemonade Risen Again         January 2025
    commands and not accidentally re-issue the same SEQ that may still
    get replies from the other endpoint.
 
-   (2) The command is a predefined enumerated 32-bit unsigned integer
-   sent in network byte order.  The value (in hex) 0xFFFFFFFF is
-   reserved for extensions if the 32-bit range is exhausted.
+3.1.1.2.  The Command (CMD)
 
-   (3) The payload has no predefined length, other what what is
-   specified for the CMD in the packet.  It could be zero to vary large
-   in size.  It could be opaque data, or it could be data that is XDR
-   encoded.  The contents are specific to the CMD in the packet.
+   The command is a predefined enumerated 32-bit unsigned integer sent
+   in network byte order.  The value (in hex) 0xFFFFFFFF is reserved for
+   extensions if the 32-bit range is exhausted.
 
-3.4.1.1.1.  Packet Reply Overview
+3.1.1.3.  The Payload (Payload)
+
+   The payload has no predefined length, other what what is specified
+   for the CMD in the packet.  It could be zero to vary large in size.
+   It could be opaque data, or it could be data that is XDR encoded.
+   The contents are specific to the CMD specified in the in the packet
+   body.
+
+3.1.2.  Packet Reply Summary
 
    All replies to a command are also a command packet.  They contain the
    same command SEQ and command as the original packet.  The endpoint
-   recognizes it is a reply because (a) the command SEQ matches one that
-   is waiting a reply.  And (b) When the client gets an even numbered
-   SEQ, it can only be a reply.  And when the server gets an odd
-   numbered SEQ, it can only be a reply.
+   recognizes it is a reply because:
+
+   *  The command SEQ matches one that is waiting a reply.
+
+   *  When the client gets an even numbered SEQ, it can only be a reply.
+
+   *  When the server gets an odd numbered SEQ, it can only be a reply.
 
    Some commands have zero to many replies.  Each of these multiple
    replies contains the same SEQ as the original command.  An example,
@@ -548,19 +552,370 @@ Internet-Draft        Phoenix: Lemonade Risen Again         January 2025
    client may get many with a SEQ of 20 as new emails arrive on the
    server.
 
+
+
+
+
+
+Royer                     Expires 25 July 2025                 [Page 10]
+
+Internet-Draft        Phoenix: Lemonade Risen Again         January 2025
+
+
+3.2.  Administration Commands Summary
+
+   Implementations are not required to implement any ADMIN command.  A
+   client will know the server supports one or more ADMIN commands when
+   it gets its post authentication capability command from the server.
+
+   Administrative command can be used to configure, audit, and manage
+   the remote endpoint.  Administrative command can be used to
+   configure, audit, and manage user access.
+
+3.2.1.  Administration Capability Definitions
+
+   Implementations MUST NOT send the ADMIN capability in the pre
+   authorization CAPABILITY list.
+
+   Implementations that support any administration command MAY include
+   ADMIN capability in the post authentication CAPABILITY list.  An
+   implementation may decide that only specified and authorized users
+   may issue administrative commands and send only those authenticated
+   users the ADMIN capability.
+
+   The ADMIN capability include the list of ADMIN commands the user is
+   allowed to perform.  For example, if a user only has permission to
+   only view user lists, then only the USER_LIST ADMIN capability will
+   be provided.
+
+   The capability name is also the command name to use when invoking
+   that capability.
+
+   When a user attempts to send a commmand they are not authorized to
+   send, the remote endpoint will reply with a NotSupported command with
+   its sequence number set to the sequence number from offending
+   command.
+
+3.2.2.  Administration of users.
+
+   The following operations are defined for administration.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Royer                     Expires 25 July 2025                 [Page 11]
+
+Internet-Draft        Phoenix: Lemonade Risen Again         January 2025
+
+
+     +====================+==========================================+
+     | Command and        | Brief Description.                       |
+     | Capability Name    |                                          |
+     +====================+==========================================+
+     | USER_CREATE        | May create a new user.  And also the     |
+     |                    | command to create a user.                |
+     +--------------------+------------------------------------------+
+     | USER_DELETE        | May delete a user.  And the command to   |
+     |                    | delete a user.                           |
+     +--------------------+------------------------------------------+
+     | USER_RENAME        | May rename a user.  And the command to   |
+     |                    | rename a user.                           |
+     +--------------------+------------------------------------------+
+     | USER_LIST          | May list users and their capabilities.   |
+     |                    | And the command to list users.           |
+     +--------------------+------------------------------------------+
+     | USER_PERMISSIONS   | May update other users permissions.  And |
+     |                    | the command to view and set user         |
+     |                    | permissions.                             |
+     +--------------------+------------------------------------------+
+     | SERVER_SHUTDOWN    | May shutdown the server.  And the        |
+     |                    | command to shutdown the server.          |
+     +--------------------+------------------------------------------+
+     | SERVER_LOGS        | May view the server logs.  And the       |
+     |                    | command to view server logs.             |
+     +--------------------+------------------------------------------+
+     | SERVER_KICK_USER   | May logout a user.  And limit when they  |
+     |                    | can use the server again.  And the       |
+     |                    | command to kick and limit a user.        |
+     +--------------------+------------------------------------------+
+     | SERVER_MANAGE_BANS | May manage IP and user bans.  And the    |
+     |                    | command to manage ban users an IP        |
+     |                    | addresses.                               |
+     +--------------------+------------------------------------------+
+     | SERVER_VIEW_STATS  | May view server statistics.  And the     |
+     |                    | command to view statistics.              |
+     +--------------------+------------------------------------------+
+     | SERVER_CONFIGURE   | May configure the server.  If sent with  |
+     |                    | a VIEW_ONLY parameter, then the user may |
+     |                    | only view the configuration information. |
+     |                    | And the command to view and alter the    |
+     |                    | server configuration information.        |
+     +--------------------+------------------------------------------+
+
+                                  Table 1
+
+
+
+
+
+
+Royer                     Expires 25 July 2025                 [Page 12]
+
+Internet-Draft        Phoenix: Lemonade Risen Again         January 2025
+
+
+3.3.  Authentication Commands Summary
+
+   TODO
+
+3.4.  Calendar Commands Summary
+
+   These command are based on iCalendar and iTIp.
+
+3.5.  Capability Commands Summary
+
+   This section
+
+3.6.  EMail Commands Summary
+
+   These commands allow for the fetching and submission of EMail
+   messages
+
+3.7.  File and Folder Commands Summary
+
+   The file operations (FileOp) have protocol names.  Here are their
+   protocol names and a breif description.
+
+   Implementations are not required to support any or all of these
+   commands.
+
+
+        +===================+=====================================+
+        | Op Name           | Brief Description.                  |
+        +===================+=====================================+
+        | FOLDER_CAPABILITY | When sent as a command, request the |
+        |                   | list of folder commands supported.  |
+        |                   | When sent as a reply, includes the  |
+        |                   | list of folder commands supported.  |
+        +-------------------+-------------------------------------+
+        | FOLDER_CREATE     | Create a new folder.  Also the name |
+        |                   | of the capability for this          |
+        |                   | permission.                         |
+        +-------------------+-------------------------------------+
+        | FOLDER_COPY       | Copy a folder.  Also the name of    |
+        |                   | the capability for this permission. |
+        +-------------------+-------------------------------------+
+        | FOLDER_DELETE     | Delete a folder.  Also the name of  |
+        |                   | the capability for this permission. |
+        +-------------------+-------------------------------------+
+        | FOLDER_RENAME     | Rename a folder.  Also the name of  |
+        |                   | the capability for this permission. |
+        +-------------------+-------------------------------------+
+        | FOLDER_MOVE       | Move a folder.  Also the name of    |
+
+
+
+Royer                     Expires 25 July 2025                 [Page 13]
+
+Internet-Draft        Phoenix: Lemonade Risen Again         January 2025
+
+
+        |                   | the capability for this permission. |
+        +-------------------+-------------------------------------+
+        | FOLDER_SHARE      | Share a folder.  Also the name of   |
+        |                   | the capability for this permission. |
+        +-------------------+-------------------------------------+
+        | FOLDER_LIST       | List folders and files.  Also the   |
+        |                   | name of the capability for this     |
+        |                   | permission.                         |
+        +-------------------+-------------------------------------+
+        | FILE_CREATE       | Create a new file.  Also the name   |
+        |                   | of the capability for this          |
+        |                   | permission.                         |
+        +-------------------+-------------------------------------+
+        | FILE_COPY         | Copy a file.  Also the name of the  |
+        |                   | capability for this permission.     |
+        +-------------------+-------------------------------------+
+        | FILE_DELETE       | Delete a file.  Also the name of    |
+        |                   | the capability for this permission. |
+        +-------------------+-------------------------------------+
+        | FILE_RENAME       | Rename a file.  Also the name of    |
+        |                   | the capability for this permission. |
+        +-------------------+-------------------------------------+
+        | FILE_MOVE         | Move a file.  Also the name of the  |
+        |                   | capability for this permission.     |
+        +-------------------+-------------------------------------+
+        | FILE_SHARE        | Share a file.  Also the name of the |
+        |                   | capability for this permission.     |
+        +-------------------+-------------------------------------+
+        | FILE_GET          | Get a file.  Also the name of the   |
+        |                   | capability for this permission.     |
+        +-------------------+-------------------------------------+
+        | FILE_MODIFY       | Modify the contents of an existing  |
+        |                   | file.  Also the name of the         |
+        |                   | capability for this permission.     |
+        +-------------------+-------------------------------------+
+
+                                  Table 2
+
+3.8.  KeepAlive Command Summary
+
+   The KeepAlive command is sent to the server from the client.  It
+   requests the server not time out.  The server may honor or ignore the
+   request.
+
+   The Phoenix protocol is designed to transfer data and a server may
+   handle a small subsets of what is possible.  Which is why the server
+   decides what is an important command while determining idle timeout.
+
+
+
+
+Royer                     Expires 25 July 2025                 [Page 14]
+
+Internet-Draft        Phoenix: Lemonade Risen Again         January 2025
+
+
+   When the server sends the post authentication capabilities to the
+   client, it includes an IdleTimeout capability that includes the
+   number of seconds it allows for idle time.  If no significant action
+   has been taken by the client, as determined by the server, in that
+   time the server may timeout and close the connection.
+
+   The KeepAlive command tells the server that the client wishes the
+   server not to time out as long as a KeepAlive or other command is
+   sent to the server before IdleTimeout seconds have passed.
+
+   An IdleTimeout capability can be a positive number, zero, or a
+   negative number.
+
+   *  A positive number is the maximum idle time in seconds before the
+      server terminates the connection.
+
+   *  When the IdleTimeout is zero (0), the server does not timeout.
+
+   *  When the IdleTimeout is less than zero (< 0), it means it ignores
+      KeepAlive and it will idle out in the absolute value of the
+      IdleTimeout value in seconds.  For example, a value of (-300)
+      means it will ignore KeepAlive and timeout when the server
+      determines nothing significant has happened in 5 minutes (300
+      seconds).
+
+   Servers that are not threaded or can not reply to simultaneous or
+   overlapping commands, MUST set their IdleTimeout to zero (0) or a
+   negative number.
+
+   Clients MUST NOT send KeepAlive commands to a server that has an
+   IdleTimeout of zero (0) or negative (< 0).
+
+   Clients MUST NOT send KeepAlive commands to the server until at least
+   75% of the idle time has passed since the last command has been sent
+   to the server.
+
+   A server may terminate a connection if the server implementation
+   determines that KeepAlive commands are arriving to quickly.
+
+3.9.  Ping Command Summary
+
+   The ping command only sent when the client implementation has
+   determined it has waited too long for a command reply.  The ping
+   command is only initiated from the client.  It is not valid for the
+   server to send a ping command to a client.
+
+
+
+
+
+
+Royer                     Expires 25 July 2025                 [Page 15]
+
+Internet-Draft        Phoenix: Lemonade Risen Again         January 2025
+
+
+   The ping command MUST NOT be the first command sent to the server.
+   It should only be sent when the client implementation determines it
+   has waited too long for a reply.
+
+   If the server supports the ping command, then a PING capability is
+   sent in the pre authentication capability command.
+
+   Sometimes servers are unavailable and can go down.  A server could be
+   down for maintenance, or in a shutdown mode.  It might limit the
+   number of simultaneous connections.  It might be very busy.  The
+   packets might not be making it to the server because of network
+   issues.
+
+   When a ping command is received by the server:
+
+   *  When the server did not send PING capability to the client.  Then
+      the server replies with a NotSupported packet with the sequence
+      number the same as in the ping command.
+
+   *  When the server has not yet received an authentication command,
+      the server replies with a NotSupported packet with the sequence
+      number the same as in the ping command.
+
+   *  When the server has received an authentication command, and has
+      not yet replied to an authentication command.  Then the server
+      sends a ping reply, with the same sequence number that was in the
+      ping command.  This could happen when the client implementation
+      had determined it has waited too long for an authentication reply.
+
+   *  When the client is authenticated, and when the server is available
+      for processing commands.  Then the server replies with a ping
+      reply with the same sequence number.  This could happen when the
+      client implementation had determined it has waited too long for an
+      expected reply.
+
+   If the server is alive and not available, the server will reply with
+   a NotSupported command, with its sequence number set to the sequence
+   number in the ping command.
+
+   If a connected and authenticated client has been waiting for a reply
+   or for some other reason needs to determine if the server is still
+   available.  It can send a ping command.  If the server is still
+   available, it sends a ping reply.  If it is no longer available for
+   any reason, it sends a NotSupported reply.
+
+   Endpoints MUST NOT send a ping command if they are awaiting the
+   results of a previously sent ping command.
+
+
+
+
+Royer                     Expires 25 July 2025                 [Page 16]
+
+Internet-Draft        Phoenix: Lemonade Risen Again         January 2025
+
+
+   Endpoints MUST NOT send more than two ping commands per minute.
+
+   Clients and servers must give priority to ping commands.  If
+   possible, reply as soon as it receives the command.
+
+   The server MAY consider too many ping commands as a malfunctioning or
+   malicious client and terminate the connection.
+
+   Servers that are not threaded or can not reply to simultaneous or
+   overlapping commands, MUST NOT include PING in their capability
+   command.
+
+3.10.  S/MIME Commands Summary
+
 4.  Over the Wire Protocol Detail
 
    This section specifies the details of what is transmitted over the
    network.
-
-
-
-
-
-Royer                     Expires 23 July 2025                 [Page 10]
-
-Internet-Draft        Phoenix: Lemonade Risen Again         January 2025
-
 
    All protocol data transmitted between the endpoints is sent in
    network byte order.
@@ -592,6 +947,13 @@ Internet-Draft        Phoenix: Lemonade Risen Again         January 2025
 
    Followed by zero or more octets of payload data.
 
+
+
+Royer                     Expires 25 July 2025                 [Page 17]
+
+Internet-Draft        Phoenix: Lemonade Risen Again         January 2025
+
+
    There is no space, padding, or line endings between the parts of the
    packet.  The payload is sent without any modification and is not
    encoded or transformed in any way.  A packet is shown here vertically
@@ -609,14 +971,6 @@ Internet-Draft        Phoenix: Lemonade Risen Again         January 2025
    The payload size and format varies for each command.  The details of
    the payload content, and the format of that content, is described in
    each specific CMD section.
-
-
-
-
-Royer                     Expires 23 July 2025                 [Page 11]
-
-Internet-Draft        Phoenix: Lemonade Risen Again         January 2025
-
 
    An implementation can send, receive, and dispatch packets within its
    implementation by looking at the length, SEQ, and CMD, then passing
@@ -648,6 +1002,14 @@ Internet-Draft        Phoenix: Lemonade Risen Again         January 2025
      //
      uint64_t   NetLength;
      uint64_t   PacketLength;
+
+
+
+Royer                     Expires 25 July 2025                 [Page 18]
+
+Internet-Draft        Phoenix: Lemonade Risen Again         January 2025
+
+
      uint8_t *  Data;
      uint8_t *  DataPointer;
      XDR        Xdr;
@@ -666,13 +1028,6 @@ Internet-Draft        Phoenix: Lemonade Risen Again         January 2025
      // Initialize the XDR deserializer.
      //
      xdrmem_create(&Xdr, Data, PacketLength, XDR_DECODE);
-
-
-
-Royer                     Expires 23 July 2025                 [Page 12]
-
-Internet-Draft        Phoenix: Lemonade Risen Again         January 2025
-
 
      // Decode the received data into a Packet.
      //
@@ -703,6 +1058,14 @@ Internet-Draft        Phoenix: Lemonade Risen Again         January 2025
        if (WeAreTheClient) {
          if (SequenceIsEvenNumber) {
            DispatchReply(Packet);
+
+
+
+Royer                     Expires 25 July 2025                 [Page 19]
+
+Internet-Draft        Phoenix: Lemonade Risen Again         January 2025
+
+
          } else {
            DispatchCommandFromOtherEndpoint(Packet);
          }
@@ -718,17 +1081,6 @@ Internet-Draft        Phoenix: Lemonade Risen Again         January 2025
 5.  IANA Considerations
 
    This memo includes no request to IANA.  [CHECK]
-
-
-
-
-
-
-
-Royer                     Expires 23 July 2025                 [Page 13]
-
-Internet-Draft        Phoenix: Lemonade Risen Again         January 2025
-
 
 6.  Security Considerations
 
@@ -763,6 +1115,13 @@ Appendix A.  Administrative Enumerated Binary Values
    Phoenix is a binary protocol.  Each value is sent as an unsigned
    32-bit integer in xdr format.
 
+
+
+Royer                     Expires 25 July 2025                 [Page 20]
+
+Internet-Draft        Phoenix: Lemonade Risen Again         January 2025
+
+
    The values for the commands are arbitrary and were assigned as
    created.  There is no plan or origination to the numbers.  There is
    no priority or superiority to any value.  The table is sorted by
@@ -781,7 +1140,40 @@ Appendix A.  Administrative Enumerated Binary Values
 
 
 
-Royer                     Expires 23 July 2025                 [Page 14]
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Royer                     Expires 25 July 2025                 [Page 21]
 
 Internet-Draft        Phoenix: Lemonade Risen Again         January 2025
 
@@ -837,7 +1229,7 @@ Appendix B.  Authentication Enumerated Binary Values
 
 
 
-Royer                     Expires 23 July 2025                 [Page 15]
+Royer                     Expires 25 July 2025                 [Page 22]
 
 Internet-Draft        Phoenix: Lemonade Risen Again         January 2025
 
@@ -893,7 +1285,7 @@ Appendix C.  File and Folder Enumerated Binary Values
 
 
 
-Royer                     Expires 23 July 2025                 [Page 16]
+Royer                     Expires 25 July 2025                 [Page 23]
 
 Internet-Draft        Phoenix: Lemonade Risen Again         January 2025
 
@@ -949,15 +1341,1762 @@ Appendix D.  Protocol Enumerated Binary Values
 
 
 
-Royer                     Expires 23 July 2025                 [Page 17]
+Royer                     Expires 25 July 2025                 [Page 24]
 
 Internet-Draft        Phoenix: Lemonade Risen Again         January 2025
 
 
-Acknowledgements
+Appendix E.  RPCGEN protocol specification
 
-   This template uses extracts from templates written by Pekka Savola,
-   Elwyn Davies and Henrik Levkowetz.  [REPLACE]
+   The following is the extendable RPCGEN specification for the Phoenix
+   protocol defined in this document.
+
+E.1.  RPCGEN - Acl
+
+   %#ifdef BUILDING_LIBPHOENIX
+   %#include "Types.hpp"
+   %#else
+   %#include <RiverExplorer/Phoenix/Types.hpp>
+   %#endif
+
+   #ifdef RPC_HDR
+   %/**
+   % * The Acl_Cmd ...
+   % */
+   #endif
+   class Acl
+   {
+           int Todo;
+   };
+
+E.2.  RPCGEN - Administration
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Royer                     Expires 25 July 2025                 [Page 25]
+
+Internet-Draft        Phoenix: Lemonade Risen Again         January 2025
+
+
+   %#ifdef BUILDING_LIBPHOENIX
+   %#include "Types.hpp"
+   %#else
+   %#include <RiverExplorer/Phoenix/Types.hpp>
+   %#endif
+
+   #ifdef RPC_HDR
+   %/**
+   % * The Administratoin Commands
+   % */
+   #endif
+   enum AdministrativeCommands_e
+   {
+           USER_CREATE = 0,
+           USER_DELETE = 1,
+           USER_RENAME = 2,
+           USER_LIST = 3,
+           USER_PERMISSIONS = 4,
+           SERVER_SHUTDOWN = 5,
+           SERVER_LOGS = 6,
+           SERVER_KICK_USER = 7,
+           SERVER_MANAGE_BANS = 8,
+           SERVER_VIEW_STATS = 9
+   };
+
+   #ifdef RPC_HDR
+   %/**
+   % * The Administratoin Command ...
+   % */
+   #endif
+   class Administration
+   {
+           int Todo;
+   };
+
+   #ifdef RPC_HDR
+   %/**
+   % * The Administratoin Reply Command ...
+   % */
+   #endif
+   class AdministrationReply
+   {
+           int Todo;
+   };
+
+E.3.  RPCGEN - Authenticate
+
+
+
+
+
+Royer                     Expires 25 July 2025                 [Page 26]
+
+Internet-Draft        Phoenix: Lemonade Risen Again         January 2025
+
+
+   %
+   %#ifdef BUILDING_LIBPHOENIX
+   %#include "Types.hpp"
+   %#else
+   %#include <RiverExplorer/Phoenix/Types.hpp>
+   %#endif
+
+   #ifdef RPC_HDR
+   %/**
+   % * Authentication is initiated by the endpoing doing the inital
+   % * connection, to the endpoint it is connecting to.
+   % *
+   % * The start of the authentication process take one of two
+   % * directions:
+   % *
+   % * (1) New account, new client, or new authentication mechanism being
+   % * attempted.
+   % *
+   % * (2) - Existing account from a previously used client using a
+   % * previously known to work (from the clients point of view) authentication
+   % * mechanism.
+   % *
+   % * New is divided up into (1.a) unknown or new account or (1.b) known account.
+   % *
+   % * (1.a) New, known account:
+   % * Just after the network connection is made, the client sends its
+   % * pre authentication capabilities to the server, then waits
+   % * for the pre authentication capabilities packet to arrive from
+   % * the server. The server supplied pre authentication packet includes
+   % * the authentication mechanisms it suppots.
+   % *
+   % * (1.b) New, unknown account:
+   % * Starts off like (a), then checks the servers capability set for
+   % * "allow-new-accounts". If provided, then the sign-up procedure is
+   % * followed. (sign-up documentation below). Followed by an authentication
+   % * to verify it worked.
+   % *
+   % * If "allow-new-accounts" is not provided, then the account information
+   % * must be aquired by methods external to this protocol.
+   % *
+   % * @note
+   % * Allowing new users to sign up using this protocol can be site
+   % * specific and may include procedures external to this protocol
+   % * such as visiting web sites or other external verification processes.
+   % *
+   % * @note
+   % * For security and anti-junk user accounts, many site may choose not enable
+   % * "allow-new-accounts". For servers internal to orginazations or on secure
+
+
+
+Royer                     Expires 25 July 2025                 [Page 27]
+
+Internet-Draft        Phoenix: Lemonade Risen Again         January 2025
+
+
+   % * networks this might be enabled.
+   % *
+   % * (2) Existing or known:
+   % * Just after the network connection is made, the client sends its
+   % * pre authentication capabilities to the server. Then without
+   % * waiting sends any first step authentication data to the server.
+   % * These are two separate packets each unique and independent.
+   % *
+   % * In both cases:
+   % * Authentication proceeds.
+   % */
+   #endif
+   struct AuthMD5
+   {
+           string Account<>;
+           string Md5Password<>;
+   };
+
+   struct Authenticate
+   {
+           AuthMD5 Md5;
+   };
+
+   struct AuthenticateReply
+   {
+           bool_t  Accepted;
+   };
+
+E.4.  RPCGEN - Capability
+
+   %
+   %#ifdef BUILDING_LIBPHOENIX
+   %#include "Types.hpp"
+   %#else
+   %#include <RiverExplorer/Phoenix/Types.hpp>
+   %#endif
+
+   #ifdef RPC_HDR
+   %/**
+   % * The Capability command informs the other endpoint about
+   % * its capabilities.
+   % *
+   % * This is done once at connection time.
+   % * And once after authentication is successful.
+   % * All other attempts will get a NotSupported_Cmd reply.
+   % *
+   % * A single capability is a string key, and a string value.
+   % * The value for each capability is described in its own
+
+
+
+Royer                     Expires 25 July 2025                 [Page 28]
+
+Internet-Draft        Phoenix: Lemonade Risen Again         January 2025
+
+
+   % * section.
+   % *
+   % * A capability value may contain one or more values, each separated
+   % * as defined in the capability description.
+   % * It is suggested that a comma (HEX 2C) be used. Except when
+   % * that would complicate the capability value.
+   % * In all cases, the capability value is defined separately for
+   % * each capability.
+   % *
+   % * If the capability list does not include the capability name,
+   % * then it is not supported.
+   % *
+   % * If the reply contains the capability name, then
+   % * its associated value will be used to determine the
+   % * extent of its support.
+   % *
+   % * Capability keys MUST BE processed in all lower case.
+   % * If a capability arrives in upper or mixed case,
+   % * the receiver MUST covert then check to see if that is
+   % * valid. This prevents capabilities with the same name
+   % * and varying case from being used.
+   % *
+   % * Capability values SHOULD BE in all lower case.
+   % * Except when the capability itself contains values
+   % * that must be upper or mixed case.
+   % *
+   % * Capabilties that have a boolean value, SHOULD use
+   % * 'true' or 'false' and not 'yes', 'no' or other variations of true or false.
+   % *
+   % * Capabilties that have a enabled or disabled value, SHOULD use
+   % * 'enabled' or 'disabled' and not 'yes', 'no' or other variations of
+   % * enabled or disabled.
+   % *
+   % */
+   #endif
+
+   class Capability
+   {
+           ArrayOfStrings  Supported<>;
+   };
+
+   #ifdef RPC_HDR
+   %/**
+   % * Capability FolderCapabilities_e Capabilities that
+   % * apply to folder or directories.
+   % *
+   % * Folder capabilites should not be provided in pre-authentication
+   % * capability packets.
+
+
+
+Royer                     Expires 25 July 2025                 [Page 29]
+
+Internet-Draft        Phoenix: Lemonade Risen Again         January 2025
+
+
+   % *
+   % * @note
+   % * Not call capabilities are applicable to all endpoints, files,
+   % * folders, users, or specific commands. Read the associated
+   % * command and capability specifications to understand each
+   % * operation.
+   % *
+   % * The capability specifies the endpoing is capable of the
+   % * function. It may be further restriced by who is authenticated
+   % * or acess control lists (ACLs) on specific associated items.
+   % *
+   % * <ul>
+   % * <li>CanList: Has a key of "canlist" and has a boolean value.
+   % * -When true, then a list of files and folders can be accessed.
+   % * -When false, then only already known named files and folders can be accessed.
+   % * </li>
+   % *
+   % * <li>CanSubscribe: Has a key value of "cansubscribe" and has
+   % * a boolean value.
+   % * -When true, then this server supports unsolicited push notifcations.
+   % * -When false, then no unsolicited push notifcations can not be sent
+   % * from this endpoint.
+   % * </li>
+   % *
+   % * <li>CanCreate: Has a key value of "cancreate" and has a boolean value.
+   % * -When true, then this endpoint supports creating folders.
+   % * -When false, this endpoint does not support creating folders.
+   % * <li>
+   % *
+   % * <li>CanRemove: Has a key value of "canremove" and has a boolean value.
+   % * -When true, this endpoint supports removing folders.
+   % * -When fales, this endpoint does not support removing foldres.
+   % * <li>
+   % *
+   % * <li>CanRename: Has a key value of "canrename" and has a boolean value.
+   % * When true, this endpoint supports renaming folders.
+   % * When false, this endpoint does not support renaming folders.
+   % * <li>
+   % *
+   % * <li>CanCopy: Has a key value of "cancopy" and has a boolean value.
+   % * When true, this endpoint supports copying folders.
+   % * When false, this endpoint does not support copying folders.
+   % * <li>
+   % *
+   % * <li>CanSearch: Has a key value of "cansearch" and has a boolean value.
+   % * When true, this endpoint supports searching folders names using posix regex expressions
+   % * When false, this endpoint does not support searching folders.
+   % * <li>
+
+
+
+Royer                     Expires 25 July 2025                 [Page 30]
+
+Internet-Draft        Phoenix: Lemonade Risen Again         January 2025
+
+
+   % *
+   % * <li>Acls: Has a key value of 'acls' and has a string value.
+   % * When supplied, the endpoint supports at least one acl type.
+   % * The types currely defined in the Acls_e enumeration.
+   % */
+   #endif
+
+   enum FolderCapabilities_e
+   {
+           CanList,
+           CanSubscribe,
+           CanCreate,
+           CanRemove,
+           CanAppend,
+           CanRename,
+           CanUpdate,
+           CanCopy,
+           CanSearch,
+           Acls
+   };
+
+   enum Acls_e
+   {
+           OwnerRW_t,
+           OwnerRO_t,
+           GroupRW_t,
+           GroupRO_t,
+           OtherRW_t,
+           OtherRO_t,
+           NamedListRW_t,
+           NamedListRO_t
+   };
+
+E.5.  RPCGEN - Folder
+
+   %
+   %#ifdef BUILDING_LIBPHOENIX
+   %#include "Types.hpp"
+   %#include "MetaData.hpp"
+   %#else
+   %#include <RiverExplorer/Phoenix/Types.hpp>
+   %#include <RiverExplorer/Phoenix/MetaData.hpp>
+   %#endif
+
+   #ifdef RPC_HDR
+   %/**
+   % */
+   #endif
+
+
+
+Royer                     Expires 25 July 2025                 [Page 31]
+
+Internet-Draft        Phoenix: Lemonade Risen Again         January 2025
+
+
+   enum Folder_e
+   {
+           FolderCreate_Cmd = 0,
+           FolderCreateReply_Cmd = 1,
+           FolderCopy_Cmd = 2,
+           FolderCopyReply_Cmd = 3,
+           FolderDelete_Cmd = 4,
+           FolderDeleteReply_Cmd = 5,
+           FolderRename_Cmd = 6,
+           FolderRenameReply_Cmd = 7,
+           FolderMove_Cmd = 8,
+           FolderMoveReply_Cmd = 9,
+           FolderShare_Cmd = 10,
+           FolderShareReply_Cmd = 11,
+           FolderList_Cmd = 12,
+           FolderListReply_Cmd = 13,
+           FileCreate_Cmd = 14,
+           FileCreateReply_Cmd = 15,
+           FileCopy_Cmd = 16,
+           FileCopyReply_Cmd = 17,
+           FileDelete_Cmd = 18,
+           FileDeleteReply_Cmd = 19,
+           FileRename_Cmd = 20,
+           FileRenameReply_Cmd = 21,
+           FileMove_Cmd = 22,
+           FileMoveReply_Cmd = 23,
+           FileShare_Cmd = 24,
+           FileShareReply_Cmd = 25,
+           FileGet_Cmd = 26,
+           FileGetReply_Cmd = 27
+   };
+
+   #ifdef RPC_HDR
+   %/**
+   % * @class FolderCreate CmdFolder.hpp <RiverExplorer/Phoenix/CmdFolder.hpp>
+   % * @addtogroup Folder
+   % *
+   % * The full path is the path from the top of the users virtual
+   % * home folder, and includes the folder name.
+   % *
+   % * The path separator is the '/' (UTF-8 value 0x2f) character.
+   % *
+   % * The root folder is "/".
+   % */
+   #endif
+   class FolderCreate
+   {
+           string  FullPath<>;
+
+
+
+Royer                     Expires 25 July 2025                 [Page 32]
+
+Internet-Draft        Phoenix: Lemonade Risen Again         January 2025
+
+
+   };
+
+   #ifdef RPC_HDR
+   %/**
+   % * @class FolderCreateReply CmdFolder.hpp <RiverExplorer/Phoenix/CmdFolder.hpp>
+   % * @addtogroup Folder
+   % * The reply for CreateFolder, Success is set to true if the
+   % * folder was created. Otherwise it is set to false.
+   % */
+   #endif
+   class FolderCreateReply
+   {
+           bool_t  Success;
+   };
+
+   #ifdef RPC_HDR
+   %/**
+   % * @class FolderCopyr CmdFolder.hpp <RiverExplorer/Phoenix/CmdFolder.hpp>
+   % * @addtogroup Folder
+   % *
+   % * The full original path is the path from the top of the users virtual
+   % * home folder, and includes the folder name. And names
+   % * the folder to copy from.
+   % *
+   % * The full destination path is the path from the top of the users virtual
+   % * home folder, and includes the folder name.
+   % * And names the folder that will have a copy of FullOriginalPath
+   % * placed into.
+   % *
+   % * When recursive is false, only the contents are copied
+   % * and not any directories.
+   % *
+   % * When recursive is true, the contents are copied
+   % * and recursively copies all directories in the original path directories
+   % * to the new destination.
+   % *
+   % * The path separator is the '/' (UTF-8 value 0x2f) character.
+   % *
+   % * The root folder is "/".
+   % */
+   #endif
+   class FolderCopy
+   {
+           string  FullOriginalPath<>;
+           string  FullDestinationPath<>;
+           bool_t  Recursive;
+   };
+
+
+
+
+Royer                     Expires 25 July 2025                 [Page 33]
+
+Internet-Draft        Phoenix: Lemonade Risen Again         January 2025
+
+
+   #ifdef RPC_HDR
+   %/**
+   % * @class FolderCopyReply CmdFolder.hpp <RiverExplorer/Phoenix/CmdFolder.hpp>
+   % * @addtogroup Folder
+   % *
+   % * The reply for CopyFolder, Success is set to true if the
+   % * folder was copied into FillToPath. Otherwise it is set to false.
+   % *
+   % * A false indicates that nothing was copied.
+   % * A true indicates that everything was copied.
+   % *
+   % * Must fail and leave the original structure in place
+   % * on any failure, and return false.
+   % */
+   #endif
+   class FolderCopyReply
+   {
+           bool_t  Success;
+   };
+
+   class FolderDelete
+   {
+           int todo;
+   };
+
+   class FolderDeleteReply
+   {
+           int todo;
+   };
+
+   class FolderRename
+   {
+           int todo;
+   };
+
+   class FolderRenameReply
+   {
+           int todo;
+   };
+
+   class FolderMove
+   {
+           int todo;
+   };
+
+   class FolderMoveReply
+   {
+           int todo;
+
+
+
+Royer                     Expires 25 July 2025                 [Page 34]
+
+Internet-Draft        Phoenix: Lemonade Risen Again         January 2025
+
+
+   };
+
+   class FolderShare
+   {
+           int todo;
+   };
+
+   class FolderShareReply
+   {
+           int todo;
+   };
+
+   class FolderList
+   {
+           int todo;
+   };
+
+   class FolderListReply
+   {
+           int todo;
+   };
+
+   class FileCreate
+   {
+           int todo;
+   };
+
+   class FileCreateReply
+   {
+           int todo;
+   };
+
+   class FileCopy
+   {
+           int todo;
+   };
+
+   class FileCopyReply
+   {
+           int todo;
+   };
+
+   class FileDelete
+   {
+           int todo;
+   };
+
+   class FileDeleteReply
+
+
+
+Royer                     Expires 25 July 2025                 [Page 35]
+
+Internet-Draft        Phoenix: Lemonade Risen Again         January 2025
+
+
+   {
+           int todo;
+   };
+
+   class FileRename
+   {
+           int todo;
+   };
+
+   class FileRenameReply
+   {
+           int todo;
+   };
+
+   class FileMove
+   {
+           int todo;
+   };
+
+   class FileMoveReply
+   {
+           int todo;
+   };
+
+   class FileShare
+   {
+           int todo;
+   };
+
+   class FileShareReply
+   {
+           int todo;
+   };
+
+   class FileGet
+   {
+           int todo;
+   };
+
+   class FileGetReply
+   {
+           int todo;
+   };
+
+   union FolderCmdData switch (Folder_e FCmd)
+   {
+    case FolderCreate_Cmd:
+            FolderCreate * FolderCreateFolder;
+
+
+
+Royer                     Expires 25 July 2025                 [Page 36]
+
+Internet-Draft        Phoenix: Lemonade Risen Again         January 2025
+
+
+    case FolderCopy_Cmd:
+            FolderCopy * FolderCopyData;
+
+    case FolderDelete_Cmd:
+            FolderDelete * FolderDeleteData;
+
+    case FolderRename_Cmd:
+            FolderRename * FolderRenameData;
+
+    case FolderMove_Cmd:
+            FolderMove * FolderMoveData;
+
+    case FolderShare_Cmd:
+            FolderShare * FolderShareData;
+
+    case FolderList_Cmd:
+            FolderList * FolderListData;
+
+    case FileCreate_Cmd:
+            FileCreate * FileCreateData;
+
+    case FileCopy_Cmd:
+            FileCopy * FileCopyData;
+
+    case FileDelete_Cmd:
+            FileDelete * FileDeleteData;
+
+    case FileRename_Cmd:
+            FileRename * FileRenameData;
+
+    case FileMove_Cmd:
+            FileMove * FileMoveData;
+
+    case FileShare_Cmd:
+            FileShare * FileShareData;
+
+    case FileGet_Cmd:
+            FileGet * FileGetData;
+
+   };
+
+   union FolderReplyData switch (Folder_e FCmd)
+   {
+    case FolderCreateReply_Cmd:
+            FolderCreateReply * FolderCreateReplyData;
+
+    case FolderCopyReply_Cmd:
+            FolderCopyReply * FolderCopyReplyData;
+
+
+
+Royer                     Expires 25 July 2025                 [Page 37]
+
+Internet-Draft        Phoenix: Lemonade Risen Again         January 2025
+
+
+    case FolderDeleteReply_Cmd:
+            FolderDeleteReply * FolderDeleteReplyData;
+
+    case FolderRenameReply_Cmd:
+            FolderRenameReply * FolderRenameReplyData;
+
+    case FolderMoveReply_Cmd:
+            FolderMoveReply * FolderMoveReplyData;
+
+    case FolderShareReply_Cmd:
+            FolderShareReply * FolderShareReplyData;
+
+    case FolderListReply_Cmd:
+            FolderListReply * FolderListReplyData;
+
+    case FileCreateReply_Cmd:
+            FileCreateReply * FileCreateReplyData;
+
+    case FileCopyReply_Cmd:
+            FileCopyReply * FileCopyReplyData;
+
+    case FileDeleteReply_Cmd:
+            FileDeleteReply * FileDeleteReplyData;
+
+    case FileRenameReply_Cmd:
+            FileRenameReply * FileRenameReplyData;
+
+    case FileMoveReply_Cmd:
+            FileMoveReply * FileMoveReplyData;
+
+    case FileShareReply_Cmd:
+            FileShareReply * FileShareReplyData;
+
+    case FileGetReply_Cmd:
+            FileGetReply * FileGetReplyData;
+
+   };
+
+
+   #ifdef RPC_HDR
+   %/**
+   % * An XML representation of a file, not the
+   % * contents, but the information about the file.
+   % *
+   % * - Meta: Is an array of MetaData.
+   % * - Name: This is the name excluding the path.
+   % * - Size: This is the full size of the file.
+   % * The FLAG_... symbols are symbolic names
+
+
+
+Royer                     Expires 25 July 2025                 [Page 38]
+
+Internet-Draft        Phoenix: Lemonade Risen Again         January 2025
+
+
+   % */
+   #endif
+
+   class FileInformation
+   {
+           MetaData        Meta<>;
+           string          Name<>;
+           uint64_t        Size;
+           uint32_t        FlagBits;
+   };
+
+   #ifdef RPC_HDR
+   %/**
+   % * An XML representation of a folder
+   % *
+   % * - Meta: Is an array of MetaData.
+   % * - Name: This is the name excluding the path.
+   % * - Folders: An array of information about folders within this folder.
+   % * - Files: An array of information about files in this folder.
+   % */
+   #endif
+   class FolderInformation
+   {
+           MetaData                Meta<>;
+           string                  Name<>;
+           FolderInformation       Folders<>;
+           FileInformation         Files<>;
+   };
+
+   class Folder
+   {
+           FolderCmdData Data;
+   };
+
+   class FolderReply
+   {
+           FolderReplyData Data;
+   };
+
+E.6.  RPCGEN - KeepAlive
+
+
+
+
+
+
+
+
+
+
+
+Royer                     Expires 25 July 2025                 [Page 39]
+
+Internet-Draft        Phoenix: Lemonade Risen Again         January 2025
+
+
+   %
+   %#ifdef BUILDING_LIBPHOENIX
+   %#include "Types.hpp"
+   %#else
+   %#include <RiverExplorer/Phoenix/Types.hpp>
+   %#endif
+
+   #ifdef RPC_HDR
+   %/**
+   % * The KeepAlive command sends a packet to the remote endpoint.
+   % *
+   % * There is no reply to a KeepAlive command.
+   % */
+   #endif
+   struct KeepAlive
+   {
+           int foo;
+   };
+
+E.7.  RPCGEN - NotSupported
+
+   %
+   %#ifdef BUILDING_LIBPHOENIX
+   %#include "Types.hpp"
+   %#else
+   %#include <RiverExplorer/Phoenix/Types.hpp>
+   %#endif
+
+   #ifdef RPC_HDR
+   %/**
+   % * Not supported. This is sent back to the initiating endpoint
+   % * when this endpoint does not support the command sent.
+   % *
+   % * @note
+   % * There is no data associated with a NotSupported_Cmd, only the
+   % * CmdPacket is sent.
+   % */
+   #endif
+
+   struct NotSupported
+   {
+           int foo;
+   };
+
+   struct NotSupportedReply
+   {
+           int foo;
+   };
+
+
+
+Royer                     Expires 25 July 2025                 [Page 40]
+
+Internet-Draft        Phoenix: Lemonade Risen Again         January 2025
+
+
+E.8.  RPCGEN - Ping
+
+   %
+   %#ifdef BUILDING_LIBPHOENIX
+   %#include "Types.hpp"
+   %#else
+   %#include <RiverExplorer/Phoenix/Types.hpp>
+   %#endif
+
+   #ifdef RPC_HDR
+   %/**
+   % * The Ping command sends a packet to the remote endpoint.
+   % * The other endpoint does a PingReply with no data.
+   % *
+   % * The reply is required.
+   % */
+   #endif
+   class Ping
+   {
+           int foo;
+   };
+
+   #ifdef RPC_HDR
+   %/**
+   % * The Ping Reply command sends a packet to the remote endpoint.
+   % * The other endpoint does a PingReply with no data.
+   % *
+   % * The reply is required.
+   % */
+   #endif
+   class PingReply
+   {
+           int foo;
+   };
+
+   #ifdef RPC_HDR
+   %/**
+   % * @return a new Ping CmdPacket.
+   % */
+   #endif
+   %namespace RiverExplorer::Phoenix
+   %{
+   %class CmdPacket;
+   %extern CmdPacket * NewPing(CommandSequence Seq);
+   %}
+
+E.9.  RPCGEN - Commands
+
+
+
+
+Royer                     Expires 25 July 2025                 [Page 41]
+
+Internet-Draft        Phoenix: Lemonade Risen Again         January 2025
+
+
+   %#ifdef BUILDING_LIBPHOENIX
+   %#include "CppTypes.hpp"
+   %#else
+   %#include <RiverExplorer/Phoenix/CppTypes.hpp>
+   %#endif
+
+   #ifdef RPC_HDR
+   %/**
+   % * Command_e: An enumerated list of fetch commands.
+   % * <ul>
+   % * <li>
+   % *     Admin_Cmd - The packet contains an administrative command.
+   % * </li>
+   % * <li>
+   % *     AdminReply_Cmd - The packet contains an administrative command reply.
+   % * </li>
+   % * <li>
+   % *     Auth_Cmd - The packet contains an authentication command.
+   % * </li>
+   % * <li>
+   % *     AuthReply_Cmd - The packet contains an authentication command reply.
+   % * </li>
+   % * <li>
+   % *     Capability_Cmd - The packet contains a capability command.
+   % * A Capability_Cmd has no reply.
+   % * </li>
+   % * <li>
+   % *     Folder_Cmd - The packet contains a folder command.
+   % * </li>
+   % * <li>
+   % *     FolderReply_Cmd - The packet contains a folder command reply.
+   % * </li>
+   % * <li>
+   % * The NotSupported_Cmd is sent back to
+   % * the remote endpoint when it sends a command
+   % * that is not supported.
+   % * It can be because of access control list,
+   % * out of sequence, or other error.
+   % * A Capability_Cmd has no reply.
+   % * </li>
+   % * <li>
+   % *     Ping_Cmd - The packet contains a pint command reply.
+   % * The reply to a ping is the same packet back.
+   % * </li>
+   % * <li>
+   % *     Proto_Cmd - The packet contains a protocol command.
+   % * A protocol command is an extension command not built int
+   % * the core Phoenix protocol.
+
+
+
+Royer                     Expires 25 July 2025                 [Page 42]
+
+Internet-Draft        Phoenix: Lemonade Risen Again         January 2025
+
+
+   % * </li>
+   % * <li>
+   % *     ProtoReply_Cmd - The packet contains a protocol command reply.
+   % * </li>
+   % * <li>
+   % *     Reserved_Cmd - In the unlikely event that 2^32 commands
+   % * are ever created, this is an escape to allow more.
+   % * </li>
+   % * </ul>
+   % *
+   % */
+   #endif
+   enum Command_e
+   {
+           Admin_Cmd = 1,
+           AdminReply_Cmd = 2,
+           Auth_Cmd = 3,
+           AuthReply_Cmd = 4,
+           Capability_Cmd = 5,
+           Folder_Cmd = 6,
+           FolderReply_Cmd = 7,
+           NotSupported_Cmd = 8,
+           Ping_Cmd = 9,
+           Proto_Cmd = 10,
+           ProtoReply_Cmd = 11,
+           Reserved_Cmd = 0xffffffff
+   };
+
+   #ifdef RPC_HDR
+   %/**
+   % * The transport top level is simple.
+   % * You can Send() a packet and get a packet back.
+   % * Or you send a notification that receives nothing back.
+   % * Or you send a broadcast message to all interested participants, with no
+   % * reply expected.
+   % */
+   #endif
+
+   #ifdef RPC_HDR
+
+   %#ifdef BUILDING_LIBPHOENIX
+   %#include "CmdAcl.hpp"
+   %#include "CmdAddMessage.hpp"
+   %#include "CmdAuthenticate.hpp"
+   %#include "CmdAdministration.hpp"
+   %#include "CmdCapability.hpp"
+   %#include "CmdCopyMessage.hpp"
+   %#include "CmdFolder.hpp"
+
+
+
+Royer                     Expires 25 July 2025                 [Page 43]
+
+Internet-Draft        Phoenix: Lemonade Risen Again         January 2025
+
+
+   %#include "CmdExpunge.hpp"
+   %#include "CmdGetMessage.hpp"
+   %#include "CmdKeepAlive.hpp"
+   %#include "CmdNotSupported.hpp"
+   %#include "CmdPing.hpp"
+   %#include "CmdSearch.hpp"
+   %#include "CmdSubscribe.hpp"
+   %#include "CmdTimeout.hpp"
+   %#include "CmdUpdateMessage.hpp"
+   %#include "Commands.hpp"
+   %#else
+   %#include <RiverExplorer/Phoenix/CmdAcl.hpp>
+   %#include <RiverExplorer/Phoenix/CmdAddMessage.hpp>
+   %#include <RiverExplorer/Phoenix/CmdAuthenticate.hpp>
+   %#include <RiverExplorer/Phoenix/CmdAdministration.hpp>
+   %#include <RiverExplorer/Phoenix/CmdCapability.hpp>
+   %#include <RiverExplorer/Phoenix/CmdCopyMessage.hpp>
+   %#include <RiverExplorer/Phoenix/CmdFolder.hpp>
+   %#include <RiverExplorer/Phoenix/CmdExpunge.hpp>
+   %#include <RiverExplorer/Phoenix/CmdGetMessage.hpp>
+   %#include <RiverExplorer/Phoenix/CmdKeepAlive.hpp>
+   %#include <RiverExplorer/Phoenix/CmdNotSupported.hpp>
+   %#include <RiverExplorer/Phoenix/CmdPing.hpp>
+   %#include <RiverExplorer/Phoenix/CmdSearch.hpp>
+   %#include <RiverExplorer/Phoenix/CmdSubscribe.hpp>
+   %#include <RiverExplorer/Phoenix/CmdTimeout.hpp>
+   %#include <RiverExplorer/Phoenix/CmdUpdateMessage.hpp>
+   %#include <RiverExplorer/Phoenix/Commands.hpp>
+   %#endif
+   #endif
+
+   union CmdData switch (Command_e Cmd)
+   {
+    case Admin_Cmd:
+            Administration *       AdminData;
+
+    case AdminReply_Cmd:
+            AdministrationReply *  AdminReplyData;
+
+    case Auth_Cmd:
+            Authenticate           *       AuthData;
+
+    case AuthReply_Cmd:
+            AuthenticateReply              *       AuthReplyData;
+
+    case Capability_Cmd:
+            Capability             *       CapabilityData;
+
+
+
+
+Royer                     Expires 25 July 2025                 [Page 44]
+
+Internet-Draft        Phoenix: Lemonade Risen Again         January 2025
+
+
+    case Folder_Cmd:
+            Folder *       FolderData;
+
+    case FolderReply_Cmd:
+            FolderReply    *       FolderReplyData;
+
+    case NotSupported_Cmd:
+            void;
+
+    case Ping_Cmd:
+            void;
+
+   };
+
+   #ifdef RPC_HDR
+   %/**
+   % * Set the callback for a command.
+   % *
+   % * @param Cmd The command being registered.
+   % *
+   % * @param Callback The user supplied callback function.
+   % *
+   % * @note
+   % * It is is recommended that each registered callback be thread safe.
+   % */
+   %namespace RiverExplorer::Phoenix
+   %{
+   %extern bool Register_Cmd(Command_e Cmd, CommandCallback * Callback);
+   %}
+   #endif
+
+   #ifdef RPC_HDR
+   %/**
+   % * Set the callback for a command.
+   % *
+   % * @param Cmd The command being registered.
+   % *
+   % * @param Callback The user supplied callback function.
+   % *
+   % * @note
+   % * It is is recommended that each registered callback be thread safe.
+   % */
+   %namespace RiverExplorer::Phoenix
+   %{
+   %extern bool Register_Cmd(Command_e Cmd, CommandCallback * Callback);
+   %}
+   #endif
+
+
+
+
+Royer                     Expires 25 July 2025                 [Page 45]
+
+Internet-Draft        Phoenix: Lemonade Risen Again         January 2025
+
+
+   #ifdef RPC_HDR
+   %/**
+   % * A command consists of:
+   % * - The enumerated command (Command_e),
+   % * - An XDR opaque object (length + data).
+   % * The XDR opaque data was prepared by the Cmd specific code
+   % * and is set into place for transport.
+   % */
+   #endif
+   struct  CmdPacket
+   {
+           CommandSequence Sequence;
+     CmdData Data;
+   };
+
+E.10.  RPCGEN - EMail
+
+   const FLAG_SEEN                         = 0x0001;
+   const FLAG_ANSWERED             = 0x0002;
+   const FLAG_FLAGGED              = 0x0004;
+   const FLAG_DELETED              = 0x0008;
+   const FLAG_DRAFT                        = 0x0010;
+   const FLAG_FORWARDED    = 0x0040;
+   const FLAG_MDNSENT              = 0x0080;
+   const FLAG_JUNK                         = 0x0100;
+   const FLAG_NOTJUNK              = 0x0200;
+   const FLAG_PHISHING             = 0x0400;
+
+   #ifdef RPC_HDR
+   %/**
+   % * @note
+   % * The "C" routines return a bool_t, the C++ API return a bool.
+   % */
+   %#ifdef BUILDING_LIBPHOENIX
+   %#include "Types.hpp"
+   %#include "MetaData.hpp"
+   %#include "Mime.hpp"
+   %#else
+   %#include <RiverExplorer/Phoenix/Types.hpp>
+   %#include <RiverExplorer/Phoenix/MetaData.hpp>
+   %#include <RiverExplorer/Phoenix/Mime.hpp>
+   %#endif
+   %#include <string>
+   %#include <vector>
+
+   #endif
+
+   #ifdef RPC_HDR
+
+
+
+Royer                     Expires 25 July 2025                 [Page 46]
+
+Internet-Draft        Phoenix: Lemonade Risen Again         January 2025
+
+
+   %/**
+   % * EMail headers are a vector of MetaData.
+   % *
+   % * Some examples:
+   % * @verbatim
+   % *
+   % * From: RiverExplorer.USexample.com
+   % * To: CEO@example.com
+   % * Subject: The holidays!
+   % *
+   % * @endverbatim
+   % *
+   % * @note
+   % * This does not define new or alter existing header types.
+   % * This is a container to transport them.
+   % */
+   #endif
+   typedef MetaData EMailHeader;
+   typedef EMailHeader EMailHeaders<>;
+
+   #ifdef RPC_HDR
+   %
+   %/**
+   % * An email is a vector of MimeBodyPart
+   % *
+   % * @note
+   % * This does not define new or alter existing mime or email headers.
+   % * This is a container to transport them.
+   % */
+   #endif
+   typedef MimeBodyPart EMailBodyParts<>;
+
+   #ifdef RPC_HDR
+   %
+   %/**
+   % * Check for the existence of a specific Header.
+   % *
+   % * @param Headers The Headers that is being processed.
+   % *
+   % * @param Key The header name being looked for.
+   % *
+   % * @return The number of matches.
+   % * Returns zero (0) when none are found.
+   % * Returns ((uint64_t)-1) when Obj or Key are NULL.
+   % */
+   %namespace RiverExplorer::Phoenix{
+   %extern uint64_t * EMail_HasHeader(EMailHeaders * Headers, const char * Key);
+   %}
+
+
+
+Royer                     Expires 25 July 2025                 [Page 47]
+
+Internet-Draft        Phoenix: Lemonade Risen Again         January 2025
+
+
+   #endif
+
+   #ifdef RPC_HDR
+   %
+   %/**
+   % * Get a specific Header.
+   % *
+   % * @param Headers The Headers that is being processed.
+   % *
+   % * @param Key The header name being looked for.
+   % *
+   % * @return A vector of the matches.
+   % * Will return zero (0) or more matches, in the original order.
+   % * Will return NULL of Obj or Key are NULL.
+   % * Will return NULL when Key is not found.
+   % */
+   %namespace RiverExplorer::Phoenix{
+   %extern EMailHeader  * EMail_GetHeader(EMailHeaders * Headers, const char * Key);
+   %}
+   #endif
+
+   #ifdef RPC_HDR
+   %
+   %/**
+   % * Headers count.
+   % *
+   % * @param Headers The Headers that is being processed.
+   % *
+   % * @return The number of EMailHeader in Headers.
+   % * Returns ((uint64_t)-1) when Headers is NULL.
+   % */
+   %namespace RiverExplorer::Phoenix{
+   %extern uint64_t EMail_GetHeaderCount(EMailHeaders * Headers);
+   %}
+   #endif
+
+   #ifdef RPC_HDR
+   %
+   %/**
+   % * Headers iterator.
+   % *
+   % * @param Headers The Headers that is being processed.
+   % *
+   % * @param Which The header to get, the first is zero (0).
+   % *
+   % * @return A pointer to the EMailHeader.
+   % * Returns NULL when Headers or Key is NULL.
+   % * Returns NULL when Which is not a valid index.
+
+
+
+Royer                     Expires 25 July 2025                 [Page 48]
+
+Internet-Draft        Phoenix: Lemonade Risen Again         January 2025
+
+
+   % */
+   %namespace RiverExplorer::Phoenix{
+   %extern EMailHeader * EMail_GetHeaderByIndex(EMailHeaders * Headers, uint64_t Which);
+   %}
+   #endif
+
+   #ifdef RPC_HDR
+   %
+   %/**
+   % * Common headers names.
+   % */
+   %namespace RiverExplorer::Phoenix{
+   %extern const char * Date_s;                    /** "Date" */
+   %extern const char * From_s;                    /** "From" */
+   %extern const char * Subject_s;         /** "Subject" */
+   %extern const char * To_s;                              /** "To" */
+   %}
+   #endif
+
+   #ifdef RPC_HDR
+   #ifdef __cplusplus
+   } // End extern "C"
+   %
+   #endif
+   %#ifdef __cplusplus
+   %namespace RiverExplorer::Phoenix::EMail {
+   %class Message
+   %{
+   % public:
+   %
+   %       /**
+   %        * Message - Default Destructor.
+   %        */
+   %       Message();
+   %
+   %       /**
+   %  * Message - Destructor.
+   %  */
+   %
+   %       /**
+   %  * Get the headers.
+   %        *
+   %        * @return All of the headers.
+   %  */
+   %       EMailHeaders * Headers() const;
+   %
+   % /**
+   %  * Add a header.
+
+
+
+Royer                     Expires 25 July 2025                 [Page 49]
+
+Internet-Draft        Phoenix: Lemonade Risen Again         January 2025
+
+
+   %  *
+   %  * @param NewHeader The new header to add.
+   %  */
+   %  void Add(EMailHeader & NewHeader);
+   %
+   % /**
+   %  * Add a header.
+   %  *
+   %  * @param Key The new header to add.
+   %  *
+   %  * @param Value The new header value to add.
+   %  */
+   %  void Add(std::string Key, std::string Value);
+   %
+   % /**
+   %  * Get the named header.
+   %  *
+   %  * @param Key The new header to add.
+   %  *
+   %        * @return A vector of all the matches. It will contain
+   %        * zero or more entries.
+   %  *
+   %  * @note
+   %  * You MUST delete result when finished or you will have
+   %        * a memory leak. You MUST NOT delete the
+   %        * entries in the vector, they are still in the email message.
+   %  */
+   %  std::vector<const EMailHeader*>      * Header(std::string Key);
+   %
+   % /**
+   %  * Get the number of body parts.
+   %  *
+   %  * @return The number of body parts.
+   %        */
+   % const uint64_t Count() const;
+   %
+   % /**
+   %  * Get the body parts.
+   %  *
+   %  * @return The body parts.
+   %  *
+   %  * @note
+   %  * Do not delete the results.
+   %        */
+   % const MimeBodyPart * Body() const;
+   %
+   % /**
+   %  * Get the nTh body part.
+
+
+
+Royer                     Expires 25 July 2025                 [Page 50]
+
+Internet-Draft        Phoenix: Lemonade Risen Again         January 2025
+
+
+   %  *
+   %  * @param nTh Which to get, first is zero (0).
+   %  *
+   %  * @return The body part.
+   %  * Returns nullptr when nTh does not exist.
+   %  *
+   %  * @note
+   %  * Do not delete the results.
+   %        */
+   % const MimeBodyPart * Body(uint64_t nTh) const;
+   %
+   % /**
+   %        * This ID is used as a transport ID between
+   %        * endpoints to uniquely identify this message for this
+   %        * account on this server.
+   %        *
+   %        * @return The message ID For this message.
+   %        * A return value of zero (0) indicates that this message
+   %  * does not have an ID.
+   %        *
+   %        * @note
+   %        * This is NOT the 'Message-ID' in email headers.
+   %        * This is the ID that uniquely identifies this message to endpoints.
+   %        *
+   %        * @note
+   %        * This ID is unique to the server or message provider and might
+   %        * not be unique on the client side.
+   %        * Implementations may wish to provide their own local ID
+   %        * to uniquely identify this message in their system that is
+   %        * separate from this ID.
+   %        */
+   % uint64_t ID() const;
+   %
+   % /**
+   %  * Messages in a message store have an ID.
+   %  * This sets the message ID for this message.
+   %        *
+   %        * @param TransportID The transport ID to associate with this message.
+   %        * A value of zero (0) indicates that this message
+   %  * does not have an ID.
+   %        *
+   %        * @note
+   %        * This is NOT the 'Message-ID' in email headers.
+   %        * This is the ID that uniquely identifies this message to endpoints.
+   %        *
+   %        * @note
+   %        * This ID is unique to the server or message provider and might
+   %        * not be unique on the client side.
+
+
+
+Royer                     Expires 25 July 2025                 [Page 51]
+
+Internet-Draft        Phoenix: Lemonade Risen Again         January 2025
+
+
+   %        * Implementations may wish to provide their own local ID
+   %        * to uniquely identify this message in their system that is
+   %        * separate from this ID.
+   %        */
+   % void ID(uint64_t StoreID) const;
+   %};
+   %} // End namespace EMail
+   %#endif // class
+   #endif // RPC_HDR
+
+E.11.  RPCGEN - MIME
+
+   #ifdef RPC_HDR
+   %/**
+   % * @note
+   % * The "C" routines return a bool_t, the C++ API return a bool.
+   % */
+   %#ifdef BUILDING_LIBPHOENIX
+   %#include "MetaData.hpp"
+   %#else
+   %#include <RiverExplorer/Phoenix/MetaData.hpp>
+   %#endif
+   %
+   %/**
+   % * A MediaType is a string pair as defined
+   % * at https://www.iana.org/assignments/media-types/media-types.xhtml
+   % *
+   % * Some examples:
+   % * @verbatim
+   % *
+   % * text/html
+   % * application/pdf
+   % * audio/ogg
+   % * image/png
+   % * multipart/mixed
+   % *
+   % * @endverbatim
+   % *
+   % * Would have a Key of 'From' and a value of 'RiverExplorer.US@gmail.com'.
+   % *
+   % * @note
+   % * This does not define new or alter existing IANA media types.
+   % * This is a containter to transport them.
+   % */
+   #endif
+   typedef MetaData MediaType;
+
+   #ifdef RPC_HDR
+
+
+
+Royer                     Expires 25 July 2025                 [Page 52]
+
+Internet-Draft        Phoenix: Lemonade Risen Again         January 2025
+
+
+   %/**
+   % * A MIME header is a key/string value.
+   % */
+   #endif
+   typedef MetaData MimeHeader;
+
+   #ifdef RPC_HDR
+   %/**
+   % * Headers is an array of MimeHeader.
+   % *
+   % * Example:
+   % * @verbatim
+   % *
+   % * From: RiverExplorer.US@example.com
+   % * To: CEO@example.com
+   % *
+   % * @endverbatim
+   % *
+   % * @note
+   % * This does not define new or alter existing mime or email headers.
+   % * This is a containter to transport them.
+   % */
+   #endif
+   typedef MimeHeader MimeHeaders<>;
+
+   #ifdef RPC_HDR
+   %
+   %/**
+   % * A MIME object. Has a MediaType, MimeHeaders and data.
+   % *
+   % * To use:
+   % *
+   % * @code
+   % *
+   % * MimeBodyPart        * TheMimeBodyPart;
+   % *
+   % * // ...however you fill in or get the MimeBodyPart object data ...
+   % * //
+   % * TheMimeBodyPart = GetTheData();
+   % *
+   % * uint64_t            Length;
+   % * const char* TheMediaType = MimeBodyPart_GetMediaType(TheMimeBodyPart);
+   % * uint8_t             * Data = MimeBodyPart_GetData(TheMimeBodyPart, &Length);
+   % * ...
+   % *
+   % * // At this point, you have the media-type, Data, and length
+   % * // of the data.
+   % *
+
+
+
+Royer                     Expires 25 July 2025                 [Page 53]
+
+Internet-Draft        Phoenix: Lemonade Risen Again         January 2025
+
+
+   % * @endcode
+   % */
+   #endif
+
+   #ifdef RPC_HDR
+   %/**
+   %       * - Type: The media-type of the object.
+   % * @note
+   % * Media-type is not duplicated in Headers.
+   % *
+   %       * - Headers: The MIME headers.
+   % *
+   % * - Data: The data itself.
+   % * The data is a binary blob without any encoding.
+   % */
+   #endif
+   struct MimeBodyPart
+   {
+           MediaType               Type;
+           MimeHeaders Headers;
+           IoVec                           Data;
+   };
+
+E.12.  RPCGEN - Phoenix
+
+   /**
+    * These are just used below to make the 'program' values
+    * more readable.
+    */
+   #define PhoenixProgramNumber 1
+   #define PhoenixProgramVersion 1
+   #define PhoenixSendPacket 1
+   #define PhoenixNotifyPacket 2
+   #define PhoenixBroadcastPacket 3
+
+   program PhoenixProgram
+   {
+           version PhoenixVersion
+           {
+                   CmdPacket Send(CmdPacket) = PhoenixSendPacket;
+                   void Notifiy(CmdPacket) = PhoenixNotifyPacket;
+                   void Broadcast(CmdPacket) = PhoenixBoradcastPacket;
+
+           } = PhoenixProgramVersion;
+   } = PhoenixProgramNumber;
+
+E.13.  RPCGEN - Types
+
+
+
+
+Royer                     Expires 25 July 2025                 [Page 54]
+
+Internet-Draft        Phoenix: Lemonade Risen Again         January 2025
+
+
+   #ifdef RPC_HDR
+   /**
+    * The orignal RPCGEN was "C" only, RPCGEN++ is "C++".
+    * C useed bool_t, and C++ uses bool.
+    * So this is a wrapper.
+    *
+    * @param xdrs An initialized XDR object.
+    *
+    * @param BValue The address of the bool_t object.
+    *
+    * @return false if failed.
+    */
+   %namespace RiverExplorer::Phoenix
+   %{
+   %extern bool xdr_bool_t(XDR * xdrs, bool_t * BValue);
+   %}
+   #endif
+
+   #ifdef RPC_HDR
+   %/**
+   % * Each command sent, has a command identifier, and a sequence.
+   % * Each reply to a command has the same CommandID and sequence.
+   % */
+   #endif
+   typedef uint64_t CommandSequence;
+
+   #ifdef RPC_HDR
+   %/**
+   % * An array of strings.
+   % */
+   #endif
+   typedef string StringType<>;
+
+   #ifdef RPC_HDR
+   %/**
+   % * An array of strings.
+   % */
+   #endif
+   typedef StringType ArrayOfStrings<>;
+
+
+   #ifdef RPC_HDR
+   %/**
+   % * An object to data objects, some of which might
+   % * be memory mapped.
+   % *
+   % * - IsMMapped: When true, Data was memory mapped and not allocated.
+   % * When false, Data was allocated.
+
+
+
+Royer                     Expires 25 July 2025                 [Page 55]
+
+Internet-Draft        Phoenix: Lemonade Risen Again         January 2025
+
+
+   % *
+   % * - Len The number of octets in Data.
+   % *
+   % * - Data A pointer to the data.
+   % */
+   #endif
+   class IovVec
+   {
+           bool_t          IsMMapped;
+           uint64_t        Len;
+           uint8_t * Data;
+   };
+
+Acknowledgments
+
 
 Contributors
 
@@ -994,15 +3133,4 @@ Author's Address
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-Royer                     Expires 23 July 2025                 [Page 18]
+Royer                     Expires 25 July 2025                 [Page 56]

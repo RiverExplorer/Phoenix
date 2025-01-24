@@ -1,0 +1,86 @@
+<t>
+	The ping command only sent when the client implementation
+	has determined it has waited too long for a command reply.
+	The ping command is only initiated from the client.
+	It is not valid for the server to send a ping command to a client.
+</t>
+<t>
+	The ping command MUST NOT be the first command sent to the server.
+	It should only be sent when the client implementation determines
+	it has waited too long for a reply.
+</t>
+<t>
+	If the server supports the ping command, then a PING capability
+	is sent in the pre authentication capability command.
+</t>
+<t>
+	Sometimes servers are unavailable and can go down.
+	A server could be down for maintenance, or in a shutdown mode.
+	It might limit the number of simultaneous connections.
+	It might be very busy.
+	The packets might not be making it to the server because of
+	network issues.
+</t>
+<t>
+	When a ping command is received by the server:
+</t>
+<ul>
+	<li>
+		When the server did not send PING capability to the client.
+		Then the server replies with a NotSupported packet
+		with the sequence number the same as in the ping command.
+	</li>
+	<li>
+		When the server has not yet received an authentication
+		command, the server replies with a NotSupported packet
+		with the sequence number the same as in the ping command.
+	</li>
+	<li>
+		When the server has received an authentication command,
+		and has not yet replied to an authentication command.
+		Then the server sends a ping reply, with the same sequence
+		number that was in the ping command.
+		This could happen when the client implementation had determined it
+		has waited too long	for an authentication reply.
+	</li>
+	<li>
+		When the client is authenticated,
+		and when the server is available for processing commands.
+		Then the server replies with a ping reply with the same sequence number.
+		This could happen when the client implementation had determined it
+		has waited too long	for an expected reply.
+	</li>
+</ul>
+<t>
+	If the server is alive and not available, the server
+	will reply with a NotSupported command, with its sequence
+	number set to the sequence number in the ping command.
+</t>
+<t>
+	If a connected and authenticated client has been waiting for a reply
+	or for some other reason needs to determine if the server is still
+	available. It can send a ping command.
+	If the server is still available, it sends a ping reply.
+	If it is no longer available for any reason, it sends a NotSupported
+	reply.
+</t>
+<t>
+	Endpoints MUST NOT send a ping command if they are awaiting
+	the results of a previously sent ping command.
+</t>
+<t>
+	Endpoints MUST NOT send more than two ping commands per minute.
+</t>
+<t>
+	Clients and servers must give priority to ping commands.
+	If possible, reply as soon as it receives the command.
+</t>
+<t>
+	The server MAY consider too many ping commands as a malfunctioning
+	or malicious client and terminate the connection.
+</t>
+<t>
+	Servers that are not threaded or can not reply to simultaneous
+	or overlapping commands, MUST NOT include PING in
+	their capability command.
+</t>

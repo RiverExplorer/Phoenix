@@ -1,0 +1,138 @@
+	<t>
+		Implementations are not required to implement any ADMIN command.
+		A client will know the server supports one or more ADMIN
+		commands when it gets its post authentication capability command
+		from the server.
+	</t>
+<t>
+	Administrative command can be used to configure, audit, and manage
+	the remote endpoint.
+	Administrative command can be used to configure, audit, and manage
+	user access.
+</t>
+
+<section anchor="ADMIN_CAP">
+	<name>Administration Capability Definitions</name>
+	<t>
+		Implementations MUST NOT send the ADMIN capability
+		in the pre authorization CAPABILITY list.
+	</t>
+	<t>
+		Implementations that support any administration command
+		MAY include ADMIN capability in the post authentication CAPABILITY list.
+		An implementation may decide that only specified and
+		authorized users may issue administrative commands and
+		send only those authenticated users the ADMIN capability.
+	</t>
+	<t>
+		The ADMIN capability include the list of ADMIN commands the user is
+		allowed to perform.
+		For example, if a user only has permission to only view user lists, then
+		only the USER_LIST ADMIN capability will be provided.
+	</t>
+	<t>
+		The capability name is also the command name to use
+		when invoking that capability.
+	</t>
+	<t>
+		When a user attempts to send a commmand they are not authorized
+		to send, the remote endpoint will reply with a NotSupported command
+		with its sequence number set to the sequence number from offending
+		command.
+	</t>
+</section>
+
+<section anchor="ADMIN_USER">
+	<name>Administration of users.</name>
+	<t>
+		The following operations are defined for administration.
+	</t>
+	<table>
+    <thead>
+      <tr><th>Command and Capability Name</th><th>Brief Description.</th></tr>
+    </thead>
+    <tbody>
+      <tr>
+				<td>USER_CREATE</td>
+				<td>
+					May create a new user.
+					And also the command to create a user.
+				</td>
+			</tr>
+      <tr>
+				<td>USER_DELETE</td>
+				<td>
+					May delete a user.
+					And the command to delete a user.
+				</td>
+			</tr>
+      <tr>
+				<td>USER_RENAME</td>
+				<td>
+					May rename a user.
+					And the command to rename a user.
+				</td>
+			</tr>
+      <tr>
+				<td>USER_LIST</td>
+				<td>
+					May list users and their capabilities.
+					And the command to list users.
+				</td>
+			</tr>
+      <tr>
+				<td>USER_PERMISSIONS</td>
+				<td>
+					May update other users permissions.
+					And the command to view and set user permissions.
+				</td>
+			</tr>
+      <tr>
+				<td>SERVER_SHUTDOWN</td>
+				<td>
+					May shutdown the server.
+					And the command to shutdown the server.
+				</td>
+			</tr>
+      <tr>
+				<td>SERVER_LOGS</td>
+				<td>
+					May view the server logs.
+					And the command to view server logs.
+				</td>
+			</tr>
+      <tr>
+				<td>SERVER_KICK_USER</td>
+				<td>
+					May logout a user. And limit when they can use the server again.
+					And the command to kick and limit a user.
+				</td>
+			</tr>
+      <tr>
+				<td>SERVER_MANAGE_BANS</td>
+				<td>
+					May manage IP and user bans.
+					And the command to manage ban users an IP addresses.
+				</td>
+			</tr>
+      <tr>
+				<td>SERVER_VIEW_STATS</td>
+				<td>
+					May view server statistics.
+					And the command to view statistics.
+				</td>
+			</tr>
+      <tr>
+				<td>SERVER_CONFIGURE</td>
+				<td>
+					May configure the server. If sent with a VIEW_ONLY
+					parameter, then the user may only view the configuration
+					information.
+					And the command to view and alter the server configuration
+					information.
+				</td>
+			</tr>
+    </tbody>
+</table>
+
+</section>

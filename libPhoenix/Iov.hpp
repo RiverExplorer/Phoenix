@@ -57,7 +57,7 @@ namespace RiverExplorer::Phoenix
 			/**
 			 * How much data.
 			 */
-			uint64_t	Length;
+			uint32_t	Length;
 
 			/**
 			 * Blob - Constructor.
@@ -69,7 +69,7 @@ namespace RiverExplorer::Phoenix
 			 * @param IsMMapped When true, Data is from mmap().
 			 * When false, Data was allocated by us.
 			 */
-			Blob(uint8_t * Data, uint64_t Len, bool IsMMapped);
+			Blob(uint8_t * Data, uint32_t Len, bool IsMMapped);
 
 			/**
 			 * Blob - Destructor.
@@ -81,12 +81,12 @@ namespace RiverExplorer::Phoenix
 		/**
 		 * Total size of incomming or outgoing data.
 		 */
-		uint64_t	TotalLength;
+		uint32_t	TotalLength;
 			
 		/**
 		 * Total size of processed data incomming or outgoing data so far.
 		 */
-		uint64_t	ProcessedCount;
+		uint32_t	ProcessedCount;
 			
 		/**
 		 * Add a blob of data
@@ -98,15 +98,15 @@ namespace RiverExplorer::Phoenix
 		 * @param IsMMapped When true, the data is mmaped.
 		 * When false, it is no mmapped.
 		 */
-		void	Add(uint8_t * Data, uint64_t Len, bool IsMMapped);
+		void	Add(uint8_t * Data, uint32_t Len, bool IsMMapped);
 
 		/**
-		 * A special add for a uint64_t host byte order value
+		 * A special add for a uint32_t host byte order value
 		 * Converts to network byte order and stores in the Q.
 		 *
-		 * @param Host64 A uint64_t value in host byte order.
+		 * @param Host32 A uint32_t value in host byte order.
 		 */
-		void Add(uint64_t Host64);
+		void Add(uint32_t Host32);
 
 		/**
 		 * During reading, we grab some, but the network may take
@@ -116,13 +116,13 @@ namespace RiverExplorer::Phoenix
 		 * We Take() by Blob. So we don't have to
 		 * allocate/free memory.
 		 *
-		 * @param[out] Len A reference to a uint64_t that tells
+		 * @param[out] Len A reference to a uint32_t that tells
 		 * us how much we got.
 		 *
 		 * @return A blobs data.
 		 * Returns nullptr with Len == 0, when there is no more data.
 		 */
-		uint8_t	*	Take(uint64_t & Len);
+		uint8_t	*	Take(uint32_t & Len);
 
 		/**
 		 * Return what we could not use yet by telling us
@@ -132,7 +132,7 @@ namespace RiverExplorer::Phoenix
 		 * When HowMuchWeUsed == Len of the blob, then all of it
 		 * was used. Pop off the blob as it was used.
 		 */
-		void			WeUsed(uint64_t HowMuchWeUsed);
+		void			WeUsed(uint32_t HowMuchWeUsed);
 
 		/**
 		 * Clear out all of the data.
