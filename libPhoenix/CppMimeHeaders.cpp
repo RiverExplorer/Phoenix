@@ -50,7 +50,7 @@ namespace RiverExplorer::Phoenix
 				if (Ptr != nullptr) {
 					if (Ptr->_HeaderLength == NLength) {
 						if (strncasecmp(Name,
-														(char*)&_Parent._EntireMessage.Data[Ptr->_HeaderOffset],
+														(char*)Ptr->_HeaderStart,
 														NLength) == 0) {
 							Results.push_back(Ptr);
 						}
@@ -73,25 +73,25 @@ namespace RiverExplorer::Phoenix
 	MimeMessage::Header::Header(MimeMessage  & Parent)
 		: _Parent(Parent)
 	{
-		_HeaderOffset = 0;
+		_HeaderStart = nullptr;
 		_HeaderLength = 0;
 		
-		_ValueOffset = 0;
+		_ValueStart = nullptr;
 		_ValueLength = 0;
 
 		return;
 	}
 
 	MimeMessage::Header::Header(MimeMessage  & Parent,
-															uint32_t HeaderOffset,
+															uint8_t * HeaderStart,
 															uint32_t HeaderLength,
-															uint32_t ValueOffset,
+															uint8_t * ValueStart,
 															uint32_t ValueLength)
 		: _Parent(Parent)
 	{
-		_HeaderOffset = HeaderOffset;
+		_HeaderStart = HeaderStart;
 		_HeaderLength = HeaderLength;
-		_ValueOffset = ValueOffset;
+		_ValueStart = ValueStart;
 		_ValueLength = ValueLength;
 
 		return;
@@ -99,27 +99,27 @@ namespace RiverExplorer::Phoenix
 	
 	MimeMessage::Header::~Header()
 	{
-		_HeaderOffset = 0;
+		_HeaderStart = nullptr;
 		_HeaderLength = 0;
 		
-		_ValueOffset = 0;
+		_ValueStart = nullptr;
 		_ValueLength = 0;
 
 		return;
 	}
 
-	uint32_t
+	uint8_t	*
 	MimeMessage::Header::Name(uint32_t & Length) const
 	{
 		Length = _HeaderLength;
-		return(_HeaderOffset);
+		return(_HeaderStart);
 	}
-
-	uint32_t
+	
+	uint8_t	*
 	MimeMessage::Header::Value(uint32_t & Length) const
 	{
 		Length = _ValueLength;
-		return(_ValueOffset);
+		return(_ValueStart);
 	}
 
 	MimeMessage::Header *

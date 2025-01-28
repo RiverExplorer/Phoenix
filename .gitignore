@@ -37,5 +37,6 @@ LOG*
 BuildTemp
 GeneratedFromXDR
 Old
-cscope.out
+.\#*
 \#*
+cscope.out

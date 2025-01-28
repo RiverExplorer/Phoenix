@@ -153,20 +153,20 @@ namespace RiverExplorer::Phoenix
 			 * @param Mime The parent MIME message.
 			 * It is a reference to the MIME message this header belongs to.
 			 *
-			 * @param Header The offset to the header.
+			 * @param HeaderStart The pointer to the start of the header.
 			 *
 			 * @param HeaderLength The length of the header.
 			 * Does not include the ':'.
 			 *
-			 * @param Value The offset to the value.
+			 * @param ValueStart The pointer to the start of the header value.
 			 *
 			 * @param ValueLength The lenght of the header value.
 			 * Does not incldue the terminating "\r\n".
 			 */
 			Header(MimeMessage & Mime,
-						 uint32_t Header,
+						 uint8_t * HeaderStart,
 						 uint32_t HeaderLength,
-						 uint32_t Value,
+						 uint8_t * ValueStart,
 						 uint32_t ValueLength);
 
 			/**
@@ -175,59 +175,57 @@ namespace RiverExplorer::Phoenix
 			~Header();
 
 			/**
-			 * Get the header name.
+			 * Get the header name offset and length.
 			 *
 			 * @param Len The length of the header name.
 			 * Len will be set to the header name length.
 			 *
-			 * @return Return the offset to the header name.
+			 * @return Return a pointer to the start of the name.
 			 */
-			uint32_t	Name(uint32_t & Len) const;
-
+			uint8_t	*	Name(uint32_t & Len) const;
+			
 			/**
-			 * Get the header value.
+			 * Get the header value offset and length.
 			 *
 			 * @param Len The length of the value.
 			 * Len will be set to the value length.
 			 *
-			 * @return Return the header value.
+			 * @return Return a pointer to the start of the value.
 			 */
-			uint32_t	Value(uint32_t & Len) const;
-
+			uint8_t	*	Value(uint32_t & Len) const;
+			
 		private:
 
 			// Forward ref.
 			//
 			class Headers;
 			friend RiverExplorer::Phoenix::MimeMessage::Headers;
-			
-			/**
-			 * Offset to the Header in the message.
-			 */
-			uint32_t	_HeaderOffset;
-			
-			/**
-			 * Set to zero in the constructor,
-			 * Set to a valid value after Name() is called.
-			 */
-			mutable uint32_t	_HeaderLength;
+			friend RiverExplorer::Phoenix::MimeMessage;
 
 			/**
-			 * Offset to the value of the header.
+			 * Pointer in the message to the start of the header.
 			 */
-			uint32_t	_ValueOffset;
+			uint8_t	*	_HeaderStart;
 
 			/**
-			 * Set to zero in the constructor,
-			 * Set to a valid value after Value() is called.
+			 * Length of the header.
 			 */
-			mutable uint32_t	_ValueLength;
+			uint32_t	_HeaderLength;
+			
+			/**
+			 * Pointer in the message to the start of the header value.
+			 */
+			uint8_t	*	_ValueStart;
+
+			/**
+			 * Length of the value.
+			 */
+			uint32_t	_ValueLength;
 			
 			/**
 			 * The parent MIME message this object is part of.
 			 */
 			MimeMessage & _Parent;
-			
 		};
 
 		/**
@@ -235,9 +233,13 @@ namespace RiverExplorer::Phoenix
 		 *
 		 * @param FileName The file  to parse.
 		 *
+		 * @param DebugMessage List of errors for debugging.
+		 * When Parse returns true, DebugMessages should be empty.
+		 *
 		 * @return true if the file coulde be parsed.
 		 */
-		bool	Parse(const char * FileName);
+		bool	Parse(const char * FileName,
+								std::vector<std::string> & DebugMessages);
 			
 		/**
 		 * See if this object is a MIME 1.0 message,
@@ -303,8 +305,10 @@ namespace RiverExplorer::Phoenix
 
 			/**
 			 * BodyPart - Default Constructor.
+			 *
+			 * @param Parent The parent object.
 			 */
-			BodyPart();
+			BodyPart(MimeMessage & Parent);
 
 			/**
 			 * Body - Constructor.
@@ -441,10 +445,34 @@ namespace RiverExplorer::Phoenix
 			bool					FromXDR(XDR & xdrs);
 
 		private:
+			friend RiverExplorer::Phoenix::MimeMessage::Headers;
+			friend RiverExplorer::Phoenix::MimeMessage;
+
 			/**
 			 * Body parts can have body parts.
 			 */
 			std::vector<BodyPart*>	_BodyParts;
+
+			/**
+			 * The parent Object.
+			 */
+			MimeMessage & _Parent;
+
+			/**
+			 * The start of this body part in _Parent.
+			 */
+			uint8_t	*	_BodyStart;
+
+			/**
+			 * The length of _BodyStart.
+			 */
+			uint32_t	_BodyLength;
+
+			/**
+			 * A MIME body part has headers.
+			 * An 822 body part, does not.
+			 */
+			std::vector<Header*>	_Headers;
 			
 		}; // End class BodyPart
 
@@ -476,10 +504,62 @@ namespace RiverExplorer::Phoenix
 		 *
 		 * @param Ptr The pointer to increment.
 		 *
-		 * @return false if it would go past the end of the message.
+		 * @return true on error.
 		 */
 		bool _IncDataPointer(uint8_t *& Ptr) const;
+
+		/**
+		 * Parse a single header.
+		 *
+		 * @param HeaderStart A pointer to the start of the header.
+		 *
+		 * @param DebugMessage List of errors for debugging.
+		 * When Parse returns true, DebugMessages should be empty.
+		 *
+		 * @return The new header, or nullptr on error.
+		 */
+		Header * _ParseHeader(const uint8_t * HeaderStart,
+													std::vector<std::string> & DebugMessages);
+
+		/**
+		 * Parse a MIME Body.
+		 * It can be recursive.
+		 *
+		 * @param BodyText A pointer to the text (or binary) of the body.
+		 *
+		 * @param BoundryLine The MIME body part boundry line.
+		 *
+		 * @return The length of the segment parsed. Or zero (0) if it
+		 * has nothing, or when it was not a MIME body part.
+		 */
+		uint32_t _ParseBody(const uint8_t * BodyText,
+												std::string BoundaryLine,
+												std::vector<std::string>    &DebugMessages);
 		
+
+		/**
+		 * May be nullptr, the preable.
+		 * This is data in a MIME object, after the headers
+		 * and before the MIME body parts.
+		 */
+		uint8_t	*	_PreambleStart;
+
+		/**
+		 * Length of _PreambleStart.
+		 */
+		uint32_t	_PreambleLength;
+			
+		/**
+		 * May be nullptr, the epilogue.
+		 * This is data in a MIME object, after the last body part
+		 * and before the end of the message.
+		 */
+		uint8_t	*	_EpilogueStart;
+
+		/**
+		 * Length of _EpilogueStart.
+		 */
+		uint32_t	_EpilogueLength;
 	};
 }
 #endif // _RIVEREXPLORER_MIME_CPPMIME_HPP_
