@@ -38,18 +38,72 @@ namespace RiverExplorer::Phoenix
 	class MimeMessage
 	{
 	public:
+
+		/**
+		 * The body part ID is the offset into the message where
+		 * the headers part of the body part starts.
+		 */
+		typedef unint32_t	BodyPartID_t;
 		
 		/**
 		 * Well known MIME strings defined in RFC-2045
 		 */
+
+		/**
+		 * Contains the string "boundary".
+		 */
 		static const char * const Boundary_s;
+
+		/**
+		 * Contains the string "MIME-Version".
+		 */
 		static const char * const MimeVersion_s;
+
+		/**
+		 * Contains the string "1.0".
+		 */
 		static const char * const MimeVersion_Value_1_s;
+
+		/**
+		 * Contains the string "Content-Description".
+		 */
 		static const char * const	ContentDescription_s;
+
+		/**
+		 * Contains the string "Content-ID".
+		 */
 		static const char * const	ContentID_s;
+
+		/**
+		 * Contains the string "Content-Type".
+		 */
 		static const char * const	ContentType_s;
+
+		/**
+		 * Contains the string "Content-Transfer-Encoding".
+		 */
 		static const char * const	ContentTransferEncoding_s;
 
+		/**
+		 * Contains the string "Multipart/mixed".
+		 */
+		static const char * const MultipartMixed_s;
+		
+		/**
+		 * Contains the string "Multipart/alternative".
+		 */
+		static const char * const MultipartAlternative_s;
+		 
+		/**
+		 * Contains the string "Multipart/digest".
+		 */
+		static const char * const MultipartDigest_s;
+		 
+		/**
+		 * Contains the string "Multipart/parallel".
+		 */
+		static const char * const MultipartParallel_s;
+		 
 		/**
 		 * MIME - Default Constructor.
 		 */
@@ -164,9 +218,9 @@ namespace RiverExplorer::Phoenix
 			 * Does not incldue the terminating "\r\n".
 			 */
 			Header(MimeMessage & Mime,
-						 uint8_t * HeaderStart,
+						 uint32_t HeaderStart,
 						 uint32_t HeaderLength,
-						 uint8_t * ValueStart,
+						 uint32_t ValueStart,
 						 uint32_t ValueLength);
 
 			/**
@@ -205,7 +259,7 @@ namespace RiverExplorer::Phoenix
 			/**
 			 * Pointer in the message to the start of the header.
 			 */
-			uint8_t	*	_HeaderStart;
+			uint32_t	_HeaderStart;
 
 			/**
 			 * Length of the header.
@@ -215,7 +269,7 @@ namespace RiverExplorer::Phoenix
 			/**
 			 * Pointer in the message to the start of the header value.
 			 */
-			uint8_t	*	_ValueStart;
+			uint32_t	_ValueStart;
 
 			/**
 			 * Length of the value.
@@ -226,74 +280,8 @@ namespace RiverExplorer::Phoenix
 			 * The parent MIME message this object is part of.
 			 */
 			MimeMessage & _Parent;
-		};
+		}; // End class Header.
 
-		/**
-		 * Parse a file.
-		 *
-		 * @param FileName The file  to parse.
-		 *
-		 * @param DebugMessage List of errors for debugging.
-		 * When Parse returns true, DebugMessages should be empty.
-		 *
-		 * @return true if the file coulde be parsed.
-		 */
-		bool	Parse(const char * FileName,
-								std::vector<std::string> & DebugMessages);
-			
-		/**
-		 * See if this object is a MIME 1.0 message,
-		 * or a pre-MIME message.
-		 *
-		 * @return true If this message complies with MIME (RFC-2045)
-		 * and contains "Mime-Version:1.0"
-		 */
-		bool	IsMimeVersion_1() const;
-
-
-		/**
-		 * Get a pointer to the entire message.
-		 *
-		 * @param Len The length of the value.
-		 * Len will be set to the value length.
-		 *
-		 * @return A pointer to the entire message.
-		 */
-		uint8_t  *	Message(uint32_t & Len) const;
-
-		/**
-		 * Get header by position.
-		 * They will be in the order they are in the MIME object.
-		 *
-		 * @param Index The position of the header.
-		 * The first one has an index value of zero (0).
-		 *
-		 * @return The Header. Or nullptr if Index is out of range.
-		 */
-		Header	* GetHeader(uint32_t Index) const;
-
-		/**
-		 * Get header by name, can return zero to many of them.
-		 * They will be in the order they are in the MIME object.
-		 *
-		 * @param Name The name of the header to get
-		 * The header name comparison is case insensitive.
-		 *
-		 * @return A possibly empty list of matches, in the order
-		 * they appear in this object.
-		 */
-		std::vector<const Header*> GetHeaders(const char * Name) const;
-
-		/**
-		 * Get the entire body part.
-		 * It will include ALL of the body parts.
-		 *
-		 * @param Length Length will be set to the length of the result.
-		 *
-		 * @return A pointer to the entire body of the message.
-		 */
-		uint8_t	*	GetEntireBody(uint32_t & Length) const;
-		
 		/**
 		 * @class BodyPart CppMime.hpp <RiverExplorer/Phoenix/CppMime.hpp>
 		 * This is a C++ wrapper for the XDR/RPCGEN MimeBodyPart object.
@@ -327,66 +315,43 @@ namespace RiverExplorer::Phoenix
 							 uint32_t NewLength);
 
 			/**
-			 * Body - Constructor.
-			 * Construct from a memory address.
-			 *
-			 * @param Message A pointer to the start of the message.
-			 *
-			 * @param MediaTypeOffset The offset into Message
-			 * that points to the Content-Type value.
-			 *
-			 * @param HeaderStartOffset The offset into Message
-			 * that points to the start of the body part headers.
-			 *
-			 * @param DataOffset The offset into Message
-			 * that points to the contents.
-			 * This is the offset to the first octet in the message
-			 * itself.
-			 *
-			 * @param DataLength The number of octets that are
-			 * the message, after DataOffset.
-			 */
-			BodyPart(uint8_t * Message,
-							 uint32_t MediaTypeOffset,
-							 uint32_t HeaderStartOffset,
-							 uint32_t	DataOffset,
-							 uint32_t DataLength);
-
-			/**
 			 * Body - Destructor.
 			 */
 			~BodyPart();
 
 			/**
-			 * @return This body parts media type.
+			 * @return This body parts media type. (Content-Type)
 			 */
 			MediaType	Type() const;
 
 			/**
-			 * Set this body parts media type.
+			 * Set this body parts media type. (Content-Type)
 			 *
 			 * @param Type The media type to set this body part o.
 			 */
 			void Type(MediaType & Type);
 		
 			/**
-			 * Get this body parts data.
+			 * Get this body part area data. (Does not the headers.)
 			 *
 			 * @param Length Will be set to the number of octets in the results.
+			 * This is the body area, not including the headers in
+			 * the body part.
 			 *
-			 * @return The data.
-			 * Returns NULL when no data is available or Length is zero (0).
+			 * @return The body area part data.
+			 * Returns nullptr when no data is available or Length is zero (0).
 			 */
-			uint8_t * Data(uint32_t & Length);
+			uint8_t * BodyData(uint32_t & Length);
 
 			/**
-			 * Set this body parts data.
+			 * Set this body part area data.
+			 * This does not inlude the headers to the body part.
 			 *
 			 * @param Blob The body part data.
 			 *
 			 * @param BlobLength The size of Blob
 			 */
-			void Data(uint8_t * Blob, uint32_t BlobLength);
+			void BodyData(uint8_t * Blob, uint32_t BlobLength);
 
 			/**
 			 * Get this body parts headers.
@@ -394,13 +359,13 @@ namespace RiverExplorer::Phoenix
 			 * @return This body parts headers.
 			 * Returns NULL when none set.
 			 */
-			MimeHeaders			* Headers(uint32_t & Length) const;
+			const MimeHeaders			* Headers(uint32_t & Length) const;
 		
 			/**
-			 * Get the number of headers in this body.
+			 * Get the number of headers in this body part.
 			 *
 			 * @return The number of headers in this body part.
-			 * Return zero (0) when none set.
+			 * Returns zero (0) when none set.
 			 */
 			uint32_t			HeaderCount() const;
 
@@ -410,9 +375,9 @@ namespace RiverExplorer::Phoenix
 			 * @param Index Which header to get.
 			 *
 			 * @return The Index'th Header object.
-			 * Returns NULL when none at this index.
+			 * Returns nullptr when none at this index.
 			 */
-			MimeHeader	*	GetHeader(uint32_t Index);
+			const MimeHeader	*	GetHeader(uint32_t Index);
 
 			/**
 			 * Add a new header to this body part.
@@ -445,6 +410,7 @@ namespace RiverExplorer::Phoenix
 			bool					FromXDR(XDR & xdrs);
 
 		private:
+
 			friend RiverExplorer::Phoenix::MimeMessage::Headers;
 			friend RiverExplorer::Phoenix::MimeMessage;
 
@@ -461,7 +427,17 @@ namespace RiverExplorer::Phoenix
 			/**
 			 * The start of this body part in _Parent.
 			 */
-			uint8_t	*	_BodyStart;
+			uint32_t	_BodyStart;
+
+			/**
+			 * The start of this body area part in _Parent.
+			 * May be the same as _BodyStart, when this
+			 * body part has no headers.
+			 *
+			 * @note
+			 * The body area length is: (_BodyLength - _BodyAreaStart)
+			 */
+			uint32_t	_BodyAreaStart;
 
 			/**
 			 * The length of _BodyStart.
@@ -475,7 +451,298 @@ namespace RiverExplorer::Phoenix
 			std::vector<Header*>	_Headers;
 			
 		}; // End class BodyPart
+			
+		/**
+		 * Parse an RFC-822 or MIME file.
+		 *
+		 * @param FileName The file  to parse.
+		 *
+		 * @param[out] DebugMessage List of errors for debugging.
+		 * When Parse returns true, DebugMessages should be empty.
+		 * These messages are not designed to be seen by the end user.
+		 * They are implementation specific messages for logging,
+		 * or administrative control.
+		 *
+		 * @return true if the file coulde be parsed.
+		 */
+		bool	Parse(const char * FileName,
+								std::vector<std::string> & DebugMessages);
+			
+		/**
+		 * See if this object is a MIME 1.0 message,
+		 * or a pre-MIME message.
+		 *
+		 * @return true If this message complies with MIME (RFC-2045)
+		 * and contains "Mime-Version: 1.0".
+		 */
+		bool	IsMime() const;
 
+		/**
+		 * Get a pointer to the entire message.
+		 *
+		 * @param Len The length of the value.
+		 * Len will be set to the value length.
+		 *
+		 * @return A pointer to the entire message.
+		 */
+		uint8_t  *	Message(uint32_t & Len) const;
+
+		/**
+		 * Get header by position.
+		 * They will be in the order they are in the MIME object.
+		 *
+		 * @param Index The position of the header.
+		 * The first one has an index value of zero (0).
+		 *
+		 * @return The Header. Or nullptr if Index is out of range.
+		 */
+		Header	* GetHeader(uint32_t Index) const;
+
+		/**
+		 * Get a header from a body part, by position from a body part ID and index.
+		 * They will be in the order they are in the body part object.
+		 *
+		 * @param FromID The ID of the body part.
+		 * FromID is a value returned from BodyPart() or BodyPartPart().
+		 *
+		 * @param Index The position of the header.
+		 * The first one has an index value of zero (0).
+		 *
+		 * @return The Header. Or nullptr if Index is out of range.
+		 *
+		 * @note
+		 * Not all body parts have headers.
+		 *
+		 * @see BodyPart()
+		 * @see BodyPartPart()
+		 */
+		Header	* GetHeader(BodyPartID_t FromID, uint32_t Index) const;
+
+		/**
+		 * Get all MIME message headers by name, can return zero to many of them.
+		 * They will be in the order they are in the MIME object.
+		 *
+		 * @param Name The name of the header to get
+		 * The header name comparison is case insensitive.
+		 *
+		 * @return A possibly empty list of matches, in the order
+		 * they appear in this object.
+		 */
+		std::vector<const Header*> GetHeaders(const char * Name) const;
+
+		/**
+		 * Get all body part headers by name, can return zero to many of them.
+		 * They will be in the order they are in the MIME object.
+		 *
+		 * @param FromID The ID of the body part.
+		 * FromID is a value returned from BodyPart() or BodyPartPart().
+		 *
+		 * @param Name The name of the header to get
+		 * The header name comparison is case insensitive.
+		 *
+		 * @return A possibly empty list of matches, in the order
+		 * they appear in this object.
+		 *
+		 * @see BodyPart()
+		 * @see BodyPartPart()
+		 */
+		std::vector<const Header*> GetHeaders(BodyPartID_t FromID,
+																					const char * Name) const;
+
+		/**
+		 * Get the entire body part.
+		 * It will include ALL of the body part.
+		 *
+		 * @param FromID The ID of the body part.
+		 * FromID is a value returned from BodyPart() or BodyPartPart().
+		 *
+		 * @param Length Length will be set to the length of the result.
+		 *
+		 * @return A pointer to the entire body of the message.
+		 * Returns a pointer to the start of the body part header area.
+		 */
+		uint8_t	*	GetEntireBody(BodyPartID_t FromID, uint32_t & Length) const;
+
+		/**
+		 * Get a bodypart.
+		 *
+		 * @param FromID The ID of the body part.
+		 * FromID is a value returned from BodyPart() or BodyPartPart().
+		 *
+		 * @return A BodyPart object, or nullptr when FromID is not valid.
+		 *
+		 * @see BodyPart()
+		 * @see BodyPartPart()
+		 */
+		BodyPart	*	GetBodyPart(FromID);
+		
+		/**
+		 * Get the index to any MIME preamble in this message.
+		 *
+		 * When !IsMime(), returns zero (0) as non-MIME messages
+		 * do not have preamble.
+		 *
+		 * @note
+		 * MIME messages may or might not have a preamble.
+		 *
+		 * @return
+		 * IsMime() == true: The offset into the entire message where the
+		 * data part of the MIME preamble starts.
+		 * Returns zero (0) when there is no preamble in this MIME message.
+		 *
+		 * !IsMime() returns zero (0), as non-MIME messages do not
+		 * have a preamble.
+		 */
+		uint32_t	GetPreambleIndex() const;
+
+		/**
+		 * Get the index to any MIME epilogue in this message.
+		 *
+		 * When !IsMime(), returns zero (0) as non-MIME messages
+		 * do not have preamble.
+		 *
+		 * @note
+		 * MIME messages may or might not have a preamble.
+		 *
+		 * @return
+		 * IsMime() == true: The offset into the entire message where the
+		 * data part of the MIME preamble starts.
+		 * Returns zero (0) when there is no preamble in this MIME message.
+		 *
+		 * !IsMime() returns zero (0), as non-MIME messages do not
+		 * have a preamble.
+		 */
+		uint32_t	GetEpilogueIndex() const;
+
+		/**
+		 * Get the offset into the entire message for the requested
+		 * body part, also gets the content type for the part.
+		 *
+		 * This gets the top level body part index information.
+		 * @see BodyPartPart() for getting any embedded body parts.
+		 *
+		 * @param Which Which top level body part to get. The first is zero (0).
+		 *
+		 * @param[out] ContentTypeValue The content type of the body part.
+		 * When no ContentType header was provided, the will be set
+		 * to an empty string.
+		 *
+		 * @return The unique ID for this body part in this message.
+		 * This also is the offset from the start of the entire message,
+		 * where this body part starts. 
+		 *
+		 * Returns zero (0) when the Which parameter is not a valid
+		 * for this message.
+		 *
+		 * @note
+		 * The returned value is valid before and after
+		 * the client fetches the message.
+		 * After getting this index, the client could fetch the entire
+		 * message, or just the body parts it desires.
+		 */
+		BodyPartID_t	BodyPart(uint32_t Which, std::string & ContentTypeValue);
+
+		/**
+		 * Get the offset into the a specific body part
+		 * for its embedded body part, also gets the content type for the part.
+		 *
+		 * This gets the body part index information for embedded body parts.
+		 * @see BodyPart() for getting any top level body parts.
+		 *
+		 * @param FromWhich Which body part to get.
+		 * This must be a value returned from BodyPart() or BodyPartPart().
+		 *
+		 * @param Which Which top level body part to get.
+		 *
+		 * @param[out] ContentTypeValue The content type of the body part.
+		 * When no ContentType header was provided, the will be set
+		 * to an empty string.
+		 *
+		 * @return The unique ID for this body part in this message.
+		 * This also is the offset from the start of the entire message,
+		 * where this body part starts. 
+		 *
+		 * Returns zero (0) when the Which parameter is not a valid
+		 * for this message.
+		 *
+		 * @note
+		 * The returned value is valid before and after
+		 * the client fetches the message.
+		 * After getting this index, the client could fetch the entire
+		 * message, or just the body parts it desires.
+		 */
+		BodyPartID_t	BodyPartPart(uint32_t FromWhich,
+															 uint32_t Which,
+															 std::string & ContentTypeValue);
+
+		/**
+		 * In order to reduce the memory footprint, this implementation
+		 * tries not to copy strings.
+		 *
+		 * A MimeString is an offset into the message where
+		 * the string starts, with a length.
+		 */
+		struct MimeString
+		{
+			/**
+			 * The offset into the MIME object where the string starts.
+			 */
+			uint32_t	Start;
+
+			/**
+			 * The length of the string.
+			 */
+			uint32_t	Length;
+		};
+		
+		/**
+		 * When the client wants to find all of the top level
+		 * content-type values for all of the MIME message body parts.
+		 *
+		 * Get a list of all of the content-type values, for all of the
+		 * body parts.
+		 *
+		 * @note
+		 * Body parts may contain body parts.
+		 * This method gets all of the content-type values for the
+		 * top level MIME object.
+		 * To get any possible content-type values within a specific
+		 * body part, call GetContentType(BodyPartID_t).
+		 *
+		 * @return A list of MimeString, to all of the content-type values
+		 * in all of the MIME message body parts. Ordered
+		 * by the order in the message.
+		 *
+		 * @see GetContentTypes(BodyPartID_t) to get them
+		 * all of the ones in a body part, that contains body parts.
+		 *
+		 * @note
+		 * Each MIME message has a Content-Type list.
+		 * And each body part has a Content-Type list.
+		 * They may be empty.
+		 */
+		const std::vector<MimeString*>	&	GetContentTypes() const;
+			
+		/**
+		 * When the client wants to find all of the content-type values
+		 * within a body part.
+		 *
+		 * Get a list of all of the content-type values, for all of the
+		 * body parts within a body part.
+		 *
+		 * @param FromWhich Which body part to get.
+		 * This must be a value returned from BodyPart() or BodyPartPart().
+		 *
+		 * @note
+		 * Body parts may contain body parts.
+		 * This method gets all of the content-type values for a
+		 * specific body part.
+		 *
+		 * @return A list of all of the body part content-type values.
+		 * It is an ordered list, as they are found in the message.
+		 */
+		const std::vector<MimeString &>	& GetContentTypes(uint32_t FromWhich) const;
+		
 	private:
 
 		/**
@@ -519,7 +786,7 @@ namespace RiverExplorer::Phoenix
 		 * @return The new header, or nullptr on error.
 		 */
 		Header * _ParseHeader(const uint8_t * HeaderStart,
-													std::vector<std::string> & DebugMessages);
+													std::vector<std::string> & DebugMessage);
 
 		/**
 		 * Parse a MIME Body.
@@ -534,15 +801,14 @@ namespace RiverExplorer::Phoenix
 		 */
 		uint32_t _ParseBody(const uint8_t * BodyText,
 												std::string BoundaryLine,
-												std::vector<std::string>    &DebugMessages);
+												std::vector<std::string> & DebugMessages);
 		
-
 		/**
 		 * May be nullptr, the preable.
 		 * This is data in a MIME object, after the headers
 		 * and before the MIME body parts.
 		 */
-		uint8_t	*	_PreambleStart;
+		uint32_t	_PreambleStart;
 
 		/**
 		 * Length of _PreambleStart.
@@ -554,7 +820,7 @@ namespace RiverExplorer::Phoenix
 		 * This is data in a MIME object, after the last body part
 		 * and before the end of the message.
 		 */
-		uint8_t	*	_EpilogueStart;
+		uint32_t	_EpilogueStart;
 
 		/**
 		 * Length of _EpilogueStart.

@@ -1,25 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <?xml-model href="rfc7991bis.rnc"?>
 <!DOCTYPE rfc [
-  <!ENTITY nbsp    "&#160;">
-  <!ENTITY zwsp   "&#8203;">
-  <!ENTITY nbhy   "&#8209;">
-  <!ENTITY wj     "&#8288;">
+<!ENTITY nbsp "&#160;">
+<!ENTITY zwsp "&#8203;">
+<!ENTITY nbhy "&#8209;">
+<!ENTITY wj "&#8288;">
 ]>
-<rfc
-  xmlns:xi="http://www.w3.org/2001/XInclude"
-  category="info"
-  docName="draft-royer-phoenix-00"
-  ipr="trust200902"
-  obsoletes=""
-  updates=""
-  submissionType="IETF"
-  xml:lang="en"
-  version="3">
+<rfc xmlns:xi="http://www.w3.org/2001/XInclude" category="info" docName="draft-royer-phoenix-00" ipr="trust200902" obsoletes="" updates="" submissionType="IETF" xml:lang="en" version="3">
   <front>
     <title abbrev="Phoenix: Lemonade Risen Again">Phoenix: Lemonade Risen Again</title>
     <seriesInfo name="Internet-Draft" value="draft-royer-phoenix-00"/>
-   
     <author fullname="Doug Royer" initials="DM" role="editor" surname="Royer">
       <organization>RiverExplorer Games LLC</organization>
       <address>
@@ -31,14 +21,13 @@
           <code>89107</code>
           <country>US</country>
           <!-- Uses two letter country code -->
-        </postal>        
+        </postal>
         <phone>1+714-989-6135</phone>
-        <email>DouglasRoyer@gmail.com</email>  
+        <email>DouglasRoyer@gmail.com</email>
         <!-- Can have more than one <email> element -->
         <uri>https://RiverExplorer.games</uri>
       </address>
     </author>
-   
     <date year="2025"/>
     <area>General</area>
     <workgroup>Internet Engineering Task Force</workgroup>
@@ -49,211 +38,1689 @@
     <keyword>lemonade</keyword>
     <keyword>phoenix</keyword>
     <abstract>
-      <xi:include href="Abstract.xml"/>
+      <t>
+	NOTE: This is just getting started, not ready for submission yet.
+</t>
+      <t>
+	Email and MIME messages account for one the largest volumes of data on the
+	internet.
+	The transfer of these MIME message has not had a major updated in decades.
+	Part of the reason is that it is very important data and altering it
+	takes a great deal of care and planning.
+</t>
+      <t>
+	This application transport can also transfer non-MIME data.
+	It can be used as an XDR transport, or for opaue data (blobs of
+	known or unknown data) transport.
+</t>
+      <t>
+	Another major concern is security and authentication.
+	This proposal allows for existing autnentication to continue to work.
+</t>
+      <t>
+	This is a MIME message transport that can facilitate
+	the transfer of any kind of MIME message. Including email, calendaring,
+	and text, image, or multimedia MIME messages.
+	It can transfer multipart and simple MIME messages.
+</t>
+      <t>
+	The POP and IMAP protocols are overly chatty and now that the Internet
+	can handle 8-bit transfers, there is no need for the overly complex
+	text handling of messages.
+</t>
+      <t>
+	This proposal includes a sample implementation.
+	(<eref target="https://github.com/RiverExplorer/Phoenix"/>)
+	Which also includes a gateway from this proposal to existing system.
+	Thunderbid and Outlook plugins are part of the sample implementation.
+</t>
     </abstract>
   </front>
-
   <middle>
-    
     <section>
-      <name>Introduction</name>
-      <xi:include href="Introduction.xml"/>
-			
-      <section>
-        <name>Requirements Language</name>
-        <t>The key words "MUST", "MUST NOT", "REQUIRED", "SHALL",
-          "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT
-          RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be
-          interpreted as described in BCP 14 <xref target="RFC2119"/>
-          <xref target="RFC8174"/> when, and only when, they appear in
-          all capitals, as shown here.</t>
-      </section>
-      <!-- [CHECK] The 'Requirements Language' section is optional -->
-
+      <name>Requirements Language</name>
+      <t>
+		The key words "MUST", "MUST NOT", "REQUIRED", "SHALL",
+		"SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT
+		RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be
+		interpreted as described in BCP 14 <xref target="RFC2119"/>
+		<xref target="RFC8174"/> when, and only when, they appear in
+		all capitals, as shown here.
+	</t>
     </section>
-    
+    <section xmlns:xi="http://www.w3.org/2001/XInclude">
+      <name>Introduction</name>
+      <t>
+		On the Internet, just about everything is a MIME object and there are
+		many ways to transport MIME.
+		This document specifies a new application level MIME transport mechanism
+		and protocol.
+		This document does not specify any new or changed MIME types.
+	</t>
+      <t>
+		Transporting MIME objects is generally done in one of two ways:
+		(1) Broadcasting, (2) Polling.
+		Both methods often require some form of authentication, registration,
+		and selecting of the desired material.
+		These selection processes are essentially a form of remote folder management.
+		In some cases you can only select what is provided, and in others
+		you have some or a lot of control over the remote folders.
+	</t>
+      <t>
+		In addition to other functions, this specification defines a remote
+		and local folder management.
+		This remote folder management is common with many type of very popular
+		protocols.
+		This design started by looking at the very popular IMAP and POP protocols.
+	</t>
+      <t>
+		An additional task is transporting the perhaps very large MIME objects.
+		Some MIME objects are so large that some devices may 
+		default to looking at only at parts of the MIME object.
+		An example is an email message with one or more very large attachments, where
+		the device may default to not download the large attachment without a
+		specific request from the user.
+	</t>
+      <t>
+		Some objects are transported as blocks of data with a known and fixed size.
+		These are often transported with some kind of search, get, and put commands.
+		In effect these are folder and file commands
+	</t>
+      <t>	
+		Other MIME objects are transported in streams of data with an unspecified
+		size,	such as streaming music, audio, or video.
+		This specification describes how to use existing protocols to 
+		facilitate the data streaming.
+		And again, these are folder and file commands.
+	</t>
+      <t>
+		A MIME object can be a simple object, or it may contain many multipart
+		sections of small to huge size.
+		These sections can be viewed as files in the containing MIME object.
+	</t>
+      <t>
+		By implementing this specification application developers can
+		use the techniques to manage local and remote files and folders.
+		Remote email or files are the same thing in this specification.
+		The sections of MIME object with multipart sections are viewed as files
+		in the MIME object.
+		You can interact with the entire folder, or just the files within it.
+	</t>
+      <t>
+		MIME objects have meta data, and they are called headers.
+		Files and folders have meta data, and they are called file attributes.
+		This specification does not mandate any meta data, it allows for
+		a consistent transport of existing meta data.
+	</t>
+      <t>
+		File and folder meta data is a complex task that can involve
+		access control lists and permissions.
+		This specification defines a mechanism to transport this meta data,
+		it does not define the meta data.
+	</t>
+      <t>
+		And this specification provides for the ability to define both
+		protocol extensions and the creating of finer control for specific
+		commands that may evolve over time.
+	</t>
+      <t>
+		This examples compares current folder and file manipulations
+		to how it can be used in this protocol with email.
+	</t>
+      <ul>
+        <li>
+			You can search for file names.
+			You can search email for: sender, subject, and more.
+		</li>
+        <li>
+			You can search for file contents.
+			You can search for email message contents.
+		</li>
+        <li>
+			You can create, delete, and modify files.
+			You can create, delete, and modify email messages.
+		</li>
+        <li>
+			You can create, delete, and modify folders.
+			You can create, delete, and modify email folders.
+		</li>
+      </ul>
+      <t>
+		What this specification defines:
+	</t>
+      <ul>
+        <li>
+			How to use existing authentication implementations or use new ones.
+		</li>
+        <li>
+			This specification describes a standard way to perform file operations
+			that are remote to the application and agnostic to
+			purpose of data being transported.
+		</li>
+        <li>
+			Specifies a way to migrate from some existing protocols to Phoenix.
+			Provides links to sample implementations.
+		</li>
+      </ul>
+    </section>
     <section>
       <name>Terms and Definition used in this proposal</name>
       <t>
 				The following is a list of terms with their definitions as
 				used in this specification.
 			</t>
-      <xi:include href="Definitions.xml"/>
+      <dl newline="true">
+        <!-- Omit newline="true" if you want each definition to start on the sa\
+me line as the corresponding term -->
+        <dt>AdminCmd</dt>
+        <dd>
+			A general term for any administrative command.
+			Administrative and auditing operations.
+			This list includes commands for authorized users to configure,
+			query logs, errors,	possibly user activity.
+		</dd>
+        <dt>AuthCmd</dt>
+        <dd>
+			A general term for any authentication command.
+			Authentication and authorization operations.
+			These operations authenticate users and verity their authorization
+			access.
+		</dd>
+        <dt>Body Part ID</dt>
+        <dd>	
+			A unique ID for a MIME Object.
+			This is an unsigned 32-bit integer in network byte order
+			that is assigned by the server and sent to the client
+			on a successful folder open.
+			This ID persists across connections.
+			And as long as the MIME object does not get altered in any way,
+			this ID is valid and persists across servers.
+			It is the offset in octets from the beginning of the
+			message to the start of the body part.
+			<br/>
+			<xref target="Index-Ref">See Index.</xref>
+		</dd>
+        <dt>Command, CMD</dt>
+        <dd>
+			A specific protocol operation, or command.
+			They are broken down into, AdminCmd, AuthCmd, FileCmd,
+			and ProtoCmd.
+			These are called a CMD or command.
+		</dd>
+        <dt>FileCmd</dt>
+        <dd>
+			A general term for any file or folder command.
+			This include creating, getting, modifying, deleting, moving,
+			and renaming files.
+		</dd>
+        <dt>Folder ID</dt>
+        <dd>
+			A unique ID for a MIME folder.
+			This is an unsigned 32-bit integer in network byte order
+			that is assigned by the server and sent to the client
+			on a successful folder open.
+			This ID persists across connections to the same server.
+			Once a folder has an ID, it never changes on a server
+			as described in <xref target="FOLDERS">Folders</xref>.
+			<br/>
+			<xref target="Index-Ref">See Index.</xref>
+		</dd>
+        <dt anchor="Index-HH">Header ID</dt>
+        <dd>
+			An offset into a MIME object where a specific header starts.
+			As the position in a MIME object is unique, this value
+			is also used as the ID to a specific header.
+			As long as the MIME object does not change in any way
+			this ID persisists across connections and servers.
+			<br/>
+			<xref target="Index-Ref">See Index.</xref>
+		</dd>
+        <dt anchor="Index-HVH">Header Value ID</dt>
+        <dd>
+			Related to Header ID.
+			An offset into a MIME object where a specific header value starts.
+			As the position in a MIME object is unique, this value
+			is also used as the ID to a specific header value.
+			As long as the MIME object does not change in any way
+			this ID persisists across connections and servers.
+			<br/>
+			<xref target="Index-Ref">See Index.</xref>
+			<br/>
+			<xref target="Index-Ref">See Header ID.</xref>
+		</dd>
+        <dt>HIDX</dt>
+        <dd>
+			Header Index type.
+			A command sent as part of a folder open command that tells the
+			server which MIME headers it would like indexed.
+		</dd>
+        <dt anchor="Index-Ref">Index</dt>
+        <dd>
+          <t>
+				This wire protocol transmits all or part of MIME objects.
+				Various parts can be referenced by an offset into the object.
+				This is an index into the MIME objects.
+				A client may request an index be used when opening a folder.
+			</t>
+          <t><em>Note</em>:	
+				None of these index values are guaranteed to persist across
+				re-connections to the server,
+				as other clients may have altered the contents.
+			</t>
+        </dd>
+        <dt>LID</dt>
+        <dd>
+			List ID.
+			In operations that require a list or set of data.
+			This ID uniquely identifies which list or set is in context.
+		</dd>
+        <dt>Media Type</dt>
+        <dd>
+			Each MIME object has a media type that identifies the
+			content of the object.
+			This specification does not add, remove, or alter any MIME media type;
+		</dd>
+        <dt>MIME</dt>
+        <dd>
+			This protocol transports MIME objects.
+			This specification does not remove or alter any MIME objects;
+		</dd>
+        <dt>Offset</dt>
+        <dd>
+			Unless otherwise specified, an offset is an unsigned 32-bit
+			integer in network byte order.
+		</dd>
+        <dt>Packet</dt>
+        <dd>
+			A packet is a blob of data that has a header (its length)
+			followed	by a Phoenix command with all
+			of its values and parameters.
+
+			Packets flow in both directions and asynchronously.
+			Commands can be sent while still waiting for other replies.
+
+			Each endpoint may send commands to the other endpoint without
+			having to be prompted to send information.
+		</dd>
+        <dt>Parameter</dt>
+        <dd>
+			Most commands have values that are associated with them.
+			These values are called parameters.
+			For example, the create folder command has the name of the new
+			folder to be created as a parameter.
+		</dd>
+        <dt>ProtoCmd</dt>
+        <dd>
+			A general term for all protocol commands.
+			This also includes commands that do not fall into one of
+			the other categories described here in this definitions section.
+		</dd>
+        <dt>SEQ, Command Sequence, CMD_SEQ</dt>
+        <dd>
+			Each command has a unique identifier, a sequence number.
+			All replies to a command include the same sequence number
+			as the original command.
+			In this way replies can be matched up with their original command.
+		</dd>
+        <dt>SSL</dt>
+        <dd>
+			For the purpose of this specification, SSL is interchangeable
+			with TLS.
+			This document uses the term TLS.
+			The sample implementation uses both SSL and TLS because
+			the legacy UNIX, Linux, Windows, and OpenSSL code
+			uses the term SSL as well as TLS.
+		</dd>
+        <dt>TLS</dt>
+        <dd>
+			A way of securely transporting data over the Internet.
+			See RFC-xxxx.
+		</dd>
+        <dt>XDR</dt>
+        <dd>
+          <t>
+				RFC-4506 specifies a standard and compatible way to transfer
+				binary information.
+				This protocol uses XDR to transmit a command, its values
+				and any parameters and replies.
+				The MIME data, the payload, is transported as XDR opaque,
+				and is unmodified.
+			</t>
+          <t><em>Note</em>: XDR transmits data in 32-bit chunks.
+				An 8-bit value is transmitted with the lower 8-bits
+				valid and the upper 24 bits set to zero.
+				A 16-bit value is transmitted with the lower 16-bits
+				valid and the upper 16 bits set to zero.
+			</t>
+          <t>
+				So many of these protocol elements pack one or more
+				of its parameters into one 32-bit value.
+				As defined in each section.
+				In many cases pseudo code is shown on how to pack the
+				date and create the protocol element.
+			</t>
+          <t>
+				SEE RFC-4506 section 3.
+			</t>
+        </dd>
+      </dl>
     </section>
-
-		<section anchor="COMMANDS">
-			<name>Commands Summary</name>
-			<t>
-				The endpoint that initiates the connection is called the client.
-        The endpoint that is connected to, is called the server.
-        The client is the protocol authority, and the server responds
-        to client commands as configured or instructed by the client.
-      </t>
-
-			<t>
-				This section provides an overview of the basic commands.
-				Each command has a detailed section in this specification.
-			</t>
-			<t>
-				When a command is sent to the remote endpoint and received,
-				the remote endpoint determines if the connection is authenticated
-				or authorized to perform the command.
-				If not supported, or not authorized, a NotSupported command
-				is send as a reply.
-				The NotSupported command sent back has the same Sequence number 
-				that was in the original command.
-			</t>
-			<t>
-				Many commands are only valid after authentication.
-			</t>
-			<t>
-				When the client connects to a server it immediately sends
-				its pre authentication capabilities to the server.
-				Or an Auth command.
-			</t>
-			<t>
-				When the server gets a new connection followed by
-				a pre authentication capability command, it immediately sends
-				its pre authentication capabilities to the client.
-			</t>
-			<t>
-				When the client and server have had a relationship, the
-				client may send an Auth Command to initiate the authorization
-				and does not send its pre authentication capability list
-				to the server.
-				It then waits for the Auth reply from the server.
-			</t>
-			<ul>
-				<li>
-					If the client gets an Auth reply that is positive,
-					it sends its post authentication capability list to the server.
-				</li>
-				<li>
-					If the client gets an Auth reply that is negative,
-					it sends its pre authentication
-					capability list to the server.
-				</li>
-			</ul>
-			<t>
-				When a servers first received packet is a Auth command,
-				It processes the Auth command and sends the Auth reply.
-			</t>
-			<ul>
-				<li>
-					If the Auth reply is positive, then it also sends it
-					post authentication capability list.
-				</li>
-				<li>
-					If the Auth reply is negative, then it sends its
-					pre authentication capability list to the client.
-				</li>
-			</ul>
-
-			<t>
-				A server may automatically send its pre authentication
-				capability list to the client upon initial connection.
-				Or it may wait to see if it gets a pre authentication
-				capability list, or an Auth command.
-			</t>
-			<t>
-				If the client sends an Auth command as its first packet,
-				it may get the pre authentication capability from the server
-				before the Auth reply. Simply process both.
-			</t>
-			
-			<section anchor="PROTO_SUMMARY">
-				<name>Protocol Commands Summary</name>
-				<xi:include href="ProtocolSummary.xml"/>
-			</section>
-
-			<section anchor="ADMIN_SUMMARY">
-				<name>Administration Commands Summary</name>
-				<xi:include href="AdminSummary.xml"/>
-			</section>
-				
-			<section anchor="AUTH_SUMMARY">
-				<name>Authentication Commands Summary</name>
-				<xi:include href="AuthSummary.xml"/>
-			</section>
-
-			<section anchor="CALENDAR_SUMMARY">
-				<name>Calendar Commands Summary</name>
-				<xi:include href="CalendarSummary.xml"/>
-			</section>
-
-			<section anchor="CAPABILITY_SUMMARY">
-				<name>Capability Commands Summary</name>
-				<xi:include href="CapabilitySummary.xml"/>
-			</section>
-
-			<section anchor="EMAIL_SUMMARY">
-				<name>EMail Commands Summary</name>
-				<xi:include href="EMailSummary.xml"/>
-			</section>
-
-			<section anchor="FOLDER_SUMMARY">
-				<name>File and Folder Commands Summary</name>
-				<xi:include href="FolderSummary.xml"/>
-			</section>
-
-			<section anchor="KEEPALIVE_SUMMARY">
-				<name>KeepAlive Command Summary</name>
-				<xi:include href="KeepAliveSummary.xml"/>
-			</section>
-
-			<section anchor="PING_SUMMARY">
-				<name>Ping Command Summary</name>
-				<xi:include href="PingSummary.xml"/>
-			</section>
-
-			<section anchor="SMIME_SUMMARY">
-				<name>S/MIME Commands Summary</name>
-				<xi:include href="SMimeSummary.xml"/>
-			</section>
-
-		</section>
-
-		<section anchor="WIREPROTOCOLDETAIL">
-			<name>Over the Wire Protocol Detail</name>
-			<t>
-				This section specifies the details of what is
-				transmitted over the network.
-			</t>
-			<xi:include href="ProtocolDetails.xml"/>
-		</section>
+    <section xmlns:xi="http://www.w3.org/2001/XInclude" anchor="COMMANDS">
+      <name>Commands Summary</name>
+      <t>
+		The endpoint that initiates the connection is called the client.
+    The endpoint that is connected to, is called the server.
+    The client is the protocol authority, and the server responds
+    to client commands as configured or instructed by the client.
+  </t>
+      <t>
+		This section provides an overview of the basic commands.
+		Each command has a detailed section in this specification.
+	</t>
+      <t>
+		When a command is sent to the remote endpoint and received,
+		the remote endpoint determines if the connection is authenticated
+		or authorized to perform the command.
+		If not supported, or not authorized, a NotSupported command
+		is send as a reply.
+		The NotSupported command sent back has the same Sequence number 
+		that was in the original command.
+	</t>
+      <t>
+		Many commands are only valid after authentication.
+	</t>
+      <t>
+		When the client connects to a server it immediately sends
+		its pre authentication capabilities to the server.
+		Or an Auth command.
+	</t>
+      <t>
+		When the server gets a new connection followed by
+		a pre authentication capability command, it immediately sends
+		its pre authentication capabilities to the client.
+	</t>
+      <t>
+		When the client and server have had a relationship, the
+		client may send an Auth Command to initiate the authorization
+		and does not send its pre authentication capability list
+		to the server.
+		It then waits for the Auth reply from the server.
+	</t>
+      <ul>
+        <li>
+			If the client gets an Auth reply that is positive,
+			it sends its post authentication capability list to the server.
+		</li>
+        <li>
+			If the client gets an Auth reply that is negative,
+			it sends its pre authentication
+			capability list to the server.
+		</li>
+      </ul>
+      <t>
+		When a servers first received packet is a Auth command,
+		It processes the Auth command and sends the Auth reply.
+	</t>
+      <ul>
+        <li>
+			If the Auth reply is positive, then it also sends it
+			post authentication capability list.
+		</li>
+        <li>
+			If the Auth reply is negative, then it sends its
+			pre authentication capability list to the client.
+		</li>
+      </ul>
+      <t>
+		A server may automatically send its pre authentication
+		capability list to the client upon initial connection.
+		Or it may wait to see if it gets a pre authentication
+		capability list, or an Auth command.
+	</t>
+      <t>
+		If the client sends an Auth command as its first packet,
+		it may get the pre authentication capability from the server
+		before the Auth reply. Simply process both.
+	</t>
+      <section anchor="PROTO_SUMMARY">
+        <name>Protocol Commands Summary</name>
+        <t>
+		In addition to the protocols listed in this specification.
+		Additional protocols and commands can be added in the future.
+		They must follow the same framework listed here.
+	</t>
+        <t>
+		This protocol connects two endpoints over a network and facilitates
+		the secure and authorized transfer of MIME objects.
+	</t>
+        <t>
+		This is a binary protocol.
+		The payload can be anything, text or binary.
+		This protocol was designed to reduce the number of back and forth
+		requests and replies between the client and server.
+		By using XDR as the format for transferring binary control
+		information it is portable to any computer architecture.
+		Appendix XXX has the rpcgen definition for the protocol
+		defined in this specification.
+	</t>
+        <t>
+		After the connection is successful and authenticated, ether endpoint
+		may send commands to the other endpoint.
+		When the server initiates an unsolicited command, it could be a
+		any kind of notification or message for the client side application
+		or the user. It could be reporting errors or updates to
+		previous client initiated commands.
+	</t>
+        <t>
+		All commands initiated from the client have even
+		numbered command sequence numbers.
 		
+		All commands initiated from the server have odd
+		numbered command sequence numbers.
+	</t>
+        <t>
+		Some commands expect a command reply.
+		Other commands do not expect a command reply.
+		An example of a command that expects a reply is the ping command.
+		An example of a command that does not expect a reply is the keep-alive
+		command.
+		Conceptually there are two kinds of commands:
+	</t>
+        <dl>
+          <dt>Directive commands:</dt>
+          <dd>
+			A directive type command expects the other endpoint to process
+			the command and possibly reply with some results.
+			An example could be: Send me an index of my emails in my InBox.
+			The client would expect a result.
+			Another example is a bye command, once sent, no reply is expected.
+		</dd>
+          <dt>Request commands:</dt>
+          <dd>
+			A request type command may or might not have any reply.
+			For example, a keep-alive command is a request to not
+			timeout and has no reply.
+			And a send new email notifications command would expect
+			zero or more replies and it would not require them, as they
+			might not happen.
+		</dd>
+        </dl>
+        <t>
+		These are not specific protocol entities, these concepts will
+		be used to describe the expected behavior when one of these
+		are transmitted.
+	</t>
+        <section anchor="PACKET_SUMMARY">
+          <name>Packet Summary</name>
+          <t>
+			All commands are sent in a packet.
+			A packet has two parts:
+		</t>
+          <ol>
+            <li>The packet header.</li>
+            <li>The packet body.</li>
+          </ol>
+          <t>
+			The packet header has one value, the total length
+			of the packet body, and payload sent as an
+			unsigned 64-bit integer	in network byte order.
+			The length does not include its own length.
+			It is the total length that follows the length value.
+		</t>
+          <t>
+			The packet body is divided into three parts:
+		</t>
+          <ol>
+            <li>Command sequence (SEQ).</li>
+            <li>The Command (CMD).</li>
+            <li>The command specific data (Payload).</li>
+          </ol>
+          <section anchor="SEQ">
+            <name>Command Sequence Number (SEQ)</name>
+            <t>
+				The Command SEQ is a 32-bit unsigned integer sent
+				in network byte order.
+				This SEQ is an even number when initiated from the client,
+				and an odd number when initiated from the server.
+			</t>
+            <t>
+				The first SEQ value sent from the client is zero (0) and is
+				incremented by two each time.
+			</t>
+            <t>
+				The first SEQ value sent from the server is one (1) and is
+				incremented by two each time.
+			</t>
+            <t>
+				In the event an endpoint command SEQ reaches its maximum value,
+				then its numbering starts over at zero (0) for the client
+				and one (1) for the server.
+				An implementation must keep track of outstanding commands
+				and not accidentally re-issue the same SEQ that may still
+				get replies from the other endpoint.
+			</t>
+          </section>
+          <section anchor="COMMAND">
+            <name>The Command (CMD)</name>
+            <t>
+				The command is a predefined enumerated 32-bit unsigned
+				integer sent in network byte order.
+				The value (in hex) 0xFFFFFFFF is reserved for extensions
+				if the 32-bit range is exhausted.
+			</t>
+          </section>
+          <section anchor="PAYLOAD">
+            <name>The Payload (Payload)</name>
+            <t>
+				The payload has no predefined length, other what
+				what is specified for the CMD in the packet.
+				It could be zero to vary large in size.
+				It could be opaque data, or it could be data that
+				is XDR encoded.
+				The contents are specific to the CMD specified in
+				the in the packet body.
+			</t>
+          </section>
+        </section>
+        <section anchor="PACKET_REPLY_SUMMARY">
+          <name>Packet Reply Summary</name>
+          <t>
+			All replies to a command are also a command packet.
+			They contain the same command SEQ and command
+			as the original packet.
+			The endpoint recognizes it is a reply because:
+		</t>
+          <ul>
+            <li>
+				The	command SEQ matches one that is waiting a reply.
+			</li>
+            <li>
+				When the client gets an even numbered SEQ, it can only
+				be a reply.
+			</li>
+            <li>
+				When the server gets an odd numbered
+				SEQ, it can only be a reply.
+			</li>
+          </ul>
+          <t>
+			Some commands have zero to many replies.
+			Each of these multiple replies contains the same SEQ as the
+			original command. An example, the client sends a request
+			to be notified when new email arrives and uses command
+			SEQ 20. Each time a new email arrives, a reply will
+			be sent from the server with a command SEQ of 20.
+			And over time, the client may get many with a SEQ of 20
+			as new emails arrive on the server.
+		</t>
+        </section>
+      </section>
+      <section anchor="ADMIN_SUMMARY">
+        <name>Administration Commands Summary</name>
+        <t>
+		Implementations are not required to implement any ADMIN command.
+		A client will know the server supports one or more ADMIN
+		commands when it gets its post authentication capability command
+		from the server.
+	</t>
+        <t>
+		Administrative command can be used to configure, audit, and manage
+		the remote endpoint.
+		Administrative command can be used to configure, audit, and manage
+		user access.
+	</t>
+        <section anchor="ADMIN_CAP">
+          <name>Administration Capability Definitions</name>
+          <t>
+			Implementations MUST NOT send the ADMIN capability
+			in the pre authorization CAPABILITY list.
+		</t>
+          <t>
+			Implementations that support any administration command
+			MAY include ADMIN capability in the post authentication CAPABILITY list.
+			An implementation may decide that only specified and
+			authorized users may issue administrative commands and
+			send only those authenticated users the ADMIN capability.
+		</t>
+          <t>
+			The ADMIN capability include the list of ADMIN commands the user is
+			allowed to perform.
+			For example, if a user only has permission to only view user lists, then
+			only the USER_LIST ADMIN capability will be provided.
+		</t>
+          <t>
+			The capability name is also the command name to use
+			when invoking that capability.
+		</t>
+          <t>
+			When a user attempts to send a commmand they are not authorized
+			to send, the remote endpoint will reply with a NotSupported command
+			with its sequence number set to the sequence number from offending
+			command.
+		</t>
+        </section>
+        <section anchor="ADMIN_USER">
+          <name>Administration of users.</name>
+          <t>
+			The following operations are defined for administration.
+		</t>
+          <table>
+            <thead>
+              <tr>
+                <th>Command and Capability Name</th>
+                <th>Brief Description.</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>USER_CREATE</td>
+                <td>
+						May create a new user.
+						And also the command to create a user.
+					</td>
+              </tr>
+              <tr>
+                <td>USER_DELETE</td>
+                <td>
+						May delete a user.
+						And the command to delete a user.
+					</td>
+              </tr>
+              <tr>
+                <td>USER_RENAME</td>
+                <td>
+						May rename a user.
+						And the command to rename a user.
+					</td>
+              </tr>
+              <tr>
+                <td>USER_LIST</td>
+                <td>
+						May list users and their capabilities.
+						And the command to list users.
+					</td>
+              </tr>
+              <tr>
+                <td>USER_PERMISSIONS</td>
+                <td>
+						May update other users permissions.
+						And the command to view and set user permissions.
+					</td>
+              </tr>
+              <tr>
+                <td>SERVER_SHUTDOWN</td>
+                <td>
+						May shutdown the server.
+						And the command to shutdown the server.
+					</td>
+              </tr>
+              <tr>
+                <td>SERVER_LOGS</td>
+                <td>
+						May view the server logs.
+						And the command to view server logs.
+					</td>
+              </tr>
+              <tr>
+                <td>SERVER_KICK_USER</td>
+                <td>
+						May logout a user. And limit when they can use the server again.
+						And the command to kick and limit a user.
+					</td>
+              </tr>
+              <tr>
+                <td>SERVER_MANAGE_BANS</td>
+                <td>
+						May manage IP and user bans.
+						And the command to manage ban users an IP addresses.
+					</td>
+              </tr>
+              <tr>
+                <td>SERVER_VIEW_STATS</td>
+                <td>
+						May view server statistics.
+						And the command to view statistics.
+					</td>
+              </tr>
+              <tr>
+                <td>SERVER_CONFIGURE</td>
+                <td>
+						May configure the server. If sent with a VIEW_ONLY
+						parameter, then the user may only view the configuration
+						information.
+						And the command to view and alter the server configuration
+						information.
+					</td>
+              </tr>
+            </tbody>
+          </table>
+        </section>
+      </section>
+      <section anchor="AUTH_SUMMARY">
+        <name>Authentication Commands Summary</name>
+        <t>
+		TODO
+	</t>
+      </section>
+      <section anchor="CALENDAR_SUMMARY">
+        <name>Calendar Commands Summary</name>
+        <t>
+		These command are based on iCalendar and iTIp.
+	</t>
+      </section>
+      <section anchor="CAPABILITY_SUMMARY">
+        <name>Capability Commands Summary</name>
+        <t>
+		This section ...
+	</t>
+      </section>
+      <section anchor="EMAIL_SUMMARY">
+        <name>EMail Commands Summary</name>
+        <t>
+		These commands allow for the fetching and submission
+		of EMail messages
+	</t>
+      </section>
+      <section anchor="FOLDERS">
+        <name>File and Folder Commands Summary</name>
+        <t>
+		The file operations (FileOp) have protocol names.
+		Here are their protocol names and a breif description.
+	</t>
+        <t>
+		Implementations are not required to support any or all of these
+		commands.
+	</t>
+        <t>
+		
+	</t>
+        <table>
+          <thead>
+            <tr>
+              <th>Op Name</th>
+              <th>Brief Description.</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>FOLDER_CAPABILITY</td>
+              <td>
+					When sent as a command, request the list of
+					folder commands supported.
+					When sent as a reply, includes the list of
+					folder commands supported.
+				</td>
+            </tr>
+            <tr>
+              <td>FOLDER_CREATE</td>
+              <td>
+					Create a new folder.
+					Also the name of the capability for this permission.
+				</td>
+            </tr>
+            <tr>
+              <td>FOLDER_COPY</td>
+              <td>
+					Copy a folder.
+					Also the name of the capability for this permission.
+				</td>
+            </tr>
+            <tr>
+              <td>FOLDER_DELETE</td>
+              <td>
+					Delete a folder.
+					Also the name of the capability for this permission.
+				</td>
+            </tr>
+            <tr>
+              <td>FOLDER_RENAME</td>
+              <td>
+					Rename a folder.
+					Also the name of the capability for this permission.
+				</td>
+            </tr>
+            <tr>
+              <td>FOLDER_MOVE</td>
+              <td>
+					Move a folder.
+					Also the name of the capability for this permission.
+				</td>
+            </tr>
+            <tr>
+              <td>FOLDER_SHARE</td>
+              <td>
+					Share a folder.
+					Also the name of the capability for this permission.
+				</td>
+            </tr>
+            <tr>
+              <td>FOLDER_LIST</td>
+              <td>
+					List folders and files.
+					Also the name of the capability for this permission.
+				</td>
+            </tr>
+            <tr>
+              <td>FILE_CREATE</td>
+              <td>
+					Create a new file.
+					Also the name of the capability for this permission.
+				</td>
+            </tr>
+            <tr>
+              <td>FILE_COPY</td>
+              <td>
+					Copy a file.
+					Also the name of the capability for this permission.
+				</td>
+            </tr>
+            <tr>
+              <td>FILE_DELETE</td>
+              <td>
+					Delete a file.
+					Also the name of the capability for this permission.
+				</td>
+            </tr>
+            <tr>
+              <td>FILE_RENAME</td>
+              <td>
+					Rename a file.
+					Also the name of the capability for this permission.
+				</td>
+            </tr>
+            <tr>
+              <td>FILE_MOVE</td>
+              <td>
+					Move a file.
+					Also the name of the capability for this permission.
+				</td>
+            </tr>
+            <tr>
+              <td>FILE_SHARE</td>
+              <td>
+					Share a file.
+					Also the name of the capability for this permission.
+				</td>
+            </tr>
+            <tr>
+              <td>FILE_GET</td>
+              <td>
+					Get a file.
+					Also the name of the capability for this permission.
+				</td>
+            </tr>
+            <tr>
+              <td>FILE_MODIFY</td>
+              <td>
+					Modify the contents of an existing file.
+					Also the name of the capability for this permission.
+				</td>
+            </tr>
+          </tbody>
+        </table>
+      </section>
+      <section anchor="KEEPALIVE_SUMMARY">
+        <name>KeepAlive Command Summary</name>
+        <t>
+		The KeepAlive command is sent to the server from the client.
+		It requests the server not time out.
+		The server may honor or ignore the request.
+	</t>
+        <t>
+		The Phoenix protocol is designed to transfer data and a server
+		may handle a small subsets of what is possible.
+		Which is why the server decides what is an important command
+		while determining idle timeout.
+	</t>
+        <t>
+		When the server sends the post authentication capabilities to the
+		client, it includes an IdleTimeout capability that includes the
+		number of seconds it allows for idle time.
+		If no significant action has been taken by the client, as determined
+		by the server, in that time	the server may timeout and close the connection.
+	</t>
+        <t>
+		The KeepAlive command tells the server that the client wishes the
+		server not to time out as long as a KeepAlive or other command
+		is sent to the server before IdleTimeout seconds have passed.
+	</t>
+        <t>
+		An IdleTimeout capability can be a positive number, zero, or
+		a negative number.
+	</t>
+        <ul>
+          <li>
+			A positive number is the maximum idle time in seconds before the server
+			terminates the connection.
+		</li>
+          <li>
+			When the IdleTimeout is zero (0), the server does not timeout.
+		</li>
+          <li>
+			When the IdleTimeout is less than zero (&lt; 0), it means it ignores
+			KeepAlive and it will idle out in the absolute value of the IdleTimeout
+			value in seconds.
+			For example, a value of (-300) means it will ignore KeepAlive
+			and timeout when the server determines nothing significant has
+			happened in 5 minutes (300 seconds).
+		</li>
+        </ul>
+        <t>
+		Servers that are not threaded or can not reply to simultaneous
+		or overlapping commands, MUST set their IdleTimeout to zero (0)
+		or a negative number.
+	</t>
+        <t>
+		Clients MUST NOT send KeepAlive commands to a server
+		that has an IdleTimeout of zero (0) or negative (&lt; 0).
+	</t>
+        <t>
+		Clients MUST NOT send KeepAlive commands to the server until
+		at least 75% of the idle time has passed since the last
+		command has been sent to the server.
+	</t>
+        <t>
+		A server may terminate a connection if the server implementation
+		determines that KeepAlive commands are arriving to quickly.
+	</t>
+      </section>
+      <section anchor="PING_SUMMARY">
+        <name>Ping Command Summary</name>
+        <t>
+		The ping command only sent when the client implementation
+		has determined it has waited too long for a command reply.
+		The ping command is only initiated from the client.
+		It is not valid for the server to send a ping command to a client.
+	</t>
+        <t>
+		The ping command MUST NOT be the first command sent to the server.
+		It should only be sent when the client implementation determines
+		it has waited too long for a reply.
+	</t>
+        <t>
+		If the server supports the ping command, then a PING capability
+		is sent in the pre authentication capability command.
+	</t>
+        <t>
+		Sometimes servers are unavailable and can go down.
+		A server could be down for maintenance, or in a shutdown mode.
+		It might limit the number of simultaneous connections.
+		It might be very busy.
+		The packets might not be making it to the server because of
+		network issues.
+	</t>
+        <t>
+		When a ping command is received by the server:
+	</t>
+        <ul>
+          <li>
+			When the server did not send PING capability to the client.
+			Then the server replies with a NotSupported packet
+			with the sequence number the same as in the ping command.
+		</li>
+          <li>
+			When the server has not yet received an authentication
+			command, the server replies with a NotSupported packet
+			with the sequence number the same as in the ping command.
+		</li>
+          <li>
+			When the server has received an authentication command,
+			and has not yet replied to an authentication command.
+			Then the server sends a ping reply, with the same sequence
+			number that was in the ping command.
+			This could happen when the client implementation had determined it
+			has waited too long	for an authentication reply.
+		</li>
+          <li>
+			When the client is authenticated,
+			and when the server is available for processing commands.
+			Then the server replies with a ping reply with the same sequence number.
+			This could happen when the client implementation had determined it
+			has waited too long	for an expected reply.
+		</li>
+        </ul>
+        <t>
+		If the server is alive and not available, the server
+		will reply with a NotSupported command, with its sequence
+		number set to the sequence number in the ping command.
+	</t>
+        <t>
+		If a connected and authenticated client has been waiting for a reply
+		or for some other reason needs to determine if the server is still
+		available. It can send a ping command.
+		If the server is still available, it sends a ping reply.
+		If it is no longer available for any reason, it sends a NotSupported
+		reply.
+	</t>
+        <t>
+		Endpoints MUST NOT send a ping command if they are awaiting
+		the results of a previously sent ping command.
+	</t>
+        <t>
+		Endpoints MUST NOT send more than two ping commands per minute.
+	</t>
+        <t>
+		Clients and servers must give priority to ping commands.
+		If possible, reply as soon as it receives the command.
+	</t>
+        <t>
+		The server MAY consider too many ping commands as a malfunctioning
+		or malicious client and terminate the connection.
+	</t>
+        <t>
+		Servers that are not threaded or can not reply to simultaneous
+		or overlapping commands, MUST NOT include PING in
+		their capability command.
+	</t>
+      </section>
+      <section anchor="SMIME_SUMMARY">
+        <name>S/MIME Commands Summary</name>
+        <t>
+		ToDo
+	</t>
+      </section>
+    </section>
+    <section anchor="WIREPROTOCOLDETAIL">
+      <name>Over the Wire Protocol Detail</name>
+      <t>
+		This section specifies the details of what is
+		transmitted over the network.
+	</t>
+      <t>
+		All protocol data transmitted between the endpoints is sent in
+		network byte order.
+	</t>
+      <t>
+		All payload data transmitted between the endpoints is sent
+		in original format.
+		The payload consent is seen as an opaque blob of data within
+		a command packet.
+	</t>
+      <t>
+		When a command packet is received by ether endpoint it:
+		(1) Checks the command sequence number to determine if it is a reply
+		or not.
+		(2) If it is a reply, it looks at the command and dispatches
+		it to the implementations commands reply code.
+		(3) If is not a reply, it looks at the command and dispatches
+		it to the implementations command code.
+	</t>
+      <t>
+		A command and all of its replies, use the same format as
+		described here.
+	</t>
+      <t>
+		A packet has a 64-bit unsigned integer in network byte
+		order that is set to the octet count of all of the
+		data that follows this length value.
+		The shortest packet is 16 octets in size, with
+		a length value set to 8. With 8 octets for the length, and 8 octets
+		for the packet.
+	</t>
+      <t>
+		Followed by a 32-bit unsigned integer in network byte
+		order that is the command sequence number.
+	</t>
+      <t>
+		Followed by a 32-bit unsigned integer in network byte
+		order that is the command.
+	</t>
+      <t>
+		Followed by zero or more octets of payload data.
+	</t>
+      <t>
+		There is no space, padding, or line endings between the parts
+		of the packet.
+		The payload is sent without any modification and is not
+		encoded or transformed in any way.
+		A packet is shown here vertically only
+		to aid in readability.
+	</t>
+      <artset>
+        <artwork type="ascii-art">
++-----------------------------------------------------------------+
+| ...64-bit.unsigned.integer.length ..............................|
++-----------------------------------------------------------------+
+| ...32-bit.unsigned.command.SEQ...|
++----------------------------------+
+| ...32-bit.unsigned.command.CMD...|
++----------------------------------+
+| payload.....
+
+		</artwork>
+      </artset>
+      <t>
+		The payload size and format varies for each command.
+		The details of the payload content, and the format
+		of that content, is described in each specific CMD section.
+	</t>
+      <t>
+		An implementation can send, receive, and dispatch packets within
+		its implementation by looking at the length, SEQ, and CMD, then
+		passing the payload to code that can handle that payload.
+	</t>
+      <t>
+		- Read in a 64-bit value.
+		- Convert the value from network byte order, to host byte order. This is the
+		total length of the data that follows.
+		- Read in length octets into the packet payload.
+		- Get the 32-bit value in the payload, it is the SEQ in network byte order.
+		- Convert the SEQ from network byte order, to host byte order.
+		- Get another 32-bit value in the payload, it is the CMD in network byte order.
+		- Convert the CMD from network byte order, to host byte order.
+		- Dispatch the CMD with SEQ and all of the data that follows
+		to implementation 
+	</t>
+      <t>
+		The following is pseudo code that explains how processing incoming XDR
+		data can be handled:
+	</t>
+      <sourcecode><![CDATA[
+  // Where:
+  //  uint64_t, is a 64-bit unsigned integer.
+  //  uint32_t, is a 32-bit unsigned integer.
+  //  uint8_t *, is a pointer to 8-bit data.
+  //  XDR, is an XDR object.
+  //
+  //  CmdPacket, is an object that represents all commands
+  //  and replies.
+  //
+  //  NOTE: See the sample implementation.
+  //
+  uint64_t   NetLength;
+  uint64_t   PacketLength;
+  uint8_t *  Data;
+  uint8_t *  DataPointer;
+  XDR        Xdr;
+  CmdPacket  Packet;
+  
+  // Read the length and convert to host byte order.
+  //
+  read(FromClientSocket, &NetLength, sizeof(uint64_t));
+  PacketLength = ntohll(NetLength);
+
+  // Allocate PacketLength data, and read it.
+  //
+  Data = new uint8_t[PacketLength]
+  DataPointer = Data;
+
+  // Initialize the XDR deserializer.
+  //
+  xdrmem_create(&Xdr, Data, PacketLength, XDR_DECODE);
+
+  // Decode the received data into a Packet.
+  //
+  if (xdr_CmdPacket(&Xdr, &Packet)) {
+
+    // If the lowest bit is set, it is an odd number.
+    //
+    if (Packet.Sequence & 0x01) {
+      SequenceIsEvenNumber = false;
+    } else {
+      SequenceIsEvenNumber = true;
+    }
+
+    // The client sends even numbered sequences, and the server
+    // sends the same even numbers sequence in the reply to
+    // the command.
+    //
+    // If a client gets an odd numbered sequence, it is a command 
+    // from the other endpoint.
+    //
+    // The server sends odd numbered sequences, and the client
+    // sends the same odd numbers sequence in the reply to
+    // the command.
+    //
+    // If a server gets an even numbered sequence, it is a
+    // command from theother endpoint.
+    //
+    if (WeAreTheClient) {
+      if (SequenceIsEvenNumber) {
+        DispatchReply(Packet);
+      } else {
+        DispatchCommandFromOtherEndpoint(Packet);
+      }
+    } else {
+      if (SequenceIsEvenNumber) {
+        DispatchCommandFromOtherEndpoint(Packet);
+      } else {
+        DispatchReply(Packet);
+      }
+    }
+  }
+]]></sourcecode>
+    </section>
+    <section anchor="INDEX">
+      <name>Index</name>
+      <section anchor="InterestedHeaders">
+        <name>Interested Headers</name>
+        <t>
+			Some implementation may wish to specify which MIME headers
+			it wants to get in the index supplied by the server.
+			This is done as part of the folder selection command which
+			can supplies a list of desired headers.
+			Or it can specify a list ID that has already been transmitted.
+			When none are supplied, no header index values will be returned.
+		</t>
+        <t>
+			This list can be the same for all folders, or unique to specific folders.
+			The client generates a list of interested headers and
+			sends an InterestedHeaders list to the server when selecting
+			a folder.
+		</t>
+        <t>
+			A request ID (HIDX) is an 8-bit unsigned integer in network byte order.
+		</t>
+        <t>
+			A Header ID is an 8-bit unsigned integer in network byte order.
+		</t>
+        <t>
+			There are three (3) types of interested header index (HIDX) requests.
+			These are 8-bit unsigned integer in network byte order.
+			And the HIDX values are:
+		</t>
+        <ul>
+          <li>
+            <t>
+					HIDX = 0
+				</t>
+            <t>
+					Used to set the default MIME object and Body Part list
+					of interesting headers the client cares about.
+					The default list has a list ID that is also zero (0).
+				</t>
+            <t>
+					And requesting a list ID of zero (0) will return the index
+					of the default headers defined by the client that was set.
+				</t>
+          </li>
+          <li>
+            <t>
+					HIDX = 1
+				</t>
+            <t>
+					This value sets a custom list that can be used later by ID.
+					Custom lists have an ID greater than zero (&gt;0)
+				</t>
+          </li>
+          <li>
+            <t>
+					HIDX = 2
+				</t>
+            <t>
+					This value is used to get the header list index.
+				</t>
+          </li>
+        </ul>
+        <t>
+			The header for setting a list is shown
+			in <xref target="Interisting-S0-01"/>, where:
+		</t>
+        <ul>
+          <li>
+            <t>
+					HIDX is used to set or get the headers the client
+					wishes the server to index in MIME objects.
+					It must be a zero (0), one (1), or two (2).
+				</t>
+          </li>
+          <li>
+            <t>
+					LID is the list ID of the list. An 8-bit value.
+					Zero (0) is the default list.
+				</t>
+          </li>
+          <li>
+            <t>
+					HdrCnt set to the number of headers the client wants
+					in the list.
+					This is an 8-bit value from 0 to 254 with 255 reserved for expanson.
+				</t>
+            <t>
+					This is a 32-bit unsigned integer in network byte order.
+				</t>
+          </li>
+        </ul>
+        <figure anchor="Interisting-S0-01" align="center">
+          <name>Setting the Intrest List - Header</name>
+          <artset>
+            <artwork type="ascii-art" src="IndexList-01.txt"/>
+            <artwork type="svg" src="IndexList-01.svg"/>
+          </artset>
+        </figure>
+        <t>
+			Followed by the header request information.
+			One sent for each unique header to be placed into the header index.
+			As shown in  <xref target="Interisting-S0-02"/>, where:
+		</t>
+        <ul>
+          <li>
+            <t>
+					HID is the client assigned unique header ID
+					for the named header.
+					This is an 8-bit unsigned integer.
+				</t>
+          </li>
+          <li>
+            <t>
+					STRING LENGTH is the octet count of the string.
+					Any terminating zero (0) is not counted.
+				</t>
+            <t>
+					This is a 24-bit unsigned integer in network byte order.
+				</t>
+          </li>
+          <li>
+            <t>
+					THE HEADER NAME is the characters that make
+					up the MIME header name	that is interesting
+					without including any terminating zero (0).
+					These are a sequence of 8-bit unsigned integer values
+					in network byte order.
+				</t>
+          </li>
+        </ul>
+        <figure anchor="Interisting-S0-02" align="center">
+          <name>Setting the Intrest List - Contents</name>
+          <artset>
+            <artwork type="ascii-art" src="IndexList-02.txt"/>
+            <artwork type="svg" src="IndexList-02.svg"/>
+          </artset>
+        </figure>
+        <t>
+			When the HIDX flag is set to two (2) then it is followed by a list
+		</t>
+        <t>
+			LID, the list ID of an already transmitted list to be used.
+			Zero (0) for the already defined and transmitted default list.
+			Or the LID of another already defined and transmitted non-default list.
+		</t>
+        <t>
+			This is sent as a 32-bit unsigned integer in network byte order.
+		</t>
+        <figure anchor="Interisting-S0-03" align="center">
+          <name>Requesting Header Index by List ID (LID)</name>
+          <artset>
+            <artwork type="ascii-art" src="IndexList-03.txt"/>
+            <artwork type="svg" src="IndexList-03.svg"/>
+          </artset>
+        </figure>
+        <t>
+			Restrictions:
+		</t>
+        <ul>
+          <li>
+				Only one default list can be set at a time.
+				It can change by sending a new default list.
+			</li>
+          <li>
+				List ID zero (0) is reserved for the default list.
+			</li>
+          <li>
+				The list IDs are unique to the connection and do not persist
+				across connections.
+			</li>
+          <li>
+				No two lists can have the same ID during a connection.
+			</li>
+        </ul>
+        <t>
+		</t>
+        <section>
+          <name>Client Interested Headers Examples</name>
+          <t>
+				This is an example of the client sending the default
+				interesting header list to the server.
+				The client is asking for the index values
+				for the following MIME headers (1) From, and (2) Subject.
+				And for the following Body part headers (1) Content-Type.
+			</t>
+          <figure anchor="Interisting-S0-04" align="center">
+            <name>Example Setting Default List</name>
+            <artset>
+              <artwork type="ascii-art" src="IndexList-04.txt"/>
+              <artwork type="svg" src="IndexList-04.svg"/>
+            </artset>
+          </figure>
+          <t>
+				Where:
+			</t>
+          <ul>
+            <li>
+					(a) Not used zero (0), HIDX, LID, Two headers follow
+					An HIDX of zero (0) means we are setting the default
+					MIME object header list.
+				</li>
+            <li>
+					(b) This first header will be identified as zero (0).
+					The first header is four (4) octets in length: 'From'.
+				</li>
+            <li>
+					(c) The value of the characters for 'From'.
+				</li>
+            <li>
+					(d) The second header will be identified as one (1).
+					The second header is seven (7) octets in length: 'Subject'.
+				</li>
+            <li>
+					(e) The value of the characters for 'Subject'.
+				</li>
+            <li>
+					(f) The two MIME objects headers are done, start of Body Part headers.
+					and there is one (1) of them.
+					HIDX and LID are not used here.
+				</li>
+            <li>
+					(g) The second header will be identified as three (3).
+					The first body part header is 12 octets long (0xc): 'Content-Type'.
+				</li>
+            <li>
+					(h) The value of the characters for 'Content-Type'.
+				</li>
+            <li>
+					(i) The reast of the value of the characters for 'Content-Type'.
+				</li>
+          </ul>
+        </section>
+      </section>
+      <section>
+        <name>MIME Folder Index</name>
+        <t>
+			In this specification, a MIME folder is also called a folder.
+			And can be files containing MIME objects on a disk that have a defined order,
+			or sequence of MIME objects in one file.
+		</t>
+        <t>
+			A folder index is a summary of the contents of a MIME folder.
+			It includes the basic header information and the specific location
+			of body parts for each MIME message in the folder.
+			The location information is the octet count to the start of the
+			beginning of the related target data.
+		</t>
+        <ul>
+          <li>
+				An index is an unsigned 32-bit integer in network byte order.
+			</li>
+          <li>
+				A length is an unsigned 32-bit integer in network byte order.
+			</li>
+        </ul>
+        <t>
+			For example, if a MIME folder contains 100 MIME messages, then
+			the folder index will have 100 message indexes.
+			Each message will have header indexes for the requested headers.
+			Each message index will	contain 1 or more body part indexes.
+			Each body part will have header indexes with zero (0) or more entries.
+		</t>
+        <t>
+			This protocol references the strings by octet offset into the entire
+			message.
+			All strings can be referenced by using a total of 8 octets.
+			A Phoenix string consists of two parts:
+		</t>
+        <ol>
+          <li>
+				The octet count to the start of the string with zero being the
+				first octet in the message.
+			</li>
+          <li>
+				The length in octets of the string.
+			</li>
+        </ol>
+        <t>
+			A Phoenix string over the wire is 8 octets in size.
+			
+		</t>
+        <artset>
+          <artwork type="ascii-art">
+				+----------------------------------+
+				| OFFSET                           |
+				+----------------------------------+
+				| LENGTH                           |
+				+----------------------------------+
+				| payload.....
+			</artwork>
+        </artset>
+        <t>
+			A folder index consists of:
+		</t>
+        <ul>
+          <li>
+				The entire length of the index as a 32-bit unsigned
+				integer in network byte order of what follows this value.
+				Allowing the recipient of this index to do one read
+				and process later.
+			</li>
+          <li>
+				The number of message indexes in this folder index.
+				As an unsigned 32-bit integer in network byte order.
+			</li>
+        </ul>
+        <t>
+			The index header is 8 octets:
+		</t>
+        <artset>
+          <artwork type="ascii-art">
+				+----------------------------------+
+				| LENGTH                           |
+				+----------------------------------+
+				| MESSAGE COUNT                    |
+				+----------------------------------+
+				| payload.....
+			</artwork>
+        </artset>
+        <t>
+			Next is an array of message indexes.
+			They are an ordered list of references to each message.
+			In the order they appear in the folder:
+		</t>
+        <ul>
+          <li>
+				A 32-bit unsigned integer in network byte order that is
+				the offset in the folder to the message.
+				An offset is unique in a MIME folder, it is used both as
+				an offset into the MIME folder,
+				and as a unique ID within a MIME folder.
+			</li>
+          <li>
+				An a length of the message as a 32-bit unsigned integer
+				in network byte order.
+			</li>
+        </ul>
+        <artset>
+          <artwork type="ascii-art">
+				+----------------------------------+
+				|    32-bit unsigned OFFSET        |
+				+----------------------------------+
+				|    32-bit unsigned LENGTH        |
+				+----------------------------------+
+				| Array of header index ..... 
+				...
+
+			</artwork>
+        </artset>
+        <t>
+			For each message index is an ordered list of interested headers.
+			The interested header list is assignable by the client and body
+			part indexes.
+			It consists of offsets to the interested headers and associated value.
+			Each interested header can be indexed with nine (9) octets.
+			and consists of:
+		</t>
+        <ul>
+          <li>
+				The clients assigned unique header ID for the interested header name.
+				This is an unsigned 32-bit integer in network byte order.
+				Leaving the client to ask for the index of 254 unique header names.
+			</li>
+          <li>
+				A Phoenix string referencing the header value.
+				And as it is unique in a MIME object, the offset is used both as
+				an offset, and as a unique ID within a MIME object.
+			</li>
+          <li>
+				An unsigned 32-bit integer in network byte order of the number
+				of body parts in this message.
+				Any MIME preamble and epilogue are not counted as body parts
+				A preamble, if it exists, can be easily be calculated as it starts as the
+				first	octet after the header area.
+				And the epilogue, if it exists, can be calculated as starting as the first
+				octet after the last MIME boundary.
+				And as it offset is unique in a MIME object, the offset is used both as
+				an offset, and as a unique ID within a MIME object.
+			</li>
+        </ul>
+      </section>
+    </section>
     <section anchor="IANA">
-    <!-- All drafts are required to have an IANA considerations section. See RFC 8126 for a guide.-->
+      <!-- All drafts are required to have an IANA considerations section. See RFC 8126 for a guide.-->
       <name>IANA Considerations</name>
       <t>This memo includes no request to IANA. [CHECK]</t>
     </section>
-    
     <section anchor="Security">
       <!-- All drafts are required to have a security considerations section. See RFC 3552 for a guide. -->
       <name>Security Considerations</name>
       <t>This document should not affect the security of the Internet. [CHECK]</t>
     </section>
-    
     <!-- NOTE: The Acknowledgements and Contributors sections are at the end of this template -->
   </middle>
-
   <back>
     <references>
       <name>References</name>
       <references>
         <name>Normative References</name>
-        
-        <xi:include href="https://bib.ietf.org/public/rfc/bibxml/reference.RFC.2119.xml"/>
-        <xi:include href="https://bib.ietf.org/public/rfc/bibxml/reference.RFC.8174.xml"/>
+        <reference anchor="RFC2119" target="https://www.rfc-editor.org/info/rfc2119" xml:base="../References/reference.RFC.2119.xml">
+          <front>
+            <title>Key words for use in RFCs to Indicate Requirement Levels</title>
+            <author fullname="S. Bradner" initials="S." surname="Bradner"/>
+            <date month="March" year="1997"/>
+            <abstract>
+              <t>In many standards track documents several words are used to signify the requirements in the specification. These words are often capitalized. This document defines these words as they should be interpreted in IETF documents. This document specifies an Internet Best Current Practices for the Internet Community, and requests discussion and suggestions for improvements.</t>
+            </abstract>
+          </front>
+          <seriesInfo name="BCP" value="14"/>
+          <seriesInfo name="RFC" value="2119"/>
+          <seriesInfo name="DOI" value="10.17487/RFC2119"/>
+        </reference>
+        <reference anchor="RFC8174" target="https://www.rfc-editor.org/info/rfc8174" xml:base="../References/reference.RFC.8174.xml">
+          <front>
+            <title>Ambiguity of Uppercase vs Lowercase in RFC 2119 Key Words</title>
+            <author fullname="B. Leiba" initials="B." surname="Leiba"/>
+            <date month="May" year="2017"/>
+            <abstract>
+              <t>RFC 2119 specifies common key words that may be used in protocol specifications. This document aims to reduce the ambiguity by clarifying that only UPPERCASE usage of the key words have the defined special meanings.</t>
+            </abstract>
+          </front>
+          <seriesInfo name="BCP" value="14"/>
+          <seriesInfo name="RFC" value="8174"/>
+          <seriesInfo name="DOI" value="10.17487/RFC8174"/>
+        </reference>
         <!-- The recommended and simplest way to include a well known reference -->
-        
       </references>
- 
       <references>
         <name>Informative References</name>
-       
         <reference anchor="exampleRefMin">
-        <!-- [REPLACE/DELETE] Example minimum reference -->
+          <!-- [REPLACE/DELETE] Example minimum reference -->
           <front>
             <title>Title [REPLACE]</title>
             <author initials="Initials [REPLACE]" surname="Surname [REPLACE]">
@@ -263,9 +1730,8 @@
             <!-- [CHECK] -->
           </front>
         </reference>
-
         <reference anchor="exampleRefOrg" target="http://www.example.com/">
-        <!-- [REPLACE/DELETE] Example reference written by an organization not a person -->
+          <!-- [REPLACE/DELETE] Example reference written by an organization not a person -->
           <front>
             <title>Title [REPLACE]</title>
             <author>
@@ -274,33 +1740,343 @@
             <date year="1984"/>
             <!-- [CHECK] -->
           </front>
-        </reference>       
-       
+        </reference>
       </references>
     </references>
-
-    <xi:include href="AdminBinaryValues.xml"/>
-
-    <xi:include href="AuthBinaryValues.xml"/>
-
-    <xi:include href="FileBinaryValues.xml"/>
-
-    <xi:include href="ProtocolBinaryValues.xml"/>
-
-    <xi:include href="RpcgenSpecification.xml"/>
-
+    <section anchor="ADMINBINARYVALUES_APPENDIX">
+      <name>Administrative Enumerated Binary Values</name>
+      <t>
+		Phoenix is a binary protocol.
+		Each value is sent as an unsigned 32-bit integer in xdr format.
+	</t>
+      <t>
+		The values for the commands are arbitrary and were assigned
+		as created. There is no plan or origination to the numbers.
+		There is no priority or superiority to any value.
+		The table is sorted by name, not value.
+	</t>
+      <t>
+		The values are not unique. They are only unique within the context
+		in which they are used.
+	</t>
+      <t>
+		Some of these values are reused for other commands.
+		For example USER_CREATE is both an (a) AUTH capability reply
+		informing the user that they have permission to create a
+		user with the (b) USER_CREATE command.
+	</t>
+      <t>
+		Some values may be reused if they are parameter arguments
+		to other commands.
+		For example xxxxxx.
+	</t>
+      <table>
+        <thead>
+          <tr>
+            <th>Decimal Value</th>
+            <th>Command / Capability Name</th>
+            <th>Brief Description.</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>x</td>
+            <td>USER_CERT</td>
+            <td>Manage a users certificate.</td>
+          </tr>
+          <tr>
+            <td>x</td>
+            <td>USER_CREATE</td>
+            <td>
+              <t>
+					When sent in a capability reply USER_CREATE informs the
+					user that they have permission to create users.
+					</t>
+              <t>
+						When sent as a command the USER_CREATE instructs
+						the other endpoint to create a named user.
+					</t>
+            </td>
+          </tr>
+          <tr>
+            <td>x</td>
+            <td>USER_DELETE</td>
+            <td>Delete a user.</td>
+          </tr>
+          <tr>
+            <td>x</td>
+            <td>USER_LIST</td>
+            <td>List users and their capabilities.</td>
+          </tr>
+          <tr>
+            <td>x</td>
+            <td>USER_PERMISSIONS</td>
+            <td>Update user permissions.</td>
+          </tr>
+          <tr>
+            <td>x</td>
+            <td>USER_RENAME</td>
+            <td>Rename a user.</td>
+          </tr>
+          <tr>
+            <td>x</td>
+            <td>USER_RESET</td>
+            <td>
+					Used to coordinate resetting a users authentication information.
+				</td>
+          </tr>
+          <tr>
+            <td>4294967296</td>
+            <td>Reserved for future expansion.</td>
+            <td>4294967296 has a hex value of: 0xffffffff </td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+    <section anchor="AUTHBINARYVALUES_APPENDIX">
+      <name>Authentication Enumerated Binary Values</name>
+      <t>
+		Phoenix is a binary protocol.
+		Each value is sent as an unsigned 32-bit integer in xdr format.
+	</t>
+      <t>
+		The values for the commands are arbitrary and were assigned
+		as created. There is no plan or origination to the numbers.
+		There is no priority or superiority to any value.
+		The table is sorted by name, not value.
+	</t>
+      <t>
+		The values are not unique. They are only unique within the context
+		in which they are used.
+	</t>
+      <t>
+		Some of these values are reused for other commands.
+		For example USER_CREATE is both an (a) AUTH capability reply
+		informing the user that they have permission to create a
+		user with the (b) USER_CREATE command.
+	</t>
+      <t>
+		Some values may be reused if they are parameter arguments
+		to other commands.
+		For example xxxxxx.
+	</t>
+      <table>
+        <thead>
+          <tr>
+            <th>Decimal Value</th>
+            <th>Command / Capability Name</th>
+            <th>Brief Description.</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>x</td>
+            <td>AUTH_TODO</td>
+            <td>xxx.</td>
+          </tr>
+          <tr>
+            <td>xxx</td>
+            <td>AUTH_xxx</td>
+            <td>xxx.</td>
+          </tr>
+          <tr>
+            <td>4294967296</td>
+            <td>Reserved for future expansion.</td>
+            <td>4294967296 has a hex value of: 0xffffffff </td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+    <section anchor="BINARYBINARYVALUES_APPENDIX">
+      <name>File and Folder Enumerated Binary Values</name>
+      <t>
+		Phoenix is a binary protocol.
+		Each value is sent as an unsigned 32-bit integer in xdr format.
+	</t>
+      <t>
+		The values for the commands are arbitrary and were assigned
+		as created. There is no plan or origination to the numbers.
+		There is no priority or superiority to any value.
+		The table is sorted by name, not value.
+	</t>
+      <t>
+		The values are not unique. They are only unique within the context
+		in which they are used.
+	</t>
+      <t>
+		Some of these values are reused for other commands.
+		For example USER_CREATE is both an (a) AUTH capability reply
+		informing the user that they have permission to create a
+		user with the (b) USER_CREATE command.
+	</t>
+      <t>
+		Some values may be reused if they are parameter arguments
+		to other commands.
+		For example xxxxxx.
+	</t>
+      <table>
+        <thead>
+          <tr>
+            <th>Decimal Value</th>
+            <th>Command / Capability Name</th>
+            <th>Brief Description.</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>x</td>
+            <td>FILE_TODO</td>
+            <td>xxx.</td>
+          </tr>
+          <tr>
+            <td>xxx</td>
+            <td>FILE_xxx</td>
+            <td>xxx.</td>
+          </tr>
+          <tr>
+            <td>4294967296</td>
+            <td>Reserved for future expansion.</td>
+            <td>4294967296 has a hex value of: 0xffffffff </td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+    <section anchor="PROTOCOLBINARYVALUES_APPENDIX">
+      <name>Protocol Enumerated Binary Values</name>
+      <t>
+		Phoenix is a binary protocol.
+		Each value is sent as an unsigned 32-bit integer in xdr format.
+	</t>
+      <t>
+		The values for the commands are arbitrary and were assigned
+		as created. There is no plan or origination to the numbers.
+		There is no priority or superiority to any value.
+		The table is sorted by name, not value.
+	</t>
+      <t>
+		The values are not unique. They are only unique within the context
+		in which they are used.
+	</t>
+      <t>
+		Some of these values are reused for other commands.
+		For example USER_CREATE is both an (a) AUTH capability reply
+		informing the user that they have permission to create a
+		user with the (b) USER_CREATE command.
+	</t>
+      <t>
+		Some values may be reused if they are parameter arguments
+		to other commands.
+		For example xxxxxx.
+	</t>
+      <table>
+        <thead>
+          <tr>
+            <th>Decimal Value</th>
+            <th>Command / Capability Name</th>
+            <th>Brief Description.</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>x</td>
+            <td>PROTO_TODO</td>
+            <td>xxx.</td>
+          </tr>
+          <tr>
+            <td>xxx</td>
+            <td>PROTO_xxx</td>
+            <td>xxx.</td>
+          </tr>
+          <tr>
+            <td>4294967296</td>
+            <td>Reserved for future expansion.</td>
+            <td>4294967296 has a hex value of: 0xffffffff </td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+    <section anchor="RPCGEN_SPEC_APPENDIX">
+      <name>RPCGEN protocol specification</name>
+      <t>
+		The following is the extendable RPCGEN specification for the Phoenix
+		protocol defined in this document.
+	</t>
+      <section anchor="CmdAcl_X">
+        <name>RPCGEN - Acl</name>
+        <sourcecode name="CmdAcl.x" src="CmdAcl.x" type="c++">
+		</sourcecode>
+      </section>
+      <section anchor="CmdAdministration_X">
+        <name>RPCGEN - Administration</name>
+        <sourcecode name="CmdAdministration.x" src="CmdAdministration.x" type="c++">
+		</sourcecode>
+      </section>
+      <section anchor="CmdAuthenticate_X">
+        <name>RPCGEN - Authenticate</name>
+        <sourcecode name="CmdAuthenticate.x" src="CmdAuthenticate.x" type="c++">
+		</sourcecode>
+      </section>
+      <section anchor="CmdCapability_X">
+        <name>RPCGEN - Capability</name>
+        <sourcecode name="CmdCapability.x" src="CmdCapability.x" type="c++">
+		</sourcecode>
+      </section>
+      <section anchor="CmdFolder_X">
+        <name>RPCGEN - Folder</name>
+        <sourcecode name="CmdFolder.x" src="CmdFolder.x" type="c++">
+		</sourcecode>
+      </section>
+      <section anchor="CmdKeeyAlive_X">
+        <name>RPCGEN - KeepAlive</name>
+        <sourcecode name="CmdKeepAlive.x" src="CmdKeepAlive.x" type="c++">
+		</sourcecode>
+      </section>
+      <section anchor="CmdNotSupported_X">
+        <name>RPCGEN - NotSupported</name>
+        <sourcecode name="CmdNotSupported.x" src="CmdNotSupported.x" type="c++">
+		</sourcecode>
+      </section>
+      <section anchor="CmdPing_X">
+        <name>RPCGEN - Ping</name>
+        <sourcecode name="CmdPing.x" src="CmdPing.x" type="c++">
+		</sourcecode>
+      </section>
+      <section anchor="Commands_X">
+        <name>RPCGEN - Commands</name>
+        <sourcecode name="Commands.x" src="Commands.x" type="c++">
+		</sourcecode>
+      </section>
+      <section anchor="Email_X">
+        <name>RPCGEN - EMail</name>
+        <sourcecode name="Email.x" src="Email.x" type="c++">
+		</sourcecode>
+      </section>
+      <section anchor="Mime_X">
+        <name>RPCGEN - MIME</name>
+        <sourcecode name="Mime.x" src="Mime.x" type="c++">
+		</sourcecode>
+      </section>
+      <section anchor="Phoenix_X">
+        <name>RPCGEN - Phoenix</name>
+        <sourcecode name="Phoenix.x" src="Phoenix.x" type="c++">
+		</sourcecode>
+      </section>
+      <section anchor="Types_X">
+        <name>RPCGEN - Types</name>
+        <sourcecode name="Types.x" src="Types.x" type="c++">
+		</sourcecode>
+      </section>
+    </section>
     <section anchor="Acknowledgements" numbered="false">
       <!-- [REPLACE/DELETE] an Acknowledgements section is optional -->
       <name>Acknowledgments</name>
-      <t></t>
+      <t/>
     </section>
-    
     <section anchor="Contributors" numbered="false">
       <!-- [REPLACE/DELETE] a Contributors section is optional -->
       <name>Contributors</name>
       <t>Thanks to all of the contributors. [REPLACE]</t>
       <!-- [CHECK] it is optional to add a <contact> record for some or all contributors -->
     </section>
-    
- </back>
+  </back>
 </rfc>

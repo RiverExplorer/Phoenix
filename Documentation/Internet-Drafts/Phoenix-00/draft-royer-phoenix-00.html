@@ -58,7 +58,7 @@
     ConfigArgParse 1.7
     google-i18n-address 3.1.1
     intervaltree 3.1.0
-    Jinja2 3.1.4
+    Jinja2 3.1.5
     lxml 5.1.0
     platformdirs 3.11.0
     pycountry 24.6.1
@@ -69,7 +69,7 @@
     wcwidth 0.2.13
     weasyprint 61.2
 -->
-<link href="tmp.xml" rel="alternate" type="application/rfc+xml">
+<link href="draft-royer-phoenix-00.xml" rel="alternate" type="application/rfc+xml">
 <link href="#copyright" rel="license">
 <style type="text/css">/*
 
@@ -1252,11 +1252,11 @@ li > p:last-of-type:only-child {
 <thead><tr>
 <td class="left">Internet-Draft</td>
 <td class="center">Phoenix: Lemonade Risen Again</td>
-<td class="right">January 2025</td>
+<td class="right">February 2025</td>
 </tr></thead>
 <tfoot><tr>
 <td class="left">Royer</td>
-<td class="center">Expires 25 July 2025</td>
+<td class="center">Expires 7 August 2025</td>
 <td class="right">[Page]</td>
 </tr></tfoot>
 </table>
@@ -1269,12 +1269,12 @@ li > p:last-of-type:only-child {
 <dd class="internet-draft">draft-royer-phoenix-00</dd>
 <dt class="label-published">Published:</dt>
 <dd class="published">
-<time datetime="2025-01-21" class="published">21 January 2025</time>
+<time datetime="2025-02-03" class="published">3 February 2025</time>
     </dd>
 <dt class="label-intended-status">Intended Status:</dt>
 <dd class="intended-status">Informational</dd>
 <dt class="label-expires">Expires:</dt>
-<dd class="expires"><time datetime="2025-07-25">25 July 2025</time></dd>
+<dd class="expires"><time datetime="2025-08-07">7 August 2025</time></dd>
 <dt class="label-authors">Author:</dt>
 <dd class="authors">
 <div class="author">
@@ -1337,7 +1337,7 @@ li > p:last-of-type:only-child {
         time. It is inappropriate to use Internet-Drafts as reference
         material or to cite them other than as "work in progress."<a href="#section-boilerplate.1-3" class="pilcrow">¶</a></p>
 <p id="section-boilerplate.1-4">
-        This Internet-Draft will expire on 25 July 2025.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
+        This Internet-Draft will expire on 7 August 2025.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="copyright">
@@ -1367,333 +1367,432 @@ li > p:last-of-type:only-child {
         </h2>
 <nav class="toc"><ul class="compact toc ulBare ulEmpty">
 <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.1">
-            <p id="section-toc.1-1.1.1" class="keepWithNext"><a href="#section-1" class="auto internal xref">1</a>.  <a href="#name-introduction" class="internal xref">Introduction</a></p>
-<ul class="compact toc ulBare ulEmpty">
-<li class="compact toc ulBare ulEmpty" id="section-toc.1-1.1.2.1">
-                <p id="section-toc.1-1.1.2.1.1" class="keepWithNext"><a href="#section-1.1" class="auto internal xref">1.1</a>.  <a href="#name-requirements-language" class="internal xref">Requirements Language</a></p>
-</li>
-            </ul>
+            <p id="section-toc.1-1.1.1" class="keepWithNext"><a href="#section-1" class="auto internal xref">1</a>.  <a href="#name-requirements-language" class="internal xref">Requirements Language</a></p>
 </li>
           <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.2">
-            <p id="section-toc.1-1.2.1" class="keepWithNext"><a href="#section-2" class="auto internal xref">2</a>.  <a href="#name-terms-and-definition-used-i" class="internal xref">Terms and Definition used in this proposal</a></p>
+            <p id="section-toc.1-1.2.1" class="keepWithNext"><a href="#section-2" class="auto internal xref">2</a>.  <a href="#name-introduction" class="internal xref">Introduction</a></p>
 </li>
           <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.3">
-            <p id="section-toc.1-1.3.1"><a href="#section-3" class="auto internal xref">3</a>.  <a href="#name-commands-summary" class="internal xref">Commands Summary</a></p>
-<ul class="compact toc ulBare ulEmpty">
-<li class="compact toc ulBare ulEmpty" id="section-toc.1-1.3.2.1">
-                <p id="section-toc.1-1.3.2.1.1"><a href="#section-3.1" class="auto internal xref">3.1</a>.  <a href="#name-protocol-commands-summary" class="internal xref">Protocol Commands Summary</a></p>
-<ul class="compact toc ulBare ulEmpty">
-<li class="compact toc ulBare ulEmpty" id="section-toc.1-1.3.2.1.2.1">
-                    <p id="section-toc.1-1.3.2.1.2.1.1"><a href="#section-3.1.1" class="auto internal xref">3.1.1</a>.  <a href="#name-packet-summary" class="internal xref">Packet Summary</a></p>
-</li>
-                  <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.3.2.1.2.2">
-                    <p id="section-toc.1-1.3.2.1.2.2.1"><a href="#section-3.1.2" class="auto internal xref">3.1.2</a>.  <a href="#name-packet-reply-summary" class="internal xref">Packet Reply Summary</a></p>
-</li>
-                </ul>
-</li>
-              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.3.2.2">
-                <p id="section-toc.1-1.3.2.2.1"><a href="#section-3.2" class="auto internal xref">3.2</a>.  <a href="#name-administration-commands-sum" class="internal xref">Administration Commands Summary</a></p>
-<ul class="compact toc ulBare ulEmpty">
-<li class="compact toc ulBare ulEmpty" id="section-toc.1-1.3.2.2.2.1">
-                    <p id="section-toc.1-1.3.2.2.2.1.1"><a href="#section-3.2.1" class="auto internal xref">3.2.1</a>.  <a href="#name-administration-capability-d" class="internal xref">Administration Capability Definitions</a></p>
-</li>
-                  <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.3.2.2.2.2">
-                    <p id="section-toc.1-1.3.2.2.2.2.1"><a href="#section-3.2.2" class="auto internal xref">3.2.2</a>.  <a href="#name-administration-of-users" class="internal xref">Administration of users.</a></p>
-</li>
-                </ul>
-</li>
-              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.3.2.3">
-                <p id="section-toc.1-1.3.2.3.1"><a href="#section-3.3" class="auto internal xref">3.3</a>.  <a href="#name-authentication-commands-sum" class="internal xref">Authentication Commands Summary</a></p>
-</li>
-              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.3.2.4">
-                <p id="section-toc.1-1.3.2.4.1"><a href="#section-3.4" class="auto internal xref">3.4</a>.  <a href="#name-calendar-commands-summary" class="internal xref">Calendar Commands Summary</a></p>
-</li>
-              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.3.2.5">
-                <p id="section-toc.1-1.3.2.5.1"><a href="#section-3.5" class="auto internal xref">3.5</a>.  <a href="#name-capability-commands-summary" class="internal xref">Capability Commands Summary</a></p>
-</li>
-              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.3.2.6">
-                <p id="section-toc.1-1.3.2.6.1"><a href="#section-3.6" class="auto internal xref">3.6</a>.  <a href="#name-email-commands-summary" class="internal xref">EMail Commands Summary</a></p>
-</li>
-              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.3.2.7">
-                <p id="section-toc.1-1.3.2.7.1"><a href="#section-3.7" class="auto internal xref">3.7</a>.  <a href="#name-file-and-folder-commands-su" class="internal xref">File and Folder Commands Summary</a></p>
-</li>
-              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.3.2.8">
-                <p id="section-toc.1-1.3.2.8.1"><a href="#section-3.8" class="auto internal xref">3.8</a>.  <a href="#name-keepalive-command-summary" class="internal xref">KeepAlive Command Summary</a></p>
-</li>
-              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.3.2.9">
-                <p id="section-toc.1-1.3.2.9.1"><a href="#section-3.9" class="auto internal xref">3.9</a>.  <a href="#name-ping-command-summary" class="internal xref">Ping Command Summary</a></p>
-</li>
-              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.3.2.10">
-                <p id="section-toc.1-1.3.2.10.1"><a href="#section-3.10" class="auto internal xref">3.10</a>. <a href="#name-s-mime-commands-summary" class="internal xref">S/MIME Commands Summary</a></p>
-</li>
-            </ul>
+            <p id="section-toc.1-1.3.1" class="keepWithNext"><a href="#section-3" class="auto internal xref">3</a>.  <a href="#name-terms-and-definition-used-i" class="internal xref">Terms and Definition used in this proposal</a></p>
 </li>
           <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.4">
-            <p id="section-toc.1-1.4.1"><a href="#section-4" class="auto internal xref">4</a>.  <a href="#name-over-the-wire-protocol-deta" class="internal xref">Over the Wire Protocol Detail</a></p>
+            <p id="section-toc.1-1.4.1"><a href="#section-4" class="auto internal xref">4</a>.  <a href="#name-commands-summary" class="internal xref">Commands Summary</a></p>
+<ul class="compact toc ulBare ulEmpty">
+<li class="compact toc ulBare ulEmpty" id="section-toc.1-1.4.2.1">
+                <p id="section-toc.1-1.4.2.1.1"><a href="#section-4.1" class="auto internal xref">4.1</a>.  <a href="#name-protocol-commands-summary" class="internal xref">Protocol Commands Summary</a></p>
+<ul class="compact toc ulBare ulEmpty">
+<li class="compact toc ulBare ulEmpty" id="section-toc.1-1.4.2.1.2.1">
+                    <p id="section-toc.1-1.4.2.1.2.1.1"><a href="#section-4.1.1" class="auto internal xref">4.1.1</a>.  <a href="#name-packet-summary" class="internal xref">Packet Summary</a></p>
+</li>
+                  <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.4.2.1.2.2">
+                    <p id="section-toc.1-1.4.2.1.2.2.1"><a href="#section-4.1.2" class="auto internal xref">4.1.2</a>.  <a href="#name-packet-reply-summary" class="internal xref">Packet Reply Summary</a></p>
+</li>
+                </ul>
+</li>
+              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.4.2.2">
+                <p id="section-toc.1-1.4.2.2.1"><a href="#section-4.2" class="auto internal xref">4.2</a>.  <a href="#name-administration-commands-sum" class="internal xref">Administration Commands Summary</a></p>
+<ul class="compact toc ulBare ulEmpty">
+<li class="compact toc ulBare ulEmpty" id="section-toc.1-1.4.2.2.2.1">
+                    <p id="section-toc.1-1.4.2.2.2.1.1"><a href="#section-4.2.1" class="auto internal xref">4.2.1</a>.  <a href="#name-administration-capability-d" class="internal xref">Administration Capability Definitions</a></p>
+</li>
+                  <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.4.2.2.2.2">
+                    <p id="section-toc.1-1.4.2.2.2.2.1"><a href="#section-4.2.2" class="auto internal xref">4.2.2</a>.  <a href="#name-administration-of-users" class="internal xref">Administration of users.</a></p>
+</li>
+                </ul>
+</li>
+              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.4.2.3">
+                <p id="section-toc.1-1.4.2.3.1"><a href="#section-4.3" class="auto internal xref">4.3</a>.  <a href="#name-authentication-commands-sum" class="internal xref">Authentication Commands Summary</a></p>
+</li>
+              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.4.2.4">
+                <p id="section-toc.1-1.4.2.4.1"><a href="#section-4.4" class="auto internal xref">4.4</a>.  <a href="#name-calendar-commands-summary" class="internal xref">Calendar Commands Summary</a></p>
+</li>
+              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.4.2.5">
+                <p id="section-toc.1-1.4.2.5.1"><a href="#section-4.5" class="auto internal xref">4.5</a>.  <a href="#name-capability-commands-summary" class="internal xref">Capability Commands Summary</a></p>
+</li>
+              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.4.2.6">
+                <p id="section-toc.1-1.4.2.6.1"><a href="#section-4.6" class="auto internal xref">4.6</a>.  <a href="#name-email-commands-summary" class="internal xref">EMail Commands Summary</a></p>
+</li>
+              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.4.2.7">
+                <p id="section-toc.1-1.4.2.7.1"><a href="#section-4.7" class="auto internal xref">4.7</a>.  <a href="#name-file-and-folder-commands-su" class="internal xref">File and Folder Commands Summary</a></p>
+</li>
+              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.4.2.8">
+                <p id="section-toc.1-1.4.2.8.1"><a href="#section-4.8" class="auto internal xref">4.8</a>.  <a href="#name-keepalive-command-summary" class="internal xref">KeepAlive Command Summary</a></p>
+</li>
+              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.4.2.9">
+                <p id="section-toc.1-1.4.2.9.1"><a href="#section-4.9" class="auto internal xref">4.9</a>.  <a href="#name-ping-command-summary" class="internal xref">Ping Command Summary</a></p>
+</li>
+              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.4.2.10">
+                <p id="section-toc.1-1.4.2.10.1"><a href="#section-4.10" class="auto internal xref">4.10</a>. <a href="#name-s-mime-commands-summary" class="internal xref">S/MIME Commands Summary</a></p>
+</li>
+            </ul>
 </li>
           <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.5">
-            <p id="section-toc.1-1.5.1"><a href="#section-5" class="auto internal xref">5</a>.  <a href="#name-iana-considerations" class="internal xref">IANA Considerations</a></p>
+            <p id="section-toc.1-1.5.1"><a href="#section-5" class="auto internal xref">5</a>.  <a href="#name-over-the-wire-protocol-deta" class="internal xref">Over the Wire Protocol Detail</a></p>
 </li>
           <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.6">
-            <p id="section-toc.1-1.6.1"><a href="#section-6" class="auto internal xref">6</a>.  <a href="#name-security-considerations" class="internal xref">Security Considerations</a></p>
+            <p id="section-toc.1-1.6.1"><a href="#section-6" class="auto internal xref">6</a>.  <a href="#name-index" class="internal xref">Index</a></p>
+<ul class="compact toc ulBare ulEmpty">
+<li class="compact toc ulBare ulEmpty" id="section-toc.1-1.6.2.1">
+                <p id="section-toc.1-1.6.2.1.1"><a href="#section-6.1" class="auto internal xref">6.1</a>.  <a href="#name-interested-headers" class="internal xref">Interested Headers</a></p>
+<ul class="compact toc ulBare ulEmpty">
+<li class="compact toc ulBare ulEmpty" id="section-toc.1-1.6.2.1.2.1">
+                    <p id="section-toc.1-1.6.2.1.2.1.1"><a href="#section-6.1.1" class="auto internal xref">6.1.1</a>.  <a href="#name-client-interested-headers-e" class="internal xref">Client Interested Headers Examples</a></p>
+</li>
+                </ul>
+</li>
+              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.6.2.2">
+                <p id="section-toc.1-1.6.2.2.1"><a href="#section-6.2" class="auto internal xref">6.2</a>.  <a href="#name-mime-folder-index" class="internal xref">MIME Folder Index</a></p>
+</li>
+            </ul>
 </li>
           <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.7">
-            <p id="section-toc.1-1.7.1"><a href="#section-7" class="auto internal xref">7</a>.  <a href="#name-references" class="internal xref">References</a></p>
-<ul class="compact toc ulBare ulEmpty">
-<li class="compact toc ulBare ulEmpty" id="section-toc.1-1.7.2.1">
-                <p id="section-toc.1-1.7.2.1.1"><a href="#section-7.1" class="auto internal xref">7.1</a>.  <a href="#name-normative-references" class="internal xref">Normative References</a></p>
-</li>
-              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.7.2.2">
-                <p id="section-toc.1-1.7.2.2.1"><a href="#section-7.2" class="auto internal xref">7.2</a>.  <a href="#name-informative-references" class="internal xref">Informative References</a></p>
-</li>
-            </ul>
+            <p id="section-toc.1-1.7.1"><a href="#section-7" class="auto internal xref">7</a>.  <a href="#name-iana-considerations" class="internal xref">IANA Considerations</a></p>
 </li>
           <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.8">
-            <p id="section-toc.1-1.8.1"><a href="#appendix-A" class="auto internal xref">Appendix A</a>.  <a href="#name-administrative-enumerated-b" class="internal xref">Administrative Enumerated Binary Values</a></p>
+            <p id="section-toc.1-1.8.1"><a href="#section-8" class="auto internal xref">8</a>.  <a href="#name-security-considerations" class="internal xref">Security Considerations</a></p>
 </li>
           <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.9">
-            <p id="section-toc.1-1.9.1"><a href="#appendix-B" class="auto internal xref">Appendix B</a>.  <a href="#name-authentication-enumerated-b" class="internal xref">Authentication Enumerated Binary Values</a></p>
-</li>
-          <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.10">
-            <p id="section-toc.1-1.10.1"><a href="#appendix-C" class="auto internal xref">Appendix C</a>.  <a href="#name-file-and-folder-enumerated-" class="internal xref">File and Folder Enumerated Binary Values</a></p>
-</li>
-          <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.11">
-            <p id="section-toc.1-1.11.1"><a href="#appendix-D" class="auto internal xref">Appendix D</a>.  <a href="#name-protocol-enumerated-binary-" class="internal xref">Protocol Enumerated Binary Values</a></p>
-</li>
-          <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.12">
-            <p id="section-toc.1-1.12.1"><a href="#appendix-E" class="auto internal xref">Appendix E</a>.  <a href="#name-rpcgen-protocol-specificati" class="internal xref">RPCGEN protocol specification</a></p>
+            <p id="section-toc.1-1.9.1"><a href="#section-9" class="auto internal xref">9</a>.  <a href="#name-references" class="internal xref">References</a></p>
 <ul class="compact toc ulBare ulEmpty">
-<li class="compact toc ulBare ulEmpty" id="section-toc.1-1.12.2.1">
-                <p id="section-toc.1-1.12.2.1.1"><a href="#appendix-E.1" class="auto internal xref">E.1</a>.  <a href="#name-rpcgen-acl" class="internal xref">RPCGEN - Acl</a></p>
+<li class="compact toc ulBare ulEmpty" id="section-toc.1-1.9.2.1">
+                <p id="section-toc.1-1.9.2.1.1"><a href="#section-9.1" class="auto internal xref">9.1</a>.  <a href="#name-normative-references" class="internal xref">Normative References</a></p>
 </li>
-              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.12.2.2">
-                <p id="section-toc.1-1.12.2.2.1"><a href="#appendix-E.2" class="auto internal xref">E.2</a>.  <a href="#name-rpcgen-administration" class="internal xref">RPCGEN - Administration</a></p>
-</li>
-              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.12.2.3">
-                <p id="section-toc.1-1.12.2.3.1"><a href="#appendix-E.3" class="auto internal xref">E.3</a>.  <a href="#name-rpcgen-authenticate" class="internal xref">RPCGEN - Authenticate</a></p>
-</li>
-              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.12.2.4">
-                <p id="section-toc.1-1.12.2.4.1"><a href="#appendix-E.4" class="auto internal xref">E.4</a>.  <a href="#name-rpcgen-capability" class="internal xref">RPCGEN - Capability</a></p>
-</li>
-              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.12.2.5">
-                <p id="section-toc.1-1.12.2.5.1"><a href="#appendix-E.5" class="auto internal xref">E.5</a>.  <a href="#name-rpcgen-folder" class="internal xref">RPCGEN - Folder</a></p>
-</li>
-              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.12.2.6">
-                <p id="section-toc.1-1.12.2.6.1"><a href="#appendix-E.6" class="auto internal xref">E.6</a>.  <a href="#name-rpcgen-keepalive" class="internal xref">RPCGEN - KeepAlive</a></p>
-</li>
-              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.12.2.7">
-                <p id="section-toc.1-1.12.2.7.1"><a href="#appendix-E.7" class="auto internal xref">E.7</a>.  <a href="#name-rpcgen-notsupported" class="internal xref">RPCGEN - NotSupported</a></p>
-</li>
-              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.12.2.8">
-                <p id="section-toc.1-1.12.2.8.1"><a href="#appendix-E.8" class="auto internal xref">E.8</a>.  <a href="#name-rpcgen-ping" class="internal xref">RPCGEN - Ping</a></p>
-</li>
-              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.12.2.9">
-                <p id="section-toc.1-1.12.2.9.1"><a href="#appendix-E.9" class="auto internal xref">E.9</a>.  <a href="#name-rpcgen-commands" class="internal xref">RPCGEN - Commands</a></p>
-</li>
-              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.12.2.10">
-                <p id="section-toc.1-1.12.2.10.1"><a href="#appendix-E.10" class="auto internal xref">E.10</a>. <a href="#name-rpcgen-email" class="internal xref">RPCGEN - EMail</a></p>
-</li>
-              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.12.2.11">
-                <p id="section-toc.1-1.12.2.11.1"><a href="#appendix-E.11" class="auto internal xref">E.11</a>. <a href="#name-rpcgen-mime" class="internal xref">RPCGEN - MIME</a></p>
-</li>
-              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.12.2.12">
-                <p id="section-toc.1-1.12.2.12.1"><a href="#appendix-E.12" class="auto internal xref">E.12</a>. <a href="#name-rpcgen-phoenix" class="internal xref">RPCGEN - Phoenix</a></p>
-</li>
-              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.12.2.13">
-                <p id="section-toc.1-1.12.2.13.1"><a href="#appendix-E.13" class="auto internal xref">E.13</a>. <a href="#name-rpcgen-types" class="internal xref">RPCGEN - Types</a></p>
+              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.9.2.2">
+                <p id="section-toc.1-1.9.2.2.1"><a href="#section-9.2" class="auto internal xref">9.2</a>.  <a href="#name-informative-references" class="internal xref">Informative References</a></p>
 </li>
             </ul>
 </li>
+          <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.10">
+            <p id="section-toc.1-1.10.1"><a href="#appendix-A" class="auto internal xref">Appendix A</a>.  <a href="#name-administrative-enumerated-b" class="internal xref">Administrative Enumerated Binary Values</a></p>
+</li>
+          <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.11">
+            <p id="section-toc.1-1.11.1"><a href="#appendix-B" class="auto internal xref">Appendix B</a>.  <a href="#name-authentication-enumerated-b" class="internal xref">Authentication Enumerated Binary Values</a></p>
+</li>
+          <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.12">
+            <p id="section-toc.1-1.12.1"><a href="#appendix-C" class="auto internal xref">Appendix C</a>.  <a href="#name-file-and-folder-enumerated-" class="internal xref">File and Folder Enumerated Binary Values</a></p>
+</li>
           <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.13">
-            <p id="section-toc.1-1.13.1"><a href="#appendix-F" class="auto internal xref"></a><a href="#name-acknowledgments" class="internal xref">Acknowledgments</a></p>
+            <p id="section-toc.1-1.13.1"><a href="#appendix-D" class="auto internal xref">Appendix D</a>.  <a href="#name-protocol-enumerated-binary-" class="internal xref">Protocol Enumerated Binary Values</a></p>
 </li>
           <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.14">
-            <p id="section-toc.1-1.14.1"><a href="#appendix-G" class="auto internal xref"></a><a href="#name-contributors" class="internal xref">Contributors</a></p>
+            <p id="section-toc.1-1.14.1"><a href="#appendix-E" class="auto internal xref">Appendix E</a>.  <a href="#name-rpcgen-protocol-specificati" class="internal xref">RPCGEN protocol specification</a></p>
+<ul class="compact toc ulBare ulEmpty">
+<li class="compact toc ulBare ulEmpty" id="section-toc.1-1.14.2.1">
+                <p id="section-toc.1-1.14.2.1.1"><a href="#appendix-E.1" class="auto internal xref">E.1</a>.  <a href="#name-rpcgen-acl" class="internal xref">RPCGEN - Acl</a></p>
+</li>
+              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.14.2.2">
+                <p id="section-toc.1-1.14.2.2.1"><a href="#appendix-E.2" class="auto internal xref">E.2</a>.  <a href="#name-rpcgen-administration" class="internal xref">RPCGEN - Administration</a></p>
+</li>
+              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.14.2.3">
+                <p id="section-toc.1-1.14.2.3.1"><a href="#appendix-E.3" class="auto internal xref">E.3</a>.  <a href="#name-rpcgen-authenticate" class="internal xref">RPCGEN - Authenticate</a></p>
+</li>
+              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.14.2.4">
+                <p id="section-toc.1-1.14.2.4.1"><a href="#appendix-E.4" class="auto internal xref">E.4</a>.  <a href="#name-rpcgen-capability" class="internal xref">RPCGEN - Capability</a></p>
+</li>
+              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.14.2.5">
+                <p id="section-toc.1-1.14.2.5.1"><a href="#appendix-E.5" class="auto internal xref">E.5</a>.  <a href="#name-rpcgen-folder" class="internal xref">RPCGEN - Folder</a></p>
+</li>
+              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.14.2.6">
+                <p id="section-toc.1-1.14.2.6.1"><a href="#appendix-E.6" class="auto internal xref">E.6</a>.  <a href="#name-rpcgen-keepalive" class="internal xref">RPCGEN - KeepAlive</a></p>
+</li>
+              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.14.2.7">
+                <p id="section-toc.1-1.14.2.7.1"><a href="#appendix-E.7" class="auto internal xref">E.7</a>.  <a href="#name-rpcgen-notsupported" class="internal xref">RPCGEN - NotSupported</a></p>
+</li>
+              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.14.2.8">
+                <p id="section-toc.1-1.14.2.8.1"><a href="#appendix-E.8" class="auto internal xref">E.8</a>.  <a href="#name-rpcgen-ping" class="internal xref">RPCGEN - Ping</a></p>
+</li>
+              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.14.2.9">
+                <p id="section-toc.1-1.14.2.9.1"><a href="#appendix-E.9" class="auto internal xref">E.9</a>.  <a href="#name-rpcgen-commands" class="internal xref">RPCGEN - Commands</a></p>
+</li>
+              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.14.2.10">
+                <p id="section-toc.1-1.14.2.10.1"><a href="#appendix-E.10" class="auto internal xref">E.10</a>. <a href="#name-rpcgen-email" class="internal xref">RPCGEN - EMail</a></p>
+</li>
+              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.14.2.11">
+                <p id="section-toc.1-1.14.2.11.1"><a href="#appendix-E.11" class="auto internal xref">E.11</a>. <a href="#name-rpcgen-mime" class="internal xref">RPCGEN - MIME</a></p>
+</li>
+              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.14.2.12">
+                <p id="section-toc.1-1.14.2.12.1"><a href="#appendix-E.12" class="auto internal xref">E.12</a>. <a href="#name-rpcgen-phoenix" class="internal xref">RPCGEN - Phoenix</a></p>
+</li>
+              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.14.2.13">
+                <p id="section-toc.1-1.14.2.13.1"><a href="#appendix-E.13" class="auto internal xref">E.13</a>. <a href="#name-rpcgen-types" class="internal xref">RPCGEN - Types</a></p>
+</li>
+            </ul>
 </li>
           <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.15">
-            <p id="section-toc.1-1.15.1"><a href="#appendix-H" class="auto internal xref"></a><a href="#name-authors-address" class="internal xref">Author's Address</a></p>
+            <p id="section-toc.1-1.15.1"><a href="#appendix-F" class="auto internal xref"></a><a href="#name-acknowledgments" class="internal xref">Acknowledgments</a></p>
+</li>
+          <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.16">
+            <p id="section-toc.1-1.16.1"><a href="#appendix-G" class="auto internal xref"></a><a href="#name-contributors" class="internal xref">Contributors</a></p>
+</li>
+          <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.17">
+            <p id="section-toc.1-1.17.1"><a href="#appendix-H" class="auto internal xref"></a><a href="#name-authors-address" class="internal xref">Author's Address</a></p>
 </li>
         </ul>
 </nav>
 </section>
 </div>
 <section id="section-1">
-      <h2 id="name-introduction">
-<a href="#section-1" class="section-number selfRef">1. </a><a href="#name-introduction" class="section-name selfRef">Introduction</a>
+      <h2 id="name-requirements-language">
+<a href="#section-1" class="section-number selfRef">1. </a><a href="#name-requirements-language" class="section-name selfRef">Requirements Language</a>
       </h2>
 <p id="section-1-1">
+ The key words "MUST", "MUST NOT", "REQUIRED", "SHALL",
+ "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT
+ RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be
+ interpreted as described in BCP 14 <span>[<a href="#RFC2119" class="cite xref">RFC2119</a>]</span>
+        <span>[<a href="#RFC8174" class="cite xref">RFC8174</a>]</span> when, and only when, they appear in
+ all capitals, as shown here.<a href="#section-1-1" class="pilcrow">¶</a></p>
+</section>
+<section id="section-2">
+      <h2 id="name-introduction">
+<a href="#section-2" class="section-number selfRef">2. </a><a href="#name-introduction" class="section-name selfRef">Introduction</a>
+      </h2>
+<p id="section-2-1">
  On the Internet, just about everything is a MIME object and there are
  many ways to transport MIME.
  This document specifies a new application level MIME transport mechanism
  and protocol.
- This document does not specify any new or changed MIME types.<a href="#section-1-1" class="pilcrow">¶</a></p>
-<p id="section-1-2">
+ This document does not specify any new or changed MIME types.<a href="#section-2-1" class="pilcrow">¶</a></p>
+<p id="section-2-2">
  Transporting MIME objects is generally done in one of two ways:
  (1) Broadcasting, (2) Polling.
  Both methods often require some form of authentication, registration,
  and selecting of the desired material.
  These selection processes are essentially a form of remote folder management.
  In some cases you can only select what is provided, and in others
- you have some or a lot of control over the remote folders.<a href="#section-1-2" class="pilcrow">¶</a></p>
-<p id="section-1-3">
+ you have some or a lot of control over the remote folders.<a href="#section-2-2" class="pilcrow">¶</a></p>
+<p id="section-2-3">
  In addition to other functions, this specification defines a remote
  and local folder management.
  This remote folder management is common with many type of very popular
  protocols.
- This design started by looking at the very popular IMAP and POP protocols.<a href="#section-1-3" class="pilcrow">¶</a></p>
-<p id="section-1-4">
+ This design started by looking at the very popular IMAP and POP protocols.<a href="#section-2-3" class="pilcrow">¶</a></p>
+<p id="section-2-4">
  An additional task is transporting the perhaps very large MIME objects.
  Some MIME objects are so large that some devices may 
  default to looking at only at parts of the MIME object.
  An example is an email message with one or more very large attachments, where
  the device may default to not download the large attachment without a
- specific request from the user.<a href="#section-1-4" class="pilcrow">¶</a></p>
-<p id="section-1-5">
+ specific request from the user.<a href="#section-2-4" class="pilcrow">¶</a></p>
+<p id="section-2-5">
  Some objects are transported as blocks of data with a known and fixed size.
  These are often transported with some kind of search, get, and put commands.
- In effect these are folder and file commands<a href="#section-1-5" class="pilcrow">¶</a></p>
-<p id="section-1-6"> 
+ In effect these are folder and file commands<a href="#section-2-5" class="pilcrow">¶</a></p>
+<p id="section-2-6"> 
  Other MIME objects are transported in streams of data with an unspecified
  size, such as streaming music, audio, or video.
  This specification describes how to use existing protocols to 
  facilitate the data streaming.
- And again, these are folder and file commands.<a href="#section-1-6" class="pilcrow">¶</a></p>
-<p id="section-1-7">
+ And again, these are folder and file commands.<a href="#section-2-6" class="pilcrow">¶</a></p>
+<p id="section-2-7">
  A MIME object can be a simple object, or it may contain many multipart
  sections of small to huge size.
- These sections can be viewed as files in the containing MIME object.<a href="#section-1-7" class="pilcrow">¶</a></p>
-<p id="section-1-8">
+ These sections can be viewed as files in the containing MIME object.<a href="#section-2-7" class="pilcrow">¶</a></p>
+<p id="section-2-8">
  By implementing this specification application developers can
  use the techniques to manage local and remote files and folders.
  Remote email or files are the same thing in this specification.
  The sections of MIME object with multipart sections are viewed as files
  in the MIME object.
- You can interact with the entire folder, or just the files within it.<a href="#section-1-8" class="pilcrow">¶</a></p>
-<p id="section-1-9">
+ You can interact with the entire folder, or just the files within it.<a href="#section-2-8" class="pilcrow">¶</a></p>
+<p id="section-2-9">
  MIME objects have meta data, and they are called headers.
  Files and folders have meta data, and they are called file attributes.
  This specification does not mandate any meta data, it allows for
- a consistent transport of existing meta data.<a href="#section-1-9" class="pilcrow">¶</a></p>
-<p id="section-1-10">
+ a consistent transport of existing meta data.<a href="#section-2-9" class="pilcrow">¶</a></p>
+<p id="section-2-10">
  File and folder meta data is a complex task that can involve
  access control lists and permissions.
  This specification defines a mechanism to transport this meta data,
- it does not define the meta data.<a href="#section-1-10" class="pilcrow">¶</a></p>
-<p id="section-1-11">
+ it does not define the meta data.<a href="#section-2-10" class="pilcrow">¶</a></p>
+<p id="section-2-11">
  And this specification provides for the ability to define both
  protocol extensions and the creating of finer control for specific
- commands that may evolve over time.<a href="#section-1-11" class="pilcrow">¶</a></p>
-<p id="section-1-12">
+ commands that may evolve over time.<a href="#section-2-11" class="pilcrow">¶</a></p>
+<p id="section-2-12">
  This examples compares current folder and file manipulations
- to how it can be used in this protocol with email.<a href="#section-1-12" class="pilcrow">¶</a></p>
+ to how it can be used in this protocol with email.<a href="#section-2-12" class="pilcrow">¶</a></p>
 <ul class="normal">
-<li class="normal" id="section-1-13.1">
+<li class="normal" id="section-2-13.1">
  You can search for file names.
- You can search email for: sender, subject, and more.<a href="#section-1-13.1" class="pilcrow">¶</a>
+ You can search email for: sender, subject, and more.<a href="#section-2-13.1" class="pilcrow">¶</a>
 </li>
-        <li class="normal" id="section-1-13.2">
+        <li class="normal" id="section-2-13.2">
  You can search for file contents.
- You can search for email message contents.<a href="#section-1-13.2" class="pilcrow">¶</a>
+ You can search for email message contents.<a href="#section-2-13.2" class="pilcrow">¶</a>
 </li>
-        <li class="normal" id="section-1-13.3">
+        <li class="normal" id="section-2-13.3">
  You can create, delete, and modify files.
- You can create, delete, and modify email messages.<a href="#section-1-13.3" class="pilcrow">¶</a>
+ You can create, delete, and modify email messages.<a href="#section-2-13.3" class="pilcrow">¶</a>
 </li>
-        <li class="normal" id="section-1-13.4">
+        <li class="normal" id="section-2-13.4">
  You can create, delete, and modify folders.
- You can create, delete, and modify email folders.<a href="#section-1-13.4" class="pilcrow">¶</a>
+ You can create, delete, and modify email folders.<a href="#section-2-13.4" class="pilcrow">¶</a>
 </li>
       </ul>
-<p id="section-1-14">
- What this specification defines:<a href="#section-1-14" class="pilcrow">¶</a></p>
+<p id="section-2-14">
+ What this specification defines:<a href="#section-2-14" class="pilcrow">¶</a></p>
 <ul class="normal">
-<li class="normal" id="section-1-15.1">
- How to use existing authentication implementations or use new ones.<a href="#section-1-15.1" class="pilcrow">¶</a>
+<li class="normal" id="section-2-15.1">
+ How to use existing authentication implementations or use new ones.<a href="#section-2-15.1" class="pilcrow">¶</a>
 </li>
-        <li class="normal" id="section-1-15.2">
+        <li class="normal" id="section-2-15.2">
  This specification describes a standard way to perform file operations
  that are remote to the application and agnostic to
- purpose of data being transported.<a href="#section-1-15.2" class="pilcrow">¶</a>
+ purpose of data being transported.<a href="#section-2-15.2" class="pilcrow">¶</a>
 </li>
-        <li class="normal" id="section-1-15.3">
+        <li class="normal" id="section-2-15.3">
  Specifies a way to migrate from some existing protocols to Phoenix.
- Provides links to sample implementations.<a href="#section-1-15.3" class="pilcrow">¶</a>
+ Provides links to sample implementations.<a href="#section-2-15.3" class="pilcrow">¶</a>
 </li>
       </ul>
-<section id="section-1.1">
-        <h3 id="name-requirements-language">
-<a href="#section-1.1" class="section-number selfRef">1.1. </a><a href="#name-requirements-language" class="section-name selfRef">Requirements Language</a>
-        </h3>
-<p id="section-1.1-1">The key words "MUST", "MUST NOT", "REQUIRED", "SHALL",
-          "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT
-          RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be
-          interpreted as described in BCP 14 <span>[<a href="#RFC2119" class="cite xref">RFC2119</a>]</span>
-          <span>[<a href="#RFC8174" class="cite xref">RFC8174</a>]</span> when, and only when, they appear in
-          all capitals, as shown here.<a href="#section-1.1-1" class="pilcrow">¶</a></p>
 </section>
-</section>
-<section id="section-2">
+<section id="section-3">
       <h2 id="name-terms-and-definition-used-i">
-<a href="#section-2" class="section-number selfRef">2. </a><a href="#name-terms-and-definition-used-i" class="section-name selfRef">Terms and Definition used in this proposal</a>
+<a href="#section-3" class="section-number selfRef">3. </a><a href="#name-terms-and-definition-used-i" class="section-name selfRef">Terms and Definition used in this proposal</a>
       </h2>
-<p id="section-2-1">
+<p id="section-3-1">
  The following is a list of terms with their definitions as
- used in this specification.<a href="#section-2-1" class="pilcrow">¶</a></p>
-<span class="break"></span><dl class="dlNewline" id="section-2-2">
-        <dt id="section-2-2.1">AdminCmd</dt>
-        <dd style="margin-left: 1.5em" id="section-2-2.2">
+ used in this specification.<a href="#section-3-1" class="pilcrow">¶</a></p>
+<span class="break"></span><dl class="dlNewline" id="section-3-2">
+        <dt id="section-3-2.1">AdminCmd</dt>
+        <dd style="margin-left: 1.5em" id="section-3-2.2">
  A general term for any administrative command.
  Administrative and auditing operations.
  This list includes commands for authorized users to configure,
- query logs, errors, possibly user activity.<a href="#section-2-2.2" class="pilcrow">¶</a>
+ query logs, errors, possibly user activity.<a href="#section-3-2.2" class="pilcrow">¶</a>
 </dd>
         <dd class="break"></dd>
-<dt id="section-2-2.3">AuthCmd</dt>
-        <dd style="margin-left: 1.5em" id="section-2-2.4">
+<dt id="section-3-2.3">AuthCmd</dt>
+        <dd style="margin-left: 1.5em" id="section-3-2.4">
  A general term for any authentication command.
  Authentication and authorization operations.
  These operations authenticate users and verity their authorization
- access.<a href="#section-2-2.4" class="pilcrow">¶</a>
+ access.<a href="#section-3-2.4" class="pilcrow">¶</a>
 </dd>
         <dd class="break"></dd>
-<dt id="section-2-2.5">CMD</dt>
-        <dd style="margin-left: 1.5em" id="section-2-2.6">
+<dt id="section-3-2.5">Body Part ID</dt>
+        <dd style="margin-left: 1.5em" id="section-3-2.6"> 
+ A unique ID for a MIME Object.
+ This is an unsigned 32-bit integer in network byte order
+ that is assigned by the server and sent to the client
+ on a successful folder open.
+ This ID persists across connections.
+ And as long as the MIME object does not get altered in any way,
+ this ID is valid and persists across servers.
+ It is the offset in octets from the beginning of the
+ message to the start of the body part.
+ <br>
+          <span><a href="#Index-Ref" class="internal xref">See Index.</a> (<a href="#Index-Ref" class="auto internal xref">Section 3</a>)</span><a href="#section-3-2.6" class="pilcrow">¶</a>
+</dd>
+        <dd class="break"></dd>
+<dt id="section-3-2.7">Command, CMD</dt>
+        <dd style="margin-left: 1.5em" id="section-3-2.8">
  A specific protocol operation, or command.
  They are broken down into, AdminCmd, AuthCmd, FileCmd,
- and ProtoCmd.<a href="#section-2-2.6" class="pilcrow">¶</a>
+ and ProtoCmd.
+ These are called a CMD or command.<a href="#section-3-2.8" class="pilcrow">¶</a>
 </dd>
         <dd class="break"></dd>
-<dt id="section-2-2.7">Command, CMD</dt>
-        <dd style="margin-left: 1.5em" id="section-2-2.8">
- Each packet contains a command.
- This command is also in the reply to the command.
- Not all commands have a reply.
- These are called a CMD or command.<a href="#section-2-2.8" class="pilcrow">¶</a>
-</dd>
-        <dd class="break"></dd>
-<dt id="section-2-2.9">FileCmd</dt>
-        <dd style="margin-left: 1.5em" id="section-2-2.10">
- A general term for any file command.
- File and folder operations.
+<dt id="section-3-2.9">FileCmd</dt>
+        <dd style="margin-left: 1.5em" id="section-3-2.10">
+ A general term for any file or folder command.
  This include creating, getting, modifying, deleting, moving,
- and renaming files.<a href="#section-2-2.10" class="pilcrow">¶</a>
+ and renaming files.<a href="#section-3-2.10" class="pilcrow">¶</a>
 </dd>
         <dd class="break"></dd>
-<dt id="section-2-2.11">Media Type</dt>
-        <dd style="margin-left: 1.5em" id="section-2-2.12">
+<dt id="section-3-2.11">Folder ID</dt>
+        <dd style="margin-left: 1.5em" id="section-3-2.12">
+ A unique ID for a MIME folder.
+ This is an unsigned 32-bit integer in network byte order
+ that is assigned by the server and sent to the client
+ on a successful folder open.
+ This ID persists across connections to the same server.
+ Once a folder has an ID, it never changes on a server
+ as described in <span><a href="#FOLDERS" class="internal xref">Folders</a> (<a href="#FOLDERS" class="auto internal xref">Section 4.7</a>)</span>.
+ <br>
+          <span><a href="#Index-Ref" class="internal xref">See Index.</a> (<a href="#Index-Ref" class="auto internal xref">Section 3</a>)</span><a href="#section-3-2.12" class="pilcrow">¶</a>
+</dd>
+        <dd class="break"></dd>
+<dt id="section-3-2.13">
+<div id="Index-HH">Header ID</div>
+        </dt>
+<dd style="margin-left: 1.5em" id="section-3-2.14">
+ An offset into a MIME object where a specific header starts.
+ As the position in a MIME object is unique, this value
+ is also used as the ID to a specific header.
+ As long as the MIME object does not change in any way
+ this ID persisists across connections and servers.
+ <br>
+          <span><a href="#Index-Ref" class="internal xref">See Index.</a> (<a href="#Index-Ref" class="auto internal xref">Section 3</a>)</span><a href="#section-3-2.14" class="pilcrow">¶</a>
+</dd>
+        <dd class="break"></dd>
+<dt id="section-3-2.15">
+<div id="Index-HVH">Header Value ID</div>
+        </dt>
+<dd style="margin-left: 1.5em" id="section-3-2.16">
+ Related to Header ID.
+ An offset into a MIME object where a specific header value starts.
+ As the position in a MIME object is unique, this value
+ is also used as the ID to a specific header value.
+ As long as the MIME object does not change in any way
+ this ID persisists across connections and servers.
+ <br>
+          <span><a href="#Index-Ref" class="internal xref">See Index.</a> (<a href="#Index-Ref" class="auto internal xref">Section 3</a>)</span>
+          <br>
+          <span><a href="#Index-Ref" class="internal xref">See Header ID.</a> (<a href="#Index-Ref" class="auto internal xref">Section 3</a>)</span><a href="#section-3-2.16" class="pilcrow">¶</a>
+</dd>
+        <dd class="break"></dd>
+<dt id="section-3-2.17">HIDX</dt>
+        <dd style="margin-left: 1.5em" id="section-3-2.18">
+ Header Index type.
+ A command sent as part of a folder open command that tells the
+ server which MIME headers it would like indexed.<a href="#section-3-2.18" class="pilcrow">¶</a>
+</dd>
+        <dd class="break"></dd>
+<dt id="section-3-2.19">
+<div id="Index-Ref">Index</div>
+        </dt>
+<dd style="margin-left: 1.5em" id="section-3-2.20">
+          <p id="section-3-2.20.1">
+ This wire protocol transmits all or part of MIME objects.
+ Various parts can be referenced by an offset into the object.
+ This is an index into the MIME objects.
+ A client may request an index be used when opening a folder.<a href="#section-3-2.20.1" class="pilcrow">¶</a></p>
+<p id="section-3-2.20.2"><em>Note</em>: 
+ None of these index values are guaranteed to persist across
+ re-connections to the server,
+ as other clients may have altered the contents.<a href="#section-3-2.20.2" class="pilcrow">¶</a></p>
+</dd>
+        <dd class="break"></dd>
+<dt id="section-3-2.21">LID</dt>
+        <dd style="margin-left: 1.5em" id="section-3-2.22">
+ List ID.
+ In operations that require a list or set of data.
+ This ID uniquely identifies which list or set is in context.<a href="#section-3-2.22" class="pilcrow">¶</a>
+</dd>
+        <dd class="break"></dd>
+<dt id="section-3-2.23">Media Type</dt>
+        <dd style="margin-left: 1.5em" id="section-3-2.24">
  Each MIME object has a media type that identifies the
  content of the object.
- This specification does not add, remove, or alter any MIME media type;<a href="#section-2-2.12" class="pilcrow">¶</a>
+ This specification does not add, remove, or alter any MIME media type;<a href="#section-3-2.24" class="pilcrow">¶</a>
 </dd>
         <dd class="break"></dd>
-<dt id="section-2-2.13">MIME</dt>
-        <dd style="margin-left: 1.5em" id="section-2-2.14">
+<dt id="section-3-2.25">MIME</dt>
+        <dd style="margin-left: 1.5em" id="section-3-2.26">
  This protocol transports MIME objects.
- This specification does not remove or alter any MIME objects;<a href="#section-2-2.14" class="pilcrow">¶</a>
+ This specification does not remove or alter any MIME objects;<a href="#section-3-2.26" class="pilcrow">¶</a>
 </dd>
         <dd class="break"></dd>
-<dt id="section-2-2.15">Packet</dt>
-        <dd style="margin-left: 1.5em" id="section-2-2.16">
+<dt id="section-3-2.27">Offset</dt>
+        <dd style="margin-left: 1.5em" id="section-3-2.28">
+ Unless otherwise specified, an offset is an unsigned 32-bit
+ integer in network byte order.<a href="#section-3-2.28" class="pilcrow">¶</a>
+</dd>
+        <dd class="break"></dd>
+<dt id="section-3-2.29">Packet</dt>
+        <dd style="margin-left: 1.5em" id="section-3-2.30">
  A packet is a blob of data that has a header (its length)
  followed by a Phoenix command with all
  of its values and parameters.
@@ -1702,143 +1801,157 @@ li > p:last-of-type:only-child {
  Commands can be sent while still waiting for other replies.
 
  Each endpoint may send commands to the other endpoint without
- having to be prompted to send information.<a href="#section-2-2.16" class="pilcrow">¶</a>
+ having to be prompted to send information.<a href="#section-3-2.30" class="pilcrow">¶</a>
 </dd>
         <dd class="break"></dd>
-<dt id="section-2-2.17">Parameter</dt>
-        <dd style="margin-left: 1.5em" id="section-2-2.18">
+<dt id="section-3-2.31">Parameter</dt>
+        <dd style="margin-left: 1.5em" id="section-3-2.32">
  Most commands have values that are associated with them.
  These values are called parameters.
  For example, the create folder command has the name of the new
- folder to be created as a parameter.<a href="#section-2-2.18" class="pilcrow">¶</a>
+ folder to be created as a parameter.<a href="#section-3-2.32" class="pilcrow">¶</a>
 </dd>
         <dd class="break"></dd>
-<dt id="section-2-2.19">ProtoCmd</dt>
-        <dd style="margin-left: 1.5em" id="section-2-2.20">
+<dt id="section-3-2.33">ProtoCmd</dt>
+        <dd style="margin-left: 1.5em" id="section-3-2.34">
  A general term for all protocol commands.
  This also includes commands that do not fall into one of
- the other catagories described here in this definistions section.<a href="#section-2-2.20" class="pilcrow">¶</a>
+ the other categories described here in this definitions section.<a href="#section-3-2.34" class="pilcrow">¶</a>
 </dd>
         <dd class="break"></dd>
-<dt id="section-2-2.21">SEQ, Command Sequence, CMD_SEQ</dt>
-        <dd style="margin-left: 1.5em" id="section-2-2.22">
+<dt id="section-3-2.35">SEQ, Command Sequence, CMD_SEQ</dt>
+        <dd style="margin-left: 1.5em" id="section-3-2.36">
  Each command has a unique identifier, a sequence number.
  All replies to a command include the same sequence number
  as the original command.
- In this way replies can be matched up with their original command.<a href="#section-2-2.22" class="pilcrow">¶</a>
+ In this way replies can be matched up with their original command.<a href="#section-3-2.36" class="pilcrow">¶</a>
 </dd>
         <dd class="break"></dd>
-<dt id="section-2-2.23">SSL</dt>
-        <dd style="margin-left: 1.5em" id="section-2-2.24">
- For the purpose of this specification, SSL is interchangable
+<dt id="section-3-2.37">SSL</dt>
+        <dd style="margin-left: 1.5em" id="section-3-2.38">
+ For the purpose of this specification, SSL is interchangeable
  with TLS.
  This document uses the term TLS.
  The sample implementation uses both SSL and TLS because
  the legacy UNIX, Linux, Windows, and OpenSSL code
- uses the term SSL as well as TLS.<a href="#section-2-2.24" class="pilcrow">¶</a>
+ uses the term SSL as well as TLS.<a href="#section-3-2.38" class="pilcrow">¶</a>
 </dd>
         <dd class="break"></dd>
-<dt id="section-2-2.25">TLS</dt>
-        <dd style="margin-left: 1.5em" id="section-2-2.26">
+<dt id="section-3-2.39">TLS</dt>
+        <dd style="margin-left: 1.5em" id="section-3-2.40">
  A way of securely transporting data over the Internet.
- See RFC-xxxx.<a href="#section-2-2.26" class="pilcrow">¶</a>
+ See RFC-xxxx.<a href="#section-3-2.40" class="pilcrow">¶</a>
 </dd>
         <dd class="break"></dd>
-<dt id="section-2-2.27">XDR</dt>
-        <dd style="margin-left: 1.5em" id="section-2-2.28">
+<dt id="section-3-2.41">XDR</dt>
+        <dd style="margin-left: 1.5em" id="section-3-2.42">
+          <p id="section-3-2.42.1">
  RFC-4506 specifies a standard and compatible way to transfer
  binary information.
  This protocol uses XDR to transmit a command, its values
  and any parameters and replies.
  The MIME data, the payload, is transported as XDR opaque,
- and is unmodified.<a href="#section-2-2.28" class="pilcrow">¶</a>
+ and is unmodified.<a href="#section-3-2.42.1" class="pilcrow">¶</a></p>
+<p id="section-3-2.42.2"><em>Note</em>: XDR transmits data in 32-bit chunks.
+ An 8-bit value is transmitted with the lower 8-bits
+ valid and the upper 24 bits set to zero.
+ A 16-bit value is transmitted with the lower 16-bits
+ valid and the upper 16 bits set to zero.<a href="#section-3-2.42.2" class="pilcrow">¶</a></p>
+<p id="section-3-2.42.3">
+ So many of these protocol elements pack one or more
+ of its parameters into one 32-bit value.
+ As defined in each section.
+ In many cases pseudo code is shown on how to pack the
+ date and create the protocol element.<a href="#section-3-2.42.3" class="pilcrow">¶</a></p>
+<p id="section-3-2.42.4">
+ SEE RFC-4506 section 3.<a href="#section-3-2.42.4" class="pilcrow">¶</a></p>
 </dd>
       <dd class="break"></dd>
 </dl>
 </section>
 <div id="COMMANDS">
-<section id="section-3">
+<section id="section-4">
       <h2 id="name-commands-summary">
-<a href="#section-3" class="section-number selfRef">3. </a><a href="#name-commands-summary" class="section-name selfRef">Commands Summary</a>
+<a href="#section-4" class="section-number selfRef">4. </a><a href="#name-commands-summary" class="section-name selfRef">Commands Summary</a>
       </h2>
-<p id="section-3-1">
+<p id="section-4-1">
  The endpoint that initiates the connection is called the client.
-        The endpoint that is connected to, is called the server.
-        The client is the protocol authority, and the server responds
-        to client commands as configured or instructed by the client.<a href="#section-3-1" class="pilcrow">¶</a></p>
-<p id="section-3-2">
+    The endpoint that is connected to, is called the server.
+    The client is the protocol authority, and the server responds
+    to client commands as configured or instructed by the client.<a href="#section-4-1" class="pilcrow">¶</a></p>
+<p id="section-4-2">
  This section provides an overview of the basic commands.
- Each command has a detailed section in this specification.<a href="#section-3-2" class="pilcrow">¶</a></p>
-<p id="section-3-3">
+ Each command has a detailed section in this specification.<a href="#section-4-2" class="pilcrow">¶</a></p>
+<p id="section-4-3">
  When a command is sent to the remote endpoint and received,
  the remote endpoint determines if the connection is authenticated
  or authorized to perform the command.
  If not supported, or not authorized, a NotSupported command
  is send as a reply.
  The NotSupported command sent back has the same Sequence number 
- that was in the original command.<a href="#section-3-3" class="pilcrow">¶</a></p>
-<p id="section-3-4">
- Many commands are only valid after authentication.<a href="#section-3-4" class="pilcrow">¶</a></p>
-<p id="section-3-5">
+ that was in the original command.<a href="#section-4-3" class="pilcrow">¶</a></p>
+<p id="section-4-4">
+ Many commands are only valid after authentication.<a href="#section-4-4" class="pilcrow">¶</a></p>
+<p id="section-4-5">
  When the client connects to a server it immediately sends
  its pre authentication capabilities to the server.
- Or an Auth command.<a href="#section-3-5" class="pilcrow">¶</a></p>
-<p id="section-3-6">
+ Or an Auth command.<a href="#section-4-5" class="pilcrow">¶</a></p>
+<p id="section-4-6">
  When the server gets a new connection followed by
  a pre authentication capability command, it immediately sends
- its pre authentication capabilities to the client.<a href="#section-3-6" class="pilcrow">¶</a></p>
-<p id="section-3-7">
+ its pre authentication capabilities to the client.<a href="#section-4-6" class="pilcrow">¶</a></p>
+<p id="section-4-7">
  When the client and server have had a relationship, the
  client may send an Auth Command to initiate the authorization
  and does not send its pre authentication capability list
  to the server.
- It then waits for the Auth reply from the server.<a href="#section-3-7" class="pilcrow">¶</a></p>
+ It then waits for the Auth reply from the server.<a href="#section-4-7" class="pilcrow">¶</a></p>
 <ul class="normal">
-<li class="normal" id="section-3-8.1">
+<li class="normal" id="section-4-8.1">
  If the client gets an Auth reply that is positive,
- it sends its post authentication capability list to the server.<a href="#section-3-8.1" class="pilcrow">¶</a>
+ it sends its post authentication capability list to the server.<a href="#section-4-8.1" class="pilcrow">¶</a>
 </li>
-        <li class="normal" id="section-3-8.2">
+        <li class="normal" id="section-4-8.2">
  If the client gets an Auth reply that is negative,
  it sends its pre authentication
- capability list to the server.<a href="#section-3-8.2" class="pilcrow">¶</a>
+ capability list to the server.<a href="#section-4-8.2" class="pilcrow">¶</a>
 </li>
       </ul>
-<p id="section-3-9">
+<p id="section-4-9">
  When a servers first received packet is a Auth command,
- It processes the Auth command and sends the Auth reply.<a href="#section-3-9" class="pilcrow">¶</a></p>
+ It processes the Auth command and sends the Auth reply.<a href="#section-4-9" class="pilcrow">¶</a></p>
 <ul class="normal">
-<li class="normal" id="section-3-10.1">
+<li class="normal" id="section-4-10.1">
  If the Auth reply is positive, then it also sends it
- post authentication capability list.<a href="#section-3-10.1" class="pilcrow">¶</a>
+ post authentication capability list.<a href="#section-4-10.1" class="pilcrow">¶</a>
 </li>
-        <li class="normal" id="section-3-10.2">
+        <li class="normal" id="section-4-10.2">
  If the Auth reply is negative, then it sends its
- pre authentication capability list to the client.<a href="#section-3-10.2" class="pilcrow">¶</a>
+ pre authentication capability list to the client.<a href="#section-4-10.2" class="pilcrow">¶</a>
 </li>
       </ul>
-<p id="section-3-11">
+<p id="section-4-11">
  A server may automatically send its pre authentication
  capability list to the client upon initial connection.
  Or it may wait to see if it gets a pre authentication
- capability list, or an Auth command.<a href="#section-3-11" class="pilcrow">¶</a></p>
-<p id="section-3-12">
+ capability list, or an Auth command.<a href="#section-4-11" class="pilcrow">¶</a></p>
+<p id="section-4-12">
  If the client sends an Auth command as its first packet,
  it may get the pre authentication capability from the server
- before the Auth reply. Simply process both.<a href="#section-3-12" class="pilcrow">¶</a></p>
+ before the Auth reply. Simply process both.<a href="#section-4-12" class="pilcrow">¶</a></p>
 <div id="PROTO_SUMMARY">
-<section id="section-3.1">
+<section id="section-4.1">
         <h3 id="name-protocol-commands-summary">
-<a href="#section-3.1" class="section-number selfRef">3.1. </a><a href="#name-protocol-commands-summary" class="section-name selfRef">Protocol Commands Summary</a>
+<a href="#section-4.1" class="section-number selfRef">4.1. </a><a href="#name-protocol-commands-summary" class="section-name selfRef">Protocol Commands Summary</a>
         </h3>
-<p id="section-3.1-1">
+<p id="section-4.1-1">
  In addition to the protocols listed in this specification.
  Additional protocols and commands can be added in the future.
- They must follow the same framework listed here.<a href="#section-3.1-1" class="pilcrow">¶</a></p>
-<p id="section-3.1-2">
+ They must follow the same framework listed here.<a href="#section-4.1-1" class="pilcrow">¶</a></p>
+<p id="section-4.1-2">
  This protocol connects two endpoints over a network and facilitates
- the secure and authorized transfer of MIME objects.<a href="#section-3.1-2" class="pilcrow">¶</a></p>
-<p id="section-3.1-3">
+ the secure and authorized transfer of MIME objects.<a href="#section-4.1-2" class="pilcrow">¶</a></p>
+<p id="section-4.1-3">
  This is a binary protocol.
  The payload can be anything, text or binary.
  This protocol was designed to reduce the number of back and forth
@@ -1846,160 +1959,160 @@ li > p:last-of-type:only-child {
  By using XDR as the format for transferring binary control
  information it is portable to any computer architecture.
  Appendix XXX has the rpcgen definition for the protocol
- defined in this specification.<a href="#section-3.1-3" class="pilcrow">¶</a></p>
-<p id="section-3.1-4">
+ defined in this specification.<a href="#section-4.1-3" class="pilcrow">¶</a></p>
+<p id="section-4.1-4">
  After the connection is successful and authenticated, ether endpoint
  may send commands to the other endpoint.
  When the server initiates an unsolicited command, it could be a
  any kind of notification or message for the client side application
  or the user. It could be reporting errors or updates to
- previous client initiated commands.<a href="#section-3.1-4" class="pilcrow">¶</a></p>
-<p id="section-3.1-5">
+ previous client initiated commands.<a href="#section-4.1-4" class="pilcrow">¶</a></p>
+<p id="section-4.1-5">
  All commands initiated from the client have even
  numbered command sequence numbers.
  
  All commands initiated from the server have odd
- numbered command sequence numbers.<a href="#section-3.1-5" class="pilcrow">¶</a></p>
-<p id="section-3.1-6">
+ numbered command sequence numbers.<a href="#section-4.1-5" class="pilcrow">¶</a></p>
+<p id="section-4.1-6">
  Some commands expect a command reply.
  Other commands do not expect a command reply.
  An example of a command that expects a reply is the ping command.
  An example of a command that does not expect a reply is the keep-alive
  command.
- Conceptually there are two kinds of commands:<a href="#section-3.1-6" class="pilcrow">¶</a></p>
-<span class="break"></span><dl class="dlParallel" id="section-3.1-7">
-          <dt id="section-3.1-7.1">Directive commands:</dt>
-          <dd style="margin-left: 1.5em" id="section-3.1-7.2">
+ Conceptually there are two kinds of commands:<a href="#section-4.1-6" class="pilcrow">¶</a></p>
+<span class="break"></span><dl class="dlParallel" id="section-4.1-7">
+          <dt id="section-4.1-7.1">Directive commands:</dt>
+          <dd style="margin-left: 1.5em" id="section-4.1-7.2">
  A directive type command expects the other endpoint to process
  the command and possibly reply with some results.
  An example could be: Send me an index of my emails in my InBox.
  The client would expect a result.
- Another example is a bye command, once sent, no reply is expected.<a href="#section-3.1-7.2" class="pilcrow">¶</a>
+ Another example is a bye command, once sent, no reply is expected.<a href="#section-4.1-7.2" class="pilcrow">¶</a>
 </dd>
           <dd class="break"></dd>
-<dt id="section-3.1-7.3">Request commands:</dt>
-          <dd style="margin-left: 1.5em" id="section-3.1-7.4">
+<dt id="section-4.1-7.3">Request commands:</dt>
+          <dd style="margin-left: 1.5em" id="section-4.1-7.4">
  A request type command may or might not have any reply.
  For example, a keep-alive command is a request to not
  timeout and has no reply.
  And a send new email notifications command would expect
  zero or more replies and it would not require them, as they
- might not happen.<a href="#section-3.1-7.4" class="pilcrow">¶</a>
+ might not happen.<a href="#section-4.1-7.4" class="pilcrow">¶</a>
 </dd>
         <dd class="break"></dd>
 </dl>
-<p id="section-3.1-8">
+<p id="section-4.1-8">
  These are not specific protocol entities, these concepts will
  be used to describe the expected behavior when one of these
- are transmitted.<a href="#section-3.1-8" class="pilcrow">¶</a></p>
+ are transmitted.<a href="#section-4.1-8" class="pilcrow">¶</a></p>
 <div id="PACKET_SUMMARY">
-<section id="section-3.1.1">
+<section id="section-4.1.1">
           <h4 id="name-packet-summary">
-<a href="#section-3.1.1" class="section-number selfRef">3.1.1. </a><a href="#name-packet-summary" class="section-name selfRef">Packet Summary</a>
+<a href="#section-4.1.1" class="section-number selfRef">4.1.1. </a><a href="#name-packet-summary" class="section-name selfRef">Packet Summary</a>
           </h4>
-<p id="section-3.1.1-1">
+<p id="section-4.1.1-1">
  All commands are sent in a packet.
- A packet has two parts:<a href="#section-3.1.1-1" class="pilcrow">¶</a></p>
-<ol start="1" type="1" class="normal type-1" id="section-3.1.1-2">
- <li id="section-3.1.1-2.1">The packet header.<a href="#section-3.1.1-2.1" class="pilcrow">¶</a>
+ A packet has two parts:<a href="#section-4.1.1-1" class="pilcrow">¶</a></p>
+<ol start="1" type="1" class="normal type-1" id="section-4.1.1-2">
+            <li id="section-4.1.1-2.1">The packet header.<a href="#section-4.1.1-2.1" class="pilcrow">¶</a>
 </li>
-            <li id="section-3.1.1-2.2">The packet body.<a href="#section-3.1.1-2.2" class="pilcrow">¶</a>
+            <li id="section-4.1.1-2.2">The packet body.<a href="#section-4.1.1-2.2" class="pilcrow">¶</a>
 </li>
           </ol>
-<p id="section-3.1.1-3">
+<p id="section-4.1.1-3">
  The packet header has one value, the total length
  of the packet body, and payload sent as an
  unsigned 64-bit integer in network byte order.
  The length does not include its own length.
- It is the total length that follows the length value.<a href="#section-3.1.1-3" class="pilcrow">¶</a></p>
-<p id="section-3.1.1-4">
- The packet body is divided into three parts:<a href="#section-3.1.1-4" class="pilcrow">¶</a></p>
-<ol start="1" type="1" class="normal type-1" id="section-3.1.1-5">
- <li id="section-3.1.1-5.1">Command sequence (SEQ).<a href="#section-3.1.1-5.1" class="pilcrow">¶</a>
+ It is the total length that follows the length value.<a href="#section-4.1.1-3" class="pilcrow">¶</a></p>
+<p id="section-4.1.1-4">
+ The packet body is divided into three parts:<a href="#section-4.1.1-4" class="pilcrow">¶</a></p>
+<ol start="1" type="1" class="normal type-1" id="section-4.1.1-5">
+            <li id="section-4.1.1-5.1">Command sequence (SEQ).<a href="#section-4.1.1-5.1" class="pilcrow">¶</a>
 </li>
-            <li id="section-3.1.1-5.2">The Command (CMD).<a href="#section-3.1.1-5.2" class="pilcrow">¶</a>
+            <li id="section-4.1.1-5.2">The Command (CMD).<a href="#section-4.1.1-5.2" class="pilcrow">¶</a>
 </li>
-            <li id="section-3.1.1-5.3">The command specific data (Payload).<a href="#section-3.1.1-5.3" class="pilcrow">¶</a>
+            <li id="section-4.1.1-5.3">The command specific data (Payload).<a href="#section-4.1.1-5.3" class="pilcrow">¶</a>
 </li>
           </ol>
 <div id="SEQ">
-<section id="section-3.1.1.1">
+<section id="section-4.1.1.1">
             <h5 id="name-command-sequence-number-seq">
-<a href="#section-3.1.1.1" class="section-number selfRef">3.1.1.1. </a><a href="#name-command-sequence-number-seq" class="section-name selfRef">Command Sequence Number (SEQ)</a>
+<a href="#section-4.1.1.1" class="section-number selfRef">4.1.1.1. </a><a href="#name-command-sequence-number-seq" class="section-name selfRef">Command Sequence Number (SEQ)</a>
             </h5>
-<p id="section-3.1.1.1-1">
+<p id="section-4.1.1.1-1">
  The Command SEQ is a 32-bit unsigned integer sent
  in network byte order.
  This SEQ is an even number when initiated from the client,
- and an odd number when initiated from the server.<a href="#section-3.1.1.1-1" class="pilcrow">¶</a></p>
-<p id="section-3.1.1.1-2">
+ and an odd number when initiated from the server.<a href="#section-4.1.1.1-1" class="pilcrow">¶</a></p>
+<p id="section-4.1.1.1-2">
  The first SEQ value sent from the client is zero (0) and is
- incremented by two each time.<a href="#section-3.1.1.1-2" class="pilcrow">¶</a></p>
-<p id="section-3.1.1.1-3">
+ incremented by two each time.<a href="#section-4.1.1.1-2" class="pilcrow">¶</a></p>
+<p id="section-4.1.1.1-3">
  The first SEQ value sent from the server is one (1) and is
- incremented by two each time.<a href="#section-3.1.1.1-3" class="pilcrow">¶</a></p>
-<p id="section-3.1.1.1-4">
+ incremented by two each time.<a href="#section-4.1.1.1-3" class="pilcrow">¶</a></p>
+<p id="section-4.1.1.1-4">
  In the event an endpoint command SEQ reaches its maximum value,
  then its numbering starts over at zero (0) for the client
  and one (1) for the server.
  An implementation must keep track of outstanding commands
  and not accidentally re-issue the same SEQ that may still
- get replies from the other endpoint.<a href="#section-3.1.1.1-4" class="pilcrow">¶</a></p>
+ get replies from the other endpoint.<a href="#section-4.1.1.1-4" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="COMMAND">
-<section id="section-3.1.1.2">
+<section id="section-4.1.1.2">
             <h5 id="name-the-command-cmd">
-<a href="#section-3.1.1.2" class="section-number selfRef">3.1.1.2. </a><a href="#name-the-command-cmd" class="section-name selfRef">The Command (CMD)</a>
+<a href="#section-4.1.1.2" class="section-number selfRef">4.1.1.2. </a><a href="#name-the-command-cmd" class="section-name selfRef">The Command (CMD)</a>
             </h5>
-<p id="section-3.1.1.2-1">
+<p id="section-4.1.1.2-1">
  The command is a predefined enumerated 32-bit unsigned
  integer sent in network byte order.
  The value (in hex) 0xFFFFFFFF is reserved for extensions
- if the 32-bit range is exhausted.<a href="#section-3.1.1.2-1" class="pilcrow">¶</a></p>
+ if the 32-bit range is exhausted.<a href="#section-4.1.1.2-1" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="PAYLOAD">
-<section id="section-3.1.1.3">
+<section id="section-4.1.1.3">
             <h5 id="name-the-payload-payload">
-<a href="#section-3.1.1.3" class="section-number selfRef">3.1.1.3. </a><a href="#name-the-payload-payload" class="section-name selfRef">The Payload (Payload)</a>
+<a href="#section-4.1.1.3" class="section-number selfRef">4.1.1.3. </a><a href="#name-the-payload-payload" class="section-name selfRef">The Payload (Payload)</a>
             </h5>
-<p id="section-3.1.1.3-1">
+<p id="section-4.1.1.3-1">
  The payload has no predefined length, other what
  what is specified for the CMD in the packet.
  It could be zero to vary large in size.
  It could be opaque data, or it could be data that
  is XDR encoded.
  The contents are specific to the CMD specified in
- the in the packet body.<a href="#section-3.1.1.3-1" class="pilcrow">¶</a></p>
+ the in the packet body.<a href="#section-4.1.1.3-1" class="pilcrow">¶</a></p>
 </section>
 </div>
 </section>
 </div>
 <div id="PACKET_REPLY_SUMMARY">
-<section id="section-3.1.2">
+<section id="section-4.1.2">
           <h4 id="name-packet-reply-summary">
-<a href="#section-3.1.2" class="section-number selfRef">3.1.2. </a><a href="#name-packet-reply-summary" class="section-name selfRef">Packet Reply Summary</a>
+<a href="#section-4.1.2" class="section-number selfRef">4.1.2. </a><a href="#name-packet-reply-summary" class="section-name selfRef">Packet Reply Summary</a>
           </h4>
-<p id="section-3.1.2-1">
+<p id="section-4.1.2-1">
  All replies to a command are also a command packet.
  They contain the same command SEQ and command
  as the original packet.
- The endpoint recognizes it is a reply because:<a href="#section-3.1.2-1" class="pilcrow">¶</a></p>
+ The endpoint recognizes it is a reply because:<a href="#section-4.1.2-1" class="pilcrow">¶</a></p>
 <ul class="normal">
-<li class="normal" id="section-3.1.2-2.1">
- The command SEQ matches one that is waiting a reply.<a href="#section-3.1.2-2.1" class="pilcrow">¶</a>
+<li class="normal" id="section-4.1.2-2.1">
+ The command SEQ matches one that is waiting a reply.<a href="#section-4.1.2-2.1" class="pilcrow">¶</a>
 </li>
-            <li class="normal" id="section-3.1.2-2.2">
+            <li class="normal" id="section-4.1.2-2.2">
  When the client gets an even numbered SEQ, it can only
- be a reply.<a href="#section-3.1.2-2.2" class="pilcrow">¶</a>
+ be a reply.<a href="#section-4.1.2-2.2" class="pilcrow">¶</a>
 </li>
-            <li class="normal" id="section-3.1.2-2.3">
+            <li class="normal" id="section-4.1.2-2.3">
  When the server gets an odd numbered
- SEQ, it can only be a reply.<a href="#section-3.1.2-2.3" class="pilcrow">¶</a>
+ SEQ, it can only be a reply.<a href="#section-4.1.2-2.3" class="pilcrow">¶</a>
 </li>
           </ul>
-<p id="section-3.1.2-3">
+<p id="section-4.1.2-3">
  Some commands have zero to many replies.
  Each of these multiple replies contains the same SEQ as the
  original command. An example, the client sends a request
@@ -2007,62 +2120,62 @@ li > p:last-of-type:only-child {
  SEQ 20. Each time a new email arrives, a reply will
  be sent from the server with a command SEQ of 20.
  And over time, the client may get many with a SEQ of 20
- as new emails arrive on the server.<a href="#section-3.1.2-3" class="pilcrow">¶</a></p>
+ as new emails arrive on the server.<a href="#section-4.1.2-3" class="pilcrow">¶</a></p>
 </section>
 </div>
 </section>
 </div>
 <div id="ADMIN_SUMMARY">
-<section id="section-3.2">
+<section id="section-4.2">
         <h3 id="name-administration-commands-sum">
-<a href="#section-3.2" class="section-number selfRef">3.2. </a><a href="#name-administration-commands-sum" class="section-name selfRef">Administration Commands Summary</a>
+<a href="#section-4.2" class="section-number selfRef">4.2. </a><a href="#name-administration-commands-sum" class="section-name selfRef">Administration Commands Summary</a>
         </h3>
-<p id="section-3.2-1">
+<p id="section-4.2-1">
  Implementations are not required to implement any ADMIN command.
  A client will know the server supports one or more ADMIN
  commands when it gets its post authentication capability command
- from the server.<a href="#section-3.2-1" class="pilcrow">¶</a></p>
-<p id="section-3.2-2">
+ from the server.<a href="#section-4.2-1" class="pilcrow">¶</a></p>
+<p id="section-4.2-2">
  Administrative command can be used to configure, audit, and manage
  the remote endpoint.
  Administrative command can be used to configure, audit, and manage
- user access.<a href="#section-3.2-2" class="pilcrow">¶</a></p>
+ user access.<a href="#section-4.2-2" class="pilcrow">¶</a></p>
 <div id="ADMIN_CAP">
-<section id="section-3.2.1">
+<section id="section-4.2.1">
           <h4 id="name-administration-capability-d">
-<a href="#section-3.2.1" class="section-number selfRef">3.2.1. </a><a href="#name-administration-capability-d" class="section-name selfRef">Administration Capability Definitions</a>
+<a href="#section-4.2.1" class="section-number selfRef">4.2.1. </a><a href="#name-administration-capability-d" class="section-name selfRef">Administration Capability Definitions</a>
           </h4>
-<p id="section-3.2.1-1">
+<p id="section-4.2.1-1">
  Implementations MUST NOT send the ADMIN capability
- in the pre authorization CAPABILITY list.<a href="#section-3.2.1-1" class="pilcrow">¶</a></p>
-<p id="section-3.2.1-2">
+ in the pre authorization CAPABILITY list.<a href="#section-4.2.1-1" class="pilcrow">¶</a></p>
+<p id="section-4.2.1-2">
  Implementations that support any administration command
  MAY include ADMIN capability in the post authentication CAPABILITY list.
  An implementation may decide that only specified and
  authorized users may issue administrative commands and
- send only those authenticated users the ADMIN capability.<a href="#section-3.2.1-2" class="pilcrow">¶</a></p>
-<p id="section-3.2.1-3">
+ send only those authenticated users the ADMIN capability.<a href="#section-4.2.1-2" class="pilcrow">¶</a></p>
+<p id="section-4.2.1-3">
  The ADMIN capability include the list of ADMIN commands the user is
  allowed to perform.
  For example, if a user only has permission to only view user lists, then
- only the USER_LIST ADMIN capability will be provided.<a href="#section-3.2.1-3" class="pilcrow">¶</a></p>
-<p id="section-3.2.1-4">
+ only the USER_LIST ADMIN capability will be provided.<a href="#section-4.2.1-3" class="pilcrow">¶</a></p>
+<p id="section-4.2.1-4">
  The capability name is also the command name to use
- when invoking that capability.<a href="#section-3.2.1-4" class="pilcrow">¶</a></p>
-<p id="section-3.2.1-5">
+ when invoking that capability.<a href="#section-4.2.1-4" class="pilcrow">¶</a></p>
+<p id="section-4.2.1-5">
  When a user attempts to send a commmand they are not authorized
  to send, the remote endpoint will reply with a NotSupported command
  with its sequence number set to the sequence number from offending
- command.<a href="#section-3.2.1-5" class="pilcrow">¶</a></p>
+ command.<a href="#section-4.2.1-5" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="ADMIN_USER">
-<section id="section-3.2.2">
+<section id="section-4.2.2">
           <h4 id="name-administration-of-users">
-<a href="#section-3.2.2" class="section-number selfRef">3.2.2. </a><a href="#name-administration-of-users" class="section-name selfRef">Administration of users.</a>
+<a href="#section-4.2.2" class="section-number selfRef">4.2.2. </a><a href="#name-administration-of-users" class="section-name selfRef">Administration of users.</a>
           </h4>
-<p id="section-3.2.2-1">
- The following operations are defined for administration.<a href="#section-3.2.2-1" class="pilcrow">¶</a></p>
+<p id="section-4.2.2-1">
+ The following operations are defined for administration.<a href="#section-4.2.2-1" class="pilcrow">¶</a></p>
 <table class="center" id="table-1">
             <caption><a href="#table-1" class="selfRef">Table 1</a></caption>
 <thead>
@@ -2159,54 +2272,54 @@ li > p:last-of-type:only-child {
 </section>
 </div>
 <div id="AUTH_SUMMARY">
-<section id="section-3.3">
+<section id="section-4.3">
         <h3 id="name-authentication-commands-sum">
-<a href="#section-3.3" class="section-number selfRef">3.3. </a><a href="#name-authentication-commands-sum" class="section-name selfRef">Authentication Commands Summary</a>
+<a href="#section-4.3" class="section-number selfRef">4.3. </a><a href="#name-authentication-commands-sum" class="section-name selfRef">Authentication Commands Summary</a>
         </h3>
-<p id="section-3.3-1">
- TODO<a href="#section-3.3-1" class="pilcrow">¶</a></p>
+<p id="section-4.3-1">
+ TODO<a href="#section-4.3-1" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="CALENDAR_SUMMARY">
-<section id="section-3.4">
+<section id="section-4.4">
         <h3 id="name-calendar-commands-summary">
-<a href="#section-3.4" class="section-number selfRef">3.4. </a><a href="#name-calendar-commands-summary" class="section-name selfRef">Calendar Commands Summary</a>
+<a href="#section-4.4" class="section-number selfRef">4.4. </a><a href="#name-calendar-commands-summary" class="section-name selfRef">Calendar Commands Summary</a>
         </h3>
-<p id="section-3.4-1">
- These command are based on iCalendar and iTIp.<a href="#section-3.4-1" class="pilcrow">¶</a></p>
+<p id="section-4.4-1">
+ These command are based on iCalendar and iTIp.<a href="#section-4.4-1" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="CAPABILITY_SUMMARY">
-<section id="section-3.5">
+<section id="section-4.5">
         <h3 id="name-capability-commands-summary">
-<a href="#section-3.5" class="section-number selfRef">3.5. </a><a href="#name-capability-commands-summary" class="section-name selfRef">Capability Commands Summary</a>
+<a href="#section-4.5" class="section-number selfRef">4.5. </a><a href="#name-capability-commands-summary" class="section-name selfRef">Capability Commands Summary</a>
         </h3>
-<p id="section-3.5-1">
- This section<a href="#section-3.5-1" class="pilcrow">¶</a></p>
+<p id="section-4.5-1">
+ This section ...<a href="#section-4.5-1" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="EMAIL_SUMMARY">
-<section id="section-3.6">
+<section id="section-4.6">
         <h3 id="name-email-commands-summary">
-<a href="#section-3.6" class="section-number selfRef">3.6. </a><a href="#name-email-commands-summary" class="section-name selfRef">EMail Commands Summary</a>
+<a href="#section-4.6" class="section-number selfRef">4.6. </a><a href="#name-email-commands-summary" class="section-name selfRef">EMail Commands Summary</a>
         </h3>
-<p id="section-3.6-1">
+<p id="section-4.6-1">
  These commands allow for the fetching and submission
- of EMail messages<a href="#section-3.6-1" class="pilcrow">¶</a></p>
+ of EMail messages<a href="#section-4.6-1" class="pilcrow">¶</a></p>
 </section>
 </div>
-<div id="FOLDER_SUMMARY">
-<section id="section-3.7">
+<div id="FOLDERS">
+<section id="section-4.7">
         <h3 id="name-file-and-folder-commands-su">
-<a href="#section-3.7" class="section-number selfRef">3.7. </a><a href="#name-file-and-folder-commands-su" class="section-name selfRef">File and Folder Commands Summary</a>
+<a href="#section-4.7" class="section-number selfRef">4.7. </a><a href="#name-file-and-folder-commands-su" class="section-name selfRef">File and Folder Commands Summary</a>
         </h3>
-<p id="section-3.7-1">
+<p id="section-4.7-1">
  The file operations (FileOp) have protocol names.
- Here are their protocol names and a breif description.<a href="#section-3.7-1" class="pilcrow">¶</a></p>
-<p id="section-3.7-2">
+ Here are their protocol names and a breif description.<a href="#section-4.7-1" class="pilcrow">¶</a></p>
+<p id="section-4.7-2">
  Implementations are not required to support any or all of these
- commands.<a href="#section-3.7-2" class="pilcrow">¶</a></p>
-<p id="section-3.7-3"></p>
+ commands.<a href="#section-4.7-2" class="pilcrow">¶</a></p>
+<p id="section-4.7-3"></p>
 <table class="center" id="table-2">
           <caption><a href="#table-2" class="selfRef">Table 2</a></caption>
 <thead>
@@ -2335,206 +2448,208 @@ li > p:last-of-type:only-child {
 </section>
 </div>
 <div id="KEEPALIVE_SUMMARY">
-<section id="section-3.8">
+<section id="section-4.8">
         <h3 id="name-keepalive-command-summary">
-<a href="#section-3.8" class="section-number selfRef">3.8. </a><a href="#name-keepalive-command-summary" class="section-name selfRef">KeepAlive Command Summary</a>
+<a href="#section-4.8" class="section-number selfRef">4.8. </a><a href="#name-keepalive-command-summary" class="section-name selfRef">KeepAlive Command Summary</a>
         </h3>
-<p id="section-3.8-1">
+<p id="section-4.8-1">
  The KeepAlive command is sent to the server from the client.
  It requests the server not time out.
- The server may honor or ignore the request.<a href="#section-3.8-1" class="pilcrow">¶</a></p>
-<p id="section-3.8-2">
+ The server may honor or ignore the request.<a href="#section-4.8-1" class="pilcrow">¶</a></p>
+<p id="section-4.8-2">
  The Phoenix protocol is designed to transfer data and a server
  may handle a small subsets of what is possible.
  Which is why the server decides what is an important command
- while determining idle timeout.<a href="#section-3.8-2" class="pilcrow">¶</a></p>
-<p id="section-3.8-3">
+ while determining idle timeout.<a href="#section-4.8-2" class="pilcrow">¶</a></p>
+<p id="section-4.8-3">
  When the server sends the post authentication capabilities to the
  client, it includes an IdleTimeout capability that includes the
  number of seconds it allows for idle time.
  If no significant action has been taken by the client, as determined
- by the server, in that time the server may timeout and close the connection.<a href="#section-3.8-3" class="pilcrow">¶</a></p>
-<p id="section-3.8-4">
+ by the server, in that time the server may timeout and close the connection.<a href="#section-4.8-3" class="pilcrow">¶</a></p>
+<p id="section-4.8-4">
  The KeepAlive command tells the server that the client wishes the
  server not to time out as long as a KeepAlive or other command
- is sent to the server before IdleTimeout seconds have passed.<a href="#section-3.8-4" class="pilcrow">¶</a></p>
-<p id="section-3.8-5">
+ is sent to the server before IdleTimeout seconds have passed.<a href="#section-4.8-4" class="pilcrow">¶</a></p>
+<p id="section-4.8-5">
  An IdleTimeout capability can be a positive number, zero, or
- a negative number.<a href="#section-3.8-5" class="pilcrow">¶</a></p>
+ a negative number.<a href="#section-4.8-5" class="pilcrow">¶</a></p>
 <ul class="normal">
-<li class="normal" id="section-3.8-6.1">
+<li class="normal" id="section-4.8-6.1">
  A positive number is the maximum idle time in seconds before the server
- terminates the connection.<a href="#section-3.8-6.1" class="pilcrow">¶</a>
+ terminates the connection.<a href="#section-4.8-6.1" class="pilcrow">¶</a>
 </li>
-          <li class="normal" id="section-3.8-6.2">
- When the IdleTimeout is zero (0), the server does not timeout.<a href="#section-3.8-6.2" class="pilcrow">¶</a>
+          <li class="normal" id="section-4.8-6.2">
+ When the IdleTimeout is zero (0), the server does not timeout.<a href="#section-4.8-6.2" class="pilcrow">¶</a>
 </li>
-          <li class="normal" id="section-3.8-6.3">
+          <li class="normal" id="section-4.8-6.3">
  When the IdleTimeout is less than zero (&lt; 0), it means it ignores
  KeepAlive and it will idle out in the absolute value of the IdleTimeout
  value in seconds.
  For example, a value of (-300) means it will ignore KeepAlive
  and timeout when the server determines nothing significant has
- happened in 5 minutes (300 seconds).<a href="#section-3.8-6.3" class="pilcrow">¶</a>
+ happened in 5 minutes (300 seconds).<a href="#section-4.8-6.3" class="pilcrow">¶</a>
 </li>
         </ul>
-<p id="section-3.8-7">
+<p id="section-4.8-7">
  Servers that are not threaded or can not reply to simultaneous
  or overlapping commands, MUST set their IdleTimeout to zero (0)
- or a negative number.<a href="#section-3.8-7" class="pilcrow">¶</a></p>
-<p id="section-3.8-8">
+ or a negative number.<a href="#section-4.8-7" class="pilcrow">¶</a></p>
+<p id="section-4.8-8">
  Clients MUST NOT send KeepAlive commands to a server
- that has an IdleTimeout of zero (0) or negative (&lt; 0).<a href="#section-3.8-8" class="pilcrow">¶</a></p>
-<p id="section-3.8-9">
+ that has an IdleTimeout of zero (0) or negative (&lt; 0).<a href="#section-4.8-8" class="pilcrow">¶</a></p>
+<p id="section-4.8-9">
  Clients MUST NOT send KeepAlive commands to the server until
  at least 75% of the idle time has passed since the last
- command has been sent to the server.<a href="#section-3.8-9" class="pilcrow">¶</a></p>
-<p id="section-3.8-10">
+ command has been sent to the server.<a href="#section-4.8-9" class="pilcrow">¶</a></p>
+<p id="section-4.8-10">
  A server may terminate a connection if the server implementation
- determines that KeepAlive commands are arriving to quickly.<a href="#section-3.8-10" class="pilcrow">¶</a></p>
+ determines that KeepAlive commands are arriving to quickly.<a href="#section-4.8-10" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="PING_SUMMARY">
-<section id="section-3.9">
+<section id="section-4.9">
         <h3 id="name-ping-command-summary">
-<a href="#section-3.9" class="section-number selfRef">3.9. </a><a href="#name-ping-command-summary" class="section-name selfRef">Ping Command Summary</a>
+<a href="#section-4.9" class="section-number selfRef">4.9. </a><a href="#name-ping-command-summary" class="section-name selfRef">Ping Command Summary</a>
         </h3>
-<p id="section-3.9-1">
+<p id="section-4.9-1">
  The ping command only sent when the client implementation
  has determined it has waited too long for a command reply.
  The ping command is only initiated from the client.
- It is not valid for the server to send a ping command to a client.<a href="#section-3.9-1" class="pilcrow">¶</a></p>
-<p id="section-3.9-2">
+ It is not valid for the server to send a ping command to a client.<a href="#section-4.9-1" class="pilcrow">¶</a></p>
+<p id="section-4.9-2">
  The ping command MUST NOT be the first command sent to the server.
  It should only be sent when the client implementation determines
- it has waited too long for a reply.<a href="#section-3.9-2" class="pilcrow">¶</a></p>
-<p id="section-3.9-3">
+ it has waited too long for a reply.<a href="#section-4.9-2" class="pilcrow">¶</a></p>
+<p id="section-4.9-3">
  If the server supports the ping command, then a PING capability
- is sent in the pre authentication capability command.<a href="#section-3.9-3" class="pilcrow">¶</a></p>
-<p id="section-3.9-4">
+ is sent in the pre authentication capability command.<a href="#section-4.9-3" class="pilcrow">¶</a></p>
+<p id="section-4.9-4">
  Sometimes servers are unavailable and can go down.
  A server could be down for maintenance, or in a shutdown mode.
  It might limit the number of simultaneous connections.
  It might be very busy.
  The packets might not be making it to the server because of
- network issues.<a href="#section-3.9-4" class="pilcrow">¶</a></p>
-<p id="section-3.9-5">
- When a ping command is received by the server:<a href="#section-3.9-5" class="pilcrow">¶</a></p>
+ network issues.<a href="#section-4.9-4" class="pilcrow">¶</a></p>
+<p id="section-4.9-5">
+ When a ping command is received by the server:<a href="#section-4.9-5" class="pilcrow">¶</a></p>
 <ul class="normal">
-<li class="normal" id="section-3.9-6.1">
+<li class="normal" id="section-4.9-6.1">
  When the server did not send PING capability to the client.
  Then the server replies with a NotSupported packet
- with the sequence number the same as in the ping command.<a href="#section-3.9-6.1" class="pilcrow">¶</a>
+ with the sequence number the same as in the ping command.<a href="#section-4.9-6.1" class="pilcrow">¶</a>
 </li>
-          <li class="normal" id="section-3.9-6.2">
+          <li class="normal" id="section-4.9-6.2">
  When the server has not yet received an authentication
  command, the server replies with a NotSupported packet
- with the sequence number the same as in the ping command.<a href="#section-3.9-6.2" class="pilcrow">¶</a>
+ with the sequence number the same as in the ping command.<a href="#section-4.9-6.2" class="pilcrow">¶</a>
 </li>
-          <li class="normal" id="section-3.9-6.3">
+          <li class="normal" id="section-4.9-6.3">
  When the server has received an authentication command,
  and has not yet replied to an authentication command.
  Then the server sends a ping reply, with the same sequence
  number that was in the ping command.
  This could happen when the client implementation had determined it
- has waited too long for an authentication reply.<a href="#section-3.9-6.3" class="pilcrow">¶</a>
+ has waited too long for an authentication reply.<a href="#section-4.9-6.3" class="pilcrow">¶</a>
 </li>
-          <li class="normal" id="section-3.9-6.4">
+          <li class="normal" id="section-4.9-6.4">
  When the client is authenticated,
  and when the server is available for processing commands.
  Then the server replies with a ping reply with the same sequence number.
  This could happen when the client implementation had determined it
- has waited too long for an expected reply.<a href="#section-3.9-6.4" class="pilcrow">¶</a>
+ has waited too long for an expected reply.<a href="#section-4.9-6.4" class="pilcrow">¶</a>
 </li>
         </ul>
-<p id="section-3.9-7">
+<p id="section-4.9-7">
  If the server is alive and not available, the server
  will reply with a NotSupported command, with its sequence
- number set to the sequence number in the ping command.<a href="#section-3.9-7" class="pilcrow">¶</a></p>
-<p id="section-3.9-8">
+ number set to the sequence number in the ping command.<a href="#section-4.9-7" class="pilcrow">¶</a></p>
+<p id="section-4.9-8">
  If a connected and authenticated client has been waiting for a reply
  or for some other reason needs to determine if the server is still
  available. It can send a ping command.
  If the server is still available, it sends a ping reply.
  If it is no longer available for any reason, it sends a NotSupported
- reply.<a href="#section-3.9-8" class="pilcrow">¶</a></p>
-<p id="section-3.9-9">
+ reply.<a href="#section-4.9-8" class="pilcrow">¶</a></p>
+<p id="section-4.9-9">
  Endpoints MUST NOT send a ping command if they are awaiting
- the results of a previously sent ping command.<a href="#section-3.9-9" class="pilcrow">¶</a></p>
-<p id="section-3.9-10">
- Endpoints MUST NOT send more than two ping commands per minute.<a href="#section-3.9-10" class="pilcrow">¶</a></p>
-<p id="section-3.9-11">
+ the results of a previously sent ping command.<a href="#section-4.9-9" class="pilcrow">¶</a></p>
+<p id="section-4.9-10">
+ Endpoints MUST NOT send more than two ping commands per minute.<a href="#section-4.9-10" class="pilcrow">¶</a></p>
+<p id="section-4.9-11">
  Clients and servers must give priority to ping commands.
- If possible, reply as soon as it receives the command.<a href="#section-3.9-11" class="pilcrow">¶</a></p>
-<p id="section-3.9-12">
+ If possible, reply as soon as it receives the command.<a href="#section-4.9-11" class="pilcrow">¶</a></p>
+<p id="section-4.9-12">
  The server MAY consider too many ping commands as a malfunctioning
- or malicious client and terminate the connection.<a href="#section-3.9-12" class="pilcrow">¶</a></p>
-<p id="section-3.9-13">
+ or malicious client and terminate the connection.<a href="#section-4.9-12" class="pilcrow">¶</a></p>
+<p id="section-4.9-13">
  Servers that are not threaded or can not reply to simultaneous
  or overlapping commands, MUST NOT include PING in
- their capability command.<a href="#section-3.9-13" class="pilcrow">¶</a></p>
+ their capability command.<a href="#section-4.9-13" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="SMIME_SUMMARY">
-<section id="section-3.10">
+<section id="section-4.10">
         <h3 id="name-s-mime-commands-summary">
-<a href="#section-3.10" class="section-number selfRef">3.10. </a><a href="#name-s-mime-commands-summary" class="section-name selfRef">S/MIME Commands Summary</a>
-      </h3>
+<a href="#section-4.10" class="section-number selfRef">4.10. </a><a href="#name-s-mime-commands-summary" class="section-name selfRef">S/MIME Commands Summary</a>
+        </h3>
+<p id="section-4.10-1">
+ ToDo<a href="#section-4.10-1" class="pilcrow">¶</a></p>
 </section>
 </div>
 </section>
 </div>
 <div id="WIREPROTOCOLDETAIL">
-<section id="section-4">
+<section id="section-5">
       <h2 id="name-over-the-wire-protocol-deta">
-<a href="#section-4" class="section-number selfRef">4. </a><a href="#name-over-the-wire-protocol-deta" class="section-name selfRef">Over the Wire Protocol Detail</a>
+<a href="#section-5" class="section-number selfRef">5. </a><a href="#name-over-the-wire-protocol-deta" class="section-name selfRef">Over the Wire Protocol Detail</a>
       </h2>
-<p id="section-4-1">
+<p id="section-5-1">
  This section specifies the details of what is
- transmitted over the network.<a href="#section-4-1" class="pilcrow">¶</a></p>
-<p id="section-4-2">
+ transmitted over the network.<a href="#section-5-1" class="pilcrow">¶</a></p>
+<p id="section-5-2">
  All protocol data transmitted between the endpoints is sent in
- network byte order.<a href="#section-4-2" class="pilcrow">¶</a></p>
-<p id="section-4-3">
+ network byte order.<a href="#section-5-2" class="pilcrow">¶</a></p>
+<p id="section-5-3">
  All payload data transmitted between the endpoints is sent
  in original format.
  The payload consent is seen as an opaque blob of data within
- a command packet.<a href="#section-4-3" class="pilcrow">¶</a></p>
-<p id="section-4-4">
+ a command packet.<a href="#section-5-3" class="pilcrow">¶</a></p>
+<p id="section-5-4">
  When a command packet is received by ether endpoint it:
  (1) Checks the command sequence number to determine if it is a reply
  or not.
  (2) If it is a reply, it looks at the command and dispatches
  it to the implementations commands reply code.
  (3) If is not a reply, it looks at the command and dispatches
- it to the implementations command code.<a href="#section-4-4" class="pilcrow">¶</a></p>
-<p id="section-4-5">
+ it to the implementations command code.<a href="#section-5-4" class="pilcrow">¶</a></p>
+<p id="section-5-5">
  A command and all of its replies, use the same format as
- described here.<a href="#section-4-5" class="pilcrow">¶</a></p>
-<p id="section-4-6">
+ described here.<a href="#section-5-5" class="pilcrow">¶</a></p>
+<p id="section-5-6">
  A packet has a 64-bit unsigned integer in network byte
  order that is set to the octet count of all of the
  data that follows this length value.
  The shortest packet is 16 octets in size, with
  a length value set to 8. With 8 octets for the length, and 8 octets
- for the packet.<a href="#section-4-6" class="pilcrow">¶</a></p>
-<p id="section-4-7">
+ for the packet.<a href="#section-5-6" class="pilcrow">¶</a></p>
+<p id="section-5-7">
  Followed by a 32-bit unsigned integer in network byte
- order that is the command sequence number.<a href="#section-4-7" class="pilcrow">¶</a></p>
-<p id="section-4-8">
+ order that is the command sequence number.<a href="#section-5-7" class="pilcrow">¶</a></p>
+<p id="section-5-8">
  Followed by a 32-bit unsigned integer in network byte
- order that is the command.<a href="#section-4-8" class="pilcrow">¶</a></p>
-<p id="section-4-9">
- Followed by zero or more octets of payload data.<a href="#section-4-9" class="pilcrow">¶</a></p>
-<p id="section-4-10">
+ order that is the command.<a href="#section-5-8" class="pilcrow">¶</a></p>
+<p id="section-5-9">
+ Followed by zero or more octets of payload data.<a href="#section-5-9" class="pilcrow">¶</a></p>
+<p id="section-5-10">
  There is no space, padding, or line endings between the parts
  of the packet.
  The payload is sent without any modification and is not
  encoded or transformed in any way.
  A packet is shown here vertically only
- to aid in readability.<a href="#section-4-10" class="pilcrow">¶</a></p>
-<div id="section-4-11">
-        <div class="alignLeft art-ascii-art art-text artwork" id="section-4-11.1">
+ to aid in readability.<a href="#section-5-10" class="pilcrow">¶</a></p>
+<div id="section-5-11">
+        <div class="alignLeft art-ascii-art art-text artwork" id="section-5-11.1">
 <pre>
 +-----------------------------------------------------------------+
 | ...64-bit.unsigned.integer.length ..............................|
@@ -2545,18 +2660,18 @@ li > p:last-of-type:only-child {
 +----------------------------------+
 | payload.....
 
-</pre><a href="#section-4-11.1" class="pilcrow">¶</a>
+</pre><a href="#section-5-11.1" class="pilcrow">¶</a>
 </div>
 </div>
-<p id="section-4-12">
+<p id="section-5-12">
  The payload size and format varies for each command.
  The details of the payload content, and the format
- of that content, is described in each specific CMD section.<a href="#section-4-12" class="pilcrow">¶</a></p>
-<p id="section-4-13">
+ of that content, is described in each specific CMD section.<a href="#section-5-12" class="pilcrow">¶</a></p>
+<p id="section-5-13">
  An implementation can send, receive, and dispatch packets within
  its implementation by looking at the length, SEQ, and CMD, then
- passing the payload to code that can handle that payload.<a href="#section-4-13" class="pilcrow">¶</a></p>
-<p id="section-4-14">
+ passing the payload to code that can handle that payload.<a href="#section-5-13" class="pilcrow">¶</a></p>
+<p id="section-5-14">
  - Read in a 64-bit value.
  - Convert the value from network byte order, to host byte order. This is the
  total length of the data that follows.
@@ -2566,13 +2681,12 @@ li > p:last-of-type:only-child {
  - Get another 32-bit value in the payload, it is the CMD in network byte order.
  - Convert the CMD from network byte order, to host byte order.
  - Dispatch the CMD with SEQ and all of the data that follows
- to implementation<a href="#section-4-14" class="pilcrow">¶</a></p>
-<p id="section-4-15">
+ to implementation<a href="#section-5-14" class="pilcrow">¶</a></p>
+<p id="section-5-15">
  The following is pseudo code that explains how processing incoming XDR
- data can be handled:<a href="#section-4-15" class="pilcrow">¶</a></p>
-<div class="breakable sourcecode" id="section-4-16">
+ data can be handled:<a href="#section-5-15" class="pilcrow">¶</a></p>
+<div class="breakable sourcecode" id="section-5-16">
 <pre>
-
   // Where:
   //  uint64_t, is a 64-bit unsigned integer.
   //  uint32_t, is a 32-bit unsigned integer.
@@ -2645,34 +2759,530 @@ li > p:last-of-type:only-child {
       }
     }
   }
-
-</pre><a href="#section-4-16" class="pilcrow">¶</a>
+</pre><a href="#section-5-16" class="pilcrow">¶</a>
 </div>
+</section>
+</div>
+<div id="INDEX">
+<section id="section-6">
+      <h2 id="name-index">
+<a href="#section-6" class="section-number selfRef">6. </a><a href="#name-index" class="section-name selfRef">Index</a>
+      </h2>
+<div id="InterestedHeaders">
+<section id="section-6.1">
+        <h3 id="name-interested-headers">
+<a href="#section-6.1" class="section-number selfRef">6.1. </a><a href="#name-interested-headers" class="section-name selfRef">Interested Headers</a>
+        </h3>
+<p id="section-6.1-1">
+ Some implementation may wish to specify which MIME headers
+ it wants to get in the index supplied by the server.
+ This is done as part of the folder selection command which
+ can supplies a list of desired headers.
+ Or it can specify a list ID that has already been transmitted.
+ When none are supplied, no header index values will be returned.<a href="#section-6.1-1" class="pilcrow">¶</a></p>
+<p id="section-6.1-2">
+ This list can be the same for all folders, or unique to specific folders.
+ The client generates a list of interested headers and
+ sends an InterestedHeaders list to the server when selecting
+ a folder.<a href="#section-6.1-2" class="pilcrow">¶</a></p>
+<p id="section-6.1-3">
+ A request ID (HIDX) is an 8-bit unsigned integer in network byte order.<a href="#section-6.1-3" class="pilcrow">¶</a></p>
+<p id="section-6.1-4">
+ A Header ID is an 8-bit unsigned integer in network byte order.<a href="#section-6.1-4" class="pilcrow">¶</a></p>
+<p id="section-6.1-5">
+ There are three (3) types of interested header index (HIDX) requests.
+ These are 8-bit unsigned integer in network byte order.
+ And the HIDX values are:<a href="#section-6.1-5" class="pilcrow">¶</a></p>
+<ul class="normal">
+<li class="normal" id="section-6.1-6.1">
+            <p id="section-6.1-6.1.1">
+ HIDX = 0<a href="#section-6.1-6.1.1" class="pilcrow">¶</a></p>
+<p id="section-6.1-6.1.2">
+ Used to set the default MIME object and Body Part list
+ of interesting headers the client cares about.
+ The default list has a list ID that is also zero (0).<a href="#section-6.1-6.1.2" class="pilcrow">¶</a></p>
+<p id="section-6.1-6.1.3">
+ And requesting a list ID of zero (0) will return the index
+ of the default headers defined by the client that was set.<a href="#section-6.1-6.1.3" class="pilcrow">¶</a></p>
+</li>
+          <li class="normal" id="section-6.1-6.2">
+            <p id="section-6.1-6.2.1">
+ HIDX = 1<a href="#section-6.1-6.2.1" class="pilcrow">¶</a></p>
+<p id="section-6.1-6.2.2">
+ This value sets a custom list that can be used later by ID.
+ Custom lists have an ID greater than zero (&gt;0)<a href="#section-6.1-6.2.2" class="pilcrow">¶</a></p>
+</li>
+          <li class="normal" id="section-6.1-6.3">
+            <p id="section-6.1-6.3.1">
+ HIDX = 2<a href="#section-6.1-6.3.1" class="pilcrow">¶</a></p>
+<p id="section-6.1-6.3.2">
+ This value is used to get the header list index.<a href="#section-6.1-6.3.2" class="pilcrow">¶</a></p>
+</li>
+        </ul>
+<p id="section-6.1-7">
+ The header for setting a list is shown
+ in <a href="#Interisting-S0-01" class="auto internal xref">Figure 1</a>, where:<a href="#section-6.1-7" class="pilcrow">¶</a></p>
+<ul class="normal">
+<li class="normal" id="section-6.1-8.1">
+            <p id="section-6.1-8.1.1">
+ HIDX is used to set or get the headers the client
+ wishes the server to index in MIME objects.
+ It must be a zero (0), one (1), or two (2).<a href="#section-6.1-8.1.1" class="pilcrow">¶</a></p>
+</li>
+          <li class="normal" id="section-6.1-8.2">
+            <p id="section-6.1-8.2.1">
+ LID is the list ID of the list. An 8-bit value.
+ Zero (0) is the default list.<a href="#section-6.1-8.2.1" class="pilcrow">¶</a></p>
+</li>
+          <li class="normal" id="section-6.1-8.3">
+            <p id="section-6.1-8.3.1">
+ HdrCnt set to the number of headers the client wants
+ in the list.
+ This is an 8-bit value from 0 to 254 with 255 reserved for expanson.<a href="#section-6.1-8.3.1" class="pilcrow">¶</a></p>
+<p id="section-6.1-8.3.2">
+ This is a 32-bit unsigned integer in network byte order.<a href="#section-6.1-8.3.2" class="pilcrow">¶</a></p>
+</li>
+        </ul>
+<span id="name-setting-the-intrest-list-he"></span><div id="Interisting-S0-01">
+<figure id="figure-1">
+          <div id="section-6.1-9.1">
+            <div class="alignLeft art-svg artwork" id="section-6.1-9.1.2">
+<svg xmlns="http://www.w3.org/2000/svg" version="1.1" height="64" width="304" viewBox="0 0 304 64" class="diagram" text-anchor="middle" font-family="monospace" font-size="13px" stroke-linecap="round">
+                <path d="M 8,16 L 8,48" fill="none" stroke="black"></path>
+                <path d="M 80,16 L 80,48" fill="none" stroke="black"></path>
+                <path d="M 152,16 L 152,48" fill="none" stroke="black"></path>
+                <path d="M 224,16 L 224,48" fill="none" stroke="black"></path>
+                <path d="M 296,16 L 296,48" fill="none" stroke="black"></path>
+                <path d="M 8,16 L 296,16" fill="none" stroke="black"></path>
+                <path d="M 8,48 L 296,48" fill="none" stroke="black"></path>
+                <g class="text">
+                  <text x="44" y="36">0x00</text>
+                  <text x="120" y="36">RID</text>
+                  <text x="184" y="36">LID</text>
+                  <text x="260" y="36">HdrCnt</text>
+                </g>
+              </svg><a href="#section-6.1-9.1.2" class="pilcrow">¶</a>
+</div>
+</div>
+<figcaption><a href="#figure-1" class="selfRef">Figure 1</a>:
+<a href="#name-setting-the-intrest-list-he" class="selfRef">Setting the Intrest List - Header</a>
+          </figcaption></figure>
+</div>
+<p id="section-6.1-10">
+ Followed by the header request information.
+ One sent for each unique header to be placed into the header index.
+ As shown in  <a href="#Interisting-S0-02" class="auto internal xref">Figure 2</a>, where:<a href="#section-6.1-10" class="pilcrow">¶</a></p>
+<ul class="normal">
+<li class="normal" id="section-6.1-11.1">
+            <p id="section-6.1-11.1.1">
+ HID is the client assigned unique header ID
+ for the named header.
+ This is an 8-bit unsigned integer.<a href="#section-6.1-11.1.1" class="pilcrow">¶</a></p>
+</li>
+          <li class="normal" id="section-6.1-11.2">
+            <p id="section-6.1-11.2.1">
+ STRING LENGTH is the octet count of the string.
+ Any terminating zero (0) is not counted.<a href="#section-6.1-11.2.1" class="pilcrow">¶</a></p>
+<p id="section-6.1-11.2.2">
+ This is a 24-bit unsigned integer in network byte order.<a href="#section-6.1-11.2.2" class="pilcrow">¶</a></p>
+</li>
+          <li class="normal" id="section-6.1-11.3">
+            <p id="section-6.1-11.3.1">
+ THE HEADER NAME is the characters that make
+ up the MIME header name that is interesting
+ without including any terminating zero (0).
+ These are a sequence of 8-bit unsigned integer values
+ in network byte order.<a href="#section-6.1-11.3.1" class="pilcrow">¶</a></p>
+</li>
+        </ul>
+<span id="name-setting-the-intrest-list-co"></span><div id="Interisting-S0-02">
+<figure id="figure-2">
+          <div id="section-6.1-12.1">
+            <div class="alignLeft art-svg artwork" id="section-6.1-12.1.2">
+<svg xmlns="http://www.w3.org/2000/svg" version="1.1" height="80" width="288" viewBox="0 0 288 80" class="diagram" text-anchor="middle" font-family="monospace" font-size="13px" stroke-linecap="round">
+                <path d="M 8,16 L 8,64" fill="none" stroke="black"></path>
+                <path d="M 80,16 L 80,48" fill="none" stroke="black"></path>
+                <path d="M 280,16 L 280,48" fill="none" stroke="black"></path>
+                <path d="M 8,16 L 280,16" fill="none" stroke="black"></path>
+                <path d="M 8,48 L 280,48" fill="none" stroke="black"></path>
+                <g class="text">
+                  <text x="32" y="36">HID</text>
+                  <text x="144" y="36">STRING LENGTH</text>
+                  <text x="92" y="68">... HEADER NAME...</text>
+                </g>
+              </svg><a href="#section-6.1-12.1.2" class="pilcrow">¶</a>
+</div>
+</div>
+<figcaption><a href="#figure-2" class="selfRef">Figure 2</a>:
+<a href="#name-setting-the-intrest-list-co" class="selfRef">Setting the Intrest List - Contents</a>
+          </figcaption></figure>
+</div>
+<p id="section-6.1-13">
+ When the HIDX flag is set to two (2) then it is followed by a list<a href="#section-6.1-13" class="pilcrow">¶</a></p>
+<p id="section-6.1-14">
+ LID, the list ID of an already transmitted list to be used.
+ Zero (0) for the already defined and transmitted default list.
+ Or the LID of another already defined and transmitted non-default list.<a href="#section-6.1-14" class="pilcrow">¶</a></p>
+<p id="section-6.1-15">
+ This is sent as a 32-bit unsigned integer in network byte order.<a href="#section-6.1-15" class="pilcrow">¶</a></p>
+<span id="name-requesting-header-index-by-"></span><div id="Interisting-S0-03">
+<figure id="figure-3">
+          <div id="section-6.1-16.1">
+            <div class="alignLeft art-svg artwork" id="section-6.1-16.1.2">
+<svg xmlns="http://www.w3.org/2000/svg" version="1.1" height="64" width="304" viewBox="0 0 304 64" class="diagram" text-anchor="middle" font-family="monospace" font-size="13px" stroke-linecap="round">
+                <path d="M 8,16 L 8,48" fill="none" stroke="black"></path>
+                <path d="M 80,16 L 80,48" fill="none" stroke="black"></path>
+                <path d="M 152,16 L 152,48" fill="none" stroke="black"></path>
+                <path d="M 224,16 L 224,48" fill="none" stroke="black"></path>
+                <path d="M 296,16 L 296,48" fill="none" stroke="black"></path>
+                <path d="M 8,16 L 296,16" fill="none" stroke="black"></path>
+                <path d="M 8,48 L 296,48" fill="none" stroke="black"></path>
+                <g class="text">
+                  <text x="44" y="36">0x00</text>
+                  <text x="116" y="36">0x00</text>
+                  <text x="188" y="36">0x02</text>
+                  <text x="256" y="36">LID</text>
+                </g>
+              </svg><a href="#section-6.1-16.1.2" class="pilcrow">¶</a>
+</div>
+</div>
+<figcaption><a href="#figure-3" class="selfRef">Figure 3</a>:
+<a href="#name-requesting-header-index-by-" class="selfRef">Requesting Header Index by List ID (LID)</a>
+          </figcaption></figure>
+</div>
+<p id="section-6.1-17">
+ Restrictions:<a href="#section-6.1-17" class="pilcrow">¶</a></p>
+<ul class="normal">
+<li class="normal" id="section-6.1-18.1">
+ Only one default list can be set at a time.
+ It can change by sending a new default list.<a href="#section-6.1-18.1" class="pilcrow">¶</a>
+</li>
+          <li class="normal" id="section-6.1-18.2">
+ List ID zero (0) is reserved for the default list.<a href="#section-6.1-18.2" class="pilcrow">¶</a>
+</li>
+          <li class="normal" id="section-6.1-18.3">
+ The list IDs are unique to the connection and do not persist
+ across connections.<a href="#section-6.1-18.3" class="pilcrow">¶</a>
+</li>
+          <li class="normal" id="section-6.1-18.4">
+ No two lists can have the same ID during a connection.<a href="#section-6.1-18.4" class="pilcrow">¶</a>
+</li>
+        </ul>
+<p id="section-6.1-19"></p>
+<section id="section-6.1.1">
+          <h4 id="name-client-interested-headers-e">
+<a href="#section-6.1.1" class="section-number selfRef">6.1.1. </a><a href="#name-client-interested-headers-e" class="section-name selfRef">Client Interested Headers Examples</a>
+          </h4>
+<p id="section-6.1.1-1">
+ This is an example of the client sending the default
+ interesting header list to the server.
+ The client is asking for the index values
+ for the following MIME headers (1) From, and (2) Subject.
+ And for the following Body part headers (1) Content-Type.<a href="#section-6.1.1-1" class="pilcrow">¶</a></p>
+<span id="name-example-setting-default-lis"></span><div id="Interisting-S0-04">
+<figure id="figure-4">
+            <div id="section-6.1.1-2.1">
+              <div class="alignLeft art-svg artwork" id="section-6.1.1-2.1.2">
+<svg xmlns="http://www.w3.org/2000/svg" version="1.1" height="352" width="552" viewBox="0 0 552 352" class="diagram" text-anchor="middle" font-family="monospace" font-size="13px" stroke-linecap="round">
+                  <path d="M 40,48 L 40,336" fill="none" stroke="black"></path>
+                  <path d="M 112,48 L 112,72" fill="none" stroke="black"></path>
+                  <path d="M 112,88 L 112,232" fill="none" stroke="black"></path>
+                  <path d="M 112,248 L 112,336" fill="none" stroke="black"></path>
+                  <path d="M 184,48 L 184,72" fill="none" stroke="black"></path>
+                  <path d="M 184,112 L 184,144" fill="none" stroke="black"></path>
+                  <path d="M 184,176 L 184,232" fill="none" stroke="black"></path>
+                  <path d="M 184,272 L 184,336" fill="none" stroke="black"></path>
+                  <path d="M 256,48 L 256,72" fill="none" stroke="black"></path>
+                  <path d="M 256,112 L 256,144" fill="none" stroke="black"></path>
+                  <path d="M 256,176 L 256,232" fill="none" stroke="black"></path>
+                  <path d="M 256,272 L 256,336" fill="none" stroke="black"></path>
+                  <path d="M 328,48 L 328,336" fill="none" stroke="black"></path>
+                  <path d="M 400,176 L 400,208" fill="none" stroke="black"></path>
+                  <path d="M 400,272 L 400,336" fill="none" stroke="black"></path>
+                  <path d="M 472,176 L 472,208" fill="none" stroke="black"></path>
+                  <path d="M 472,272 L 472,304" fill="none" stroke="black"></path>
+                  <path d="M 544,176 L 544,208" fill="none" stroke="black"></path>
+                  <path d="M 544,272 L 544,304" fill="none" stroke="black"></path>
+                  <path d="M 40,48 L 328,48" fill="none" stroke="black"></path>
+                  <path d="M 40,80 L 328,80" fill="none" stroke="black"></path>
+                  <path d="M 40,112 L 328,112" fill="none" stroke="black"></path>
+                  <path d="M 40,144 L 328,144" fill="none" stroke="black"></path>
+                  <path d="M 40,176 L 544,176" fill="none" stroke="black"></path>
+                  <path d="M 40,208 L 544,208" fill="none" stroke="black"></path>
+                  <path d="M 40,240 L 328,240" fill="none" stroke="black"></path>
+                  <path d="M 40,272 L 544,272" fill="none" stroke="black"></path>
+                  <path d="M 40,304 L 544,304" fill="none" stroke="black"></path>
+                  <path d="M 40,336 L 400,336" fill="none" stroke="black"></path>
+                  <g class="text">
+                    <text x="148" y="36">RCMD</text>
+                    <text x="216" y="36">LID</text>
+                    <text x="408" y="36">2 MIME Object Headers included.</text>
+                    <text x="16" y="68">(a)</text>
+                    <text x="76" y="68">0x00</text>
+                    <text x="148" y="68">0x00</text>
+                    <text x="220" y="68">0x00</text>
+                    <text x="292" y="68">0x02</text>
+                    <text x="16" y="100">(b)</text>
+                    <text x="76" y="100">0x00</text>
+                    <text x="276" y="100">0x000004</text>
+                    <text x="16" y="132">(c)</text>
+                    <text x="76" y="132">0x46</text>
+                    <text x="148" y="132">0x72</text>
+                    <text x="220" y="132">0x6f</text>
+                    <text x="292" y="132">0x6d</text>
+                    <text x="16" y="164">(d)</text>
+                    <text x="76" y="164">0x01</text>
+                    <text x="276" y="164">0x000007</text>
+                    <text x="16" y="196">(e)</text>
+                    <text x="76" y="196">0x53</text>
+                    <text x="148" y="196">0x75</text>
+                    <text x="220" y="196">0x62</text>
+                    <text x="292" y="196">0x6a</text>
+                    <text x="364" y="196">0x65</text>
+                    <text x="436" y="196">0x63</text>
+                    <text x="508" y="196">0x74</text>
+                    <text x="16" y="228">(f)</text>
+                    <text x="76" y="228">0x00</text>
+                    <text x="148" y="228">0x00</text>
+                    <text x="220" y="228">0x00</text>
+                    <text x="292" y="228">0x01</text>
+                    <text x="16" y="260">(g)</text>
+                    <text x="76" y="260">0x02</text>
+                    <text x="276" y="260">0x00000c</text>
+                    <text x="16" y="292">(h)</text>
+                    <text x="76" y="292">0x43</text>
+                    <text x="148" y="292">0x6f</text>
+                    <text x="220" y="292">0x6e</text>
+                    <text x="292" y="292">0x74</text>
+                    <text x="364" y="292">0x65</text>
+                    <text x="436" y="292">0x6e</text>
+                    <text x="508" y="292">0x74</text>
+                    <text x="16" y="324">(i)</text>
+                    <text x="76" y="324">0x2d</text>
+                    <text x="148" y="324">0x74</text>
+                    <text x="220" y="324">0x79</text>
+                    <text x="292" y="324">0x70</text>
+                    <text x="364" y="324">0x74</text>
+                  </g>
+                </svg><a href="#section-6.1.1-2.1.2" class="pilcrow">¶</a>
+</div>
+</div>
+<figcaption><a href="#figure-4" class="selfRef">Figure 4</a>:
+<a href="#name-example-setting-default-lis" class="selfRef">Example Setting Default List</a>
+            </figcaption></figure>
+</div>
+<p id="section-6.1.1-3">
+ Where:<a href="#section-6.1.1-3" class="pilcrow">¶</a></p>
+<ul class="normal">
+<li class="normal" id="section-6.1.1-4.1">
+ (a) Not used zero (0), HIDX, LID, Two headers follow
+ An HIDX of zero (0) means we are setting the default
+ MIME object header list.<a href="#section-6.1.1-4.1" class="pilcrow">¶</a>
+</li>
+            <li class="normal" id="section-6.1.1-4.2">
+ (b) This first header will be identified as zero (0).
+ The first header is four (4) octets in length: 'From'.<a href="#section-6.1.1-4.2" class="pilcrow">¶</a>
+</li>
+            <li class="normal" id="section-6.1.1-4.3">
+ (c) The value of the characters for 'From'.<a href="#section-6.1.1-4.3" class="pilcrow">¶</a>
+</li>
+            <li class="normal" id="section-6.1.1-4.4">
+ (d) The second header will be identified as one (1).
+ The second header is seven (7) octets in length: 'Subject'.<a href="#section-6.1.1-4.4" class="pilcrow">¶</a>
+</li>
+            <li class="normal" id="section-6.1.1-4.5">
+ (e) The value of the characters for 'Subject'.<a href="#section-6.1.1-4.5" class="pilcrow">¶</a>
+</li>
+            <li class="normal" id="section-6.1.1-4.6">
+ (f) The two MIME objects headers are done, start of Body Part headers.
+ and there is one (1) of them.
+ HIDX and LID are not used here.<a href="#section-6.1.1-4.6" class="pilcrow">¶</a>
+</li>
+            <li class="normal" id="section-6.1.1-4.7">
+ (g) The second header will be identified as three (3).
+ The first body part header is 12 octets long (0xc): 'Content-Type'.<a href="#section-6.1.1-4.7" class="pilcrow">¶</a>
+</li>
+            <li class="normal" id="section-6.1.1-4.8">
+ (h) The value of the characters for 'Content-Type'.<a href="#section-6.1.1-4.8" class="pilcrow">¶</a>
+</li>
+            <li class="normal" id="section-6.1.1-4.9">
+ (i) The reast of the value of the characters for 'Content-Type'.<a href="#section-6.1.1-4.9" class="pilcrow">¶</a>
+</li>
+          </ul>
+</section>
+</section>
+</div>
+<section id="section-6.2">
+        <h3 id="name-mime-folder-index">
+<a href="#section-6.2" class="section-number selfRef">6.2. </a><a href="#name-mime-folder-index" class="section-name selfRef">MIME Folder Index</a>
+        </h3>
+<p id="section-6.2-1">
+ In this specification, a MIME folder is also called a folder.
+ And can be files containing MIME objects on a disk that have a defined order,
+ or sequence of MIME objects in one file.<a href="#section-6.2-1" class="pilcrow">¶</a></p>
+<p id="section-6.2-2">
+ A folder index is a summary of the contents of a MIME folder.
+ It includes the basic header information and the specific location
+ of body parts for each MIME message in the folder.
+ The location information is the octet count to the start of the
+ beginning of the related target data.<a href="#section-6.2-2" class="pilcrow">¶</a></p>
+<ul class="normal">
+<li class="normal" id="section-6.2-3.1">
+ An index is an unsigned 32-bit integer in network byte order.<a href="#section-6.2-3.1" class="pilcrow">¶</a>
+</li>
+          <li class="normal" id="section-6.2-3.2">
+ A length is an unsigned 32-bit integer in network byte order.<a href="#section-6.2-3.2" class="pilcrow">¶</a>
+</li>
+        </ul>
+<p id="section-6.2-4">
+ For example, if a MIME folder contains 100 MIME messages, then
+ the folder index will have 100 message indexes.
+ Each message will have header indexes for the requested headers.
+ Each message index will contain 1 or more body part indexes.
+ Each body part will have header indexes with zero (0) or more entries.<a href="#section-6.2-4" class="pilcrow">¶</a></p>
+<p id="section-6.2-5">
+ This protocol references the strings by octet offset into the entire
+ message.
+ All strings can be referenced by using a total of 8 octets.
+ A Phoenix string consists of two parts:<a href="#section-6.2-5" class="pilcrow">¶</a></p>
+<ol start="1" type="1" class="normal type-1" id="section-6.2-6">
+          <li id="section-6.2-6.1">
+ The octet count to the start of the string with zero being the
+ first octet in the message.<a href="#section-6.2-6.1" class="pilcrow">¶</a>
+</li>
+          <li id="section-6.2-6.2">
+ The length in octets of the string.<a href="#section-6.2-6.2" class="pilcrow">¶</a>
+</li>
+        </ol>
+<p id="section-6.2-7">
+ A Phoenix string over the wire is 8 octets in size.<a href="#section-6.2-7" class="pilcrow">¶</a></p>
+<div id="section-6.2-8">
+          <div class="alignLeft art-ascii-art art-text artwork" id="section-6.2-8.1">
+<pre>
+                                +----------------------------------+
+                                | OFFSET                           |
+                                +----------------------------------+
+                                | LENGTH                           |
+                                +----------------------------------+
+                                | payload.....
+</pre><a href="#section-6.2-8.1" class="pilcrow">¶</a>
+</div>
+</div>
+<p id="section-6.2-9">
+ A folder index consists of:<a href="#section-6.2-9" class="pilcrow">¶</a></p>
+<ul class="normal">
+<li class="normal" id="section-6.2-10.1">
+ The entire length of the index as a 32-bit unsigned
+ integer in network byte order of what follows this value.
+ Allowing the recipient of this index to do one read
+ and process later.<a href="#section-6.2-10.1" class="pilcrow">¶</a>
+</li>
+          <li class="normal" id="section-6.2-10.2">
+ The number of message indexes in this folder index.
+ As an unsigned 32-bit integer in network byte order.<a href="#section-6.2-10.2" class="pilcrow">¶</a>
+</li>
+        </ul>
+<p id="section-6.2-11">
+ The index header is 8 octets:<a href="#section-6.2-11" class="pilcrow">¶</a></p>
+<div id="section-6.2-12">
+          <div class="alignLeft art-ascii-art art-text artwork" id="section-6.2-12.1">
+<pre>
+                                +----------------------------------+
+                                | LENGTH                           |
+                                +----------------------------------+
+                                | MESSAGE COUNT                    |
+                                +----------------------------------+
+                                | payload.....
+</pre><a href="#section-6.2-12.1" class="pilcrow">¶</a>
+</div>
+</div>
+<p id="section-6.2-13">
+ Next is an array of message indexes.
+ They are an ordered list of references to each message.
+ In the order they appear in the folder:<a href="#section-6.2-13" class="pilcrow">¶</a></p>
+<ul class="normal">
+<li class="normal" id="section-6.2-14.1">
+ A 32-bit unsigned integer in network byte order that is
+ the offset in the folder to the message.
+ An offset is unique in a MIME folder, it is used both as
+ an offset into the MIME folder,
+ and as a unique ID within a MIME folder.<a href="#section-6.2-14.1" class="pilcrow">¶</a>
+</li>
+          <li class="normal" id="section-6.2-14.2">
+ An a length of the message as a 32-bit unsigned integer
+ in network byte order.<a href="#section-6.2-14.2" class="pilcrow">¶</a>
+</li>
+        </ul>
+<div id="section-6.2-15">
+          <div class="alignLeft art-ascii-art art-text artwork" id="section-6.2-15.1">
+<pre>
+                                +----------------------------------+
+                                |    32-bit unsigned OFFSET        |
+                                +----------------------------------+
+                                |    32-bit unsigned LENGTH        |
+                                +----------------------------------+
+                                | Array of header index .....
+                                ...
+
+</pre><a href="#section-6.2-15.1" class="pilcrow">¶</a>
+</div>
+</div>
+<p id="section-6.2-16">
+ For each message index is an ordered list of interested headers.
+ The interested header list is assignable by the client and body
+ part indexes.
+ It consists of offsets to the interested headers and associated value.
+ Each interested header can be indexed with nine (9) octets.
+ and consists of:<a href="#section-6.2-16" class="pilcrow">¶</a></p>
+<ul class="normal">
+<li class="normal" id="section-6.2-17.1">
+ The clients assigned unique header ID for the interested header name.
+ This is an unsigned 32-bit integer in network byte order.
+ Leaving the client to ask for the index of 254 unique header names.<a href="#section-6.2-17.1" class="pilcrow">¶</a>
+</li>
+          <li class="normal" id="section-6.2-17.2">
+ A Phoenix string referencing the header value.
+ And as it is unique in a MIME object, the offset is used both as
+ an offset, and as a unique ID within a MIME object.<a href="#section-6.2-17.2" class="pilcrow">¶</a>
+</li>
+          <li class="normal" id="section-6.2-17.3">
+ An unsigned 32-bit integer in network byte order of the number
+ of body parts in this message.
+ Any MIME preamble and epilogue are not counted as body parts
+ A preamble, if it exists, can be easily be calculated as it starts as the
+ first octet after the header area.
+ And the epilogue, if it exists, can be calculated as starting as the first
+ octet after the last MIME boundary.
+ And as it offset is unique in a MIME object, the offset is used both as
+ an offset, and as a unique ID within a MIME object.<a href="#section-6.2-17.3" class="pilcrow">¶</a>
+</li>
+        </ul>
+</section>
 </section>
 </div>
 <div id="IANA">
-<section id="section-5">
+<section id="section-7">
       <h2 id="name-iana-considerations">
-<a href="#section-5" class="section-number selfRef">5. </a><a href="#name-iana-considerations" class="section-name selfRef">IANA Considerations</a>
+<a href="#section-7" class="section-number selfRef">7. </a><a href="#name-iana-considerations" class="section-name selfRef">IANA Considerations</a>
       </h2>
-<p id="section-5-1">This memo includes no request to IANA. [CHECK]<a href="#section-5-1" class="pilcrow">¶</a></p>
+<p id="section-7-1">This memo includes no request to IANA. [CHECK]<a href="#section-7-1" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="Security">
-<section id="section-6">
+<section id="section-8">
       <h2 id="name-security-considerations">
-<a href="#section-6" class="section-number selfRef">6. </a><a href="#name-security-considerations" class="section-name selfRef">Security Considerations</a>
+<a href="#section-8" class="section-number selfRef">8. </a><a href="#name-security-considerations" class="section-name selfRef">Security Considerations</a>
       </h2>
-<p id="section-6-1">This document should not affect the security of the Internet. [CHECK]<a href="#section-6-1" class="pilcrow">¶</a></p>
+<p id="section-8-1">This document should not affect the security of the Internet. [CHECK]<a href="#section-8-1" class="pilcrow">¶</a></p>
 </section>
 </div>
-<section id="section-7">
+<section id="section-9">
       <h2 id="name-references">
-<a href="#section-7" class="section-number selfRef">7. </a><a href="#name-references" class="section-name selfRef">References</a>
+<a href="#section-9" class="section-number selfRef">9. </a><a href="#name-references" class="section-name selfRef">References</a>
       </h2>
-<section id="section-7.1">
+<section id="section-9.1">
         <h3 id="name-normative-references">
-<a href="#section-7.1" class="section-number selfRef">7.1. </a><a href="#name-normative-references" class="section-name selfRef">Normative References</a>
+<a href="#section-9.1" class="section-number selfRef">9.1. </a><a href="#name-normative-references" class="section-name selfRef">Normative References</a>
         </h3>
 <dl class="references">
 <dt id="RFC2119">[RFC2119]</dt>
@@ -2684,9 +3294,9 @@ li > p:last-of-type:only-child {
 <span class="refAuthor">Leiba, B.</span>, <span class="refTitle">"Ambiguity of Uppercase vs Lowercase in RFC 2119 Key Words"</span>, <span class="seriesInfo">BCP 14</span>, <span class="seriesInfo">RFC 8174</span>, <span class="seriesInfo">DOI 10.17487/RFC8174</span>, <time datetime="2017-05" class="refDate">May 2017</time>, <span>&lt;<a href="https://www.rfc-editor.org/info/rfc8174">https://www.rfc-editor.org/info/rfc8174</a>&gt;</span>. </dd>
 <dd class="break"></dd></dl>
 </section>
-<section id="section-7.2">
+<section id="section-9.2">
         <h3 id="name-informative-references">
-<a href="#section-7.2" class="section-number selfRef">7.2. </a><a href="#name-informative-references" class="section-name selfRef">Informative References</a>
+<a href="#section-9.2" class="section-number selfRef">9.2. </a><a href="#name-informative-references" class="section-name selfRef">Informative References</a>
         </h3>
 <dl class="references">
 <dt id="exampleRefMin">[exampleRefMin]</dt>
@@ -3644,7 +4254,7 @@ class FileInformation
 {
         MetaData        Meta&lt;&gt;;
         string          Name&lt;&gt;;
-        uint64_t        Size;
+        uint32_t        Size;
         uint32_t        FlagBits;
 };
 
@@ -4098,10 +4708,10 @@ typedef MimeBodyPart EMailBodyParts&lt;&gt;;
 % *
 % * @return The number of matches.
 % * Returns zero (0) when none are found.
-% * Returns ((uint64_t)-1) when Obj or Key are NULL.
+% * Returns ((uint32_t)-1) when Obj or Key are NULL.
 % */
 %namespace RiverExplorer::Phoenix{
-%extern uint64_t * EMail_HasHeader(EMailHeaders * Headers, const char * Key);
+%extern uint32_t * EMail_HasHeader(EMailHeaders * Headers, const char * Key);
 %}
 #endif
 
@@ -4132,10 +4742,10 @@ typedef MimeBodyPart EMailBodyParts&lt;&gt;;
 % * @param Headers The Headers that is being processed.
 % *
 % * @return The number of EMailHeader in Headers.
-% * Returns ((uint64_t)-1) when Headers is NULL.
+% * Returns ((uint32_t)-1) when Headers is NULL.
 % */
 %namespace RiverExplorer::Phoenix{
-%extern uint64_t EMail_GetHeaderCount(EMailHeaders * Headers);
+%extern uint32_t EMail_GetHeaderCount(EMailHeaders * Headers);
 %}
 #endif
 
@@ -4153,7 +4763,7 @@ typedef MimeBodyPart EMailBodyParts&lt;&gt;;
 % * Returns NULL when Which is not a valid index.
 % */
 %namespace RiverExplorer::Phoenix{
-%extern EMailHeader * EMail_GetHeaderByIndex(EMailHeaders * Headers, uint64_t Which);
+%extern EMailHeader * EMail_GetHeaderByIndex(EMailHeaders * Headers, uint32_t Which);
 %}
 #endif
 
@@ -4233,7 +4843,7 @@ typedef MimeBodyPart EMailBodyParts&lt;&gt;;
 %  *
 %  * @return The number of body parts.
 %        */
-% const uint64_t Count() const;
+% const uint32_t Count() const;
 %
 % /**
 %  * Get the body parts.
@@ -4256,7 +4866,7 @@ typedef MimeBodyPart EMailBodyParts&lt;&gt;;
 %  * @note
 %  * Do not delete the results.
 %        */
-% const MimeBodyPart * Body(uint64_t nTh) const;
+% const MimeBodyPart * Body(uint32_t nTh) const;
 %
 % /**
 %        * This ID is used as a transport ID between
@@ -4278,7 +4888,7 @@ typedef MimeBodyPart EMailBodyParts&lt;&gt;;
 %        * to uniquely identify this message in their system that is
 %        * separate from this ID.
 %        */
-% uint64_t ID() const;
+% uint32_t ID() const;
 %
 % /**
 %  * Messages in a message store have an ID.
@@ -4299,7 +4909,7 @@ typedef MimeBodyPart EMailBodyParts&lt;&gt;;
 %        * to uniquely identify this message in their system that is
 %        * separate from this ID.
 %        */
-% void ID(uint64_t StoreID) const;
+% void ID(uint32_t StoreID) const;
 %};
 %} // End namespace EMail
 %#endif // class
@@ -4321,8 +4931,10 @@ typedef MimeBodyPart EMailBodyParts&lt;&gt;;
 % * The "C" routines return a bool_t, the C++ API return a bool.
 % */
 %#ifdef BUILDING_LIBPHOENIX
+%#include "Types.hpp"
 %#include "MetaData.hpp"
 %#else
+%#include &lt;RiverExplorer/Phoenix/Types.hpp&gt;
 %#include &lt;RiverExplorer/Phoenix/MetaData.hpp&gt;
 %#endif
 %
@@ -4391,7 +5003,7 @@ typedef MimeHeader MimeHeaders&lt;&gt;;
 % * //
 % * TheMimeBodyPart = GetTheData();
 % *
-% * uint64_t            Length;
+% * uint32_t            Length;
 % * const char* TheMediaType = MimeBodyPart_GetMediaType(TheMimeBodyPart);
 % * uint8_t             * Data = MimeBodyPart_GetData(TheMimeBodyPart, &amp;Length);
 % * ...
@@ -4508,22 +5120,24 @@ typedef StringType ArrayOfStrings&lt;&gt;;
 % * be memory mapped.
 % *
 % * - IsMMapped: When true, Data was memory mapped and not allocated.
-% * When false, Data was allocated.
+% * - IsAllocated When true, Data was allocated.
+% *
+% * @note
+% * Both IsMMapped and IsAllocated can be false when it is pointing
+% * to a subset of an allocated or mmapped data.
 % *
 % * - Len The number of octets in Data.
 % *
 % * - Data A pointer to the data.
 % */
 #endif
-class IovVec
+class IoVec
 {
         bool_t          IsMMapped;
-        uint64_t        Len;
+        bool_t          IsAllocated;
+        uint32_t        Length;
         uint8_t * Data;
 };
-
-
-
 </pre><a href="#appendix-E.13-1" class="pilcrow">¶</a>
 </div>
 </section>

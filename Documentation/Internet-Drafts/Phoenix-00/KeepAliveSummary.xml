@@ -1,62 +1,66 @@
-<t>
-	The KeepAlive command is sent to the server from the client.
-	It requests the server not time out.
-	The server may honor or ignore the request.
-</t>
-<t>
-	The Phoenix protocol is designed to transfer data and a server
-	may handle a small subsets of what is possible.
-	Which is why the server decides what is an important command
-	while determining idle timeout.
-</t>
-<t>
-	When the server sends the post authentication capabilities to the
-	client, it includes an IdleTimeout capability that includes the
-	number of seconds it allows for idle time.
-	If no significant action has been taken by the client, as determined
-	by the server, in that time	the server may timeout and close the connection.
-</t>
-<t>
-	The KeepAlive command tells the server that the client wishes the
-	server not to time out as long as a KeepAlive or other command
-	is sent to the server before IdleTimeout seconds have passed.
-</t>
-<t>
-	An IdleTimeout capability can be a positive number, zero, or
-	a negative number.
-</t>
-<ul>
-	<li>
-		A positive number is the maximum idle time in seconds before the server
-		terminates the connection.
-	</li>
-	<li>
-		When the IdleTimeout is zero (0), the server does not timeout.
-	</li>
-	<li>
-		When the IdleTimeout is less than zero (&lt; 0), it means it ignores
-		KeepAlive and it will idle out in the absolute value of the IdleTimeout
-		value in seconds.
-		For example, a value of (-300) means it will ignore KeepAlive
-		and timeout when the server determines nothing significant has
-		happened in 5 minutes (300 seconds).
-	</li>
-</ul>
-<t>
-	Servers that are not threaded or can not reply to simultaneous
-	or overlapping commands, MUST set their IdleTimeout to zero (0)
-	or a negative number.
-</t>
-<t>
-	Clients MUST NOT send KeepAlive commands to a server
-	that has an IdleTimeout of zero (0) or negative (&lt; 0).
-</t>
-<t>
-	Clients MUST NOT send KeepAlive commands to the server until
-	at least 75% of the idle time has passed since the last
-	command has been sent to the server.
-</t>
-<t>
-	A server may terminate a connection if the server implementation
-	determines that KeepAlive commands are arriving to quickly.
-</t>
+<section anchor="KEEPALIVE_SUMMARY">
+	<name>KeepAlive Command Summary</name>
+
+	<t>
+		The KeepAlive command is sent to the server from the client.
+		It requests the server not time out.
+		The server may honor or ignore the request.
+	</t>
+	<t>
+		The Phoenix protocol is designed to transfer data and a server
+		may handle a small subsets of what is possible.
+		Which is why the server decides what is an important command
+		while determining idle timeout.
+	</t>
+	<t>
+		When the server sends the post authentication capabilities to the
+		client, it includes an IdleTimeout capability that includes the
+		number of seconds it allows for idle time.
+		If no significant action has been taken by the client, as determined
+		by the server, in that time	the server may timeout and close the connection.
+	</t>
+	<t>
+		The KeepAlive command tells the server that the client wishes the
+		server not to time out as long as a KeepAlive or other command
+		is sent to the server before IdleTimeout seconds have passed.
+	</t>
+	<t>
+		An IdleTimeout capability can be a positive number, zero, or
+		a negative number.
+	</t>
+	<ul>
+		<li>
+			A positive number is the maximum idle time in seconds before the server
+			terminates the connection.
+		</li>
+		<li>
+			When the IdleTimeout is zero (0), the server does not timeout.
+		</li>
+		<li>
+			When the IdleTimeout is less than zero (&lt; 0), it means it ignores
+			KeepAlive and it will idle out in the absolute value of the IdleTimeout
+			value in seconds.
+			For example, a value of (-300) means it will ignore KeepAlive
+			and timeout when the server determines nothing significant has
+			happened in 5 minutes (300 seconds).
+		</li>
+	</ul>
+	<t>
+		Servers that are not threaded or can not reply to simultaneous
+		or overlapping commands, MUST set their IdleTimeout to zero (0)
+		or a negative number.
+	</t>
+	<t>
+		Clients MUST NOT send KeepAlive commands to a server
+		that has an IdleTimeout of zero (0) or negative (&lt; 0).
+	</t>
+	<t>
+		Clients MUST NOT send KeepAlive commands to the server until
+		at least 75% of the idle time has passed since the last
+		command has been sent to the server.
+	</t>
+	<t>
+		A server may terminate a connection if the server implementation
+		determines that KeepAlive commands are arriving to quickly.
+	</t>
+</section>

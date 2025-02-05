@@ -15,25 +15,94 @@ me line as the corresponding term -->
 			These operations authenticate users and verity their authorization
 			access.
 		</dd>
-		<dt>CMD</dt>
-		<dd>
-			A specific protocol operation, or command.
-			They are broken down into, AdminCmd, AuthCmd, FileCmd,
-			and ProtoCmd.
+		<dt>Body Part ID</dt>
+		<dd>	
+			A unique ID for a MIME Object.
+			This is an unsigned 32-bit integer in network byte order
+			that is assigned by the server and sent to the client
+			on a successful folder open.
+			This ID persists across connections.
+			And as long as the MIME object does not get altered in any way,
+			this ID is valid and persists across servers.
+			It is the offset in octets from the beginning of the
+			message to the start of the body part.
+			<br/>
+			<xref target="Index-Ref">See Index.</xref>
 		</dd>
     <dt>Command, CMD</dt>
     <dd>
-			Each packet contains a command.
-			This command is also in the reply to the command.
-			Not all commands have a reply.
+			A specific protocol operation, or command.
+			They are broken down into, AdminCmd, AuthCmd, FileCmd,
+			and ProtoCmd.
 			These are called a CMD or command.
 		</dd>
 		<dt>FileCmd</dt>
 		<dd>
-			A general term for any file command.
-			File and folder operations.
+			A general term for any file or folder command.
 			This include creating, getting, modifying, deleting, moving,
 			and renaming files.
+		</dd>
+		<dt>Folder ID</dt>
+		<dd>
+			A unique ID for a MIME folder.
+			This is an unsigned 32-bit integer in network byte order
+			that is assigned by the server and sent to the client
+			on a successful folder open.
+			This ID persists across connections to the same server.
+			Once a folder has an ID, it never changes on a server
+			as described in <xref target="FOLDERS">Folders</xref>.
+			<br/>
+			<xref target="Index-Ref">See Index.</xref>
+		</dd>
+		<dt anchor="Index-HH">Header ID</dt>
+		<dd>
+			An offset into a MIME object where a specific header starts.
+			As the position in a MIME object is unique, this value
+			is also used as the ID to a specific header.
+			As long as the MIME object does not change in any way
+			this ID persisists across connections and servers.
+			<br/>
+			<xref target="Index-Ref">See Index.</xref>
+		</dd>
+		<dt anchor="Index-HVH">Header Value ID</dt>
+		<dd>
+			Related to Header ID.
+			An offset into a MIME object where a specific header value starts.
+			As the position in a MIME object is unique, this value
+			is also used as the ID to a specific header value.
+			As long as the MIME object does not change in any way
+			this ID persisists across connections and servers.
+			<br/>
+			<xref target="Index-Ref">See Index.</xref>
+			<br/>
+			<xref target="Index-Ref">See Header ID.</xref>
+		</dd>
+		<dt>HIDX</dt>
+		<dd>
+			Header Index type.
+			A command sent as part of a folder open command that tells the
+			server which MIME headers it would like indexed.
+		</dd>
+		<dt anchor="Index-Ref">Index</dt>
+		<dd>
+			<t>
+				This wire protocol transmits all or part of MIME objects.
+				Various parts can be referenced by an offset into the object.
+				This is an index into the MIME objects.
+				A client may request an index be used when opening a folder.
+			</t>
+			<t>
+				<em>Note</em>:	
+				None of these index values are guaranteed to persist across
+				re-connections to the server,
+				as other clients may have altered the contents.
+			</t>
+		</dd>
+		<dt>LID</dt>
+		<dd>
+			List ID.
+			In operations that require a list or set of data.
+			This ID uniquely identifies which list or set is in context.
 		</dd>
     <dt>Media Type</dt>
     <dd>
@@ -45,6 +114,11 @@ me line as the corresponding term -->
     <dd>
 			This protocol transports MIME objects.
 			This specification does not remove or alter any MIME objects;
+		</dd>
+		<dt>Offset</dt>
+		<dd>
+			Unless otherwise specified, an offset is an unsigned 32-bit
+			integer in network byte order.
 		</dd>
 		<dt>Packet</dt>
 		<dd>
@@ -69,7 +143,7 @@ me line as the corresponding term -->
     <dd>
 			A general term for all protocol commands.
 			This also includes commands that do not fall into one of
-			the other catagories described here in this definistions section.
+			the other categories described here in this definitions section.
 		</dd>
     <dt>SEQ, Command Sequence, CMD_SEQ</dt>
 		<dd>
@@ -80,7 +154,7 @@ me line as the corresponding term -->
 		</dd>
 		<dt>SSL</dt>
 		<dd>
-			For the purpose of this specification, SSL is interchangable
+			For the purpose of this specification, SSL is interchangeable
 			with TLS.
 			This document uses the term TLS.
 			The sample implementation uses both SSL and TLS because
@@ -94,11 +168,30 @@ me line as the corresponding term -->
 		</dd>
     <dt>XDR</dt>
     <dd>
-			RFC-4506 specifies a standard and compatible way to transfer
-			binary information.
-			This protocol uses XDR to transmit a command, its values
-			and any parameters and replies.
-			The MIME data, the payload, is transported as XDR opaque,
-			and is unmodified.
+			<t>
+				RFC-4506 specifies a standard and compatible way to transfer
+				binary information.
+				This protocol uses XDR to transmit a command, its values
+				and any parameters and replies.
+				The MIME data, the payload, is transported as XDR opaque,
+				and is unmodified.
+			</t>
+			<t>
+				<em>Note</em>: XDR transmits data in 32-bit chunks.
+				An 8-bit value is transmitted with the lower 8-bits
+				valid and the upper 24 bits set to zero.
+				A 16-bit value is transmitted with the lower 16-bits
+				valid and the upper 16 bits set to zero.
+			</t>
+			<t>
+				So many of these protocol elements pack one or more
+				of its parameters into one 32-bit value.
+				As defined in each section.
+				In many cases pseudo code is shown on how to pack the
+				date and create the protocol element.
+			</t>
+			<t>
+				SEE RFC-4506 section 3.
+			</t>
 		</dd>
   </dl>

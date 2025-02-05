@@ -161,7 +161,7 @@ main(int argc, char ** argv)
 				Msg = new Phoenix::MimeMessage();
 
 				if (Msg->Parse(PathToFile.c_str(), Errors)) {
-					fprintf(stdout, "OK:%s\n", PathToFile.c_str());
+					fprintf(stdout, "OK:\n");
 
 					SaveMessage(Msg, OutPath);
 
@@ -189,6 +189,8 @@ main(int argc, char ** argv)
 
 		Msg = new Phoenix::MimeMessage();
 
+		fprintf(stdout, "Starting:%s ...", FileName);
+		fflush(stdout);
 		if (Msg->Parse(FileName, Errors)) {
 			fprintf(stdout, "OK:%s\n", FileName);
 

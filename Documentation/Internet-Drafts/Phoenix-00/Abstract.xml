@@ -1,3 +1,4 @@
+<abstract>
 <t>
 	NOTE: This is just getting started, not ready for submission yet.
 </t>
@@ -34,3 +35,4 @@
 	Which also includes a gateway from this proposal to existing system.
 	Thunderbid and Outlook plugins are part of the sample implementation.
 </t>
+</abstract>

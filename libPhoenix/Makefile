@@ -62,6 +62,7 @@ SOURCES.cpp = \
 	CppGetMessage.cpp \
 	CppMime.cpp \
 	CppMimeHeaders.cpp \
+	CppMimeBodyPart.cpp \
 	CppNotSupported.cpp \
 	CppPing.cpp \
 	CppSearch.cpp \

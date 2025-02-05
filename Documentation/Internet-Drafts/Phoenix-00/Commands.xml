@@ -1,0 +1,92 @@
+<section anchor="COMMANDS" xmlns:xi="http://www.w3.org/2001/XInclude">
+	<name>Commands Summary</name>
+	<t>
+		The endpoint that initiates the connection is called the client.
+    The endpoint that is connected to, is called the server.
+    The client is the protocol authority, and the server responds
+    to client commands as configured or instructed by the client.
+  </t>
+
+	<t>
+		This section provides an overview of the basic commands.
+		Each command has a detailed section in this specification.
+	</t>
+	<t>
+		When a command is sent to the remote endpoint and received,
+		the remote endpoint determines if the connection is authenticated
+		or authorized to perform the command.
+		If not supported, or not authorized, a NotSupported command
+		is send as a reply.
+		The NotSupported command sent back has the same Sequence number 
+		that was in the original command.
+	</t>
+	<t>
+		Many commands are only valid after authentication.
+	</t>
+	<t>
+		When the client connects to a server it immediately sends
+		its pre authentication capabilities to the server.
+		Or an Auth command.
+	</t>
+	<t>
+		When the server gets a new connection followed by
+		a pre authentication capability command, it immediately sends
+		its pre authentication capabilities to the client.
+	</t>
+	<t>
+		When the client and server have had a relationship, the
+		client may send an Auth Command to initiate the authorization
+		and does not send its pre authentication capability list
+		to the server.
+		It then waits for the Auth reply from the server.
+	</t>
+	<ul>
+		<li>
+			If the client gets an Auth reply that is positive,
+			it sends its post authentication capability list to the server.
+		</li>
+		<li>
+			If the client gets an Auth reply that is negative,
+			it sends its pre authentication
+			capability list to the server.
+		</li>
+	</ul>
+	<t>
+		When a servers first received packet is a Auth command,
+		It processes the Auth command and sends the Auth reply.
+	</t>
+	<ul>
+		<li>
+			If the Auth reply is positive, then it also sends it
+			post authentication capability list.
+		</li>
+		<li>
+			If the Auth reply is negative, then it sends its
+			pre authentication capability list to the client.
+		</li>
+	</ul>
+
+	<t>
+		A server may automatically send its pre authentication
+		capability list to the client upon initial connection.
+		Or it may wait to see if it gets a pre authentication
+		capability list, or an Auth command.
+	</t>
+	<t>
+		If the client sends an Auth command as its first packet,
+		it may get the pre authentication capability from the server
+		before the Auth reply. Simply process both.
+	</t>
+	
+	<xi:include href="ProtocolSummary.xml"/>
+	<xi:include href="AdminSummary.xml"/>
+	<xi:include href="AuthSummary.xml"/>
+	<xi:include href="CalendarSummary.xml"/>
+	<xi:include href="CapabilitySummary.xml"/>
+	<xi:include href="EMailSummary.xml"/>
+	<xi:include href="Folder.xml"/>
+	<xi:include href="KeepAliveSummary.xml"/>
+	<xi:include href="PingSummary.xml"/>
+	<xi:include href="SMimeSummary.xml"/>
+
+</section>

@@ -1,14 +1,13 @@
 #
 #
 
-SOURCES.cpp = SimpleCpp.cpp
+SOURCES.cpp = XmlInclude.cpp
 CXXFLAGS		= -g
 
 OBJECTS			= $(SOURCES.cpp:.cpp=.o)
 
-SimpleCpp : $(OBJECTS)
+XmlInclude : $(OBJECTS)
 	$(CXX) -g $(OBJECTS) -o $@
 
 clean:
-	$(RM) $(OBJECTS) SimpleCpp
-
+	$(RM) $(OBJECTS) XmlInclude

@@ -2,6 +2,8 @@
 # Build the draft
 #
 #
+.SUFFIXES:	.txt .svg
+
 TOP			=	../..
 
 TITLE		=	draft-royer-phoenix
@@ -16,11 +18,13 @@ SOURCES.xml = \
 	AuthSummary.xml \
 	CalendarSummary.xml \
 	CapabilitySummary.xml \
+	Commands.xml \
 	Definitions.xml \
 	EMailSummary.xml \
-	draft-royer-phoenix-00.xml \
+	draft-00.xml \
 	FileBinaryValues.xml \
-	FolderSummary.xml \
+	Folder.xml \
+	Index.xml \
 	Introduction.xml \
 	KeepAliveSummary.xml \
 	PingSummary.xml \
@@ -28,6 +32,14 @@ SOURCES.xml = \
 	ProtocolDetails.xml \
 	ProtocolSummary.xml \
 	SMimeSummary.xml
+
+ARTWORK.txt = \
+	IndexList-01.txt \
+	IndexList-02.txt \
+	IndexList-03.txt \
+	IndexList-04.txt
+
+GENERATED_ARTWORK.svg = $(ARTWORK.txt:.txt=.svg)
 
 TOPDOC.xml	= $(TITLE)-$(VERSION).xml
 
@@ -41,31 +53,34 @@ CPP = $(TOP)/MyTools/SimpleCpp
 
 all : $(TARGET.html) $(TARGET.pdf) $(TARGET.txt)
 
-txt : $(TARGET.txt)
+txt : $(TARGET.txt) $(ARTWORK.txt)
 
-pdf : $(TARGET.pdf)
+pdf : $(TARGET.pdf) $(GENERATED_ARTWORK.svg)
 
-html : $(TARGET.html)
+html : $(TARGET.html) (ARGWORK.svg)
 
-$(TARGET.txt) : $(SOURCES.xml)
-	$(CPP) $(TOPDOC.xml) > tmp.xml
-	xml2rfc tmp.xml
-	mv tmp.txt $@
+$(TARGET.txt) : $(ARTWORK.txt) $(TOPDOC.xml)
+	xml2rfc $(TOPDOC.xml)
 
-$(TARGET.pdf) : $(SOURCES.xml)
-	$(CPP) $(TOPDOC.xml) > tmp.xml
-	xml2rfc --pdf tmp.xml
-	mv tmp.pdf $@
+$(TARGET.pdf) : $(GENERATED_ARTWORK.svg) $(TOPDOC.xml)
+	xml2rfc --pdf $(TOPDOC.xml)
 
-$(TARGET.html): $(SOURCES.xml)
-	$(CPP) $(TOPDOC.xml) > tmp.xml
-	xml2rfc --html tmp.xml
-	mv tmp.html $@
+$(TARGET.html): $(GENERATED_ARTWORK.svg) $(TOPDOC.xml)
+	xml2rfc --html $(TOPDOC.xml)
+
+$(TOPDOC.xml) : draft-00.xml $(SOURCES.xml)
+	xmllint --xinclude --format $< > $@
 
 scp : $(TARGET.html) $(TARGET.pdf) $(TARGET.txt)
 	scp $(TARGET.html) riverexplorer.games:~/public_html/Phoenix
 	scp $(TARGET.pdf) riverexplorer.games:~/public_html/Phoenix
 	scp $(TARGET.txt) riverexplorer.games:~/public_html/Phoenix
+
 clean :
 	$(RM) tmp.*
 	$(RM) $(TARGET.txt) $(TARGET.html) $(TARGET.pdf)
+	$(RM) $(GENERATED_ARTWORK.svg)
+	$(RM) $(TOPDOC.xml)
+
+%.svg : %.txt
+	aasvg < $< > $@

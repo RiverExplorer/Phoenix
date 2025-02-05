@@ -1,112 +1,121 @@
-<t>
-	On the Internet, just about everything is a MIME object and there are
-	many ways to transport MIME.
-	This document specifies a new application level MIME transport mechanism
-	and protocol.
-	This document does not specify any new or changed MIME types.
-</t>
-<t>
-	Transporting MIME objects is generally done in one of two ways:
-	(1) Broadcasting, (2) Polling.
-	Both methods often require some form of authentication, registration,
-	and selecting of the desired material.
-	These selection processes are essentially a form of remote folder management.
-	In some cases you can only select what is provided, and in others
-	you have some or a lot of control over the remote folders.
-</t>
-<t>
-	In addition to other functions, this specification defines a remote
-	and local folder management.
-	This remote folder management is common with many type of very popular
-	protocols.
-	This design started by looking at the very popular IMAP and POP protocols.
-</t>
-<t>
-	An additional task is transporting the perhaps very large MIME objects.
-	Some MIME objects are so large that some devices may 
-	default to looking at only at parts of the MIME object.
-	An example is an email message with one or more very large attachments, where
-	the device may default to not download the large attachment without a
-	specific request from the user.
-</t>
-<t>
-	Some objects are transported as blocks of data with a known and fixed size.
-	These are often transported with some kind of search, get, and put commands.
-	In effect these are folder and file commands
-</t>
-<t>	
-	Other MIME objects are transported in streams of data with an unspecified
-	size,	such as streaming music, audio, or video.
-	This specification describes how to use existing protocols to 
-	facilitate the data streaming.
-	And again, these are folder and file commands.
-</t>
-<t>
-	A MIME object can be a simple object, or it may contain many multipart
-	sections of small to huge size.
-	These sections can be viewed as files in the containing MIME object.
-</t>
-<t>
-	By implementing this specification application developers can
-	use the techniques to manage local and remote files and folders.
-	Remote email or files are the same thing in this specification.
-	The sections of MIME object with multipart sections are viewed as files
-	in the MIME object.
-	You can interact with the entire folder, or just the files within it.
-</t>
-<t>
-	MIME objects have meta data, and they are called headers.
-	Files and folders have meta data, and they are called file attributes.
-	This specification does not mandate any meta data, it allows for
-	a consistent transport of existing meta data.
-</t>
-<t>
-	File and folder meta data is a complex task that can involve
-	access control lists and permissions.
-	This specification defines a mechanism to transport this meta data,
-	it does not define the meta data.
-</t>
-<t>
-	And this specification provides for the ability to define both
-	protocol extensions and the creating of finer control for specific
-	commands that may evolve over time.
-</t>
-<t>
-	This examples compares current folder and file manipulations
-	to how it can be used in this protocol with email.
-</t>
-<ul>
-	<li>
-		You can search for file names.
-		You can search email for: sender, subject, and more.
-	</li>
-	<li>
-		You can search for file contents.
-		You can search for email message contents.
-	</li>
-	<li>
-		You can create, delete, and modify files.
-		You can create, delete, and modify email messages.
-	</li>
-	<li>
-		You can create, delete, and modify folders.
-		You can create, delete, and modify email folders.
-	</li>
-</ul>
-<t>
-	What this specification defines:
-</t>
-<ul>
-	<li>
-		How to use existing authentication implementations or use new ones.
-	</li>
-	<li>
-		This specification describes a standard way to perform file operations
-		that are remote to the application and agnostic to
-		purpose of data being transported.
-	</li>
-	<li>
-		Specifies a way to migrate from some existing protocols to Phoenix.
-		Provides links to sample implementations.
-	</li>
-</ul>
+<section xmlns:xi="http://www.w3.org/2001/XInclude">
+  <name>Introduction</name>
+	
+	<t>
+		On the Internet, just about everything is a MIME object and there are
+		many ways to transport MIME.
+		This document specifies a new application level MIME transport mechanism
+		and protocol.
+		This document does not specify any new or changed MIME types.
+	</t>
+	<t>
+		Transporting MIME objects is generally done in one of two ways:
+		(1) Broadcasting, (2) Polling.
+		Both methods often require some form of authentication, registration,
+		and selecting of the desired material.
+		These selection processes are essentially a form of remote folder management.
+		In some cases you can only select what is provided, and in others
+		you have some or a lot of control over the remote folders.
+	</t>
+	<t>
+		In addition to other functions, this specification defines a remote
+		and local folder management.
+		This remote folder management is common with many type of very popular
+		protocols.
+		This design started by looking at the very popular IMAP and POP protocols.
+	</t>
+	<t>
+		An additional task is transporting the perhaps very large MIME objects.
+		Some MIME objects are so large that some devices may 
+		default to looking at only at parts of the MIME object.
+		An example is an email message with one or more very large attachments, where
+		the device may default to not download the large attachment without a
+		specific request from the user.
+	</t>
+	<t>
+		Some objects are transported as blocks of data with a known and fixed size.
+		These are often transported with some kind of search, get, and put commands.
+		In effect these are folder and file commands
+	</t>
+	<t>	
+		Other MIME objects are transported in streams of data with an unspecified
+		size,	such as streaming music, audio, or video.
+		This specification describes how to use existing protocols to 
+		facilitate the data streaming.
+		And again, these are folder and file commands.
+	</t>
+	<t>
+		A MIME object can be a simple object, or it may contain many multipart
+		sections of small to huge size.
+		These sections can be viewed as files in the containing MIME object.
+	</t>
+	<t>
+		By implementing this specification application developers can
+		use the techniques to manage local and remote files and folders.
+		Remote email or files are the same thing in this specification.
+		The sections of MIME object with multipart sections are viewed as files
+		in the MIME object.
+		You can interact with the entire folder, or just the files within it.
+	</t>
+	<t>
+		MIME objects have meta data, and they are called headers.
+		Files and folders have meta data, and they are called file attributes.
+		This specification does not mandate any meta data.
+		It does define some that may be used by implementations.
+		Other related specifications do define some meta data
+		that is consistant with existing protocols.
+		This protocol allows for	a consistent transport of existing meta data
+		and MIME objects.
+	</t>
+	<t>
+		File and folder meta data is a complex task that can involve
+		access control lists and permissions.
+		This specification defines a mechanism to transport this meta data,
+		it does not define the meta data.
+	</t>
+	<t>
+		And this specification provides for the ability to define both
+		protocol extensions and the creating of finer control for specific
+		commands that may evolve over time.
+	</t>
+	<t>
+		This examples compares current folder and file manipulations
+		to how it can be used in this protocol with email.
+	</t>
+	<ul>
+		<li>
+			You can search for file names.
+			You can search email for: sender, subject, and more.
+		</li>
+		<li>
+			You can search for file contents.
+			You can search for email message contents.
+		</li>
+		<li>
+			You can create, delete, and modify files.
+			You can create, delete, and modify email messages.
+		</li>
+		<li>
+			You can create, delete, and modify folders.
+			You can create, delete, and modify email folders.
+		</li>
+	</ul>
+	<t>
+		What this specification defines:
+	</t>
+	<ul>
+		<li>
+			How to use existing authentication implementations or use new ones.
+		</li>
+		<li>
+			This specification describes a standard way to perform file
+			and folder operations	that are remote to the application and
+			agnostic to purpose of data being transported.
+		</li>
+		<li>
+			Specifies a way to migrate from some existing protocols to Phoenix.
+			Provides links to sample implementations.
+		</li>
+	</ul>
+
+</section>

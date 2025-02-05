@@ -1,4 +1,8 @@
-<t>
-	These commands allow for the fetching and submission
-	of EMail messages
-</t>
+<section anchor="EMAIL_SUMMARY">
+	<name>EMail Commands Summary</name>
+	<t>
+		These commands allow for the fetching and submission
+		of EMail messages
+	</t>
+</section>
+
