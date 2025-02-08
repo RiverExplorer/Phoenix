@@ -1,3 +1,5 @@
+<!-- Copyright 2025 RiverExplorer LLC and Douglas Mark Royer -->
+
 <section anchor="INDEX">
 	<name>Index</name>
 
@@ -17,57 +19,14 @@
 			sends an Interested Headers list or list ID to the server when selecting
 			a folder.
 		</t>
-		<section anchor="InterestedHeaders-IndexOP">
-			<name>Index Operation (IndexOP)</name>
-			<t>
-				An Index Operation (IndexOP) is an 8-bit
-				unsigned integer in network byte order.
-				There are only two (2) values, set list (0), use existing list (1).
-			</t>
-			<t>
-				There are two (2) types of index operations (IndexOP) requests.
-				These are 8-bit unsigned integer in network byte order.
-				And the IndexOP values are:
-			</t>
-			<ul>
-				<li>
-					<t>
-						IndexOP = 0
-					</t>
-					<t>
-						Used to set a list of body MIME object, and Body Part,
-						interesting headers the client cares about.
-					</t>
-				</li>
-				<li>
-					<t>
-						IndexOP = 1
-					</t>
-					<t>
-						This indicates that LID is an existing list number to use.
-					</t>
-				</li>
-			</ul>
-		</section>
-		
-		<section anchor="InterestedHeaders-HID">
-			<name>Header ID (HID)</name>
-			<t>
-				A Header ID (HID) is an 8-bit unsigned integer in network byte order.
-				The client assigned this 8-bit number to a header name, then
-				the client and server references it by ID in packets and replies.
-				A client can have up to 254 interested headers per connection.
-				The value 255 is reserved for expansion.
-			</t>
-		</section>
-		
+
 		<section anchor="InterestedHeaders-LID">
 			<name>List ID (LID)</name>
 			<t>
-				A List ID (LID) it an 8-bit unsigned integer in network byte order.
+				A List ID (LID) is a unsigned integer ranging from 0 to 254.
 				It is used in requests and replies to refer to the interested headers
 				list.
-				A client can have up to 254 lists per connection.
+				A client can have up to 254 (LID 0 to 254) lists per connection.
 				The value 255 is reserved for expansion.
 			</t>
 			<t>
@@ -79,52 +38,147 @@
 					across connections.
 				</li>
 				<li>
-					No two lists can have the same ID during a connection.
+					No two lists can have the same ID within a connection.
 				</li>
 			</ul>
+			<t>
+				ABNF:
+			</t>
+			<artwork type="abnf" name="" align="left" alt=""><![CDATA[
+LID    = uint8_t;				
+]]></artwork>
+
 		</section>
 		
-		<section anchor="InterestedHeaders-Wire">
-			<name>Protocol Format</name>
+		<section anchor="InterestedHeaders-IndexOP">
+			<name>Index Operation (IndexOP)</name>
 			<t>
-				When a folder is opened with the FOLDER_OPEN command,
-				it is followed by a	list of interested headers it wants back in
-				the folder open reply.
-				The list can be empty (a single 32-bit unsigned integer
-				set to zero), or contain what follows:
-			</t>
-			<t>
-				The client sets these 3 values into one 32-bit unsigned
-				integer in network byte order as shown
-				in <xref target="Interisting-S0-01"/>, where:
+				An Index Operation (IndexOP) has only one of two values:
 			</t>
 			<ul>
 				<li>
 					<t>
-						IndexOP is used to specify headers the client
-						wishes the server to index in MIME objects.
-						It must be a zero (0) to set the list definition.
+						IndexOPDefine = 0
+					</t>
+					<t>
+						Used to define a list of body MIME object, and Body Part,
+						interesting headers the client cares about.
+						When the LID is already defined, then this redefines it.
+						When the LID is not already defined, it creates a new list.
+						The results will come back as an Folder-Index in a
+						successful FOLDER_OPEN reply.
 					</t>
 				</li>
 				<li>
 					<t>
-						LID is the list ID of the list that client is defining.
-						An 8-bit value.
-					</t>
-				</li>
-				<li>
-					<t>
-						HdrCnt is set by the client to the number of headers in the list.
-						This is an 8-bit value from 0 to 254 with 255 reserved for
-						expansion.
+						IndexOPUse = 1
 					</t>
 					<t>
-						This is a 32-bit unsigned integer in network byte order.
+						This indicates that LID is an existing list number to use.
+						LID has previously been defined in this session.
+						The results will come back as an Folder-Index in a
+						successful FOLDER_OPEN reply.
 					</t>
 				</li>
 			</ul>
+		</section>
+		
+		<section anchor="InterestedHeaders-HID">
+			<name>Header ID (HID)</name>
+			<t>
+				A Header ID (HID) is an unsigned integer ranging
+				from 0 to 254.
+				The client assigned the HID value to a header name, then
+				the client and server references it by HID in packets and replies.
+				A client can have up to 254 interested headers per connection.
+				The value 255 is reserved for expansion.
+			</t>
+			<t>
+				ABNF:
+			</t>
+			<artwork type="abnf" name="" align="left" alt=""><![CDATA[
+HID    = uint8_t;				
+]]></artwork>
+		</section>
+		
+		<section anchor="InterestedHeaders-Lists">
+			<name>Lists</name>
+			<t>
+				The client sends a list to the server as part of
+				a FOLDER_OPEN.
+				One of the parameters to a FOLDER_OPEN is an interested
+				header list.
+				A successfule reply to a FOLDER_OPEN will include
+				indexes into the MIME object for the desired header values.
+			</t>
+			<t>
+				The list can be defined in the same packet.
+				Or it can use an already defined list.
+				Or it can not request any header indexes by defining or using
+				a list that has zero entries.
+			</t>
+			<t>
+				<xref target="Interisting-S0-01"/>, shows the interisted
+				header list prefix.
+				This interisted header list prefix is followed by zero or more
+				SingleEntry objects.
+			</t>
+			<table>
+				<thead>
+					<tr>
+						<td>
+							Name
+						</td>
+						<td>
+							XDR Type
+						</td>
+						<td>
+							Description
+						</td>
+					</tr>
+				</thead>
+				<tbody>
+					<tr>
+						<td>
+							IndexOP
+						</td>
+						<td>
+							uint8_t
+						</td>
+						<td>
+							IndexOPis used to specify headers the client
+							wishes the server to index in MIME objects.
+							It must be a zero (0) to set the list definition.
+						</td>
+					</tr>
+					<tr>
+						<td>
+							LID
+						</td>
+						<td>
+							uint8_t
+						</td>
+						<td>
+							LID is the list ID of the list that client is defining.
+							With 255 reserved for	expansion.
+						</td>
+					</tr>
+					<tr>
+						<td>
+							HDRCNT
+						</td>
+						<td>
+							uint8_t
+						</td>
+						<td>
+							HdrCnt is set by the client to the number of headers in the list.
+							With 255 reserved for	expansion.
+						</td>
+					</tr>
+				</tbody>
+			</table>
 			<figure anchor="Interisting-S0-01" align="center">
-				<name>Setting the Interest List - Header</name>
+				<name>Interest Header List Prefix</name>
 				<artset>
 					<artwork type="ascii-art" src="IndexList-01.txt"/>
 					<artwork type="svg" src="IndexList-01.svg"/>
@@ -135,53 +189,68 @@
 				ABNF:
 			</t>
 			<sourcecode>
-Interest Header:32 = 0x00:8 IndexOP:8 LID:8 HdrCnt:8
+DefineListOp  = 0x01:8
+				
+Interest-Header = DefineListOp LID HdrCnt
 			</sourcecode>
 			
 			<section anchor="InterestedHeader-Entry">
 				<name>Interested Headers - Single Entry</name>
 				<t>
-					Followed by the header request information is one or more
+					Following interest header list prefix data is zero or more
 					of these single header entries.
-					One sent for each unique header to be placed into the header index.
+					One sent for each HdrCnt in the prefix.
+					This list informs the server the HID value that
+					will be used for each interested header in the index
+					that the server replies with.
 					As shown in  <xref target="Interisting-S0-02"/>, where:
 				</t>
-				<ul>
-					<li>
-						<t>
-							HID is the client assigned unique header ID
-							for the named header.
-							This is an 8-bit unsigned integer.
-						</t>
-					</li>
-					<li>
-						<t>
-							STRING LENGTH is the octet count of the string.
-							Any terminating zero (0) is not counted in the length.
-						</t>
-						<t>
-							This is a 24-bit unsigned integer in network byte order.
-						</t>
-					</li>
-					<li>
-						<t>
-							THE HEADER NAME is the characters that make
-							up the MIME header name	that is interesting
-							without including any terminating zero (0).
-							These are a sequence of 8-bit unsigned integer values
-							in network byte order.
-						</t>
-						<t>
-							They are packed into a 32-bit unsigned integer in network
-							byte order.
-						</t>
-						<t>
-							When THE HEADER NAME is not a multiple of 32-bits in
-							length, the remaining bits are unused and shown as
-							zero (0) in this specification.
-						</t>
-					</li>
-				</ul>
+
+				<table>
+					<thead>
+						<tr>
+							<td>
+								Name
+							</td>
+							<td>
+								XDR Type
+							</td>
+							<td>
+								Description
+							</td>
+						</tr>
+					</thead>
+					<tbody>
+						<tr>
+							<td>
+								HID
+							</td>
+							<td>
+								uint8_t
+							</td>
+							<td>
+								HID is the client assigned unique header ID
+								for the named header.
+								This is an 8-bit unsigned integer.
+							</td>
+						</tr>
+						<tr>
+							<td>
+								HEADER NAME
+							</td>
+							<td>
+								PhoenixString
+							</td>
+							<td>
+								<t>
+									THE HEADER NAME is the characters that make
+									up the MIME header name	that is interesting
+									without including any terminating zero (0).
+								</t>
+							</td>
+						</tr>
+					</tbody>
+				</table>
 
 				<figure anchor="Interisting-S0-02" align="center">
 					<name>Setting the Interest List - Contents</name>
@@ -195,9 +264,7 @@ Interest Header:32 = 0x00:8 IndexOP:8 LID:8 HdrCnt:8
 					ABNF:
 				</t>
 				<sourcecode>
-SingleEntry     = SingleHeader:32 HeaderName822
-					
-SingleHeader:32 = HID:8 StringLength:24
+SingleHeader = HID PhoenixString
 				</sourcecode>
 			</section>
 			
@@ -224,9 +291,10 @@ SingleHeader:32 = HID:8 StringLength:24
 					ABNF:
 				</t>
 				<sourcecode>
-UseExistingOp:8 = 0x01:8
+UseExistingOp      = 0x01:8
 					
-UseExistingList:32 = 0x00:8 UseExistingOp:8 LID:8 0x00:8
+UseExistingList:32 = UseExistingOp LID 0x00:8
+
 				</sourcecode>
 			</section>
 

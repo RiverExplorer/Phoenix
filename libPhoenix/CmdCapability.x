@@ -7,6 +7,7 @@
 
 #ifdef RPC_HDR
 %/**
+% * @class RiverExplorer::Phoenix::Capability
 % * The Capability command informs the other endpoint about
 % * its capabilities.
 % *
@@ -59,6 +60,7 @@ class Capability
 
 #ifdef RPC_HDR
 %/**
+% * @enum RiverExplorer::Phoenix::FolderCapabilities_e
 % * Capability FolderCapabilities_e Capabilities that
 % * apply to folder or directories.
 % *

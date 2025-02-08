@@ -9,6 +9,7 @@
 
 #ifdef RPC_HDR
 %/**
+% * @enum RiverExplorer::Phoenix::Folder_e
 % */
 #endif
 
@@ -46,7 +47,7 @@ enum Folder_e
 
 #ifdef RPC_HDR
 %/**
-% * @class FolderCreate CmdFolder.hpp <RiverExplorer/Phoenix/CmdFolder.hpp>
+% * @class RiverExplorer::Phoenix::FolderCreate CmdFolder.hpp <RiverExplorer/Phoenix/CmdFolder.hpp>
 % * @addtogroup Folder
 % *
 % * The full path is the path from the top of the users virtual
@@ -64,7 +65,7 @@ class FolderCreate
 
 #ifdef RPC_HDR
 %/**
-% * @class FolderCreateReply CmdFolder.hpp <RiverExplorer/Phoenix/CmdFolder.hpp>
+% * @class RiverExplorer::Phoenix::FolderCreateReply CmdFolder.hpp <RiverExplorer/Phoenix/CmdFolder.hpp>
 % * @addtogroup Folder
 % * The reply for CreateFolder, Success is set to true if the
 % * folder was created. Otherwise it is set to false.
@@ -77,7 +78,7 @@ class FolderCreateReply
 
 #ifdef RPC_HDR
 %/**
-% * @class FolderCopyr CmdFolder.hpp <RiverExplorer/Phoenix/CmdFolder.hpp>
+% * @class RiverExplorer::Phoenix::FolderCopyr CmdFolder.hpp <RiverExplorer/Phoenix/CmdFolder.hpp>
 % * @addtogroup Folder
 % *
 % * The full original path is the path from the top of the users virtual
@@ -110,7 +111,7 @@ class FolderCopy
 
 #ifdef RPC_HDR
 %/**
-% * @class FolderCopyReply CmdFolder.hpp <RiverExplorer/Phoenix/CmdFolder.hpp>
+% * @class RiverExplorer::Phoenix::FolderCopyReply CmdFolder.hpp <RiverExplorer/Phoenix/CmdFolder.hpp>
 % * @addtogroup Folder
 % *
 % * The reply for CopyFolder, Success is set to true if the
@@ -363,6 +364,7 @@ class FileInformation
 
 #ifdef RPC_HDR
 %/**
+% * @class RiverExplorer::Phonnix::FolderInformation
 % * An XML representation of a folder
 % *
 % * - Meta: Is an array of MetaData.

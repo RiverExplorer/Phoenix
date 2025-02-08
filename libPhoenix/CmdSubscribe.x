@@ -7,6 +7,7 @@
 
 #ifdef RPC_HDR
 %/**
+% * @class RiverExplorer::Phoenix::Subscribe
 % * The Subscribe Command ...
 % */
 #endif
@@ -18,6 +19,7 @@ struct Subscribe
 
 #ifdef RPC_HDR
 %/**
+% * @class RiverExplorer::Phoenix::SubscribeReply
 % * The Subscribe Reply Command ...
 % */
 #endif

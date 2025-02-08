@@ -1,3 +1,7 @@
-+--------+--------+--------+--------+
-|  0x00  |  0x01  |  LID   |  0x00  | Use exiting (0x01). And the List LID
-+--------+--------+--------+--------+
++--------+
+|  0x01  | UseExistingOp
++--------+
+|  LID   | The List ID
++--------+
+|  0x00  | Included Header Count
++--------+

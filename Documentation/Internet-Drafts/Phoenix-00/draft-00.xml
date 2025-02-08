@@ -6,6 +6,7 @@
   <!ENTITY nbhy   "&#8209;">
   <!ENTITY wj     "&#8288;">
 ]>
+<!-- Copyright 2025 RiverExplorer LLC and Douglas Mark Royer -->
 <rfc
   xmlns:xi="http://www.w3.org/2001/XInclude"
   category="info"
@@ -53,6 +54,7 @@
 
   <middle> 
     <xi:include href="RequirementsLanguage.xml"/>
+    <xi:include href="ABNF.xml"/>
     <xi:include href="Introduction.xml"/>
     <xi:include href="Definitions.xml"/>
     <xi:include href="Commands.xml"/>

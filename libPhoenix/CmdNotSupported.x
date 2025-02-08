@@ -7,6 +7,7 @@
 
 #ifdef RPC_HDR
 %/**
+% * @class RiverExplorer::Phoenix::NotSupported
 % * Not supported. This is sent back to the initiating endpoint
 % * when this endpoint does not support the command sent.
 % *
@@ -16,7 +17,7 @@
 % */
 #endif
 
-struct NotSupported
+class NotSupported
 {
 	int foo;
 };

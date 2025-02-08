@@ -7,6 +7,7 @@
 
 #ifdef RPC_HDR
 %/**
+% * @enum RiverExplorer::Phoenix::Command_e
 % * Command_e: An enumerated list of fetch commands.
 % * <ul>
 % * <li>
@@ -159,6 +160,7 @@ union CmdData switch (Command_e Cmd)
 
 #ifdef RPC_HDR
 %/**
+% * @fn RiverExplorer::Phoenix::Register_Cmd
 % * Set the callback for a command.
 % *
 % * @param Cmd The command being registered.
@@ -176,6 +178,7 @@ union CmdData switch (Command_e Cmd)
 
 #ifdef RPC_HDR
 %/**
+% * @fn RiverExplorer::Phoenix::Register_Cmd
 % * Set the callback for a command.
 % *
 % * @param Cmd The command being registered.
@@ -193,6 +196,7 @@ union CmdData switch (Command_e Cmd)
 
 #ifdef RPC_HDR
 %/**
+% * @class RiverExplorer::Phoenix::CmdPacket
 % * A command consists of:
 % * - The enumerated command (Command_e),
 % * - An XDR opaque object (length + data).

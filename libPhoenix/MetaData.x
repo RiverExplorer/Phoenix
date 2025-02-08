@@ -6,12 +6,13 @@
 % */
 %
 %/**
+% * @class RiverExplorer::Phoenix::MetaData
 % * Generic MetaData is a string Key and string Value set.
 % * This is a single value.
 % */
 #endif
 
-struct MetaData
+class MetaData
 {
 #ifdef RPC_HDR 
 %	/**

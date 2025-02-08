@@ -7,6 +7,7 @@
 
 #ifdef RPC_HDR
 %/**
+% * @class RiverExplorer::Phoenix::Timeout
 % * The Timeout Command ...
 % */
 #endif
@@ -18,6 +19,7 @@ struct Timeout
 
 #ifdef RPC_HDR
 %/**
+% * @class RiverExplorer::Phoenix::TimeoutReply
 % * The Timeout Reply Command ...
 % */
 #endif

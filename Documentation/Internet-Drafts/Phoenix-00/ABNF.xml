@@ -1,0 +1,147 @@
+<!-- Copyright 2025 RiverExplorer LLC and Douglas Mark Royer -->
+
+<section>
+	<name>ABNF Notes and Some Definitions</name>
+	<section>
+		<name>ABNF Number of bits in value</name>
+		<t>
+			This specification adds some usage to <xref target="RFC5234">ABNF</xref>
+			to deal with bit width in a binary number.
+		</t>
+		<t>
+			Terminals may specify a bit width.
+			That is the number of bits in the value.
+		</t>
+		<t>
+			<xref target="RFC5234" section="2.3">Terminal Values</xref>
+			is within this specification defined to be:
+		</t>
+		<t>
+			b = binary / binary:width
+			<br/>
+			<br/>
+			d = decimal / decimal:width
+			<br/>
+			<br/>
+			x = hexadecimal / hexadecimal:width
+		</t>
+		<t>
+			Where: with is the number of bits in the value.
+			And must be an unsigned integer greater than zero.
+		</t>
+		<t>
+			And they will pack when applied to to a rule:
+		</t>
+		<t>
+			When the left side has a width: 
+			The number of bits on the left side must equal
+			the number of bits on the right side.
+		</t>
+		<t>
+			In this example A Header is 32-bits in size
+			and is composed of an 8-bit and 24-bit value.
+			The most significant value are placed on the left of the rule:
+		</t>
+		<artwork type="abnf" name="" align="left" alt=""><![CDATA[
+Header:32 = Offset:8 Length:24
+]]></artwork>
+		<t>
+		</t>
+		<t>
+			The pseudo code could be:
+		</t>
+		<sourcecode>
+
+// Header is a 32-bit unsigned integer.
+// Offset is an 8-bit unsigned integer.
+// Length is a 24-bit unsigned integer
+//
+Header = Offset &lt;&lt; 24 | Length;
+
+		</sourcecode>
+
+		<t>
+			This shifts the 8-bit Offset over 24 bits to the left, then
+			adds the 24-bit Length.
+
+			The result would be:
+		</t>
+
+		<figure anchor="ABNF-00" align="center">
+			<name>Packed Bit Example</name>
+			<artset>
+				<artwork type="ascii-art" src="ABNF-00.txt"/>
+				<artwork type="svg" src="ABNF-00.svg"/>
+			</artset>
+		</figure>
+	</section>
+
+	<section>
+		<name>Some ABNF Definitions</name>
+
+		<artwork type="abnf" name="" align="center" alt=""><![CDATA[
+
+             ; An 8-bit unsigned integer
+uint8_t    = 0x00 - 0xff
+		
+             ; A 16-bit unsigned integer
+uint16_t   = 0x0000 - 0xffff
+
+             ; A 32-bit unsigned integer
+uint32_t   = 0x00000000 - 0xffffffff
+
+             ; A 64-bit unsigned integer
+uint64_t   = 0x0000000000000000 - 0xffffffffffffffff
+
+]]></artwork>
+
+		<table>
+			<thead>
+				<tr>
+					<td>
+						ABNF TYPE
+					</td>
+					<td>
+						XDR TYPE
+					</td>
+				</tr>
+			</thead>
+			<tbody>
+				<tr>
+					<td>
+						uint8_t
+					</td>
+					<td>
+						uint8_t
+					</td>
+				</tr>
+				<tr>
+					<td>
+						uint16_t
+					</td>
+					<td>
+						uint16_t
+					</td>
+				</tr>
+				<tr>
+					<td>
+						uint32_t
+					</td>
+					<td>
+						uint32_t
+					</td>
+				</tr>
+				<tr>
+					<td>
+						uint64_t
+					</td>
+					<td>
+						uint64_t
+					</td>
+				</tr>
+			</tbody>
+		</table>
+	</section>
+	
+</section>
+<!-- [CHECK] The 'Requirements Language' section is optional -->

@@ -11,6 +11,7 @@ TITLE		=	draft-royer-phoenix
 VERSION	=	00
 
 SOURCES.xml = \
+	ABNF.xml \
 	Abstract.xml \
 	AdminBinaryValues.xml \
 	AdminSummary.xml \

@@ -67,7 +67,7 @@ SaveMessage(Phoenix::MimeMessage * Msg, std::string OutFileName)
 				AHeader = Msg->GetHeader(Index);
 			}
 
-			TheEntireBody = Msg->GetEntireBody(BodyLength);
+			TheEntireBody = Msg->GetEntireMessage(BodyLength);
 						
 			fwrite((char*)TheEntireBody, BodyLength, 1, OutFp);
 									 

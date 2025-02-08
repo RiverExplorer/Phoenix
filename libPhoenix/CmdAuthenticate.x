@@ -7,6 +7,7 @@
 
 #ifdef RPC_HDR
 %/**
+% * @class RiverExplorer::Phoenix::AuthMD5
 % * Authentication is initiated by the endpoing doing the inital
 % * connection, to the endpoint it is connecting to.
 % *

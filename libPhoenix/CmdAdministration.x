@@ -6,6 +6,7 @@
 
 #ifdef RPC_HDR
 %/**
+% * @enum RiverExplorer::Phoenix::AdministrativeCommands_e
 % * The Administratoin Commands
 % */
 #endif
@@ -25,6 +26,7 @@ enum AdministrativeCommands_e
 
 #ifdef RPC_HDR
 %/**
+% * @class RiverExplorer::Phonenix::Administration
 % * The Administratoin Command ...
 % */
 #endif
@@ -35,6 +37,7 @@ class Administration
 
 #ifdef RPC_HDR
 %/**
+% * @class RiverExplorer::Phonenix::AdministrationReply
 % * The Administratoin Reply Command ...
 % */
 #endif

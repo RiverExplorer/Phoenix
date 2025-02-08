@@ -91,6 +91,7 @@ typedef MimeHeader MimeHeaders<>;
 
 #ifdef RPC_HDR
 %/**
+% * @class RiverExplorer::Phoenix::MimeBodyPart
 %	* - Type: The media-type of the object.
 % * @note
 % * Media-type is not duplicated in Headers.
@@ -101,7 +102,7 @@ typedef MimeHeader MimeHeaders<>;
 % * The data is a binary blob without any encoding.
 % */
 #endif
-struct MimeBodyPart
+class MimeBodyPart
 {
 	MediaType		Type;
 	MimeHeaders Headers;

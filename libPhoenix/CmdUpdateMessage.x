@@ -7,6 +7,7 @@
 
 #ifdef RPC_HDR
 %/**
+% * @class RiverExplorer::Phoenix::UpdateMessage
 % * The UpdateMessage command ...
 % */
 #endif
@@ -18,6 +19,7 @@ struct UpdateMessage
 
 #ifdef RPC_HDR
 %/**
+% * @class RiverExplorer::Phoenix::UpdateMessageReply
 % * The UpdateMessage Reply Command ...
 % */
 #endif

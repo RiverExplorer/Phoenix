@@ -7,6 +7,7 @@
 
 #ifdef RPC_HDR
 %/**
+% * @class RiverExplorer::Phoenix::Ping
 % * The Ping command sends a packet to the remote endpoint.
 % * The other endpoint does a PingReply with no data.
 % *
@@ -20,6 +21,7 @@ class Ping
 
 #ifdef RPC_HDR
 %/**
+% * @class RiverExplorer::Phoenix::PingReply
 % * The Ping Reply command sends a packet to the remote endpoint.
 % * The other endpoint does a PingReply with no data.
 % *
@@ -33,6 +35,7 @@ class PingReply
 
 #ifdef RPC_HDR
 %/**
+% * @class RiverExplorer::Phoenix::CmdPacket
 % * @return a new Ping CmdPacket.
 % */
 #endif

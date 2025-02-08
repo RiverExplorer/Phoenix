@@ -7,6 +7,7 @@
 
 #ifdef RPC_HDR
 %/**
+% * @class RiverExplorer::Phoenix::CopyMessage
 % * The CopyMessage_Cmd ...
 % */
 #endif

@@ -7,6 +7,7 @@
 
 #ifdef RPC_HDR
 %/**
+% * @class RiverExplorer::Phoenix::KeepAlive
 % * The KeepAlive command sends a packet to the remote endpoint.
 % *
 % * There is no reply to a KeepAlive command.

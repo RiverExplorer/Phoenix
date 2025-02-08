@@ -1,3 +1,5 @@
+<!-- Copyright 2025 RiverExplorer LLC and Douglas Mark Royer -->
+
 <section>
   <name>Terms and Definition used in this proposal</name>
   <t>
@@ -22,7 +24,7 @@
 			These operations authenticate users and verity their authorization
 			access.
 		</dd>
-		<dt>Body Part ID</dt>
+		<dt>Body Part ID (BPID)</dt>
 		<dd>
 			<t>
 				A unique ID for a MIME Object.
@@ -39,7 +41,7 @@
 				<xref target="Index-Ref">See Index.</xref>
 			</t>
 		</dd>
-		<dt>Command, CMD</dt>
+		<dt>Command (CMD)</dt>
 		<dd>
 			A specific protocol operation, or command.
 			They are broken down into, AdminCmd, AuthCmd, FileCmd,
@@ -52,7 +54,7 @@
 			This include creating, getting, modifying, deleting, moving,
 			and renaming files.
 		</dd>
-		<dt>Folder ID</dt>
+		<dt>Folder ID (FolderID)</dt>
 		<dd>
 			<t>
 				A unique ID for a MIME folder.
@@ -67,7 +69,7 @@
 				<xref target="Index-Ref">See Index.</xref>
 			</t>
 		</dd>
-		<dt>IndexOP</dt>
+		<dt>Index Operation Type (IndexOP)</dt>
 		<dd>
 			<t>
 				Header Index Operation.
@@ -78,12 +80,15 @@
 				<xref target="Index-Ref">See Index.</xref>
 			</t>
 		</dd>
-		<dt anchor="HeaderDefID">HID</dt>
+		<dt anchor="HeaderDefID">Header Name ID (HID)</dt>
 		<dd>
 			<t>
-				Header Definition ID.
 				And 8-bit unsigned integer the client has assiged to
 				a specific header name.
+				The client and server use the ID rather than passing
+				the string value back and forth in indexes and other
+				operations.
+				It is not used in the MIME object.
 			</t>
 			<t>
 				<xref target="Index-Ref">See Index.</xref>
@@ -98,22 +103,22 @@
 		<dd>
 			<t>
 				An offset into a MIME object where a specific header starts.
-				As the position in a MIME object is unique, this value
-				is also used as the ID to a specific header.
+				As its position in a MIME object is unique, this value
+				is also used as the offset to a specific header.
 				As long as the MIME object does not change in any way
-				this ID persisists across connections and servers.
+				this HeaderID persisists across connections and servers.
 			</t>
 			<t>
 				<xref target="Index-Ref">See Index.</xref>
 			</t>
 		</dd>
-		<dt anchor="Index-HVH">Header Value ID</dt>
+		<dt anchor="Index-HVH">Header Value ID (HVID)</dt>
 		<dd>
 			<t>
 				Related to Header ID.
 				An offset into a MIME object where a specific header value starts.
 				As the position in a MIME object is unique, this value
-				is also used as the ID to a specific header value.
+				is also used as the HVID to a specific header value.
 				As long as the MIME object does not change in any way
 				this ID persisists across connections and servers.
 			</t>
@@ -139,22 +144,27 @@
 				as other clients may have altered the contents.
 			</t>
 		</dd>
-		<dt>LID</dt>
+		<dt>List ID (LID)</dt>
 		<dd>
-			List ID.
 			In operations that require a list or set of data.
-			This ID uniquely identifies which list or set is in context.
+			This LID uniquely identifies which list or set is in context.
 		</dd>
 		<dt>Media Type</dt>
 		<dd>
 			Each MIME object has a media type that identifies the
 			content of the object.
-			This specification does not add, remove, or alter any MIME media type;
+			This specification does not add, remove, or alter any MIME media type.
+			This is represented in MIME objcects as the "Content-Type".
 		</dd>
 		<dt>MIME</dt>
 		<dd>
-			This protocol transports MIME objects.
-			This specification does not remove or alter any MIME objects;
+			<t>
+				This protocol transports MIME objects.
+				This specification does not remove or alter any MIME objects;
+			</t>
+			<t>
+				<xref target="Index-Ref">TODO - this link not valid.</xref>
+			</t>
 		</dd>
 		<dt>Offset</dt>
 		<dd>
@@ -186,7 +196,7 @@
 			This also includes commands that do not fall into one of
 			the other categories described here in this definitions section.
 		</dd>
-		<dt>SEQ, Command Sequence, CMD_SEQ</dt>
+		<dt>SEQ, Command Sequence, (CMDSEQ) or (SEQ)</dt>
 		<dd>
 			Each command has a unique identifier, a sequence number.
 			All replies to a command include the same sequence number

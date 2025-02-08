@@ -1,17 +1,27 @@
-+--------+--------+--------+--------
-| ID-CNT |Body-CNT|  HID   |  HID ...
+
+The Message Index:
+
++--------+
+|Body-CNT|
++--------+
+| HID-CNT|
++--------+.........
+| Array of HID ...
 +--------+--------+--------+--------
 | Array of Phoenix String ...
 +-----------------------------------
 
-Then for each Body-CNT body parts:
+One for each Body-CNT in the Message Index.
+The body part Index:
 
 +-----------------------------------
 | 32-bit Offset, start of Body Part|
 +--------+--------+--------+--------
-| ID-CNT |Body-CNT|  HID   |  HID ...
+|Body-CNT|
++--------+
+| HID-CNT|
++--------+.........
+| Array of HID ...
 +--------+--------+--------+--------
 | Array of Phoenix String ...
 +-----------------------------------
-| Then for each Body-CNT body parts:
-+...................................

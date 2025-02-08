@@ -99,6 +99,7 @@ SOURCES.x = \
 	Index.x \
 	MetaData.x \
 	Mime.x \
+	PhoenixString.x \
 	Types.x
 
 SOURCES.hpp += \

@@ -7,6 +7,7 @@
 
 #ifdef RPC_HDR
 %/**
+% * @class RiverExplorer::Phoenix::Expunge
 % * The Expunge Command ...
 % */
 #endif
@@ -18,6 +19,7 @@ struct Expunge
 
 #ifdef RPC_HDR
 %/**
+% * @class RiverExplorer::Phoenix::ExpungeReply
 % * The Expunge Reply Command ...
 % */
 #endif

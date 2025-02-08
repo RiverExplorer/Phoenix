@@ -52,9 +52,9 @@ namespace RiverExplorer::Phoenix
 
 		return;
 	}
-	
+
 	uint8_t	*
-	MimeMessage::GetEntireBody(uint32_t & Length) const
+	MimeMessage::GetEntireMessage(uint32_t & Length) const
 	{
 		Length = _EntireBody.Length;
 		return(_EntireBody.Data);
@@ -65,11 +65,12 @@ namespace RiverExplorer::Phoenix
 													std::string Boundary,
 													std::vector<std::string> & DebugMessages)
 	{
-		uint32_t			Results = 0;
+		uint32_t					Results = 0;
 
+		MimeMessage::BodyPart		*	NewBodyPart = nullptr;
+		
 		bool					Error = false;
-		BodyPart		*	NewBodyPart = nullptr;
-		uint8_t			*	DataPtr = (uint8_t*)BodyStart;
+		uint8_t			*	DataPtr = (uint8_t*)EntireBodyStart;
 		bool					HeadersDone = false;
 		bool					HasPreamble = false;
 		bool					HasEpilogue = false;
@@ -89,8 +90,8 @@ namespace RiverExplorer::Phoenix
 		const char * StartAsString = BodyStart.c_str();
 		const size_t	StartLength = strlen(StartAsString);
 
-		const hcar * LastAsString = BodyEnd.c_str();
-		const size_t	EndLength = strlen(EndAsString);
+		const char * LastAsString = BodyEnd.c_str();
+		const size_t	EndLength = strlen(LastAsString);
 		
 		// The first part of the body, may be just an ordanary
 		// 822 text.
@@ -104,7 +105,7 @@ namespace RiverExplorer::Phoenix
 		//
 		// First look for the next one (when more than one).
 		//
-		uint8_t	*	PartEnd = (uint8_t*)strstr((char*)EntireBodyStart + StartLen, 
+		uint8_t	*	PartEnd = (uint8_t*)strstr((char*)EntireBodyStart + StartLength, 
 																				 StartAsString);
 
 		// If did not find it, look for last one.
@@ -112,8 +113,8 @@ namespace RiverExplorer::Phoenix
 		if (PartEnd == nullptr) {
 			// Must be the last one?
 			//
-			PartEnd = (uint8_t*)strstr((char*)EntireBodyStart + StartLen, 
-																 EndAsString);
+			PartEnd = (uint8_t*)strstr((char*)EntireBodyStart + StartLength, 
+																 LastAsString);
 
 			if (PartEnd == nullptr) {
 				// ERROR
@@ -125,7 +126,7 @@ namespace RiverExplorer::Phoenix
 		// If yes, it has a preamble.
 		// If not, just skip the white space.
 		//
-		const char * Ptr = EntireBodyStart;
+		const uint8_t * Ptr = EntireBodyStart;
 
 		while (isspace(*Ptr++));
 
@@ -135,8 +136,8 @@ namespace RiverExplorer::Phoenix
 			// it should be ignored, we keep it.
 			// The User Agent can ignore it.
 			//
-			_PreambleStart = (uint32_t)(BodyStart - _EntireMessage.Data);
-			_PreambleLength = (uint32_t)(PartStart - BodyStart);
+			_PreambleStart = (uint32_t)(EntireBodyStart - _EntireMessage.Data);
+			_PreambleLength = (uint32_t)(PartStart - EntireBodyStart);
 
 			DataPtr = PartStart;
 		}
@@ -230,7 +231,7 @@ namespace RiverExplorer::Phoenix
 		// The entire length.
 		//
 		if (!Error) {
-			Results = (uint32_t)(PartEnd - BodyStart);
+			Results = (uint32_t)(PartEnd - EntireBodyStart);
 		}
 
 		return(Results);

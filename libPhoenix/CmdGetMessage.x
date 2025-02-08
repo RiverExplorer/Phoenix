@@ -7,6 +7,7 @@
 
 #ifdef RPC_HDR
 %/**
+% * @class RiverExplorer::Phoenix::GetMessage
 % * The GetMessage_Cmd ...
 % */
 #endif

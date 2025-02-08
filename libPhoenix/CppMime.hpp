@@ -43,7 +43,7 @@ namespace RiverExplorer::Phoenix
 		 * The body part ID is the offset into the message where
 		 * the headers part of the body part starts.
 		 */
-		typedef unint32_t	BodyPartID_t;
+		typedef uint32_t	BodyPartID_t;
 		
 		/**
 		 * Well known MIME strings defined in RFC-2045
@@ -449,7 +449,7 @@ namespace RiverExplorer::Phoenix
 			 * An 822 body part, does not.
 			 */
 			std::vector<Header*>	_Headers;
-			
+		
 		}; // End class BodyPart
 			
 		/**
@@ -550,18 +550,15 @@ namespace RiverExplorer::Phoenix
 																					const char * Name) const;
 
 		/**
-		 * Get the entire body part.
+		 * Get the entire messsage part.
 		 * It will include ALL of the body part.
-		 *
-		 * @param FromID The ID of the body part.
-		 * FromID is a value returned from BodyPart() or BodyPartPart().
 		 *
 		 * @param Length Length will be set to the length of the result.
 		 *
 		 * @return A pointer to the entire body of the message.
 		 * Returns a pointer to the start of the body part header area.
 		 */
-		uint8_t	*	GetEntireBody(BodyPartID_t FromID, uint32_t & Length) const;
+		uint8_t	*	GetEntireMessage(uint32_t & Length) const;
 
 		/**
 		 * Get a bodypart.
@@ -574,7 +571,7 @@ namespace RiverExplorer::Phoenix
 		 * @see BodyPart()
 		 * @see BodyPartPart()
 		 */
-		BodyPart	*	GetBodyPart(FromID);
+		BodyPart	*	GetBodyPart(BodyPartID_t FromID);
 		
 		/**
 		 * Get the index to any MIME preamble in this message.
@@ -640,7 +637,8 @@ namespace RiverExplorer::Phoenix
 		 * After getting this index, the client could fetch the entire
 		 * message, or just the body parts it desires.
 		 */
-		BodyPartID_t	BodyPart(uint32_t Which, std::string & ContentTypeValue);
+		BodyPartID_t	BodyPartID(uint32_t Which,
+														 std::string & ContentTypeValue);
 
 		/**
 		 * Get the offset into the a specific body part
@@ -671,9 +669,9 @@ namespace RiverExplorer::Phoenix
 		 * After getting this index, the client could fetch the entire
 		 * message, or just the body parts it desires.
 		 */
-		BodyPartID_t	BodyPartPart(uint32_t FromWhich,
-															 uint32_t Which,
-															 std::string & ContentTypeValue);
+		BodyPartID_t	BodyPartPartID(uint32_t FromWhich,
+																 uint32_t Which,
+																 std::string & ContentTypeValue);
 
 		/**
 		 * In order to reduce the memory footprint, this implementation
@@ -760,8 +758,9 @@ namespace RiverExplorer::Phoenix
 		 */
 		IoVec		_EntireBody;
 
+			
 		/**
-		 * And Body parts can have body parts.
+		 * Body parts can have body parts.
 		 */
 		std::vector<BodyPart*>	_BodyParts;
 		

@@ -7,6 +7,7 @@
 
 #ifdef RPC_HDR
 %/**
+% * @class RiverExplorer::Phoenix::Search
 % * The Search_Cmd ...
 % */
 #endif

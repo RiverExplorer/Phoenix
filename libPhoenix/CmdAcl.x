@@ -6,6 +6,7 @@
 
 #ifdef RPC_HDR
 %/**
+% * @class RiverExplorer::Phoenix::Acl
 % * The Acl_Cmd ...
 % */
 #endif
