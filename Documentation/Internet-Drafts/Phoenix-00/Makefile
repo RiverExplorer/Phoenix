@@ -57,11 +57,11 @@ DOCDIR			= ../..
 
 TOPDOC.xml	= $(TITLE)-$(VERSION).xml
 
-TARGET.txt	=	$(DOCDIR)/$(TITLE)-$(VERSION).txt
+TARGET.txt	=	$(DOCDIR)/$(TITLE).txt
 
-TARGET.html	=	$(DOCDIR)/$(TITLE)-$(VERSION).html
+TARGET.html	=	$(DOCDIR)/$(TITLE).html
 
-TARGET.pdf	=	$(DOCDIR)/$(TITLE)-$(VERSION).pdf
+TARGET.pdf	=	$(DOCDIR)/$(TITLE).pdf
 
 CPP = $(TOP)/MyTools/SimpleCpp
 

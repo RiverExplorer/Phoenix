@@ -96,6 +96,7 @@ SOURCES.x = \
 	CmdUpdateMessage.x \
 	Commands.x \
 	Email.x \
+	Index.x \
 	MetaData.x \
 	Mime.x \
 	Types.x
