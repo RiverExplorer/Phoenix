@@ -55,10 +55,26 @@
 				</td>
 			</tr>
 			<tr>
+				<td>FOLDER_METADATA</td>
+				<td>
+					Get, set, and update information associated with the
+					folder.
+					File meta data is also returned with the FOLDER_OPEN
+					command.
+				</td>
+			</tr>
+			<tr>
 				<td>FOLDER_MOVE</td>
 				<td>
 					Move a folder.
 					Also the name of the capability for this permission.
+				</td>
+			</tr>
+			<tr>
+				<td>FOLDER_OPEN</td>
+				<td>
+					Open a folder and get information about the folder
+					and files in the folder.
 				</td>
 			</tr>
 			<tr>
@@ -104,6 +120,15 @@
 				<td>
 					Rename a file.
 					Also the name of the capability for this permission.
+				</td>
+			</tr>
+			<tr>
+				<td>FILE_METADATA</td>
+				<td>
+					Get, set, and update information associated with the
+					folder.
+					File meta data is also returned with the FOLDER_OPEN
+					command.
 				</td>
 			</tr>
 			<tr>

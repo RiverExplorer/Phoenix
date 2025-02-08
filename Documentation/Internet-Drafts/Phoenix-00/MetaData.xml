@@ -1,0 +1,410 @@
+<section anchor="META_DATA">
+	<name>Meta Data</name>
+	<t>
+		In this specification a file and a MIME object are used
+		interchangeably.
+		Meta Data is data that is associated with the MIME object
+		and not contained within the MIME object.
+		Meta Data should never be stored in the MIME object as altering
+		the MIME object would invalidate the index information and
+		can invalidate digital signature and encryption information.
+	</t>
+	<t>
+		Meta Data for the folder and MIME objects is returned in
+		a FOLDER_OPEN, FILE_METADATA, or FOLDER_METADATA command.
+		Meta Data can be set and updated by the client using FILE_METADATA
+		or FOLDER_METADATA commands.
+	</t>
+	<t>
+		Most are 8-bit boolean values that are set to false (0x00) or true (0x01).
+		A value that does not exists is the same as a false.
+	</t>
+	<t>
+		Meta data can be global to the object.
+		That is once tagged (or not tagged) the attribute shows up for all
+		users.
+		Or it can be user specific meta data.
+		User specific meta data does not show up for other users.
+	</t>
+	<t>
+		Many have the same or similar name and meaning as they do
+		in <xref target="RFC9051">IMAP</xref>.
+	</t>
+
+	<section>
+		<name>Meta Data - Answered</name>
+		<t>
+			When true, the object has been replied to by the client.
+			This has the same meaning as \Answered does in IMAP.
+		</t>
+		<t>
+			This value can be set and unset.
+			This is user specific meta data because it
+			also applies to shared folders and files.
+		</t>
+	</section>
+	
+	<section>
+		<name>Meta Data - Attributes</name>
+		<t>
+			This object has been tagged with special attributes.
+			It is a list of strings with matching values.
+		</t>
+		<t>
+			User defined attributes MUST start with "X-".
+			These are not portable between implementations
+			and no attempt should be made to copy these
+			between implementations.
+		</t>
+		<t>
+			Non user defined attributes are described
+			in other sections or specifications.
+		</t>
+		<t>
+			This can be user specific meta data or global meta data.
+			See the specific attribute documentation.
+		</t>
+	</section>
+	
+	<section>
+		<name>Meta Data - Deleted</name>
+		<t>
+			When true, this object has been marked as deleted
+			and has not yet been expunged.
+			This has the same meaning as \Deleted does in IMAP.
+		</t>
+		<t>
+			For shared objects, an expunge removes the
+			user from shared access to the file.
+			And the actual expunge is only processed
+			when all shared users have expunged
+			the object.
+		</t>
+		<t>
+			This value can be set and unset.
+			This is user specific meta data because it
+			also applies to shared folders and files.
+		</t>
+	</section>
+	
+	<section>
+		<name>Meta Data - Draft</name>
+		<t>
+			When true, this object is incomplete and not ready.
+		</t>
+		<t>
+			This has the same meaning as \Draft does in IMAP.
+		</t>
+		<t>
+			This value can be set and unset.
+			This is user specific meta data.
+		</t>
+	</section>
+	
+	<section>
+		<name>Meta Data - Flagged</name>
+		<t>
+			An object has been tagged as important.
+			This is the same as the IMAP \Flagged value. 
+		</t>
+		<t>
+			This value can be set and unset.
+			This is user specific meta data because it
+			also applies to shared folders and files.
+		</t>
+	</section>
+
+	<section>
+		<name>Meta Data - Forwarded</name>
+		<t>
+			This has the same meaning as $Forwarded does in IMAP.
+		</t>
+		<t>
+			This value can be set and unset.
+			This is user specific meta data because it
+			also applies to shared folders and files.
+		</t>
+	</section>
+
+	<section>
+		<name>Meta Data - Hide</name>
+		<t>
+			With NotExpungable objects, the user may wish to not view the object.
+			In these cases the attribute Hide can be set.
+			The attribute does not effect the view of other users.
+		</t>
+		<t>
+			This value can be set and unset.
+			This is user specific meta data because it
+			also applies to shared folders and files.
+		</t>
+	</section>
+	
+	<section>
+		<name>Meta Data - Junk</name>
+		<t>
+			This has the same meaning as $Junk does in IMAP.
+		</t>
+		<t>
+			This value can be set and unset.
+			This is user specific meta data because it
+			also applies to shared folders and files.
+		</t>
+	</section>
+	
+	<section>
+		<name>Meta Data - MDNSent</name>
+		<t>
+			This value can be set and unset.
+			This has the same meaning as $MDNSent does in IMAP.
+		</t>
+		<t>
+			This value can be set and unset.
+			This is user specific meta data because it
+			also applies to shared folders and files.
+		</t>
+	</section>
+
+	<section>
+		<name>Meta Data - NoCopy</name>
+		<t>
+			When true, this MIME object can not be copied.
+		</t>
+		<t>
+			This value can be set and unset by the owner of the file or folder.
+			This value can not be unset by non owners.
+			This is global meta data.
+		</t>
+	</section>
+	
+	<section>
+		<name>Meta Data - NotJunk</name>
+		<t>
+			This has the same meaning as $NotJunk does in IMAP.
+		</t>
+		<t>
+			This value can be set and unset.
+			This is user specific meta data because it
+			also applies to shared folders and files.
+		</t>
+	</section>
+	
+	<section>
+		<name>Meta Data - NotExpungable</name>
+		<t>
+			The mime object can not be marked for delete or expunged.
+			It could be because it is an historical record that will never
+			be expunged, or other reason.
+		</t>
+		<t>
+			A client implementation could use the Hide attribute
+			to not show the object to the user.
+		</t>
+		<t>
+			This value can be set and unset by the owner of the file or folder.
+			This value can not be unset by non owners.
+			This is global meta data.
+		</t>
+	</section>
+	
+	<section>
+		<name>Meta Data - Phishing</name>
+		<t>
+			This has the same meaning as $Phishing does in IMAP.
+		</t>
+		<t>
+			This value can be set and unset.
+			This is user specific meta data because it
+			also applies to shared folders and files.
+		</t>
+	</section>
+	
+	<section>
+		<name>Meta Data - ReadOnly</name>
+		<t>
+			The MIME object associated with this attribute
+			can not be altered, deleted, moved, or renamed.
+			It can be copied, unless the NoCopy meta tag
+			is also applied.
+		</t>
+		<t>
+			This value can be set and unset by the owner of the file or folder.
+			This value can not be unset by non owners.
+			This is global meta data.
+		</t>
+		<t>
+			Setting of this to false may fail if the file or folder is
+			stored on read-only media.
+			When the file or folder is stored on read-only media,
+			this MUST BE set to true.
+		</t>
+	</section>
+	
+	<section>
+		<name>Meta Data - Shared</name>
+		<t>
+			The MIME object associated with this attribute
+			is shared and is also often tagged with the ReadOnly
+			meta data tag.
+		</t>
+		<t>
+			This value can not be set and unset by the owner.
+		</t>
+		<t>
+			If copying of the file or folder is allowed, then
+			the shared attribute is removed when copied.
+		</t>
+		<t>
+			This file or folder will only be expunged when all
+			of the users with shared access have deleted and
+			expunged it.
+		</t>
+	</section>
+	
+	<section>
+		<name>Meta Data - Seen</name>
+		<t>
+			This has the same meaning as \Seen does in IMAP.
+		</t>
+		<t>
+			This value can be set and unset.
+			This is user specific meta data because it
+			also applies to shared folders and files.
+		</t>
+	</section>
+	
+	<section>
+		<name>Meta Data - MDNData Attribute</name>
+		<t>
+			This Meta Data Attribute is only visible to the
+			owner of the object for which MDN has been set.
+		</t>
+		<t>
+			This is a list of recipients email address that
+			that are on the distribution list effected by the MDN.
+		</t>
+		<t>
+			The format of an MDNData record is
+			a header, that has:
+		</t>
+		<ul>
+			<li>
+				COUNT: A 32-bit unsigned integer in network byte order
+				indicating how many were on the distribution list
+				for this MDN.
+			</li>
+			<li>
+				SENT: The UTC timestamp as a 64-bit unsigned integer
+				in network byte order of when the MDN reply was sent.
+			</li>
+		</ul>
+		<t>
+			Followed by COUNT detail records:
+		</t>
+		<ul>
+			<li>
+				UTC: The UTC timestamp as a 64-bit unsigned integer
+				in network byte order of when the MDN reply was received.
+				Set to zero if not received.
+			</li>
+			<li>
+				Email-Address: A PhoenixString with the associated
+				email address of the user that has or has not returned
+				the MDN.
+			</li>
+		</ul>
+		<figure anchor="MDNData" align="center">
+			<name>MDNData Attribute</name>
+			<artset>
+				<artwork type="ascii-art" src="MDN-00.txt"/>
+				<artwork type="svg" src="MDN-00.svg"/>
+			</artset>
+		</figure>
+
+	</section>
+
+	<section>
+		<name>Meta Data with Shared Objects</name>
+		<t>
+			When a server implementation allows shared objects,
+			the meta data returned to the client may be different
+			depending on the authenticated user.
+			Some users may have read only copies, other may be
+			able to delete the object.
+		</t>
+		<t>
+			When a shared object is deleted, it is marked as deleted for
+			only the user that issued the delete.
+		</t>
+		<t>
+			When a shared object is expunged, its access is removed
+			for the user that issued the expunge.
+			After all users have expunged the object, then it is
+			removed by the server.
+		</t>
+		<t>
+			There are two kinds of expunge for shared objects.
+			Force and delayed.
+		</t>
+		<ul>
+			<li>
+				<t>
+					Forced:
+				</t>
+				<t>
+					A forced expunge can be the result of security policies
+					at the server, site, or administrators discretion.
+					This also is how timed messages are deleted.
+				</t>
+				<t>
+					In order for a shared object that is expunged to not
+					force an immediate re-index for all clients, the server sends
+					an expunge to all clients, where the client MUST immediately make
+					the object not show	to the user and MUST invalidate
+					any cached or memory copy of the data.
+					Then when convenient, the client can do a re-index
+					of the folder.
+					When a user is viewing the object when an expunge
+					arrives, the client must inform the user that the data
+					is no longer available and replace the user view of
+					the data with an empty object or move the view to
+					another object.
+				</t>
+				<t>
+					Server implementations must prioritize forced expunge notices
+					to the clients and immediately reject all attempts to read,
+					view, copy, or access meta data.
+				</t>
+			</li>
+			<li>
+				<t>
+					Delayed:
+				</t>
+				<t>
+					The user is informed the MIME object is no longer available.
+					The client implementation may continue to show the object.
+					The client may copy the MIME object, unless tagged as
+					NoCopy.
+				</t>
+				<t>
+					The next time the client does an expunge the object will be
+					expunged from the client.
+				</t>
+				<t>
+					When a client application closes, all delayed expunges
+					MUST occur at exit.
+				</t>
+				<t>
+					When a client applications starts the client MUST check for
+					delayed expunges that have not been processed and expunge them
+					and not	allow the user to see them.
+				</t>
+				<t>
+					Server implementations must reject attempts to fetch or view
+					a folder or file or any of its meta data when an expunge has started,
+					and not yet completed.
+				</t>
+			</li>
+		</ul>
+	</section>
+</section>

@@ -10,7 +10,7 @@
   <front>
     <title abbrev="Phoenix: Lemonade Risen Again">Phoenix: Lemonade Risen Again</title>
     <seriesInfo name="Internet-Draft" value="draft-royer-phoenix-00"/>
-    <author fullname="Doug Royer" initials="DM" role="editor" surname="Royer">
+    <author fullname="Doug Royer" initials="DM" surname="Royer">
       <organization>RiverExplorer Games LLC</organization>
       <address>
         <postal>
@@ -87,6 +87,76 @@
 		<xref target="RFC8174"/> when, and only when, they appear in
 		all capitals, as shown here.
 	</t>
+      <section>
+        <name>ABNF additions</name>
+        <t>
+			This specification adds some usage to <xref target="RFC5234">ABNF</xref>
+			to deal with bit width in a binary number.
+		</t>
+        <t>
+			Terminals may specify a bit width.
+			That is the number of bits in the value.
+		</t>
+        <t><xref target="RFC5234" section="2.3">Terminal Values</xref>
+			is within this specification defined to be:
+		</t>
+        <t>
+			b = binary / binary:width
+			<br/>
+			<br/>
+			d = decimal / decimal:width
+			<br/>
+			<br/>
+			x = hexadecimal / hexadecimal:width
+		</t>
+        <t>
+			Where: with is the number of bits in the value.
+			And must be an unsigned integer greater than zero.
+		</t>
+        <t>
+			And they will pack when applied to to a rule:
+		</t>
+        <t>
+			When the left side has a width: 
+			The number of bits on the left side must equal
+			the number of bits on the right side.
+		</t>
+        <t>
+			In this example A Header is 32-bits in size
+			and is composed of an 8-bit and 24-bit value.
+			The most significant value are placed on the left of the rule:
+		</t>
+        <sourcecode>
+      Header:32 = Offset:8 Length:24
+		</sourcecode>
+        <t>
+		</t>
+        <t>
+			The pseudo code could be:
+		</t>
+        <sourcecode>
+
+      // Header is a 32-bit unsigned integer.
+      // Offset is an 8-bit unsigned integer.
+      // Length is a 24-bit unsigned integer
+      //
+      Header = Offset &lt;&lt; 24 | Length;
+
+		</sourcecode>
+        <t>
+			This shifts the 8-bit Offset over 24 bits to the left, then
+			adds the 24-bit Length.
+
+			The result would be:
+		</t>
+        <figure anchor="ABNF-00" align="center">
+          <name>Packed Bit Example</name>
+          <artset>
+            <artwork type="ascii-art" src="ABNF-00.txt"/>
+            <artwork type="svg" src="ABNF-00.svg"/>
+          </artset>
+        </figure>
+      </section>
     </section>
     <section xmlns:xi="http://www.w3.org/2001/XInclude">
       <name>Introduction</name>
@@ -149,8 +219,12 @@
       <t>
 		MIME objects have meta data, and they are called headers.
 		Files and folders have meta data, and they are called file attributes.
-		This specification does not mandate any meta data, it allows for
-		a consistent transport of existing meta data.
+		This specification does not mandate any meta data.
+		It does define some that may be used by implementations.
+		Other related specifications do define some meta data
+		that is consistant with existing protocols.
+		This protocol allows for	a consistent transport of existing meta data
+		and MIME objects.
 	</t>
       <t>
 		File and folder meta data is a complex task that can involve
@@ -193,9 +267,9 @@
 			How to use existing authentication implementations or use new ones.
 		</li>
         <li>
-			This specification describes a standard way to perform file operations
-			that are remote to the application and agnostic to
-			purpose of data being transported.
+			This specification describes a standard way to perform file
+			and folder operations	that are remote to the application and
+			agnostic to purpose of data being transported.
 		</li>
         <li>
 			Specifies a way to migrate from some existing protocols to Phoenix.
@@ -206,12 +280,12 @@
     <section>
       <name>Terms and Definition used in this proposal</name>
       <t>
-				The following is a list of terms with their definitions as
-				used in this specification.
-			</t>
+		The following is a list of terms with their definitions as
+		used in this specification.
+	</t>
       <dl newline="true">
         <!-- Omit newline="true" if you want each definition to start on the sa\
-me line as the corresponding term -->
+				 me line as the corresponding term -->
         <dt>AdminCmd</dt>
         <dd>
 			A general term for any administrative command.
@@ -227,19 +301,22 @@ me line as the corresponding term -->
 			access.
 		</dd>
         <dt>Body Part ID</dt>
-        <dd>	
-			A unique ID for a MIME Object.
-			This is an unsigned 32-bit integer in network byte order
-			that is assigned by the server and sent to the client
-			on a successful folder open.
-			This ID persists across connections.
-			And as long as the MIME object does not get altered in any way,
-			this ID is valid and persists across servers.
-			It is the offset in octets from the beginning of the
-			message to the start of the body part.
-			<br/>
-			<xref target="Index-Ref">See Index.</xref>
-		</dd>
+        <dd>
+          <t>
+				A unique ID for a MIME Object.
+				This is an unsigned 32-bit integer in network byte order
+				that is assigned by the server and sent to the client
+				on a successful folder open.
+				This ID persists across connections.
+				And as long as the MIME object does not get altered in any way,
+				this ID is valid and persists across servers.
+				It is the offset in octets from the beginning of the
+				message to the start of the body part.
+			</t>
+          <t>
+            <xref target="Index-Ref">See Index.</xref>
+          </t>
+        </dd>
         <dt>Command, CMD</dt>
         <dd>
 			A specific protocol operation, or command.
@@ -255,45 +332,76 @@ me line as the corresponding term -->
 		</dd>
         <dt>Folder ID</dt>
         <dd>
-			A unique ID for a MIME folder.
-			This is an unsigned 32-bit integer in network byte order
-			that is assigned by the server and sent to the client
-			on a successful folder open.
-			This ID persists across connections to the same server.
-			Once a folder has an ID, it never changes on a server
-			as described in <xref target="FOLDERS">Folders</xref>.
-			<br/>
-			<xref target="Index-Ref">See Index.</xref>
-		</dd>
-        <dt anchor="Index-HH">Header ID</dt>
+          <t>
+				A unique ID for a MIME folder.
+				This is an unsigned 32-bit integer in network byte order
+				that is assigned by the server and sent to the client
+				on a successful folder open.
+				This ID persists across connections to the same server.
+				Once a folder has an ID, it never changes on a server
+				as described in <xref target="FOLDERS">Folders</xref>.
+			</t>
+          <t>
+            <xref target="Index-Ref">See Index.</xref>
+          </t>
+        </dd>
+        <dt>IndexOP</dt>
         <dd>
-			An offset into a MIME object where a specific header starts.
-			As the position in a MIME object is unique, this value
-			is also used as the ID to a specific header.
-			As long as the MIME object does not change in any way
-			this ID persisists across connections and servers.
-			<br/>
-			<xref target="Index-Ref">See Index.</xref>
+          <t>
+				Header Index Operation.
+				A command sent as part of a folder open command that tells the
+				server which MIME headers it would like indexed.
+			</t>
+          <t>
+            <xref target="Index-Ref">See Index.</xref>
+          </t>
+        </dd>
+        <dt anchor="HeaderDefID">HID</dt>
+        <dd>
+          <t>
+				Header Definition ID.
+				And 8-bit unsigned integer the client has assiged to
+				a specific header name.
+			</t>
+          <t>
+            <xref target="Index-Ref">See Index.</xref>
+          </t>
+        </dd>
+        <dt anchor="Header822">HeaderName822</dt>
+        <dd>
+			A RFC822 or MIME header name.
+			See <xref target="RFC0822" section="3.2"/>
 		</dd>
+        <dt anchor="HeaderOffset">HeaderID</dt>
+        <dd>
+          <t>
+				An offset into a MIME object where a specific header starts.
+				As the position in a MIME object is unique, this value
+				is also used as the ID to a specific header.
+				As long as the MIME object does not change in any way
+				this ID persisists across connections and servers.
+			</t>
+          <t>
+            <xref target="Index-Ref">See Index.</xref>
+          </t>
+        </dd>
         <dt anchor="Index-HVH">Header Value ID</dt>
         <dd>
-			Related to Header ID.
-			An offset into a MIME object where a specific header value starts.
-			As the position in a MIME object is unique, this value
-			is also used as the ID to a specific header value.
-			As long as the MIME object does not change in any way
-			this ID persisists across connections and servers.
-			<br/>
-			<xref target="Index-Ref">See Index.</xref>
-			<br/>
-			<xref target="Index-Ref">See Header ID.</xref>
-		</dd>
-        <dt>HIDX</dt>
-        <dd>
-			Header Index type.
-			A command sent as part of a folder open command that tells the
-			server which MIME headers it would like indexed.
-		</dd>
+          <t>
+				Related to Header ID.
+				An offset into a MIME object where a specific header value starts.
+				As the position in a MIME object is unique, this value
+				is also used as the ID to a specific header value.
+				As long as the MIME object does not change in any way
+				this ID persisists across connections and servers.
+			</t>
+          <t>
+            <xref target="Index-Ref">See Index.</xref>
+          </t>
+          <t>
+            <xref target="Index-Ref">See Header ID.</xref>
+          </t>
+        </dd>
         <dt anchor="Index-Ref">Index</dt>
         <dd>
           <t>
@@ -369,13 +477,17 @@ me line as the corresponding term -->
 			This document uses the term TLS.
 			The sample implementation uses both SSL and TLS because
 			the legacy UNIX, Linux, Windows, and OpenSSL code
-			uses the term SSL as well as TLS.
+			uses the term SSL in cases where is it TLS.
 		</dd>
         <dt>TLS</dt>
         <dd>
-			A way of securely transporting data over the Internet.
-			See RFC-xxxx.
-		</dd>
+          <t>
+				A way of securely transporting data over the Internet.
+			</t>
+          <t>
+				See <xref target="RFC8446"/>
+			</t>
+        </dd>
         <dt>XDR</dt>
         <dd>
           <t>
@@ -397,10 +509,10 @@ me line as the corresponding term -->
 				of its parameters into one 32-bit value.
 				As defined in each section.
 				In many cases pseudo code is shown on how to pack the
-				date and create the protocol element.
+				data and create the protocol element.
 			</t>
           <t>
-				SEE RFC-4506 section 3.
+				See <xref target="RFC4506" section="3"/>
 			</t>
         </dd>
       </dl>
@@ -880,10 +992,26 @@ me line as the corresponding term -->
 				</td>
             </tr>
             <tr>
+              <td>FOLDER_METADATA</td>
+              <td>
+					Get, set, and update information associated with the
+					folder.
+					File meta data is also returned with the FOLDER_OPEN
+					command.
+				</td>
+            </tr>
+            <tr>
               <td>FOLDER_MOVE</td>
               <td>
 					Move a folder.
 					Also the name of the capability for this permission.
+				</td>
+            </tr>
+            <tr>
+              <td>FOLDER_OPEN</td>
+              <td>
+					Open a folder and get information about the folder
+					and files in the folder.
 				</td>
             </tr>
             <tr>
@@ -926,6 +1054,15 @@ me line as the corresponding term -->
               <td>
 					Rename a file.
 					Also the name of the capability for this permission.
+				</td>
+            </tr>
+            <tr>
+              <td>FILE_METADATA</td>
+              <td>
+					Get, set, and update information associated with the
+					folder.
+					File meta data is also returned with the FOLDER_OPEN
+					command.
 				</td>
             </tr>
             <tr>
@@ -1120,6 +1257,397 @@ me line as the corresponding term -->
 	</t>
       </section>
     </section>
+    <section anchor="META_DATA">
+      <name>Meta Data</name>
+      <t>
+		In this specification a file and a MIME object are used
+		interchangeably.
+		Meta Data is data that is associated with the MIME object
+		and not contained within the MIME object.
+		Meta Data should never be stored in the MIME object as altering
+		the MIME object would invalidate the index information and
+		can invalidate digital signature and encryption information.
+	</t>
+      <t>
+		Meta Data for the folder and MIME objects is returned in
+		a FOLDER_OPEN, FILE_METADATA, or FOLDER_METADATA command.
+		Meta Data can be set and updated by the client using FILE_METADATA
+		or FOLDER_METADATA commands.
+	</t>
+      <t>
+		Most are 8-bit boolean values that are set to false (0x00) or true (0x01).
+		A value that does not exists is the same as a false.
+	</t>
+      <t>
+		Meta data can be global to the object.
+		That is once tagged (or not tagged) the attribute shows up for all
+		users.
+		Or it can be user specific meta data.
+		User specific meta data does not show up for other users.
+	</t>
+      <t>
+		Many have the same or similar name and meaning as they do
+		in <xref target="RFC9051">IMAP</xref>.
+	</t>
+      <section>
+        <name>Meta Data - Answered</name>
+        <t>
+			When true, the object has been replied to by the client.
+			This has the same meaning as \Answered does in IMAP.
+		</t>
+        <t>
+			This value can be set and unset.
+			This is user specific meta data because it
+			also applies to shared folders and files.
+		</t>
+      </section>
+      <section>
+        <name>Meta Data - Attributes</name>
+        <t>
+			This object has been tagged with special attributes.
+			It is a list of strings with matching values.
+		</t>
+        <t>
+			User defined attributes MUST start with "X-".
+			These are not portable between implementations
+			and no attempt should be made to copy these
+			between implementations.
+		</t>
+        <t>
+			Non user defined attributes are described
+			in other sections or specifications.
+		</t>
+        <t>
+			This can be user specific meta data or global meta data.
+			See the specific attribute documentation.
+		</t>
+      </section>
+      <section>
+        <name>Meta Data - Deleted</name>
+        <t>
+			When true, this object has been marked as deleted
+			and has not yet been expunged.
+			This has the same meaning as \Deleted does in IMAP.
+		</t>
+        <t>
+			For shared objects, an expunge removes the
+			user from shared access to the file.
+			And the actual expunge is only processed
+			when all shared users have expunged
+			the object.
+		</t>
+        <t>
+			This value can be set and unset.
+			This is user specific meta data because it
+			also applies to shared folders and files.
+		</t>
+      </section>
+      <section>
+        <name>Meta Data - Draft</name>
+        <t>
+			When true, this object is incomplete and not ready.
+		</t>
+        <t>
+			This has the same meaning as \Draft does in IMAP.
+		</t>
+        <t>
+			This value can be set and unset.
+			This is user specific meta data.
+		</t>
+      </section>
+      <section>
+        <name>Meta Data - Flagged</name>
+        <t>
+			An object has been tagged as important.
+			This is the same as the IMAP \Flagged value. 
+		</t>
+        <t>
+			This value can be set and unset.
+			This is user specific meta data because it
+			also applies to shared folders and files.
+		</t>
+      </section>
+      <section>
+        <name>Meta Data - Forwarded</name>
+        <t>
+			This has the same meaning as $Forwarded does in IMAP.
+		</t>
+        <t>
+			This value can be set and unset.
+			This is user specific meta data because it
+			also applies to shared folders and files.
+		</t>
+      </section>
+      <section>
+        <name>Meta Data - Hide</name>
+        <t>
+			With NotExpungable objects, the user may wish to not view the object.
+			In these cases the attribute Hide can be set.
+			The attribute does not effect the view of other users.
+		</t>
+        <t>
+			This value can be set and unset.
+			This is user specific meta data because it
+			also applies to shared folders and files.
+		</t>
+      </section>
+      <section>
+        <name>Meta Data - Junk</name>
+        <t>
+			This has the same meaning as $Junk does in IMAP.
+		</t>
+        <t>
+			This value can be set and unset.
+			This is user specific meta data because it
+			also applies to shared folders and files.
+		</t>
+      </section>
+      <section>
+        <name>Meta Data - MDNSent</name>
+        <t>
+			This value can be set and unset.
+			This has the same meaning as $MDNSent does in IMAP.
+		</t>
+        <t>
+			This value can be set and unset.
+			This is user specific meta data because it
+			also applies to shared folders and files.
+		</t>
+      </section>
+      <section>
+        <name>Meta Data - NoCopy</name>
+        <t>
+			When true, this MIME object can not be copied.
+		</t>
+        <t>
+			This value can be set and unset by the owner of the file or folder.
+			This value can not be unset by non owners.
+			This is global meta data.
+		</t>
+      </section>
+      <section>
+        <name>Meta Data - NotJunk</name>
+        <t>
+			This has the same meaning as $NotJunk does in IMAP.
+		</t>
+        <t>
+			This value can be set and unset.
+			This is user specific meta data because it
+			also applies to shared folders and files.
+		</t>
+      </section>
+      <section>
+        <name>Meta Data - NotExpungable</name>
+        <t>
+			The mime object can not be marked for delete or expunged.
+			It could be because it is an historical record that will never
+			be expunged, or other reason.
+		</t>
+        <t>
+			A client implementation could use the Hide attribute
+			to not show the object to the user.
+		</t>
+        <t>
+			This value can be set and unset by the owner of the file or folder.
+			This value can not be unset by non owners.
+			This is global meta data.
+		</t>
+      </section>
+      <section>
+        <name>Meta Data - Phishing</name>
+        <t>
+			This has the same meaning as $Phishing does in IMAP.
+		</t>
+        <t>
+			This value can be set and unset.
+			This is user specific meta data because it
+			also applies to shared folders and files.
+		</t>
+      </section>
+      <section>
+        <name>Meta Data - ReadOnly</name>
+        <t>
+			The MIME object associated with this attribute
+			can not be altered, deleted, moved, or renamed.
+			It can be copied, unless the NoCopy meta tag
+			is also applied.
+		</t>
+        <t>
+			This value can be set and unset by the owner of the file or folder.
+			This value can not be unset by non owners.
+			This is global meta data.
+		</t>
+        <t>
+			Setting of this to false may fail if the file or folder is
+			stored on read-only media.
+			When the file or folder is stored on read-only media,
+			this MUST BE set to true.
+		</t>
+      </section>
+      <section>
+        <name>Meta Data - Shared</name>
+        <t>
+			The MIME object associated with this attribute
+			is shared and is also often tagged with the ReadOnly
+			meta data tag.
+		</t>
+        <t>
+			This value can not be set and unset by the owner.
+		</t>
+        <t>
+			If copying of the file or folder is allowed, then
+			the shared attribute is removed when copied.
+		</t>
+        <t>
+			This file or folder will only be expunged when all
+			of the users with shared access have deleted and
+			expunged it.
+		</t>
+      </section>
+      <section>
+        <name>Meta Data - Seen</name>
+        <t>
+			This has the same meaning as \Seen does in IMAP.
+		</t>
+        <t>
+			This value can be set and unset.
+			This is user specific meta data because it
+			also applies to shared folders and files.
+		</t>
+      </section>
+      <section>
+        <name>Meta Data - MDNData Attribute</name>
+        <t>
+			This Meta Data Attribute is only visible to the
+			owner of the object for which MDN has been set.
+		</t>
+        <t>
+			This is a list of recipients email address that
+			that are on the distribution list effected by the MDN.
+		</t>
+        <t>
+			The format of an MDNData record is
+			a header, that has:
+		</t>
+        <ul>
+          <li>
+				COUNT: A 32-bit unsigned integer in network byte order
+				indicating how many were on the distribution list
+				for this MDN.
+			</li>
+          <li>
+				SENT: The UTC timestamp as a 64-bit unsigned integer
+				in network byte order of when the MDN reply was sent.
+			</li>
+        </ul>
+        <t>
+			Followed by COUNT detail records:
+		</t>
+        <ul>
+          <li>
+				UTC: The UTC timestamp as a 64-bit unsigned integer
+				in network byte order of when the MDN reply was received.
+				Set to zero if not received.
+			</li>
+          <li>
+				Email-Address: A PhoenixString with the associated
+				email address of the user that has or has not returned
+				the MDN.
+			</li>
+        </ul>
+        <figure anchor="MDNData" align="center">
+          <name>MDNData Attribute</name>
+          <artset>
+            <artwork type="ascii-art" src="MDN-00.txt"/>
+            <artwork type="svg" src="MDN-00.svg"/>
+          </artset>
+        </figure>
+      </section>
+      <section>
+        <name>Meta Data with Shared Objects</name>
+        <t>
+			When a server implementation allows shared objects,
+			the meta data returned to the client may be different
+			depending on the authenticated user.
+			Some users may have read only copies, other may be
+			able to delete the object.
+		</t>
+        <t>
+			When a shared object is deleted, it is marked as deleted for
+			only the user that issued the delete.
+		</t>
+        <t>
+			When a shared object is expunged, its access is removed
+			for the user that issued the expunge.
+			After all users have expunged the object, then it is
+			removed by the server.
+		</t>
+        <t>
+			There are two kinds of expunge for shared objects.
+			Force and delayed.
+		</t>
+        <ul>
+          <li>
+            <t>
+					Forced:
+				</t>
+            <t>
+					A forced expunge can be the result of security policies
+					at the server, site, or administrators discretion.
+					This also is how timed messages are deleted.
+				</t>
+            <t>
+					In order for a shared object that is expunged to not
+					force an immediate re-index for all clients, the server sends
+					an expunge to all clients, where the client MUST immediately make
+					the object not show	to the user and MUST invalidate
+					any cached or memory copy of the data.
+					Then when convenient, the client can do a re-index
+					of the folder.
+					When a user is viewing the object when an expunge
+					arrives, the client must inform the user that the data
+					is no longer available and replace the user view of
+					the data with an empty object or move the view to
+					another object.
+				</t>
+            <t>
+					Server implementations must prioritize forced expunge notices
+					to the clients and immediately reject all attempts to read,
+					view, copy, or access meta data.
+				</t>
+          </li>
+          <li>
+            <t>
+					Delayed:
+				</t>
+            <t>
+					The user is informed the MIME object is no longer available.
+					The client implementation may continue to show the object.
+					The client may copy the MIME object, unless tagged as
+					NoCopy.
+				</t>
+            <t>
+					The next time the client does an expunge the object will be
+					expunged from the client.
+				</t>
+            <t>
+					When a client application closes, all delayed expunges
+					MUST occur at exit.
+				</t>
+            <t>
+					When a client applications starts the client MUST check for
+					delayed expunges that have not been processed and expunge them
+					and not	allow the user to see them.
+				</t>
+            <t>
+					Server implementations must reject attempts to fetch or view
+					a folder or file or any of its meta data when an expunge has started,
+					and not yet completed.
+				</t>
+          </li>
+        </ul>
+      </section>
+    </section>
     <section anchor="WIREPROTOCOLDETAIL">
       <name>Over the Wire Protocol Detail</name>
       <t>
@@ -1150,7 +1678,7 @@ me line as the corresponding term -->
 		described here.
 	</t>
       <t>
-		A packet has a 64-bit unsigned integer in network byte
+		A packet has a 32-bit unsigned integer in network byte
 		order that is set to the octet count of all of the
 		data that follows this length value.
 		The shortest packet is 16 octets in size, with
@@ -1177,18 +1705,19 @@ me line as the corresponding term -->
 		to aid in readability.
 	</t>
       <artset>
-        <artwork type="ascii-art">
-+-----------------------------------------------------------------+
-| ...64-bit.unsigned.integer.length ..............................|
-+-----------------------------------------------------------------+
-| ...32-bit.unsigned.command.SEQ...|
-+----------------------------------+
-| ...32-bit.unsigned.command.CMD...|
-+----------------------------------+
-| payload.....
-
-		</artwork>
+        <artwork type="ascii-art" src="Packet-00.txt"/>
+        <artwork type="svg" src="Packet-00.svg"/>
       </artset>
+      <t>
+		ABNF:
+	</t>
+      <sourcecode>
+
+CommandHeader : Length:32 Sequence:32 CMD:32
+
+Command : CommandHeader Payload
+
+	</sourcecode>
       <t>
 		The payload size and format varies for each command.
 		The details of the payload content, and the format
@@ -1217,7 +1746,6 @@ me line as the corresponding term -->
 	</t>
       <sourcecode><![CDATA[
   // Where:
-  //  uint64_t, is a 64-bit unsigned integer.
   //  uint32_t, is a 32-bit unsigned integer.
   //  uint8_t *, is a pointer to 8-bit data.
   //  XDR, is an XDR object.
@@ -1227,8 +1755,8 @@ me line as the corresponding term -->
   //
   //  NOTE: See the sample implementation.
   //
-  uint64_t   NetLength;
-  uint64_t   PacketLength;
+  uint32_t   NetLength;
+  uint32_t   PacketLength;
   uint8_t *  Data;
   uint8_t *  DataPointer;
   XDR        Xdr;
@@ -1236,7 +1764,7 @@ me line as the corresponding term -->
   
   // Read the length and convert to host byte order.
   //
-  read(FromClientSocket, &NetLength, sizeof(uint64_t));
+  read(FromClientSocket, &NetLength, sizeof(uint32_t));
   PacketLength = ntohll(NetLength);
 
   // Allocate PacketLength data, and read it.
@@ -1272,7 +1800,7 @@ me line as the corresponding term -->
     // the command.
     //
     // If a server gets an even numbered sequence, it is a
-    // command from theother endpoint.
+    // command from the other endpoint.
     //
     if (WeAreTheClient) {
       if (SequenceIsEvenNumber) {
@@ -1298,244 +1826,374 @@ me line as the corresponding term -->
 			Some implementation may wish to specify which MIME headers
 			it wants to get in the index supplied by the server.
 			This is done as part of the folder selection command which
-			can supplies a list of desired headers.
+			can supply a list of desired headers.
 			Or it can specify a list ID that has already been transmitted.
 			When none are supplied, no header index values will be returned.
 		</t>
         <t>
 			This list can be the same for all folders, or unique to specific folders.
 			The client generates a list of interested headers and
-			sends an InterestedHeaders list to the server when selecting
+			sends an Interested Headers list or list ID to the server when selecting
 			a folder.
 		</t>
-        <t>
-			A request ID (HIDX) is an 8-bit unsigned integer in network byte order.
-		</t>
-        <t>
-			A Header ID is an 8-bit unsigned integer in network byte order.
-		</t>
-        <t>
-			There are three (3) types of interested header index (HIDX) requests.
-			These are 8-bit unsigned integer in network byte order.
-			And the HIDX values are:
-		</t>
-        <ul>
-          <li>
-            <t>
-					HIDX = 0
-				</t>
-            <t>
-					Used to set the default MIME object and Body Part list
-					of interesting headers the client cares about.
-					The default list has a list ID that is also zero (0).
-				</t>
-            <t>
-					And requesting a list ID of zero (0) will return the index
-					of the default headers defined by the client that was set.
-				</t>
-          </li>
-          <li>
-            <t>
-					HIDX = 1
-				</t>
-            <t>
-					This value sets a custom list that can be used later by ID.
-					Custom lists have an ID greater than zero (&gt;0)
-				</t>
-          </li>
-          <li>
-            <t>
-					HIDX = 2
-				</t>
-            <t>
-					This value is used to get the header list index.
-				</t>
-          </li>
-        </ul>
-        <t>
-			The header for setting a list is shown
-			in <xref target="Interisting-S0-01"/>, where:
-		</t>
-        <ul>
-          <li>
-            <t>
-					HIDX is used to set or get the headers the client
-					wishes the server to index in MIME objects.
-					It must be a zero (0), one (1), or two (2).
-				</t>
-          </li>
-          <li>
-            <t>
-					LID is the list ID of the list. An 8-bit value.
-					Zero (0) is the default list.
-				</t>
-          </li>
-          <li>
-            <t>
-					HdrCnt set to the number of headers the client wants
-					in the list.
-					This is an 8-bit value from 0 to 254 with 255 reserved for expanson.
-				</t>
-            <t>
-					This is a 32-bit unsigned integer in network byte order.
-				</t>
-          </li>
-        </ul>
-        <figure anchor="Interisting-S0-01" align="center">
-          <name>Setting the Intrest List - Header</name>
-          <artset>
-            <artwork type="ascii-art" src="IndexList-01.txt"/>
-            <artwork type="svg" src="IndexList-01.svg"/>
-          </artset>
-        </figure>
-        <t>
-			Followed by the header request information.
-			One sent for each unique header to be placed into the header index.
-			As shown in  <xref target="Interisting-S0-02"/>, where:
-		</t>
-        <ul>
-          <li>
-            <t>
-					HID is the client assigned unique header ID
-					for the named header.
-					This is an 8-bit unsigned integer.
-				</t>
-          </li>
-          <li>
-            <t>
-					STRING LENGTH is the octet count of the string.
-					Any terminating zero (0) is not counted.
-				</t>
-            <t>
-					This is a 24-bit unsigned integer in network byte order.
-				</t>
-          </li>
-          <li>
-            <t>
-					THE HEADER NAME is the characters that make
-					up the MIME header name	that is interesting
-					without including any terminating zero (0).
-					These are a sequence of 8-bit unsigned integer values
-					in network byte order.
-				</t>
-          </li>
-        </ul>
-        <figure anchor="Interisting-S0-02" align="center">
-          <name>Setting the Intrest List - Contents</name>
-          <artset>
-            <artwork type="ascii-art" src="IndexList-02.txt"/>
-            <artwork type="svg" src="IndexList-02.svg"/>
-          </artset>
-        </figure>
-        <t>
-			When the HIDX flag is set to two (2) then it is followed by a list
-		</t>
-        <t>
-			LID, the list ID of an already transmitted list to be used.
-			Zero (0) for the already defined and transmitted default list.
-			Or the LID of another already defined and transmitted non-default list.
-		</t>
-        <t>
-			This is sent as a 32-bit unsigned integer in network byte order.
-		</t>
-        <figure anchor="Interisting-S0-03" align="center">
-          <name>Requesting Header Index by List ID (LID)</name>
-          <artset>
-            <artwork type="ascii-art" src="IndexList-03.txt"/>
-            <artwork type="svg" src="IndexList-03.svg"/>
-          </artset>
-        </figure>
-        <t>
-			Restrictions:
-		</t>
-        <ul>
-          <li>
-				Only one default list can be set at a time.
-				It can change by sending a new default list.
-			</li>
-          <li>
-				List ID zero (0) is reserved for the default list.
-			</li>
-          <li>
-				The list IDs are unique to the connection and do not persist
-				across connections.
-			</li>
-          <li>
-				No two lists can have the same ID during a connection.
-			</li>
-        </ul>
-        <t>
-		</t>
-        <section>
-          <name>Client Interested Headers Examples</name>
+        <section anchor="InterestedHeaders-IndexOP">
+          <name>Index Operation (IndexOP)</name>
           <t>
-				This is an example of the client sending the default
-				interesting header list to the server.
-				The client is asking for the index values
-				for the following MIME headers (1) From, and (2) Subject.
-				And for the following Body part headers (1) Content-Type.
+				An Index Operation (IndexOP) is an 8-bit
+				unsigned integer in network byte order.
+				There are only two (2) values, set list (0), use existing list (1).
 			</t>
-          <figure anchor="Interisting-S0-04" align="center">
-            <name>Example Setting Default List</name>
-            <artset>
-              <artwork type="ascii-art" src="IndexList-04.txt"/>
-              <artwork type="svg" src="IndexList-04.svg"/>
-            </artset>
-          </figure>
           <t>
-				Where:
+				There are two (2) types of index operations (IndexOP) requests.
+				These are 8-bit unsigned integer in network byte order.
+				And the IndexOP values are:
 			</t>
           <ul>
             <li>
-					(a) Not used zero (0), HIDX, LID, Two headers follow
-					An HIDX of zero (0) means we are setting the default
-					MIME object header list.
+              <t>
+						IndexOP = 0
+					</t>
+              <t>
+						Used to set a list of body MIME object, and Body Part,
+						interesting headers the client cares about.
+					</t>
+            </li>
+            <li>
+              <t>
+						IndexOP = 1
+					</t>
+              <t>
+						This indicates that LID is an existing list number to use.
+					</t>
+            </li>
+          </ul>
+        </section>
+        <section anchor="InterestedHeaders-HID">
+          <name>Header ID (HID)</name>
+          <t>
+				A Header ID (HID) is an 8-bit unsigned integer in network byte order.
+				The client assigned this 8-bit number to a header name, then
+				the client and server references it by ID in packets and replies.
+				A client can have up to 254 interested headers per connection.
+				The value 255 is reserved for expansion.
+			</t>
+        </section>
+        <section anchor="InterestedHeaders-LID">
+          <name>List ID (LID)</name>
+          <t>
+				A List ID (LID) it an 8-bit unsigned integer in network byte order.
+				It is used in requests and replies to refer to the interested headers
+				list.
+				A client can have up to 254 lists per connection.
+				The value 255 is reserved for expansion.
+			</t>
+          <t>
+				Restrictions:
+			</t>
+          <ul>
+            <li>
+					The list IDs are unique to the connection and do not persist
+					across connections.
 				</li>
             <li>
-					(b) This first header will be identified as zero (0).
-					The first header is four (4) octets in length: 'From'.
-				</li>
-            <li>
-					(c) The value of the characters for 'From'.
-				</li>
-            <li>
-					(d) The second header will be identified as one (1).
-					The second header is seven (7) octets in length: 'Subject'.
-				</li>
-            <li>
-					(e) The value of the characters for 'Subject'.
-				</li>
-            <li>
-					(f) The two MIME objects headers are done, start of Body Part headers.
-					and there is one (1) of them.
-					HIDX and LID are not used here.
-				</li>
-            <li>
-					(g) The second header will be identified as three (3).
-					The first body part header is 12 octets long (0xc): 'Content-Type'.
-				</li>
-            <li>
-					(h) The value of the characters for 'Content-Type'.
-				</li>
-            <li>
-					(i) The reast of the value of the characters for 'Content-Type'.
+					No two lists can have the same ID during a connection.
 				</li>
           </ul>
         </section>
+        <section anchor="InterestedHeaders-Wire">
+          <name>Protocol Format</name>
+          <t>
+				When a folder is opened with the FOLDER_OPEN command,
+				it is followed by a	list of interested headers it wants back in
+				the folder open reply.
+				The list can be empty (a single 32-bit unsigned integer
+				set to zero), or contain what follows:
+			</t>
+          <t>
+				The client sets these 3 values into one 32-bit unsigned
+				integer in network byte order as shown
+				in <xref target="Interisting-S0-01"/>, where:
+			</t>
+          <ul>
+            <li>
+              <t>
+						IndexOP is used to specify headers the client
+						wishes the server to index in MIME objects.
+						It must be a zero (0) to set the list definition.
+					</t>
+            </li>
+            <li>
+              <t>
+						LID is the list ID of the list that client is defining.
+						An 8-bit value.
+					</t>
+            </li>
+            <li>
+              <t>
+						HdrCnt is set by the client to the number of headers in the list.
+						This is an 8-bit value from 0 to 254 with 255 reserved for
+						expansion.
+					</t>
+              <t>
+						This is a 32-bit unsigned integer in network byte order.
+					</t>
+            </li>
+          </ul>
+          <figure anchor="Interisting-S0-01" align="center">
+            <name>Setting the Interest List - Header</name>
+            <artset>
+              <artwork type="ascii-art" src="IndexList-01.txt"/>
+              <artwork type="svg" src="IndexList-01.svg"/>
+            </artset>
+          </figure>
+          <t>
+				ABNF:
+			</t>
+          <sourcecode>
+Interest Header:32 = 0x00:8 IndexOP:8 LID:8 HdrCnt:8
+			</sourcecode>
+          <section anchor="InterestedHeader-Entry">
+            <name>Interested Headers - Single Entry</name>
+            <t>
+					Followed by the header request information is one or more
+					of these single header entries.
+					One sent for each unique header to be placed into the header index.
+					As shown in  <xref target="Interisting-S0-02"/>, where:
+				</t>
+            <ul>
+              <li>
+                <t>
+							HID is the client assigned unique header ID
+							for the named header.
+							This is an 8-bit unsigned integer.
+						</t>
+              </li>
+              <li>
+                <t>
+							STRING LENGTH is the octet count of the string.
+							Any terminating zero (0) is not counted in the length.
+						</t>
+                <t>
+							This is a 24-bit unsigned integer in network byte order.
+						</t>
+              </li>
+              <li>
+                <t>
+							THE HEADER NAME is the characters that make
+							up the MIME header name	that is interesting
+							without including any terminating zero (0).
+							These are a sequence of 8-bit unsigned integer values
+							in network byte order.
+						</t>
+                <t>
+							They are packed into a 32-bit unsigned integer in network
+							byte order.
+						</t>
+                <t>
+							When THE HEADER NAME is not a multiple of 32-bits in
+							length, the remaining bits are unused and shown as
+							zero (0) in this specification.
+						</t>
+              </li>
+            </ul>
+            <figure anchor="Interisting-S0-02" align="center">
+              <name>Setting the Interest List - Contents</name>
+              <artset>
+                <artwork type="ascii-art" src="IndexList-02.txt"/>
+                <artwork type="svg" src="IndexList-02.svg"/>
+              </artset>
+            </figure>
+            <t>
+					ABNF:
+				</t>
+            <sourcecode>
+SingleEntry     = SingleHeader:32 HeaderName822
+					
+SingleHeader:32 = HID:8 StringLength:24
+				</sourcecode>
+          </section>
+          <section anchor="InterestedHeader-GetIndex">
+            <name>Interested Headers - Use Existing List</name>
+            <t>
+					When the IndexOP flag is set to one (1) then it is followed by
+					an existing list ID	number.
+				</t>
+            <t>
+					LID, the list ID of an already transmitted list to be used.
+				</t>
+            <t>
+					This is sent as a 32-bit unsigned integer in network byte order.
+				</t>
+            <figure anchor="Interisting-S0-03" align="center">
+              <name>Using Existing Header Index by List ID (LID)</name>
+              <artset>
+                <artwork type="ascii-art" src="IndexList-03.txt"/>
+                <artwork type="svg" src="IndexList-03.svg"/>
+              </artset>
+            </figure>
+            <t>
+					ABNF:
+				</t>
+            <sourcecode>
+UseExistingOp:8 = 0x01:8
+					
+UseExistingList:32 = 0x00:8 UseExistingOp:8 LID:8 0x00:8
+				</sourcecode>
+          </section>
+          <section>
+            <name>Example: Setting the Interested Header List</name>
+            <t>
+					This is an example of the client sending an
+					interesting header list to the server.
+					The client is asking for the index values
+					for the following MIME headers (1) From, and (2) Subject.
+					And for the following Body part headers (1) Content-Type.
+				</t>
+            <figure anchor="Interisting-S0-04" align="center">
+              <name>Example Setting a List</name>
+              <artset>
+                <artwork type="ascii-art" src="IndexList-04.txt"/>
+                <artwork type="svg" src="IndexList-04.svg"/>
+              </artset>
+            </figure>
+            <t>
+					Where:
+				</t>
+            <ul>
+              <li>
+                <t>
+							(a): A 32-bit unsigned integer in network byte order
+							as described in <xref target="Interisting-S0-01"/>.
+						</t>
+                <t>The first 8-bits are zero.</t>
+                <t>The IndexOP of zero, which means defining a list.</t>
+                <t>
+							And in this example two (0x02) MIME object headers
+							are requested	to be indexed, "From", and "Subject".
+						</t>
+              </li>
+              <li>
+                <t>
+							(b): A 32-bit unsigned integer in network byte order
+							as described in <xref target="Interisting-S0-02"/>.
+						</t>
+                <t>
+							The header ID that the client and server will use to
+							to identify the "From" header name will be zero (0)
+							in this example.
+						</t>
+                <t>
+							The length of the string "From" is four (4)
+							and its length is the lower 24 bits of this entry.
+						</t>
+              </li>
+              <li>
+                <t>
+							(c) A series of 8-bit unsigned values packed into one or more
+							32-bit unsigned integers in network byte order.
+						</t>
+                <t>
+							Each 8-bit value is the value of the letters in "From".
+							As "From" is a multiple of 32-bits, no padding is done.
+						</t>
+              </li>
+              <li>
+                <t>
+							(d): A 32-bit unsigned integer in network byte order
+							as described in <xref target="Interisting-S0-02"/>.
+						</t>
+                <t>
+							The header ID that the client and server will use to
+							to identify the "Subject" header name will be one (1)
+							in this example.
+						</t>
+                <t>
+							The length of the string "Subject" is seven (7)
+							and its length is the lower 24 bits of this entry.
+						</t>
+              </li>
+              <li>
+                <t>
+							(e) A series of 8-bit unsigned values packed into one or more
+							32-bit unsigned integers in network byte order.
+						</t>
+                <t>
+							Each 8-bit value is the value of the letters in "Subject".
+						</t>
+                <t>
+							As The length of "Subject" is not a multiple of 32-bits,
+							the remaining bits are ignored.
+							Shown as zero in this example.
+						</t>
+              </li>
+              <li>
+						(f) The two MIME objects headers are done, start of Body Part
+						headers, and there is one (1) of them.
+						IndexOP and LID are not used here.
+					</li>
+              <li>
+						(g) The second header will be identified as three (3).
+						The first body part header is 12 octets long (0xc): 'Content-Type'.
+					</li>
+              <li>
+						(h) The value of the characters for 'Content-Type'.
+					</li>
+              <li>
+						(i) The rest of the value of the characters for 'Content-Type'.
+					</li>
+            </ul>
+          </section>
+        </section>
+      </section>
+      <section anchor="PhoenixString">
+        <name>PhoenixString</name>
+        <t>
+			This protocol references the strings by octet offset into the entire
+			message.
+			All strings can be referenced by using a total of 8 octets.
+			A Phoenix string consists of two parts:
+		</t>
+        <ul>
+          <li>
+				Offset: A 32-bit unsigned integer in network byte order.
+				The octet count to the start of the string with zero being the
+				first octet in the message.
+				
+			</li>
+          <li>
+				Length: The length in octets of the string.
+				A 32-bit unsigned integer in network byte order.
+			</li>
+        </ul>
+        <t>
+			A Phoenix string over the wire is 8 octets in size.
+		</t>
+        <figure anchor="PhoenixStringFigure" align="center">
+          <name>Phoenix String Format</name>
+          <artset>
+            <artwork type="ascii-art" src="PhoenixString-00.txt"/>
+            <artwork type="svg" src="PhoenixString-00.svg"/>
+          </artset>
+        </figure>
+        <t>
+			ABNF:
+		</t>
+        <sourcecode>
+PhoenixString = Offset:32 Length:32 String
+		</sourcecode>
       </section>
       <section>
         <name>MIME Folder Index</name>
         <t>
 			In this specification, a MIME folder is also called a folder.
-			And can be files containing MIME objects on a disk that have a defined order,
-			or sequence of MIME objects in one file.
+			And can be files containing MIME objects on a disk that have
+			a defined order, or sequence of MIME objects in one file.
 		</t>
         <t>
 			A folder index is a summary of the contents of a MIME folder.
-			It includes the basic header information and the specific location
-			of body parts for each MIME message in the folder.
-			The location information is the octet count to the start of the
-			beginning of the related target data.
+			It may include the basic header information.
+			It does include location information provided as the octet count to the
+			start of the beginning of the related target data.
 		</t>
         <ul>
           <li>
@@ -1548,128 +2206,319 @@ me line as the corresponding term -->
         <t>
 			For example, if a MIME folder contains 100 MIME messages, then
 			the folder index will have 100 message indexes.
-			Each message will have header indexes for the requested headers.
+			Each message will have header indexes for the interested headers.
 			Each message index will	contain 1 or more body part indexes.
 			Each body part will have header indexes with zero (0) or more entries.
 		</t>
-        <t>
-			This protocol references the strings by octet offset into the entire
-			message.
-			All strings can be referenced by using a total of 8 octets.
-			A Phoenix string consists of two parts:
-		</t>
-        <ol>
-          <li>
-				The octet count to the start of the string with zero being the
-				first octet in the message.
-			</li>
-          <li>
-				The length in octets of the string.
-			</li>
-        </ol>
-        <t>
-			A Phoenix string over the wire is 8 octets in size.
-			
-		</t>
-        <artset>
-          <artwork type="ascii-art">
-				+----------------------------------+
-				| OFFSET                           |
-				+----------------------------------+
-				| LENGTH                           |
-				+----------------------------------+
-				| payload.....
-			</artwork>
-        </artset>
-        <t>
-			A folder index consists of:
-		</t>
-        <ul>
-          <li>
-				The entire length of the index as a 32-bit unsigned
-				integer in network byte order of what follows this value.
-				Allowing the recipient of this index to do one read
-				and process later.
-			</li>
-          <li>
-				The number of message indexes in this folder index.
-				As an unsigned 32-bit integer in network byte order.
-			</li>
-        </ul>
-        <t>
-			The index header is 8 octets:
-		</t>
-        <artset>
-          <artwork type="ascii-art">
-				+----------------------------------+
-				| LENGTH                           |
-				+----------------------------------+
-				| MESSAGE COUNT                    |
-				+----------------------------------+
-				| payload.....
-			</artwork>
-        </artset>
-        <t>
-			Next is an array of message indexes.
-			They are an ordered list of references to each message.
-			In the order they appear in the folder:
-		</t>
-        <ul>
-          <li>
-				A 32-bit unsigned integer in network byte order that is
-				the offset in the folder to the message.
-				An offset is unique in a MIME folder, it is used both as
-				an offset into the MIME folder,
-				and as a unique ID within a MIME folder.
-			</li>
-          <li>
-				An a length of the message as a 32-bit unsigned integer
-				in network byte order.
-			</li>
-        </ul>
-        <artset>
-          <artwork type="ascii-art">
-				+----------------------------------+
-				|    32-bit unsigned OFFSET        |
-				+----------------------------------+
-				|    32-bit unsigned LENGTH        |
-				+----------------------------------+
-				| Array of header index ..... 
-				...
+        <section>
+          <name>Folder Index Header</name>
+          <t>
+				A folder index consists of:
+			</t>
+          <ul>
+            <li>
+					The entire length of the index as a 32-bit unsigned
+					integer in network byte order of what follows this value.
+					Allowing the recipient of this index to do one read
+					and process later.
+				</li>
+            <li>
+					The number of message indexes in this folder index.
+					As an unsigned 32-bit integer in network byte order.
+				</li>
+          </ul>
+          <t>
+				The index header is 8 octets, that is followed by
+				the each message index:
+			</t>
+          <figure anchor="FolderIndexHeaderFigure" align="center">
+            <name>Folder Index</name>
+            <artset>
+              <artwork type="ascii-art" src="IndexList-05.txt"/>
+              <artwork type="svg" src="IndexList-05.svg"/>
+            </artset>
+          </figure>
+          <t>
+				ABNF:
+			</t>
+          <sourcecode>
+FolderIndexHeader = FolderIndexSize:32 MessageCount:32 ArrayOfMsgIndex
+			</sourcecode>
+          <t>
+				The header is followed by an array of message indexes.
+				They are an ordered list of references to each message.
+				In the order they appear in the folder:
+			</t>
+        </section>
+        <section>
+          <name>Message Index</name>
+          <ul>
+            <li>
+					A 32-bit unsigned integer in network byte order that is
+					the offset into the folder of the message.
+					A Message offset is unique in a MIME folder, it is used both as
+					an offset into the MIME folder,
+					and as a unique ID within a MIME folder for a message.
+				</li>
+            <li>
+					An a length of the message as a 32-bit unsigned integer
+					in network byte order.
+				</li>
+          </ul>
+          <figure anchor="MessageIndexFigure" align="center">
+            <name>Message Index</name>
+            <artset>
+              <artwork type="ascii-art" src="IndexList-07.txt"/>
+              <artwork type="svg" src="IndexList-07.svg"/>
+            </artset>
+          </figure>
+          <t>
+				ABNF:
+			</t>
+          <sourcecode>
+MessageIndex = OfffsetIntoFolder:32 MessageLength:32 ArrayOfHeaderIndex
+				
+ArrayOfMsgIndex = MessageIndex*
+			</sourcecode>
+          <t>
+				For each message index is an ordered list of interested headers.
+				The interested header list is assignable by the client and body
+				part indexes.
+				It consists of offsets to the interested headers and associated value.
+				Each interested header can be indexed with nine (9) octets.
+				and consists of:
+			</t>
+        </section>
+        <section>
+          <name>Header Index</name>
+          <ul>
+            <li>
+					ID-CNT:
+					A count of matched headers.
+					Only matched headers will be included.
+					If they are not included, no such header existed
+					in the object.
+				</li>
+            <li>
+              <t>
+						The number of body parts in this object.
+						An unsigned 8-bit number.
+						With MIME, body parts may contain body parts.
+					</t>
+              <t>
+						Any MIME preamble and epilogue are not counted as body parts
+						A preamble, if it exists, can be easily be calculated as it starts
+						as the first	octet after the header area.
+						And the epilogue, if it exists, can be calculated as starting as
+						the first
+						octet after the last MIME boundary.
+					</t>
+            </li>
+            <li>
+					Followed by an array of ID-CNT 8-bit client assigned HID values
+					that matched.
+					Padded to round up to 32-bits.
+					The unused bits are ignored and shown as zero in this specification.
+				</li>
+          </ul>
+          <t>
+				A single header index consists of the list description,
+				followed by the index values.
+				There are two header indexes in each Message index.
+			</t>
+          <ol>
+            <li>The first is for the MIME object itself.</li>
+            <li>
+					The second is for the objects Body Parts.
+					This part will not exists exist when it is an RFC-822
+					style message or has no body parts.
+					Followed by the header index.
+					This second part also include an offset to the start
+					of the body part itself in the MIME object.
+				</li>
+          </ol>
+          <t>
+				A list description is one 8-bit result count,
+				followed by the list of matching header ID's (HID).
+			</t>
+          <t>
+				If the list description is not a multiple of 32-bits
+				then padding is added and the extra are ignored and shown as
+				zero in this specification.
+			</t>
+          <sourcecode>
+-Meta-Data-: Seen,Answered,$NotJunk
+			</sourcecode>
+          <figure anchor="HeaderIndex2" align="center">
+            <name>Header Index</name>
+            <artset>
+              <artwork type="ascii-art" src="IndexList-10.txt"/>
+              <artwork type="svg" src="IndexList-10.svg"/>
+            </artset>
+          </figure>
+          <t>
+				ABNF:
+			</t>
+          <sourcecode>
+HeaderIndex          = HeaderIndexHeader:32 ArrayOfHID*
+                       PhoenixString* BodyPartIndex*
 
-			</artwork>
-        </artset>
-        <t>
-			For each message index is an ordered list of interested headers.
-			The interested header list is assignable by the client and body
-			part indexes.
-			It consists of offsets to the interested headers and associated value.
-			Each interested header can be indexed with nine (9) octets.
-			and consists of:
-		</t>
-        <ul>
-          <li>
-				The clients assigned unique header ID for the interested header name.
-				This is an unsigned 32-bit integer in network byte order.
-				Leaving the client to ask for the index of 254 unique header names.
-			</li>
-          <li>
-				A Phoenix string referencing the header value.
-				And as it is unique in a MIME object, the offset is used both as
-				an offset, and as a unique ID within a MIME object.
-			</li>
-          <li>
-				An unsigned 32-bit integer in network byte order of the number
-				of body parts in this message.
-				Any MIME preamble and epilogue are not counted as body parts
-				A preamble, if it exists, can be easily be calculated as it starts as the
-				first	octet after the header area.
-				And the epilogue, if it exists, can be calculated as starting as the first
-				octet after the last MIME boundary.
-				And as it offset is unique in a MIME object, the offset is used both as
-				an offset, and as a unique ID within a MIME object.
-			</li>
-        </ul>
+                       ; One HID (HeaderID) for each match header
+                       ; in the LID provided. Padded out to multiples
+                       ; of 32-bits.
+HeaderIndexHeader:32 = ID-CNT:8 Body-Count:8
+                       / (HID HID)
+                       / (HID 0x00:8)
+                       / (0x00:8 0x00:8)
+
+ArrayOfHid           = HIDEntry*
+
+BodyPartIndex        = BodyPartOffset:32 HeaderIndexHeader:32 PhoenixString*
+                       BodyPartIndex*
+
+ID-CNT:8               ; The number of headers found in the
+                       ; MIME object and requested in the interested
+                       ; header list.
+
+Body-CNT:8             ; The number of body parts in the object
+
+                       ; Padded out to multiples of 32-bits.
+HidEntry             = (HID:8 HID:8 HID:8 HID:8)
+                       / (HID:8 HID:8 HID:8 0x00:8)
+                       / (HID:8 HID:8 0x00:8 0x00:8)
+                       / (HID:8 0x00:8 0x00:8 0x00:8)
+			</sourcecode>
+          <t>
+				Where:
+			</t>
+          <t>
+				HeaderIndex: The header index starts with a 32-bit unsigned
+				integer in network byte order, the HeaderIndex:32.
+			</t>
+          <t>
+				HeaderIndex:32: Contains 0, 1, or 2 HID values.
+				They are in the order found in the object.
+			</t>
+          <t>
+				ArrayIfHID: Keeps repeating until all of the
+				headers in the list have been found in the message.
+				The last one pads with zeros when needed.
+			</t>
+          <t>
+				BodyPartIndex: When the object has body parts,
+				there will be a BodyPartIndex for each body part,
+				in the order they are in the object.
+				The first 32-bits are the offset to the start
+				of the body part. This does not include any boundary.
+			</t>
+          <t>
+				Body parts themselves may contain body parts,
+				they are recursively included as needed.
+			</t>
+        </section>
+        <section>
+          <name>Header Index Example 1</name>
+          <t>
+				For example, if the client requested MIME object indexes for the
+				"From",	"Subject", "To", "Message-ID",
+				"Content-Type", "MIME-Version", and "Date"
+				header values.
+			</t>
+          <t>
+				Assume this is an RFC-822 message with no body parts.
+				So the body part header index has a count of zero (0).
+				And the HID values assigned by the client when opening
+				the folder are:
+			</t>
+          <ul>
+            <li>From: 0</li>
+            <li>Subject: 1</li>
+            <li>To: 2</li>
+            <li>Message-ID: 3</li>
+            <li>Content-Type: 4</li>
+            <li>Data: 5</li>
+            <li>MIME-Version: 6</li>
+          </ul>
+          <t>
+				In the Message each line is terminated with a carriage
+				return and line feed:
+			</t>
+          <sourcecode><![CDATA[
+From: Doug@example.com
+To: Notices@example.com, Supervisors@example.com, Dave@example.com
+Date: Thu, 06 Feb 2025 20:29:35 +0000
+MessageID: <7324e0b9-f6dc-3c9b-a02f-0b2b824e863c@example.com>
+Subject: A new draft of Phoenix has been published.
+Content-Type: text/plain
+
+A new draft has been published.
+
+]]></sourcecode>
+          <figure anchor="HeaderIndexFigure1" align="center">
+            <name>Header Index</name>
+            <artset>
+              <artwork type="ascii-art" src="IndexList-08.txt"/>
+              <artwork type="svg" src="IndexList-08.svg"/>
+            </artset>
+          </figure>
+        </section>
+        <section>
+          <name>Header Index Example 2</name>
+          <t>
+				For example, if the client requested MIME object indexes for the
+				"From",	"Subject", "To", "MIME-Version", and "Content-Type".
+				header values.
+			</t>
+          <t>
+				And when the folder was opened, the client asked for
+				the "Content-Type" header.
+			</t>
+          <t>
+				Assume this is a MIME message with two body parts.
+				So the body part header index has a count of two (2).
+				And the HID values assigned by the client when opening
+				the folder are:
+			</t>
+          <ul>
+            <li>From: 8</li>
+            <li>Subject: 12</li>
+            <li>To: 4</li>
+            <li>Content-Type: 3</li>
+            <li>MIME-Version: 9</li>
+          </ul>
+          <t>
+				In the Message each line is terminated with a carriage
+				return and line feed:
+			</t>
+          <sourcecode><![CDATA[
+From: User@example.com
+To: User2@example.com
+Subject: This is the subject of a sample message
+MIME-Version: 1.0
+Content-Type: multipart/alternative; boundary="XXXXboundary text"
+
+--XXXXboundary text
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: quoted-printable
+
+This is the body text of a sample message
+
+--XXXXboundary text
+Content-Type: text/html; charset="utf-8"
+Content-Transfer-Encoding: quoted-printable
+
+This is the body text of a sample message.
+--XXXXboundary text--￼
+
+]]></sourcecode>
+          <figure anchor="HeaderIndexFigure2" align="center">
+            <name>Header And Body Part Index</name>
+            <artset>
+              <artwork type="ascii-art" src="IndexList-09.txt"/>
+              <artwork type="svg" src="IndexList-09.svg"/>
+            </artset>
+          </figure>
+        </section>
       </section>
     </section>
     <section anchor="IANA">
@@ -1689,6 +2538,19 @@ me line as the corresponding term -->
       <name>References</name>
       <references>
         <name>Normative References</name>
+        <reference anchor="RFC0822" target="https://www.rfc-editor.org/info/rfc822" xml:base="../References/reference.RFC.0822.xml">
+          <front>
+            <title>STANDARD FOR THE FORMAT OF ARPA INTERNET TEXT MESSAGES</title>
+            <author fullname="D. Crocker" initials="D." surname="Crocker"/>
+            <date month="August" year="1982"/>
+            <abstract>
+              <t>This document revises the specifications in RFC 733, in order to serve the needs of the larger and more complex ARPA Internet. Some of RFC 733's features failed to gain adequate acceptance. In order to simplify the standard and the software that follows it, these features have been removed. A different addressing scheme is used, to handle the case of internetwork mail; and the concept of re-transmission has been introduced. Obsoletes RFC 733, NIC 41952.</t>
+            </abstract>
+          </front>
+          <seriesInfo name="STD" value="11"/>
+          <seriesInfo name="RFC" value="822"/>
+          <seriesInfo name="DOI" value="10.17487/RFC0822"/>
+        </reference>
         <reference anchor="RFC2119" target="https://www.rfc-editor.org/info/rfc2119" xml:base="../References/reference.RFC.2119.xml">
           <front>
             <title>Key words for use in RFCs to Indicate Requirement Levels</title>
@@ -1701,6 +2563,33 @@ me line as the corresponding term -->
           <seriesInfo name="BCP" value="14"/>
           <seriesInfo name="RFC" value="2119"/>
           <seriesInfo name="DOI" value="10.17487/RFC2119"/>
+        </reference>
+        <reference anchor="RFC4506" target="https://www.rfc-editor.org/info/rfc4506" xml:base="../References/reference.RFC.4506.xml">
+          <front>
+            <title>XDR: External Data Representation Standard</title>
+            <author fullname="M. Eisler" initials="M." role="editor" surname="Eisler"/>
+            <date month="May" year="2006"/>
+            <abstract>
+              <t>This document describes the External Data Representation Standard (XDR) protocol as it is currently deployed and accepted. This document obsoletes RFC 1832. [STANDARDS-TRACK]</t>
+            </abstract>
+          </front>
+          <seriesInfo name="STD" value="67"/>
+          <seriesInfo name="RFC" value="4506"/>
+          <seriesInfo name="DOI" value="10.17487/RFC4506"/>
+        </reference>
+        <reference anchor="RFC5234" target="https://www.rfc-editor.org/info/rfc5234" xml:base="../References/reference.RFC.5234.xml">
+          <front>
+            <title>Augmented BNF for Syntax Specifications: ABNF</title>
+            <author fullname="D. Crocker" initials="D." role="editor" surname="Crocker"/>
+            <author fullname="P. Overell" initials="P." surname="Overell"/>
+            <date month="January" year="2008"/>
+            <abstract>
+              <t>Internet technical specifications often need to define a formal syntax. Over the years, a modified version of Backus-Naur Form (BNF), called Augmented BNF (ABNF), has been popular among many Internet specifications. The current specification documents ABNF. It balances compactness and simplicity with reasonable representational power. The differences between standard BNF and ABNF involve naming rules, repetition, alternatives, order-independence, and value ranges. This specification also supplies additional rule definitions and encoding for a core lexical analyzer of the type common to several Internet specifications. [STANDARDS-TRACK]</t>
+            </abstract>
+          </front>
+          <seriesInfo name="STD" value="68"/>
+          <seriesInfo name="RFC" value="5234"/>
+          <seriesInfo name="DOI" value="10.17487/RFC5234"/>
         </reference>
         <reference anchor="RFC8174" target="https://www.rfc-editor.org/info/rfc8174" xml:base="../References/reference.RFC.8174.xml">
           <front>
@@ -1715,7 +2604,34 @@ me line as the corresponding term -->
           <seriesInfo name="RFC" value="8174"/>
           <seriesInfo name="DOI" value="10.17487/RFC8174"/>
         </reference>
-        <!-- The recommended and simplest way to include a well known reference -->
+        <reference anchor="RFC8446" target="https://www.rfc-editor.org/info/rfc8446" xml:base="../References/reference.RFC.8446.xml">
+          <front>
+            <title>The Transport Layer Security (TLS) Protocol Version 1.3</title>
+            <author fullname="E. Rescorla" initials="E." surname="Rescorla"/>
+            <date month="August" year="2018"/>
+            <abstract>
+              <t>This document specifies version 1.3 of the Transport Layer Security (TLS) protocol. TLS allows client/server applications to communicate over the Internet in a way that is designed to prevent eavesdropping, tampering, and message forgery.</t>
+              <t>This document updates RFCs 5705 and 6066, and obsoletes RFCs 5077, 5246, and 6961. This document also specifies new requirements for TLS 1.2 implementations.</t>
+            </abstract>
+          </front>
+          <seriesInfo name="RFC" value="8446"/>
+          <seriesInfo name="DOI" value="10.17487/RFC8446"/>
+        </reference>
+        <reference anchor="RFC9051" target="https://www.rfc-editor.org/info/rfc9051" xml:base="../References/reference.RFC.9051.xml">
+          <front>
+            <title>Internet Message Access Protocol (IMAP) - Version 4rev2</title>
+            <author fullname="A. Melnikov" initials="A." role="editor" surname="Melnikov"/>
+            <author fullname="B. Leiba" initials="B." role="editor" surname="Leiba"/>
+            <date month="August" year="2021"/>
+            <abstract>
+              <t>The Internet Message Access Protocol Version 4rev2 (IMAP4rev2) allows a client to access and manipulate electronic mail messages on a server. IMAP4rev2 permits manipulation of mailboxes (remote message folders) in a way that is functionally equivalent to local folders. IMAP4rev2 also provides the capability for an offline client to resynchronize with the server.</t>
+              <t>IMAP4rev2 includes operations for creating, deleting, and renaming mailboxes; checking for new messages; removing messages permanently; setting and clearing flags; parsing per RFCs 5322, 2045, and 2231; searching; and selective fetching of message attributes, texts, and portions thereof. Messages in IMAP4rev2 are accessed by the use of numbers. These numbers are either message sequence numbers or unique identifiers.</t>
+              <t>IMAP4rev2 does not specify a means of posting mail; this function is handled by a mail submission protocol such as the one specified in RFC 6409.</t>
+            </abstract>
+          </front>
+          <seriesInfo name="RFC" value="9051"/>
+          <seriesInfo name="DOI" value="10.17487/RFC9051"/>
+        </reference>
       </references>
       <references>
         <name>Informative References</name>

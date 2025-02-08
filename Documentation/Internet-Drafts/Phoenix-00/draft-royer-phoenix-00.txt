@@ -2,10 +2,10 @@
 
 
 
-Internet Engineering Task Force                           DM. Royer, Ed.
+Internet Engineering Task Force                                DM. Royer
 Internet-Draft                                   RiverExplorer Games LLC
-Intended status: Informational                           3 February 2025
-Expires: 7 August 2025
+Intended status: Informational                           7 February 2025
+Expires: 11 August 2025
 
 
                      Phoenix: Lemonade Risen Again
@@ -53,7 +53,7 @@ Status of This Memo
 
 
 
-Royer                     Expires 7 August 2025                 [Page 1]
+Royer                    Expires 11 August 2025                 [Page 1]
 
 Internet-Draft        Phoenix: Lemonade Risen Again        February 2025
 
@@ -68,7 +68,7 @@ Internet-Draft        Phoenix: Lemonade Risen Again        February 2025
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 7 August 2025.
+   This Internet-Draft will expire on 11 August 2025.
 
 Copyright Notice
 
@@ -86,63 +86,100 @@ Copyright Notice
 
 Table of Contents
 
-   1.  Requirements Language . . . . . . . . . . . . . . . . . . . .   3
-   2.  Introduction  . . . . . . . . . . . . . . . . . . . . . . . .   3
-   3.  Terms and Definition used in this proposal  . . . . . . . . .   5
-   4.  Commands Summary  . . . . . . . . . . . . . . . . . . . . . .   8
-     4.1.  Protocol Commands Summary . . . . . . . . . . . . . . . .  10
-       4.1.1.  Packet Summary  . . . . . . . . . . . . . . . . . . .  11
-       4.1.2.  Packet Reply Summary  . . . . . . . . . . . . . . . .  12
-     4.2.  Administration Commands Summary . . . . . . . . . . . . .  12
-       4.2.1.  Administration Capability Definitions . . . . . . . .  12
-       4.2.2.  Administration of users.  . . . . . . . . . . . . . .  13
-     4.3.  Authentication Commands Summary . . . . . . . . . . . . .  15
-     4.4.  Calendar Commands Summary . . . . . . . . . . . . . . . .  15
-     4.5.  Capability Commands Summary . . . . . . . . . . . . . . .  15
-     4.6.  EMail Commands Summary  . . . . . . . . . . . . . . . . .  15
-     4.7.  File and Folder Commands Summary  . . . . . . . . . . . .  15
-     4.8.  KeepAlive Command Summary . . . . . . . . . . . . . . . .  16
-     4.9.  Ping Command Summary  . . . . . . . . . . . . . . . . . .  17
-     4.10. S/MIME Commands Summary . . . . . . . . . . . . . . . . .  19
-   5.  Over the Wire Protocol Detail . . . . . . . . . . . . . . . .  19
-   6.  Index . . . . . . . . . . . . . . . . . . . . . . . . . . . .  22
+   1.  Requirements Language . . . . . . . . . . . . . . . . . . . .   4
+     1.1.  ABNF additions  . . . . . . . . . . . . . . . . . . . . .   4
+   2.  Introduction  . . . . . . . . . . . . . . . . . . . . . . . .   5
+   3.  Terms and Definition used in this proposal  . . . . . . . . .   7
+   4.  Commands Summary  . . . . . . . . . . . . . . . . . . . . . .  10
+     4.1.  Protocol Commands Summary . . . . . . . . . . . . . . . .  11
+       4.1.1.  Packet Summary  . . . . . . . . . . . . . . . . . . .  12
+       4.1.2.  Packet Reply Summary  . . . . . . . . . . . . . . . .  14
+     4.2.  Administration Commands Summary . . . . . . . . . . . . .  14
+       4.2.1.  Administration Capability Definitions . . . . . . . .  14
+       4.2.2.  Administration of users.  . . . . . . . . . . . . . .  15
+     4.3.  Authentication Commands Summary . . . . . . . . . . . . .  17
+     4.4.  Calendar Commands Summary . . . . . . . . . . . . . . . .  17
+     4.5.  Capability Commands Summary . . . . . . . . . . . . . . .  17
+     4.6.  EMail Commands Summary  . . . . . . . . . . . . . . . . .  17
+     4.7.  File and Folder Commands Summary  . . . . . . . . . . . .  17
+     4.8.  KeepAlive Command Summary . . . . . . . . . . . . . . . .  19
+     4.9.  Ping Command Summary  . . . . . . . . . . . . . . . . . .  20
+     4.10. S/MIME Commands Summary . . . . . . . . . . . . . . . . .  21
+   5.  Meta Data . . . . . . . . . . . . . . . . . . . . . . . . . .  21
 
 
 
-Royer                     Expires 7 August 2025                 [Page 2]
+Royer                    Expires 11 August 2025                 [Page 2]
 
 Internet-Draft        Phoenix: Lemonade Risen Again        February 2025
 
 
-     6.1.  Interested Headers  . . . . . . . . . . . . . . . . . . .  22
-       6.1.1.  Client Interested Headers Examples  . . . . . . . . .  24
-     6.2.  MIME Folder Index . . . . . . . . . . . . . . . . . . . .  26
-   7.  IANA Considerations . . . . . . . . . . . . . . . . . . . . .  28
-   8.  Security Considerations . . . . . . . . . . . . . . . . . . .  28
-   9.  References  . . . . . . . . . . . . . . . . . . . . . . . . .  28
-     9.1.  Normative References  . . . . . . . . . . . . . . . . . .  28
-     9.2.  Informative References  . . . . . . . . . . . . . . . . .  28
-   Appendix A.  Administrative Enumerated Binary Values  . . . . . .  28
-   Appendix B.  Authentication Enumerated Binary Values  . . . . . .  29
-   Appendix C.  File and Folder Enumerated Binary Values . . . . . .  30
-   Appendix D.  Protocol Enumerated Binary Values  . . . . . . . . .  31
-   Appendix E.  RPCGEN protocol specification  . . . . . . . . . . .  32
-     E.1.  RPCGEN - Acl  . . . . . . . . . . . . . . . . . . . . . .  32
-     E.2.  RPCGEN - Administration . . . . . . . . . . . . . . . . .  32
-     E.3.  RPCGEN - Authenticate . . . . . . . . . . . . . . . . . .  33
-     E.4.  RPCGEN - Capability . . . . . . . . . . . . . . . . . . .  35
-     E.5.  RPCGEN - Folder . . . . . . . . . . . . . . . . . . . . .  38
-     E.6.  RPCGEN - KeepAlive  . . . . . . . . . . . . . . . . . . .  46
-     E.7.  RPCGEN - NotSupported . . . . . . . . . . . . . . . . . .  47
-     E.8.  RPCGEN - Ping . . . . . . . . . . . . . . . . . . . . . .  48
-     E.9.  RPCGEN - Commands . . . . . . . . . . . . . . . . . . . .  48
-     E.10. RPCGEN - EMail  . . . . . . . . . . . . . . . . . . . . .  53
-     E.11. RPCGEN - MIME . . . . . . . . . . . . . . . . . . . . . .  59
-     E.12. RPCGEN - Phoenix  . . . . . . . . . . . . . . . . . . . .  61
-     E.13. RPCGEN - Types  . . . . . . . . . . . . . . . . . . . . .  62
-   Acknowledgments . . . . . . . . . . . . . . . . . . . . . . . . .  63
-   Contributors  . . . . . . . . . . . . . . . . . . . . . . . . . .  63
-   Author's Address  . . . . . . . . . . . . . . . . . . . . . . . .  63
+     5.1.  Meta Data - Answered  . . . . . . . . . . . . . . . . . .  22
+     5.2.  Meta Data - Attributes  . . . . . . . . . . . . . . . . .  22
+     5.3.  Meta Data - Deleted . . . . . . . . . . . . . . . . . . .  22
+     5.4.  Meta Data - Draft . . . . . . . . . . . . . . . . . . . .  22
+     5.5.  Meta Data - Flagged . . . . . . . . . . . . . . . . . . .  23
+     5.6.  Meta Data - Forwarded . . . . . . . . . . . . . . . . . .  23
+     5.7.  Meta Data - Hide  . . . . . . . . . . . . . . . . . . . .  23
+     5.8.  Meta Data - Junk  . . . . . . . . . . . . . . . . . . . .  23
+     5.9.  Meta Data - MDNSent . . . . . . . . . . . . . . . . . . .  23
+     5.10. Meta Data - NoCopy  . . . . . . . . . . . . . . . . . . .  23
+     5.11. Meta Data - NotJunk . . . . . . . . . . . . . . . . . . .  24
+     5.12. Meta Data - NotExpungable . . . . . . . . . . . . . . . .  24
+     5.13. Meta Data - Phishing  . . . . . . . . . . . . . . . . . .  24
+     5.14. Meta Data - ReadOnly  . . . . . . . . . . . . . . . . . .  24
+     5.15. Meta Data - Shared  . . . . . . . . . . . . . . . . . . .  24
+     5.16. Meta Data - Seen  . . . . . . . . . . . . . . . . . . . .  25
+     5.17. Meta Data - MDNData Attribute . . . . . . . . . . . . . .  25
+     5.18. Meta Data with Shared Objects . . . . . . . . . . . . . .  26
+   6.  Over the Wire Protocol Detail . . . . . . . . . . . . . . . .  27
+   7.  Index . . . . . . . . . . . . . . . . . . . . . . . . . . . .  30
+     7.1.  Interested Headers  . . . . . . . . . . . . . . . . . . .  31
+       7.1.1.  Index Operation (IndexOP) . . . . . . . . . . . . . .  31
+       7.1.2.  Header ID (HID) . . . . . . . . . . . . . . . . . . .  31
+       7.1.3.  List ID (LID) . . . . . . . . . . . . . . . . . . . .  31
+       7.1.4.  Protocol Format . . . . . . . . . . . . . . . . . . .  32
+     7.2.  PhoenixString . . . . . . . . . . . . . . . . . . . . . .  36
+     7.3.  MIME Folder Index . . . . . . . . . . . . . . . . . . . .  36
+       7.3.1.  Folder Index Header . . . . . . . . . . . . . . . . .  37
+       7.3.2.  Message Index . . . . . . . . . . . . . . . . . . . .  37
+       7.3.3.  Header Index  . . . . . . . . . . . . . . . . . . . .  38
+       7.3.4.  Header Index Example 1  . . . . . . . . . . . . . . .  41
+       7.3.5.  Header Index Example 2  . . . . . . . . . . . . . . .  42
+   8.  IANA Considerations . . . . . . . . . . . . . . . . . . . . .  44
+   9.  Security Considerations . . . . . . . . . . . . . . . . . . .  45
+   10. References  . . . . . . . . . . . . . . . . . . . . . . . . .  45
+     10.1.  Normative References . . . . . . . . . . . . . . . . . .  45
+     10.2.  Informative References . . . . . . . . . . . . . . . . .  45
+   Appendix A.  Administrative Enumerated Binary Values  . . . . . .  46
+   Appendix B.  Authentication Enumerated Binary Values  . . . . . .  47
+   Appendix C.  File and Folder Enumerated Binary Values . . . . . .  48
+   Appendix D.  Protocol Enumerated Binary Values  . . . . . . . . .  49
+   Appendix E.  RPCGEN protocol specification  . . . . . . . . . . .  50
+     E.1.  RPCGEN - Acl  . . . . . . . . . . . . . . . . . . . . . .  50
+     E.2.  RPCGEN - Administration . . . . . . . . . . . . . . . . .  50
+     E.3.  RPCGEN - Authenticate . . . . . . . . . . . . . . . . . .  51
+     E.4.  RPCGEN - Capability . . . . . . . . . . . . . . . . . . .  53
+     E.5.  RPCGEN - Folder . . . . . . . . . . . . . . . . . . . . .  56
+     E.6.  RPCGEN - KeepAlive  . . . . . . . . . . . . . . . . . . .  64
+
+
+
+Royer                    Expires 11 August 2025                 [Page 3]
+
+Internet-Draft        Phoenix: Lemonade Risen Again        February 2025
+
+
+     E.7.  RPCGEN - NotSupported . . . . . . . . . . . . . . . . . .  65
+     E.8.  RPCGEN - Ping . . . . . . . . . . . . . . . . . . . . . .  66
+     E.9.  RPCGEN - Commands . . . . . . . . . . . . . . . . . . . .  66
+     E.10. RPCGEN - EMail  . . . . . . . . . . . . . . . . . . . . .  71
+     E.11. RPCGEN - MIME . . . . . . . . . . . . . . . . . . . . . .  77
+     E.12. RPCGEN - Phoenix  . . . . . . . . . . . . . . . . . . . .  79
+     E.13. RPCGEN - Types  . . . . . . . . . . . . . . . . . . . . .  80
+   Acknowledgments . . . . . . . . . . . . . . . . . . . . . . . . .  81
+   Contributors  . . . . . . . . . . . . . . . . . . . . . . . . . .  81
+   Author's Address  . . . . . . . . . . . . . . . . . . . . . . . .  81
 
 1.  Requirements Language
 
@@ -151,6 +188,63 @@ Internet-Draft        Phoenix: Lemonade Risen Again        February 2025
    "OPTIONAL" in this document are to be interpreted as described in BCP
    14 [RFC2119] [RFC8174] when, and only when, they appear in all
    capitals, as shown here.
+
+1.1.  ABNF additions
+
+   This specification adds some usage to ABNF [RFC5234] to deal with bit
+   width in a binary number.
+
+   Terminals may specify a bit width.  That is the number of bits in the
+   value.
+
+   Section 2.3 of Terminal Values [RFC5234] is within this specification
+   defined to be:
+
+   b = binary / binary:width
+
+   d = decimal / decimal:width
+
+   x = hexadecimal / hexadecimal:width
+
+   Where: with is the number of bits in the value.  And must be an
+   unsigned integer greater than zero.
+
+   And they will pack when applied to to a rule:
+
+   When the left side has a width: The number of bits on the left side
+   must equal the number of bits on the right side.
+
+   In this example A Header is 32-bits in size and is composed of an
+   8-bit and 24-bit value.  The most significant value are placed on the
+   left of the rule:
+
+
+
+
+Royer                    Expires 11 August 2025                 [Page 4]
+
+Internet-Draft        Phoenix: Lemonade Risen Again        February 2025
+
+
+         Header:32 = Offset:8 Length:24
+
+
+   The pseudo code could be:
+
+         // Header is a 32-bit unsigned integer.
+         // Offset is an 8-bit unsigned integer.
+         // Length is a 24-bit unsigned integer
+         //
+         Header = Offset << 24 | Length;
+
+   This shifts the 8-bit Offset over 24 bits to the left, then adds the
+   24-bit Length.  The result would be:
+
+   +--------+--------+--------+--------+
+   | Offset |       Length             |
+   +--------+--------+--------+--------+
+
+                        Figure 1: Packed Bit Example
 
 2.  Introduction
 
@@ -162,14 +256,6 @@ Internet-Draft        Phoenix: Lemonade Risen Again        February 2025
    Transporting MIME objects is generally done in one of two ways: (1)
    Broadcasting, (2) Polling.  Both methods often require some form of
    authentication, registration, and selecting of the desired material.
-
-
-
-Royer                     Expires 7 August 2025                 [Page 3]
-
-Internet-Draft        Phoenix: Lemonade Risen Again        February 2025
-
-
    These selection processes are essentially a form of remote folder
    management.  In some cases you can only select what is provided, and
    in others you have some or a lot of control over the remote folders.
@@ -185,6 +271,16 @@ Internet-Draft        Phoenix: Lemonade Risen Again        February 2025
    is an email message with one or more very large attachments, where
    the device may default to not download the large attachment without a
    specific request from the user.
+
+
+
+
+
+
+Royer                    Expires 11 August 2025                 [Page 5]
+
+Internet-Draft        Phoenix: Lemonade Risen Again        February 2025
+
 
    Some objects are transported as blocks of data with a known and fixed
    size.  These are often transported with some kind of search, get, and
@@ -208,23 +304,16 @@ Internet-Draft        Phoenix: Lemonade Risen Again        February 2025
 
    MIME objects have meta data, and they are called headers.  Files and
    folders have meta data, and they are called file attributes.  This
-   specification does not mandate any meta data, it allows for a
-   consistent transport of existing meta data.
+   specification does not mandate any meta data.  It does define some
+   that may be used by implementations.  Other related specifications do
+   define some meta data that is consistant with existing protocols.
+   This protocol allows for a consistent transport of existing meta data
+   and MIME objects.
 
    File and folder meta data is a complex task that can involve access
    control lists and permissions.  This specification defines a
    mechanism to transport this meta data, it does not define the meta
    data.
-
-
-
-
-
-
-Royer                     Expires 7 August 2025                 [Page 4]
-
-Internet-Draft        Phoenix: Lemonade Risen Again        February 2025
-
 
    And this specification provides for the ability to define both
    protocol extensions and the creating of finer control for specific
@@ -242,6 +331,13 @@ Internet-Draft        Phoenix: Lemonade Risen Again        February 2025
    *  You can create, delete, and modify files.  You can create, delete,
       and modify email messages.
 
+
+
+Royer                    Expires 11 August 2025                 [Page 6]
+
+Internet-Draft        Phoenix: Lemonade Risen Again        February 2025
+
+
    *  You can create, delete, and modify folders.  You can create,
       delete, and modify email folders.
 
@@ -250,9 +346,9 @@ Internet-Draft        Phoenix: Lemonade Risen Again        February 2025
    *  How to use existing authentication implementations or use new
       ones.
 
-   *  This specification describes a standard way to perform file
-      operations that are remote to the application and agnostic to
-      purpose of data being transported.
+   *  This specification describes a standard way to perform file and
+      folder operations that are remote to the application and agnostic
+      to purpose of data being transported.
 
    *  Specifies a way to migrate from some existing protocols to
       Phoenix.  Provides links to sample implementations.
@@ -272,16 +368,6 @@ Internet-Draft        Phoenix: Lemonade Risen Again        February 2025
       authorization operations.  These operations authenticate users and
       verity their authorization access.
 
-
-
-
-
-
-Royer                     Expires 7 August 2025                 [Page 5]
-
-Internet-Draft        Phoenix: Lemonade Risen Again        February 2025
-
-
    Body Part ID
       A unique ID for a MIME Object.  This is an unsigned 32-bit integer
       in network byte order that is assigned by the server and sent to
@@ -290,12 +376,23 @@ Internet-Draft        Phoenix: Lemonade Risen Again        February 2025
       in any way, this ID is valid and persists across servers.  It is
       the offset in octets from the beginning of the message to the
       start of the body part.
+
       See Index.  (Section 3)
 
    Command, CMD
       A specific protocol operation, or command.  They are broken down
       into, AdminCmd, AuthCmd, FileCmd, and ProtoCmd.  These are called
       a CMD or command.
+
+
+
+
+
+
+Royer                    Expires 11 August 2025                 [Page 7]
+
+Internet-Draft        Phoenix: Lemonade Risen Again        February 2025
+
 
    FileCmd
       A general term for any file or folder command.  This include
@@ -308,14 +405,32 @@ Internet-Draft        Phoenix: Lemonade Risen Again        February 2025
       the client on a successful folder open.  This ID persists across
       connections to the same server.  Once a folder has an ID, it never
       changes on a server as described in Folders (Section 4.7).
+
       See Index.  (Section 3)
 
-   Header ID
+   IndexOP
+      Header Index Operation.  A command sent as part of a folder open
+      command that tells the server which MIME headers it would like
+      indexed.
+
+      See Index.  (Section 3)
+
+   HID
+      Header Definition ID.  And 8-bit unsigned integer the client has
+      assiged to a specific header name.
+
+      See Index.  (Section 3)
+
+   HeaderName822
+      A RFC822 or MIME header name.  See Section 3.2 of [RFC0822]
+
+   HeaderID
       An offset into a MIME object where a specific header starts.  As
       the position in a MIME object is unique, this value is also used
       as the ID to a specific header.  As long as the MIME object does
       not change in any way this ID persisists across connections and
       servers.
+
       See Index.  (Section 3)
 
    Header Value ID
@@ -324,24 +439,18 @@ Internet-Draft        Phoenix: Lemonade Risen Again        February 2025
       unique, this value is also used as the ID to a specific header
       value.  As long as the MIME object does not change in any way this
       ID persisists across connections and servers.
+
       See Index.  (Section 3)
-      See Header ID.  (Section 3)
 
 
 
 
-
-
-
-Royer                     Expires 7 August 2025                 [Page 6]
+Royer                    Expires 11 August 2025                 [Page 8]
 
 Internet-Draft        Phoenix: Lemonade Risen Again        February 2025
 
 
-   HIDX
-      Header Index type.  A command sent as part of a folder open
-      command that tells the server which MIME headers it would like
-      indexed.
+      See Header ID.  (Section 3)
 
    Index
       This wire protocol transmits all or part of MIME objects.  Various
@@ -384,20 +493,18 @@ Internet-Draft        Phoenix: Lemonade Risen Again        February 2025
       command has the name of the new folder to be created as a
       parameter.
 
-
-
-
-
-
-Royer                     Expires 7 August 2025                 [Page 7]
-
-Internet-Draft        Phoenix: Lemonade Risen Again        February 2025
-
-
    ProtoCmd
       A general term for all protocol commands.  This also includes
       commands that do not fall into one of the other categories
       described here in this definitions section.
+
+
+
+
+Royer                    Expires 11 August 2025                 [Page 9]
+
+Internet-Draft        Phoenix: Lemonade Risen Again        February 2025
+
 
    SEQ, Command Sequence, CMD_SEQ
       Each command has a unique identifier, a sequence number.  All
@@ -409,11 +516,12 @@ Internet-Draft        Phoenix: Lemonade Risen Again        February 2025
       For the purpose of this specification, SSL is interchangeable with
       TLS.  This document uses the term TLS.  The sample implementation
       uses both SSL and TLS because the legacy UNIX, Linux, Windows, and
-      OpenSSL code uses the term SSL as well as TLS.
+      OpenSSL code uses the term SSL in cases where is it TLS.
 
    TLS
-      A way of securely transporting data over the Internet.  See RFC-
-      xxxx.
+      A way of securely transporting data over the Internet.
+
+      See [RFC8446]
 
    XDR
       RFC-4506 specifies a standard and compatible way to transfer
@@ -428,10 +536,10 @@ Internet-Draft        Phoenix: Lemonade Risen Again        February 2025
 
       So many of these protocol elements pack one or more of its
       parameters into one 32-bit value.  As defined in each section.  In
-      many cases pseudo code is shown on how to pack the date and create
+      many cases pseudo code is shown on how to pack the data and create
       the protocol element.
 
-      SEE RFC-4506 section 3.
+      See Section 3 of [RFC4506]
 
 4.  Commands Summary
 
@@ -443,16 +551,17 @@ Internet-Draft        Phoenix: Lemonade Risen Again        February 2025
    This section provides an overview of the basic commands.  Each
    command has a detailed section in this specification.
 
+   When a command is sent to the remote endpoint and received, the
+   remote endpoint determines if the connection is authenticated or
+   authorized to perform the command.  If not supported, or not
 
 
-Royer                     Expires 7 August 2025                 [Page 8]
+
+Royer                    Expires 11 August 2025                [Page 10]
 
 Internet-Draft        Phoenix: Lemonade Risen Again        February 2025
 
 
-   When a command is sent to the remote endpoint and received, the
-   remote endpoint determines if the connection is authenticated or
-   authorized to perform the command.  If not supported, or not
    authorized, a NotSupported command is send as a reply.  The
    NotSupported command sent back has the same Sequence number that was
    in the original command.
@@ -494,23 +603,20 @@ Internet-Draft        Phoenix: Lemonade Risen Again        February 2025
    the pre authentication capability from the server before the Auth
    reply.  Simply process both.
 
-
-
-
-
-
-
-
-Royer                     Expires 7 August 2025                 [Page 9]
-
-Internet-Draft        Phoenix: Lemonade Risen Again        February 2025
-
-
 4.1.  Protocol Commands Summary
 
    In addition to the protocols listed in this specification.
    Additional protocols and commands can be added in the future.  They
    must follow the same framework listed here.
+
+
+
+
+
+Royer                    Expires 11 August 2025                [Page 11]
+
+Internet-Draft        Phoenix: Lemonade Risen Again        February 2025
+
 
    This protocol connects two endpoints over a network and facilitates
    the secure and authorized transfer of MIME objects.
@@ -553,15 +659,6 @@ Internet-Draft        Phoenix: Lemonade Risen Again        February 2025
    These are not specific protocol entities, these concepts will be used
    to describe the expected behavior when one of these are transmitted.
 
-
-
-
-
-Royer                     Expires 7 August 2025                [Page 10]
-
-Internet-Draft        Phoenix: Lemonade Risen Again        February 2025
-
-
 4.1.1.  Packet Summary
 
    All commands are sent in a packet.  A packet has two parts:
@@ -569,6 +666,13 @@ Internet-Draft        Phoenix: Lemonade Risen Again        February 2025
    1.  The packet header.
 
    2.  The packet body.
+
+
+
+Royer                    Expires 11 August 2025                [Page 12]
+
+Internet-Draft        Phoenix: Lemonade Risen Again        February 2025
+
 
    The packet header has one value, the total length of the packet body,
    and payload sent as an unsigned 64-bit integer in network byte order.
@@ -607,17 +711,6 @@ Internet-Draft        Phoenix: Lemonade Risen Again        February 2025
    in network byte order.  The value (in hex) 0xFFFFFFFF is reserved for
    extensions if the 32-bit range is exhausted.
 
-
-
-
-
-
-
-Royer                     Expires 7 August 2025                [Page 11]
-
-Internet-Draft        Phoenix: Lemonade Risen Again        February 2025
-
-
 4.1.1.3.  The Payload (Payload)
 
    The payload has no predefined length, other what what is specified
@@ -625,6 +718,17 @@ Internet-Draft        Phoenix: Lemonade Risen Again        February 2025
    It could be opaque data, or it could be data that is XDR encoded.
    The contents are specific to the CMD specified in the in the packet
    body.
+
+
+
+
+
+
+
+Royer                    Expires 11 August 2025                [Page 13]
+
+Internet-Draft        Phoenix: Lemonade Risen Again        February 2025
+
 
 4.1.2.  Packet Reply Summary
 
@@ -667,13 +771,6 @@ Internet-Draft        Phoenix: Lemonade Risen Again        February 2025
    may issue administrative commands and send only those authenticated
    users the ADMIN capability.
 
-
-
-Royer                     Expires 7 August 2025                [Page 12]
-
-Internet-Draft        Phoenix: Lemonade Risen Again        February 2025
-
-
    The ADMIN capability include the list of ADMIN commands the user is
    allowed to perform.  For example, if a user only has permission to
    only view user lists, then only the USER_LIST ADMIN capability will
@@ -681,6 +778,13 @@ Internet-Draft        Phoenix: Lemonade Risen Again        February 2025
 
    The capability name is also the command name to use when invoking
    that capability.
+
+
+
+Royer                    Expires 11 August 2025                [Page 14]
+
+Internet-Draft        Phoenix: Lemonade Risen Again        February 2025
+
 
    When a user attempts to send a commmand they are not authorized to
    send, the remote endpoint will reply with a NotSupported command with
@@ -725,7 +829,15 @@ Internet-Draft        Phoenix: Lemonade Risen Again        February 2025
 
 
 
-Royer                     Expires 7 August 2025                [Page 13]
+
+
+
+
+
+
+
+
+Royer                    Expires 11 August 2025                [Page 15]
 
 Internet-Draft        Phoenix: Lemonade Risen Again        February 2025
 
@@ -781,7 +893,7 @@ Internet-Draft        Phoenix: Lemonade Risen Again        February 2025
 
 
 
-Royer                     Expires 7 August 2025                [Page 14]
+Royer                    Expires 11 August 2025                [Page 16]
 
 Internet-Draft        Phoenix: Lemonade Risen Again        February 2025
 
@@ -833,16 +945,25 @@ Internet-Draft        Phoenix: Lemonade Risen Again        February 2025
         | FOLDER_RENAME     | Rename a folder.  Also the name of  |
         |                   | the capability for this permission. |
         +-------------------+-------------------------------------+
-        | FOLDER_MOVE       | Move a folder.  Also the name of    |
+        | FOLDER_METADATA   | Get, set, and update information    |
 
 
 
-Royer                     Expires 7 August 2025                [Page 15]
+Royer                    Expires 11 August 2025                [Page 17]
 
 Internet-Draft        Phoenix: Lemonade Risen Again        February 2025
 
 
+        |                   | associated with the folder.  File   |
+        |                   | meta data is also returned with the |
+        |                   | FOLDER_OPEN command.                |
+        +-------------------+-------------------------------------+
+        | FOLDER_MOVE       | Move a folder.  Also the name of    |
         |                   | the capability for this permission. |
+        +-------------------+-------------------------------------+
+        | FOLDER_OPEN       | Open a folder and get information   |
+        |                   | about the folder and files in the   |
+        |                   | folder.                             |
         +-------------------+-------------------------------------+
         | FOLDER_SHARE      | Share a folder.  Also the name of   |
         |                   | the capability for this permission. |
@@ -864,6 +985,11 @@ Internet-Draft        Phoenix: Lemonade Risen Again        February 2025
         | FILE_RENAME       | Rename a file.  Also the name of    |
         |                   | the capability for this permission. |
         +-------------------+-------------------------------------+
+        | FILE_METADATA     | Get, set, and update information    |
+        |                   | associated with the folder.  File   |
+        |                   | meta data is also returned with the |
+        |                   | FOLDER_OPEN command.                |
+        +-------------------+-------------------------------------+
         | FILE_MOVE         | Move a file.  Also the name of the  |
         |                   | capability for this permission.     |
         +-------------------+-------------------------------------+
@@ -876,6 +1002,14 @@ Internet-Draft        Phoenix: Lemonade Risen Again        February 2025
         | FILE_MODIFY       | Modify the contents of an existing  |
         |                   | file.  Also the name of the         |
         |                   | capability for this permission.     |
+
+
+
+Royer                    Expires 11 August 2025                [Page 18]
+
+Internet-Draft        Phoenix: Lemonade Risen Again        February 2025
+
+
         +-------------------+-------------------------------------+
 
                                   Table 2
@@ -889,14 +1023,6 @@ Internet-Draft        Phoenix: Lemonade Risen Again        February 2025
    The Phoenix protocol is designed to transfer data and a server may
    handle a small subsets of what is possible.  Which is why the server
    decides what is an important command while determining idle timeout.
-
-
-
-
-Royer                     Expires 7 August 2025                [Page 16]
-
-Internet-Draft        Phoenix: Lemonade Risen Again        February 2025
-
 
    When the server sends the post authentication capabilities to the
    client, it includes an IdleTimeout capability that includes the
@@ -930,6 +1056,16 @@ Internet-Draft        Phoenix: Lemonade Risen Again        February 2025
    Clients MUST NOT send KeepAlive commands to a server that has an
    IdleTimeout of zero (0) or negative (< 0).
 
+
+
+
+
+
+Royer                    Expires 11 August 2025                [Page 19]
+
+Internet-Draft        Phoenix: Lemonade Risen Again        February 2025
+
+
    Clients MUST NOT send KeepAlive commands to the server until at least
    75% of the idle time has passed since the last command has been sent
    to the server.
@@ -943,16 +1079,6 @@ Internet-Draft        Phoenix: Lemonade Risen Again        February 2025
    determined it has waited too long for a command reply.  The ping
    command is only initiated from the client.  It is not valid for the
    server to send a ping command to a client.
-
-
-
-
-
-
-Royer                     Expires 7 August 2025                [Page 17]
-
-Internet-Draft        Phoenix: Lemonade Risen Again        February 2025
-
 
    The ping command MUST NOT be the first command sent to the server.
    It should only be sent when the client implementation determines it
@@ -989,6 +1115,13 @@ Internet-Draft        Phoenix: Lemonade Risen Again        February 2025
       client implementation had determined it has waited too long for an
       expected reply.
 
+
+
+Royer                    Expires 11 August 2025                [Page 20]
+
+Internet-Draft        Phoenix: Lemonade Risen Again        February 2025
+
+
    If the server is alive and not available, the server will reply with
    a NotSupported command, with its sequence number set to the sequence
    number in the ping command.
@@ -1001,14 +1134,6 @@ Internet-Draft        Phoenix: Lemonade Risen Again        February 2025
 
    Endpoints MUST NOT send a ping command if they are awaiting the
    results of a previously sent ping command.
-
-
-
-
-Royer                     Expires 7 August 2025                [Page 18]
-
-Internet-Draft        Phoenix: Lemonade Risen Again        February 2025
-
 
    Endpoints MUST NOT send more than two ping commands per minute.
 
@@ -1026,7 +1151,348 @@ Internet-Draft        Phoenix: Lemonade Risen Again        February 2025
 
    ToDo
 
-5.  Over the Wire Protocol Detail
+5.  Meta Data
+
+   In this specification a file and a MIME object are used
+   interchangeably.  Meta Data is data that is associated with the MIME
+   object and not contained within the MIME object.  Meta Data should
+   never be stored in the MIME object as altering the MIME object would
+   invalidate the index information and can invalidate digital signature
+   and encryption information.
+
+   Meta Data for the folder and MIME objects is returned in a
+   FOLDER_OPEN, FILE_METADATA, or FOLDER_METADATA command.  Meta Data
+   can be set and updated by the client using FILE_METADATA or
+   FOLDER_METADATA commands.
+
+   Most are 8-bit boolean values that are set to false (0x00) or true
+   (0x01).  A value that does not exists is the same as a false.
+
+
+
+
+
+
+Royer                    Expires 11 August 2025                [Page 21]
+
+Internet-Draft        Phoenix: Lemonade Risen Again        February 2025
+
+
+   Meta data can be global to the object.  That is once tagged (or not
+   tagged) the attribute shows up for all users.  Or it can be user
+   specific meta data.  User specific meta data does not show up for
+   other users.
+
+   Many have the same or similar name and meaning as they do in IMAP
+   [RFC9051].
+
+5.1.  Meta Data - Answered
+
+   When true, the object has been replied to by the client.  This has
+   the same meaning as \Answered does in IMAP.
+
+   This value can be set and unset.  This is user specific meta data
+   because it also applies to shared folders and files.
+
+5.2.  Meta Data - Attributes
+
+   This object has been tagged with special attributes.  It is a list of
+   strings with matching values.
+
+   User defined attributes MUST start with "X-".  These are not portable
+   between implementations and no attempt should be made to copy these
+   between implementations.
+
+   Non user defined attributes are described in other sections or
+   specifications.
+
+   This can be user specific meta data or global meta data.  See the
+   specific attribute documentation.
+
+5.3.  Meta Data - Deleted
+
+   When true, this object has been marked as deleted and has not yet
+   been expunged.  This has the same meaning as \Deleted does in IMAP.
+
+   For shared objects, an expunge removes the user from shared access to
+   the file.  And the actual expunge is only processed when all shared
+   users have expunged the object.
+
+   This value can be set and unset.  This is user specific meta data
+   because it also applies to shared folders and files.
+
+5.4.  Meta Data - Draft
+
+   When true, this object is incomplete and not ready.
+
+   This has the same meaning as \Draft does in IMAP.
+
+
+
+Royer                    Expires 11 August 2025                [Page 22]
+
+Internet-Draft        Phoenix: Lemonade Risen Again        February 2025
+
+
+   This value can be set and unset.  This is user specific meta data.
+
+5.5.  Meta Data - Flagged
+
+   An object has been tagged as important.  This is the same as the IMAP
+   \Flagged value.
+
+   This value can be set and unset.  This is user specific meta data
+   because it also applies to shared folders and files.
+
+5.6.  Meta Data - Forwarded
+
+   This has the same meaning as $Forwarded does in IMAP.
+
+   This value can be set and unset.  This is user specific meta data
+   because it also applies to shared folders and files.
+
+5.7.  Meta Data - Hide
+
+   With NotExpungable objects, the user may wish to not view the object.
+   In these cases the attribute Hide can be set.  The attribute does not
+   effect the view of other users.
+
+   This value can be set and unset.  This is user specific meta data
+   because it also applies to shared folders and files.
+
+5.8.  Meta Data - Junk
+
+   This has the same meaning as $Junk does in IMAP.
+
+   This value can be set and unset.  This is user specific meta data
+   because it also applies to shared folders and files.
+
+5.9.  Meta Data - MDNSent
+
+   This value can be set and unset.  This has the same meaning as
+   $MDNSent does in IMAP.
+
+   This value can be set and unset.  This is user specific meta data
+   because it also applies to shared folders and files.
+
+5.10.  Meta Data - NoCopy
+
+   When true, this MIME object can not be copied.
+
+   This value can be set and unset by the owner of the file or folder.
+   This value can not be unset by non owners.  This is global meta data.
+
+
+
+
+Royer                    Expires 11 August 2025                [Page 23]
+
+Internet-Draft        Phoenix: Lemonade Risen Again        February 2025
+
+
+5.11.  Meta Data - NotJunk
+
+   This has the same meaning as $NotJunk does in IMAP.
+
+   This value can be set and unset.  This is user specific meta data
+   because it also applies to shared folders and files.
+
+5.12.  Meta Data - NotExpungable
+
+   The mime object can not be marked for delete or expunged.  It could
+   be because it is an historical record that will never be expunged, or
+   other reason.
+
+   A client implementation could use the Hide attribute to not show the
+   object to the user.
+
+   This value can be set and unset by the owner of the file or folder.
+   This value can not be unset by non owners.  This is global meta data.
+
+5.13.  Meta Data - Phishing
+
+   This has the same meaning as $Phishing does in IMAP.
+
+   This value can be set and unset.  This is user specific meta data
+   because it also applies to shared folders and files.
+
+5.14.  Meta Data - ReadOnly
+
+   The MIME object associated with this attribute can not be altered,
+   deleted, moved, or renamed.  It can be copied, unless the NoCopy meta
+   tag is also applied.
+
+   This value can be set and unset by the owner of the file or folder.
+   This value can not be unset by non owners.  This is global meta data.
+
+   Setting of this to false may fail if the file or folder is stored on
+   read-only media.  When the file or folder is stored on read-only
+   media, this MUST BE set to true.
+
+5.15.  Meta Data - Shared
+
+   The MIME object associated with this attribute is shared and is also
+   often tagged with the ReadOnly meta data tag.
+
+   This value can not be set and unset by the owner.
+
+   If copying of the file or folder is allowed, then the shared
+   attribute is removed when copied.
+
+
+
+Royer                    Expires 11 August 2025                [Page 24]
+
+Internet-Draft        Phoenix: Lemonade Risen Again        February 2025
+
+
+   This file or folder will only be expunged when all of the users with
+   shared access have deleted and expunged it.
+
+5.16.  Meta Data - Seen
+
+   This has the same meaning as \Seen does in IMAP.
+
+   This value can be set and unset.  This is user specific meta data
+   because it also applies to shared folders and files.
+
+5.17.  Meta Data - MDNData Attribute
+
+   This Meta Data Attribute is only visible to the owner of the object
+   for which MDN has been set.
+
+   This is a list of recipients email address that that are on the
+   distribution list effected by the MDN.
+
+   The format of an MDNData record is a header, that has:
+
+   *  COUNT: A 32-bit unsigned integer in network byte order indicating
+      how many were on the distribution list for this MDN.
+
+   *  SENT: The UTC timestamp as a 64-bit unsigned integer in network
+      byte order of when the MDN reply was sent.
+
+   Followed by COUNT detail records:
+
+   *  UTC: The UTC timestamp as a 64-bit unsigned integer in network
+      byte order of when the MDN reply was received.  Set to zero if not
+      received.
+
+   *  Email-Address: A PhoenixString with the associated email address
+      of the user that has or has not returned the MDN.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Royer                    Expires 11 August 2025                [Page 25]
+
+Internet-Draft        Phoenix: Lemonade Risen Again        February 2025
+
+
++--------+--------------------------+
+|  32-bit COUNT                     |
++--------+--------------------------+-----------------------------------+
+|  MDN SENT Time Stamp UTC 64-bit                                       |
++-----------------------------------------------------------------------+
+
+Followed by COUNT of these:
+
++-----------------------------------------------------------------------+
+|  MDN Received Time Stamp UTC 64-bit                                   |
++--------+--------------------------+-----------------------------------+
+|  32-bit LENGTH of email           |
++--------+--------------------------+
+|  Email-Address ...
++-----------------------------------+
+
+                     Figure 2: MDNData Attribute
+
+5.18.  Meta Data with Shared Objects
+
+   When a server implementation allows shared objects, the meta data
+   returned to the client may be different depending on the
+   authenticated user.  Some users may have read only copies, other may
+   be able to delete the object.
+
+   When a shared object is deleted, it is marked as deleted for only the
+   user that issued the delete.
+
+   When a shared object is expunged, its access is removed for the user
+   that issued the expunge.  After all users have expunged the object,
+   then it is removed by the server.
+
+   There are two kinds of expunge for shared objects.  Force and
+   delayed.
+
+   *  Forced:
+
+      A forced expunge can be the result of security policies at the
+      server, site, or administrators discretion.  This also is how
+      timed messages are deleted.
+
+
+
+
+
+
+
+
+
+
+
+Royer                    Expires 11 August 2025                [Page 26]
+
+Internet-Draft        Phoenix: Lemonade Risen Again        February 2025
+
+
+      In order for a shared object that is expunged to not force an
+      immediate re-index for all clients, the server sends an expunge to
+      all clients, where the client MUST immediately make the object not
+      show to the user and MUST invalidate any cached or memory copy of
+      the data.  Then when convenient, the client can do a re-index of
+      the folder.  When a user is viewing the object when an expunge
+      arrives, the client must inform the user that the data is no
+      longer available and replace the user view of the data with an
+      empty object or move the view to another object.
+
+      Server implementations must prioritize forced expunge notices to
+      the clients and immediately reject all attempts to read, view,
+      copy, or access meta data.
+
+   *  Delayed:
+
+      The user is informed the MIME object is no longer available.  The
+      client implementation may continue to show the object.  The client
+      may copy the MIME object, unless tagged as NoCopy.
+
+      The next time the client does an expunge the object will be
+      expunged from the client.
+
+      When a client application closes, all delayed expunges MUST occur
+      at exit.
+
+      When a client applications starts the client MUST check for
+      delayed expunges that have not been processed and expunge them and
+      not allow the user to see them.
+
+      Server implementations must reject attempts to fetch or view a
+      folder or file or any of its meta data when an expunge has
+      started, and not yet completed.
+
+6.  Over the Wire Protocol Detail
 
    This section specifies the details of what is transmitted over the
    network.
@@ -1038,6 +1504,16 @@ Internet-Draft        Phoenix: Lemonade Risen Again        February 2025
    original format.  The payload consent is seen as an opaque blob of
    data within a command packet.
 
+
+
+
+
+
+Royer                    Expires 11 August 2025                [Page 27]
+
+Internet-Draft        Phoenix: Lemonade Risen Again        February 2025
+
+
    When a command packet is received by ether endpoint it: (1) Checks
    the command sequence number to determine if it is a reply or not.
    (2) If it is a reply, it looks at the command and dispatches it to
@@ -1048,7 +1524,7 @@ Internet-Draft        Phoenix: Lemonade Risen Again        February 2025
    A command and all of its replies, use the same format as described
    here.
 
-   A packet has a 64-bit unsigned integer in network byte order that is
+   A packet has a 32-bit unsigned integer in network byte order that is
    set to the octet count of all of the data that follows this length
    value.  The shortest packet is 16 octets in size, with a length value
    set to 8.  With 8 octets for the length, and 8 octets for the packet.
@@ -1059,13 +1535,6 @@ Internet-Draft        Phoenix: Lemonade Risen Again        February 2025
    Followed by a 32-bit unsigned integer in network byte order that is
    the command.
 
-
-
-Royer                     Expires 7 August 2025                [Page 19]
-
-Internet-Draft        Phoenix: Lemonade Risen Again        February 2025
-
-
    Followed by zero or more octets of payload data.
 
    There is no space, padding, or line endings between the parts of the
@@ -1073,18 +1542,33 @@ Internet-Draft        Phoenix: Lemonade Risen Again        February 2025
    encoded or transformed in any way.  A packet is shown here vertically
    only to aid in readability.
 
-   +-----------------------------------------------------------------+
-   | ...64-bit.unsigned.integer.length ..............................|
-   +-----------------------------------------------------------------+
+   +----------------------------------+
+   | ...32-bit.unsigned.integer.length|
+   +----------------------------------+
    | ...32-bit.unsigned.command.SEQ...|
    +----------------------------------+
    | ...32-bit.unsigned.command.CMD...|
    +----------------------------------+
    | payload.....
 
+   ABNF:
+
+   CommandHeader : Length:32 Sequence:32 CMD:32
+
+   Command : CommandHeader Payload
+
    The payload size and format varies for each command.  The details of
    the payload content, and the format of that content, is described in
    each specific CMD section.
+
+
+
+
+
+Royer                    Expires 11 August 2025                [Page 28]
+
+Internet-Draft        Phoenix: Lemonade Risen Again        February 2025
+
 
    An implementation can send, receive, and dispatch packets within its
    implementation by looking at the length, SEQ, and CMD, then passing
@@ -1104,7 +1588,6 @@ Internet-Draft        Phoenix: Lemonade Risen Again        February 2025
    XDR data can be handled:
 
      // Where:
-     //  uint64_t, is a 64-bit unsigned integer.
      //  uint32_t, is a 32-bit unsigned integer.
      //  uint8_t *, is a pointer to 8-bit data.
      //  XDR, is an XDR object.
@@ -1114,16 +1597,8 @@ Internet-Draft        Phoenix: Lemonade Risen Again        February 2025
      //
      //  NOTE: See the sample implementation.
      //
-
-
-
-Royer                     Expires 7 August 2025                [Page 20]
-
-Internet-Draft        Phoenix: Lemonade Risen Again        February 2025
-
-
-     uint64_t   NetLength;
-     uint64_t   PacketLength;
+     uint32_t   NetLength;
+     uint32_t   PacketLength;
      uint8_t *  Data;
      uint8_t *  DataPointer;
      XDR        Xdr;
@@ -1131,7 +1606,7 @@ Internet-Draft        Phoenix: Lemonade Risen Again        February 2025
 
      // Read the length and convert to host byte order.
      //
-     read(FromClientSocket, &NetLength, sizeof(uint64_t));
+     read(FromClientSocket, &NetLength, sizeof(uint32_t));
      PacketLength = ntohll(NetLength);
 
      // Allocate PacketLength data, and read it.
@@ -1142,6 +1617,14 @@ Internet-Draft        Phoenix: Lemonade Risen Again        February 2025
      // Initialize the XDR deserializer.
      //
      xdrmem_create(&Xdr, Data, PacketLength, XDR_DECODE);
+
+
+
+
+Royer                    Expires 11 August 2025                [Page 29]
+
+Internet-Draft        Phoenix: Lemonade Risen Again        February 2025
+
 
      // Decode the received data into a Packet.
      //
@@ -1167,17 +1650,9 @@ Internet-Draft        Phoenix: Lemonade Risen Again        February 2025
        // the command.
        //
        // If a server gets an even numbered sequence, it is a
-       // command from theother endpoint.
+       // command from the other endpoint.
        //
        if (WeAreTheClient) {
-
-
-
-Royer                     Expires 7 August 2025                [Page 21]
-
-Internet-Draft        Phoenix: Lemonade Risen Again        February 2025
-
-
          if (SequenceIsEvenNumber) {
            DispatchReply(Packet);
          } else {
@@ -1192,85 +1667,135 @@ Internet-Draft        Phoenix: Lemonade Risen Again        February 2025
        }
      }
 
-6.  Index
+7.  Index
 
-6.1.  Interested Headers
+
+
+
+
+
+
+
+
+Royer                    Expires 11 August 2025                [Page 30]
+
+Internet-Draft        Phoenix: Lemonade Risen Again        February 2025
+
+
+7.1.  Interested Headers
 
    Some implementation may wish to specify which MIME headers it wants
    to get in the index supplied by the server.  This is done as part of
-   the folder selection command which can supplies a list of desired
+   the folder selection command which can supply a list of desired
    headers.  Or it can specify a list ID that has already been
    transmitted.  When none are supplied, no header index values will be
    returned.
 
    This list can be the same for all folders, or unique to specific
    folders.  The client generates a list of interested headers and sends
-   an InterestedHeaders list to the server when selecting a folder.
+   an Interested Headers list or list ID to the server when selecting a
+   folder.
 
-   A request ID (HIDX) is an 8-bit unsigned integer in network byte
-   order.
+7.1.1.  Index Operation (IndexOP)
 
-   A Header ID is an 8-bit unsigned integer in network byte order.
+   An Index Operation (IndexOP) is an 8-bit unsigned integer in network
+   byte order.  There are only two (2) values, set list (0), use
+   existing list (1).
 
-   There are three (3) types of interested header index (HIDX) requests.
-   These are 8-bit unsigned integer in network byte order.  And the HIDX
-   values are:
+   There are two (2) types of index operations (IndexOP) requests.
+   These are 8-bit unsigned integer in network byte order.  And the
+   IndexOP values are:
 
-   *  HIDX = 0
+   *  IndexOP = 0
 
-      Used to set the default MIME object and Body Part list of
-      interesting headers the client cares about.  The default list has
-      a list ID that is also zero (0).
+      Used to set a list of body MIME object, and Body Part, interesting
+      headers the client cares about.
 
-      And requesting a list ID of zero (0) will return the index of the
-      default headers defined by the client that was set.
+   *  IndexOP = 1
 
-   *  HIDX = 1
+      This indicates that LID is an existing list number to use.
+
+7.1.2.  Header ID (HID)
+
+   A Header ID (HID) is an 8-bit unsigned integer in network byte order.
+   The client assigned this 8-bit number to a header name, then the
+   client and server references it by ID in packets and replies.  A
+   client can have up to 254 interested headers per connection.  The
+   value 255 is reserved for expansion.
+
+7.1.3.  List ID (LID)
+
+   A List ID (LID) it an 8-bit unsigned integer in network byte order.
+   It is used in requests and replies to refer to the interested headers
+   list.  A client can have up to 254 lists per connection.  The value
+   255 is reserved for expansion.
 
 
 
-Royer                     Expires 7 August 2025                [Page 22]
+
+Royer                    Expires 11 August 2025                [Page 31]
 
 Internet-Draft        Phoenix: Lemonade Risen Again        February 2025
 
 
-      This value sets a custom list that can be used later by ID.
-      Custom lists have an ID greater than zero (>0)
+   Restrictions:
 
-   *  HIDX = 2
+   *  The list IDs are unique to the connection and do not persist
+      across connections.
 
-      This value is used to get the header list index.
+   *  No two lists can have the same ID during a connection.
 
-   The header for setting a list is shown in Figure 1, where:
+7.1.4.  Protocol Format
 
-   *  HIDX is used to set or get the headers the client wishes the
-      server to index in MIME objects.  It must be a zero (0), one (1),
-      or two (2).
+   When a folder is opened with the FOLDER_OPEN command, it is followed
+   by a list of interested headers it wants back in the folder open
+   reply.  The list can be empty (a single 32-bit unsigned integer set
+   to zero), or contain what follows:
 
-   *  LID is the list ID of the list.  An 8-bit value.  Zero (0) is the
-      default list.
+   The client sets these 3 values into one 32-bit unsigned integer in
+   network byte order as shown in Figure 3, where:
 
-   *  HdrCnt set to the number of headers the client wants in the list.
+   *  IndexOP is used to specify headers the client wishes the server to
+      index in MIME objects.  It must be a zero (0) to set the list
+      definition.
+
+   *  LID is the list ID of the list that client is defining.  An 8-bit
+      value.
+
+   *  HdrCnt is set by the client to the number of headers in the list.
       This is an 8-bit value from 0 to 254 with 255 reserved for
-      expanson.
+      expansion.
 
       This is a 32-bit unsigned integer in network byte order.
 
    +--------+--------+--------+--------+
-   |  0x00  |   RID  |  LID   | HdrCnt |
+   |  0x00  | IndexOP|  LID   | HdrCnt |
    +--------+--------+--------+--------+
 
-                Figure 1: Setting the Intrest List - Header
+                Figure 3: Setting the Interest List - Header
 
-   Followed by the header request information.  One sent for each unique
-   header to be placed into the header index.  As shown in Figure 2,
-   where:
+   ABNF:
+
+   Interest Header:32 = 0x00:8 IndexOP:8 LID:8 HdrCnt:8
+
+7.1.4.1.  Interested Headers - Single Entry
+
+   Followed by the header request information is one or more of these
+   single header entries.  One sent for each unique header to be placed
+   into the header index.  As shown in Figure 4, where:
 
    *  HID is the client assigned unique header ID for the named header.
       This is an 8-bit unsigned integer.
 
+
+
+Royer                    Expires 11 August 2025                [Page 32]
+
+Internet-Draft        Phoenix: Lemonade Risen Again        February 2025
+
+
    *  STRING LENGTH is the octet count of the string.  Any terminating
-      zero (0) is not counted.
+      zero (0) is not counted in the length.
 
       This is a 24-bit unsigned integer in network byte order.
 
@@ -1279,168 +1804,227 @@ Internet-Draft        Phoenix: Lemonade Risen Again        February 2025
       (0).  These are a sequence of 8-bit unsigned integer values in
       network byte order.
 
+      They are packed into a 32-bit unsigned integer in network byte
+      order.
 
-
-
-
-
-
-Royer                     Expires 7 August 2025                [Page 23]
-
-Internet-Draft        Phoenix: Lemonade Risen Again        February 2025
-
+      When THE HEADER NAME is not a multiple of 32-bits in length, the
+      remaining bits are unused and shown as zero (0) in this
+      specification.
 
    +--------+------------------------+
-   | HID    | STRING LENGTH          |
+   | HID    | STRING LENGTH          | A 32-bit value.
    +--------+------------------------+
-   | ... HEADER NAME...
+   | HEADER NAME     ...               Packet 8 bit values.
+   +--------+------------------------+
 
-               Figure 2: Setting the Intrest List - Contents
+               Figure 4: Setting the Interest List - Contents
 
-   When the HIDX flag is set to two (2) then it is followed by a list
+   ABNF:
 
-   LID, the list ID of an already transmitted list to be used.  Zero (0)
-   for the already defined and transmitted default list.  Or the LID of
-   another already defined and transmitted non-default list.
+   SingleEntry     = SingleHeader:32 HeaderName822
+
+   SingleHeader:32 = HID:8 StringLength:24
+
+7.1.4.2.  Interested Headers - Use Existing List
+
+   When the IndexOP flag is set to one (1) then it is followed by an
+   existing list ID number.
+
+   LID, the list ID of an already transmitted list to be used.
 
    This is sent as a 32-bit unsigned integer in network byte order.
 
-   +--------+--------+--------+--------+
-   |  0x00  |  0x00  |  0x02  |  LID   |
-   +--------+--------+--------+--------+
++--------+--------+--------+--------+
+|  0x00  |  0x01  |  LID   |  0x00  | Use exiting (0x01). And the List LID
++--------+--------+--------+--------+
 
-             Figure 3: Requesting Header Index by List ID (LID)
+        Figure 5: Using Existing Header Index by List ID (LID)
 
-   Restrictions:
-
-   *  Only one default list can be set at a time.  It can change by
-      sending a new default list.
-
-   *  List ID zero (0) is reserved for the default list.
-
-   *  The list IDs are unique to the connection and do not persist
-      across connections.
-
-   *  No two lists can have the same ID during a connection.
-
-
-6.1.1.  Client Interested Headers Examples
-
-   This is an example of the client sending the default interesting
-   header list to the server.  The client is asking for the index values
-   for the following MIME headers (1) From, and (2) Subject.  And for
-   the following Body part headers (1) Content-Type.
+   ABNF:
 
 
 
 
-
-
-
-
-
-
-
-Royer                     Expires 7 August 2025                [Page 24]
+Royer                    Expires 11 August 2025                [Page 33]
 
 Internet-Draft        Phoenix: Lemonade Risen Again        February 2025
 
 
-                   RCMD     LID       2 MIME Object Headers included.
-       +--------+--------+--------+--------+
-   (a) |  0x00  |  0x00  |  0x00  |  0x02  |
-       +-----------------------------------+
-   (b) |  0x00  |                0x000004  |
-       +--------+--------+--------+--------+
-   (c) |  0x46  |  0x72  |  0x6f  |  0x6d  |
-       +--------+--------+--------+--------+
-   (d) |  0x01  |                0x000007  |
-       +--------+--------+--------+--------+--------+--------+--------+
-   (e) |  0x53  |  0x75  |  0x62  |  0x6a  |  0x65  |  0x63  |  0x74  |
-       +--------+--------+--------+--------+--------+--------+--------+
-   (f) |  0x00  |  0x00  |  0x00  |  0x01  |
-       +-----------------------------------+
-   (g) |  0x02  |                0x00000c  |
-       +--------+--------+--------+--------+--------+--------+--------+
-   (h) |  0x43  |  0x6f  |  0x6e  |  0x74  |  0x65  |  0x6e  |  0x74  |
-       +--------+--------+--------+--------+--------+--------+--------+
-   (i) |  0x2d  |  0x74  |  0x79  |  0x70  |  0x74  |
-       +--------+--------+--------+--------+--------+
+   UseExistingOp:8 = 0x01:8
 
-                   Figure 4: Example Setting Default List
+   UseExistingList:32 = 0x00:8 UseExistingOp:8 LID:8 0x00:8
+
+7.1.4.3.  Example: Setting the Interested Header List
+
+   This is an example of the client sending an interesting header list
+   to the server.  The client is asking for the index values for the
+   following MIME headers (1) From, and (2) Subject.  And for the
+   following Body part headers (1) Content-Type.
+
+      +-----------------------------------...
+      | The folder open command .............
+      +-----------------------------------...
+
+  Immediately followed by:
+
+                 IndexOP   LID      2 MIME Object Headers included.
+      +--------+--------+--------+--------+
+  (a) |  0x00  |  0x00  |  0x00  |  0x02  | Start of MIME object List
+      +-----------------------------------+
+  (b) |  0x00  |                0x000004  | Header (0), Length (4)
+      +--------+--------+--------+--------+
+  (c) |  0x46  |  0x72  |  0x6f  |  0x6d  | "From"
+      +--------+--------+--------+--------+
+  (d) |  0x01  |                0x000007  | Header (1), Length (7)
+      +--------+--------+--------+--------+
+  (e) |  0x53  |  0x75  |  0x62  |  0x6a  | "Subject"
+      +--------+--------+--------+--------+
+      |  0x65  |  0x63  |  0x74  |  0x00  |
+      +--------+--------+--------+--------+
+  (f) |  0x00  |  0x00  |  0x00  |  0x01  | Start of Body Part List
+      +-----------------------------------+
+  (g) |  0x02  |                0x00000c  | Body Header (2), Length (12)
+      +--------+--------+--------+--------+
+  (h) |  0x43  |  0x6f  |  0x6e  |  0x74  | "Content-Type"
+      +--------+--------+--------+--------+
+      |  0x65  |  0x6e  |  0x74  |  0x2d  |
+      +--------+--------+--------+--------+
+      |  0x74  |  0x79  |  0x70  |  0x74  |
+      +--------+--------+--------+--------+
+
+                     Figure 6: Example Setting a List
 
    Where:
 
-   *  (a) Not used zero (0), HIDX, LID, Two headers follow An HIDX of
-      zero (0) means we are setting the default MIME object header list.
+   *  (a): A 32-bit unsigned integer in network byte order as described
+      in Figure 3.
 
-   *  (b) This first header will be identified as zero (0).  The first
-      header is four (4) octets in length: 'From'.
 
-   *  (c) The value of the characters for 'From'.
 
-   *  (d) The second header will be identified as one (1).  The second
-      header is seven (7) octets in length: 'Subject'.
+Royer                    Expires 11 August 2025                [Page 34]
+
+Internet-Draft        Phoenix: Lemonade Risen Again        February 2025
 
-   *  (e) The value of the characters for 'Subject'.
+
+      The first 8-bits are zero.
+
+      The IndexOP of zero, which means defining a list.
+
+      And in this example two (0x02) MIME object headers are requested
+      to be indexed, "From", and "Subject".
+
+   *  (b): A 32-bit unsigned integer in network byte order as described
+      in Figure 4.
+
+      The header ID that the client and server will use to to identify
+      the "From" header name will be zero (0) in this example.
+
+      The length of the string "From" is four (4) and its length is the
+      lower 24 bits of this entry.
+
+   *  (c) A series of 8-bit unsigned values packed into one or more
+      32-bit unsigned integers in network byte order.
+
+      Each 8-bit value is the value of the letters in "From".  As "From"
+      is a multiple of 32-bits, no padding is done.
+
+   *  (d): A 32-bit unsigned integer in network byte order as described
+      in Figure 4.
+
+      The header ID that the client and server will use to to identify
+      the "Subject" header name will be one (1) in this example.
+
+      The length of the string "Subject" is seven (7) and its length is
+      the lower 24 bits of this entry.
+
+   *  (e) A series of 8-bit unsigned values packed into one or more
+      32-bit unsigned integers in network byte order.
+
+      Each 8-bit value is the value of the letters in "Subject".
+
+      As The length of "Subject" is not a multiple of 32-bits, the
+      remaining bits are ignored.  Shown as zero in this example.
 
    *  (f) The two MIME objects headers are done, start of Body Part
-      headers.  and there is one (1) of them.  HIDX and LID are not used
-      here.
+      headers, and there is one (1) of them.  IndexOP and LID are not
+      used here.
 
    *  (g) The second header will be identified as three (3).  The first
       body part header is 12 octets long (0xc): 'Content-Type'.
 
    *  (h) The value of the characters for 'Content-Type'.
 
-   *  (i) The reast of the value of the characters for 'Content-Type'.
 
 
 
-Royer                     Expires 7 August 2025                [Page 25]
+Royer                    Expires 11 August 2025                [Page 35]
 
 Internet-Draft        Phoenix: Lemonade Risen Again        February 2025
 
 
-6.2.  MIME Folder Index
+   *  (i) The rest of the value of the characters for 'Content-Type'.
 
-   In this specification, a MIME folder is also called a folder.  And
-   can be files containing MIME objects on a disk that have a defined
-   order, or sequence of MIME objects in one file.
-
-   A folder index is a summary of the contents of a MIME folder.  It
-   includes the basic header information and the specific location of
-   body parts for each MIME message in the folder.  The location
-   information is the octet count to the start of the beginning of the
-   related target data.
-
-   *  An index is an unsigned 32-bit integer in network byte order.
-
-   *  A length is an unsigned 32-bit integer in network byte order.
-
-   For example, if a MIME folder contains 100 MIME messages, then the
-   folder index will have 100 message indexes.  Each message will have
-   header indexes for the requested headers.  Each message index will
-   contain 1 or more body part indexes.  Each body part will have header
-   indexes with zero (0) or more entries.
+7.2.  PhoenixString
 
    This protocol references the strings by octet offset into the entire
    message.  All strings can be referenced by using a total of 8 octets.
    A Phoenix string consists of two parts:
 
-   1.  The octet count to the start of the string with zero being the
-       first octet in the message.
+   *  Offset: A 32-bit unsigned integer in network byte order.  The
+      octet count to the start of the string with zero being the first
+      octet in the message.
 
-   2.  The length in octets of the string.
+   *  Length: The length in octets of the string.  A 32-bit unsigned
+      integer in network byte order.
 
    A Phoenix string over the wire is 8 octets in size.
 
-                                   +----------------------------------+
-                                   | OFFSET                           |
-                                   +----------------------------------+
-                                   | LENGTH                           |
-                                   +----------------------------------+
-                                   | payload.....
+   +----------------------------------+
+   | OFFSET                           |
+   +----------------------------------+
+   | LENGTH                           |
+   +----------------------------------+
+   | payload.....
+   +----------------------------------+
+
+                      Figure 7: Phoenix String Format
+
+   ABNF:
+
+   PhoenixString = Offset:32 Length:32 String
+
+7.3.  MIME Folder Index
+
+   In this specification, a MIME folder is also called a folder.  And
+   can be files containing MIME objects on a disk that have a defined
+   order, or sequence of MIME objects in one file.
+
+   A folder index is a summary of the contents of a MIME folder.  It may
+   include the basic header information.  It does include location
+   information provided as the octet count to the start of the beginning
+   of the related target data.
+
+   *  An index is an unsigned 32-bit integer in network byte order.
+
+   *  A length is an unsigned 32-bit integer in network byte order.
+
+
+
+
+
+
+Royer                    Expires 11 August 2025                [Page 36]
+
+Internet-Draft        Phoenix: Lemonade Risen Again        February 2025
+
+
+   For example, if a MIME folder contains 100 MIME messages, then the
+   folder index will have 100 message indexes.  Each message will have
+   header indexes for the interested headers.  Each message index will
+   contain 1 or more body part indexes.  Each body part will have header
+   indexes with zero (0) or more entries.
+
+7.3.1.  Folder Index Header
 
    A folder index consists of:
 
@@ -1451,40 +2035,60 @@ Internet-Draft        Phoenix: Lemonade Risen Again        February 2025
    *  The number of message indexes in this folder index.  As an
       unsigned 32-bit integer in network byte order.
 
+   The index header is 8 octets, that is followed by the each message
+   index:
 
+   +--------+--------+--------+--------+
+   |  32-bit Total Folder Index Size   |
+   +--------+--------+--------+--------+
+   |  32-bit Message Indexes Count     |
+   +--------+--------+--------+--------+
+   | Array of Message Indexes ...
+   +-----------------------------------+
 
-Royer                     Expires 7 August 2025                [Page 26]
-
-Internet-Draft        Phoenix: Lemonade Risen Again        February 2025
+                           Figure 8: Folder Index
 
+   ABNF:
 
-   The index header is 8 octets:
+   FolderIndexHeader = FolderIndexSize:32 MessageCount:32 ArrayOfMsgIndex
 
-                                   +----------------------------------+
-                                   | LENGTH                           |
-                                   +----------------------------------+
-                                   | MESSAGE COUNT                    |
-                                   +----------------------------------+
-                                   | payload.....
+   The header is followed by an array of message indexes.  They are an
+   ordered list of references to each message.  In the order they appear
+   in the folder:
 
-   Next is an array of message indexes.  They are an ordered list of
-   references to each message.  In the order they appear in the folder:
+7.3.2.  Message Index
 
    *  A 32-bit unsigned integer in network byte order that is the offset
-      in the folder to the message.  An offset is unique in a MIME
-      folder, it is used both as an offset into the MIME folder, and as
-      a unique ID within a MIME folder.
+      into the folder of the message.  A Message offset is unique in a
+      MIME folder, it is used both as an offset into the MIME folder,
+      and as a unique ID within a MIME folder for a message.
 
    *  An a length of the message as a 32-bit unsigned integer in network
       byte order.
 
-                                   +----------------------------------+
-                                   |    32-bit unsigned OFFSET        |
-                                   +----------------------------------+
-                                   |    32-bit unsigned LENGTH        |
-                                   +----------------------------------+
-                                   | Array of header index .....
-                                   ...
+
+
+
+Royer                    Expires 11 August 2025                [Page 37]
+
+Internet-Draft        Phoenix: Lemonade Risen Again        February 2025
+
+
+   +----------------------------------+
+   |    32-bit unsigned OFFSET        |
+   +----------------------------------+
+   |    32-bit unsigned LENGTH        |
+   +----------------------------------+
+   | Header Index List Description ...
+   +----------------------------------+
+
+                          Figure 9: Message Index
+
+   ABNF:
+
+   MessageIndex = OfffsetIntoFolder:32 MessageLength:32 ArrayOfHeaderIndex
+
+   ArrayOfMsgIndex = MessageIndex*
 
    For each message index is an ordered list of interested headers.  The
    interested header list is assignable by the client and body part
@@ -1492,59 +2096,431 @@ Internet-Draft        Phoenix: Lemonade Risen Again        February 2025
    associated value.  Each interested header can be indexed with nine
    (9) octets.  and consists of:
 
-   *  The clients assigned unique header ID for the interested header
-      name.  This is an unsigned 32-bit integer in network byte order.
-      Leaving the client to ask for the index of 254 unique header
-      names.
+7.3.3.  Header Index
 
-   *  A Phoenix string referencing the header value.  And as it is
-      unique in a MIME object, the offset is used both as an offset, and
-      as a unique ID within a MIME object.
+   *  ID-CNT: A count of matched headers.  Only matched headers will be
+      included.  If they are not included, no such header existed in the
+      object.
 
-   *  An unsigned 32-bit integer in network byte order of the number of
-      body parts in this message.  Any MIME preamble and epilogue are
-      not counted as body parts A preamble, if it exists, can be easily
-      be calculated as it starts as the first octet after the header
-      area.  And the epilogue, if it exists, can be calculated as
+   *  The number of body parts in this object.  An unsigned 8-bit
+      number.  With MIME, body parts may contain body parts.
+
+      Any MIME preamble and epilogue are not counted as body parts A
+      preamble, if it exists, can be easily be calculated as it starts
+      as the first octet after the header area.  And the epilogue, if it
+      exists, can be calculated as starting as the first octet after the
+      last MIME boundary.
+
+   *  Followed by an array of ID-CNT 8-bit client assigned HID values
+      that matched.  Padded to round up to 32-bits.  The unused bits are
+      ignored and shown as zero in this specification.
+
+   A single header index consists of the list description, followed by
+   the index values.  There are two header indexes in each Message
+   index.
+
+   1.  The first is for the MIME object itself.
 
 
 
-Royer                     Expires 7 August 2025                [Page 27]
+
+
+Royer                    Expires 11 August 2025                [Page 38]
 
 Internet-Draft        Phoenix: Lemonade Risen Again        February 2025
 
 
-      starting as the first octet after the last MIME boundary.  And as
-      it offset is unique in a MIME object, the offset is used both as
-      an offset, and as a unique ID within a MIME object.
+   2.  The second is for the objects Body Parts.  This part will not
+       exists exist when it is an RFC-822 style message or has no body
+       parts.  Followed by the header index.  This second part also
+       include an offset to the start of the body part itself in the
+       MIME object.
 
-7.  IANA Considerations
+   A list description is one 8-bit result count, followed by the list of
+   matching header ID's (HID).
+
+   If the list description is not a multiple of 32-bits then padding is
+   added and the extra are ignored and shown as zero in this
+   specification.
+
+   -Meta-Data-: Seen,Answered,$NotJunk
+
+   +--------+--------+--------+--------
+   | ID-CNT |Body-CNT|  HID   |  HID ...
+   +--------+--------+--------+--------
+   | Array of Phoenix String ...
+   +-----------------------------------
+
+   Then for each Body-CNT body parts:
+
+   +-----------------------------------
+   | 32-bit Offset, start of Body Part|
+   +--------+--------+--------+--------
+   | ID-CNT |Body-CNT|  HID   |  HID ...
+   +--------+--------+--------+--------
+   | Array of Phoenix String ...
+   +-----------------------------------
+   | Then for each Body-CNT body parts:
+   +...................................
+
+                          Figure 10: Header Index
+
+   ABNF:
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Royer                    Expires 11 August 2025                [Page 39]
+
+Internet-Draft        Phoenix: Lemonade Risen Again        February 2025
+
+
+   HeaderIndex          = HeaderIndexHeader:32 ArrayOfHID*
+                          PhoenixString* BodyPartIndex*
+
+                          ; One HID (HeaderID) for each match header
+                          ; in the LID provided. Padded out to multiples
+                          ; of 32-bits.
+   HeaderIndexHeader:32 = ID-CNT:8 Body-Count:8
+                          / (HID HID)
+                          / (HID 0x00:8)
+                          / (0x00:8 0x00:8)
+
+   ArrayOfHid           = HIDEntry*
+
+   BodyPartIndex        = BodyPartOffset:32 HeaderIndexHeader:32 PhoenixString*
+                          BodyPartIndex*
+
+   ID-CNT:8               ; The number of headers found in the
+                          ; MIME object and requested in the interested
+                          ; header list.
+
+   Body-CNT:8             ; The number of body parts in the object
+
+                          ; Padded out to multiples of 32-bits.
+   HidEntry             = (HID:8 HID:8 HID:8 HID:8)
+                          / (HID:8 HID:8 HID:8 0x00:8)
+                          / (HID:8 HID:8 0x00:8 0x00:8)
+                          / (HID:8 0x00:8 0x00:8 0x00:8)
+
+   Where:
+
+   HeaderIndex: The header index starts with a 32-bit unsigned integer
+   in network byte order, the HeaderIndex:32.
+
+   HeaderIndex:32: Contains 0, 1, or 2 HID values.  They are in the
+   order found in the object.
+
+   ArrayIfHID: Keeps repeating until all of the headers in the list have
+   been found in the message.  The last one pads with zeros when needed.
+
+   BodyPartIndex: When the object has body parts, there will be a
+   BodyPartIndex for each body part, in the order they are in the
+   object.  The first 32-bits are the offset to the start of the body
+   part.  This does not include any boundary.
+
+   Body parts themselves may contain body parts, they are recursively
+   included as needed.
+
+
+
+
+
+Royer                    Expires 11 August 2025                [Page 40]
+
+Internet-Draft        Phoenix: Lemonade Risen Again        February 2025
+
+
+7.3.4.  Header Index Example 1
+
+   For example, if the client requested MIME object indexes for the
+   "From", "Subject", "To", "Message-ID", "Content-Type", "MIME-
+   Version", and "Date" header values.
+
+   Assume this is an RFC-822 message with no body parts.  So the body
+   part header index has a count of zero (0).  And the HID values
+   assigned by the client when opening the folder are:
+
+   *  From: 0
+
+   *  Subject: 1
+
+   *  To: 2
+
+   *  Message-ID: 3
+
+   *  Content-Type: 4
+
+   *  Data: 5
+
+   *  MIME-Version: 6
+
+   In the Message each line is terminated with a carriage return and
+   line feed:
+
+   From: Doug@example.com
+   To: Notices@example.com, Supervisors@example.com, Dave@example.com
+   Date: Thu, 06 Feb 2025 20:29:35 +0000
+   MessageID: <7324e0b9-f6dc-3c9b-a02f-0b2b824e863c@example.com>
+   Subject: A new draft of Phoenix has been published.
+   Content-Type: text/plain
+
+   A new draft has been published.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Royer                    Expires 11 August 2025                [Page 41]
+
+Internet-Draft        Phoenix: Lemonade Risen Again        February 2025
+
+
++--------+--------+--------+--------+
+|   7    |    0   |    0   |   2    | ID CNT, Body Cnt, From ID, To ID,
++--------+--------+--------+--------+
+|   2    |    2   |    5   |   3    | To ID, To ID, Date ID, Message-ID ID,
++--------+--------+--------+--------+
+|   1    |    4   |    0   |   0    | Subject ID, Content-Type ID, pads 0
++--------+--------+--------+--------+
+|                 6                 | OFFSET to: Doug@example.com
++-----------------------------------+
+|                16                 | LENGTH of: 16
++-----------------------------------+
+|                28                 | OFFSET to: Notices@example.com
++-----------------------------------+
+|                19                 | LENGTH of: 19
++-----------------------------------+
+|                49                 | OFFSET to: Supervisors@example.com
++-----------------------------------+
+|                23                 | LENGTH of: 23
++-----------------------------------+
+|                74                 | OFFSET to: Dave@example.com
++-----------------------------------+
+|                16                 | LENGTH of: 16
++-----------------------------------+
+|                98                 | OFFSET to: 06 Feb ...
++-----------------------------------+
+|                31                 | LENGTH of: 31
++-----------------------------------+
+|               142                 | OFFSET to: <732er ....>
++-----------------------------------+
+|                50                 | LENGTH of: 50
++-----------------------------------+
+|               204                 | OFFSET to: A new draft ...
++-----------------------------------+
+|                42                 | LENGTH of: 42
++-----------------------------------+
+|               249                 | OFFSET to: Content/Type
++-----------------------------------+
+|                10                 | LENGTH of: 10
++-----------------------------------+
+
+                       Figure 11: Header Index
+
+7.3.5.  Header Index Example 2
+
+   For example, if the client requested MIME object indexes for the
+   "From", "Subject", "To", "MIME-Version", and "Content-Type".  header
+   values.
+
+
+
+
+Royer                    Expires 11 August 2025                [Page 42]
+
+Internet-Draft        Phoenix: Lemonade Risen Again        February 2025
+
+
+   And when the folder was opened, the client asked for the "Content-
+   Type" header.
+
+   Assume this is a MIME message with two body parts.  So the body part
+   header index has a count of two (2).  And the HID values assigned by
+   the client when opening the folder are:
+
+   *  From: 8
+
+   *  Subject: 12
+
+   *  To: 4
+
+   *  Content-Type: 3
+
+   *  MIME-Version: 9
+
+   In the Message each line is terminated with a carriage return and
+   line feed:
+
+   From: User@example.com
+   To: User2@example.com
+   Subject: This is the subject of a sample message
+   MIME-Version: 1.0
+   Content-Type: multipart/alternative; boundary="XXXXboundary text"
+
+   --XXXXboundary text
+   Content-Type: text/plain; charset="utf-8"
+   Content-Transfer-Encoding: quoted-printable
+
+   This is the body text of a sample message
+
+   --XXXXboundary text
+   Content-Type: text/html; charset="utf-8"
+   Content-Transfer-Encoding: quoted-printable
+
+   This is the body text of a sample message.
+   --XXXXboundary text--￼
+
++--------+--------+--------+--------+
+|   5    |    2   |    8   |   4    | ID CNT, Body Cnt, From ID, To ID,
++--------+--------+--------+--------+
+|   12   |    9   |    3   |   0    | Subject ID, MIME ID, Content-Type ID
++--------+--------+--------+--------+
+|                 6                 | OFFSET to: User@example.com
++-----------------------------------+
+|                16                 | LENGTH of: 16
++-----------------------------------+
+
+
+
+Royer                    Expires 11 August 2025                [Page 43]
+
+Internet-Draft        Phoenix: Lemonade Risen Again        February 2025
+
+
+|                28                 | OFFSET to: User2@example.com
++-----------------------------------+
+|                17                 | LENGTH of: 17
++-----------------------------------+
+|                56                 | OFFSET to: This is the subject ...
++-----------------------------------+
+|                39                 | LENGTH of: 39
++-----------------------------------+
+|               111                 | OFFSET to: 1.0
++-----------------------------------+
+|                 3                 | LENGTH of: 3
++-----------------------------------+
+|               130                 | OFFSET to: multiplar/alternative...
++-----------------------------------+
+|                50                 | LENGTH of: 50
++-----------------------------------+
+
+Next is the data for the first body part.
+This one body part has no body parts, so its Body Cnt is zero.
+
++-----------------------------------+
+|               206                 | Offset to start of Body Part
++-----------------------------------+
+|   1    |    0   |    3   |   0    | ID CNT, Body Cnt, Content-Type ID, pad
++-----------------------------------+
+|               220                 | OFFSET to: Content/Type
++-----------------------------------+
+|                27                 | LENGTH of: 27
++-----------------------------------+
+
+Then the second body part:
+
++-----------------------------------+
+|               361                 | Offset to start of Body Part
++-----------------------------------+
+|   1    |    0   |    3   |   0    | ID CNT, Body Cnt, Content-Type ID, pad
++-----------------------------------+
+|               376                 | OFFSET to: Content/Type
++-----------------------------------+
+|                26                 | LENGTH of: 26
++-----------------------------------+
+
+                Figure 12: Header And Body Part Index
+
+8.  IANA Considerations
 
    This memo includes no request to IANA.  [CHECK]
 
-8.  Security Considerations
+
+
+
+Royer                    Expires 11 August 2025                [Page 44]
+
+Internet-Draft        Phoenix: Lemonade Risen Again        February 2025
+
+
+9.  Security Considerations
 
    This document should not affect the security of the Internet.
    [CHECK]
 
-9.  References
+10.  References
 
-9.1.  Normative References
+10.1.  Normative References
+
+   [RFC0822]  Crocker, D., "STANDARD FOR THE FORMAT OF ARPA INTERNET
+              TEXT MESSAGES", STD 11, RFC 822, DOI 10.17487/RFC0822,
+              August 1982, <https://www.rfc-editor.org/info/rfc822>.
 
    [RFC2119]  Bradner, S., "Key words for use in RFCs to Indicate
               Requirement Levels", BCP 14, RFC 2119,
               DOI 10.17487/RFC2119, March 1997,
               <https://www.rfc-editor.org/info/rfc2119>.
 
+   [RFC4506]  Eisler, M., Ed., "XDR: External Data Representation
+              Standard", STD 67, RFC 4506, DOI 10.17487/RFC4506, May
+              2006, <https://www.rfc-editor.org/info/rfc4506>.
+
+   [RFC5234]  Crocker, D., Ed. and P. Overell, "Augmented BNF for Syntax
+              Specifications: ABNF", STD 68, RFC 5234,
+              DOI 10.17487/RFC5234, January 2008,
+              <https://www.rfc-editor.org/info/rfc5234>.
+
    [RFC8174]  Leiba, B., "Ambiguity of Uppercase vs Lowercase in RFC
               2119 Key Words", BCP 14, RFC 8174, DOI 10.17487/RFC8174,
               May 2017, <https://www.rfc-editor.org/info/rfc8174>.
 
-9.2.  Informative References
+   [RFC8446]  Rescorla, E., "The Transport Layer Security (TLS) Protocol
+              Version 1.3", RFC 8446, DOI 10.17487/RFC8446, August 2018,
+              <https://www.rfc-editor.org/info/rfc8446>.
+
+   [RFC9051]  Melnikov, A., Ed. and B. Leiba, Ed., "Internet Message
+              Access Protocol (IMAP) - Version 4rev2", RFC 9051,
+              DOI 10.17487/RFC9051, August 2021,
+              <https://www.rfc-editor.org/info/rfc9051>.
+
+10.2.  Informative References
 
    [exampleRefMin]
               Surname [REPLACE], Initials [REPLACE]., "Title [REPLACE]",
               2006.
+
+
+
+
+
+
+Royer                    Expires 11 August 2025                [Page 45]
+
+Internet-Draft        Phoenix: Lemonade Risen Again        February 2025
+
 
    [exampleRefOrg]
               Organization [REPLACE], "Title [REPLACE]", 1984,
@@ -1563,13 +2539,6 @@ Appendix A.  Administrative Enumerated Binary Values
    The values are not unique.  They are only unique within the context
    in which they are used.
 
-
-
-Royer                     Expires 7 August 2025                [Page 28]
-
-Internet-Draft        Phoenix: Lemonade Risen Again        February 2025
-
-
    Some of these values are reused for other commands.  For example
    USER_CREATE is both an (a) AUTH capability reply informing the user
    that they have permission to create a user with the (b) USER_CREATE
@@ -1577,6 +2546,37 @@ Internet-Draft        Phoenix: Lemonade Risen Again        February 2025
 
    Some values may be reused if they are parameter arguments to other
    commands.  For example xxxxxx.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Royer                    Expires 11 August 2025                [Page 46]
+
+Internet-Draft        Phoenix: Lemonade Risen Again        February 2025
+
 
    +============+==================+==================================+
    | Decimal    | Command /        | Brief Description.               |
@@ -1618,14 +2618,6 @@ Appendix B.  Authentication Enumerated Binary Values
    Phoenix is a binary protocol.  Each value is sent as an unsigned
    32-bit integer in xdr format.
 
-
-
-
-Royer                     Expires 7 August 2025                [Page 29]
-
-Internet-Draft        Phoenix: Lemonade Risen Again        February 2025
-
-
    The values for the commands are arbitrary and were assigned as
    created.  There is no plan or origination to the numbers.  There is
    no priority or superiority to any value.  The table is sorted by
@@ -1633,6 +2625,14 @@ Internet-Draft        Phoenix: Lemonade Risen Again        February 2025
 
    The values are not unique.  They are only unique within the context
    in which they are used.
+
+
+
+
+Royer                    Expires 11 August 2025                [Page 47]
+
+Internet-Draft        Phoenix: Lemonade Risen Again        February 2025
+
 
    Some of these values are reused for other commands.  For example
    USER_CREATE is both an (a) AUTH capability reply informing the user
@@ -1673,17 +2673,22 @@ Appendix C.  File and Folder Enumerated Binary Values
    that they have permission to create a user with the (b) USER_CREATE
    command.
 
+   Some values may be reused if they are parameter arguments to other
+   commands.  For example xxxxxx.
 
 
 
 
-Royer                     Expires 7 August 2025                [Page 30]
+
+
+
+
+
+
+Royer                    Expires 11 August 2025                [Page 48]
 
 Internet-Draft        Phoenix: Lemonade Risen Again        February 2025
 
-
-   Some values may be reused if they are parameter arguments to other
-   commands.  For example xxxxxx.
 
    +===============+===========================+======================+
    | Decimal Value | Command / Capability Name | Brief Description.   |
@@ -1719,25 +2724,6 @@ Appendix D.  Protocol Enumerated Binary Values
    Some values may be reused if they are parameter arguments to other
    commands.  For example xxxxxx.
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-Royer                     Expires 7 August 2025                [Page 31]
-
-Internet-Draft        Phoenix: Lemonade Risen Again        February 2025
-
-
    +===============+===========================+======================+
    | Decimal Value | Command / Capability Name | Brief Description.   |
    +===============+===========================+======================+
@@ -1750,6 +2736,15 @@ Internet-Draft        Phoenix: Lemonade Risen Again        February 2025
    +---------------+---------------------------+----------------------+
 
                                  Table 6
+
+
+
+
+
+Royer                    Expires 11 August 2025                [Page 49]
+
+Internet-Draft        Phoenix: Lemonade Risen Again        February 2025
+
 
 Appendix E.  RPCGEN protocol specification
 
@@ -1789,7 +2784,20 @@ E.2.  RPCGEN - Administration
 
 
 
-Royer                     Expires 7 August 2025                [Page 32]
+
+
+
+
+
+
+
+
+
+
+
+
+
+Royer                    Expires 11 August 2025                [Page 50]
 
 Internet-Draft        Phoenix: Lemonade Risen Again        February 2025
 
@@ -1845,7 +2853,7 @@ E.3.  RPCGEN - Authenticate
 
 
 
-Royer                     Expires 7 August 2025                [Page 33]
+Royer                    Expires 11 August 2025                [Page 51]
 
 Internet-Draft        Phoenix: Lemonade Risen Again        February 2025
 
@@ -1901,7 +2909,7 @@ Internet-Draft        Phoenix: Lemonade Risen Again        February 2025
 
 
 
-Royer                     Expires 7 August 2025                [Page 34]
+Royer                    Expires 11 August 2025                [Page 52]
 
 Internet-Draft        Phoenix: Lemonade Risen Again        February 2025
 
@@ -1957,7 +2965,7 @@ E.4.  RPCGEN - Capability
 
 
 
-Royer                     Expires 7 August 2025                [Page 35]
+Royer                    Expires 11 August 2025                [Page 53]
 
 Internet-Draft        Phoenix: Lemonade Risen Again        February 2025
 
@@ -2013,7 +3021,7 @@ Internet-Draft        Phoenix: Lemonade Risen Again        February 2025
 
 
 
-Royer                     Expires 7 August 2025                [Page 36]
+Royer                    Expires 11 August 2025                [Page 54]
 
 Internet-Draft        Phoenix: Lemonade Risen Again        February 2025
 
@@ -2069,7 +3077,7 @@ Internet-Draft        Phoenix: Lemonade Risen Again        February 2025
 
 
 
-Royer                     Expires 7 August 2025                [Page 37]
+Royer                    Expires 11 August 2025                [Page 55]
 
 Internet-Draft        Phoenix: Lemonade Risen Again        February 2025
 
@@ -2125,7 +3133,7 @@ E.5.  RPCGEN - Folder
 
 
 
-Royer                     Expires 7 August 2025                [Page 38]
+Royer                    Expires 11 August 2025                [Page 56]
 
 Internet-Draft        Phoenix: Lemonade Risen Again        February 2025
 
@@ -2181,7 +3189,7 @@ Internet-Draft        Phoenix: Lemonade Risen Again        February 2025
 
 
 
-Royer                     Expires 7 August 2025                [Page 39]
+Royer                    Expires 11 August 2025                [Page 57]
 
 Internet-Draft        Phoenix: Lemonade Risen Again        February 2025
 
@@ -2237,7 +3245,7 @@ Internet-Draft        Phoenix: Lemonade Risen Again        February 2025
 
 
 
-Royer                     Expires 7 August 2025                [Page 40]
+Royer                    Expires 11 August 2025                [Page 58]
 
 Internet-Draft        Phoenix: Lemonade Risen Again        February 2025
 
@@ -2293,7 +3301,7 @@ Internet-Draft        Phoenix: Lemonade Risen Again        February 2025
 
 
 
-Royer                     Expires 7 August 2025                [Page 41]
+Royer                    Expires 11 August 2025                [Page 59]
 
 Internet-Draft        Phoenix: Lemonade Risen Again        February 2025
 
@@ -2349,7 +3357,7 @@ Internet-Draft        Phoenix: Lemonade Risen Again        February 2025
 
 
 
-Royer                     Expires 7 August 2025                [Page 42]
+Royer                    Expires 11 August 2025                [Page 60]
 
 Internet-Draft        Phoenix: Lemonade Risen Again        February 2025
 
@@ -2405,7 +3413,7 @@ Internet-Draft        Phoenix: Lemonade Risen Again        February 2025
 
 
 
-Royer                     Expires 7 August 2025                [Page 43]
+Royer                    Expires 11 August 2025                [Page 61]
 
 Internet-Draft        Phoenix: Lemonade Risen Again        February 2025
 
@@ -2461,7 +3469,7 @@ Internet-Draft        Phoenix: Lemonade Risen Again        February 2025
 
 
 
-Royer                     Expires 7 August 2025                [Page 44]
+Royer                    Expires 11 August 2025                [Page 62]
 
 Internet-Draft        Phoenix: Lemonade Risen Again        February 2025
 
@@ -2517,7 +3525,7 @@ Internet-Draft        Phoenix: Lemonade Risen Again        February 2025
 
 
 
-Royer                     Expires 7 August 2025                [Page 45]
+Royer                    Expires 11 August 2025                [Page 63]
 
 Internet-Draft        Phoenix: Lemonade Risen Again        February 2025
 
@@ -2573,7 +3581,7 @@ E.6.  RPCGEN - KeepAlive
 
 
 
-Royer                     Expires 7 August 2025                [Page 46]
+Royer                    Expires 11 August 2025                [Page 64]
 
 Internet-Draft        Phoenix: Lemonade Risen Again        February 2025
 
@@ -2629,7 +3637,7 @@ E.7.  RPCGEN - NotSupported
 
 
 
-Royer                     Expires 7 August 2025                [Page 47]
+Royer                    Expires 11 August 2025                [Page 65]
 
 Internet-Draft        Phoenix: Lemonade Risen Again        February 2025
 
@@ -2685,7 +3693,7 @@ E.9.  RPCGEN - Commands
 
 
 
-Royer                     Expires 7 August 2025                [Page 48]
+Royer                    Expires 11 August 2025                [Page 66]
 
 Internet-Draft        Phoenix: Lemonade Risen Again        February 2025
 
@@ -2741,7 +3749,7 @@ Internet-Draft        Phoenix: Lemonade Risen Again        February 2025
 
 
 
-Royer                     Expires 7 August 2025                [Page 49]
+Royer                    Expires 11 August 2025                [Page 67]
 
 Internet-Draft        Phoenix: Lemonade Risen Again        February 2025
 
@@ -2797,7 +3805,7 @@ Internet-Draft        Phoenix: Lemonade Risen Again        February 2025
 
 
 
-Royer                     Expires 7 August 2025                [Page 50]
+Royer                    Expires 11 August 2025                [Page 68]
 
 Internet-Draft        Phoenix: Lemonade Risen Again        February 2025
 
@@ -2853,7 +3861,7 @@ Internet-Draft        Phoenix: Lemonade Risen Again        February 2025
 
 
 
-Royer                     Expires 7 August 2025                [Page 51]
+Royer                    Expires 11 August 2025                [Page 69]
 
 Internet-Draft        Phoenix: Lemonade Risen Again        February 2025
 
@@ -2909,7 +3917,7 @@ Internet-Draft        Phoenix: Lemonade Risen Again        February 2025
 
 
 
-Royer                     Expires 7 August 2025                [Page 52]
+Royer                    Expires 11 August 2025                [Page 70]
 
 Internet-Draft        Phoenix: Lemonade Risen Again        February 2025
 
@@ -2965,7 +3973,7 @@ E.10.  RPCGEN - EMail
 
 
 
-Royer                     Expires 7 August 2025                [Page 53]
+Royer                    Expires 11 August 2025                [Page 71]
 
 Internet-Draft        Phoenix: Lemonade Risen Again        February 2025
 
@@ -3021,7 +4029,7 @@ Internet-Draft        Phoenix: Lemonade Risen Again        February 2025
 
 
 
-Royer                     Expires 7 August 2025                [Page 54]
+Royer                    Expires 11 August 2025                [Page 72]
 
 Internet-Draft        Phoenix: Lemonade Risen Again        February 2025
 
@@ -3077,7 +4085,7 @@ Internet-Draft        Phoenix: Lemonade Risen Again        February 2025
 
 
 
-Royer                     Expires 7 August 2025                [Page 55]
+Royer                    Expires 11 August 2025                [Page 73]
 
 Internet-Draft        Phoenix: Lemonade Risen Again        February 2025
 
@@ -3133,7 +4141,7 @@ Internet-Draft        Phoenix: Lemonade Risen Again        February 2025
 
 
 
-Royer                     Expires 7 August 2025                [Page 56]
+Royer                    Expires 11 August 2025                [Page 74]
 
 Internet-Draft        Phoenix: Lemonade Risen Again        February 2025
 
@@ -3189,7 +4197,7 @@ Internet-Draft        Phoenix: Lemonade Risen Again        February 2025
 
 
 
-Royer                     Expires 7 August 2025                [Page 57]
+Royer                    Expires 11 August 2025                [Page 75]
 
 Internet-Draft        Phoenix: Lemonade Risen Again        February 2025
 
@@ -3245,7 +4253,7 @@ Internet-Draft        Phoenix: Lemonade Risen Again        February 2025
 
 
 
-Royer                     Expires 7 August 2025                [Page 58]
+Royer                    Expires 11 August 2025                [Page 76]
 
 Internet-Draft        Phoenix: Lemonade Risen Again        February 2025
 
@@ -3301,7 +4309,7 @@ E.11.  RPCGEN - MIME
 
 
 
-Royer                     Expires 7 August 2025                [Page 59]
+Royer                    Expires 11 August 2025                [Page 77]
 
 Internet-Draft        Phoenix: Lemonade Risen Again        February 2025
 
@@ -3357,7 +4365,7 @@ Internet-Draft        Phoenix: Lemonade Risen Again        February 2025
 
 
 
-Royer                     Expires 7 August 2025                [Page 60]
+Royer                    Expires 11 August 2025                [Page 78]
 
 Internet-Draft        Phoenix: Lemonade Risen Again        February 2025
 
@@ -3413,7 +4421,7 @@ E.12.  RPCGEN - Phoenix
 
 
 
-Royer                     Expires 7 August 2025                [Page 61]
+Royer                    Expires 11 August 2025                [Page 79]
 
 Internet-Draft        Phoenix: Lemonade Risen Again        February 2025
 
@@ -3469,7 +4477,7 @@ E.13.  RPCGEN - Types
 
 
 
-Royer                     Expires 7 August 2025                [Page 62]
+Royer                    Expires 11 August 2025                [Page 80]
 
 Internet-Draft        Phoenix: Lemonade Risen Again        February 2025
 
@@ -3503,7 +4511,7 @@ Contributors
 
 Author's Address
 
-   Doug Royer (editor)
+   Doug Royer
    RiverExplorer Games LLC
    848 N. Rainbow Blvd #1120
    Las Vegas, Nevada 89107
@@ -3525,4 +4533,4 @@ Author's Address
 
 
 
-Royer                     Expires 7 August 2025                [Page 63]
+Royer                    Expires 11 August 2025                [Page 81]

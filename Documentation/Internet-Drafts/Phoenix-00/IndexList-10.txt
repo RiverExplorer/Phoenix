@@ -1,0 +1,17 @@
++--------+--------+--------+--------
+| ID-CNT |Body-CNT|  HID   |  HID ...
++--------+--------+--------+--------
+| Array of Phoenix String ...
++-----------------------------------
+
+Then for each Body-CNT body parts:
+
++-----------------------------------
+| 32-bit Offset, start of Body Part|
++--------+--------+--------+--------
+| ID-CNT |Body-CNT|  HID   |  HID ...
++--------+--------+--------+--------
+| Array of Phoenix String ...
++-----------------------------------
+| Then for each Body-CNT body parts:
++...................................

@@ -28,7 +28,7 @@
 		described here.
 	</t>
 	<t>
-		A packet has a 64-bit unsigned integer in network byte
+		A packet has a 32-bit unsigned integer in network byte
 		order that is set to the octet count of all of the
 		data that follows this length value.
 		The shortest packet is 16 octets in size, with
@@ -56,18 +56,19 @@
 	</t>
 
 	<artset>
-		<artwork type="ascii-art">
-+-----------------------------------------------------------------+
-| ...64-bit.unsigned.integer.length ..............................|
-+-----------------------------------------------------------------+
-| ...32-bit.unsigned.command.SEQ...|
-+----------------------------------+
-| ...32-bit.unsigned.command.CMD...|
-+----------------------------------+
-| payload.....
-
-		</artwork>
+		<artwork type="ascii-art" src="Packet-00.txt"/>
+		<artwork type="svg" src="Packet-00.svg"/>
 	</artset>
+	<t>
+		ABNF:
+	</t>
+	<sourcecode>
+
+CommandHeader : Length:32 Sequence:32 CMD:32
+
+Command : CommandHeader Payload
+
+	</sourcecode>
 	<t>
 		The payload size and format varies for each command.
 		The details of the payload content, and the format
@@ -97,7 +98,6 @@
 	<sourcecode>
 <![CDATA[
   // Where:
-  //  uint64_t, is a 64-bit unsigned integer.
   //  uint32_t, is a 32-bit unsigned integer.
   //  uint8_t *, is a pointer to 8-bit data.
   //  XDR, is an XDR object.
@@ -107,8 +107,8 @@
   //
   //  NOTE: See the sample implementation.
   //
-  uint64_t   NetLength;
-  uint64_t   PacketLength;
+  uint32_t   NetLength;
+  uint32_t   PacketLength;
   uint8_t *  Data;
   uint8_t *  DataPointer;
   XDR        Xdr;
@@ -116,7 +116,7 @@
   
   // Read the length and convert to host byte order.
   //
-  read(FromClientSocket, &NetLength, sizeof(uint64_t));
+  read(FromClientSocket, &NetLength, sizeof(uint32_t));
   PacketLength = ntohll(NetLength);
 
   // Allocate PacketLength data, and read it.
@@ -152,7 +152,7 @@
     // the command.
     //
     // If a server gets an even numbered sequence, it is a
-    // command from theother endpoint.
+    // command from the other endpoint.
     //
     if (WeAreTheClient) {
       if (SequenceIsEvenNumber) {

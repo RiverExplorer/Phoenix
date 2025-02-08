@@ -27,17 +27,29 @@ SOURCES.xml = \
 	Index.xml \
 	Introduction.xml \
 	KeepAliveSummary.xml \
+	MetaData.xml \
 	PingSummary.xml \
 	ProtocolBinaryValues.xml \
 	ProtocolDetails.xml \
 	ProtocolSummary.xml \
+	RequirementsLanguage.xml \
 	SMimeSummary.xml
 
 ARTWORK.txt = \
+	ABNF-00.txt \
 	IndexList-01.txt \
 	IndexList-02.txt \
 	IndexList-03.txt \
-	IndexList-04.txt
+	IndexList-04.txt \
+	IndexList-05.txt \
+	IndexList-06.txt \
+	IndexList-07.txt \
+	IndexList-08.txt \
+	IndexList-09.txt \
+	IndexList-10.txt \
+	MDN-00.txt \
+	Packet-00.txt \
+	PhoenixString-00.txt
 
 GENERATED_ARTWORK.svg = $(ARTWORK.txt:.txt=.svg)
 

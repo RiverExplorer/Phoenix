@@ -1,4 +1,6 @@
 +--------+------------------------+
-| HID    | STRING LENGTH          |
+| HID    | STRING LENGTH          | A 32-bit value.
 +--------+------------------------+
-| ... HEADER NAME...
+| HEADER NAME     ...               Packet 8 bit values.
++--------+------------------------+
+

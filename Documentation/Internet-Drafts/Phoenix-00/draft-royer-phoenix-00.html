@@ -1256,7 +1256,7 @@ li > p:last-of-type:only-child {
 </tr></thead>
 <tfoot><tr>
 <td class="left">Royer</td>
-<td class="center">Expires 7 August 2025</td>
+<td class="center">Expires 11 August 2025</td>
 <td class="right">[Page]</td>
 </tr></tfoot>
 </table>
@@ -1269,17 +1269,16 @@ li > p:last-of-type:only-child {
 <dd class="internet-draft">draft-royer-phoenix-00</dd>
 <dt class="label-published">Published:</dt>
 <dd class="published">
-<time datetime="2025-02-03" class="published">3 February 2025</time>
+<time datetime="2025-02-07" class="published">7 February 2025</time>
     </dd>
 <dt class="label-intended-status">Intended Status:</dt>
 <dd class="intended-status">Informational</dd>
 <dt class="label-expires">Expires:</dt>
-<dd class="expires"><time datetime="2025-08-07">7 August 2025</time></dd>
+<dd class="expires"><time datetime="2025-08-11">11 August 2025</time></dd>
 <dt class="label-authors">Author:</dt>
 <dd class="authors">
 <div class="author">
-      <div class="author-name">DM. Royer, <span class="editor">Ed.</span>
-</div>
+      <div class="author-name">DM. Royer</div>
 <div class="org">RiverExplorer Games LLC</div>
 </div>
 </dd>
@@ -1337,7 +1336,7 @@ li > p:last-of-type:only-child {
         time. It is inappropriate to use Internet-Drafts as reference
         material or to cite them other than as "work in progress."<a href="#section-boilerplate.1-3" class="pilcrow">¶</a></p>
 <p id="section-boilerplate.1-4">
-        This Internet-Draft will expire on 7 August 2025.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
+        This Internet-Draft will expire on 11 August 2025.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="copyright">
@@ -1368,12 +1367,17 @@ li > p:last-of-type:only-child {
 <nav class="toc"><ul class="compact toc ulBare ulEmpty">
 <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.1">
             <p id="section-toc.1-1.1.1" class="keepWithNext"><a href="#section-1" class="auto internal xref">1</a>.  <a href="#name-requirements-language" class="internal xref">Requirements Language</a></p>
+<ul class="compact toc ulBare ulEmpty">
+<li class="compact toc ulBare ulEmpty" id="section-toc.1-1.1.2.1">
+                <p id="section-toc.1-1.1.2.1.1" class="keepWithNext"><a href="#section-1.1" class="auto internal xref">1.1</a>.  <a href="#name-abnf-additions" class="internal xref">ABNF additions</a></p>
+</li>
+            </ul>
 </li>
           <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.2">
             <p id="section-toc.1-1.2.1" class="keepWithNext"><a href="#section-2" class="auto internal xref">2</a>.  <a href="#name-introduction" class="internal xref">Introduction</a></p>
 </li>
           <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.3">
-            <p id="section-toc.1-1.3.1" class="keepWithNext"><a href="#section-3" class="auto internal xref">3</a>.  <a href="#name-terms-and-definition-used-i" class="internal xref">Terms and Definition used in this proposal</a></p>
+            <p id="section-toc.1-1.3.1"><a href="#section-3" class="auto internal xref">3</a>.  <a href="#name-terms-and-definition-used-i" class="internal xref">Terms and Definition used in this proposal</a></p>
 </li>
           <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.4">
             <p id="section-toc.1-1.4.1"><a href="#section-4" class="auto internal xref">4</a>.  <a href="#name-commands-summary" class="internal xref">Commands Summary</a></p>
@@ -1427,105 +1431,193 @@ li > p:last-of-type:only-child {
             </ul>
 </li>
           <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.5">
-            <p id="section-toc.1-1.5.1"><a href="#section-5" class="auto internal xref">5</a>.  <a href="#name-over-the-wire-protocol-deta" class="internal xref">Over the Wire Protocol Detail</a></p>
+            <p id="section-toc.1-1.5.1"><a href="#section-5" class="auto internal xref">5</a>.  <a href="#name-meta-data" class="internal xref">Meta Data</a></p>
+<ul class="compact toc ulBare ulEmpty">
+<li class="compact toc ulBare ulEmpty" id="section-toc.1-1.5.2.1">
+                <p id="section-toc.1-1.5.2.1.1"><a href="#section-5.1" class="auto internal xref">5.1</a>.  <a href="#name-meta-data-answered" class="internal xref">Meta Data - Answered</a></p>
+</li>
+              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.5.2.2">
+                <p id="section-toc.1-1.5.2.2.1"><a href="#section-5.2" class="auto internal xref">5.2</a>.  <a href="#name-meta-data-attributes" class="internal xref">Meta Data - Attributes</a></p>
+</li>
+              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.5.2.3">
+                <p id="section-toc.1-1.5.2.3.1"><a href="#section-5.3" class="auto internal xref">5.3</a>.  <a href="#name-meta-data-deleted" class="internal xref">Meta Data - Deleted</a></p>
+</li>
+              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.5.2.4">
+                <p id="section-toc.1-1.5.2.4.1"><a href="#section-5.4" class="auto internal xref">5.4</a>.  <a href="#name-meta-data-draft" class="internal xref">Meta Data - Draft</a></p>
+</li>
+              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.5.2.5">
+                <p id="section-toc.1-1.5.2.5.1"><a href="#section-5.5" class="auto internal xref">5.5</a>.  <a href="#name-meta-data-flagged" class="internal xref">Meta Data - Flagged</a></p>
+</li>
+              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.5.2.6">
+                <p id="section-toc.1-1.5.2.6.1"><a href="#section-5.6" class="auto internal xref">5.6</a>.  <a href="#name-meta-data-forwarded" class="internal xref">Meta Data - Forwarded</a></p>
+</li>
+              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.5.2.7">
+                <p id="section-toc.1-1.5.2.7.1"><a href="#section-5.7" class="auto internal xref">5.7</a>.  <a href="#name-meta-data-hide" class="internal xref">Meta Data - Hide</a></p>
+</li>
+              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.5.2.8">
+                <p id="section-toc.1-1.5.2.8.1"><a href="#section-5.8" class="auto internal xref">5.8</a>.  <a href="#name-meta-data-junk" class="internal xref">Meta Data - Junk</a></p>
+</li>
+              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.5.2.9">
+                <p id="section-toc.1-1.5.2.9.1"><a href="#section-5.9" class="auto internal xref">5.9</a>.  <a href="#name-meta-data-mdnsent" class="internal xref">Meta Data - MDNSent</a></p>
+</li>
+              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.5.2.10">
+                <p id="section-toc.1-1.5.2.10.1"><a href="#section-5.10" class="auto internal xref">5.10</a>. <a href="#name-meta-data-nocopy" class="internal xref">Meta Data - NoCopy</a></p>
+</li>
+              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.5.2.11">
+                <p id="section-toc.1-1.5.2.11.1"><a href="#section-5.11" class="auto internal xref">5.11</a>. <a href="#name-meta-data-notjunk" class="internal xref">Meta Data - NotJunk</a></p>
+</li>
+              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.5.2.12">
+                <p id="section-toc.1-1.5.2.12.1"><a href="#section-5.12" class="auto internal xref">5.12</a>. <a href="#name-meta-data-notexpungable" class="internal xref">Meta Data - NotExpungable</a></p>
+</li>
+              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.5.2.13">
+                <p id="section-toc.1-1.5.2.13.1"><a href="#section-5.13" class="auto internal xref">5.13</a>. <a href="#name-meta-data-phishing" class="internal xref">Meta Data - Phishing</a></p>
+</li>
+              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.5.2.14">
+                <p id="section-toc.1-1.5.2.14.1"><a href="#section-5.14" class="auto internal xref">5.14</a>. <a href="#name-meta-data-readonly" class="internal xref">Meta Data - ReadOnly</a></p>
+</li>
+              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.5.2.15">
+                <p id="section-toc.1-1.5.2.15.1"><a href="#section-5.15" class="auto internal xref">5.15</a>. <a href="#name-meta-data-shared" class="internal xref">Meta Data - Shared</a></p>
+</li>
+              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.5.2.16">
+                <p id="section-toc.1-1.5.2.16.1"><a href="#section-5.16" class="auto internal xref">5.16</a>. <a href="#name-meta-data-seen" class="internal xref">Meta Data - Seen</a></p>
+</li>
+              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.5.2.17">
+                <p id="section-toc.1-1.5.2.17.1"><a href="#section-5.17" class="auto internal xref">5.17</a>. <a href="#name-meta-data-mdndata-attribute" class="internal xref">Meta Data - MDNData Attribute</a></p>
+</li>
+              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.5.2.18">
+                <p id="section-toc.1-1.5.2.18.1"><a href="#section-5.18" class="auto internal xref">5.18</a>. <a href="#name-meta-data-with-shared-objec" class="internal xref">Meta Data with Shared Objects</a></p>
+</li>
+            </ul>
 </li>
           <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.6">
-            <p id="section-toc.1-1.6.1"><a href="#section-6" class="auto internal xref">6</a>.  <a href="#name-index" class="internal xref">Index</a></p>
+            <p id="section-toc.1-1.6.1"><a href="#section-6" class="auto internal xref">6</a>.  <a href="#name-over-the-wire-protocol-deta" class="internal xref">Over the Wire Protocol Detail</a></p>
+</li>
+          <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.7">
+            <p id="section-toc.1-1.7.1"><a href="#section-7" class="auto internal xref">7</a>.  <a href="#name-index" class="internal xref">Index</a></p>
 <ul class="compact toc ulBare ulEmpty">
-<li class="compact toc ulBare ulEmpty" id="section-toc.1-1.6.2.1">
-                <p id="section-toc.1-1.6.2.1.1"><a href="#section-6.1" class="auto internal xref">6.1</a>.  <a href="#name-interested-headers" class="internal xref">Interested Headers</a></p>
+<li class="compact toc ulBare ulEmpty" id="section-toc.1-1.7.2.1">
+                <p id="section-toc.1-1.7.2.1.1"><a href="#section-7.1" class="auto internal xref">7.1</a>.  <a href="#name-interested-headers" class="internal xref">Interested Headers</a></p>
 <ul class="compact toc ulBare ulEmpty">
-<li class="compact toc ulBare ulEmpty" id="section-toc.1-1.6.2.1.2.1">
-                    <p id="section-toc.1-1.6.2.1.2.1.1"><a href="#section-6.1.1" class="auto internal xref">6.1.1</a>.  <a href="#name-client-interested-headers-e" class="internal xref">Client Interested Headers Examples</a></p>
+<li class="compact toc ulBare ulEmpty" id="section-toc.1-1.7.2.1.2.1">
+                    <p id="section-toc.1-1.7.2.1.2.1.1"><a href="#section-7.1.1" class="auto internal xref">7.1.1</a>.  <a href="#name-index-operation-indexop" class="internal xref">Index Operation (IndexOP)</a></p>
+</li>
+                  <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.7.2.1.2.2">
+                    <p id="section-toc.1-1.7.2.1.2.2.1"><a href="#section-7.1.2" class="auto internal xref">7.1.2</a>.  <a href="#name-header-id-hid" class="internal xref">Header ID (HID)</a></p>
+</li>
+                  <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.7.2.1.2.3">
+                    <p id="section-toc.1-1.7.2.1.2.3.1"><a href="#section-7.1.3" class="auto internal xref">7.1.3</a>.  <a href="#name-list-id-lid" class="internal xref">List ID (LID)</a></p>
+</li>
+                  <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.7.2.1.2.4">
+                    <p id="section-toc.1-1.7.2.1.2.4.1"><a href="#section-7.1.4" class="auto internal xref">7.1.4</a>.  <a href="#name-protocol-format" class="internal xref">Protocol Format</a></p>
 </li>
                 </ul>
 </li>
-              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.6.2.2">
-                <p id="section-toc.1-1.6.2.2.1"><a href="#section-6.2" class="auto internal xref">6.2</a>.  <a href="#name-mime-folder-index" class="internal xref">MIME Folder Index</a></p>
+              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.7.2.2">
+                <p id="section-toc.1-1.7.2.2.1"><a href="#section-7.2" class="auto internal xref">7.2</a>.  <a href="#name-phoenixstring" class="internal xref">PhoenixString</a></p>
+</li>
+              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.7.2.3">
+                <p id="section-toc.1-1.7.2.3.1"><a href="#section-7.3" class="auto internal xref">7.3</a>.  <a href="#name-mime-folder-index" class="internal xref">MIME Folder Index</a></p>
+<ul class="compact toc ulBare ulEmpty">
+<li class="compact toc ulBare ulEmpty" id="section-toc.1-1.7.2.3.2.1">
+                    <p id="section-toc.1-1.7.2.3.2.1.1"><a href="#section-7.3.1" class="auto internal xref">7.3.1</a>.  <a href="#name-folder-index-header" class="internal xref">Folder Index Header</a></p>
+</li>
+                  <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.7.2.3.2.2">
+                    <p id="section-toc.1-1.7.2.3.2.2.1"><a href="#section-7.3.2" class="auto internal xref">7.3.2</a>.  <a href="#name-message-index" class="internal xref">Message Index</a></p>
+</li>
+                  <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.7.2.3.2.3">
+                    <p id="section-toc.1-1.7.2.3.2.3.1"><a href="#section-7.3.3" class="auto internal xref">7.3.3</a>.  <a href="#name-header-index" class="internal xref">Header Index</a></p>
+</li>
+                  <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.7.2.3.2.4">
+                    <p id="section-toc.1-1.7.2.3.2.4.1"><a href="#section-7.3.4" class="auto internal xref">7.3.4</a>.  <a href="#name-header-index-example-1" class="internal xref">Header Index Example 1</a></p>
+</li>
+                  <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.7.2.3.2.5">
+                    <p id="section-toc.1-1.7.2.3.2.5.1"><a href="#section-7.3.5" class="auto internal xref">7.3.5</a>.  <a href="#name-header-index-example-2" class="internal xref">Header Index Example 2</a></p>
+</li>
+                </ul>
 </li>
             </ul>
-</li>
-          <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.7">
-            <p id="section-toc.1-1.7.1"><a href="#section-7" class="auto internal xref">7</a>.  <a href="#name-iana-considerations" class="internal xref">IANA Considerations</a></p>
 </li>
           <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.8">
-            <p id="section-toc.1-1.8.1"><a href="#section-8" class="auto internal xref">8</a>.  <a href="#name-security-considerations" class="internal xref">Security Considerations</a></p>
+            <p id="section-toc.1-1.8.1"><a href="#section-8" class="auto internal xref">8</a>.  <a href="#name-iana-considerations" class="internal xref">IANA Considerations</a></p>
 </li>
           <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.9">
-            <p id="section-toc.1-1.9.1"><a href="#section-9" class="auto internal xref">9</a>.  <a href="#name-references" class="internal xref">References</a></p>
-<ul class="compact toc ulBare ulEmpty">
-<li class="compact toc ulBare ulEmpty" id="section-toc.1-1.9.2.1">
-                <p id="section-toc.1-1.9.2.1.1"><a href="#section-9.1" class="auto internal xref">9.1</a>.  <a href="#name-normative-references" class="internal xref">Normative References</a></p>
-</li>
-              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.9.2.2">
-                <p id="section-toc.1-1.9.2.2.1"><a href="#section-9.2" class="auto internal xref">9.2</a>.  <a href="#name-informative-references" class="internal xref">Informative References</a></p>
-</li>
-            </ul>
+            <p id="section-toc.1-1.9.1"><a href="#section-9" class="auto internal xref">9</a>.  <a href="#name-security-considerations" class="internal xref">Security Considerations</a></p>
 </li>
           <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.10">
-            <p id="section-toc.1-1.10.1"><a href="#appendix-A" class="auto internal xref">Appendix A</a>.  <a href="#name-administrative-enumerated-b" class="internal xref">Administrative Enumerated Binary Values</a></p>
-</li>
-          <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.11">
-            <p id="section-toc.1-1.11.1"><a href="#appendix-B" class="auto internal xref">Appendix B</a>.  <a href="#name-authentication-enumerated-b" class="internal xref">Authentication Enumerated Binary Values</a></p>
-</li>
-          <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.12">
-            <p id="section-toc.1-1.12.1"><a href="#appendix-C" class="auto internal xref">Appendix C</a>.  <a href="#name-file-and-folder-enumerated-" class="internal xref">File and Folder Enumerated Binary Values</a></p>
-</li>
-          <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.13">
-            <p id="section-toc.1-1.13.1"><a href="#appendix-D" class="auto internal xref">Appendix D</a>.  <a href="#name-protocol-enumerated-binary-" class="internal xref">Protocol Enumerated Binary Values</a></p>
-</li>
-          <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.14">
-            <p id="section-toc.1-1.14.1"><a href="#appendix-E" class="auto internal xref">Appendix E</a>.  <a href="#name-rpcgen-protocol-specificati" class="internal xref">RPCGEN protocol specification</a></p>
+            <p id="section-toc.1-1.10.1"><a href="#section-10" class="auto internal xref">10</a>. <a href="#name-references" class="internal xref">References</a></p>
 <ul class="compact toc ulBare ulEmpty">
-<li class="compact toc ulBare ulEmpty" id="section-toc.1-1.14.2.1">
-                <p id="section-toc.1-1.14.2.1.1"><a href="#appendix-E.1" class="auto internal xref">E.1</a>.  <a href="#name-rpcgen-acl" class="internal xref">RPCGEN - Acl</a></p>
+<li class="compact toc ulBare ulEmpty" id="section-toc.1-1.10.2.1">
+                <p id="section-toc.1-1.10.2.1.1"><a href="#section-10.1" class="auto internal xref">10.1</a>.  <a href="#name-normative-references" class="internal xref">Normative References</a></p>
 </li>
-              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.14.2.2">
-                <p id="section-toc.1-1.14.2.2.1"><a href="#appendix-E.2" class="auto internal xref">E.2</a>.  <a href="#name-rpcgen-administration" class="internal xref">RPCGEN - Administration</a></p>
-</li>
-              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.14.2.3">
-                <p id="section-toc.1-1.14.2.3.1"><a href="#appendix-E.3" class="auto internal xref">E.3</a>.  <a href="#name-rpcgen-authenticate" class="internal xref">RPCGEN - Authenticate</a></p>
-</li>
-              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.14.2.4">
-                <p id="section-toc.1-1.14.2.4.1"><a href="#appendix-E.4" class="auto internal xref">E.4</a>.  <a href="#name-rpcgen-capability" class="internal xref">RPCGEN - Capability</a></p>
-</li>
-              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.14.2.5">
-                <p id="section-toc.1-1.14.2.5.1"><a href="#appendix-E.5" class="auto internal xref">E.5</a>.  <a href="#name-rpcgen-folder" class="internal xref">RPCGEN - Folder</a></p>
-</li>
-              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.14.2.6">
-                <p id="section-toc.1-1.14.2.6.1"><a href="#appendix-E.6" class="auto internal xref">E.6</a>.  <a href="#name-rpcgen-keepalive" class="internal xref">RPCGEN - KeepAlive</a></p>
-</li>
-              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.14.2.7">
-                <p id="section-toc.1-1.14.2.7.1"><a href="#appendix-E.7" class="auto internal xref">E.7</a>.  <a href="#name-rpcgen-notsupported" class="internal xref">RPCGEN - NotSupported</a></p>
-</li>
-              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.14.2.8">
-                <p id="section-toc.1-1.14.2.8.1"><a href="#appendix-E.8" class="auto internal xref">E.8</a>.  <a href="#name-rpcgen-ping" class="internal xref">RPCGEN - Ping</a></p>
-</li>
-              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.14.2.9">
-                <p id="section-toc.1-1.14.2.9.1"><a href="#appendix-E.9" class="auto internal xref">E.9</a>.  <a href="#name-rpcgen-commands" class="internal xref">RPCGEN - Commands</a></p>
-</li>
-              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.14.2.10">
-                <p id="section-toc.1-1.14.2.10.1"><a href="#appendix-E.10" class="auto internal xref">E.10</a>. <a href="#name-rpcgen-email" class="internal xref">RPCGEN - EMail</a></p>
-</li>
-              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.14.2.11">
-                <p id="section-toc.1-1.14.2.11.1"><a href="#appendix-E.11" class="auto internal xref">E.11</a>. <a href="#name-rpcgen-mime" class="internal xref">RPCGEN - MIME</a></p>
-</li>
-              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.14.2.12">
-                <p id="section-toc.1-1.14.2.12.1"><a href="#appendix-E.12" class="auto internal xref">E.12</a>. <a href="#name-rpcgen-phoenix" class="internal xref">RPCGEN - Phoenix</a></p>
-</li>
-              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.14.2.13">
-                <p id="section-toc.1-1.14.2.13.1"><a href="#appendix-E.13" class="auto internal xref">E.13</a>. <a href="#name-rpcgen-types" class="internal xref">RPCGEN - Types</a></p>
+              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.10.2.2">
+                <p id="section-toc.1-1.10.2.2.1"><a href="#section-10.2" class="auto internal xref">10.2</a>.  <a href="#name-informative-references" class="internal xref">Informative References</a></p>
 </li>
             </ul>
 </li>
+          <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.11">
+            <p id="section-toc.1-1.11.1"><a href="#appendix-A" class="auto internal xref">Appendix A</a>.  <a href="#name-administrative-enumerated-b" class="internal xref">Administrative Enumerated Binary Values</a></p>
+</li>
+          <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.12">
+            <p id="section-toc.1-1.12.1"><a href="#appendix-B" class="auto internal xref">Appendix B</a>.  <a href="#name-authentication-enumerated-b" class="internal xref">Authentication Enumerated Binary Values</a></p>
+</li>
+          <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.13">
+            <p id="section-toc.1-1.13.1"><a href="#appendix-C" class="auto internal xref">Appendix C</a>.  <a href="#name-file-and-folder-enumerated-" class="internal xref">File and Folder Enumerated Binary Values</a></p>
+</li>
+          <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.14">
+            <p id="section-toc.1-1.14.1"><a href="#appendix-D" class="auto internal xref">Appendix D</a>.  <a href="#name-protocol-enumerated-binary-" class="internal xref">Protocol Enumerated Binary Values</a></p>
+</li>
           <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.15">
-            <p id="section-toc.1-1.15.1"><a href="#appendix-F" class="auto internal xref"></a><a href="#name-acknowledgments" class="internal xref">Acknowledgments</a></p>
+            <p id="section-toc.1-1.15.1"><a href="#appendix-E" class="auto internal xref">Appendix E</a>.  <a href="#name-rpcgen-protocol-specificati" class="internal xref">RPCGEN protocol specification</a></p>
+<ul class="compact toc ulBare ulEmpty">
+<li class="compact toc ulBare ulEmpty" id="section-toc.1-1.15.2.1">
+                <p id="section-toc.1-1.15.2.1.1"><a href="#appendix-E.1" class="auto internal xref">E.1</a>.  <a href="#name-rpcgen-acl" class="internal xref">RPCGEN - Acl</a></p>
+</li>
+              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.15.2.2">
+                <p id="section-toc.1-1.15.2.2.1"><a href="#appendix-E.2" class="auto internal xref">E.2</a>.  <a href="#name-rpcgen-administration" class="internal xref">RPCGEN - Administration</a></p>
+</li>
+              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.15.2.3">
+                <p id="section-toc.1-1.15.2.3.1"><a href="#appendix-E.3" class="auto internal xref">E.3</a>.  <a href="#name-rpcgen-authenticate" class="internal xref">RPCGEN - Authenticate</a></p>
+</li>
+              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.15.2.4">
+                <p id="section-toc.1-1.15.2.4.1"><a href="#appendix-E.4" class="auto internal xref">E.4</a>.  <a href="#name-rpcgen-capability" class="internal xref">RPCGEN - Capability</a></p>
+</li>
+              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.15.2.5">
+                <p id="section-toc.1-1.15.2.5.1"><a href="#appendix-E.5" class="auto internal xref">E.5</a>.  <a href="#name-rpcgen-folder" class="internal xref">RPCGEN - Folder</a></p>
+</li>
+              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.15.2.6">
+                <p id="section-toc.1-1.15.2.6.1"><a href="#appendix-E.6" class="auto internal xref">E.6</a>.  <a href="#name-rpcgen-keepalive" class="internal xref">RPCGEN - KeepAlive</a></p>
+</li>
+              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.15.2.7">
+                <p id="section-toc.1-1.15.2.7.1"><a href="#appendix-E.7" class="auto internal xref">E.7</a>.  <a href="#name-rpcgen-notsupported" class="internal xref">RPCGEN - NotSupported</a></p>
+</li>
+              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.15.2.8">
+                <p id="section-toc.1-1.15.2.8.1"><a href="#appendix-E.8" class="auto internal xref">E.8</a>.  <a href="#name-rpcgen-ping" class="internal xref">RPCGEN - Ping</a></p>
+</li>
+              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.15.2.9">
+                <p id="section-toc.1-1.15.2.9.1"><a href="#appendix-E.9" class="auto internal xref">E.9</a>.  <a href="#name-rpcgen-commands" class="internal xref">RPCGEN - Commands</a></p>
+</li>
+              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.15.2.10">
+                <p id="section-toc.1-1.15.2.10.1"><a href="#appendix-E.10" class="auto internal xref">E.10</a>. <a href="#name-rpcgen-email" class="internal xref">RPCGEN - EMail</a></p>
+</li>
+              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.15.2.11">
+                <p id="section-toc.1-1.15.2.11.1"><a href="#appendix-E.11" class="auto internal xref">E.11</a>. <a href="#name-rpcgen-mime" class="internal xref">RPCGEN - MIME</a></p>
+</li>
+              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.15.2.12">
+                <p id="section-toc.1-1.15.2.12.1"><a href="#appendix-E.12" class="auto internal xref">E.12</a>. <a href="#name-rpcgen-phoenix" class="internal xref">RPCGEN - Phoenix</a></p>
+</li>
+              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.15.2.13">
+                <p id="section-toc.1-1.15.2.13.1"><a href="#appendix-E.13" class="auto internal xref">E.13</a>. <a href="#name-rpcgen-types" class="internal xref">RPCGEN - Types</a></p>
+</li>
+            </ul>
 </li>
           <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.16">
-            <p id="section-toc.1-1.16.1"><a href="#appendix-G" class="auto internal xref"></a><a href="#name-contributors" class="internal xref">Contributors</a></p>
+            <p id="section-toc.1-1.16.1"><a href="#appendix-F" class="auto internal xref"></a><a href="#name-acknowledgments" class="internal xref">Acknowledgments</a></p>
 </li>
           <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.17">
-            <p id="section-toc.1-1.17.1"><a href="#appendix-H" class="auto internal xref"></a><a href="#name-authors-address" class="internal xref">Author's Address</a></p>
+            <p id="section-toc.1-1.17.1"><a href="#appendix-G" class="auto internal xref"></a><a href="#name-contributors" class="internal xref">Contributors</a></p>
+</li>
+          <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.18">
+            <p id="section-toc.1-1.18.1"><a href="#appendix-H" class="auto internal xref"></a><a href="#name-authors-address" class="internal xref">Author's Address</a></p>
 </li>
         </ul>
 </nav>
@@ -1542,6 +1634,85 @@ li > p:last-of-type:only-child {
  interpreted as described in BCP 14 <span>[<a href="#RFC2119" class="cite xref">RFC2119</a>]</span>
         <span>[<a href="#RFC8174" class="cite xref">RFC8174</a>]</span> when, and only when, they appear in
  all capitals, as shown here.<a href="#section-1-1" class="pilcrow">¶</a></p>
+<section id="section-1.1">
+        <h3 id="name-abnf-additions">
+<a href="#section-1.1" class="section-number selfRef">1.1. </a><a href="#name-abnf-additions" class="section-name selfRef">ABNF additions</a>
+        </h3>
+<p id="section-1.1-1">
+ This specification adds some usage to <span><a href="#RFC5234" class="internal xref">ABNF</a> [<a href="#RFC5234" class="cite xref">RFC5234</a>]</span>
+ to deal with bit width in a binary number.<a href="#section-1.1-1" class="pilcrow">¶</a></p>
+<p id="section-1.1-2">
+ Terminals may specify a bit width.
+ That is the number of bits in the value.<a href="#section-1.1-2" class="pilcrow">¶</a></p>
+<p id="section-1.1-3"><span><a href="https://rfc-editor.org/rfc/rfc5234#section-2.3" class="relref">Section 2.3</a> of Terminal Values [<a href="#RFC5234" class="cite xref">RFC5234</a>]</span>
+ is within this specification defined to be:<a href="#section-1.1-3" class="pilcrow">¶</a></p>
+<p id="section-1.1-4">
+ b = binary / binary:width
+ <br>
+          <br>
+ d = decimal / decimal:width
+ <br>
+          <br>
+ x = hexadecimal / hexadecimal:width<a href="#section-1.1-4" class="pilcrow">¶</a></p>
+<p id="section-1.1-5">
+ Where: with is the number of bits in the value.
+ And must be an unsigned integer greater than zero.<a href="#section-1.1-5" class="pilcrow">¶</a></p>
+<p id="section-1.1-6">
+ And they will pack when applied to to a rule:<a href="#section-1.1-6" class="pilcrow">¶</a></p>
+<p id="section-1.1-7">
+ When the left side has a width: 
+ The number of bits on the left side must equal
+ the number of bits on the right side.<a href="#section-1.1-7" class="pilcrow">¶</a></p>
+<p id="section-1.1-8">
+ In this example A Header is 32-bits in size
+ and is composed of an 8-bit and 24-bit value.
+ The most significant value are placed on the left of the rule:<a href="#section-1.1-8" class="pilcrow">¶</a></p>
+<div class="sourcecode" id="section-1.1-9">
+<pre>
+      Header:32 = Offset:8 Length:24
+</pre><a href="#section-1.1-9" class="pilcrow">¶</a>
+</div>
+<p id="section-1.1-10"></p>
+<p id="section-1.1-11">
+ The pseudo code could be:<a href="#section-1.1-11" class="pilcrow">¶</a></p>
+<div class="sourcecode" id="section-1.1-12">
+<pre>
+
+      // Header is a 32-bit unsigned integer.
+      // Offset is an 8-bit unsigned integer.
+      // Length is a 24-bit unsigned integer
+      //
+      Header = Offset &lt;&lt; 24 | Length;
+
+</pre><a href="#section-1.1-12" class="pilcrow">¶</a>
+</div>
+<p id="section-1.1-13">
+ This shifts the 8-bit Offset over 24 bits to the left, then
+ adds the 24-bit Length.
+
+ The result would be:<a href="#section-1.1-13" class="pilcrow">¶</a></p>
+<span id="name-packed-bit-example"></span><div id="ABNF-00">
+<figure id="figure-1">
+          <div id="section-1.1-14.1">
+            <div class="alignLeft art-svg artwork" id="section-1.1-14.1.2">
+<svg xmlns="http://www.w3.org/2000/svg" version="1.1" height="64" width="304" viewBox="0 0 304 64" class="diagram" text-anchor="middle" font-family="monospace" font-size="13px" stroke-linecap="round">
+                <path d="M 8,16 L 8,48" fill="none" stroke="black"></path>
+                <path d="M 80,16 L 80,48" fill="none" stroke="black"></path>
+                <path d="M 296,16 L 296,48" fill="none" stroke="black"></path>
+                <path d="M 8,16 L 296,16" fill="none" stroke="black"></path>
+                <path d="M 8,48 L 296,48" fill="none" stroke="black"></path>
+                <g class="text">
+                  <text x="44" y="36">Offset</text>
+                  <text x="164" y="36">Length</text>
+                </g>
+              </svg><a href="#section-1.1-14.1.2" class="pilcrow">¶</a>
+</div>
+</div>
+<figcaption><a href="#figure-1" class="selfRef">Figure 1</a>:
+<a href="#name-packed-bit-example" class="selfRef">Packed Bit Example</a>
+          </figcaption></figure>
+</div>
+</section>
 </section>
 <section id="section-2">
       <h2 id="name-introduction">
@@ -1598,8 +1769,12 @@ li > p:last-of-type:only-child {
 <p id="section-2-9">
  MIME objects have meta data, and they are called headers.
  Files and folders have meta data, and they are called file attributes.
- This specification does not mandate any meta data, it allows for
- a consistent transport of existing meta data.<a href="#section-2-9" class="pilcrow">¶</a></p>
+ This specification does not mandate any meta data.
+ It does define some that may be used by implementations.
+ Other related specifications do define some meta data
+ that is consistant with existing protocols.
+ This protocol allows for a consistent transport of existing meta data
+ and MIME objects.<a href="#section-2-9" class="pilcrow">¶</a></p>
 <p id="section-2-10">
  File and folder meta data is a complex task that can involve
  access control lists and permissions.
@@ -1637,9 +1812,9 @@ li > p:last-of-type:only-child {
  How to use existing authentication implementations or use new ones.<a href="#section-2-15.1" class="pilcrow">¶</a>
 </li>
         <li class="normal" id="section-2-15.2">
- This specification describes a standard way to perform file operations
- that are remote to the application and agnostic to
- purpose of data being transported.<a href="#section-2-15.2" class="pilcrow">¶</a>
+ This specification describes a standard way to perform file
+ and folder operations that are remote to the application and
+ agnostic to purpose of data being transported.<a href="#section-2-15.2" class="pilcrow">¶</a>
 </li>
         <li class="normal" id="section-2-15.3">
  Specifies a way to migrate from some existing protocols to Phoenix.
@@ -1672,7 +1847,8 @@ li > p:last-of-type:only-child {
 </dd>
         <dd class="break"></dd>
 <dt id="section-3-2.5">Body Part ID</dt>
-        <dd style="margin-left: 1.5em" id="section-3-2.6"> 
+        <dd style="margin-left: 1.5em" id="section-3-2.6">
+          <p id="section-3-2.6.1">
  A unique ID for a MIME Object.
  This is an unsigned 32-bit integer in network byte order
  that is assigned by the server and sent to the client
@@ -1681,9 +1857,9 @@ li > p:last-of-type:only-child {
  And as long as the MIME object does not get altered in any way,
  this ID is valid and persists across servers.
  It is the offset in octets from the beginning of the
- message to the start of the body part.
- <br>
-          <span><a href="#Index-Ref" class="internal xref">See Index.</a> (<a href="#Index-Ref" class="auto internal xref">Section 3</a>)</span><a href="#section-3-2.6" class="pilcrow">¶</a>
+ message to the start of the body part.<a href="#section-3-2.6.1" class="pilcrow">¶</a></p>
+<p id="section-3-2.6.2">
+            <span><a href="#Index-Ref" class="internal xref">See Index.</a> (<a href="#Index-Ref" class="auto internal xref">Section 3</a>)</span><a href="#section-3-2.6.2" class="pilcrow">¶</a></p>
 </dd>
         <dd class="break"></dd>
 <dt id="section-3-2.7">Command, CMD</dt>
@@ -1703,96 +1879,122 @@ li > p:last-of-type:only-child {
         <dd class="break"></dd>
 <dt id="section-3-2.11">Folder ID</dt>
         <dd style="margin-left: 1.5em" id="section-3-2.12">
+          <p id="section-3-2.12.1">
  A unique ID for a MIME folder.
  This is an unsigned 32-bit integer in network byte order
  that is assigned by the server and sent to the client
  on a successful folder open.
  This ID persists across connections to the same server.
  Once a folder has an ID, it never changes on a server
- as described in <span><a href="#FOLDERS" class="internal xref">Folders</a> (<a href="#FOLDERS" class="auto internal xref">Section 4.7</a>)</span>.
- <br>
-          <span><a href="#Index-Ref" class="internal xref">See Index.</a> (<a href="#Index-Ref" class="auto internal xref">Section 3</a>)</span><a href="#section-3-2.12" class="pilcrow">¶</a>
+ as described in <span><a href="#FOLDERS" class="internal xref">Folders</a> (<a href="#FOLDERS" class="auto internal xref">Section 4.7</a>)</span>.<a href="#section-3-2.12.1" class="pilcrow">¶</a></p>
+<p id="section-3-2.12.2">
+            <span><a href="#Index-Ref" class="internal xref">See Index.</a> (<a href="#Index-Ref" class="auto internal xref">Section 3</a>)</span><a href="#section-3-2.12.2" class="pilcrow">¶</a></p>
 </dd>
         <dd class="break"></dd>
-<dt id="section-3-2.13">
-<div id="Index-HH">Header ID</div>
+<dt id="section-3-2.13">IndexOP</dt>
+        <dd style="margin-left: 1.5em" id="section-3-2.14">
+          <p id="section-3-2.14.1">
+ Header Index Operation.
+ A command sent as part of a folder open command that tells the
+ server which MIME headers it would like indexed.<a href="#section-3-2.14.1" class="pilcrow">¶</a></p>
+<p id="section-3-2.14.2">
+            <span><a href="#Index-Ref" class="internal xref">See Index.</a> (<a href="#Index-Ref" class="auto internal xref">Section 3</a>)</span><a href="#section-3-2.14.2" class="pilcrow">¶</a></p>
+</dd>
+        <dd class="break"></dd>
+<dt id="section-3-2.15">
+<div id="HeaderDefID">HID</div>
         </dt>
-<dd style="margin-left: 1.5em" id="section-3-2.14">
+<dd style="margin-left: 1.5em" id="section-3-2.16">
+          <p id="section-3-2.16.1">
+ Header Definition ID.
+ And 8-bit unsigned integer the client has assiged to
+ a specific header name.<a href="#section-3-2.16.1" class="pilcrow">¶</a></p>
+<p id="section-3-2.16.2">
+            <span><a href="#Index-Ref" class="internal xref">See Index.</a> (<a href="#Index-Ref" class="auto internal xref">Section 3</a>)</span><a href="#section-3-2.16.2" class="pilcrow">¶</a></p>
+</dd>
+        <dd class="break"></dd>
+<dt id="section-3-2.17">
+<div id="Header822">HeaderName822</div>
+        </dt>
+<dd style="margin-left: 1.5em" id="section-3-2.18">
+ A RFC822 or MIME header name.
+ See <span><a href="https://rfc-editor.org/rfc/rfc822#section-3.2" class="relref">Section 3.2</a> of [<a href="#RFC0822" class="cite xref">RFC0822</a>]</span><a href="#section-3-2.18" class="pilcrow">¶</a>
+</dd>
+        <dd class="break"></dd>
+<dt id="section-3-2.19">
+<div id="HeaderOffset">HeaderID</div>
+        </dt>
+<dd style="margin-left: 1.5em" id="section-3-2.20">
+          <p id="section-3-2.20.1">
  An offset into a MIME object where a specific header starts.
  As the position in a MIME object is unique, this value
  is also used as the ID to a specific header.
  As long as the MIME object does not change in any way
- this ID persisists across connections and servers.
- <br>
-          <span><a href="#Index-Ref" class="internal xref">See Index.</a> (<a href="#Index-Ref" class="auto internal xref">Section 3</a>)</span><a href="#section-3-2.14" class="pilcrow">¶</a>
+ this ID persisists across connections and servers.<a href="#section-3-2.20.1" class="pilcrow">¶</a></p>
+<p id="section-3-2.20.2">
+            <span><a href="#Index-Ref" class="internal xref">See Index.</a> (<a href="#Index-Ref" class="auto internal xref">Section 3</a>)</span><a href="#section-3-2.20.2" class="pilcrow">¶</a></p>
 </dd>
         <dd class="break"></dd>
-<dt id="section-3-2.15">
+<dt id="section-3-2.21">
 <div id="Index-HVH">Header Value ID</div>
         </dt>
-<dd style="margin-left: 1.5em" id="section-3-2.16">
+<dd style="margin-left: 1.5em" id="section-3-2.22">
+          <p id="section-3-2.22.1">
  Related to Header ID.
  An offset into a MIME object where a specific header value starts.
  As the position in a MIME object is unique, this value
  is also used as the ID to a specific header value.
  As long as the MIME object does not change in any way
- this ID persisists across connections and servers.
- <br>
-          <span><a href="#Index-Ref" class="internal xref">See Index.</a> (<a href="#Index-Ref" class="auto internal xref">Section 3</a>)</span>
-          <br>
-          <span><a href="#Index-Ref" class="internal xref">See Header ID.</a> (<a href="#Index-Ref" class="auto internal xref">Section 3</a>)</span><a href="#section-3-2.16" class="pilcrow">¶</a>
+ this ID persisists across connections and servers.<a href="#section-3-2.22.1" class="pilcrow">¶</a></p>
+<p id="section-3-2.22.2">
+            <span><a href="#Index-Ref" class="internal xref">See Index.</a> (<a href="#Index-Ref" class="auto internal xref">Section 3</a>)</span><a href="#section-3-2.22.2" class="pilcrow">¶</a></p>
+<p id="section-3-2.22.3">
+            <span><a href="#Index-Ref" class="internal xref">See Header ID.</a> (<a href="#Index-Ref" class="auto internal xref">Section 3</a>)</span><a href="#section-3-2.22.3" class="pilcrow">¶</a></p>
 </dd>
         <dd class="break"></dd>
-<dt id="section-3-2.17">HIDX</dt>
-        <dd style="margin-left: 1.5em" id="section-3-2.18">
- Header Index type.
- A command sent as part of a folder open command that tells the
- server which MIME headers it would like indexed.<a href="#section-3-2.18" class="pilcrow">¶</a>
-</dd>
-        <dd class="break"></dd>
-<dt id="section-3-2.19">
+<dt id="section-3-2.23">
 <div id="Index-Ref">Index</div>
         </dt>
-<dd style="margin-left: 1.5em" id="section-3-2.20">
-          <p id="section-3-2.20.1">
+<dd style="margin-left: 1.5em" id="section-3-2.24">
+          <p id="section-3-2.24.1">
  This wire protocol transmits all or part of MIME objects.
  Various parts can be referenced by an offset into the object.
  This is an index into the MIME objects.
- A client may request an index be used when opening a folder.<a href="#section-3-2.20.1" class="pilcrow">¶</a></p>
-<p id="section-3-2.20.2"><em>Note</em>: 
+ A client may request an index be used when opening a folder.<a href="#section-3-2.24.1" class="pilcrow">¶</a></p>
+<p id="section-3-2.24.2"><em>Note</em>: 
  None of these index values are guaranteed to persist across
  re-connections to the server,
- as other clients may have altered the contents.<a href="#section-3-2.20.2" class="pilcrow">¶</a></p>
+ as other clients may have altered the contents.<a href="#section-3-2.24.2" class="pilcrow">¶</a></p>
 </dd>
         <dd class="break"></dd>
-<dt id="section-3-2.21">LID</dt>
-        <dd style="margin-left: 1.5em" id="section-3-2.22">
+<dt id="section-3-2.25">LID</dt>
+        <dd style="margin-left: 1.5em" id="section-3-2.26">
  List ID.
  In operations that require a list or set of data.
- This ID uniquely identifies which list or set is in context.<a href="#section-3-2.22" class="pilcrow">¶</a>
+ This ID uniquely identifies which list or set is in context.<a href="#section-3-2.26" class="pilcrow">¶</a>
 </dd>
         <dd class="break"></dd>
-<dt id="section-3-2.23">Media Type</dt>
-        <dd style="margin-left: 1.5em" id="section-3-2.24">
+<dt id="section-3-2.27">Media Type</dt>
+        <dd style="margin-left: 1.5em" id="section-3-2.28">
  Each MIME object has a media type that identifies the
  content of the object.
- This specification does not add, remove, or alter any MIME media type;<a href="#section-3-2.24" class="pilcrow">¶</a>
+ This specification does not add, remove, or alter any MIME media type;<a href="#section-3-2.28" class="pilcrow">¶</a>
 </dd>
         <dd class="break"></dd>
-<dt id="section-3-2.25">MIME</dt>
-        <dd style="margin-left: 1.5em" id="section-3-2.26">
- This protocol transports MIME objects.
- This specification does not remove or alter any MIME objects;<a href="#section-3-2.26" class="pilcrow">¶</a>
-</dd>
-        <dd class="break"></dd>
-<dt id="section-3-2.27">Offset</dt>
-        <dd style="margin-left: 1.5em" id="section-3-2.28">
- Unless otherwise specified, an offset is an unsigned 32-bit
- integer in network byte order.<a href="#section-3-2.28" class="pilcrow">¶</a>
-</dd>
-        <dd class="break"></dd>
-<dt id="section-3-2.29">Packet</dt>
+<dt id="section-3-2.29">MIME</dt>
         <dd style="margin-left: 1.5em" id="section-3-2.30">
+ This protocol transports MIME objects.
+ This specification does not remove or alter any MIME objects;<a href="#section-3-2.30" class="pilcrow">¶</a>
+</dd>
+        <dd class="break"></dd>
+<dt id="section-3-2.31">Offset</dt>
+        <dd style="margin-left: 1.5em" id="section-3-2.32">
+ Unless otherwise specified, an offset is an unsigned 32-bit
+ integer in network byte order.<a href="#section-3-2.32" class="pilcrow">¶</a>
+</dd>
+        <dd class="break"></dd>
+<dt id="section-3-2.33">Packet</dt>
+        <dd style="margin-left: 1.5em" id="section-3-2.34">
  A packet is a blob of data that has a header (its length)
  followed by a Phoenix command with all
  of its values and parameters.
@@ -1801,70 +2003,72 @@ li > p:last-of-type:only-child {
  Commands can be sent while still waiting for other replies.
 
  Each endpoint may send commands to the other endpoint without
- having to be prompted to send information.<a href="#section-3-2.30" class="pilcrow">¶</a>
+ having to be prompted to send information.<a href="#section-3-2.34" class="pilcrow">¶</a>
 </dd>
         <dd class="break"></dd>
-<dt id="section-3-2.31">Parameter</dt>
-        <dd style="margin-left: 1.5em" id="section-3-2.32">
+<dt id="section-3-2.35">Parameter</dt>
+        <dd style="margin-left: 1.5em" id="section-3-2.36">
  Most commands have values that are associated with them.
  These values are called parameters.
  For example, the create folder command has the name of the new
- folder to be created as a parameter.<a href="#section-3-2.32" class="pilcrow">¶</a>
+ folder to be created as a parameter.<a href="#section-3-2.36" class="pilcrow">¶</a>
 </dd>
         <dd class="break"></dd>
-<dt id="section-3-2.33">ProtoCmd</dt>
-        <dd style="margin-left: 1.5em" id="section-3-2.34">
+<dt id="section-3-2.37">ProtoCmd</dt>
+        <dd style="margin-left: 1.5em" id="section-3-2.38">
  A general term for all protocol commands.
  This also includes commands that do not fall into one of
- the other categories described here in this definitions section.<a href="#section-3-2.34" class="pilcrow">¶</a>
+ the other categories described here in this definitions section.<a href="#section-3-2.38" class="pilcrow">¶</a>
 </dd>
         <dd class="break"></dd>
-<dt id="section-3-2.35">SEQ, Command Sequence, CMD_SEQ</dt>
-        <dd style="margin-left: 1.5em" id="section-3-2.36">
+<dt id="section-3-2.39">SEQ, Command Sequence, CMD_SEQ</dt>
+        <dd style="margin-left: 1.5em" id="section-3-2.40">
  Each command has a unique identifier, a sequence number.
  All replies to a command include the same sequence number
  as the original command.
- In this way replies can be matched up with their original command.<a href="#section-3-2.36" class="pilcrow">¶</a>
+ In this way replies can be matched up with their original command.<a href="#section-3-2.40" class="pilcrow">¶</a>
 </dd>
         <dd class="break"></dd>
-<dt id="section-3-2.37">SSL</dt>
-        <dd style="margin-left: 1.5em" id="section-3-2.38">
+<dt id="section-3-2.41">SSL</dt>
+        <dd style="margin-left: 1.5em" id="section-3-2.42">
  For the purpose of this specification, SSL is interchangeable
  with TLS.
  This document uses the term TLS.
  The sample implementation uses both SSL and TLS because
  the legacy UNIX, Linux, Windows, and OpenSSL code
- uses the term SSL as well as TLS.<a href="#section-3-2.38" class="pilcrow">¶</a>
+ uses the term SSL in cases where is it TLS.<a href="#section-3-2.42" class="pilcrow">¶</a>
 </dd>
         <dd class="break"></dd>
-<dt id="section-3-2.39">TLS</dt>
-        <dd style="margin-left: 1.5em" id="section-3-2.40">
- A way of securely transporting data over the Internet.
- See RFC-xxxx.<a href="#section-3-2.40" class="pilcrow">¶</a>
+<dt id="section-3-2.43">TLS</dt>
+        <dd style="margin-left: 1.5em" id="section-3-2.44">
+          <p id="section-3-2.44.1">
+ A way of securely transporting data over the Internet.<a href="#section-3-2.44.1" class="pilcrow">¶</a></p>
+<p id="section-3-2.44.2">
+ See <span>[<a href="#RFC8446" class="cite xref">RFC8446</a>]</span><a href="#section-3-2.44.2" class="pilcrow">¶</a></p>
 </dd>
         <dd class="break"></dd>
-<dt id="section-3-2.41">XDR</dt>
-        <dd style="margin-left: 1.5em" id="section-3-2.42">
-          <p id="section-3-2.42.1">
+<dt id="section-3-2.45">XDR</dt>
+        <dd style="margin-left: 1.5em" id="section-3-2.46">
+          <p id="section-3-2.46.1">
  RFC-4506 specifies a standard and compatible way to transfer
  binary information.
  This protocol uses XDR to transmit a command, its values
  and any parameters and replies.
  The MIME data, the payload, is transported as XDR opaque,
- and is unmodified.<a href="#section-3-2.42.1" class="pilcrow">¶</a></p>
-<p id="section-3-2.42.2"><em>Note</em>: XDR transmits data in 32-bit chunks.
+ and is unmodified.<a href="#section-3-2.46.1" class="pilcrow">¶</a></p>
+<p id="section-3-2.46.2"><em>Note</em>: XDR transmits data in 32-bit chunks.
  An 8-bit value is transmitted with the lower 8-bits
  valid and the upper 24 bits set to zero.
  A 16-bit value is transmitted with the lower 16-bits
- valid and the upper 16 bits set to zero.<a href="#section-3-2.42.2" class="pilcrow">¶</a></p>
-<p id="section-3-2.42.3">
+ valid and the upper 16 bits set to zero.<a href="#section-3-2.46.2" class="pilcrow">¶</a></p>
+<p id="section-3-2.46.3">
  So many of these protocol elements pack one or more
  of its parameters into one 32-bit value.
  As defined in each section.
  In many cases pseudo code is shown on how to pack the
- date and create the protocol element.<a href="#section-3-2.42.3" class="pilcrow">¶</a></p>
-<p id="section-3-2.42.4">
- SEE RFC-4506 section 3.<a href="#section-3-2.42.4" class="pilcrow">¶</a></p>
+ data and create the protocol element.<a href="#section-3-2.46.3" class="pilcrow">¶</a></p>
+<p id="section-3-2.46.4">
+ See <span><a href="https://rfc-editor.org/rfc/rfc4506#section-3" class="relref">Section 3</a> of [<a href="#RFC4506" class="cite xref">RFC4506</a>]</span><a href="#section-3-2.46.4" class="pilcrow">¶</a></p>
 </dd>
       <dd class="break"></dd>
 </dl>
@@ -2367,10 +2571,26 @@ li > p:last-of-type:only-child {
  </td>
             </tr>
             <tr>
+              <td class="text-left" rowspan="1" colspan="1">FOLDER_METADATA</td>
+              <td class="text-left" rowspan="1" colspan="1">
+ Get, set, and update information associated with the
+ folder.
+ File meta data is also returned with the FOLDER_OPEN
+ command.
+ </td>
+            </tr>
+            <tr>
               <td class="text-left" rowspan="1" colspan="1">FOLDER_MOVE</td>
               <td class="text-left" rowspan="1" colspan="1">
  Move a folder.
  Also the name of the capability for this permission.
+ </td>
+            </tr>
+            <tr>
+              <td class="text-left" rowspan="1" colspan="1">FOLDER_OPEN</td>
+              <td class="text-left" rowspan="1" colspan="1">
+ Open a folder and get information about the folder
+ and files in the folder.
  </td>
             </tr>
             <tr>
@@ -2413,6 +2633,15 @@ li > p:last-of-type:only-child {
               <td class="text-left" rowspan="1" colspan="1">
  Rename a file.
  Also the name of the capability for this permission.
+ </td>
+            </tr>
+            <tr>
+              <td class="text-left" rowspan="1" colspan="1">FILE_METADATA</td>
+              <td class="text-left" rowspan="1" colspan="1">
+ Get, set, and update information associated with the
+ folder.
+ File meta data is also returned with the FOLDER_OPEN
+ command.
  </td>
             </tr>
             <tr>
@@ -2599,79 +2828,487 @@ li > p:last-of-type:only-child {
 </div>
 </section>
 </div>
-<div id="WIREPROTOCOLDETAIL">
+<div id="META_DATA">
 <section id="section-5">
-      <h2 id="name-over-the-wire-protocol-deta">
-<a href="#section-5" class="section-number selfRef">5. </a><a href="#name-over-the-wire-protocol-deta" class="section-name selfRef">Over the Wire Protocol Detail</a>
+      <h2 id="name-meta-data">
+<a href="#section-5" class="section-number selfRef">5. </a><a href="#name-meta-data" class="section-name selfRef">Meta Data</a>
       </h2>
 <p id="section-5-1">
- This section specifies the details of what is
- transmitted over the network.<a href="#section-5-1" class="pilcrow">¶</a></p>
+ In this specification a file and a MIME object are used
+ interchangeably.
+ Meta Data is data that is associated with the MIME object
+ and not contained within the MIME object.
+ Meta Data should never be stored in the MIME object as altering
+ the MIME object would invalidate the index information and
+ can invalidate digital signature and encryption information.<a href="#section-5-1" class="pilcrow">¶</a></p>
 <p id="section-5-2">
- All protocol data transmitted between the endpoints is sent in
- network byte order.<a href="#section-5-2" class="pilcrow">¶</a></p>
+ Meta Data for the folder and MIME objects is returned in
+ a FOLDER_OPEN, FILE_METADATA, or FOLDER_METADATA command.
+ Meta Data can be set and updated by the client using FILE_METADATA
+ or FOLDER_METADATA commands.<a href="#section-5-2" class="pilcrow">¶</a></p>
 <p id="section-5-3">
+ Most are 8-bit boolean values that are set to false (0x00) or true (0x01).
+ A value that does not exists is the same as a false.<a href="#section-5-3" class="pilcrow">¶</a></p>
+<p id="section-5-4">
+ Meta data can be global to the object.
+ That is once tagged (or not tagged) the attribute shows up for all
+ users.
+ Or it can be user specific meta data.
+ User specific meta data does not show up for other users.<a href="#section-5-4" class="pilcrow">¶</a></p>
+<p id="section-5-5">
+ Many have the same or similar name and meaning as they do
+ in <span><a href="#RFC9051" class="internal xref">IMAP</a> [<a href="#RFC9051" class="cite xref">RFC9051</a>]</span>.<a href="#section-5-5" class="pilcrow">¶</a></p>
+<section id="section-5.1">
+        <h3 id="name-meta-data-answered">
+<a href="#section-5.1" class="section-number selfRef">5.1. </a><a href="#name-meta-data-answered" class="section-name selfRef">Meta Data - Answered</a>
+        </h3>
+<p id="section-5.1-1">
+ When true, the object has been replied to by the client.
+ This has the same meaning as \Answered does in IMAP.<a href="#section-5.1-1" class="pilcrow">¶</a></p>
+<p id="section-5.1-2">
+ This value can be set and unset.
+ This is user specific meta data because it
+ also applies to shared folders and files.<a href="#section-5.1-2" class="pilcrow">¶</a></p>
+</section>
+<section id="section-5.2">
+        <h3 id="name-meta-data-attributes">
+<a href="#section-5.2" class="section-number selfRef">5.2. </a><a href="#name-meta-data-attributes" class="section-name selfRef">Meta Data - Attributes</a>
+        </h3>
+<p id="section-5.2-1">
+ This object has been tagged with special attributes.
+ It is a list of strings with matching values.<a href="#section-5.2-1" class="pilcrow">¶</a></p>
+<p id="section-5.2-2">
+ User defined attributes MUST start with "X-".
+ These are not portable between implementations
+ and no attempt should be made to copy these
+ between implementations.<a href="#section-5.2-2" class="pilcrow">¶</a></p>
+<p id="section-5.2-3">
+ Non user defined attributes are described
+ in other sections or specifications.<a href="#section-5.2-3" class="pilcrow">¶</a></p>
+<p id="section-5.2-4">
+ This can be user specific meta data or global meta data.
+ See the specific attribute documentation.<a href="#section-5.2-4" class="pilcrow">¶</a></p>
+</section>
+<section id="section-5.3">
+        <h3 id="name-meta-data-deleted">
+<a href="#section-5.3" class="section-number selfRef">5.3. </a><a href="#name-meta-data-deleted" class="section-name selfRef">Meta Data - Deleted</a>
+        </h3>
+<p id="section-5.3-1">
+ When true, this object has been marked as deleted
+ and has not yet been expunged.
+ This has the same meaning as \Deleted does in IMAP.<a href="#section-5.3-1" class="pilcrow">¶</a></p>
+<p id="section-5.3-2">
+ For shared objects, an expunge removes the
+ user from shared access to the file.
+ And the actual expunge is only processed
+ when all shared users have expunged
+ the object.<a href="#section-5.3-2" class="pilcrow">¶</a></p>
+<p id="section-5.3-3">
+ This value can be set and unset.
+ This is user specific meta data because it
+ also applies to shared folders and files.<a href="#section-5.3-3" class="pilcrow">¶</a></p>
+</section>
+<section id="section-5.4">
+        <h3 id="name-meta-data-draft">
+<a href="#section-5.4" class="section-number selfRef">5.4. </a><a href="#name-meta-data-draft" class="section-name selfRef">Meta Data - Draft</a>
+        </h3>
+<p id="section-5.4-1">
+ When true, this object is incomplete and not ready.<a href="#section-5.4-1" class="pilcrow">¶</a></p>
+<p id="section-5.4-2">
+ This has the same meaning as \Draft does in IMAP.<a href="#section-5.4-2" class="pilcrow">¶</a></p>
+<p id="section-5.4-3">
+ This value can be set and unset.
+ This is user specific meta data.<a href="#section-5.4-3" class="pilcrow">¶</a></p>
+</section>
+<section id="section-5.5">
+        <h3 id="name-meta-data-flagged">
+<a href="#section-5.5" class="section-number selfRef">5.5. </a><a href="#name-meta-data-flagged" class="section-name selfRef">Meta Data - Flagged</a>
+        </h3>
+<p id="section-5.5-1">
+ An object has been tagged as important.
+ This is the same as the IMAP \Flagged value.<a href="#section-5.5-1" class="pilcrow">¶</a></p>
+<p id="section-5.5-2">
+ This value can be set and unset.
+ This is user specific meta data because it
+ also applies to shared folders and files.<a href="#section-5.5-2" class="pilcrow">¶</a></p>
+</section>
+<section id="section-5.6">
+        <h3 id="name-meta-data-forwarded">
+<a href="#section-5.6" class="section-number selfRef">5.6. </a><a href="#name-meta-data-forwarded" class="section-name selfRef">Meta Data - Forwarded</a>
+        </h3>
+<p id="section-5.6-1">
+ This has the same meaning as $Forwarded does in IMAP.<a href="#section-5.6-1" class="pilcrow">¶</a></p>
+<p id="section-5.6-2">
+ This value can be set and unset.
+ This is user specific meta data because it
+ also applies to shared folders and files.<a href="#section-5.6-2" class="pilcrow">¶</a></p>
+</section>
+<section id="section-5.7">
+        <h3 id="name-meta-data-hide">
+<a href="#section-5.7" class="section-number selfRef">5.7. </a><a href="#name-meta-data-hide" class="section-name selfRef">Meta Data - Hide</a>
+        </h3>
+<p id="section-5.7-1">
+ With NotExpungable objects, the user may wish to not view the object.
+ In these cases the attribute Hide can be set.
+ The attribute does not effect the view of other users.<a href="#section-5.7-1" class="pilcrow">¶</a></p>
+<p id="section-5.7-2">
+ This value can be set and unset.
+ This is user specific meta data because it
+ also applies to shared folders and files.<a href="#section-5.7-2" class="pilcrow">¶</a></p>
+</section>
+<section id="section-5.8">
+        <h3 id="name-meta-data-junk">
+<a href="#section-5.8" class="section-number selfRef">5.8. </a><a href="#name-meta-data-junk" class="section-name selfRef">Meta Data - Junk</a>
+        </h3>
+<p id="section-5.8-1">
+ This has the same meaning as $Junk does in IMAP.<a href="#section-5.8-1" class="pilcrow">¶</a></p>
+<p id="section-5.8-2">
+ This value can be set and unset.
+ This is user specific meta data because it
+ also applies to shared folders and files.<a href="#section-5.8-2" class="pilcrow">¶</a></p>
+</section>
+<section id="section-5.9">
+        <h3 id="name-meta-data-mdnsent">
+<a href="#section-5.9" class="section-number selfRef">5.9. </a><a href="#name-meta-data-mdnsent" class="section-name selfRef">Meta Data - MDNSent</a>
+        </h3>
+<p id="section-5.9-1">
+ This value can be set and unset.
+ This has the same meaning as $MDNSent does in IMAP.<a href="#section-5.9-1" class="pilcrow">¶</a></p>
+<p id="section-5.9-2">
+ This value can be set and unset.
+ This is user specific meta data because it
+ also applies to shared folders and files.<a href="#section-5.9-2" class="pilcrow">¶</a></p>
+</section>
+<section id="section-5.10">
+        <h3 id="name-meta-data-nocopy">
+<a href="#section-5.10" class="section-number selfRef">5.10. </a><a href="#name-meta-data-nocopy" class="section-name selfRef">Meta Data - NoCopy</a>
+        </h3>
+<p id="section-5.10-1">
+ When true, this MIME object can not be copied.<a href="#section-5.10-1" class="pilcrow">¶</a></p>
+<p id="section-5.10-2">
+ This value can be set and unset by the owner of the file or folder.
+ This value can not be unset by non owners.
+ This is global meta data.<a href="#section-5.10-2" class="pilcrow">¶</a></p>
+</section>
+<section id="section-5.11">
+        <h3 id="name-meta-data-notjunk">
+<a href="#section-5.11" class="section-number selfRef">5.11. </a><a href="#name-meta-data-notjunk" class="section-name selfRef">Meta Data - NotJunk</a>
+        </h3>
+<p id="section-5.11-1">
+ This has the same meaning as $NotJunk does in IMAP.<a href="#section-5.11-1" class="pilcrow">¶</a></p>
+<p id="section-5.11-2">
+ This value can be set and unset.
+ This is user specific meta data because it
+ also applies to shared folders and files.<a href="#section-5.11-2" class="pilcrow">¶</a></p>
+</section>
+<section id="section-5.12">
+        <h3 id="name-meta-data-notexpungable">
+<a href="#section-5.12" class="section-number selfRef">5.12. </a><a href="#name-meta-data-notexpungable" class="section-name selfRef">Meta Data - NotExpungable</a>
+        </h3>
+<p id="section-5.12-1">
+ The mime object can not be marked for delete or expunged.
+ It could be because it is an historical record that will never
+ be expunged, or other reason.<a href="#section-5.12-1" class="pilcrow">¶</a></p>
+<p id="section-5.12-2">
+ A client implementation could use the Hide attribute
+ to not show the object to the user.<a href="#section-5.12-2" class="pilcrow">¶</a></p>
+<p id="section-5.12-3">
+ This value can be set and unset by the owner of the file or folder.
+ This value can not be unset by non owners.
+ This is global meta data.<a href="#section-5.12-3" class="pilcrow">¶</a></p>
+</section>
+<section id="section-5.13">
+        <h3 id="name-meta-data-phishing">
+<a href="#section-5.13" class="section-number selfRef">5.13. </a><a href="#name-meta-data-phishing" class="section-name selfRef">Meta Data - Phishing</a>
+        </h3>
+<p id="section-5.13-1">
+ This has the same meaning as $Phishing does in IMAP.<a href="#section-5.13-1" class="pilcrow">¶</a></p>
+<p id="section-5.13-2">
+ This value can be set and unset.
+ This is user specific meta data because it
+ also applies to shared folders and files.<a href="#section-5.13-2" class="pilcrow">¶</a></p>
+</section>
+<section id="section-5.14">
+        <h3 id="name-meta-data-readonly">
+<a href="#section-5.14" class="section-number selfRef">5.14. </a><a href="#name-meta-data-readonly" class="section-name selfRef">Meta Data - ReadOnly</a>
+        </h3>
+<p id="section-5.14-1">
+ The MIME object associated with this attribute
+ can not be altered, deleted, moved, or renamed.
+ It can be copied, unless the NoCopy meta tag
+ is also applied.<a href="#section-5.14-1" class="pilcrow">¶</a></p>
+<p id="section-5.14-2">
+ This value can be set and unset by the owner of the file or folder.
+ This value can not be unset by non owners.
+ This is global meta data.<a href="#section-5.14-2" class="pilcrow">¶</a></p>
+<p id="section-5.14-3">
+ Setting of this to false may fail if the file or folder is
+ stored on read-only media.
+ When the file or folder is stored on read-only media,
+ this MUST BE set to true.<a href="#section-5.14-3" class="pilcrow">¶</a></p>
+</section>
+<section id="section-5.15">
+        <h3 id="name-meta-data-shared">
+<a href="#section-5.15" class="section-number selfRef">5.15. </a><a href="#name-meta-data-shared" class="section-name selfRef">Meta Data - Shared</a>
+        </h3>
+<p id="section-5.15-1">
+ The MIME object associated with this attribute
+ is shared and is also often tagged with the ReadOnly
+ meta data tag.<a href="#section-5.15-1" class="pilcrow">¶</a></p>
+<p id="section-5.15-2">
+ This value can not be set and unset by the owner.<a href="#section-5.15-2" class="pilcrow">¶</a></p>
+<p id="section-5.15-3">
+ If copying of the file or folder is allowed, then
+ the shared attribute is removed when copied.<a href="#section-5.15-3" class="pilcrow">¶</a></p>
+<p id="section-5.15-4">
+ This file or folder will only be expunged when all
+ of the users with shared access have deleted and
+ expunged it.<a href="#section-5.15-4" class="pilcrow">¶</a></p>
+</section>
+<section id="section-5.16">
+        <h3 id="name-meta-data-seen">
+<a href="#section-5.16" class="section-number selfRef">5.16. </a><a href="#name-meta-data-seen" class="section-name selfRef">Meta Data - Seen</a>
+        </h3>
+<p id="section-5.16-1">
+ This has the same meaning as \Seen does in IMAP.<a href="#section-5.16-1" class="pilcrow">¶</a></p>
+<p id="section-5.16-2">
+ This value can be set and unset.
+ This is user specific meta data because it
+ also applies to shared folders and files.<a href="#section-5.16-2" class="pilcrow">¶</a></p>
+</section>
+<section id="section-5.17">
+        <h3 id="name-meta-data-mdndata-attribute">
+<a href="#section-5.17" class="section-number selfRef">5.17. </a><a href="#name-meta-data-mdndata-attribute" class="section-name selfRef">Meta Data - MDNData Attribute</a>
+        </h3>
+<p id="section-5.17-1">
+ This Meta Data Attribute is only visible to the
+ owner of the object for which MDN has been set.<a href="#section-5.17-1" class="pilcrow">¶</a></p>
+<p id="section-5.17-2">
+ This is a list of recipients email address that
+ that are on the distribution list effected by the MDN.<a href="#section-5.17-2" class="pilcrow">¶</a></p>
+<p id="section-5.17-3">
+ The format of an MDNData record is
+ a header, that has:<a href="#section-5.17-3" class="pilcrow">¶</a></p>
+<ul class="normal">
+<li class="normal" id="section-5.17-4.1">
+ COUNT: A 32-bit unsigned integer in network byte order
+ indicating how many were on the distribution list
+ for this MDN.<a href="#section-5.17-4.1" class="pilcrow">¶</a>
+</li>
+          <li class="normal" id="section-5.17-4.2">
+ SENT: The UTC timestamp as a 64-bit unsigned integer
+ in network byte order of when the MDN reply was sent.<a href="#section-5.17-4.2" class="pilcrow">¶</a>
+</li>
+        </ul>
+<p id="section-5.17-5">
+ Followed by COUNT detail records:<a href="#section-5.17-5" class="pilcrow">¶</a></p>
+<ul class="normal">
+<li class="normal" id="section-5.17-6.1">
+ UTC: The UTC timestamp as a 64-bit unsigned integer
+ in network byte order of when the MDN reply was received.
+ Set to zero if not received.<a href="#section-5.17-6.1" class="pilcrow">¶</a>
+</li>
+          <li class="normal" id="section-5.17-6.2">
+ Email-Address: A PhoenixString with the associated
+ email address of the user that has or has not returned
+ the MDN.<a href="#section-5.17-6.2" class="pilcrow">¶</a>
+</li>
+        </ul>
+<span id="name-mdndata-attribute"></span><div id="MDNData">
+<figure id="figure-2">
+          <div id="section-5.17-7.1">
+            <div class="alignLeft art-svg artwork" id="section-5.17-7.1.2">
+<svg xmlns="http://www.w3.org/2000/svg" version="1.1" height="256" width="592" viewBox="0 0 592 256" class="diagram" text-anchor="middle" font-family="monospace" font-size="13px" stroke-linecap="round">
+                <path d="M 8,16 L 8,80" fill="none" stroke="black"></path>
+                <path d="M 8,144 L 8,240" fill="none" stroke="black"></path>
+                <path d="M 296,16 L 296,48" fill="none" stroke="black"></path>
+                <path d="M 296,176 L 296,208" fill="none" stroke="black"></path>
+                <path d="M 584,48 L 584,80" fill="none" stroke="black"></path>
+                <path d="M 584,144 L 584,176" fill="none" stroke="black"></path>
+                <path d="M 8,16 L 296,16" fill="none" stroke="black"></path>
+                <path d="M 8,48 L 584,48" fill="none" stroke="black"></path>
+                <path d="M 8,80 L 584,80" fill="none" stroke="black"></path>
+                <path d="M 8,144 L 584,144" fill="none" stroke="black"></path>
+                <path d="M 8,176 L 584,176" fill="none" stroke="black"></path>
+                <path d="M 8,208 L 296,208" fill="none" stroke="black"></path>
+                <path d="M 8,240 L 296,240" fill="none" stroke="black"></path>
+                <g class="text">
+                  <text x="76" y="36">32-bit COUNT</text>
+                  <text x="148" y="68">MDN SENT Time Stamp UTC 64-bit</text>
+                  <text x="112" y="116">Followed by COUNT of these:</text>
+                  <text x="164" y="164">MDN Received Time Stamp UTC 64-bit</text>
+                  <text x="116" y="196">32-bit LENGTH of email</text>
+                  <text x="96" y="228">Email-Address ...</text>
+                </g>
+              </svg><a href="#section-5.17-7.1.2" class="pilcrow">¶</a>
+</div>
+</div>
+<figcaption><a href="#figure-2" class="selfRef">Figure 2</a>:
+<a href="#name-mdndata-attribute" class="selfRef">MDNData Attribute</a>
+          </figcaption></figure>
+</div>
+</section>
+<section id="section-5.18">
+        <h3 id="name-meta-data-with-shared-objec">
+<a href="#section-5.18" class="section-number selfRef">5.18. </a><a href="#name-meta-data-with-shared-objec" class="section-name selfRef">Meta Data with Shared Objects</a>
+        </h3>
+<p id="section-5.18-1">
+ When a server implementation allows shared objects,
+ the meta data returned to the client may be different
+ depending on the authenticated user.
+ Some users may have read only copies, other may be
+ able to delete the object.<a href="#section-5.18-1" class="pilcrow">¶</a></p>
+<p id="section-5.18-2">
+ When a shared object is deleted, it is marked as deleted for
+ only the user that issued the delete.<a href="#section-5.18-2" class="pilcrow">¶</a></p>
+<p id="section-5.18-3">
+ When a shared object is expunged, its access is removed
+ for the user that issued the expunge.
+ After all users have expunged the object, then it is
+ removed by the server.<a href="#section-5.18-3" class="pilcrow">¶</a></p>
+<p id="section-5.18-4">
+ There are two kinds of expunge for shared objects.
+ Force and delayed.<a href="#section-5.18-4" class="pilcrow">¶</a></p>
+<ul class="normal">
+<li class="normal" id="section-5.18-5.1">
+            <p id="section-5.18-5.1.1">
+ Forced:<a href="#section-5.18-5.1.1" class="pilcrow">¶</a></p>
+<p id="section-5.18-5.1.2">
+ A forced expunge can be the result of security policies
+ at the server, site, or administrators discretion.
+ This also is how timed messages are deleted.<a href="#section-5.18-5.1.2" class="pilcrow">¶</a></p>
+<p id="section-5.18-5.1.3">
+ In order for a shared object that is expunged to not
+ force an immediate re-index for all clients, the server sends
+ an expunge to all clients, where the client MUST immediately make
+ the object not show to the user and MUST invalidate
+ any cached or memory copy of the data.
+ Then when convenient, the client can do a re-index
+ of the folder.
+ When a user is viewing the object when an expunge
+ arrives, the client must inform the user that the data
+ is no longer available and replace the user view of
+ the data with an empty object or move the view to
+ another object.<a href="#section-5.18-5.1.3" class="pilcrow">¶</a></p>
+<p id="section-5.18-5.1.4">
+ Server implementations must prioritize forced expunge notices
+ to the clients and immediately reject all attempts to read,
+ view, copy, or access meta data.<a href="#section-5.18-5.1.4" class="pilcrow">¶</a></p>
+</li>
+          <li class="normal" id="section-5.18-5.2">
+            <p id="section-5.18-5.2.1">
+ Delayed:<a href="#section-5.18-5.2.1" class="pilcrow">¶</a></p>
+<p id="section-5.18-5.2.2">
+ The user is informed the MIME object is no longer available.
+ The client implementation may continue to show the object.
+ The client may copy the MIME object, unless tagged as
+ NoCopy.<a href="#section-5.18-5.2.2" class="pilcrow">¶</a></p>
+<p id="section-5.18-5.2.3">
+ The next time the client does an expunge the object will be
+ expunged from the client.<a href="#section-5.18-5.2.3" class="pilcrow">¶</a></p>
+<p id="section-5.18-5.2.4">
+ When a client application closes, all delayed expunges
+ MUST occur at exit.<a href="#section-5.18-5.2.4" class="pilcrow">¶</a></p>
+<p id="section-5.18-5.2.5">
+ When a client applications starts the client MUST check for
+ delayed expunges that have not been processed and expunge them
+ and not allow the user to see them.<a href="#section-5.18-5.2.5" class="pilcrow">¶</a></p>
+<p id="section-5.18-5.2.6">
+ Server implementations must reject attempts to fetch or view
+ a folder or file or any of its meta data when an expunge has started,
+ and not yet completed.<a href="#section-5.18-5.2.6" class="pilcrow">¶</a></p>
+</li>
+        </ul>
+</section>
+</section>
+</div>
+<div id="WIREPROTOCOLDETAIL">
+<section id="section-6">
+      <h2 id="name-over-the-wire-protocol-deta">
+<a href="#section-6" class="section-number selfRef">6. </a><a href="#name-over-the-wire-protocol-deta" class="section-name selfRef">Over the Wire Protocol Detail</a>
+      </h2>
+<p id="section-6-1">
+ This section specifies the details of what is
+ transmitted over the network.<a href="#section-6-1" class="pilcrow">¶</a></p>
+<p id="section-6-2">
+ All protocol data transmitted between the endpoints is sent in
+ network byte order.<a href="#section-6-2" class="pilcrow">¶</a></p>
+<p id="section-6-3">
  All payload data transmitted between the endpoints is sent
  in original format.
  The payload consent is seen as an opaque blob of data within
- a command packet.<a href="#section-5-3" class="pilcrow">¶</a></p>
-<p id="section-5-4">
+ a command packet.<a href="#section-6-3" class="pilcrow">¶</a></p>
+<p id="section-6-4">
  When a command packet is received by ether endpoint it:
  (1) Checks the command sequence number to determine if it is a reply
  or not.
  (2) If it is a reply, it looks at the command and dispatches
  it to the implementations commands reply code.
  (3) If is not a reply, it looks at the command and dispatches
- it to the implementations command code.<a href="#section-5-4" class="pilcrow">¶</a></p>
-<p id="section-5-5">
+ it to the implementations command code.<a href="#section-6-4" class="pilcrow">¶</a></p>
+<p id="section-6-5">
  A command and all of its replies, use the same format as
- described here.<a href="#section-5-5" class="pilcrow">¶</a></p>
-<p id="section-5-6">
- A packet has a 64-bit unsigned integer in network byte
+ described here.<a href="#section-6-5" class="pilcrow">¶</a></p>
+<p id="section-6-6">
+ A packet has a 32-bit unsigned integer in network byte
  order that is set to the octet count of all of the
  data that follows this length value.
  The shortest packet is 16 octets in size, with
  a length value set to 8. With 8 octets for the length, and 8 octets
- for the packet.<a href="#section-5-6" class="pilcrow">¶</a></p>
-<p id="section-5-7">
+ for the packet.<a href="#section-6-6" class="pilcrow">¶</a></p>
+<p id="section-6-7">
  Followed by a 32-bit unsigned integer in network byte
- order that is the command sequence number.<a href="#section-5-7" class="pilcrow">¶</a></p>
-<p id="section-5-8">
+ order that is the command sequence number.<a href="#section-6-7" class="pilcrow">¶</a></p>
+<p id="section-6-8">
  Followed by a 32-bit unsigned integer in network byte
- order that is the command.<a href="#section-5-8" class="pilcrow">¶</a></p>
-<p id="section-5-9">
- Followed by zero or more octets of payload data.<a href="#section-5-9" class="pilcrow">¶</a></p>
-<p id="section-5-10">
+ order that is the command.<a href="#section-6-8" class="pilcrow">¶</a></p>
+<p id="section-6-9">
+ Followed by zero or more octets of payload data.<a href="#section-6-9" class="pilcrow">¶</a></p>
+<p id="section-6-10">
  There is no space, padding, or line endings between the parts
  of the packet.
  The payload is sent without any modification and is not
  encoded or transformed in any way.
  A packet is shown here vertically only
- to aid in readability.<a href="#section-5-10" class="pilcrow">¶</a></p>
-<div id="section-5-11">
-        <div class="alignLeft art-ascii-art art-text artwork" id="section-5-11.1">
+ to aid in readability.<a href="#section-6-10" class="pilcrow">¶</a></p>
+<div id="section-6-11">
+        <div class="alignLeft art-svg artwork" id="section-6-11.2">
+<svg xmlns="http://www.w3.org/2000/svg" version="1.1" height="144" width="296" viewBox="0 0 296 144" class="diagram" text-anchor="middle" font-family="monospace" font-size="13px" stroke-linecap="round">
+            <path d="M 8,16 L 8,128" fill="none" stroke="black"></path>
+            <path d="M 288,16 L 288,112" fill="none" stroke="black"></path>
+            <path d="M 8,16 L 288,16" fill="none" stroke="black"></path>
+            <path d="M 8,48 L 288,48" fill="none" stroke="black"></path>
+            <path d="M 8,80 L 288,80" fill="none" stroke="black"></path>
+            <path d="M 8,112 L 288,112" fill="none" stroke="black"></path>
+            <g class="text">
+              <text x="152" y="36">...32-bit.unsigned.integer.length</text>
+              <text x="152" y="68">...32-bit.unsigned.command.SEQ...</text>
+              <text x="152" y="100">...32-bit.unsigned.command.CMD...</text>
+              <text x="68" y="132">payload.....</text>
+            </g>
+          </svg><a href="#section-6-11.2" class="pilcrow">¶</a>
+</div>
+</div>
+<p id="section-6-12">
+ ABNF:<a href="#section-6-12" class="pilcrow">¶</a></p>
+<div class="sourcecode" id="section-6-13">
 <pre>
-+-----------------------------------------------------------------+
-| ...64-bit.unsigned.integer.length ..............................|
-+-----------------------------------------------------------------+
-| ...32-bit.unsigned.command.SEQ...|
-+----------------------------------+
-| ...32-bit.unsigned.command.CMD...|
-+----------------------------------+
-| payload.....
 
-</pre><a href="#section-5-11.1" class="pilcrow">¶</a>
+CommandHeader : Length:32 Sequence:32 CMD:32
+
+Command : CommandHeader Payload
+
+</pre><a href="#section-6-13" class="pilcrow">¶</a>
 </div>
-</div>
-<p id="section-5-12">
+<p id="section-6-14">
  The payload size and format varies for each command.
  The details of the payload content, and the format
- of that content, is described in each specific CMD section.<a href="#section-5-12" class="pilcrow">¶</a></p>
-<p id="section-5-13">
+ of that content, is described in each specific CMD section.<a href="#section-6-14" class="pilcrow">¶</a></p>
+<p id="section-6-15">
  An implementation can send, receive, and dispatch packets within
  its implementation by looking at the length, SEQ, and CMD, then
- passing the payload to code that can handle that payload.<a href="#section-5-13" class="pilcrow">¶</a></p>
-<p id="section-5-14">
+ passing the payload to code that can handle that payload.<a href="#section-6-15" class="pilcrow">¶</a></p>
+<p id="section-6-16">
  - Read in a 64-bit value.
  - Convert the value from network byte order, to host byte order. This is the
  total length of the data that follows.
@@ -2681,14 +3318,13 @@ li > p:last-of-type:only-child {
  - Get another 32-bit value in the payload, it is the CMD in network byte order.
  - Convert the CMD from network byte order, to host byte order.
  - Dispatch the CMD with SEQ and all of the data that follows
- to implementation<a href="#section-5-14" class="pilcrow">¶</a></p>
-<p id="section-5-15">
+ to implementation<a href="#section-6-16" class="pilcrow">¶</a></p>
+<p id="section-6-17">
  The following is pseudo code that explains how processing incoming XDR
- data can be handled:<a href="#section-5-15" class="pilcrow">¶</a></p>
-<div class="breakable sourcecode" id="section-5-16">
+ data can be handled:<a href="#section-6-17" class="pilcrow">¶</a></p>
+<div class="breakable sourcecode" id="section-6-18">
 <pre>
   // Where:
-  //  uint64_t, is a 64-bit unsigned integer.
   //  uint32_t, is a 32-bit unsigned integer.
   //  uint8_t *, is a pointer to 8-bit data.
   //  XDR, is an XDR object.
@@ -2698,8 +3334,8 @@ li > p:last-of-type:only-child {
   //
   //  NOTE: See the sample implementation.
   //
-  uint64_t   NetLength;
-  uint64_t   PacketLength;
+  uint32_t   NetLength;
+  uint32_t   PacketLength;
   uint8_t *  Data;
   uint8_t *  DataPointer;
   XDR        Xdr;
@@ -2707,7 +3343,7 @@ li > p:last-of-type:only-child {
 
   // Read the length and convert to host byte order.
   //
-  read(FromClientSocket, &amp;NetLength, sizeof(uint64_t));
+  read(FromClientSocket, &amp;NetLength, sizeof(uint32_t));
   PacketLength = ntohll(NetLength);
 
   // Allocate PacketLength data, and read it.
@@ -2743,7 +3379,7 @@ li > p:last-of-type:only-child {
     // the command.
     //
     // If a server gets an even numbered sequence, it is a
-    // command from theother endpoint.
+    // command from the other endpoint.
     //
     if (WeAreTheClient) {
       if (SequenceIsEvenNumber) {
@@ -2759,544 +3395,1192 @@ li > p:last-of-type:only-child {
       }
     }
   }
-</pre><a href="#section-5-16" class="pilcrow">¶</a>
+</pre><a href="#section-6-18" class="pilcrow">¶</a>
 </div>
 </section>
 </div>
 <div id="INDEX">
-<section id="section-6">
+<section id="section-7">
       <h2 id="name-index">
-<a href="#section-6" class="section-number selfRef">6. </a><a href="#name-index" class="section-name selfRef">Index</a>
+<a href="#section-7" class="section-number selfRef">7. </a><a href="#name-index" class="section-name selfRef">Index</a>
       </h2>
 <div id="InterestedHeaders">
-<section id="section-6.1">
+<section id="section-7.1">
         <h3 id="name-interested-headers">
-<a href="#section-6.1" class="section-number selfRef">6.1. </a><a href="#name-interested-headers" class="section-name selfRef">Interested Headers</a>
+<a href="#section-7.1" class="section-number selfRef">7.1. </a><a href="#name-interested-headers" class="section-name selfRef">Interested Headers</a>
         </h3>
-<p id="section-6.1-1">
+<p id="section-7.1-1">
  Some implementation may wish to specify which MIME headers
  it wants to get in the index supplied by the server.
  This is done as part of the folder selection command which
- can supplies a list of desired headers.
+ can supply a list of desired headers.
  Or it can specify a list ID that has already been transmitted.
- When none are supplied, no header index values will be returned.<a href="#section-6.1-1" class="pilcrow">¶</a></p>
-<p id="section-6.1-2">
+ When none are supplied, no header index values will be returned.<a href="#section-7.1-1" class="pilcrow">¶</a></p>
+<p id="section-7.1-2">
  This list can be the same for all folders, or unique to specific folders.
  The client generates a list of interested headers and
- sends an InterestedHeaders list to the server when selecting
- a folder.<a href="#section-6.1-2" class="pilcrow">¶</a></p>
-<p id="section-6.1-3">
- A request ID (HIDX) is an 8-bit unsigned integer in network byte order.<a href="#section-6.1-3" class="pilcrow">¶</a></p>
-<p id="section-6.1-4">
- A Header ID is an 8-bit unsigned integer in network byte order.<a href="#section-6.1-4" class="pilcrow">¶</a></p>
-<p id="section-6.1-5">
- There are three (3) types of interested header index (HIDX) requests.
+ sends an Interested Headers list or list ID to the server when selecting
+ a folder.<a href="#section-7.1-2" class="pilcrow">¶</a></p>
+<div id="InterestedHeaders-IndexOP">
+<section id="section-7.1.1">
+          <h4 id="name-index-operation-indexop">
+<a href="#section-7.1.1" class="section-number selfRef">7.1.1. </a><a href="#name-index-operation-indexop" class="section-name selfRef">Index Operation (IndexOP)</a>
+          </h4>
+<p id="section-7.1.1-1">
+ An Index Operation (IndexOP) is an 8-bit
+ unsigned integer in network byte order.
+ There are only two (2) values, set list (0), use existing list (1).<a href="#section-7.1.1-1" class="pilcrow">¶</a></p>
+<p id="section-7.1.1-2">
+ There are two (2) types of index operations (IndexOP) requests.
  These are 8-bit unsigned integer in network byte order.
- And the HIDX values are:<a href="#section-6.1-5" class="pilcrow">¶</a></p>
+ And the IndexOP values are:<a href="#section-7.1.1-2" class="pilcrow">¶</a></p>
 <ul class="normal">
-<li class="normal" id="section-6.1-6.1">
-            <p id="section-6.1-6.1.1">
- HIDX = 0<a href="#section-6.1-6.1.1" class="pilcrow">¶</a></p>
-<p id="section-6.1-6.1.2">
- Used to set the default MIME object and Body Part list
- of interesting headers the client cares about.
- The default list has a list ID that is also zero (0).<a href="#section-6.1-6.1.2" class="pilcrow">¶</a></p>
-<p id="section-6.1-6.1.3">
- And requesting a list ID of zero (0) will return the index
- of the default headers defined by the client that was set.<a href="#section-6.1-6.1.3" class="pilcrow">¶</a></p>
+<li class="normal" id="section-7.1.1-3.1">
+              <p id="section-7.1.1-3.1.1">
+ IndexOP = 0<a href="#section-7.1.1-3.1.1" class="pilcrow">¶</a></p>
+<p id="section-7.1.1-3.1.2">
+ Used to set a list of body MIME object, and Body Part,
+ interesting headers the client cares about.<a href="#section-7.1.1-3.1.2" class="pilcrow">¶</a></p>
 </li>
-          <li class="normal" id="section-6.1-6.2">
-            <p id="section-6.1-6.2.1">
- HIDX = 1<a href="#section-6.1-6.2.1" class="pilcrow">¶</a></p>
-<p id="section-6.1-6.2.2">
- This value sets a custom list that can be used later by ID.
- Custom lists have an ID greater than zero (&gt;0)<a href="#section-6.1-6.2.2" class="pilcrow">¶</a></p>
+            <li class="normal" id="section-7.1.1-3.2">
+              <p id="section-7.1.1-3.2.1">
+ IndexOP = 1<a href="#section-7.1.1-3.2.1" class="pilcrow">¶</a></p>
+<p id="section-7.1.1-3.2.2">
+ This indicates that LID is an existing list number to use.<a href="#section-7.1.1-3.2.2" class="pilcrow">¶</a></p>
 </li>
-          <li class="normal" id="section-6.1-6.3">
-            <p id="section-6.1-6.3.1">
- HIDX = 2<a href="#section-6.1-6.3.1" class="pilcrow">¶</a></p>
-<p id="section-6.1-6.3.2">
- This value is used to get the header list index.<a href="#section-6.1-6.3.2" class="pilcrow">¶</a></p>
-</li>
-        </ul>
-<p id="section-6.1-7">
- The header for setting a list is shown
- in <a href="#Interisting-S0-01" class="auto internal xref">Figure 1</a>, where:<a href="#section-6.1-7" class="pilcrow">¶</a></p>
+          </ul>
+</section>
+</div>
+<div id="InterestedHeaders-HID">
+<section id="section-7.1.2">
+          <h4 id="name-header-id-hid">
+<a href="#section-7.1.2" class="section-number selfRef">7.1.2. </a><a href="#name-header-id-hid" class="section-name selfRef">Header ID (HID)</a>
+          </h4>
+<p id="section-7.1.2-1">
+ A Header ID (HID) is an 8-bit unsigned integer in network byte order.
+ The client assigned this 8-bit number to a header name, then
+ the client and server references it by ID in packets and replies.
+ A client can have up to 254 interested headers per connection.
+ The value 255 is reserved for expansion.<a href="#section-7.1.2-1" class="pilcrow">¶</a></p>
+</section>
+</div>
+<div id="InterestedHeaders-LID">
+<section id="section-7.1.3">
+          <h4 id="name-list-id-lid">
+<a href="#section-7.1.3" class="section-number selfRef">7.1.3. </a><a href="#name-list-id-lid" class="section-name selfRef">List ID (LID)</a>
+          </h4>
+<p id="section-7.1.3-1">
+ A List ID (LID) it an 8-bit unsigned integer in network byte order.
+ It is used in requests and replies to refer to the interested headers
+ list.
+ A client can have up to 254 lists per connection.
+ The value 255 is reserved for expansion.<a href="#section-7.1.3-1" class="pilcrow">¶</a></p>
+<p id="section-7.1.3-2">
+ Restrictions:<a href="#section-7.1.3-2" class="pilcrow">¶</a></p>
 <ul class="normal">
-<li class="normal" id="section-6.1-8.1">
-            <p id="section-6.1-8.1.1">
- HIDX is used to set or get the headers the client
+<li class="normal" id="section-7.1.3-3.1">
+ The list IDs are unique to the connection and do not persist
+ across connections.<a href="#section-7.1.3-3.1" class="pilcrow">¶</a>
+</li>
+            <li class="normal" id="section-7.1.3-3.2">
+ No two lists can have the same ID during a connection.<a href="#section-7.1.3-3.2" class="pilcrow">¶</a>
+</li>
+          </ul>
+</section>
+</div>
+<div id="InterestedHeaders-Wire">
+<section id="section-7.1.4">
+          <h4 id="name-protocol-format">
+<a href="#section-7.1.4" class="section-number selfRef">7.1.4. </a><a href="#name-protocol-format" class="section-name selfRef">Protocol Format</a>
+          </h4>
+<p id="section-7.1.4-1">
+ When a folder is opened with the FOLDER_OPEN command,
+ it is followed by a list of interested headers it wants back in
+ the folder open reply.
+ The list can be empty (a single 32-bit unsigned integer
+ set to zero), or contain what follows:<a href="#section-7.1.4-1" class="pilcrow">¶</a></p>
+<p id="section-7.1.4-2">
+ The client sets these 3 values into one 32-bit unsigned
+ integer in network byte order as shown
+ in <a href="#Interisting-S0-01" class="auto internal xref">Figure 3</a>, where:<a href="#section-7.1.4-2" class="pilcrow">¶</a></p>
+<ul class="normal">
+<li class="normal" id="section-7.1.4-3.1">
+              <p id="section-7.1.4-3.1.1">
+ IndexOP is used to specify headers the client
  wishes the server to index in MIME objects.
- It must be a zero (0), one (1), or two (2).<a href="#section-6.1-8.1.1" class="pilcrow">¶</a></p>
+ It must be a zero (0) to set the list definition.<a href="#section-7.1.4-3.1.1" class="pilcrow">¶</a></p>
 </li>
-          <li class="normal" id="section-6.1-8.2">
-            <p id="section-6.1-8.2.1">
- LID is the list ID of the list. An 8-bit value.
- Zero (0) is the default list.<a href="#section-6.1-8.2.1" class="pilcrow">¶</a></p>
+            <li class="normal" id="section-7.1.4-3.2">
+              <p id="section-7.1.4-3.2.1">
+ LID is the list ID of the list that client is defining.
+ An 8-bit value.<a href="#section-7.1.4-3.2.1" class="pilcrow">¶</a></p>
 </li>
-          <li class="normal" id="section-6.1-8.3">
-            <p id="section-6.1-8.3.1">
- HdrCnt set to the number of headers the client wants
- in the list.
- This is an 8-bit value from 0 to 254 with 255 reserved for expanson.<a href="#section-6.1-8.3.1" class="pilcrow">¶</a></p>
-<p id="section-6.1-8.3.2">
- This is a 32-bit unsigned integer in network byte order.<a href="#section-6.1-8.3.2" class="pilcrow">¶</a></p>
+            <li class="normal" id="section-7.1.4-3.3">
+              <p id="section-7.1.4-3.3.1">
+ HdrCnt is set by the client to the number of headers in the list.
+ This is an 8-bit value from 0 to 254 with 255 reserved for
+ expansion.<a href="#section-7.1.4-3.3.1" class="pilcrow">¶</a></p>
+<p id="section-7.1.4-3.3.2">
+ This is a 32-bit unsigned integer in network byte order.<a href="#section-7.1.4-3.3.2" class="pilcrow">¶</a></p>
 </li>
-        </ul>
-<span id="name-setting-the-intrest-list-he"></span><div id="Interisting-S0-01">
-<figure id="figure-1">
-          <div id="section-6.1-9.1">
-            <div class="alignLeft art-svg artwork" id="section-6.1-9.1.2">
+          </ul>
+<span id="name-setting-the-interest-list-h"></span><div id="Interisting-S0-01">
+<figure id="figure-3">
+            <div id="section-7.1.4-4.1">
+              <div class="alignLeft art-svg artwork" id="section-7.1.4-4.1.2">
 <svg xmlns="http://www.w3.org/2000/svg" version="1.1" height="64" width="304" viewBox="0 0 304 64" class="diagram" text-anchor="middle" font-family="monospace" font-size="13px" stroke-linecap="round">
-                <path d="M 8,16 L 8,48" fill="none" stroke="black"></path>
-                <path d="M 80,16 L 80,48" fill="none" stroke="black"></path>
-                <path d="M 152,16 L 152,48" fill="none" stroke="black"></path>
-                <path d="M 224,16 L 224,48" fill="none" stroke="black"></path>
-                <path d="M 296,16 L 296,48" fill="none" stroke="black"></path>
-                <path d="M 8,16 L 296,16" fill="none" stroke="black"></path>
-                <path d="M 8,48 L 296,48" fill="none" stroke="black"></path>
-                <g class="text">
-                  <text x="44" y="36">0x00</text>
-                  <text x="120" y="36">RID</text>
-                  <text x="184" y="36">LID</text>
-                  <text x="260" y="36">HdrCnt</text>
-                </g>
-              </svg><a href="#section-6.1-9.1.2" class="pilcrow">¶</a>
+                  <path d="M 8,16 L 8,48" fill="none" stroke="black"></path>
+                  <path d="M 80,16 L 80,48" fill="none" stroke="black"></path>
+                  <path d="M 152,16 L 152,48" fill="none" stroke="black"></path>
+                  <path d="M 224,16 L 224,48" fill="none" stroke="black"></path>
+                  <path d="M 296,16 L 296,48" fill="none" stroke="black"></path>
+                  <path d="M 8,16 L 296,16" fill="none" stroke="black"></path>
+                  <path d="M 8,48 L 296,48" fill="none" stroke="black"></path>
+                  <g class="text">
+                    <text x="44" y="36">0x00</text>
+                    <text x="120" y="36">IndexOP</text>
+                    <text x="184" y="36">LID</text>
+                    <text x="260" y="36">HdrCnt</text>
+                  </g>
+                </svg><a href="#section-7.1.4-4.1.2" class="pilcrow">¶</a>
 </div>
 </div>
-<figcaption><a href="#figure-1" class="selfRef">Figure 1</a>:
-<a href="#name-setting-the-intrest-list-he" class="selfRef">Setting the Intrest List - Header</a>
-          </figcaption></figure>
+<figcaption><a href="#figure-3" class="selfRef">Figure 3</a>:
+<a href="#name-setting-the-interest-list-h" class="selfRef">Setting the Interest List - Header</a>
+            </figcaption></figure>
 </div>
-<p id="section-6.1-10">
- Followed by the header request information.
+<p id="section-7.1.4-5">
+ ABNF:<a href="#section-7.1.4-5" class="pilcrow">¶</a></p>
+<div class="sourcecode" id="section-7.1.4-6">
+<pre>
+Interest Header:32 = 0x00:8 IndexOP:8 LID:8 HdrCnt:8
+</pre><a href="#section-7.1.4-6" class="pilcrow">¶</a>
+</div>
+<div id="InterestedHeader-Entry">
+<section id="section-7.1.4.1">
+            <h5 id="name-interested-headers-single-e">
+<a href="#section-7.1.4.1" class="section-number selfRef">7.1.4.1. </a><a href="#name-interested-headers-single-e" class="section-name selfRef">Interested Headers - Single Entry</a>
+            </h5>
+<p id="section-7.1.4.1-1">
+ Followed by the header request information is one or more
+ of these single header entries.
  One sent for each unique header to be placed into the header index.
- As shown in  <a href="#Interisting-S0-02" class="auto internal xref">Figure 2</a>, where:<a href="#section-6.1-10" class="pilcrow">¶</a></p>
+ As shown in  <a href="#Interisting-S0-02" class="auto internal xref">Figure 4</a>, where:<a href="#section-7.1.4.1-1" class="pilcrow">¶</a></p>
 <ul class="normal">
-<li class="normal" id="section-6.1-11.1">
-            <p id="section-6.1-11.1.1">
+<li class="normal" id="section-7.1.4.1-2.1">
+                <p id="section-7.1.4.1-2.1.1">
  HID is the client assigned unique header ID
  for the named header.
- This is an 8-bit unsigned integer.<a href="#section-6.1-11.1.1" class="pilcrow">¶</a></p>
+ This is an 8-bit unsigned integer.<a href="#section-7.1.4.1-2.1.1" class="pilcrow">¶</a></p>
 </li>
-          <li class="normal" id="section-6.1-11.2">
-            <p id="section-6.1-11.2.1">
+              <li class="normal" id="section-7.1.4.1-2.2">
+                <p id="section-7.1.4.1-2.2.1">
  STRING LENGTH is the octet count of the string.
- Any terminating zero (0) is not counted.<a href="#section-6.1-11.2.1" class="pilcrow">¶</a></p>
-<p id="section-6.1-11.2.2">
- This is a 24-bit unsigned integer in network byte order.<a href="#section-6.1-11.2.2" class="pilcrow">¶</a></p>
+ Any terminating zero (0) is not counted in the length.<a href="#section-7.1.4.1-2.2.1" class="pilcrow">¶</a></p>
+<p id="section-7.1.4.1-2.2.2">
+ This is a 24-bit unsigned integer in network byte order.<a href="#section-7.1.4.1-2.2.2" class="pilcrow">¶</a></p>
 </li>
-          <li class="normal" id="section-6.1-11.3">
-            <p id="section-6.1-11.3.1">
+              <li class="normal" id="section-7.1.4.1-2.3">
+                <p id="section-7.1.4.1-2.3.1">
  THE HEADER NAME is the characters that make
  up the MIME header name that is interesting
  without including any terminating zero (0).
  These are a sequence of 8-bit unsigned integer values
- in network byte order.<a href="#section-6.1-11.3.1" class="pilcrow">¶</a></p>
+ in network byte order.<a href="#section-7.1.4.1-2.3.1" class="pilcrow">¶</a></p>
+<p id="section-7.1.4.1-2.3.2">
+ They are packed into a 32-bit unsigned integer in network
+ byte order.<a href="#section-7.1.4.1-2.3.2" class="pilcrow">¶</a></p>
+<p id="section-7.1.4.1-2.3.3">
+ When THE HEADER NAME is not a multiple of 32-bits in
+ length, the remaining bits are unused and shown as
+ zero (0) in this specification.<a href="#section-7.1.4.1-2.3.3" class="pilcrow">¶</a></p>
 </li>
-        </ul>
-<span id="name-setting-the-intrest-list-co"></span><div id="Interisting-S0-02">
-<figure id="figure-2">
-          <div id="section-6.1-12.1">
-            <div class="alignLeft art-svg artwork" id="section-6.1-12.1.2">
-<svg xmlns="http://www.w3.org/2000/svg" version="1.1" height="80" width="288" viewBox="0 0 288 80" class="diagram" text-anchor="middle" font-family="monospace" font-size="13px" stroke-linecap="round">
-                <path d="M 8,16 L 8,64" fill="none" stroke="black"></path>
-                <path d="M 80,16 L 80,48" fill="none" stroke="black"></path>
-                <path d="M 280,16 L 280,48" fill="none" stroke="black"></path>
-                <path d="M 8,16 L 280,16" fill="none" stroke="black"></path>
-                <path d="M 8,48 L 280,48" fill="none" stroke="black"></path>
-                <g class="text">
-                  <text x="32" y="36">HID</text>
-                  <text x="144" y="36">STRING LENGTH</text>
-                  <text x="92" y="68">... HEADER NAME...</text>
-                </g>
-              </svg><a href="#section-6.1-12.1.2" class="pilcrow">¶</a>
-</div>
-</div>
-<figcaption><a href="#figure-2" class="selfRef">Figure 2</a>:
-<a href="#name-setting-the-intrest-list-co" class="selfRef">Setting the Intrest List - Contents</a>
-          </figcaption></figure>
-</div>
-<p id="section-6.1-13">
- When the HIDX flag is set to two (2) then it is followed by a list<a href="#section-6.1-13" class="pilcrow">¶</a></p>
-<p id="section-6.1-14">
- LID, the list ID of an already transmitted list to be used.
- Zero (0) for the already defined and transmitted default list.
- Or the LID of another already defined and transmitted non-default list.<a href="#section-6.1-14" class="pilcrow">¶</a></p>
-<p id="section-6.1-15">
- This is sent as a 32-bit unsigned integer in network byte order.<a href="#section-6.1-15" class="pilcrow">¶</a></p>
-<span id="name-requesting-header-index-by-"></span><div id="Interisting-S0-03">
-<figure id="figure-3">
-          <div id="section-6.1-16.1">
-            <div class="alignLeft art-svg artwork" id="section-6.1-16.1.2">
-<svg xmlns="http://www.w3.org/2000/svg" version="1.1" height="64" width="304" viewBox="0 0 304 64" class="diagram" text-anchor="middle" font-family="monospace" font-size="13px" stroke-linecap="round">
-                <path d="M 8,16 L 8,48" fill="none" stroke="black"></path>
-                <path d="M 80,16 L 80,48" fill="none" stroke="black"></path>
-                <path d="M 152,16 L 152,48" fill="none" stroke="black"></path>
-                <path d="M 224,16 L 224,48" fill="none" stroke="black"></path>
-                <path d="M 296,16 L 296,48" fill="none" stroke="black"></path>
-                <path d="M 8,16 L 296,16" fill="none" stroke="black"></path>
-                <path d="M 8,48 L 296,48" fill="none" stroke="black"></path>
-                <g class="text">
-                  <text x="44" y="36">0x00</text>
-                  <text x="116" y="36">0x00</text>
-                  <text x="188" y="36">0x02</text>
-                  <text x="256" y="36">LID</text>
-                </g>
-              </svg><a href="#section-6.1-16.1.2" class="pilcrow">¶</a>
-</div>
-</div>
-<figcaption><a href="#figure-3" class="selfRef">Figure 3</a>:
-<a href="#name-requesting-header-index-by-" class="selfRef">Requesting Header Index by List ID (LID)</a>
-          </figcaption></figure>
-</div>
-<p id="section-6.1-17">
- Restrictions:<a href="#section-6.1-17" class="pilcrow">¶</a></p>
-<ul class="normal">
-<li class="normal" id="section-6.1-18.1">
- Only one default list can be set at a time.
- It can change by sending a new default list.<a href="#section-6.1-18.1" class="pilcrow">¶</a>
-</li>
-          <li class="normal" id="section-6.1-18.2">
- List ID zero (0) is reserved for the default list.<a href="#section-6.1-18.2" class="pilcrow">¶</a>
-</li>
-          <li class="normal" id="section-6.1-18.3">
- The list IDs are unique to the connection and do not persist
- across connections.<a href="#section-6.1-18.3" class="pilcrow">¶</a>
-</li>
-          <li class="normal" id="section-6.1-18.4">
- No two lists can have the same ID during a connection.<a href="#section-6.1-18.4" class="pilcrow">¶</a>
-</li>
-        </ul>
-<p id="section-6.1-19"></p>
-<section id="section-6.1.1">
-          <h4 id="name-client-interested-headers-e">
-<a href="#section-6.1.1" class="section-number selfRef">6.1.1. </a><a href="#name-client-interested-headers-e" class="section-name selfRef">Client Interested Headers Examples</a>
-          </h4>
-<p id="section-6.1.1-1">
- This is an example of the client sending the default
- interesting header list to the server.
- The client is asking for the index values
- for the following MIME headers (1) From, and (2) Subject.
- And for the following Body part headers (1) Content-Type.<a href="#section-6.1.1-1" class="pilcrow">¶</a></p>
-<span id="name-example-setting-default-lis"></span><div id="Interisting-S0-04">
+            </ul>
+<span id="name-setting-the-interest-list-c"></span><div id="Interisting-S0-02">
 <figure id="figure-4">
-            <div id="section-6.1.1-2.1">
-              <div class="alignLeft art-svg artwork" id="section-6.1.1-2.1.2">
-<svg xmlns="http://www.w3.org/2000/svg" version="1.1" height="352" width="552" viewBox="0 0 552 352" class="diagram" text-anchor="middle" font-family="monospace" font-size="13px" stroke-linecap="round">
-                  <path d="M 40,48 L 40,336" fill="none" stroke="black"></path>
-                  <path d="M 112,48 L 112,72" fill="none" stroke="black"></path>
-                  <path d="M 112,88 L 112,232" fill="none" stroke="black"></path>
-                  <path d="M 112,248 L 112,336" fill="none" stroke="black"></path>
-                  <path d="M 184,48 L 184,72" fill="none" stroke="black"></path>
-                  <path d="M 184,112 L 184,144" fill="none" stroke="black"></path>
-                  <path d="M 184,176 L 184,232" fill="none" stroke="black"></path>
-                  <path d="M 184,272 L 184,336" fill="none" stroke="black"></path>
-                  <path d="M 256,48 L 256,72" fill="none" stroke="black"></path>
-                  <path d="M 256,112 L 256,144" fill="none" stroke="black"></path>
-                  <path d="M 256,176 L 256,232" fill="none" stroke="black"></path>
-                  <path d="M 256,272 L 256,336" fill="none" stroke="black"></path>
-                  <path d="M 328,48 L 328,336" fill="none" stroke="black"></path>
-                  <path d="M 400,176 L 400,208" fill="none" stroke="black"></path>
-                  <path d="M 400,272 L 400,336" fill="none" stroke="black"></path>
-                  <path d="M 472,176 L 472,208" fill="none" stroke="black"></path>
-                  <path d="M 472,272 L 472,304" fill="none" stroke="black"></path>
-                  <path d="M 544,176 L 544,208" fill="none" stroke="black"></path>
-                  <path d="M 544,272 L 544,304" fill="none" stroke="black"></path>
-                  <path d="M 40,48 L 328,48" fill="none" stroke="black"></path>
-                  <path d="M 40,80 L 328,80" fill="none" stroke="black"></path>
-                  <path d="M 40,112 L 328,112" fill="none" stroke="black"></path>
-                  <path d="M 40,144 L 328,144" fill="none" stroke="black"></path>
-                  <path d="M 40,176 L 544,176" fill="none" stroke="black"></path>
-                  <path d="M 40,208 L 544,208" fill="none" stroke="black"></path>
-                  <path d="M 40,240 L 328,240" fill="none" stroke="black"></path>
-                  <path d="M 40,272 L 544,272" fill="none" stroke="black"></path>
-                  <path d="M 40,304 L 544,304" fill="none" stroke="black"></path>
-                  <path d="M 40,336 L 400,336" fill="none" stroke="black"></path>
-                  <g class="text">
-                    <text x="148" y="36">RCMD</text>
-                    <text x="216" y="36">LID</text>
-                    <text x="408" y="36">2 MIME Object Headers included.</text>
-                    <text x="16" y="68">(a)</text>
-                    <text x="76" y="68">0x00</text>
-                    <text x="148" y="68">0x00</text>
-                    <text x="220" y="68">0x00</text>
-                    <text x="292" y="68">0x02</text>
-                    <text x="16" y="100">(b)</text>
-                    <text x="76" y="100">0x00</text>
-                    <text x="276" y="100">0x000004</text>
-                    <text x="16" y="132">(c)</text>
-                    <text x="76" y="132">0x46</text>
-                    <text x="148" y="132">0x72</text>
-                    <text x="220" y="132">0x6f</text>
-                    <text x="292" y="132">0x6d</text>
-                    <text x="16" y="164">(d)</text>
-                    <text x="76" y="164">0x01</text>
-                    <text x="276" y="164">0x000007</text>
-                    <text x="16" y="196">(e)</text>
-                    <text x="76" y="196">0x53</text>
-                    <text x="148" y="196">0x75</text>
-                    <text x="220" y="196">0x62</text>
-                    <text x="292" y="196">0x6a</text>
-                    <text x="364" y="196">0x65</text>
-                    <text x="436" y="196">0x63</text>
-                    <text x="508" y="196">0x74</text>
-                    <text x="16" y="228">(f)</text>
-                    <text x="76" y="228">0x00</text>
-                    <text x="148" y="228">0x00</text>
-                    <text x="220" y="228">0x00</text>
-                    <text x="292" y="228">0x01</text>
-                    <text x="16" y="260">(g)</text>
-                    <text x="76" y="260">0x02</text>
-                    <text x="276" y="260">0x00000c</text>
-                    <text x="16" y="292">(h)</text>
-                    <text x="76" y="292">0x43</text>
-                    <text x="148" y="292">0x6f</text>
-                    <text x="220" y="292">0x6e</text>
-                    <text x="292" y="292">0x74</text>
-                    <text x="364" y="292">0x65</text>
-                    <text x="436" y="292">0x6e</text>
-                    <text x="508" y="292">0x74</text>
-                    <text x="16" y="324">(i)</text>
-                    <text x="76" y="324">0x2d</text>
-                    <text x="148" y="324">0x74</text>
-                    <text x="220" y="324">0x79</text>
-                    <text x="292" y="324">0x70</text>
-                    <text x="364" y="324">0x74</text>
-                  </g>
-                </svg><a href="#section-6.1.1-2.1.2" class="pilcrow">¶</a>
+              <div id="section-7.1.4.1-3.1">
+                <div class="alignLeft art-svg artwork" id="section-7.1.4.1-3.1.2">
+<svg xmlns="http://www.w3.org/2000/svg" version="1.1" height="112" width="456" viewBox="0 0 456 112" class="diagram" text-anchor="middle" font-family="monospace" font-size="13px" stroke-linecap="round">
+                    <path d="M 8,16 L 8,80" fill="none" stroke="black"></path>
+                    <path d="M 80,16 L 80,48" fill="none" stroke="black"></path>
+                    <path d="M 280,16 L 280,48" fill="none" stroke="black"></path>
+                    <path d="M 8,16 L 280,16" fill="none" stroke="black"></path>
+                    <path d="M 8,48 L 280,48" fill="none" stroke="black"></path>
+                    <path d="M 8,80 L 280,80" fill="none" stroke="black"></path>
+                    <g class="text">
+                      <text x="32" y="36">HID</text>
+                      <text x="144" y="36">STRING LENGTH</text>
+                      <text x="352" y="36">A 32-bit value.</text>
+                      <text x="64" y="68">HEADER NAME</text>
+                      <text x="160" y="68">...</text>
+                      <text x="372" y="68">Packet 8 bit values.</text>
+                    </g>
+                  </svg><a href="#section-7.1.4.1-3.1.2" class="pilcrow">¶</a>
 </div>
 </div>
 <figcaption><a href="#figure-4" class="selfRef">Figure 4</a>:
-<a href="#name-example-setting-default-lis" class="selfRef">Example Setting Default List</a>
-            </figcaption></figure>
+<a href="#name-setting-the-interest-list-c" class="selfRef">Setting the Interest List - Contents</a>
+              </figcaption></figure>
 </div>
-<p id="section-6.1.1-3">
- Where:<a href="#section-6.1.1-3" class="pilcrow">¶</a></p>
+<p id="section-7.1.4.1-4">
+ ABNF:<a href="#section-7.1.4.1-4" class="pilcrow">¶</a></p>
+<div class="sourcecode" id="section-7.1.4.1-5">
+<pre>
+SingleEntry     = SingleHeader:32 HeaderName822
+
+SingleHeader:32 = HID:8 StringLength:24
+</pre><a href="#section-7.1.4.1-5" class="pilcrow">¶</a>
+</div>
+</section>
+</div>
+<div id="InterestedHeader-GetIndex">
+<section id="section-7.1.4.2">
+            <h5 id="name-interested-headers-use-exis">
+<a href="#section-7.1.4.2" class="section-number selfRef">7.1.4.2. </a><a href="#name-interested-headers-use-exis" class="section-name selfRef">Interested Headers - Use Existing List</a>
+            </h5>
+<p id="section-7.1.4.2-1">
+ When the IndexOP flag is set to one (1) then it is followed by
+ an existing list ID number.<a href="#section-7.1.4.2-1" class="pilcrow">¶</a></p>
+<p id="section-7.1.4.2-2">
+ LID, the list ID of an already transmitted list to be used.<a href="#section-7.1.4.2-2" class="pilcrow">¶</a></p>
+<p id="section-7.1.4.2-3">
+ This is sent as a 32-bit unsigned integer in network byte order.<a href="#section-7.1.4.2-3" class="pilcrow">¶</a></p>
+<span id="name-using-existing-header-index"></span><div id="Interisting-S0-03">
+<figure id="figure-5">
+              <div id="section-7.1.4.2-4.1">
+                <div class="alignLeft art-svg artwork" id="section-7.1.4.2-4.1.2">
+<svg xmlns="http://www.w3.org/2000/svg" version="1.1" height="64" width="600" viewBox="0 0 600 64" class="diagram" text-anchor="middle" font-family="monospace" font-size="13px" stroke-linecap="round">
+                    <path d="M 8,16 L 8,48" fill="none" stroke="black"></path>
+                    <path d="M 80,16 L 80,48" fill="none" stroke="black"></path>
+                    <path d="M 152,16 L 152,48" fill="none" stroke="black"></path>
+                    <path d="M 224,16 L 224,48" fill="none" stroke="black"></path>
+                    <path d="M 296,16 L 296,48" fill="none" stroke="black"></path>
+                    <path d="M 8,16 L 296,16" fill="none" stroke="black"></path>
+                    <path d="M 8,48 L 296,48" fill="none" stroke="black"></path>
+                    <g class="text">
+                      <text x="44" y="36">0x00</text>
+                      <text x="116" y="36">0x01</text>
+                      <text x="184" y="36">LID</text>
+                      <text x="260" y="36">0x00</text>
+                      <text x="452" y="36">Use exiting (0x01). And the List LID</text>
+                    </g>
+                  </svg><a href="#section-7.1.4.2-4.1.2" class="pilcrow">¶</a>
+</div>
+</div>
+<figcaption><a href="#figure-5" class="selfRef">Figure 5</a>:
+<a href="#name-using-existing-header-index" class="selfRef">Using Existing Header Index by List ID (LID)</a>
+              </figcaption></figure>
+</div>
+<p id="section-7.1.4.2-5">
+ ABNF:<a href="#section-7.1.4.2-5" class="pilcrow">¶</a></p>
+<div class="sourcecode" id="section-7.1.4.2-6">
+<pre>
+UseExistingOp:8 = 0x01:8
+
+UseExistingList:32 = 0x00:8 UseExistingOp:8 LID:8 0x00:8
+</pre><a href="#section-7.1.4.2-6" class="pilcrow">¶</a>
+</div>
+</section>
+</div>
+<section id="section-7.1.4.3">
+            <h5 id="name-example-setting-the-interes">
+<a href="#section-7.1.4.3" class="section-number selfRef">7.1.4.3. </a><a href="#name-example-setting-the-interes" class="section-name selfRef">Example: Setting the Interested Header List</a>
+            </h5>
+<p id="section-7.1.4.3-1">
+ This is an example of the client sending an
+ interesting header list to the server.
+ The client is asking for the index values
+ for the following MIME headers (1) From, and (2) Subject.
+ And for the following Body part headers (1) Content-Type.<a href="#section-7.1.4.3-1" class="pilcrow">¶</a></p>
+<span id="name-example-setting-a-list"></span><div id="Interisting-S0-04">
+<figure id="figure-6">
+              <div id="section-7.1.4.3-2.1">
+                <div class="alignLeft art-svg artwork" id="section-7.1.4.3-2.1.2">
+<svg xmlns="http://www.w3.org/2000/svg" version="1.1" height="496" width="568" viewBox="0 0 568 496" class="diagram" text-anchor="middle" font-family="monospace" font-size="13px" stroke-linecap="round">
+                    <path d="M 40,16 L 40,48" fill="none" stroke="black"></path>
+                    <path d="M 40,128 L 40,480" fill="none" stroke="black"></path>
+                    <path d="M 112,128 L 112,152" fill="none" stroke="black"></path>
+                    <path d="M 112,168 L 112,344" fill="none" stroke="black"></path>
+                    <path d="M 112,360 L 112,480" fill="none" stroke="black"></path>
+                    <path d="M 184,128 L 184,152" fill="none" stroke="black"></path>
+                    <path d="M 184,192 L 184,224" fill="none" stroke="black"></path>
+                    <path d="M 184,256 L 184,344" fill="none" stroke="black"></path>
+                    <path d="M 184,384 L 184,480" fill="none" stroke="black"></path>
+                    <path d="M 256,128 L 256,152" fill="none" stroke="black"></path>
+                    <path d="M 256,192 L 256,224" fill="none" stroke="black"></path>
+                    <path d="M 256,256 L 256,344" fill="none" stroke="black"></path>
+                    <path d="M 256,384 L 256,480" fill="none" stroke="black"></path>
+                    <path d="M 328,128 L 328,480" fill="none" stroke="black"></path>
+                    <path d="M 40,16 L 328,16" fill="none" stroke="black"></path>
+                    <path d="M 40,48 L 328,48" fill="none" stroke="black"></path>
+                    <path d="M 40,128 L 328,128" fill="none" stroke="black"></path>
+                    <path d="M 40,160 L 328,160" fill="none" stroke="black"></path>
+                    <path d="M 40,192 L 328,192" fill="none" stroke="black"></path>
+                    <path d="M 40,224 L 328,224" fill="none" stroke="black"></path>
+                    <path d="M 40,256 L 328,256" fill="none" stroke="black"></path>
+                    <path d="M 40,288 L 328,288" fill="none" stroke="black"></path>
+                    <path d="M 40,320 L 328,320" fill="none" stroke="black"></path>
+                    <path d="M 40,352 L 328,352" fill="none" stroke="black"></path>
+                    <path d="M 40,384 L 328,384" fill="none" stroke="black"></path>
+                    <path d="M 40,416 L 328,416" fill="none" stroke="black"></path>
+                    <path d="M 40,448 L 328,448" fill="none" stroke="black"></path>
+                    <path d="M 40,480 L 328,480" fill="none" stroke="black"></path>
+                    <g class="text">
+                      <text x="340" y="20">..</text>
+                      <text x="200" y="36">The folder open command .............</text>
+                      <text x="340" y="52">..</text>
+                      <text x="100" y="84">Immediately followed by:</text>
+                      <text x="152" y="116">IndexOP</text>
+                      <text x="216" y="116">LID</text>
+                      <text x="400" y="116">2 MIME Object Headers included.</text>
+                      <text x="16" y="148">(a)</text>
+                      <text x="76" y="148">0x00</text>
+                      <text x="148" y="148">0x00</text>
+                      <text x="220" y="148">0x00</text>
+                      <text x="292" y="148">0x02</text>
+                      <text x="440" y="148">Start of MIME object List</text>
+                      <text x="16" y="180">(b)</text>
+                      <text x="76" y="180">0x00</text>
+                      <text x="276" y="180">0x000004</text>
+                      <text x="428" y="180">Header (0), Length (4)</text>
+                      <text x="16" y="212">(c)</text>
+                      <text x="76" y="212">0x46</text>
+                      <text x="148" y="212">0x72</text>
+                      <text x="220" y="212">0x6f</text>
+                      <text x="292" y="212">0x6d</text>
+                      <text x="364" y="212">"From"</text>
+                      <text x="16" y="244">(d)</text>
+                      <text x="76" y="244">0x01</text>
+                      <text x="276" y="244">0x000007</text>
+                      <text x="428" y="244">Header (1), Length (7)</text>
+                      <text x="16" y="276">(e)</text>
+                      <text x="76" y="276">0x53</text>
+                      <text x="148" y="276">0x75</text>
+                      <text x="220" y="276">0x62</text>
+                      <text x="292" y="276">0x6a</text>
+                      <text x="376" y="276">"Subject"</text>
+                      <text x="76" y="308">0x65</text>
+                      <text x="148" y="308">0x63</text>
+                      <text x="220" y="308">0x74</text>
+                      <text x="292" y="308">0x00</text>
+                      <text x="16" y="340">(f)</text>
+                      <text x="76" y="340">0x00</text>
+                      <text x="148" y="340">0x00</text>
+                      <text x="220" y="340">0x00</text>
+                      <text x="292" y="340">0x01</text>
+                      <text x="432" y="340">Start of Body Part List</text>
+                      <text x="16" y="372">(g)</text>
+                      <text x="76" y="372">0x02</text>
+                      <text x="276" y="372">0x00000c</text>
+                      <text x="452" y="372">Body Header (2), Length (12)</text>
+                      <text x="16" y="404">(h)</text>
+                      <text x="76" y="404">0x43</text>
+                      <text x="148" y="404">0x6f</text>
+                      <text x="220" y="404">0x6e</text>
+                      <text x="292" y="404">0x74</text>
+                      <text x="396" y="404">"Content-Type"</text>
+                      <text x="76" y="436">0x65</text>
+                      <text x="148" y="436">0x6e</text>
+                      <text x="220" y="436">0x74</text>
+                      <text x="292" y="436">0x2d</text>
+                      <text x="76" y="468">0x74</text>
+                      <text x="148" y="468">0x79</text>
+                      <text x="220" y="468">0x70</text>
+                      <text x="292" y="468">0x74</text>
+                    </g>
+                  </svg><a href="#section-7.1.4.3-2.1.2" class="pilcrow">¶</a>
+</div>
+</div>
+<figcaption><a href="#figure-6" class="selfRef">Figure 6</a>:
+<a href="#name-example-setting-a-list" class="selfRef">Example Setting a List</a>
+              </figcaption></figure>
+</div>
+<p id="section-7.1.4.3-3">
+ Where:<a href="#section-7.1.4.3-3" class="pilcrow">¶</a></p>
 <ul class="normal">
-<li class="normal" id="section-6.1.1-4.1">
- (a) Not used zero (0), HIDX, LID, Two headers follow
- An HIDX of zero (0) means we are setting the default
- MIME object header list.<a href="#section-6.1.1-4.1" class="pilcrow">¶</a>
+<li class="normal" id="section-7.1.4.3-4.1">
+                <p id="section-7.1.4.3-4.1.1">
+ (a): A 32-bit unsigned integer in network byte order
+ as described in <a href="#Interisting-S0-01" class="auto internal xref">Figure 3</a>.<a href="#section-7.1.4.3-4.1.1" class="pilcrow">¶</a></p>
+<p id="section-7.1.4.3-4.1.2">The first 8-bits are zero.<a href="#section-7.1.4.3-4.1.2" class="pilcrow">¶</a></p>
+<p id="section-7.1.4.3-4.1.3">The IndexOP of zero, which means defining a list.<a href="#section-7.1.4.3-4.1.3" class="pilcrow">¶</a></p>
+<p id="section-7.1.4.3-4.1.4">
+ And in this example two (0x02) MIME object headers
+ are requested to be indexed, "From", and "Subject".<a href="#section-7.1.4.3-4.1.4" class="pilcrow">¶</a></p>
 </li>
-            <li class="normal" id="section-6.1.1-4.2">
- (b) This first header will be identified as zero (0).
- The first header is four (4) octets in length: 'From'.<a href="#section-6.1.1-4.2" class="pilcrow">¶</a>
+              <li class="normal" id="section-7.1.4.3-4.2">
+                <p id="section-7.1.4.3-4.2.1">
+ (b): A 32-bit unsigned integer in network byte order
+ as described in <a href="#Interisting-S0-02" class="auto internal xref">Figure 4</a>.<a href="#section-7.1.4.3-4.2.1" class="pilcrow">¶</a></p>
+<p id="section-7.1.4.3-4.2.2">
+ The header ID that the client and server will use to
+ to identify the "From" header name will be zero (0)
+ in this example.<a href="#section-7.1.4.3-4.2.2" class="pilcrow">¶</a></p>
+<p id="section-7.1.4.3-4.2.3">
+ The length of the string "From" is four (4)
+ and its length is the lower 24 bits of this entry.<a href="#section-7.1.4.3-4.2.3" class="pilcrow">¶</a></p>
 </li>
-            <li class="normal" id="section-6.1.1-4.3">
- (c) The value of the characters for 'From'.<a href="#section-6.1.1-4.3" class="pilcrow">¶</a>
+              <li class="normal" id="section-7.1.4.3-4.3">
+                <p id="section-7.1.4.3-4.3.1">
+ (c) A series of 8-bit unsigned values packed into one or more
+ 32-bit unsigned integers in network byte order.<a href="#section-7.1.4.3-4.3.1" class="pilcrow">¶</a></p>
+<p id="section-7.1.4.3-4.3.2">
+ Each 8-bit value is the value of the letters in "From".
+ As "From" is a multiple of 32-bits, no padding is done.<a href="#section-7.1.4.3-4.3.2" class="pilcrow">¶</a></p>
 </li>
-            <li class="normal" id="section-6.1.1-4.4">
- (d) The second header will be identified as one (1).
- The second header is seven (7) octets in length: 'Subject'.<a href="#section-6.1.1-4.4" class="pilcrow">¶</a>
+              <li class="normal" id="section-7.1.4.3-4.4">
+                <p id="section-7.1.4.3-4.4.1">
+ (d): A 32-bit unsigned integer in network byte order
+ as described in <a href="#Interisting-S0-02" class="auto internal xref">Figure 4</a>.<a href="#section-7.1.4.3-4.4.1" class="pilcrow">¶</a></p>
+<p id="section-7.1.4.3-4.4.2">
+ The header ID that the client and server will use to
+ to identify the "Subject" header name will be one (1)
+ in this example.<a href="#section-7.1.4.3-4.4.2" class="pilcrow">¶</a></p>
+<p id="section-7.1.4.3-4.4.3">
+ The length of the string "Subject" is seven (7)
+ and its length is the lower 24 bits of this entry.<a href="#section-7.1.4.3-4.4.3" class="pilcrow">¶</a></p>
 </li>
-            <li class="normal" id="section-6.1.1-4.5">
- (e) The value of the characters for 'Subject'.<a href="#section-6.1.1-4.5" class="pilcrow">¶</a>
+              <li class="normal" id="section-7.1.4.3-4.5">
+                <p id="section-7.1.4.3-4.5.1">
+ (e) A series of 8-bit unsigned values packed into one or more
+ 32-bit unsigned integers in network byte order.<a href="#section-7.1.4.3-4.5.1" class="pilcrow">¶</a></p>
+<p id="section-7.1.4.3-4.5.2">
+ Each 8-bit value is the value of the letters in "Subject".<a href="#section-7.1.4.3-4.5.2" class="pilcrow">¶</a></p>
+<p id="section-7.1.4.3-4.5.3">
+ As The length of "Subject" is not a multiple of 32-bits,
+ the remaining bits are ignored.
+ Shown as zero in this example.<a href="#section-7.1.4.3-4.5.3" class="pilcrow">¶</a></p>
 </li>
-            <li class="normal" id="section-6.1.1-4.6">
- (f) The two MIME objects headers are done, start of Body Part headers.
- and there is one (1) of them.
- HIDX and LID are not used here.<a href="#section-6.1.1-4.6" class="pilcrow">¶</a>
+              <li class="normal" id="section-7.1.4.3-4.6">
+ (f) The two MIME objects headers are done, start of Body Part
+ headers, and there is one (1) of them.
+ IndexOP and LID are not used here.<a href="#section-7.1.4.3-4.6" class="pilcrow">¶</a>
 </li>
-            <li class="normal" id="section-6.1.1-4.7">
+              <li class="normal" id="section-7.1.4.3-4.7">
  (g) The second header will be identified as three (3).
- The first body part header is 12 octets long (0xc): 'Content-Type'.<a href="#section-6.1.1-4.7" class="pilcrow">¶</a>
+ The first body part header is 12 octets long (0xc): 'Content-Type'.<a href="#section-7.1.4.3-4.7" class="pilcrow">¶</a>
 </li>
-            <li class="normal" id="section-6.1.1-4.8">
- (h) The value of the characters for 'Content-Type'.<a href="#section-6.1.1-4.8" class="pilcrow">¶</a>
+              <li class="normal" id="section-7.1.4.3-4.8">
+ (h) The value of the characters for 'Content-Type'.<a href="#section-7.1.4.3-4.8" class="pilcrow">¶</a>
 </li>
-            <li class="normal" id="section-6.1.1-4.9">
- (i) The reast of the value of the characters for 'Content-Type'.<a href="#section-6.1.1-4.9" class="pilcrow">¶</a>
+              <li class="normal" id="section-7.1.4.3-4.9">
+ (i) The rest of the value of the characters for 'Content-Type'.<a href="#section-7.1.4.3-4.9" class="pilcrow">¶</a>
 </li>
-          </ul>
+            </ul>
 </section>
 </section>
 </div>
-<section id="section-6.2">
-        <h3 id="name-mime-folder-index">
-<a href="#section-6.2" class="section-number selfRef">6.2. </a><a href="#name-mime-folder-index" class="section-name selfRef">MIME Folder Index</a>
+</section>
+</div>
+<div id="PhoenixString">
+<section id="section-7.2">
+        <h3 id="name-phoenixstring">
+<a href="#section-7.2" class="section-number selfRef">7.2. </a><a href="#name-phoenixstring" class="section-name selfRef">PhoenixString</a>
         </h3>
-<p id="section-6.2-1">
- In this specification, a MIME folder is also called a folder.
- And can be files containing MIME objects on a disk that have a defined order,
- or sequence of MIME objects in one file.<a href="#section-6.2-1" class="pilcrow">¶</a></p>
-<p id="section-6.2-2">
- A folder index is a summary of the contents of a MIME folder.
- It includes the basic header information and the specific location
- of body parts for each MIME message in the folder.
- The location information is the octet count to the start of the
- beginning of the related target data.<a href="#section-6.2-2" class="pilcrow">¶</a></p>
-<ul class="normal">
-<li class="normal" id="section-6.2-3.1">
- An index is an unsigned 32-bit integer in network byte order.<a href="#section-6.2-3.1" class="pilcrow">¶</a>
-</li>
-          <li class="normal" id="section-6.2-3.2">
- A length is an unsigned 32-bit integer in network byte order.<a href="#section-6.2-3.2" class="pilcrow">¶</a>
-</li>
-        </ul>
-<p id="section-6.2-4">
- For example, if a MIME folder contains 100 MIME messages, then
- the folder index will have 100 message indexes.
- Each message will have header indexes for the requested headers.
- Each message index will contain 1 or more body part indexes.
- Each body part will have header indexes with zero (0) or more entries.<a href="#section-6.2-4" class="pilcrow">¶</a></p>
-<p id="section-6.2-5">
+<p id="section-7.2-1">
  This protocol references the strings by octet offset into the entire
  message.
  All strings can be referenced by using a total of 8 octets.
- A Phoenix string consists of two parts:<a href="#section-6.2-5" class="pilcrow">¶</a></p>
-<ol start="1" type="1" class="normal type-1" id="section-6.2-6">
-          <li id="section-6.2-6.1">
- The octet count to the start of the string with zero being the
- first octet in the message.<a href="#section-6.2-6.1" class="pilcrow">¶</a>
-</li>
-          <li id="section-6.2-6.2">
- The length in octets of the string.<a href="#section-6.2-6.2" class="pilcrow">¶</a>
-</li>
-        </ol>
-<p id="section-6.2-7">
- A Phoenix string over the wire is 8 octets in size.<a href="#section-6.2-7" class="pilcrow">¶</a></p>
-<div id="section-6.2-8">
-          <div class="alignLeft art-ascii-art art-text artwork" id="section-6.2-8.1">
-<pre>
-                                +----------------------------------+
-                                | OFFSET                           |
-                                +----------------------------------+
-                                | LENGTH                           |
-                                +----------------------------------+
-                                | payload.....
-</pre><a href="#section-6.2-8.1" class="pilcrow">¶</a>
-</div>
-</div>
-<p id="section-6.2-9">
- A folder index consists of:<a href="#section-6.2-9" class="pilcrow">¶</a></p>
+ A Phoenix string consists of two parts:<a href="#section-7.2-1" class="pilcrow">¶</a></p>
 <ul class="normal">
-<li class="normal" id="section-6.2-10.1">
+<li class="normal" id="section-7.2-2.1">
+ Offset: A 32-bit unsigned integer in network byte order.
+ The octet count to the start of the string with zero being the
+ first octet in the message.<a href="#section-7.2-2.1" class="pilcrow">¶</a>
+</li>
+          <li class="normal" id="section-7.2-2.2">
+ Length: The length in octets of the string.
+ A 32-bit unsigned integer in network byte order.<a href="#section-7.2-2.2" class="pilcrow">¶</a>
+</li>
+        </ul>
+<p id="section-7.2-3">
+ A Phoenix string over the wire is 8 octets in size.<a href="#section-7.2-3" class="pilcrow">¶</a></p>
+<span id="name-phoenix-string-format"></span><div id="PhoenixStringFigure">
+<figure id="figure-7">
+          <div id="section-7.2-4.1">
+            <div class="alignLeft art-svg artwork" id="section-7.2-4.1.2">
+<svg xmlns="http://www.w3.org/2000/svg" version="1.1" height="128" width="296" viewBox="0 0 296 128" class="diagram" text-anchor="middle" font-family="monospace" font-size="13px" stroke-linecap="round">
+                <path d="M 8,16 L 8,112" fill="none" stroke="black"></path>
+                <path d="M 288,16 L 288,80" fill="none" stroke="black"></path>
+                <path d="M 8,16 L 288,16" fill="none" stroke="black"></path>
+                <path d="M 8,48 L 288,48" fill="none" stroke="black"></path>
+                <path d="M 8,80 L 288,80" fill="none" stroke="black"></path>
+                <path d="M 8,112 L 288,112" fill="none" stroke="black"></path>
+                <g class="text">
+                  <text x="44" y="36">OFFSET</text>
+                  <text x="44" y="68">LENGTH</text>
+                  <text x="68" y="100">payload.....</text>
+                </g>
+              </svg><a href="#section-7.2-4.1.2" class="pilcrow">¶</a>
+</div>
+</div>
+<figcaption><a href="#figure-7" class="selfRef">Figure 7</a>:
+<a href="#name-phoenix-string-format" class="selfRef">Phoenix String Format</a>
+          </figcaption></figure>
+</div>
+<p id="section-7.2-5">
+ ABNF:<a href="#section-7.2-5" class="pilcrow">¶</a></p>
+<div class="sourcecode" id="section-7.2-6">
+<pre>
+PhoenixString = Offset:32 Length:32 String
+</pre><a href="#section-7.2-6" class="pilcrow">¶</a>
+</div>
+</section>
+</div>
+<section id="section-7.3">
+        <h3 id="name-mime-folder-index">
+<a href="#section-7.3" class="section-number selfRef">7.3. </a><a href="#name-mime-folder-index" class="section-name selfRef">MIME Folder Index</a>
+        </h3>
+<p id="section-7.3-1">
+ In this specification, a MIME folder is also called a folder.
+ And can be files containing MIME objects on a disk that have
+ a defined order, or sequence of MIME objects in one file.<a href="#section-7.3-1" class="pilcrow">¶</a></p>
+<p id="section-7.3-2">
+ A folder index is a summary of the contents of a MIME folder.
+ It may include the basic header information.
+ It does include location information provided as the octet count to the
+ start of the beginning of the related target data.<a href="#section-7.3-2" class="pilcrow">¶</a></p>
+<ul class="normal">
+<li class="normal" id="section-7.3-3.1">
+ An index is an unsigned 32-bit integer in network byte order.<a href="#section-7.3-3.1" class="pilcrow">¶</a>
+</li>
+          <li class="normal" id="section-7.3-3.2">
+ A length is an unsigned 32-bit integer in network byte order.<a href="#section-7.3-3.2" class="pilcrow">¶</a>
+</li>
+        </ul>
+<p id="section-7.3-4">
+ For example, if a MIME folder contains 100 MIME messages, then
+ the folder index will have 100 message indexes.
+ Each message will have header indexes for the interested headers.
+ Each message index will contain 1 or more body part indexes.
+ Each body part will have header indexes with zero (0) or more entries.<a href="#section-7.3-4" class="pilcrow">¶</a></p>
+<section id="section-7.3.1">
+          <h4 id="name-folder-index-header">
+<a href="#section-7.3.1" class="section-number selfRef">7.3.1. </a><a href="#name-folder-index-header" class="section-name selfRef">Folder Index Header</a>
+          </h4>
+<p id="section-7.3.1-1">
+ A folder index consists of:<a href="#section-7.3.1-1" class="pilcrow">¶</a></p>
+<ul class="normal">
+<li class="normal" id="section-7.3.1-2.1">
  The entire length of the index as a 32-bit unsigned
  integer in network byte order of what follows this value.
  Allowing the recipient of this index to do one read
- and process later.<a href="#section-6.2-10.1" class="pilcrow">¶</a>
+ and process later.<a href="#section-7.3.1-2.1" class="pilcrow">¶</a>
 </li>
-          <li class="normal" id="section-6.2-10.2">
+            <li class="normal" id="section-7.3.1-2.2">
  The number of message indexes in this folder index.
- As an unsigned 32-bit integer in network byte order.<a href="#section-6.2-10.2" class="pilcrow">¶</a>
+ As an unsigned 32-bit integer in network byte order.<a href="#section-7.3.1-2.2" class="pilcrow">¶</a>
 </li>
-        </ul>
-<p id="section-6.2-11">
- The index header is 8 octets:<a href="#section-6.2-11" class="pilcrow">¶</a></p>
-<div id="section-6.2-12">
-          <div class="alignLeft art-ascii-art art-text artwork" id="section-6.2-12.1">
+          </ul>
+<p id="section-7.3.1-3">
+ The index header is 8 octets, that is followed by
+ the each message index:<a href="#section-7.3.1-3" class="pilcrow">¶</a></p>
+<span id="name-folder-index"></span><div id="FolderIndexHeaderFigure">
+<figure id="figure-8">
+            <div id="section-7.3.1-4.1">
+              <div class="alignLeft art-svg artwork" id="section-7.3.1-4.1.2">
+<svg xmlns="http://www.w3.org/2000/svg" version="1.1" height="128" width="304" viewBox="0 0 304 128" class="diagram" text-anchor="middle" font-family="monospace" font-size="13px" stroke-linecap="round">
+                  <path d="M 8,16 L 8,112" fill="none" stroke="black"></path>
+                  <path d="M 296,16 L 296,80" fill="none" stroke="black"></path>
+                  <path d="M 8,16 L 296,16" fill="none" stroke="black"></path>
+                  <path d="M 8,48 L 296,48" fill="none" stroke="black"></path>
+                  <path d="M 8,80 L 296,80" fill="none" stroke="black"></path>
+                  <path d="M 8,112 L 296,112" fill="none" stroke="black"></path>
+                  <g class="text">
+                    <text x="148" y="36">32-bit Total Folder Index Size</text>
+                    <text x="140" y="68">32-bit Message Indexes Count</text>
+                    <text x="132" y="100">Array of Message Indexes ...</text>
+                  </g>
+                </svg><a href="#section-7.3.1-4.1.2" class="pilcrow">¶</a>
+</div>
+</div>
+<figcaption><a href="#figure-8" class="selfRef">Figure 8</a>:
+<a href="#name-folder-index" class="selfRef">Folder Index</a>
+            </figcaption></figure>
+</div>
+<p id="section-7.3.1-5">
+ ABNF:<a href="#section-7.3.1-5" class="pilcrow">¶</a></p>
+<div class="sourcecode" id="section-7.3.1-6">
 <pre>
-                                +----------------------------------+
-                                | LENGTH                           |
-                                +----------------------------------+
-                                | MESSAGE COUNT                    |
-                                +----------------------------------+
-                                | payload.....
-</pre><a href="#section-6.2-12.1" class="pilcrow">¶</a>
+FolderIndexHeader = FolderIndexSize:32 MessageCount:32 ArrayOfMsgIndex
+</pre><a href="#section-7.3.1-6" class="pilcrow">¶</a>
 </div>
-</div>
-<p id="section-6.2-13">
- Next is an array of message indexes.
+<p id="section-7.3.1-7">
+ The header is followed by an array of message indexes.
  They are an ordered list of references to each message.
- In the order they appear in the folder:<a href="#section-6.2-13" class="pilcrow">¶</a></p>
+ In the order they appear in the folder:<a href="#section-7.3.1-7" class="pilcrow">¶</a></p>
+</section>
+<section id="section-7.3.2">
+          <h4 id="name-message-index">
+<a href="#section-7.3.2" class="section-number selfRef">7.3.2. </a><a href="#name-message-index" class="section-name selfRef">Message Index</a>
+          </h4>
 <ul class="normal">
-<li class="normal" id="section-6.2-14.1">
+<li class="normal" id="section-7.3.2-1.1">
  A 32-bit unsigned integer in network byte order that is
- the offset in the folder to the message.
- An offset is unique in a MIME folder, it is used both as
+ the offset into the folder of the message.
+ A Message offset is unique in a MIME folder, it is used both as
  an offset into the MIME folder,
- and as a unique ID within a MIME folder.<a href="#section-6.2-14.1" class="pilcrow">¶</a>
+ and as a unique ID within a MIME folder for a message.<a href="#section-7.3.2-1.1" class="pilcrow">¶</a>
 </li>
-          <li class="normal" id="section-6.2-14.2">
+            <li class="normal" id="section-7.3.2-1.2">
  An a length of the message as a 32-bit unsigned integer
- in network byte order.<a href="#section-6.2-14.2" class="pilcrow">¶</a>
+ in network byte order.<a href="#section-7.3.2-1.2" class="pilcrow">¶</a>
 </li>
-        </ul>
-<div id="section-6.2-15">
-          <div class="alignLeft art-ascii-art art-text artwork" id="section-6.2-15.1">
+          </ul>
+<span id="name-message-index-2"></span><div id="MessageIndexFigure">
+<figure id="figure-9">
+            <div id="section-7.3.2-2.1">
+              <div class="alignLeft art-svg artwork" id="section-7.3.2-2.1.2">
+<svg xmlns="http://www.w3.org/2000/svg" version="1.1" height="128" width="296" viewBox="0 0 296 128" class="diagram" text-anchor="middle" font-family="monospace" font-size="13px" stroke-linecap="round">
+                  <path d="M 8,16 L 8,112" fill="none" stroke="black"></path>
+                  <path d="M 288,16 L 288,80" fill="none" stroke="black"></path>
+                  <path d="M 8,16 L 288,16" fill="none" stroke="black"></path>
+                  <path d="M 8,48 L 288,48" fill="none" stroke="black"></path>
+                  <path d="M 8,80 L 288,80" fill="none" stroke="black"></path>
+                  <path d="M 8,112 L 288,112" fill="none" stroke="black"></path>
+                  <g class="text">
+                    <text x="132" y="36">32-bit unsigned OFFSET</text>
+                    <text x="132" y="68">32-bit unsigned LENGTH</text>
+                    <text x="152" y="100">Header Index List Description ...</text>
+                  </g>
+                </svg><a href="#section-7.3.2-2.1.2" class="pilcrow">¶</a>
+</div>
+</div>
+<figcaption><a href="#figure-9" class="selfRef">Figure 9</a>:
+<a href="#name-message-index-2" class="selfRef">Message Index</a>
+            </figcaption></figure>
+</div>
+<p id="section-7.3.2-3">
+ ABNF:<a href="#section-7.3.2-3" class="pilcrow">¶</a></p>
+<div class="sourcecode" id="section-7.3.2-4">
 <pre>
-                                +----------------------------------+
-                                |    32-bit unsigned OFFSET        |
-                                +----------------------------------+
-                                |    32-bit unsigned LENGTH        |
-                                +----------------------------------+
-                                | Array of header index .....
-                                ...
+MessageIndex = OfffsetIntoFolder:32 MessageLength:32 ArrayOfHeaderIndex
 
-</pre><a href="#section-6.2-15.1" class="pilcrow">¶</a>
+ArrayOfMsgIndex = MessageIndex*
+</pre><a href="#section-7.3.2-4" class="pilcrow">¶</a>
 </div>
-</div>
-<p id="section-6.2-16">
+<p id="section-7.3.2-5">
  For each message index is an ordered list of interested headers.
  The interested header list is assignable by the client and body
  part indexes.
  It consists of offsets to the interested headers and associated value.
  Each interested header can be indexed with nine (9) octets.
- and consists of:<a href="#section-6.2-16" class="pilcrow">¶</a></p>
+ and consists of:<a href="#section-7.3.2-5" class="pilcrow">¶</a></p>
+</section>
+<section id="section-7.3.3">
+          <h4 id="name-header-index">
+<a href="#section-7.3.3" class="section-number selfRef">7.3.3. </a><a href="#name-header-index" class="section-name selfRef">Header Index</a>
+          </h4>
 <ul class="normal">
-<li class="normal" id="section-6.2-17.1">
- The clients assigned unique header ID for the interested header name.
- This is an unsigned 32-bit integer in network byte order.
- Leaving the client to ask for the index of 254 unique header names.<a href="#section-6.2-17.1" class="pilcrow">¶</a>
+<li class="normal" id="section-7.3.3-1.1">
+ ID-CNT:
+ A count of matched headers.
+ Only matched headers will be included.
+ If they are not included, no such header existed
+ in the object.<a href="#section-7.3.3-1.1" class="pilcrow">¶</a>
 </li>
-          <li class="normal" id="section-6.2-17.2">
- A Phoenix string referencing the header value.
- And as it is unique in a MIME object, the offset is used both as
- an offset, and as a unique ID within a MIME object.<a href="#section-6.2-17.2" class="pilcrow">¶</a>
-</li>
-          <li class="normal" id="section-6.2-17.3">
- An unsigned 32-bit integer in network byte order of the number
- of body parts in this message.
+            <li class="normal" id="section-7.3.3-1.2">
+              <p id="section-7.3.3-1.2.1">
+ The number of body parts in this object.
+ An unsigned 8-bit number.
+ With MIME, body parts may contain body parts.<a href="#section-7.3.3-1.2.1" class="pilcrow">¶</a></p>
+<p id="section-7.3.3-1.2.2">
  Any MIME preamble and epilogue are not counted as body parts
- A preamble, if it exists, can be easily be calculated as it starts as the
- first octet after the header area.
- And the epilogue, if it exists, can be calculated as starting as the first
- octet after the last MIME boundary.
- And as it offset is unique in a MIME object, the offset is used both as
- an offset, and as a unique ID within a MIME object.<a href="#section-6.2-17.3" class="pilcrow">¶</a>
+ A preamble, if it exists, can be easily be calculated as it starts
+ as the first octet after the header area.
+ And the epilogue, if it exists, can be calculated as starting as
+ the first
+ octet after the last MIME boundary.<a href="#section-7.3.3-1.2.2" class="pilcrow">¶</a></p>
 </li>
-        </ul>
+            <li class="normal" id="section-7.3.3-1.3">
+ Followed by an array of ID-CNT 8-bit client assigned HID values
+ that matched.
+ Padded to round up to 32-bits.
+ The unused bits are ignored and shown as zero in this specification.<a href="#section-7.3.3-1.3" class="pilcrow">¶</a>
+</li>
+          </ul>
+<p id="section-7.3.3-2">
+ A single header index consists of the list description,
+ followed by the index values.
+ There are two header indexes in each Message index.<a href="#section-7.3.3-2" class="pilcrow">¶</a></p>
+<ol start="1" type="1" class="normal type-1" id="section-7.3.3-3">
+            <li id="section-7.3.3-3.1">The first is for the MIME object itself.<a href="#section-7.3.3-3.1" class="pilcrow">¶</a>
+</li>
+            <li id="section-7.3.3-3.2">
+ The second is for the objects Body Parts.
+ This part will not exists exist when it is an RFC-822
+ style message or has no body parts.
+ Followed by the header index.
+ This second part also include an offset to the start
+ of the body part itself in the MIME object.<a href="#section-7.3.3-3.2" class="pilcrow">¶</a>
+</li>
+          </ol>
+<p id="section-7.3.3-4">
+ A list description is one 8-bit result count,
+ followed by the list of matching header ID's (HID).<a href="#section-7.3.3-4" class="pilcrow">¶</a></p>
+<p id="section-7.3.3-5">
+ If the list description is not a multiple of 32-bits
+ then padding is added and the extra are ignored and shown as
+ zero in this specification.<a href="#section-7.3.3-5" class="pilcrow">¶</a></p>
+<div class="sourcecode" id="section-7.3.3-6">
+<pre>
+-Meta-Data-: Seen,Answered,$NotJunk
+</pre><a href="#section-7.3.3-6" class="pilcrow">¶</a>
+</div>
+<span id="name-header-index-2"></span><div id="HeaderIndex2">
+<figure id="figure-10">
+            <div id="section-7.3.3-7.1">
+              <div class="alignLeft art-svg artwork" id="section-7.3.3-7.1.2">
+<svg xmlns="http://www.w3.org/2000/svg" version="1.1" height="288" width="304" viewBox="0 0 304 288" class="diagram" text-anchor="middle" font-family="monospace" font-size="13px" stroke-linecap="round">
+                  <path d="M 8,16 L 8,80" fill="none" stroke="black"></path>
+                  <path d="M 8,144 L 8,272" fill="none" stroke="black"></path>
+                  <path d="M 80,16 L 80,48" fill="none" stroke="black"></path>
+                  <path d="M 80,176 L 80,208" fill="none" stroke="black"></path>
+                  <path d="M 152,16 L 152,48" fill="none" stroke="black"></path>
+                  <path d="M 152,176 L 152,208" fill="none" stroke="black"></path>
+                  <path d="M 224,16 L 224,48" fill="none" stroke="black"></path>
+                  <path d="M 224,176 L 224,208" fill="none" stroke="black"></path>
+                  <path d="M 8,16 L 288,16" fill="none" stroke="black"></path>
+                  <path d="M 8,48 L 288,48" fill="none" stroke="black"></path>
+                  <path d="M 8,80 L 288,80" fill="none" stroke="black"></path>
+                  <path d="M 8,144 L 288,144" fill="none" stroke="black"></path>
+                  <path d="M 8,176 L 288,176" fill="none" stroke="black"></path>
+                  <path d="M 8,208 L 288,208" fill="none" stroke="black"></path>
+                  <path d="M 8,240 L 288,240" fill="none" stroke="black"></path>
+                  <g class="text">
+                    <text x="44" y="36">ID-CNT</text>
+                    <text x="116" y="36">Body-CNT</text>
+                    <text x="184" y="36">HID</text>
+                    <text x="272" y="36">HID ...</text>
+                    <text x="128" y="68">Array of Phoenix String ...</text>
+                    <text x="140" y="116">Then for each Body-CNT body parts:</text>
+                    <text x="156" y="164">32-bit Offset, start of Body Part|</text>
+                    <text x="44" y="196">ID-CNT</text>
+                    <text x="116" y="196">Body-CNT</text>
+                    <text x="184" y="196">HID</text>
+                    <text x="272" y="196">HID ...</text>
+                    <text x="128" y="228">Array of Phoenix String ...</text>
+                    <text x="156" y="260">Then for each Body-CNT body parts:</text>
+                    <text x="152" y="276">...................................</text>
+                  </g>
+                </svg><a href="#section-7.3.3-7.1.2" class="pilcrow">¶</a>
+</div>
+</div>
+<figcaption><a href="#figure-10" class="selfRef">Figure 10</a>:
+<a href="#name-header-index-2" class="selfRef">Header Index</a>
+            </figcaption></figure>
+</div>
+<p id="section-7.3.3-8">
+ ABNF:<a href="#section-7.3.3-8" class="pilcrow">¶</a></p>
+<div class="sourcecode" id="section-7.3.3-9">
+<pre>
+HeaderIndex          = HeaderIndexHeader:32 ArrayOfHID*
+                       PhoenixString* BodyPartIndex*
+
+                       ; One HID (HeaderID) for each match header
+                       ; in the LID provided. Padded out to multiples
+                       ; of 32-bits.
+HeaderIndexHeader:32 = ID-CNT:8 Body-Count:8
+                       / (HID HID)
+                       / (HID 0x00:8)
+                       / (0x00:8 0x00:8)
+
+ArrayOfHid           = HIDEntry*
+
+BodyPartIndex        = BodyPartOffset:32 HeaderIndexHeader:32 PhoenixString*
+                       BodyPartIndex*
+
+ID-CNT:8               ; The number of headers found in the
+                       ; MIME object and requested in the interested
+                       ; header list.
+
+Body-CNT:8             ; The number of body parts in the object
+
+                       ; Padded out to multiples of 32-bits.
+HidEntry             = (HID:8 HID:8 HID:8 HID:8)
+                       / (HID:8 HID:8 HID:8 0x00:8)
+                       / (HID:8 HID:8 0x00:8 0x00:8)
+                       / (HID:8 0x00:8 0x00:8 0x00:8)
+</pre><a href="#section-7.3.3-9" class="pilcrow">¶</a>
+</div>
+<p id="section-7.3.3-10">
+ Where:<a href="#section-7.3.3-10" class="pilcrow">¶</a></p>
+<p id="section-7.3.3-11">
+ HeaderIndex: The header index starts with a 32-bit unsigned
+ integer in network byte order, the HeaderIndex:32.<a href="#section-7.3.3-11" class="pilcrow">¶</a></p>
+<p id="section-7.3.3-12">
+ HeaderIndex:32: Contains 0, 1, or 2 HID values.
+ They are in the order found in the object.<a href="#section-7.3.3-12" class="pilcrow">¶</a></p>
+<p id="section-7.3.3-13">
+ ArrayIfHID: Keeps repeating until all of the
+ headers in the list have been found in the message.
+ The last one pads with zeros when needed.<a href="#section-7.3.3-13" class="pilcrow">¶</a></p>
+<p id="section-7.3.3-14">
+ BodyPartIndex: When the object has body parts,
+ there will be a BodyPartIndex for each body part,
+ in the order they are in the object.
+ The first 32-bits are the offset to the start
+ of the body part. This does not include any boundary.<a href="#section-7.3.3-14" class="pilcrow">¶</a></p>
+<p id="section-7.3.3-15">
+ Body parts themselves may contain body parts,
+ they are recursively included as needed.<a href="#section-7.3.3-15" class="pilcrow">¶</a></p>
+</section>
+<section id="section-7.3.4">
+          <h4 id="name-header-index-example-1">
+<a href="#section-7.3.4" class="section-number selfRef">7.3.4. </a><a href="#name-header-index-example-1" class="section-name selfRef">Header Index Example 1</a>
+          </h4>
+<p id="section-7.3.4-1">
+ For example, if the client requested MIME object indexes for the
+ "From", "Subject", "To", "Message-ID",
+ "Content-Type", "MIME-Version", and "Date"
+ header values.<a href="#section-7.3.4-1" class="pilcrow">¶</a></p>
+<p id="section-7.3.4-2">
+ Assume this is an RFC-822 message with no body parts.
+ So the body part header index has a count of zero (0).
+ And the HID values assigned by the client when opening
+ the folder are:<a href="#section-7.3.4-2" class="pilcrow">¶</a></p>
+<ul class="normal">
+<li class="normal" id="section-7.3.4-3.1">From: 0<a href="#section-7.3.4-3.1" class="pilcrow">¶</a>
+</li>
+            <li class="normal" id="section-7.3.4-3.2">Subject: 1<a href="#section-7.3.4-3.2" class="pilcrow">¶</a>
+</li>
+            <li class="normal" id="section-7.3.4-3.3">To: 2<a href="#section-7.3.4-3.3" class="pilcrow">¶</a>
+</li>
+            <li class="normal" id="section-7.3.4-3.4">Message-ID: 3<a href="#section-7.3.4-3.4" class="pilcrow">¶</a>
+</li>
+            <li class="normal" id="section-7.3.4-3.5">Content-Type: 4<a href="#section-7.3.4-3.5" class="pilcrow">¶</a>
+</li>
+            <li class="normal" id="section-7.3.4-3.6">Data: 5<a href="#section-7.3.4-3.6" class="pilcrow">¶</a>
+</li>
+            <li class="normal" id="section-7.3.4-3.7">MIME-Version: 6<a href="#section-7.3.4-3.7" class="pilcrow">¶</a>
+</li>
+          </ul>
+<p id="section-7.3.4-4">
+ In the Message each line is terminated with a carriage
+ return and line feed:<a href="#section-7.3.4-4" class="pilcrow">¶</a></p>
+<div class="sourcecode" id="section-7.3.4-5">
+<pre>
+From: Doug@example.com
+To: Notices@example.com, Supervisors@example.com, Dave@example.com
+Date: Thu, 06 Feb 2025 20:29:35 +0000
+MessageID: &lt;7324e0b9-f6dc-3c9b-a02f-0b2b824e863c@example.com&gt;
+Subject: A new draft of Phoenix has been published.
+Content-Type: text/plain
+
+A new draft has been published.
+
+</pre><a href="#section-7.3.4-5" class="pilcrow">¶</a>
+</div>
+<span id="name-header-index-3"></span><div id="HeaderIndexFigure1">
+<figure id="figure-11">
+            <div id="section-7.3.4-6.1">
+              <div class="alignLeft art-svg artwork" id="section-7.3.4-6.1.2">
+<svg xmlns="http://www.w3.org/2000/svg" version="1.1" height="640" width="608" viewBox="0 0 608 640" class="diagram" text-anchor="middle" font-family="monospace" font-size="13px" stroke-linecap="round">
+                  <path d="M 8,16 L 8,624" fill="none" stroke="black"></path>
+                  <path d="M 80,16 L 80,112" fill="none" stroke="black"></path>
+                  <path d="M 152,16 L 152,112" fill="none" stroke="black"></path>
+                  <path d="M 224,16 L 224,112" fill="none" stroke="black"></path>
+                  <path d="M 296,16 L 296,624" fill="none" stroke="black"></path>
+                  <path d="M 8,16 L 296,16" fill="none" stroke="black"></path>
+                  <path d="M 8,48 L 296,48" fill="none" stroke="black"></path>
+                  <path d="M 8,80 L 296,80" fill="none" stroke="black"></path>
+                  <path d="M 8,112 L 296,112" fill="none" stroke="black"></path>
+                  <path d="M 8,144 L 296,144" fill="none" stroke="black"></path>
+                  <path d="M 8,176 L 296,176" fill="none" stroke="black"></path>
+                  <path d="M 8,208 L 296,208" fill="none" stroke="black"></path>
+                  <path d="M 8,240 L 296,240" fill="none" stroke="black"></path>
+                  <path d="M 8,272 L 296,272" fill="none" stroke="black"></path>
+                  <path d="M 8,304 L 296,304" fill="none" stroke="black"></path>
+                  <path d="M 8,336 L 296,336" fill="none" stroke="black"></path>
+                  <path d="M 8,368 L 296,368" fill="none" stroke="black"></path>
+                  <path d="M 8,400 L 296,400" fill="none" stroke="black"></path>
+                  <path d="M 8,432 L 296,432" fill="none" stroke="black"></path>
+                  <path d="M 8,464 L 296,464" fill="none" stroke="black"></path>
+                  <path d="M 8,496 L 296,496" fill="none" stroke="black"></path>
+                  <path d="M 8,528 L 296,528" fill="none" stroke="black"></path>
+                  <path d="M 8,560 L 296,560" fill="none" stroke="black"></path>
+                  <path d="M 8,592 L 296,592" fill="none" stroke="black"></path>
+                  <path d="M 8,624 L 296,624" fill="none" stroke="black"></path>
+                  <g class="text">
+                    <text x="40" y="36">7</text>
+                    <text x="120" y="36">0</text>
+                    <text x="192" y="36">0</text>
+                    <text x="256" y="36">2</text>
+                    <text x="440" y="36">ID CNT, Body Cnt, From ID, To ID,</text>
+                    <text x="40" y="68">2</text>
+                    <text x="120" y="68">2</text>
+                    <text x="192" y="68">5</text>
+                    <text x="256" y="68">3</text>
+                    <text x="456" y="68">To ID, To ID, Date ID, Message-ID ID,</text>
+                    <text x="40" y="100">1</text>
+                    <text x="120" y="100">4</text>
+                    <text x="192" y="100">0</text>
+                    <text x="256" y="100">0</text>
+                    <text x="448" y="100">Subject ID, Content-Type ID, pads 0</text>
+                    <text x="152" y="132">6</text>
+                    <text x="416" y="132">OFFSET to: Doug@example.com</text>
+                    <text x="148" y="164">16</text>
+                    <text x="360" y="164">LENGTH of: 16</text>
+                    <text x="148" y="196">28</text>
+                    <text x="428" y="196">OFFSET to: Notices@example.com</text>
+                    <text x="148" y="228">19</text>
+                    <text x="360" y="228">LENGTH of: 19</text>
+                    <text x="148" y="260">49</text>
+                    <text x="444" y="260">OFFSET to: Supervisors@example.com</text>
+                    <text x="148" y="292">23</text>
+                    <text x="360" y="292">LENGTH of: 23</text>
+                    <text x="148" y="324">74</text>
+                    <text x="416" y="324">OFFSET to: Dave@example.com</text>
+                    <text x="148" y="356">16</text>
+                    <text x="360" y="356">LENGTH of: 16</text>
+                    <text x="148" y="388">98</text>
+                    <text x="392" y="388">OFFSET to: 06 Feb ...</text>
+                    <text x="148" y="420">31</text>
+                    <text x="360" y="420">LENGTH of: 31</text>
+                    <text x="144" y="452">142</text>
+                    <text x="400" y="452">OFFSET to: &lt;732er ....&gt;</text>
+                    <text x="148" y="484">50</text>
+                    <text x="360" y="484">LENGTH of: 50</text>
+                    <text x="144" y="516">204</text>
+                    <text x="412" y="516">OFFSET to: A new draft ...</text>
+                    <text x="148" y="548">42</text>
+                    <text x="360" y="548">LENGTH of: 42</text>
+                    <text x="144" y="580">249</text>
+                    <text x="400" y="580">OFFSET to: Content/Type</text>
+                    <text x="148" y="612">10</text>
+                    <text x="360" y="612">LENGTH of: 10</text>
+                  </g>
+                </svg><a href="#section-7.3.4-6.1.2" class="pilcrow">¶</a>
+</div>
+</div>
+<figcaption><a href="#figure-11" class="selfRef">Figure 11</a>:
+<a href="#name-header-index-3" class="selfRef">Header Index</a>
+            </figcaption></figure>
+</div>
+</section>
+<section id="section-7.3.5">
+          <h4 id="name-header-index-example-2">
+<a href="#section-7.3.5" class="section-number selfRef">7.3.5. </a><a href="#name-header-index-example-2" class="section-name selfRef">Header Index Example 2</a>
+          </h4>
+<p id="section-7.3.5-1">
+ For example, if the client requested MIME object indexes for the
+ "From", "Subject", "To", "MIME-Version", and "Content-Type".
+ header values.<a href="#section-7.3.5-1" class="pilcrow">¶</a></p>
+<p id="section-7.3.5-2">
+ And when the folder was opened, the client asked for
+ the "Content-Type" header.<a href="#section-7.3.5-2" class="pilcrow">¶</a></p>
+<p id="section-7.3.5-3">
+ Assume this is a MIME message with two body parts.
+ So the body part header index has a count of two (2).
+ And the HID values assigned by the client when opening
+ the folder are:<a href="#section-7.3.5-3" class="pilcrow">¶</a></p>
+<ul class="normal">
+<li class="normal" id="section-7.3.5-4.1">From: 8<a href="#section-7.3.5-4.1" class="pilcrow">¶</a>
+</li>
+            <li class="normal" id="section-7.3.5-4.2">Subject: 12<a href="#section-7.3.5-4.2" class="pilcrow">¶</a>
+</li>
+            <li class="normal" id="section-7.3.5-4.3">To: 4<a href="#section-7.3.5-4.3" class="pilcrow">¶</a>
+</li>
+            <li class="normal" id="section-7.3.5-4.4">Content-Type: 3<a href="#section-7.3.5-4.4" class="pilcrow">¶</a>
+</li>
+            <li class="normal" id="section-7.3.5-4.5">MIME-Version: 9<a href="#section-7.3.5-4.5" class="pilcrow">¶</a>
+</li>
+          </ul>
+<p id="section-7.3.5-5">
+ In the Message each line is terminated with a carriage
+ return and line feed:<a href="#section-7.3.5-5" class="pilcrow">¶</a></p>
+<div class="sourcecode" id="section-7.3.5-6">
+<pre>
+From: User@example.com
+To: User2@example.com
+Subject: This is the subject of a sample message
+MIME-Version: 1.0
+Content-Type: multipart/alternative; boundary="XXXXboundary text"
+
+--XXXXboundary text
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: quoted-printable
+
+This is the body text of a sample message
+
+--XXXXboundary text
+Content-Type: text/html; charset="utf-8"
+Content-Transfer-Encoding: quoted-printable
+
+This is the body text of a sample message.
+--XXXXboundary text--￼
+
+</pre><a href="#section-7.3.5-6" class="pilcrow">¶</a>
+</div>
+<span id="name-header-and-body-part-index"></span><div id="HeaderIndexFigure2">
+<figure id="figure-12">
+            <div id="section-7.3.5-7.1">
+              <div class="alignLeft art-svg artwork" id="section-7.3.5-7.1.2">
+<svg xmlns="http://www.w3.org/2000/svg" version="1.1" height="816" width="616" viewBox="0 0 616 816" class="diagram" text-anchor="middle" font-family="monospace" font-size="13px" stroke-linecap="round">
+                  <path d="M 8,16 L 8,400" fill="none" stroke="black"></path>
+                  <path d="M 8,480 L 8,608" fill="none" stroke="black"></path>
+                  <path d="M 8,672 L 8,800" fill="none" stroke="black"></path>
+                  <path d="M 80,16 L 80,80" fill="none" stroke="black"></path>
+                  <path d="M 152,16 L 152,80" fill="none" stroke="black"></path>
+                  <path d="M 224,16 L 224,80" fill="none" stroke="black"></path>
+                  <path d="M 296,16 L 296,400" fill="none" stroke="black"></path>
+                  <path d="M 296,480 L 296,608" fill="none" stroke="black"></path>
+                  <path d="M 296,672 L 296,800" fill="none" stroke="black"></path>
+                  <path d="M 8,16 L 296,16" fill="none" stroke="black"></path>
+                  <path d="M 8,48 L 296,48" fill="none" stroke="black"></path>
+                  <path d="M 8,80 L 296,80" fill="none" stroke="black"></path>
+                  <path d="M 8,112 L 296,112" fill="none" stroke="black"></path>
+                  <path d="M 8,144 L 296,144" fill="none" stroke="black"></path>
+                  <path d="M 8,176 L 296,176" fill="none" stroke="black"></path>
+                  <path d="M 8,208 L 296,208" fill="none" stroke="black"></path>
+                  <path d="M 8,240 L 296,240" fill="none" stroke="black"></path>
+                  <path d="M 8,272 L 296,272" fill="none" stroke="black"></path>
+                  <path d="M 8,304 L 296,304" fill="none" stroke="black"></path>
+                  <path d="M 8,336 L 296,336" fill="none" stroke="black"></path>
+                  <path d="M 8,368 L 296,368" fill="none" stroke="black"></path>
+                  <path d="M 8,400 L 296,400" fill="none" stroke="black"></path>
+                  <path d="M 8,480 L 296,480" fill="none" stroke="black"></path>
+                  <path d="M 8,512 L 296,512" fill="none" stroke="black"></path>
+                  <path d="M 8,544 L 296,544" fill="none" stroke="black"></path>
+                  <path d="M 8,576 L 296,576" fill="none" stroke="black"></path>
+                  <path d="M 8,608 L 296,608" fill="none" stroke="black"></path>
+                  <path d="M 8,672 L 296,672" fill="none" stroke="black"></path>
+                  <path d="M 8,704 L 296,704" fill="none" stroke="black"></path>
+                  <path d="M 8,736 L 296,736" fill="none" stroke="black"></path>
+                  <path d="M 8,768 L 296,768" fill="none" stroke="black"></path>
+                  <path d="M 8,800 L 296,800" fill="none" stroke="black"></path>
+                  <g class="text">
+                    <text x="40" y="36">5</text>
+                    <text x="120" y="36">2</text>
+                    <text x="192" y="36">8</text>
+                    <text x="256" y="36">4</text>
+                    <text x="440" y="36">ID CNT, Body Cnt, From ID, To ID,</text>
+                    <text x="44" y="68">12</text>
+                    <text x="120" y="68">9</text>
+                    <text x="192" y="68">3</text>
+                    <text x="256" y="68">0</text>
+                    <text x="452" y="68">Subject ID, MIME ID, Content-Type ID</text>
+                    <text x="152" y="100">6</text>
+                    <text x="416" y="100">OFFSET to: User@example.com</text>
+                    <text x="148" y="132">16</text>
+                    <text x="360" y="132">LENGTH of: 16</text>
+                    <text x="148" y="164">28</text>
+                    <text x="420" y="164">OFFSET to: User2@example.com</text>
+                    <text x="148" y="196">17</text>
+                    <text x="360" y="196">LENGTH of: 17</text>
+                    <text x="148" y="228">56</text>
+                    <text x="444" y="228">OFFSET to: This is the subject ...</text>
+                    <text x="148" y="260">39</text>
+                    <text x="360" y="260">LENGTH of: 39</text>
+                    <text x="144" y="292">111</text>
+                    <text x="364" y="292">OFFSET to: 1.0</text>
+                    <text x="152" y="324">3</text>
+                    <text x="356" y="324">LENGTH of: 3</text>
+                    <text x="144" y="356">130</text>
+                    <text x="448" y="356">OFFSET to: multiplar/alternative...</text>
+                    <text x="148" y="388">50</text>
+                    <text x="360" y="388">LENGTH of: 50</text>
+                    <text x="168" y="436">Next is the data for the first body part.</text>
+                    <text x="252" y="452">This one body part has no body parts, so its Body Cnt is zero.</text>
+                    <text x="144" y="500">206</text>
+                    <text x="420" y="500">Offset to start of Body Part</text>
+                    <text x="40" y="532">1</text>
+                    <text x="80" y="532">|</text>
+                    <text x="120" y="532">0</text>
+                    <text x="152" y="532">|</text>
+                    <text x="192" y="532">3</text>
+                    <text x="224" y="532">|</text>
+                    <text x="256" y="532">0</text>
+                    <text x="460" y="532">ID CNT, Body Cnt, Content-Type ID, pad</text>
+                    <text x="144" y="564">220</text>
+                    <text x="400" y="564">OFFSET to: Content/Type</text>
+                    <text x="148" y="596">27</text>
+                    <text x="360" y="596">LENGTH of: 27</text>
+                    <text x="108" y="644">Then the second body part:</text>
+                    <text x="144" y="692">361</text>
+                    <text x="420" y="692">Offset to start of Body Part</text>
+                    <text x="40" y="724">1</text>
+                    <text x="80" y="724">|</text>
+                    <text x="120" y="724">0</text>
+                    <text x="152" y="724">|</text>
+                    <text x="192" y="724">3</text>
+                    <text x="224" y="724">|</text>
+                    <text x="256" y="724">0</text>
+                    <text x="460" y="724">ID CNT, Body Cnt, Content-Type ID, pad</text>
+                    <text x="144" y="756">376</text>
+                    <text x="400" y="756">OFFSET to: Content/Type</text>
+                    <text x="148" y="788">26</text>
+                    <text x="360" y="788">LENGTH of: 26</text>
+                  </g>
+                </svg><a href="#section-7.3.5-7.1.2" class="pilcrow">¶</a>
+</div>
+</div>
+<figcaption><a href="#figure-12" class="selfRef">Figure 12</a>:
+<a href="#name-header-and-body-part-index" class="selfRef">Header And Body Part Index</a>
+            </figcaption></figure>
+</div>
+</section>
 </section>
 </section>
 </div>
 <div id="IANA">
-<section id="section-7">
+<section id="section-8">
       <h2 id="name-iana-considerations">
-<a href="#section-7" class="section-number selfRef">7. </a><a href="#name-iana-considerations" class="section-name selfRef">IANA Considerations</a>
+<a href="#section-8" class="section-number selfRef">8. </a><a href="#name-iana-considerations" class="section-name selfRef">IANA Considerations</a>
       </h2>
-<p id="section-7-1">This memo includes no request to IANA. [CHECK]<a href="#section-7-1" class="pilcrow">¶</a></p>
+<p id="section-8-1">This memo includes no request to IANA. [CHECK]<a href="#section-8-1" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="Security">
-<section id="section-8">
+<section id="section-9">
       <h2 id="name-security-considerations">
-<a href="#section-8" class="section-number selfRef">8. </a><a href="#name-security-considerations" class="section-name selfRef">Security Considerations</a>
+<a href="#section-9" class="section-number selfRef">9. </a><a href="#name-security-considerations" class="section-name selfRef">Security Considerations</a>
       </h2>
-<p id="section-8-1">This document should not affect the security of the Internet. [CHECK]<a href="#section-8-1" class="pilcrow">¶</a></p>
+<p id="section-9-1">This document should not affect the security of the Internet. [CHECK]<a href="#section-9-1" class="pilcrow">¶</a></p>
 </section>
 </div>
-<section id="section-9">
+<section id="section-10">
       <h2 id="name-references">
-<a href="#section-9" class="section-number selfRef">9. </a><a href="#name-references" class="section-name selfRef">References</a>
+<a href="#section-10" class="section-number selfRef">10. </a><a href="#name-references" class="section-name selfRef">References</a>
       </h2>
-<section id="section-9.1">
+<section id="section-10.1">
         <h3 id="name-normative-references">
-<a href="#section-9.1" class="section-number selfRef">9.1. </a><a href="#name-normative-references" class="section-name selfRef">Normative References</a>
+<a href="#section-10.1" class="section-number selfRef">10.1. </a><a href="#name-normative-references" class="section-name selfRef">Normative References</a>
         </h3>
 <dl class="references">
+<dt id="RFC0822">[RFC0822]</dt>
+        <dd>
+<span class="refAuthor">Crocker, D.</span>, <span class="refTitle">"STANDARD FOR THE FORMAT OF ARPA INTERNET TEXT MESSAGES"</span>, <span class="seriesInfo">STD 11</span>, <span class="seriesInfo">RFC 822</span>, <span class="seriesInfo">DOI 10.17487/RFC0822</span>, <time datetime="1982-08" class="refDate">August 1982</time>, <span>&lt;<a href="https://www.rfc-editor.org/info/rfc822">https://www.rfc-editor.org/info/rfc822</a>&gt;</span>. </dd>
+<dd class="break"></dd>
 <dt id="RFC2119">[RFC2119]</dt>
         <dd>
 <span class="refAuthor">Bradner, S.</span>, <span class="refTitle">"Key words for use in RFCs to Indicate Requirement Levels"</span>, <span class="seriesInfo">BCP 14</span>, <span class="seriesInfo">RFC 2119</span>, <span class="seriesInfo">DOI 10.17487/RFC2119</span>, <time datetime="1997-03" class="refDate">March 1997</time>, <span>&lt;<a href="https://www.rfc-editor.org/info/rfc2119">https://www.rfc-editor.org/info/rfc2119</a>&gt;</span>. </dd>
 <dd class="break"></dd>
+<dt id="RFC4506">[RFC4506]</dt>
+        <dd>
+<span class="refAuthor">Eisler, M., Ed.</span>, <span class="refTitle">"XDR: External Data Representation Standard"</span>, <span class="seriesInfo">STD 67</span>, <span class="seriesInfo">RFC 4506</span>, <span class="seriesInfo">DOI 10.17487/RFC4506</span>, <time datetime="2006-05" class="refDate">May 2006</time>, <span>&lt;<a href="https://www.rfc-editor.org/info/rfc4506">https://www.rfc-editor.org/info/rfc4506</a>&gt;</span>. </dd>
+<dd class="break"></dd>
+<dt id="RFC5234">[RFC5234]</dt>
+        <dd>
+<span class="refAuthor">Crocker, D., Ed.</span> and <span class="refAuthor">P. Overell</span>, <span class="refTitle">"Augmented BNF for Syntax Specifications: ABNF"</span>, <span class="seriesInfo">STD 68</span>, <span class="seriesInfo">RFC 5234</span>, <span class="seriesInfo">DOI 10.17487/RFC5234</span>, <time datetime="2008-01" class="refDate">January 2008</time>, <span>&lt;<a href="https://www.rfc-editor.org/info/rfc5234">https://www.rfc-editor.org/info/rfc5234</a>&gt;</span>. </dd>
+<dd class="break"></dd>
 <dt id="RFC8174">[RFC8174]</dt>
         <dd>
 <span class="refAuthor">Leiba, B.</span>, <span class="refTitle">"Ambiguity of Uppercase vs Lowercase in RFC 2119 Key Words"</span>, <span class="seriesInfo">BCP 14</span>, <span class="seriesInfo">RFC 8174</span>, <span class="seriesInfo">DOI 10.17487/RFC8174</span>, <time datetime="2017-05" class="refDate">May 2017</time>, <span>&lt;<a href="https://www.rfc-editor.org/info/rfc8174">https://www.rfc-editor.org/info/rfc8174</a>&gt;</span>. </dd>
-<dd class="break"></dd></dl>
+<dd class="break"></dd>
+<dt id="RFC8446">[RFC8446]</dt>
+        <dd>
+<span class="refAuthor">Rescorla, E.</span>, <span class="refTitle">"The Transport Layer Security (TLS) Protocol Version 1.3"</span>, <span class="seriesInfo">RFC 8446</span>, <span class="seriesInfo">DOI 10.17487/RFC8446</span>, <time datetime="2018-08" class="refDate">August 2018</time>, <span>&lt;<a href="https://www.rfc-editor.org/info/rfc8446">https://www.rfc-editor.org/info/rfc8446</a>&gt;</span>. </dd>
+<dd class="break"></dd>
+<dt id="RFC9051">[RFC9051]</dt>
+      <dd>
+<span class="refAuthor">Melnikov, A., Ed.</span> and <span class="refAuthor">B. Leiba, Ed.</span>, <span class="refTitle">"Internet Message Access Protocol (IMAP) - Version 4rev2"</span>, <span class="seriesInfo">RFC 9051</span>, <span class="seriesInfo">DOI 10.17487/RFC9051</span>, <time datetime="2021-08" class="refDate">August 2021</time>, <span>&lt;<a href="https://www.rfc-editor.org/info/rfc9051">https://www.rfc-editor.org/info/rfc9051</a>&gt;</span>. </dd>
+<dd class="break"></dd>
+</dl>
 </section>
-<section id="section-9.2">
+<section id="section-10.2">
         <h3 id="name-informative-references">
-<a href="#section-9.2" class="section-number selfRef">9.2. </a><a href="#name-informative-references" class="section-name selfRef">Informative References</a>
+<a href="#section-10.2" class="section-number selfRef">10.2. </a><a href="#name-informative-references" class="section-name selfRef">Informative References</a>
         </h3>
 <dl class="references">
 <dt id="exampleRefMin">[exampleRefMin]</dt>
@@ -5166,7 +6450,7 @@ class IoVec
 <a href="#name-authors-address" class="section-name selfRef">Author's Address</a>
       </h2>
 <address class="vcard">
-        <div dir="auto" class="left"><span class="fn nameRole">Doug Royer (<span class="role">editor</span>)</span></div>
+        <div dir="auto" class="left"><span class="fn nameRole">Doug Royer</span></div>
 <div dir="auto" class="left"><span class="org">RiverExplorer Games LLC</span></div>
 <div dir="auto" class="left"><span class="street-address">848 N. Rainbow Blvd #1120</span></div>
 <div dir="auto" class="left">

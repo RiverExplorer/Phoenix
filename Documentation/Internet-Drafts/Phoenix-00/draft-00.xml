@@ -20,7 +20,7 @@
     <title abbrev="Phoenix: Lemonade Risen Again">Phoenix: Lemonade Risen Again</title>
     <seriesInfo name="Internet-Draft" value="draft-royer-phoenix-00"/>
    
-    <author fullname="Doug Royer" initials="DM" role="editor" surname="Royer">
+    <author fullname="Doug Royer" initials="DM" surname="Royer">
       <organization>RiverExplorer Games LLC</organization>
       <address>
         <postal>
@@ -54,17 +54,9 @@
   <middle> 
     <xi:include href="RequirementsLanguage.xml"/>
     <xi:include href="Introduction.xml"/>
-    
-    <section>
-      <name>Terms and Definition used in this proposal</name>
-      <t>
-				The following is a list of terms with their definitions as
-				used in this specification.
-			</t>
-      <xi:include href="Definitions.xml"/>
-    </section>
-
+    <xi:include href="Definitions.xml"/>
     <xi:include href="Commands.xml"/>
+    <xi:include href="MetaData.xml"/>
 		<xi:include href="ProtocolDetails.xml"/>
 		<xi:include href="Index.xml"/>
 		
@@ -89,10 +81,13 @@
       <references>
         <name>Normative References</name>
         
+        <xi:include href="../References/reference.RFC.0822.xml"/>
         <xi:include href="../References/reference.RFC.2119.xml"/>
+        <xi:include href="../References/reference.RFC.4506.xml"/>
+        <xi:include href="../References/reference.RFC.5234.xml"/>
         <xi:include href="../References/reference.RFC.8174.xml"/>
-        <!-- The recommended and simplest way to include a well known reference -->
-        
+        <xi:include href="../References/reference.RFC.8446.xml"/>
+        <xi:include href="../References/reference.RFC.9051.xml"/>
       </references>
  
       <references>
