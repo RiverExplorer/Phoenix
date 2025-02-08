@@ -53,13 +53,15 @@ ARTWORK.txt = \
 
 GENERATED_ARTWORK.svg = $(ARTWORK.txt:.txt=.svg)
 
+DOCDIR			= ../..
+
 TOPDOC.xml	= $(TITLE)-$(VERSION).xml
 
-TARGET.txt	=	$(TITLE)-$(VERSION).txt
+TARGET.txt	=	$(DOCDIR)/$(TITLE)-$(VERSION).txt
 
-TARGET.html	=	$(TITLE)-$(VERSION).html
+TARGET.html	=	$(DOCDIR)/$(TITLE)-$(VERSION).html
 
-TARGET.pdf	=	$(TITLE)-$(VERSION).pdf
+TARGET.pdf	=	$(DOCDIR)/$(TITLE)-$(VERSION).pdf
 
 CPP = $(TOP)/MyTools/SimpleCpp
 
@@ -72,13 +74,13 @@ pdf : $(TARGET.pdf) $(GENERATED_ARTWORK.svg)
 html : $(TARGET.html) (ARGWORK.svg)
 
 $(TARGET.txt) : $(ARTWORK.txt) $(TOPDOC.xml)
-	xml2rfc $(TOPDOC.xml)
+	xml2rfc -o $@ $(TOPDOC.xml)
 
 $(TARGET.pdf) : $(GENERATED_ARTWORK.svg) $(TOPDOC.xml)
-	xml2rfc --pdf $(TOPDOC.xml)
+	xml2rfc --pdf -o $@ $(TOPDOC.xml)
 
 $(TARGET.html): $(GENERATED_ARTWORK.svg) $(TOPDOC.xml)
-	xml2rfc --html $(TOPDOC.xml)
+	xml2rfc --html -o $@ $(TOPDOC.xml)
 
 $(TOPDOC.xml) : draft-00.xml $(SOURCES.xml)
 	xmllint --xinclude --format $< > $@
@@ -90,7 +92,6 @@ scp : $(TARGET.html) $(TARGET.pdf) $(TARGET.txt)
 
 clean :
 	$(RM) tmp.*
-	$(RM) $(TARGET.txt) $(TARGET.html) $(TARGET.pdf)
 	$(RM) $(GENERATED_ARTWORK.svg)
 	$(RM) $(TOPDOC.xml)
 
