@@ -7,23 +7,23 @@
 
 #ifdef RPC_HDR
 %/**
-% * When selecting or asking for folder details,
-% * It may include an interested header list.
+% * @file Index.x
+% * This is the XDR specification for the Interested header
+% * list described in [Phoenix Index]https://RiverExplorer.games/Phoenix/
 % *
-% * The client generates the list of headers it is interested in
-% * Assigns a unique unsigned 8-bit number to each and informs the
-% * server.
 % *
-% * It consists of a string with the interested header name.
 % *
-% * And an ID when referencing to any header that matches Name.
-% * The client makes up and assigns the ID's.
-% * This value is in the MIME folder index list to highlight
-% * the MIME headers that the client says it is interested in.
 % *
-% * This is one interested header.
-% * A value of 0xff is reserved for expansion, allowing for
-% * a client to be interested in 254 unique headers without expansion.
+% *
+% *
+% *
+% *
+% *
+% *
+% *
+% *
+% *
+% *
 % */
 #endif
 class HeaderID

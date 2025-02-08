@@ -215,7 +215,7 @@ namespace RiverExplorer::Phoenix
 
 					// At this point it is the Start of the body area.
 					//
-					NewBodyPart->_BodyAreaStart = (uint32_t)(HeaderStart - _EntireMessage.Data); // An offset.
+					NewBodyPart->_BodyStart = (uint32_t)(HeaderStart - _EntireMessage.Data); // An offset.
 					NewBodyPart->_BodyLength = (uint32_t)(PartEnd - HeaderStart);
 					
 				}
