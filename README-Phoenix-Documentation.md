@@ -32,19 +32,13 @@ Many years ago I was asked by the IETF to see if I could revamp IMAP and POP.
 Just now I am getting to it.
 
  -----------------------------------------------------------------
-To view the protocol documentation (work in progress):
+To view the protocol documentation (very much work in progress):
 
  The Internet draft (PDF):
 
-https://github.com/RiverExplorer/Phoenix/blob/main/Documentation/Internet-Drafts/Phoenix-00/draft-royer-phoenix-00.pdf
-
- The Internet draft (html):
-
-https://htmlpreview.github.io/?https://github.com/RiverExplorer/Phoenix/blob/main/Documentation/Internet-Drafts/Phoenix-00/draft-royer-phoenix-00.html
-
- The Internet draft (text):
-
-https://github.com/RiverExplorer/Phoenix/blob/main/Documentation/Internet-Drafts/Phoenix-00/draft-royer-phoenix-00.txt
+https://github.com/RiverExplorer/Phoenix/Documentation/draft-royer-phoenix-00.pdf
+https://github.com/RiverExplorer/Phoenix/Documentation/draft-royer-phoenix-00.html
+https://github.com/RiverExplorer/Phoenix/Documentation/draft-royer-phoenix-00.txt
 
  The sample implemenation public API:
 
@@ -60,13 +54,17 @@ To build the documentation you will need:
  - dot from https://www.graphviz.org
  - xml2rfc from https://authors.ietf.org/en/author-tools-web-service
 
+It uses doxygen to built the public and internal API docs.
+(cd Documentation ; make)
+
  -----------------------------------------------------------------
 
 For build instructions see libPhoenix/README-libphoenix.md
 
-This project builds on Linux for Linux, Windows, and Android.
-You will need the mingw cross compilers to build for windows.
-You will need the Android NDK and tools to build for Android.
+This project builds on Linux for Linux, Windows (not yet), and Android (not yet).
+
+-You will need the mingw cross compilers to build for windows.
+-You will need the Android NDK and tools to build for Android.
 
 Currently, all platform builds must be done on Linux.
 

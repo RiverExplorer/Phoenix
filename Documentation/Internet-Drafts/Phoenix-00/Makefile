@@ -49,8 +49,20 @@ ARTWORK.txt = \
 	IndexList-09.txt \
 	IndexList-10.txt \
 	MDN-00.txt \
+	MDN-01.txt \
 	Packet-00.txt \
-	PhoenixString-00.txt
+	StringRef-00.txt
+
+REFERENCES.xml = \
+	../References/reference.RFC.0822.xml \
+	../References/reference.RFC.5234.xml \
+	../References/reference.RFC.9051.xml \
+	../References/reference.RFC.2119.xml \
+	../References/reference.RFC.8174.xml \
+	../References/reference.rpcgen++.xml \
+	../References/reference.rpcgendocs.xml \
+	../References/reference.RFC.4506.xml \
+	../References/reference.RFC.8446.xml
 
 GENERATED_ARTWORK.svg = $(ARTWORK.txt:.txt=.svg)
 
@@ -74,16 +86,16 @@ pdf : $(TARGET.pdf) $(GENERATED_ARTWORK.svg)
 
 html : $(TARGET.html) (ARGWORK.svg)
 
-$(TARGET.txt) : $(ARTWORK.txt) $(TOPDOC.xml)
+$(TARGET.txt) : $(ARTWORK.txt) $(TOPDOC.xml)  $(REFERENCES.xml)
 	xml2rfc -o $@ $(TOPDOC.xml)
 
-$(TARGET.pdf) : $(GENERATED_ARTWORK.svg) $(TOPDOC.xml)
+$(TARGET.pdf) : $(GENERATED_ARTWORK.svg) $(TOPDOC.xml) $(REFERENCES.xml)
 	xml2rfc --pdf -o $@ $(TOPDOC.xml)
 
-$(TARGET.html): $(GENERATED_ARTWORK.svg) $(TOPDOC.xml)
+$(TARGET.html): $(GENERATED_ARTWORK.svg) $(TOPDOC.xml) $(REFERENCES.xml)
 	xml2rfc --html -o $@ $(TOPDOC.xml)
 
-$(TOPDOC.xml) : draft-00.xml $(SOURCES.xml)
+$(TOPDOC.xml) : draft-00.xml $(SOURCES.xml) $(REFERENCES.xml)
 	xmllint --xinclude --format $< > $@
 
 scp : $(TARGET.html) $(TARGET.pdf) $(TARGET.txt)

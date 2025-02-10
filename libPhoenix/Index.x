@@ -1,4 +1,10 @@
-%
+%/**
+% * @file
+% * This RPCGEN++ file (Index.x) defines the over the wire
+% * protocol for the implementation.
+% *
+% * This file implements the Index objects.
+% */
 %#ifdef BUILDING_LIBPHOENIX
 %#include "Index.hpp"
 %#include "PhoenixString.hpp"

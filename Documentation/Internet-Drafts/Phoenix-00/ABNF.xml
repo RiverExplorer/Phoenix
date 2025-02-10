@@ -1,11 +1,100 @@
 <!-- Copyright 2025 RiverExplorer LLC and Douglas Mark Royer -->
 
 <section>
-	<name>ABNF Notes and Some Definitions</name>
+	<name>ABNF, Notes, and Definitions</name>
+	<section>
+		<name>XDR TYPE - Meaning - Informative</name>
+		<t>
+			The meaning of "XDR TYPE" in this specification refers
+			to the "C" code API.
+			For every "XDR TYPE" "foo", is a "C" code API of "xdr_foo(...)".
+			The purpose of "XDR TYPE" is to guide implementors and is to be
+			considered informative and not normative information.
+		</t>
+		<t>
+			In some cases the "xdr_foo(...)" API is part of system libraries,
+			and in other cases it is the result of processing the normative XDR
+			definition files provided in this specification with the tools
+			in the sample implementation or open-source XDR
+			<xref target="rpcgenopensource">"rpcgen / rpcgen++"</xref> tools.
+			<xref target="rpcgendocs">"rpcgen documentation"</xref>.
+		</t>
+		<t>
+			In most cases the "XDR TYPE" is used in a ".x" XDR definition
+			file as the variable type.
+			In some cases like "string", and "opaque", they must be
+			defined as arrays.
+			Any other exceptions are added to the informative description
+			in this specifications when needed:
+		</t>
+		<table>
+			<thead>
+				<tr>
+					<td>
+						ABNF NAME
+					</td>
+					<td>
+						XDR TYPE
+					</td>
+					<td>
+						Description:
+					</td>
+				</tr>
+			</thead>
+			<tbody>
+				<tr>
+					<td>
+						string
+					</td>
+					<td>
+						string
+					</td>
+					<td>
+						<t>
+							Is an XDR array.
+							Example usage in XDR definition file (see rpcgen
+							open-source documentation):
+						</t>
+						<t>
+							<br/>
+							"string MyVariableName&lt;&gt;;"
+							<br/>
+						</t>
+						<t>
+							The ABNF definition for string is in <xref target="GenericAbnf"/>
+						</t>
+					</td>
+				</tr>
+				<tr>
+					<td>
+						opaque
+					</td>
+					<td>
+						opaque
+					</td>
+					<td>
+						<t>
+							Is an XDR array.
+							Example usage in XDR definition file (see rpcgen
+							open-source documentation):
+						</t>
+						<t>
+							<br/>
+							"opaque DataNotToBeAltered&lt;&gt;;"
+							<br/>
+						</t>
+						<t>
+							The ABNF definition for opaque is in <xref target="GenericAbnf"/>
+						</t>
+					</td>
+				</tr>
+			</tbody>
+		</table>
+	</section>
 	<section>
 		<name>ABNF Number of bits in value</name>
 		<t>
-			This specification adds some usage to <xref target="RFC5234">ABNF</xref>
+			This specification adds some syntax to <xref target="RFC5234">ABNF</xref>
 			to deal with bit width in a binary number.
 		</t>
 		<t>
@@ -30,39 +119,42 @@
 			And must be an unsigned integer greater than zero.
 		</t>
 		<t>
-			And they will pack when applied to to a rule:
-		</t>
-		<t>
 			When the left side has a width: 
 			The number of bits on the left side must equal
 			the number of bits on the right side.
 		</t>
 		<t>
+			The most significant values are placed to the left of
+			lesser signification values in the rule:
+		</t>
+		<t>
 			In this example A Header is 32-bits in size
-			and is composed of an 8-bit and 24-bit value.
-			The most significant value are placed on the left of the rule:
+			and is composed of an 8-bit (Offset), 2-bit (Flags or F),
+			and 22-bit (Length) value.
 		</t>
 		<artwork type="abnf" name="" align="left" alt=""><![CDATA[
-Header:32 = Offset:8 Length:24
+Header:32 = Offset:8 Flags:2 Length:22
 ]]></artwork>
 		<t>
 		</t>
 		<t>
-			The pseudo code could be:
+			Example pseudo code could be:
 		</t>
 		<sourcecode>
 
 // Header is a 32-bit unsigned integer.
 // Offset is an 8-bit unsigned integer.
-// Length is a 24-bit unsigned integer
+// Flags (F) is a 2-bit unsigned integer.
+// Length is a 22-bit unsigned integer
 //
-Header = Offset &lt;&lt; 24 | Length;
+Header = (Offset &lt;&lt; 24) | (Flags &lt;&lt; 22) | Length;
 
 		</sourcecode>
 
 		<t>
-			This shifts the 8-bit Offset over 24 bits to the left, then
-			adds the 24-bit Length.
+			This shifts the 8-bit "Offset" over 24 bits to the left, then
+			shifts the 2-bit value "Flags (F)" over 22 bits,
+			then, places the lower 24-bits "Length" into the results.
 
 			The result would be:
 		</t>
@@ -79,22 +171,46 @@ Header = Offset &lt;&lt; 24 | Length;
 	<section>
 		<name>Some ABNF Definitions</name>
 
-		<artwork type="abnf" name="" align="center" alt=""><![CDATA[
+		<figure anchor="GenericAbnf">
+			<artwork type="abnf" name="" align="center" alt=""><![CDATA[
 
-             ; An 8-bit unsigned integer
-uint8_t    = 0x00 - 0xff
+             ; An 8-bit unsigned integer type
+uint8_t    = 0x00-ff:8
 		
-             ; A 16-bit unsigned integer
-uint16_t   = 0x0000 - 0xffff
+             ; A 16-bit unsigned integer type
+uint16_t   = 0x0000-ffff:16
 
-             ; A 32-bit unsigned integer
-uint32_t   = 0x00000000 - 0xffffffff
+             ; A 32-bit unsigned integer type
+uint32_t   = 0x00000000-ffffffff:32
 
-             ; A 64-bit unsigned integer
-uint64_t   = 0x0000000000000000 - 0xffffffffffffffff
+             ; A 64-bit unsigned integer type
+uint64_t   = 0x0000000000000000-ffffffffffffffff:64
+
+             ; This is a generic array of UTF-8 characters without
+             ; any terminating character.
+             ; They could be 1, 2, 3, or 4 octet UTF-8 characters.
+             ; The implemention must ensure that complete characters
+             ; are containd in the string.
+             ;
+             ; Specific uses in this or related specifications
+             ; could limit the set of characters that could be in the string.
+             ;
+             ; The uint32_t value is the total number of octets in the string.
+             ;
+             ; The UTF8-Char is any valid and complete UTF-8 character.
+             ;
+string     = uint32_t *UTF8-Char
+
+             ; This is a generic array of uint8_t values.
+             ; The data in an opaque array is not altered in any
+             ; way in the protocol. It is sent over the wire unaltered.
+             ;
+             ; The uint32_t value is the number of octets in the data.
+             ;
+opaque     = uint32_t *uint8_t
 
 ]]></artwork>
-
+		</figure>
 		<table>
 			<thead>
 				<tr>
@@ -141,6 +257,67 @@ uint64_t   = 0x0000000000000000 - 0xffffffffffffffff
 				</tr>
 			</tbody>
 		</table>
+	</section>
+	
+	<section anchor="StringRef">
+		<name>StringRef</name>
+		<t>
+			This protocol references strings in existing MIME objects
+			by octet offset into the MIME object.
+			This is is called a StringRef.
+			All strings can be referenced by using a total of 8 octets.
+			A StringRef consists of two parts:
+		</t>
+		<t>
+			The StringRef does not contain the string, it is a 
+			reference an existing string in a MIME object.
+		</t>
+		<table>
+			<thead>
+				<tr>
+					<td>Name</td><td>XDR Type</td><td>Description</td>
+				</tr>
+			</thead>
+			<tbody>
+				<tr>
+					<td>Offset</td>
+					<td>uint32_t</td>
+					<td>
+						The octet count to the start of the string with zero being the
+						first octet in the message.
+					</td>
+				</tr>
+				<tr>
+					<td>Length</td>
+					<td>uint32_t</td>
+					<td>
+						The length in octets of the string.
+					</td>
+				</tr>
+			</tbody>
+		</table>
+		<t>
+			A StringRef over the wire is 8 octets in size.
+		</t>
+		<figure anchor="StringRefFigure" align="center">
+			<name>StringRef Format</name>
+			<artset>
+				<artwork type="ascii-art" src="StringRef-00.txt"/>
+				<artwork type="svg" src="StringRef-00.svg"/>
+			</artset>
+		</figure>
+
+		<t>
+			ABNF:
+		</t>
+		<artwork type="abnf" name="" align="left" alt=""><![CDATA[
+
+Offset        = uint32_t
+
+Length        = uint32_t
+
+StringRef     = Offset Length
+]]></artwork>
 	</section>
 	
 </section>

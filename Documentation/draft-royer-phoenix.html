@@ -19,12 +19,12 @@
  
        
  This application transport can also transfer non-MIME data.
- It can be used as an XDR transport, or for opaue data (blobs of
+ It can be used as an XDR transport, or for opaque data (blobs of
  known or unknown data) transport.
  
        
  Another major concern is security and authentication.
- This proposal allows for existing autnentication to continue to work.
+ This proposal allows for existing authentication to continue to work.
  
        
  This is a MIME message transport that can facilitate
@@ -39,9 +39,11 @@
  
        
  This proposal includes a sample implementation.
- ( )
- Which also includes a gateway from this proposal to existing system.
- Thunderbid and Outlook plugins are part of the sample implementation.
+ ( Github - Phoenix )
+ Which also includes a gateway from this proposal to existing systems.
+ Thunderbird and Outlook plugins are part of the sample implementation.
+ A Linux, Windows DLL and .NET, and Android client library are part of
+ the sample implementation
  
     " name="description">
 <meta content="xml2rfc 3.23.2" name="generator">
@@ -1255,7 +1257,7 @@ li > p:last-of-type:only-child {
 </tr></thead>
 <tfoot><tr>
 <td class="left">Royer</td>
-<td class="center">Expires 12 August 2025</td>
+<td class="center">Expires 14 August 2025</td>
 <td class="right">[Page]</td>
 </tr></tfoot>
 </table>
@@ -1268,17 +1270,17 @@ li > p:last-of-type:only-child {
 <dd class="internet-draft">draft-royer-phoenix-00</dd>
 <dt class="label-published">Published:</dt>
 <dd class="published">
-<time datetime="2025-02-08" class="published">8 February 2025</time>
+<time datetime="2025-02-10" class="published">10 February 2025</time>
     </dd>
 <dt class="label-intended-status">Intended Status:</dt>
 <dd class="intended-status">Informational</dd>
 <dt class="label-expires">Expires:</dt>
-<dd class="expires"><time datetime="2025-08-12">12 August 2025</time></dd>
+<dd class="expires"><time datetime="2025-08-14">14 August 2025</time></dd>
 <dt class="label-authors">Author:</dt>
 <dd class="authors">
 <div class="author">
       <div class="author-name">DM. Royer</div>
-<div class="org">RiverExplorer Games LLC</div>
+<div class="org">RiverExplorer LLC</div>
 </div>
 </dd>
 </dl>
@@ -1296,11 +1298,11 @@ li > p:last-of-type:only-child {
  takes a great deal of care and planning.<a href="#section-abstract-2" class="pilcrow">¶</a></p>
 <p id="section-abstract-3">
  This application transport can also transfer non-MIME data.
- It can be used as an XDR transport, or for opaue data (blobs of
+ It can be used as an XDR transport, or for opaque data (blobs of
  known or unknown data) transport.<a href="#section-abstract-3" class="pilcrow">¶</a></p>
 <p id="section-abstract-4">
  Another major concern is security and authentication.
- This proposal allows for existing autnentication to continue to work.<a href="#section-abstract-4" class="pilcrow">¶</a></p>
+ This proposal allows for existing authentication to continue to work.<a href="#section-abstract-4" class="pilcrow">¶</a></p>
 <p id="section-abstract-5">
  This is a MIME message transport that can facilitate
  the transfer of any kind of MIME message. Including email, calendaring,
@@ -1312,9 +1314,11 @@ li > p:last-of-type:only-child {
  text handling of messages.<a href="#section-abstract-6" class="pilcrow">¶</a></p>
 <p id="section-abstract-7">
  This proposal includes a sample implementation.
- (<span><a href="https://github.com/RiverExplorer/Phoenix">https://github.com/RiverExplorer/Phoenix</a></span>)
- Which also includes a gateway from this proposal to existing system.
- Thunderbid and Outlook plugins are part of the sample implementation.<a href="#section-abstract-7" class="pilcrow">¶</a></p>
+ (<a href="https://github.com/RiverExplorer/Phoenix">Github - Phoenix</a>)
+ Which also includes a gateway from this proposal to existing systems.
+ Thunderbird and Outlook plugins are part of the sample implementation.
+ A Linux, Windows DLL and .NET, and Android client library are part of
+ the sample implementation<a href="#section-abstract-7" class="pilcrow">¶</a></p>
 </section>
 <div id="status-of-memo">
 <section id="section-boilerplate.1">
@@ -1335,7 +1339,7 @@ li > p:last-of-type:only-child {
         time. It is inappropriate to use Internet-Drafts as reference
         material or to cite them other than as "work in progress."<a href="#section-boilerplate.1-3" class="pilcrow">¶</a></p>
 <p id="section-boilerplate.1-4">
-        This Internet-Draft will expire on 12 August 2025.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
+        This Internet-Draft will expire on 14 August 2025.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="copyright">
@@ -1368,13 +1372,19 @@ li > p:last-of-type:only-child {
             <p id="section-toc.1-1.1.1" class="keepWithNext"><a href="#section-1" class="auto internal xref">1</a>.  <a href="#name-requirements-language" class="internal xref">Requirements Language</a></p>
 </li>
           <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.2">
-            <p id="section-toc.1-1.2.1"><a href="#section-2" class="auto internal xref">2</a>.  <a href="#name-abnf-notes-and-some-definit" class="internal xref">ABNF Notes and Some Definitions</a></p>
+            <p id="section-toc.1-1.2.1"><a href="#section-2" class="auto internal xref">2</a>.  <a href="#name-abnf-notes-and-definitions" class="internal xref">ABNF, Notes, and Definitions</a></p>
 <ul class="compact toc ulBare ulEmpty">
 <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.2.2.1">
-                <p id="section-toc.1-1.2.2.1.1" class="keepWithNext"><a href="#section-2.1" class="auto internal xref">2.1</a>.  <a href="#name-abnf-number-of-bits-in-valu" class="internal xref">ABNF Number of bits in value</a></p>
+                <p id="section-toc.1-1.2.2.1.1" class="keepWithNext"><a href="#section-2.1" class="auto internal xref">2.1</a>.  <a href="#name-xdr-type-meaning-informativ" class="internal xref">XDR TYPE - Meaning - Informative</a></p>
 </li>
               <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.2.2.2">
-                <p id="section-toc.1-1.2.2.2.1" class="keepWithNext"><a href="#section-2.2" class="auto internal xref">2.2</a>.  <a href="#name-some-abnf-definitions" class="internal xref">Some ABNF Definitions</a></p>
+                <p id="section-toc.1-1.2.2.2.1" class="keepWithNext"><a href="#section-2.2" class="auto internal xref">2.2</a>.  <a href="#name-abnf-number-of-bits-in-valu" class="internal xref">ABNF Number of bits in value</a></p>
+</li>
+              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.2.2.3">
+                <p id="section-toc.1-1.2.2.3.1"><a href="#section-2.3" class="auto internal xref">2.3</a>.  <a href="#name-some-abnf-definitions" class="internal xref">Some ABNF Definitions</a></p>
+</li>
+              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.2.2.4">
+                <p id="section-toc.1-1.2.2.4.1"><a href="#section-2.4" class="auto internal xref">2.4</a>.  <a href="#name-stringref" class="internal xref">StringRef</a></p>
 </li>
             </ul>
 </li>
@@ -1488,6 +1498,14 @@ li > p:last-of-type:only-child {
 </li>
               <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.6.2.17">
                 <p id="section-toc.1-1.6.2.17.1"><a href="#section-6.17" class="auto internal xref">6.17</a>. <a href="#name-meta-data-mdndata-attribute" class="internal xref">Meta Data - MDNData Attribute</a></p>
+<ul class="compact toc ulBare ulEmpty">
+<li class="compact toc ulBare ulEmpty" id="section-toc.1-1.6.2.17.2.1">
+                    <p id="section-toc.1-1.6.2.17.2.1.1"><a href="#section-6.17.1" class="auto internal xref">6.17.1</a>.  <a href="#name-mdndata-record" class="internal xref">MDNData Record</a></p>
+</li>
+                  <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.6.2.17.2.2">
+                    <p id="section-toc.1-1.6.2.17.2.2.1"><a href="#section-6.17.2" class="auto internal xref">6.17.2</a>.  <a href="#name-mdnrecord" class="internal xref">MDNRecord</a></p>
+</li>
+                </ul>
 </li>
               <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.6.2.18">
                 <p id="section-toc.1-1.6.2.18.1"><a href="#section-6.18" class="auto internal xref">6.18</a>. <a href="#name-meta-data-with-shared-objec" class="internal xref">Meta Data with Shared Objects</a></p>
@@ -1518,25 +1536,22 @@ li > p:last-of-type:only-child {
                 </ul>
 </li>
               <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.8.2.2">
-                <p id="section-toc.1-1.8.2.2.1"><a href="#section-8.2" class="auto internal xref">8.2</a>.  <a href="#name-phoenixstring" class="internal xref">PhoenixString</a></p>
-</li>
-              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.8.2.3">
-                <p id="section-toc.1-1.8.2.3.1"><a href="#section-8.3" class="auto internal xref">8.3</a>.  <a href="#name-mime-folder-index" class="internal xref">MIME Folder Index</a></p>
+                <p id="section-toc.1-1.8.2.2.1"><a href="#section-8.2" class="auto internal xref">8.2</a>.  <a href="#name-mime-folder-index" class="internal xref">MIME Folder Index</a></p>
 <ul class="compact toc ulBare ulEmpty">
-<li class="compact toc ulBare ulEmpty" id="section-toc.1-1.8.2.3.2.1">
-                    <p id="section-toc.1-1.8.2.3.2.1.1"><a href="#section-8.3.1" class="auto internal xref">8.3.1</a>.  <a href="#name-folder-index-header" class="internal xref">Folder Index Header</a></p>
+<li class="compact toc ulBare ulEmpty" id="section-toc.1-1.8.2.2.2.1">
+                    <p id="section-toc.1-1.8.2.2.2.1.1"><a href="#section-8.2.1" class="auto internal xref">8.2.1</a>.  <a href="#name-folder-index-header" class="internal xref">Folder Index Header</a></p>
 </li>
-                  <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.8.2.3.2.2">
-                    <p id="section-toc.1-1.8.2.3.2.2.1"><a href="#section-8.3.2" class="auto internal xref">8.3.2</a>.  <a href="#name-message-index" class="internal xref">Message Index</a></p>
+                  <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.8.2.2.2.2">
+                    <p id="section-toc.1-1.8.2.2.2.2.1"><a href="#section-8.2.2" class="auto internal xref">8.2.2</a>.  <a href="#name-message-index" class="internal xref">Message Index</a></p>
 </li>
-                  <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.8.2.3.2.3">
-                    <p id="section-toc.1-1.8.2.3.2.3.1"><a href="#section-8.3.3" class="auto internal xref">8.3.3</a>.  <a href="#name-header-index" class="internal xref">Header Index</a></p>
+                  <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.8.2.2.2.3">
+                    <p id="section-toc.1-1.8.2.2.2.3.1"><a href="#section-8.2.3" class="auto internal xref">8.2.3</a>.  <a href="#name-header-index" class="internal xref">Header Index</a></p>
 </li>
-                  <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.8.2.3.2.4">
-                    <p id="section-toc.1-1.8.2.3.2.4.1"><a href="#section-8.3.4" class="auto internal xref">8.3.4</a>.  <a href="#name-header-index-example-1" class="internal xref">Header Index Example 1</a></p>
+                  <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.8.2.2.2.4">
+                    <p id="section-toc.1-1.8.2.2.2.4.1"><a href="#section-8.2.4" class="auto internal xref">8.2.4</a>.  <a href="#name-header-index-example-1" class="internal xref">Header Index Example 1</a></p>
 </li>
-                  <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.8.2.3.2.5">
-                    <p id="section-toc.1-1.8.2.3.2.5.1"><a href="#section-8.3.5" class="auto internal xref">8.3.5</a>.  <a href="#name-header-index-example-2" class="internal xref">Header Index Example 2</a></p>
+                  <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.8.2.2.2.5">
+                    <p id="section-toc.1-1.8.2.2.2.5.1"><a href="#section-8.2.5" class="auto internal xref">8.2.5</a>.  <a href="#name-header-index-example-2" class="internal xref">Header Index Example 2</a></p>
 </li>
                 </ul>
 </li>
@@ -1641,81 +1656,174 @@ li > p:last-of-type:only-child {
  all capitals, as shown here.<a href="#section-1-1" class="pilcrow">¶</a></p>
 </section>
 <section id="section-2">
-      <h2 id="name-abnf-notes-and-some-definit">
-<a href="#section-2" class="section-number selfRef">2. </a><a href="#name-abnf-notes-and-some-definit" class="section-name selfRef">ABNF Notes and Some Definitions</a>
+      <h2 id="name-abnf-notes-and-definitions">
+<a href="#section-2" class="section-number selfRef">2. </a><a href="#name-abnf-notes-and-definitions" class="section-name selfRef">ABNF, Notes, and Definitions</a>
       </h2>
 <section id="section-2.1">
-        <h3 id="name-abnf-number-of-bits-in-valu">
-<a href="#section-2.1" class="section-number selfRef">2.1. </a><a href="#name-abnf-number-of-bits-in-valu" class="section-name selfRef">ABNF Number of bits in value</a>
+        <h3 id="name-xdr-type-meaning-informativ">
+<a href="#section-2.1" class="section-number selfRef">2.1. </a><a href="#name-xdr-type-meaning-informativ" class="section-name selfRef">XDR TYPE - Meaning - Informative</a>
         </h3>
 <p id="section-2.1-1">
- This specification adds some usage to <span><a href="#RFC5234" class="internal xref">ABNF</a> [<a href="#RFC5234" class="cite xref">RFC5234</a>]</span>
- to deal with bit width in a binary number.<a href="#section-2.1-1" class="pilcrow">¶</a></p>
+ The meaning of "XDR TYPE" in this specification refers
+ to the "C" code API.
+ For every "XDR TYPE" "foo", is a "C" code API of "xdr_foo(...)".
+ The purpose of "XDR TYPE" is to guide implementors and is to be
+ considered informative and not normative information.<a href="#section-2.1-1" class="pilcrow">¶</a></p>
 <p id="section-2.1-2">
+ In some cases the "xdr_foo(...)" API is part of system libraries,
+ and in other cases it is the result of processing the normative XDR
+ definition files provided in this specification with the tools
+ in the sample implementation or open-source XDR
+ <span><a href="#rpcgenopensource" class="internal xref">"rpcgen / rpcgen++"</a> [<a href="#rpcgenopensource" class="cite xref">rpcgenopensource</a>]</span> tools.
+ <span><a href="#rpcgendocs" class="internal xref">"rpcgen documentation"</a> [<a href="#rpcgendocs" class="cite xref">rpcgendocs</a>]</span>.<a href="#section-2.1-2" class="pilcrow">¶</a></p>
+<p id="section-2.1-3">
+ In most cases the "XDR TYPE" is used in a ".x" XDR definition
+ file as the variable type.
+ In some cases like "string", and "opaque", they must be
+ defined as arrays.
+ Any other exceptions are added to the informative description
+ in this specifications when needed:<a href="#section-2.1-3" class="pilcrow">¶</a></p>
+<table class="center" id="table-1">
+          <caption><a href="#table-1" class="selfRef">Table 1</a></caption>
+<thead>
+            <tr>
+              <td class="text-left" rowspan="1" colspan="1">
+ ABNF NAME
+ </td>
+              <td class="text-left" rowspan="1" colspan="1">
+ XDR TYPE
+ </td>
+              <td class="text-left" rowspan="1" colspan="1">
+ Description:
+ </td>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td class="text-left" rowspan="1" colspan="1">
+ string
+ </td>
+              <td class="text-left" rowspan="1" colspan="1">
+ string
+ </td>
+              <td class="text-left" rowspan="1" colspan="1">
+                <p id="section-2.1-4.2.1.3.1">
+ Is an XDR array.
+ Example usage in XDR definition file (see rpcgen
+ open-source documentation):<a href="#section-2.1-4.2.1.3.1" class="pilcrow">¶</a></p>
+<p id="section-2.1-4.2.1.3.2"><br>
+ "string MyVariableName&lt;&gt;;"
+ <br><a href="#section-2.1-4.2.1.3.2" class="pilcrow">¶</a></p>
+<p id="section-2.1-4.2.1.3.3">
+ The ABNF definition for string is in <a href="#GenericAbnf" class="auto internal xref">Figure 2</a><a href="#section-2.1-4.2.1.3.3" class="pilcrow">¶</a></p>
+</td>
+            </tr>
+            <tr>
+              <td class="text-left" rowspan="1" colspan="1">
+ opaque
+ </td>
+              <td class="text-left" rowspan="1" colspan="1">
+ opaque
+ </td>
+              <td class="text-left" rowspan="1" colspan="1">
+                <p id="section-2.1-4.2.2.3.1">
+ Is an XDR array.
+ Example usage in XDR definition file (see rpcgen
+ open-source documentation):<a href="#section-2.1-4.2.2.3.1" class="pilcrow">¶</a></p>
+<p id="section-2.1-4.2.2.3.2"><br>
+ "opaque DataNotToBeAltered&lt;&gt;;"
+ <br><a href="#section-2.1-4.2.2.3.2" class="pilcrow">¶</a></p>
+<p id="section-2.1-4.2.2.3.3">
+ The ABNF definition for opaque is in <a href="#GenericAbnf" class="auto internal xref">Figure 2</a><a href="#section-2.1-4.2.2.3.3" class="pilcrow">¶</a></p>
+</td>
+            </tr>
+          </tbody>
+        </table>
+</section>
+<section id="section-2.2">
+        <h3 id="name-abnf-number-of-bits-in-valu">
+<a href="#section-2.2" class="section-number selfRef">2.2. </a><a href="#name-abnf-number-of-bits-in-valu" class="section-name selfRef">ABNF Number of bits in value</a>
+        </h3>
+<p id="section-2.2-1">
+ This specification adds some syntax to <span><a href="#RFC5234" class="internal xref">ABNF</a> [<a href="#RFC5234" class="cite xref">RFC5234</a>]</span>
+ to deal with bit width in a binary number.<a href="#section-2.2-1" class="pilcrow">¶</a></p>
+<p id="section-2.2-2">
  Terminals may specify a bit width.
- That is the number of bits in the value.<a href="#section-2.1-2" class="pilcrow">¶</a></p>
-<p id="section-2.1-3"><span><a href="https://rfc-editor.org/rfc/rfc5234#section-2.3" class="relref">Section 2.3</a> of Terminal Values [<a href="#RFC5234" class="cite xref">RFC5234</a>]</span>
- is within this specification defined to be:<a href="#section-2.1-3" class="pilcrow">¶</a></p>
-<p id="section-2.1-4">
+ That is the number of bits in the value.<a href="#section-2.2-2" class="pilcrow">¶</a></p>
+<p id="section-2.2-3"><span><a href="https://rfc-editor.org/rfc/rfc5234#section-2.3" class="relref">Section 2.3</a> of Terminal Values [<a href="#RFC5234" class="cite xref">RFC5234</a>]</span>
+ is within this specification defined to be:<a href="#section-2.2-3" class="pilcrow">¶</a></p>
+<p id="section-2.2-4">
  b = binary / binary:width
  <br>
           <br>
  d = decimal / decimal:width
  <br>
           <br>
- x = hexadecimal / hexadecimal:width<a href="#section-2.1-4" class="pilcrow">¶</a></p>
-<p id="section-2.1-5">
+ x = hexadecimal / hexadecimal:width<a href="#section-2.2-4" class="pilcrow">¶</a></p>
+<p id="section-2.2-5">
  Where: with is the number of bits in the value.
- And must be an unsigned integer greater than zero.<a href="#section-2.1-5" class="pilcrow">¶</a></p>
-<p id="section-2.1-6">
- And they will pack when applied to to a rule:<a href="#section-2.1-6" class="pilcrow">¶</a></p>
-<p id="section-2.1-7">
+ And must be an unsigned integer greater than zero.<a href="#section-2.2-5" class="pilcrow">¶</a></p>
+<p id="section-2.2-6">
  When the left side has a width: 
  The number of bits on the left side must equal
- the number of bits on the right side.<a href="#section-2.1-7" class="pilcrow">¶</a></p>
-<p id="section-2.1-8">
+ the number of bits on the right side.<a href="#section-2.2-6" class="pilcrow">¶</a></p>
+<p id="section-2.2-7">
+ The most significant values are placed to the left of
+ lesser signification values in the rule:<a href="#section-2.2-7" class="pilcrow">¶</a></p>
+<p id="section-2.2-8">
  In this example A Header is 32-bits in size
- and is composed of an 8-bit and 24-bit value.
- The most significant value are placed on the left of the rule:<a href="#section-2.1-8" class="pilcrow">¶</a></p>
-<div class="alignLeft art-abnf art-text artwork" id="section-2.1-9">
+ and is composed of an 8-bit (Offset), 2-bit (Flags or F),
+ and 22-bit (Length) value.<a href="#section-2.2-8" class="pilcrow">¶</a></p>
+<div class="alignLeft art-abnf art-text artwork" id="section-2.2-9">
 <pre>
-Header:32 = Offset:8 Length:24
-</pre><a href="#section-2.1-9" class="pilcrow">¶</a>
+Header:32 = Offset:8 Flags:2 Length:22
+</pre><a href="#section-2.2-9" class="pilcrow">¶</a>
 </div>
-<p id="section-2.1-10"></p>
-<p id="section-2.1-11">
- The pseudo code could be:<a href="#section-2.1-11" class="pilcrow">¶</a></p>
-<div class="sourcecode" id="section-2.1-12">
+<p id="section-2.2-10"></p>
+<p id="section-2.2-11">
+ Example pseudo code could be:<a href="#section-2.2-11" class="pilcrow">¶</a></p>
+<div class="sourcecode" id="section-2.2-12">
 <pre>
 
 // Header is a 32-bit unsigned integer.
 // Offset is an 8-bit unsigned integer.
-// Length is a 24-bit unsigned integer
+// Flags (F) is a 2-bit unsigned integer.
+// Length is a 22-bit unsigned integer
 //
-Header = Offset &lt;&lt; 24 | Length;
+Header = (Offset &lt;&lt; 24) | (Flags &lt;&lt; 22) | Length;
 
-</pre><a href="#section-2.1-12" class="pilcrow">¶</a>
+</pre><a href="#section-2.2-12" class="pilcrow">¶</a>
 </div>
-<p id="section-2.1-13">
- This shifts the 8-bit Offset over 24 bits to the left, then
- adds the 24-bit Length.
+<p id="section-2.2-13">
+ This shifts the 8-bit "Offset" over 24 bits to the left, then
+ shifts the 2-bit value "Flags (F)" over 22 bits,
+ then, places the lower 24-bits "Length" into the results.
 
- The result would be:<a href="#section-2.1-13" class="pilcrow">¶</a></p>
+ The result would be:<a href="#section-2.2-13" class="pilcrow">¶</a></p>
 <span id="name-packed-bit-example"></span><div id="ABNF-00">
 <figure id="figure-1">
-          <div id="section-2.1-14.1">
-            <div class="alignLeft art-svg artwork" id="section-2.1-14.1.2">
-<svg xmlns="http://www.w3.org/2000/svg" version="1.1" height="64" width="304" viewBox="0 0 304 64" class="diagram" text-anchor="middle" font-family="monospace" font-size="13px" stroke-linecap="round">
-                <path d="M 8,16 L 8,48" fill="none" stroke="black"></path>
-                <path d="M 80,16 L 80,48" fill="none" stroke="black"></path>
-                <path d="M 296,16 L 296,48" fill="none" stroke="black"></path>
-                <path d="M 8,16 L 296,16" fill="none" stroke="black"></path>
-                <path d="M 8,48 L 296,48" fill="none" stroke="black"></path>
+          <div id="section-2.2-14.1">
+            <div class="alignLeft art-svg artwork" id="section-2.2-14.1.2">
+<svg xmlns="http://www.w3.org/2000/svg" version="1.1" height="96" width="304" viewBox="0 0 304 96" class="diagram" text-anchor="middle" font-family="monospace" font-size="13px" stroke-linecap="round">
+                <path d="M 8,32 L 8,80" fill="none" stroke="black"></path>
+                <path d="M 80,16 L 80,64" fill="none" stroke="black"></path>
+                <path d="M 112,32 L 112,64" fill="none" stroke="black"></path>
+                <path d="M 152,16 L 152,32" fill="none" stroke="black"></path>
+                <path d="M 224,16 L 224,32" fill="none" stroke="black"></path>
+                <path d="M 296,16 L 296,80" fill="none" stroke="black"></path>
+                <path d="M 8,32 L 296,32" fill="none" stroke="black"></path>
+                <path d="M 8,64 L 296,64" fill="none" stroke="black"></path>
                 <g class="text">
-                  <text x="44" y="36">Offset</text>
-                  <text x="164" y="36">Length</text>
+                  <text x="44" y="20">8-bits</text>
+                  <text x="116" y="20">8-bits</text>
+                  <text x="188" y="20">8-bits</text>
+                  <text x="260" y="20">8-bits</text>
+                  <text x="44" y="52">Offset</text>
+                  <text x="96" y="52">F</text>
+                  <text x="156" y="52">Length</text>
+                  <text x="48" y="84">32-bits</text>
                 </g>
-              </svg><a href="#section-2.1-14.1.2" class="pilcrow">¶</a>
+              </svg><a href="#section-2.2-14.1.2" class="pilcrow">¶</a>
 </div>
 </div>
 <figcaption><a href="#figure-1" class="selfRef">Figure 1</a>:
@@ -1723,29 +1831,56 @@ Header = Offset &lt;&lt; 24 | Length;
           </figcaption></figure>
 </div>
 </section>
-<section id="section-2.2">
+<section id="section-2.3">
         <h3 id="name-some-abnf-definitions">
-<a href="#section-2.2" class="section-number selfRef">2.2. </a><a href="#name-some-abnf-definitions" class="section-name selfRef">Some ABNF Definitions</a>
+<a href="#section-2.3" class="section-number selfRef">2.3. </a><a href="#name-some-abnf-definitions" class="section-name selfRef">Some ABNF Definitions</a>
         </h3>
-<div class="alignCenter art-abnf art-text artwork" id="section-2.2-1">
+<div id="GenericAbnf">
+<figure id="figure-2">
+          <div class="alignCenter art-abnf art-text artwork" id="section-2.3-1.1">
 <pre>
 
-             ; An 8-bit unsigned integer
-uint8_t    = 0x00 - 0xff
+             ; An 8-bit unsigned integer type
+uint8_t    = 0x00-ff:8
 
-             ; A 16-bit unsigned integer
-uint16_t   = 0x0000 - 0xffff
+             ; A 16-bit unsigned integer type
+uint16_t   = 0x0000-ffff:16
 
-             ; A 32-bit unsigned integer
-uint32_t   = 0x00000000 - 0xffffffff
+             ; A 32-bit unsigned integer type
+uint32_t   = 0x00000000-ffffffff:32
 
-             ; A 64-bit unsigned integer
-uint64_t   = 0x0000000000000000 - 0xffffffffffffffff
+             ; A 64-bit unsigned integer type
+uint64_t   = 0x0000000000000000-ffffffffffffffff:64
 
-</pre><a href="#section-2.2-1" class="pilcrow">¶</a>
+             ; This is a generic array of UTF-8 characters without
+             ; any terminating character.
+             ; They could be 1, 2, 3, or 4 octet UTF-8 characters.
+             ; The implemention must ensure that complete characters
+             ; are containd in the string.
+             ;
+             ; Specific uses in this or related specifications
+             ; could limit the set of characters that could be in the string.
+             ;
+             ; The uint32_t value is the total number of octets in the string.
+             ;
+             ; The UTF8-Char is any valid and complete UTF-8 character.
+             ;
+string     = uint32_t *UTF8-Char
+
+             ; This is a generic array of uint8_t values.
+             ; The data in an opaque array is not altered in any
+             ; way in the protocol. It is sent over the wire unaltered.
+             ;
+             ; The uint32_t value is the number of octets in the data.
+             ;
+opaque     = uint32_t *uint8_t
+
+</pre>
 </div>
-<table class="center" id="table-1">
-          <caption><a href="#table-1" class="selfRef">Table 1</a></caption>
+<figcaption><a href="#figure-2" class="selfRef">Figure 2</a></figcaption></figure>
+</div>
+<table class="center" id="table-2">
+          <caption><a href="#table-2" class="selfRef">Table 2</a></caption>
 <thead>
             <tr>
               <td class="text-left" rowspan="1" colspan="1">
@@ -1792,6 +1927,84 @@ uint64_t   = 0x0000000000000000 - 0xffffffffffffffff
           </tbody>
         </table>
 </section>
+<div id="StringRef">
+<section id="section-2.4">
+        <h3 id="name-stringref">
+<a href="#section-2.4" class="section-number selfRef">2.4. </a><a href="#name-stringref" class="section-name selfRef">StringRef</a>
+        </h3>
+<p id="section-2.4-1">
+ This protocol references strings in existing MIME objects
+ by octet offset into the MIME object.
+ This is is called a StringRef.
+ All strings can be referenced by using a total of 8 octets.
+ A StringRef consists of two parts:<a href="#section-2.4-1" class="pilcrow">¶</a></p>
+<p id="section-2.4-2">
+ The StringRef does not contain the string, it is a 
+ reference an existing string in a MIME object.<a href="#section-2.4-2" class="pilcrow">¶</a></p>
+<table class="center" id="table-3">
+          <caption><a href="#table-3" class="selfRef">Table 3</a></caption>
+<thead>
+            <tr>
+              <td class="text-left" rowspan="1" colspan="1">Name</td>
+              <td class="text-left" rowspan="1" colspan="1">XDR Type</td>
+              <td class="text-left" rowspan="1" colspan="1">Description</td>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td class="text-left" rowspan="1" colspan="1">Offset</td>
+              <td class="text-left" rowspan="1" colspan="1">uint32_t</td>
+              <td class="text-left" rowspan="1" colspan="1">
+ The octet count to the start of the string with zero being the
+ first octet in the message.
+ </td>
+            </tr>
+            <tr>
+              <td class="text-left" rowspan="1" colspan="1">Length</td>
+              <td class="text-left" rowspan="1" colspan="1">uint32_t</td>
+              <td class="text-left" rowspan="1" colspan="1">
+ The length in octets of the string.
+ </td>
+            </tr>
+          </tbody>
+        </table>
+<p id="section-2.4-4">
+ A StringRef over the wire is 8 octets in size.<a href="#section-2.4-4" class="pilcrow">¶</a></p>
+<span id="name-stringref-format"></span><div id="StringRefFigure">
+<figure id="figure-3">
+          <div id="section-2.4-5.1">
+            <div class="alignLeft art-svg artwork" id="section-2.4-5.1.2">
+<svg xmlns="http://www.w3.org/2000/svg" version="1.1" height="96" width="296" viewBox="0 0 296 96" class="diagram" text-anchor="middle" font-family="monospace" font-size="13px" stroke-linecap="round">
+                <path d="M 8,16 L 8,80" fill="none" stroke="black"></path>
+                <path d="M 288,16 L 288,80" fill="none" stroke="black"></path>
+                <path d="M 8,16 L 288,16" fill="none" stroke="black"></path>
+                <path d="M 8,48 L 288,48" fill="none" stroke="black"></path>
+                <path d="M 8,80 L 288,80" fill="none" stroke="black"></path>
+                <g class="text">
+                  <text x="44" y="36">OFFSET</text>
+                  <text x="44" y="68">LENGTH</text>
+                </g>
+              </svg><a href="#section-2.4-5.1.2" class="pilcrow">¶</a>
+</div>
+</div>
+<figcaption><a href="#figure-3" class="selfRef">Figure 3</a>:
+<a href="#name-stringref-format" class="selfRef">StringRef Format</a>
+          </figcaption></figure>
+</div>
+<p id="section-2.4-6">
+ ABNF:<a href="#section-2.4-6" class="pilcrow">¶</a></p>
+<div class="alignLeft art-abnf art-text artwork" id="section-2.4-7">
+<pre>
+
+Offset        = uint32_t
+
+Length        = uint32_t
+
+StringRef     = Offset Length
+</pre><a href="#section-2.4-7" class="pilcrow">¶</a>
+</div>
+</section>
+</div>
 </section>
 <section id="section-3">
       <h2 id="name-introduction">
@@ -2308,72 +2521,153 @@ uint64_t   = 0x0000000000000000 - 0xffffffffffffffff
             <li id="section-5.1.1-2.2">The packet body.<a href="#section-5.1.1-2.2" class="pilcrow">¶</a>
 </li>
           </ol>
-<p id="section-5.1.1-3">
+<section id="section-5.1.1.1">
+            <h5 id="name-packet-header">
+<a href="#section-5.1.1.1" class="section-number selfRef">5.1.1.1. </a><a href="#name-packet-header" class="section-name selfRef">Packet Header</a>
+            </h5>
+<p id="section-5.1.1.1-1">
  The packet header has one value, the total length
  of the packet body, and payload sent as an
  unsigned 64-bit integer in network byte order.
  The length does not include its own length.
- It is the total length that follows the length value.<a href="#section-5.1.1-3" class="pilcrow">¶</a></p>
-<p id="section-5.1.1-4">
- The packet body is divided into three parts:<a href="#section-5.1.1-4" class="pilcrow">¶</a></p>
-<ol start="1" type="1" class="normal type-1" id="section-5.1.1-5">
-            <li id="section-5.1.1-5.1">Command sequence (SEQ).<a href="#section-5.1.1-5.1" class="pilcrow">¶</a>
-</li>
-            <li id="section-5.1.1-5.2">The Command (CMD).<a href="#section-5.1.1-5.2" class="pilcrow">¶</a>
-</li>
-            <li id="section-5.1.1-5.3">The command specific data (Payload).<a href="#section-5.1.1-5.3" class="pilcrow">¶</a>
-</li>
-          </ol>
-<div id="SEQ">
-<section id="section-5.1.1.1">
-            <h5 id="name-command-sequence-number-seq">
-<a href="#section-5.1.1.1" class="section-number selfRef">5.1.1.1. </a><a href="#name-command-sequence-number-seq" class="section-name selfRef">Command Sequence Number (SEQ)</a>
+ It is the total length that follows the length value.<a href="#section-5.1.1.1-1" class="pilcrow">¶</a></p>
+<table class="center" id="table-4">
+              <caption><a href="#table-4" class="selfRef">Table 4</a></caption>
+<thead>
+                <tr>
+                  <td class="text-left" rowspan="1" colspan="1">
+ Name
+ </td>
+                  <td class="text-left" rowspan="1" colspan="1">
+ XDR Type
+ </td>
+                  <td class="text-left" rowspan="1" colspan="1">
+ Description
+ </td>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td class="text-left" rowspan="1" colspan="1">
+ PacketLength
+ </td>
+                  <td class="text-left" rowspan="1" colspan="1">
+ uint64_t
+ </td>
+                  <td class="text-left" rowspan="1" colspan="1">
+ The nuber of octets that follow this value that
+ are part of this packet. 
+ </td>
+                </tr>
+              </tbody>
+            </table>
+<p id="section-5.1.1.1-3">
+ ABNF:<a href="#section-5.1.1.1-3" class="pilcrow">¶</a></p>
+<div class="alignLeft art-abnf art-text artwork" id="section-5.1.1.1-4">
+<pre>
+PacketLength      = uint64_t
+</pre><a href="#section-5.1.1.1-4" class="pilcrow">¶</a>
+</div>
+</section>
+<section id="section-5.1.1.2">
+            <h5 id="name-packet-body">
+<a href="#section-5.1.1.2" class="section-number selfRef">5.1.1.2. </a><a href="#name-packet-body" class="section-name selfRef">Packet Body</a>
             </h5>
-<p id="section-5.1.1.1-1">
+<p id="section-5.1.1.2-1">
+ The packet body is divided into three parts:<a href="#section-5.1.1.2-1" class="pilcrow">¶</a></p>
+<table class="center" id="table-5">
+              <caption><a href="#table-5" class="selfRef">Table 5</a></caption>
+<thead>
+                <tr>
+                  <td class="text-left" rowspan="1" colspan="1">
+ Name
+ </td>
+                  <td class="text-left" rowspan="1" colspan="1">
+ XDR Type
+ </td>
+                  <td class="text-left" rowspan="1" colspan="1">
+ Description
+ </td>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td class="text-left" rowspan="1" colspan="1">
+ SEQ
+ </td>
+                  <td class="text-left" rowspan="1" colspan="1">
+ SEQ
+ </td>
+                  <td class="text-left" rowspan="1" colspan="1">
+                    <p id="section-5.1.1.2-2.2.1.3.1">
  The Command SEQ is a 32-bit unsigned integer sent
  in network byte order.
  This SEQ is an even number when initiated from the client,
- and an odd number when initiated from the server.<a href="#section-5.1.1.1-1" class="pilcrow">¶</a></p>
-<p id="section-5.1.1.1-2">
+ and an odd number when initiated from the server.<a href="#section-5.1.1.2-2.2.1.3.1" class="pilcrow">¶</a></p>
+<p id="section-5.1.1.2-2.2.1.3.2">
  The first SEQ value sent from the client is zero (0) and is
- incremented by two each time.<a href="#section-5.1.1.1-2" class="pilcrow">¶</a></p>
-<p id="section-5.1.1.1-3">
+ incremented by two each time.<a href="#section-5.1.1.2-2.2.1.3.2" class="pilcrow">¶</a></p>
+<p id="section-5.1.1.2-2.2.1.3.3">
  The first SEQ value sent from the server is one (1) and is
- incremented by two each time.<a href="#section-5.1.1.1-3" class="pilcrow">¶</a></p>
-<p id="section-5.1.1.1-4">
- In the event an endpoint command SEQ reaches its maximum value,
- then its numbering starts over at zero (0) for the client
- and one (1) for the server.
+ incremented by two each time.<a href="#section-5.1.1.2-2.2.1.3.3" class="pilcrow">¶</a></p>
+<p id="section-5.1.1.2-2.2.1.3.4">
+ In the event an endpoint command SEQ reaches its maximum
+ value, then its numbering starts over at zero (0) for
+ the client and one (1) for the server.
  An implementation must keep track of outstanding commands
  and not accidentally re-issue the same SEQ that may still
- get replies from the other endpoint.<a href="#section-5.1.1.1-4" class="pilcrow">¶</a></p>
+ get replies from the other endpoint.<a href="#section-5.1.1.2-2.2.1.3.4" class="pilcrow">¶</a></p>
+</td>
+                </tr>
+              </tbody>
+            </table>
+<div class="alignLeft art-abnf art-text artwork" id="section-5.1.1.2-3">
+<pre>
+xxx
+</pre><a href="#section-5.1.1.2-3" class="pilcrow">¶</a>
+</div>
+<ol start="1" type="1" class="normal type-1" id="section-5.1.1.2-4">
+              <li id="section-5.1.1.2-4.1">Command sequence (SEQ).<a href="#section-5.1.1.2-4.1" class="pilcrow">¶</a>
+</li>
+              <li id="section-5.1.1.2-4.2">The Command (CMD).<a href="#section-5.1.1.2-4.2" class="pilcrow">¶</a>
+</li>
+              <li id="section-5.1.1.2-4.3">The command specific data (Payload).<a href="#section-5.1.1.2-4.3" class="pilcrow">¶</a>
+</li>
+            </ol>
+</section>
+<div id="SEQ">
+<section id="section-5.1.1.3">
+            <h5 id="name-command-sequence-number-seq">
+<a href="#section-5.1.1.3" class="section-number selfRef">5.1.1.3. </a><a href="#name-command-sequence-number-seq" class="section-name selfRef">Command Sequence Number (SEQ)</a>
+            </h5>
+<p id="section-5.1.1.3-1"></p>
 </section>
 </div>
 <div id="COMMAND">
-<section id="section-5.1.1.2">
+<section id="section-5.1.1.4">
             <h5 id="name-the-command-cmd">
-<a href="#section-5.1.1.2" class="section-number selfRef">5.1.1.2. </a><a href="#name-the-command-cmd" class="section-name selfRef">The Command (CMD)</a>
+<a href="#section-5.1.1.4" class="section-number selfRef">5.1.1.4. </a><a href="#name-the-command-cmd" class="section-name selfRef">The Command (CMD)</a>
             </h5>
-<p id="section-5.1.1.2-1">
+<p id="section-5.1.1.4-1">
  The command is a predefined enumerated 32-bit unsigned
  integer sent in network byte order.
  The value (in hex) 0xFFFFFFFF is reserved for extensions
- if the 32-bit range is exhausted.<a href="#section-5.1.1.2-1" class="pilcrow">¶</a></p>
+ if the 32-bit range is exhausted.<a href="#section-5.1.1.4-1" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="PAYLOAD">
-<section id="section-5.1.1.3">
+<section id="section-5.1.1.5">
             <h5 id="name-the-payload-payload">
-<a href="#section-5.1.1.3" class="section-number selfRef">5.1.1.3. </a><a href="#name-the-payload-payload" class="section-name selfRef">The Payload (Payload)</a>
+<a href="#section-5.1.1.5" class="section-number selfRef">5.1.1.5. </a><a href="#name-the-payload-payload" class="section-name selfRef">The Payload (Payload)</a>
             </h5>
-<p id="section-5.1.1.3-1">
+<p id="section-5.1.1.5-1">
  The payload has no predefined length, other what
  what is specified for the CMD in the packet.
  It could be zero to vary large in size.
  It could be opaque data, or it could be data that
  is XDR encoded.
  The contents are specific to the CMD specified in
- the in the packet body.<a href="#section-5.1.1.3-1" class="pilcrow">¶</a></p>
+ the in the packet body.<a href="#section-5.1.1.5-1" class="pilcrow">¶</a></p>
 </section>
 </div>
 </section>
@@ -2465,8 +2759,8 @@ uint64_t   = 0x0000000000000000 - 0xffffffffffffffff
           </h4>
 <p id="section-5.2.2-1">
  The following operations are defined for administration.<a href="#section-5.2.2-1" class="pilcrow">¶</a></p>
-<table class="center" id="table-2">
-            <caption><a href="#table-2" class="selfRef">Table 2</a></caption>
+<table class="center" id="table-6">
+            <caption><a href="#table-6" class="selfRef">Table 6</a></caption>
 <thead>
               <tr>
                 <th class="text-left" rowspan="1" colspan="1">Command and Capability Name</th>
@@ -2609,8 +2903,8 @@ uint64_t   = 0x0000000000000000 - 0xffffffffffffffff
  Implementations are not required to support any or all of these
  commands.<a href="#section-5.7-2" class="pilcrow">¶</a></p>
 <p id="section-5.7-3"></p>
-<table class="center" id="table-3">
-          <caption><a href="#table-3" class="selfRef">Table 3</a></caption>
+<table class="center" id="table-7">
+          <caption><a href="#table-7" class="selfRef">Table 7</a></caption>
 <thead>
             <tr>
               <th class="text-left" rowspan="1" colspan="1">Op Name</th>
@@ -3171,67 +3465,140 @@ uint64_t   = 0x0000000000000000 - 0xffffffffffffffff
 <p id="section-6.17-2">
  This is a list of recipients email address that
  that are on the distribution list effected by the MDN.<a href="#section-6.17-2" class="pilcrow">¶</a></p>
-<p id="section-6.17-3">
+<section id="section-6.17.1">
+          <h4 id="name-mdndata-record">
+<a href="#section-6.17.1" class="section-number selfRef">6.17.1. </a><a href="#name-mdndata-record" class="section-name selfRef">MDNData Record</a>
+          </h4>
+<p id="section-6.17.1-1">
  The format of an MDNData record is
- a header, that has:<a href="#section-6.17-3" class="pilcrow">¶</a></p>
-<ul class="normal">
-<li class="normal" id="section-6.17-4.1">
- COUNT: A 32-bit unsigned integer in network byte order
+ a header, that has:<a href="#section-6.17.1-1" class="pilcrow">¶</a></p>
+<table class="center" id="table-8">
+            <caption><a href="#table-8" class="selfRef">Table 8</a></caption>
+<thead>
+              <tr>
+                <td class="text-left" rowspan="1" colspan="1">Name</td>
+                <td class="text-left" rowspan="1" colspan="1">XDR Type</td>
+                <td class="text-left" rowspan="1" colspan="1">Description</td>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td class="text-left" rowspan="1" colspan="1">COUNT</td>
+                <td class="text-left" rowspan="1" colspan="1">uint32_t</td>
+                <td class="text-left" rowspan="1" colspan="1">
+ A 32-bit unsigned integer in network byte order
  indicating how many were on the distribution list
- for this MDN.<a href="#section-6.17-4.1" class="pilcrow">¶</a>
-</li>
-          <li class="normal" id="section-6.17-4.2">
- SENT: The UTC timestamp as a 64-bit unsigned integer
- in network byte order of when the MDN reply was sent.<a href="#section-6.17-4.2" class="pilcrow">¶</a>
-</li>
-        </ul>
-<p id="section-6.17-5">
- Followed by COUNT detail records:<a href="#section-6.17-5" class="pilcrow">¶</a></p>
-<ul class="normal">
-<li class="normal" id="section-6.17-6.1">
- UTC: The UTC timestamp as a 64-bit unsigned integer
- in network byte order of when the MDN reply was received.
- Set to zero if not received.<a href="#section-6.17-6.1" class="pilcrow">¶</a>
-</li>
-          <li class="normal" id="section-6.17-6.2">
- Email-Address: A PhoenixString with the associated
- email address of the user that has or has not returned
- the MDN.<a href="#section-6.17-6.2" class="pilcrow">¶</a>
-</li>
-        </ul>
+ for this MDN.
+ </td>
+              </tr>
+              <tr>
+                <td class="text-left" rowspan="1" colspan="1">SENT</td>
+                <td class="text-left" rowspan="1" colspan="1">uint64_t</td>
+                <td class="text-left" rowspan="1" colspan="1">
+ The UTC timestamp as a 64-bit unsigned integer
+ in network byte order of when the MDN reply was sent.
+ </td>
+              </tr>
+            </tbody>
+          </table>
 <span id="name-mdndata-attribute"></span><div id="MDNData">
-<figure id="figure-2">
-          <div id="section-6.17-7.1">
-            <div class="alignLeft art-svg artwork" id="section-6.17-7.1.2">
-<svg xmlns="http://www.w3.org/2000/svg" version="1.1" height="256" width="592" viewBox="0 0 592 256" class="diagram" text-anchor="middle" font-family="monospace" font-size="13px" stroke-linecap="round">
-                <path d="M 8,16 L 8,80" fill="none" stroke="black"></path>
-                <path d="M 8,144 L 8,240" fill="none" stroke="black"></path>
-                <path d="M 296,16 L 296,48" fill="none" stroke="black"></path>
-                <path d="M 296,176 L 296,208" fill="none" stroke="black"></path>
-                <path d="M 584,48 L 584,80" fill="none" stroke="black"></path>
-                <path d="M 584,144 L 584,176" fill="none" stroke="black"></path>
-                <path d="M 8,16 L 296,16" fill="none" stroke="black"></path>
-                <path d="M 8,48 L 584,48" fill="none" stroke="black"></path>
-                <path d="M 8,80 L 584,80" fill="none" stroke="black"></path>
-                <path d="M 8,144 L 584,144" fill="none" stroke="black"></path>
-                <path d="M 8,176 L 584,176" fill="none" stroke="black"></path>
-                <path d="M 8,208 L 296,208" fill="none" stroke="black"></path>
-                <path d="M 8,240 L 296,240" fill="none" stroke="black"></path>
-                <g class="text">
-                  <text x="76" y="36">32-bit COUNT</text>
-                  <text x="148" y="68">MDN SENT Time Stamp UTC 64-bit</text>
-                  <text x="112" y="116">Followed by COUNT of these:</text>
-                  <text x="164" y="164">MDN Received Time Stamp UTC 64-bit</text>
-                  <text x="116" y="196">32-bit LENGTH of email</text>
-                  <text x="96" y="228">Email-Address ...</text>
-                </g>
-              </svg><a href="#section-6.17-7.1.2" class="pilcrow">¶</a>
+<figure id="figure-4">
+            <div id="section-6.17.1-3.1">
+              <div class="alignLeft art-svg artwork" id="section-6.17.1-3.1.2">
+<svg xmlns="http://www.w3.org/2000/svg" version="1.1" height="96" width="592" viewBox="0 0 592 96" class="diagram" text-anchor="middle" font-family="monospace" font-size="13px" stroke-linecap="round">
+                  <path d="M 8,16 L 8,80" fill="none" stroke="black"></path>
+                  <path d="M 296,16 L 296,48" fill="none" stroke="black"></path>
+                  <path d="M 584,48 L 584,80" fill="none" stroke="black"></path>
+                  <path d="M 8,16 L 296,16" fill="none" stroke="black"></path>
+                  <path d="M 8,48 L 584,48" fill="none" stroke="black"></path>
+                  <path d="M 8,80 L 584,80" fill="none" stroke="black"></path>
+                  <g class="text">
+                    <text x="76" y="36">32-bit COUNT</text>
+                    <text x="148" y="68">MDN SENT Time Stamp UTC 64-bit</text>
+                  </g>
+                </svg><a href="#section-6.17.1-3.1.2" class="pilcrow">¶</a>
 </div>
 </div>
-<figcaption><a href="#figure-2" class="selfRef">Figure 2</a>:
+<figcaption><a href="#figure-4" class="selfRef">Figure 4</a>:
 <a href="#name-mdndata-attribute" class="selfRef">MDNData Attribute</a>
-          </figcaption></figure>
+            </figcaption></figure>
 </div>
+<p id="section-6.17.1-4">
+ ABNF:<a href="#section-6.17.1-4" class="pilcrow">¶</a></p>
+<div class="alignLeft art-abnf art-text artwork" id="section-6.17.1-5">
+<pre>
+MDNData    = COUNT SENT 1*MDNRecord
+</pre><a href="#section-6.17.1-5" class="pilcrow">¶</a>
+</div>
+<p id="section-6.17.1-6">
+ Followed by COUNT MDNRecord's.<a href="#section-6.17.1-6" class="pilcrow">¶</a></p>
+</section>
+<section id="section-6.17.2">
+          <h4 id="name-mdnrecord">
+<a href="#section-6.17.2" class="section-number selfRef">6.17.2. </a><a href="#name-mdnrecord" class="section-name selfRef">MDNRecord</a>
+          </h4>
+<table class="center" id="table-9">
+            <caption><a href="#table-9" class="selfRef">Table 9</a></caption>
+<thead>
+              <tr>
+                <td class="text-left" rowspan="1" colspan="1">Name</td>
+                <td class="text-left" rowspan="1" colspan="1">XDR Type</td>
+                <td class="text-left" rowspan="1" colspan="1">Description</td>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td class="text-left" rowspan="1" colspan="1">UTC</td>
+                <td class="text-left" rowspan="1" colspan="1">uint32_t</td>
+                <td class="text-left" rowspan="1" colspan="1">
+ The UTC timestamp as a 64-bit unsigned integer
+ in network byte order of when the MDN reply was received.
+ Set to zero if not received.
+ </td>
+              </tr>
+              <tr>
+                <td class="text-left" rowspan="1" colspan="1">Email-Address</td>
+                <td class="text-left" rowspan="1" colspan="1">string</td>
+                <td class="text-left" rowspan="1" colspan="1">
+ A string of the associated
+ email address of the user that has or has not returned
+ the MDN.
+ </td>
+              </tr>
+            </tbody>
+          </table>
+<span id="name-mdndata-attribute-2"></span><div id="MDNRecord">
+<figure id="figure-5">
+            <div id="section-6.17.2-2.1">
+              <div class="alignLeft art-svg artwork" id="section-6.17.2-2.1.2">
+<svg xmlns="http://www.w3.org/2000/svg" version="1.1" height="128" width="592" viewBox="0 0 592 128" class="diagram" text-anchor="middle" font-family="monospace" font-size="13px" stroke-linecap="round">
+                  <path d="M 8,16 L 8,112" fill="none" stroke="black"></path>
+                  <path d="M 296,48 L 296,80" fill="none" stroke="black"></path>
+                  <path d="M 584,16 L 584,48" fill="none" stroke="black"></path>
+                  <path d="M 8,16 L 584,16" fill="none" stroke="black"></path>
+                  <path d="M 8,48 L 584,48" fill="none" stroke="black"></path>
+                  <path d="M 8,80 L 296,80" fill="none" stroke="black"></path>
+                  <path d="M 8,112 L 296,112" fill="none" stroke="black"></path>
+                  <g class="text">
+                    <text x="164" y="36">MDN Received Time Stamp UTC 64-bit</text>
+                    <text x="116" y="68">32-bit LENGTH of email</text>
+                    <text x="96" y="100">Email-Address ...</text>
+                  </g>
+                </svg><a href="#section-6.17.2-2.1.2" class="pilcrow">¶</a>
+</div>
+</div>
+<figcaption><a href="#figure-5" class="selfRef">Figure 5</a>:
+<a href="#name-mdndata-attribute-2" class="selfRef">MDNData Attribute</a>
+            </figcaption></figure>
+</div>
+<p id="section-6.17.2-3">
+ ABNF:<a href="#section-6.17.2-3" class="pilcrow">¶</a></p>
+<div class="alignLeft art-abnf art-text artwork" id="section-6.17.2-4">
+<pre>
+MDNRecord  = UTC string
+</pre><a href="#section-6.17.2-4" class="pilcrow">¶</a>
+</div>
+</section>
 </section>
 <section id="section-6.18">
         <h3 id="name-meta-data-with-shared-objec">
@@ -3566,6 +3933,17 @@ LID    = uint8_t;
  successful FOLDER_OPEN reply.<a href="#section-8.1.2-2.2.2" class="pilcrow">¶</a></p>
 </li>
           </ul>
+<p id="section-8.1.2-3">
+ ABNF:<a href="#section-8.1.2-3" class="pilcrow">¶</a></p>
+<div class="alignLeft art-abnf art-text artwork" id="section-8.1.2-4">
+<pre>
+IndexOpDefine   = 0x00:8
+
+IndexOpUse      = 0x01:8
+
+IndexOp         = IndexOpDefine / IndexOpUse
+</pre><a href="#section-8.1.2-4" class="pilcrow">¶</a>
+</div>
 </section>
 </div>
 <div id="InterestedHeaders-HID">
@@ -3606,12 +3984,12 @@ HID    = uint8_t;
  Or it can use an already defined list.
  Or it can not request any header indexes by defining or using
  a list that has zero entries.<a href="#section-8.1.4-2" class="pilcrow">¶</a></p>
-<p id="section-8.1.4-3"><a href="#Interisting-S0-01" class="auto internal xref">Figure 3</a>, shows the interisted
+<p id="section-8.1.4-3"><a href="#Interisting-S0-01" class="auto internal xref">Figure 6</a>, shows the interisted
  header list prefix.
  This interisted header list prefix is followed by zero or more
  SingleEntry objects.<a href="#section-8.1.4-3" class="pilcrow">¶</a></p>
-<table class="center" id="table-4">
-            <caption><a href="#table-4" class="selfRef">Table 4</a></caption>
+<table class="center" id="table-10">
+            <caption><a href="#table-10" class="selfRef">Table 10</a></caption>
 <thead>
               <tr>
                 <td class="text-left" rowspan="1" colspan="1">
@@ -3634,9 +4012,29 @@ HID    = uint8_t;
  uint8_t
  </td>
                 <td class="text-left" rowspan="1" colspan="1">
- IndexOPis used to specify headers the client
- wishes the server to index in MIME objects.
- It must be a zero (0) to set the list definition.
+ One of IndexOpDefine or IndexOpUse
+ </td>
+              </tr>
+              <tr>
+                <td class="text-left" rowspan="1" colspan="1">
+ IndexOPDefine
+ </td>
+                <td class="text-left" rowspan="1" colspan="1">
+ uint8_t
+ </td>
+                <td class="text-left" rowspan="1" colspan="1">
+ Define or redefine a list.
+ </td>
+              </tr>
+              <tr>
+                <td class="text-left" rowspan="1" colspan="1">
+ IndexOPUse
+ </td>
+                <td class="text-left" rowspan="1" colspan="1">
+ uint8_t
+ </td>
+                <td class="text-left" rowspan="1" colspan="1">
+ Use an already defined list.
  </td>
               </tr>
               <tr>
@@ -3656,26 +4054,28 @@ HID    = uint8_t;
  HDRCNT
  </td>
                 <td class="text-left" rowspan="1" colspan="1">
- uint8_t
+ uint32_t
  </td>
                 <td class="text-left" rowspan="1" colspan="1">
- HdrCnt is set by the client to the number of headers in the list.
- With 255 reserved for expansion.
+ HdrCnt is set by the client to the number of headers
+ in the list.
+ With 0xffffff reserved for expansion.
  </td>
               </tr>
             </tbody>
           </table>
 <span id="name-interest-header-list-prefix"></span><div id="Interisting-S0-01">
-<figure id="figure-3">
+<figure id="figure-6">
             <div id="section-8.1.4-5.1">
               <div class="alignLeft art-svg artwork" id="section-8.1.4-5.1.2">
-<svg xmlns="http://www.w3.org/2000/svg" version="1.1" height="128" width="88" viewBox="0 0 88 128" class="diagram" text-anchor="middle" font-family="monospace" font-size="13px" stroke-linecap="round">
+<svg xmlns="http://www.w3.org/2000/svg" version="1.1" height="128" width="288" viewBox="0 0 288 128" class="diagram" text-anchor="middle" font-family="monospace" font-size="13px" stroke-linecap="round">
                   <path d="M 8,16 L 8,112" fill="none" stroke="black"></path>
-                  <path d="M 80,16 L 80,112" fill="none" stroke="black"></path>
+                  <path d="M 80,16 L 80,80" fill="none" stroke="black"></path>
+                  <path d="M 280,80 L 280,112" fill="none" stroke="black"></path>
                   <path d="M 8,16 L 80,16" fill="none" stroke="black"></path>
                   <path d="M 8,48 L 80,48" fill="none" stroke="black"></path>
-                  <path d="M 8,80 L 80,80" fill="none" stroke="black"></path>
-                  <path d="M 8,112 L 80,112" fill="none" stroke="black"></path>
+                  <path d="M 8,80 L 280,80" fill="none" stroke="black"></path>
+                  <path d="M 8,112 L 280,112" fill="none" stroke="black"></path>
                   <g class="text">
                     <text x="48" y="36">IndexOP</text>
                     <text x="40" y="68">LID</text>
@@ -3684,17 +4084,17 @@ HID    = uint8_t;
                 </svg><a href="#section-8.1.4-5.1.2" class="pilcrow">¶</a>
 </div>
 </div>
-<figcaption><a href="#figure-3" class="selfRef">Figure 3</a>:
+<figcaption><a href="#figure-6" class="selfRef">Figure 6</a>:
 <a href="#name-interest-header-list-prefix" class="selfRef">Interest Header List Prefix</a>
             </figcaption></figure>
 </div>
 <p id="section-8.1.4-6">
  ABNF:<a href="#section-8.1.4-6" class="pilcrow">¶</a></p>
-<div class="sourcecode" id="section-8.1.4-7">
+<div class="alignLeft art-abnf art-text artwork" id="section-8.1.4-7">
 <pre>
-DefineListOp  = 0x01:8
+HdrCnt          = uint32_t
 
-Interest-Header = DefineListOp LID HdrCnt
+Interest-Header = IndexOp LID HdrCnt
 </pre><a href="#section-8.1.4-7" class="pilcrow">¶</a>
 </div>
 <div id="InterestedHeader-Entry">
@@ -3709,9 +4109,9 @@ Interest-Header = DefineListOp LID HdrCnt
  This list informs the server the HID value that
  will be used for each interested header in the index
  that the server replies with.
- As shown in  <a href="#Interisting-S0-02" class="auto internal xref">Figure 4</a>, where:<a href="#section-8.1.4.1-1" class="pilcrow">¶</a></p>
-<table class="center" id="table-5">
-              <caption><a href="#table-5" class="selfRef">Table 5</a></caption>
+ As shown in  <a href="#Interisting-S0-02" class="auto internal xref">Figure 7</a>, where:<a href="#section-8.1.4.1-1" class="pilcrow">¶</a></p>
+<table class="center" id="table-11">
+              <caption><a href="#table-11" class="selfRef">Table 11</a></caption>
 <thead>
                 <tr>
                   <td class="text-left" rowspan="1" colspan="1">
@@ -3744,7 +4144,7 @@ Interest-Header = DefineListOp LID HdrCnt
  HEADER NAME
  </td>
                   <td class="text-left" rowspan="1" colspan="1">
- PhoenixString
+ StringRef
  </td>
                   <td class="text-left" rowspan="1" colspan="1">
                     <p id="section-8.1.4.1-2.2.2.3.1">
@@ -3756,33 +4156,38 @@ Interest-Header = DefineListOp LID HdrCnt
               </tbody>
             </table>
 <span id="name-setting-the-interest-list-c"></span><div id="Interisting-S0-02">
-<figure id="figure-4">
+<figure id="figure-7">
               <div id="section-8.1.4.1-3.1">
                 <div class="alignLeft art-svg artwork" id="section-8.1.4.1-3.1.2">
-<svg xmlns="http://www.w3.org/2000/svg" version="1.1" height="96" width="304" viewBox="0 0 304 96" class="diagram" text-anchor="middle" font-family="monospace" font-size="13px" stroke-linecap="round">
-                    <path d="M 8,16 L 8,80" fill="none" stroke="black"></path>
+<svg xmlns="http://www.w3.org/2000/svg" version="1.1" height="128" width="304" viewBox="0 0 304 128" class="diagram" text-anchor="middle" font-family="monospace" font-size="13px" stroke-linecap="round">
+                    <path d="M 8,16 L 8,112" fill="none" stroke="black"></path>
                     <path d="M 80,16 L 80,48" fill="none" stroke="black"></path>
+                    <path d="M 80,80 L 80,112" fill="none" stroke="black"></path>
+                    <path d="M 272,48 L 272,72" fill="none" stroke="black"></path>
                     <path d="M 8,16 L 80,16" fill="none" stroke="black"></path>
-                    <path d="M 8,48 L 280,48" fill="none" stroke="black"></path>
+                    <path d="M 8,48 L 272,48" fill="none" stroke="black"></path>
                     <path d="M 8,80 L 280,80" fill="none" stroke="black"></path>
+                    <path d="M 8,112 L 280,112" fill="none" stroke="black"></path>
                     <g class="text">
                       <text x="32" y="36">HID</text>
-                      <text x="292" y="52">..</text>
-                      <text x="72" y="68">PhoenixString</text>
+                      <text x="44" y="68">Length</text>
                       <text x="292" y="84">..</text>
+                      <text x="44" y="100">Octets</text>
+                      <text x="148" y="100">f the string ...</text>
+                      <text x="292" y="116">..</text>
                     </g>
                   </svg><a href="#section-8.1.4.1-3.1.2" class="pilcrow">¶</a>
 </div>
 </div>
-<figcaption><a href="#figure-4" class="selfRef">Figure 4</a>:
+<figcaption><a href="#figure-7" class="selfRef">Figure 7</a>:
 <a href="#name-setting-the-interest-list-c" class="selfRef">Setting the Interest List - Contents</a>
               </figcaption></figure>
 </div>
 <p id="section-8.1.4.1-4">
  ABNF:<a href="#section-8.1.4.1-4" class="pilcrow">¶</a></p>
-<div class="sourcecode" id="section-8.1.4.1-5">
+<div class="alignLeft art-abnf art-text artwork" id="section-8.1.4.1-5">
 <pre>
-SingleHeader = HID PhoenixString
+SingleHeader = HID StringRef
 </pre><a href="#section-8.1.4.1-5" class="pilcrow">¶</a>
 </div>
 </section>
@@ -3800,39 +4205,38 @@ SingleHeader = HID PhoenixString
 <p id="section-8.1.4.2-3">
  This is sent as a 32-bit unsigned integer in network byte order.<a href="#section-8.1.4.2-3" class="pilcrow">¶</a></p>
 <span id="name-using-existing-header-index"></span><div id="Interisting-S0-03">
-<figure id="figure-5">
+<figure id="figure-8">
               <div id="section-8.1.4.2-4.1">
                 <div class="alignLeft art-svg artwork" id="section-8.1.4.2-4.1.2">
-<svg xmlns="http://www.w3.org/2000/svg" version="1.1" height="128" width="264" viewBox="0 0 264 128" class="diagram" text-anchor="middle" font-family="monospace" font-size="13px" stroke-linecap="round">
+<svg xmlns="http://www.w3.org/2000/svg" version="1.1" height="128" width="288" viewBox="0 0 288 128" class="diagram" text-anchor="middle" font-family="monospace" font-size="13px" stroke-linecap="round">
                     <path d="M 8,16 L 8,112" fill="none" stroke="black"></path>
-                    <path d="M 80,16 L 80,112" fill="none" stroke="black"></path>
+                    <path d="M 80,16 L 80,80" fill="none" stroke="black"></path>
+                    <path d="M 280,80 L 280,112" fill="none" stroke="black"></path>
                     <path d="M 8,16 L 80,16" fill="none" stroke="black"></path>
                     <path d="M 8,48 L 80,48" fill="none" stroke="black"></path>
-                    <path d="M 8,80 L 80,80" fill="none" stroke="black"></path>
-                    <path d="M 8,112 L 80,112" fill="none" stroke="black"></path>
+                    <path d="M 8,80 L 280,80" fill="none" stroke="black"></path>
+                    <path d="M 8,112 L 280,112" fill="none" stroke="black"></path>
                     <g class="text">
                       <text x="44" y="36">0x01</text>
                       <text x="144" y="36">UseExistingOp</text>
                       <text x="40" y="68">LID</text>
                       <text x="136" y="68">The List ID</text>
                       <text x="44" y="100">0x00</text>
-                      <text x="176" y="100">Included Header Count</text>
                     </g>
                   </svg><a href="#section-8.1.4.2-4.1.2" class="pilcrow">¶</a>
 </div>
 </div>
-<figcaption><a href="#figure-5" class="selfRef">Figure 5</a>:
+<figcaption><a href="#figure-8" class="selfRef">Figure 8</a>:
 <a href="#name-using-existing-header-index" class="selfRef">Using Existing Header Index by List ID (LID)</a>
               </figcaption></figure>
 </div>
 <p id="section-8.1.4.2-5">
  ABNF:<a href="#section-8.1.4.2-5" class="pilcrow">¶</a></p>
-<div class="sourcecode" id="section-8.1.4.2-6">
+<div class="alignLeft art-abnf art-text artwork" id="section-8.1.4.2-6">
 <pre>
 UseExistingOp      = 0x01:8
 
 UseExistingList:32 = UseExistingOp LID 0x00:8
-
 </pre><a href="#section-8.1.4.2-6" class="pilcrow">¶</a>
 </div>
 </section>
@@ -3848,7 +4252,7 @@ UseExistingList:32 = UseExistingOp LID 0x00:8
  for the following MIME headers (1) From, and (2) Subject.
  And for the following Body part headers (1) Content-Type.<a href="#section-8.1.4.3-1" class="pilcrow">¶</a></p>
 <span id="name-example-setting-a-list"></span><div id="Interisting-S0-04">
-<figure id="figure-6">
+<figure id="figure-9">
               <div id="section-8.1.4.3-2.1">
                 <div class="alignLeft art-svg artwork" id="section-8.1.4.3-2.1.2">
 <svg xmlns="http://www.w3.org/2000/svg" version="1.1" height="496" width="568" viewBox="0 0 568 496" class="diagram" text-anchor="middle" font-family="monospace" font-size="13px" stroke-linecap="round">
@@ -3946,7 +4350,7 @@ UseExistingList:32 = UseExistingOp LID 0x00:8
                   </svg><a href="#section-8.1.4.3-2.1.2" class="pilcrow">¶</a>
 </div>
 </div>
-<figcaption><a href="#figure-6" class="selfRef">Figure 6</a>:
+<figcaption><a href="#figure-9" class="selfRef">Figure 9</a>:
 <a href="#name-example-setting-a-list" class="selfRef">Example Setting a List</a>
               </figcaption></figure>
 </div>
@@ -3956,7 +4360,7 @@ UseExistingList:32 = UseExistingOp LID 0x00:8
 <li class="normal" id="section-8.1.4.3-4.1">
                 <p id="section-8.1.4.3-4.1.1">
  (a): A 32-bit unsigned integer in network byte order
- as described in <a href="#Interisting-S0-01" class="auto internal xref">Figure 3</a>.<a href="#section-8.1.4.3-4.1.1" class="pilcrow">¶</a></p>
+ as described in <a href="#Interisting-S0-01" class="auto internal xref">Figure 6</a>.<a href="#section-8.1.4.3-4.1.1" class="pilcrow">¶</a></p>
 <p id="section-8.1.4.3-4.1.2">The first 8-bits are zero.<a href="#section-8.1.4.3-4.1.2" class="pilcrow">¶</a></p>
 <p id="section-8.1.4.3-4.1.3">The IndexOP of zero, which means defining a list.<a href="#section-8.1.4.3-4.1.3" class="pilcrow">¶</a></p>
 <p id="section-8.1.4.3-4.1.4">
@@ -3966,7 +4370,7 @@ UseExistingList:32 = UseExistingOp LID 0x00:8
               <li class="normal" id="section-8.1.4.3-4.2">
                 <p id="section-8.1.4.3-4.2.1">
  (b): A 32-bit unsigned integer in network byte order
- as described in <a href="#Interisting-S0-02" class="auto internal xref">Figure 4</a>.<a href="#section-8.1.4.3-4.2.1" class="pilcrow">¶</a></p>
+ as described in <a href="#Interisting-S0-02" class="auto internal xref">Figure 7</a>.<a href="#section-8.1.4.3-4.2.1" class="pilcrow">¶</a></p>
 <p id="section-8.1.4.3-4.2.2">
  The header ID that the client and server will use to
  to identify the "From" header name will be zero (0)
@@ -3986,7 +4390,7 @@ UseExistingList:32 = UseExistingOp LID 0x00:8
               <li class="normal" id="section-8.1.4.3-4.4">
                 <p id="section-8.1.4.3-4.4.1">
  (d): A 32-bit unsigned integer in network byte order
- as described in <a href="#Interisting-S0-02" class="auto internal xref">Figure 4</a>.<a href="#section-8.1.4.3-4.4.1" class="pilcrow">¶</a></p>
+ as described in <a href="#Interisting-S0-02" class="auto internal xref">Figure 7</a>.<a href="#section-8.1.4.3-4.4.1" class="pilcrow">¶</a></p>
 <p id="section-8.1.4.3-4.4.2">
  The header ID that the client and server will use to
  to identify the "Subject" header name will be one (1)
@@ -4027,113 +4431,58 @@ UseExistingList:32 = UseExistingOp LID 0x00:8
 </div>
 </section>
 </div>
-<div id="PhoenixString">
 <section id="section-8.2">
-        <h3 id="name-phoenixstring">
-<a href="#section-8.2" class="section-number selfRef">8.2. </a><a href="#name-phoenixstring" class="section-name selfRef">PhoenixString</a>
+        <h3 id="name-mime-folder-index">
+<a href="#section-8.2" class="section-number selfRef">8.2. </a><a href="#name-mime-folder-index" class="section-name selfRef">MIME Folder Index</a>
         </h3>
 <p id="section-8.2-1">
- This protocol references the strings by octet offset into the entire
- message.
- All strings can be referenced by using a total of 8 octets.
- A Phoenix string consists of two parts:<a href="#section-8.2-1" class="pilcrow">¶</a></p>
-<ul class="normal">
-<li class="normal" id="section-8.2-2.1">
- Offset: A 32-bit unsigned integer in network byte order.
- The octet count to the start of the string with zero being the
- first octet in the message.<a href="#section-8.2-2.1" class="pilcrow">¶</a>
-</li>
-          <li class="normal" id="section-8.2-2.2">
- Length: The length in octets of the string.
- A 32-bit unsigned integer in network byte order.<a href="#section-8.2-2.2" class="pilcrow">¶</a>
-</li>
-        </ul>
-<p id="section-8.2-3">
- A Phoenix string over the wire is 8 octets in size.<a href="#section-8.2-3" class="pilcrow">¶</a></p>
-<span id="name-phoenix-string-format"></span><div id="PhoenixStringFigure">
-<figure id="figure-7">
-          <div id="section-8.2-4.1">
-            <div class="alignLeft art-svg artwork" id="section-8.2-4.1.2">
-<svg xmlns="http://www.w3.org/2000/svg" version="1.1" height="128" width="296" viewBox="0 0 296 128" class="diagram" text-anchor="middle" font-family="monospace" font-size="13px" stroke-linecap="round">
-                <path d="M 8,16 L 8,112" fill="none" stroke="black"></path>
-                <path d="M 288,16 L 288,80" fill="none" stroke="black"></path>
-                <path d="M 8,16 L 288,16" fill="none" stroke="black"></path>
-                <path d="M 8,48 L 288,48" fill="none" stroke="black"></path>
-                <path d="M 8,80 L 288,80" fill="none" stroke="black"></path>
-                <path d="M 8,112 L 288,112" fill="none" stroke="black"></path>
-                <g class="text">
-                  <text x="44" y="36">OFFSET</text>
-                  <text x="44" y="68">LENGTH</text>
-                  <text x="68" y="100">payload.....</text>
-                </g>
-              </svg><a href="#section-8.2-4.1.2" class="pilcrow">¶</a>
-</div>
-</div>
-<figcaption><a href="#figure-7" class="selfRef">Figure 7</a>:
-<a href="#name-phoenix-string-format" class="selfRef">Phoenix String Format</a>
-          </figcaption></figure>
-</div>
-<p id="section-8.2-5">
- ABNF:<a href="#section-8.2-5" class="pilcrow">¶</a></p>
-<div class="sourcecode" id="section-8.2-6">
-<pre>
-PhoenixString = Offset:32 Length:32 String
-</pre><a href="#section-8.2-6" class="pilcrow">¶</a>
-</div>
-</section>
-</div>
-<section id="section-8.3">
-        <h3 id="name-mime-folder-index">
-<a href="#section-8.3" class="section-number selfRef">8.3. </a><a href="#name-mime-folder-index" class="section-name selfRef">MIME Folder Index</a>
-        </h3>
-<p id="section-8.3-1">
  In this specification, a MIME folder is also called a folder.
  And can be files containing MIME objects on a disk that have
- a defined order, or sequence of MIME objects in one file.<a href="#section-8.3-1" class="pilcrow">¶</a></p>
-<p id="section-8.3-2">
+ a defined order, or sequence of MIME objects in one file.<a href="#section-8.2-1" class="pilcrow">¶</a></p>
+<p id="section-8.2-2">
  A folder index is a summary of the contents of a MIME folder.
  It may include the basic header information.
  It does include location information provided as the octet count to the
- start of the beginning of the related target data.<a href="#section-8.3-2" class="pilcrow">¶</a></p>
+ start of the beginning of the related target data.<a href="#section-8.2-2" class="pilcrow">¶</a></p>
 <ul class="normal">
-<li class="normal" id="section-8.3-3.1">
- An index is an unsigned 32-bit integer in network byte order.<a href="#section-8.3-3.1" class="pilcrow">¶</a>
+<li class="normal" id="section-8.2-3.1">
+ An index is an unsigned 32-bit integer in network byte order.<a href="#section-8.2-3.1" class="pilcrow">¶</a>
 </li>
-          <li class="normal" id="section-8.3-3.2">
- A length is an unsigned 32-bit integer in network byte order.<a href="#section-8.3-3.2" class="pilcrow">¶</a>
+          <li class="normal" id="section-8.2-3.2">
+ A length is an unsigned 32-bit integer in network byte order.<a href="#section-8.2-3.2" class="pilcrow">¶</a>
 </li>
         </ul>
-<p id="section-8.3-4">
+<p id="section-8.2-4">
  For example, if a MIME folder contains 100 MIME messages, then
  the folder index will have 100 message indexes.
  Each message will have header indexes for the interested headers.
  Each message index will contain 1 or more body part indexes.
- Each body part will have header indexes with zero (0) or more entries.<a href="#section-8.3-4" class="pilcrow">¶</a></p>
-<section id="section-8.3.1">
+ Each body part will have header indexes with zero (0) or more entries.<a href="#section-8.2-4" class="pilcrow">¶</a></p>
+<section id="section-8.2.1">
           <h4 id="name-folder-index-header">
-<a href="#section-8.3.1" class="section-number selfRef">8.3.1. </a><a href="#name-folder-index-header" class="section-name selfRef">Folder Index Header</a>
+<a href="#section-8.2.1" class="section-number selfRef">8.2.1. </a><a href="#name-folder-index-header" class="section-name selfRef">Folder Index Header</a>
           </h4>
-<p id="section-8.3.1-1">
- A folder index consists of:<a href="#section-8.3.1-1" class="pilcrow">¶</a></p>
+<p id="section-8.2.1-1">
+ A folder index consists of:<a href="#section-8.2.1-1" class="pilcrow">¶</a></p>
 <ul class="normal">
-<li class="normal" id="section-8.3.1-2.1">
+<li class="normal" id="section-8.2.1-2.1">
  The entire length of the index as a 32-bit unsigned
  integer in network byte order of what follows this value.
  Allowing the recipient of this index to do one read
- and process later.<a href="#section-8.3.1-2.1" class="pilcrow">¶</a>
+ and process later.<a href="#section-8.2.1-2.1" class="pilcrow">¶</a>
 </li>
-            <li class="normal" id="section-8.3.1-2.2">
+            <li class="normal" id="section-8.2.1-2.2">
  The number of message indexes in this folder index.
- As an unsigned 32-bit integer in network byte order.<a href="#section-8.3.1-2.2" class="pilcrow">¶</a>
+ As an unsigned 32-bit integer in network byte order.<a href="#section-8.2.1-2.2" class="pilcrow">¶</a>
 </li>
           </ul>
-<p id="section-8.3.1-3">
+<p id="section-8.2.1-3">
  The index header is 8 octets, that is followed by
- the each message index:<a href="#section-8.3.1-3" class="pilcrow">¶</a></p>
+ the each message index:<a href="#section-8.2.1-3" class="pilcrow">¶</a></p>
 <span id="name-folder-index"></span><div id="FolderIndexHeaderFigure">
-<figure id="figure-8">
-            <div id="section-8.3.1-4.1">
-              <div class="alignLeft art-svg artwork" id="section-8.3.1-4.1.2">
+<figure id="figure-10">
+            <div id="section-8.2.1-4.1">
+              <div class="alignLeft art-svg artwork" id="section-8.2.1-4.1.2">
 <svg xmlns="http://www.w3.org/2000/svg" version="1.1" height="128" width="304" viewBox="0 0 304 128" class="diagram" text-anchor="middle" font-family="monospace" font-size="13px" stroke-linecap="round">
                   <path d="M 8,16 L 8,112" fill="none" stroke="black"></path>
                   <path d="M 296,16 L 296,80" fill="none" stroke="black"></path>
@@ -4146,46 +4495,46 @@ PhoenixString = Offset:32 Length:32 String
                     <text x="140" y="68">32-bit Message Indexes Count</text>
                     <text x="132" y="100">Array of Message Indexes ...</text>
                   </g>
-                </svg><a href="#section-8.3.1-4.1.2" class="pilcrow">¶</a>
+                </svg><a href="#section-8.2.1-4.1.2" class="pilcrow">¶</a>
 </div>
 </div>
-<figcaption><a href="#figure-8" class="selfRef">Figure 8</a>:
+<figcaption><a href="#figure-10" class="selfRef">Figure 10</a>:
 <a href="#name-folder-index" class="selfRef">Folder Index</a>
             </figcaption></figure>
 </div>
-<p id="section-8.3.1-5">
- ABNF:<a href="#section-8.3.1-5" class="pilcrow">¶</a></p>
-<div class="sourcecode" id="section-8.3.1-6">
+<p id="section-8.2.1-5">
+ ABNF:<a href="#section-8.2.1-5" class="pilcrow">¶</a></p>
+<div class="alignLeft art-abnf art-text artwork" id="section-8.2.1-6">
 <pre>
 FolderIndexHeader = FolderIndexSize:32 MessageCount:32 ArrayOfMsgIndex
-</pre><a href="#section-8.3.1-6" class="pilcrow">¶</a>
+</pre><a href="#section-8.2.1-6" class="pilcrow">¶</a>
 </div>
-<p id="section-8.3.1-7">
+<p id="section-8.2.1-7">
  The header is followed by an array of message indexes.
  They are an ordered list of references to each message.
- In the order they appear in the folder:<a href="#section-8.3.1-7" class="pilcrow">¶</a></p>
+ In the order they appear in the folder:<a href="#section-8.2.1-7" class="pilcrow">¶</a></p>
 </section>
-<section id="section-8.3.2">
+<section id="section-8.2.2">
           <h4 id="name-message-index">
-<a href="#section-8.3.2" class="section-number selfRef">8.3.2. </a><a href="#name-message-index" class="section-name selfRef">Message Index</a>
+<a href="#section-8.2.2" class="section-number selfRef">8.2.2. </a><a href="#name-message-index" class="section-name selfRef">Message Index</a>
           </h4>
 <ul class="normal">
-<li class="normal" id="section-8.3.2-1.1">
+<li class="normal" id="section-8.2.2-1.1">
  A 32-bit unsigned integer in network byte order that is
  the offset into the folder of the message.
  A Message offset is unique in a MIME folder, it is used both as
  an offset into the MIME folder,
- and as a unique ID within a MIME folder for a message.<a href="#section-8.3.2-1.1" class="pilcrow">¶</a>
+ and as a unique ID within a MIME folder for a message.<a href="#section-8.2.2-1.1" class="pilcrow">¶</a>
 </li>
-            <li class="normal" id="section-8.3.2-1.2">
+            <li class="normal" id="section-8.2.2-1.2">
  An a length of the message as a 32-bit unsigned integer
- in network byte order.<a href="#section-8.3.2-1.2" class="pilcrow">¶</a>
+ in network byte order.<a href="#section-8.2.2-1.2" class="pilcrow">¶</a>
 </li>
           </ul>
 <span id="name-message-index-2"></span><div id="MessageIndexFigure">
-<figure id="figure-9">
-            <div id="section-8.3.2-2.1">
-              <div class="alignLeft art-svg artwork" id="section-8.3.2-2.1.2">
+<figure id="figure-11">
+            <div id="section-8.2.2-2.1">
+              <div class="alignLeft art-svg artwork" id="section-8.2.2-2.1.2">
 <svg xmlns="http://www.w3.org/2000/svg" version="1.1" height="128" width="296" viewBox="0 0 296 128" class="diagram" text-anchor="middle" font-family="monospace" font-size="13px" stroke-linecap="round">
                   <path d="M 8,16 L 8,112" fill="none" stroke="black"></path>
                   <path d="M 288,16 L 288,80" fill="none" stroke="black"></path>
@@ -4198,94 +4547,94 @@ FolderIndexHeader = FolderIndexSize:32 MessageCount:32 ArrayOfMsgIndex
                     <text x="132" y="68">32-bit unsigned LENGTH</text>
                     <text x="152" y="100">Header Index List Description ...</text>
                   </g>
-                </svg><a href="#section-8.3.2-2.1.2" class="pilcrow">¶</a>
+                </svg><a href="#section-8.2.2-2.1.2" class="pilcrow">¶</a>
 </div>
 </div>
-<figcaption><a href="#figure-9" class="selfRef">Figure 9</a>:
+<figcaption><a href="#figure-11" class="selfRef">Figure 11</a>:
 <a href="#name-message-index-2" class="selfRef">Message Index</a>
             </figcaption></figure>
 </div>
-<p id="section-8.3.2-3">
- ABNF:<a href="#section-8.3.2-3" class="pilcrow">¶</a></p>
-<div class="sourcecode" id="section-8.3.2-4">
+<p id="section-8.2.2-3">
+ ABNF:<a href="#section-8.2.2-3" class="pilcrow">¶</a></p>
+<div class="alignLeft art-abnf art-text artwork" id="section-8.2.2-4">
 <pre>
 MessageIndex = OfffsetIntoFolder:32 MessageLength:32 ArrayOfHeaderIndex
 
-ArrayOfMsgIndex = MessageIndex*
-</pre><a href="#section-8.3.2-4" class="pilcrow">¶</a>
+ArrayOfMsgIndex = *MessageIndex
+</pre><a href="#section-8.2.2-4" class="pilcrow">¶</a>
 </div>
-<p id="section-8.3.2-5">
+<p id="section-8.2.2-5">
  For each message index is an ordered list of interested headers.
  The interested header list is assignable by the client and body
  part indexes.
  It consists of offsets to the interested headers and associated value.
  Each interested header can be indexed with nine (9) octets.
- and consists of:<a href="#section-8.3.2-5" class="pilcrow">¶</a></p>
+ and consists of:<a href="#section-8.2.2-5" class="pilcrow">¶</a></p>
 </section>
-<section id="section-8.3.3">
+<section id="section-8.2.3">
           <h4 id="name-header-index">
-<a href="#section-8.3.3" class="section-number selfRef">8.3.3. </a><a href="#name-header-index" class="section-name selfRef">Header Index</a>
+<a href="#section-8.2.3" class="section-number selfRef">8.2.3. </a><a href="#name-header-index" class="section-name selfRef">Header Index</a>
           </h4>
 <ul class="normal">
-<li class="normal" id="section-8.3.3-1.1">
+<li class="normal" id="section-8.2.3-1.1">
  ID-CNT:
  A count of matched headers.
  Only matched headers will be included.
  If they are not included, no such header existed
- in the object.<a href="#section-8.3.3-1.1" class="pilcrow">¶</a>
+ in the object.<a href="#section-8.2.3-1.1" class="pilcrow">¶</a>
 </li>
-            <li class="normal" id="section-8.3.3-1.2">
-              <p id="section-8.3.3-1.2.1">
+            <li class="normal" id="section-8.2.3-1.2">
+              <p id="section-8.2.3-1.2.1">
  The number of body parts in this object.
  An unsigned 8-bit number.
- With MIME, body parts may contain body parts.<a href="#section-8.3.3-1.2.1" class="pilcrow">¶</a></p>
-<p id="section-8.3.3-1.2.2">
+ With MIME, body parts may contain body parts.<a href="#section-8.2.3-1.2.1" class="pilcrow">¶</a></p>
+<p id="section-8.2.3-1.2.2">
  Any MIME preamble and epilogue are not counted as body parts
  A preamble, if it exists, can be easily be calculated as it starts
  as the first octet after the header area.
  And the epilogue, if it exists, can be calculated as starting as
  the first
- octet after the last MIME boundary.<a href="#section-8.3.3-1.2.2" class="pilcrow">¶</a></p>
+ octet after the last MIME boundary.<a href="#section-8.2.3-1.2.2" class="pilcrow">¶</a></p>
 </li>
-            <li class="normal" id="section-8.3.3-1.3">
+            <li class="normal" id="section-8.2.3-1.3">
  Followed by an array of ID-CNT 8-bit client assigned HID values
  that matched.
  Padded to round up to 32-bits.
- The unused bits are ignored and shown as zero in this specification.<a href="#section-8.3.3-1.3" class="pilcrow">¶</a>
+ The unused bits are ignored and shown as zero in this specification.<a href="#section-8.2.3-1.3" class="pilcrow">¶</a>
 </li>
           </ul>
-<p id="section-8.3.3-2">
+<p id="section-8.2.3-2">
  A single header index consists of the list description,
  followed by the index values.
- There are two header indexes in each Message index.<a href="#section-8.3.3-2" class="pilcrow">¶</a></p>
-<ol start="1" type="1" class="normal type-1" id="section-8.3.3-3">
-            <li id="section-8.3.3-3.1">The first is for the MIME object itself.<a href="#section-8.3.3-3.1" class="pilcrow">¶</a>
+ There are two header indexes in each Message index.<a href="#section-8.2.3-2" class="pilcrow">¶</a></p>
+<ol start="1" type="1" class="normal type-1" id="section-8.2.3-3">
+            <li id="section-8.2.3-3.1">The first is for the MIME object itself.<a href="#section-8.2.3-3.1" class="pilcrow">¶</a>
 </li>
-            <li id="section-8.3.3-3.2">
+            <li id="section-8.2.3-3.2">
  The second is for the objects Body Parts.
  This part will not exists exist when it is an RFC-822
  style message or has no body parts.
  Followed by the header index.
  This second part also include an offset to the start
- of the body part itself in the MIME object.<a href="#section-8.3.3-3.2" class="pilcrow">¶</a>
+ of the body part itself in the MIME object.<a href="#section-8.2.3-3.2" class="pilcrow">¶</a>
 </li>
           </ol>
-<p id="section-8.3.3-4">
+<p id="section-8.2.3-4">
  A list description is one 8-bit result count,
- followed by the list of matching header ID's (HID).<a href="#section-8.3.3-4" class="pilcrow">¶</a></p>
-<p id="section-8.3.3-5">
+ followed by the list of matching header ID's (HID).<a href="#section-8.2.3-4" class="pilcrow">¶</a></p>
+<p id="section-8.2.3-5">
  If the list description is not a multiple of 32-bits
  then padding is added and the extra are ignored and shown as
- zero in this specification.<a href="#section-8.3.3-5" class="pilcrow">¶</a></p>
-<div class="sourcecode" id="section-8.3.3-6">
+ zero in this specification.<a href="#section-8.2.3-5" class="pilcrow">¶</a></p>
+<div class="alignLeft art-abnf art-text artwork" id="section-8.2.3-6">
 <pre>
 -Meta-Data-: Seen,Answered,$NotJunk
-</pre><a href="#section-8.3.3-6" class="pilcrow">¶</a>
+</pre><a href="#section-8.2.3-6" class="pilcrow">¶</a>
 </div>
 <span id="name-header-index-2"></span><div id="HeaderIndex2">
-<figure id="figure-10">
-            <div id="section-8.3.3-7.1">
-              <div class="alignLeft art-svg artwork" id="section-8.3.3-7.1.2">
+<figure id="figure-12">
+            <div id="section-8.2.3-7.1">
+              <div class="alignLeft art-svg artwork" id="section-8.2.3-7.1.2">
 <svg xmlns="http://www.w3.org/2000/svg" version="1.1" height="448" width="352" viewBox="0 0 352 448" class="diagram" text-anchor="middle" font-family="monospace" font-size="13px" stroke-linecap="round">
                   <path d="M 8,64 L 8,192" fill="none" stroke="black"></path>
                   <path d="M 8,272 L 8,432" fill="none" stroke="black"></path>
@@ -4308,7 +4657,7 @@ ArrayOfMsgIndex = MessageIndex*
                     <text x="48" y="116">HID-CNT</text>
                     <text x="124" y="132">........</text>
                     <text x="84" y="148">Array of HID ...</text>
-                    <text x="128" y="180">Array of Phoenix String ...</text>
+                    <text x="108" y="180">Array of StringRef ...</text>
                     <text x="176" y="228">One for each Body-CNT in the Message Index.</text>
                     <text x="84" y="244">The body part Index:</text>
                     <text x="156" y="292">32-bit Offset, start of Body Part|</text>
@@ -4316,21 +4665,21 @@ ArrayOfMsgIndex = MessageIndex*
                     <text x="48" y="356">HID-CNT</text>
                     <text x="124" y="372">........</text>
                     <text x="84" y="388">Array of HID ...</text>
-                    <text x="128" y="420">Array of Phoenix String ...</text>
+                    <text x="108" y="420">Array of StringRef ...</text>
                   </g>
-                </svg><a href="#section-8.3.3-7.1.2" class="pilcrow">¶</a>
+                </svg><a href="#section-8.2.3-7.1.2" class="pilcrow">¶</a>
 </div>
 </div>
-<figcaption><a href="#figure-10" class="selfRef">Figure 10</a>:
+<figcaption><a href="#figure-12" class="selfRef">Figure 12</a>:
 <a href="#name-header-index-2" class="selfRef">Header Index</a>
             </figcaption></figure>
 </div>
-<p id="section-8.3.3-8">
- ABNF:<a href="#section-8.3.3-8" class="pilcrow">¶</a></p>
-<div class="sourcecode" id="section-8.3.3-9">
+<p id="section-8.2.3-8">
+ ABNF:<a href="#section-8.2.3-8" class="pilcrow">¶</a></p>
+<div class="alignLeft art-abnf art-text artwork" id="section-8.2.3-9">
 <pre>
-HeaderIndex          = HeaderIndexHeader:32 ArrayOfHID*
-                       PhoenixString* BodyPartIndex*
+HeaderIndex          = HeaderIndexHeader:32 *ArrayOfHID
+                       *StringRef *BodyPartIndex
 
                        ; One HID (HeaderID) for each match header
                        ; in the LID provided. Padded out to multiples
@@ -4340,10 +4689,10 @@ HeaderIndexHeader:32 = ID-CNT:8 Body-Count:8
                        / (HID 0x00:8)
                        / (0x00:8 0x00:8)
 
-ArrayOfHid           = HIDEntry*
+ArrayOfHid           = *HIDEntry
 
-BodyPartIndex        = BodyPartOffset:32 HeaderIndexHeader:32 PhoenixString*
-                       BodyPartIndex*
+BodyPartIndex        = BodyPartOffset:32 HeaderIndexHeader:32 *StringRef
+                       *BodyPartIndex
 
 ID-CNT:8               ; The number of headers found in the
                        ; MIME object and requested in the interested
@@ -4356,64 +4705,64 @@ HidEntry             = (HID:8 HID:8 HID:8 HID:8)
                        / (HID:8 HID:8 HID:8 0x00:8)
                        / (HID:8 HID:8 0x00:8 0x00:8)
                        / (HID:8 0x00:8 0x00:8 0x00:8)
-</pre><a href="#section-8.3.3-9" class="pilcrow">¶</a>
+</pre><a href="#section-8.2.3-9" class="pilcrow">¶</a>
 </div>
-<p id="section-8.3.3-10">
- Where:<a href="#section-8.3.3-10" class="pilcrow">¶</a></p>
-<p id="section-8.3.3-11">
+<p id="section-8.2.3-10">
+ Where:<a href="#section-8.2.3-10" class="pilcrow">¶</a></p>
+<p id="section-8.2.3-11">
  HeaderIndex: The header index starts with a 32-bit unsigned
- integer in network byte order, the HeaderIndex:32.<a href="#section-8.3.3-11" class="pilcrow">¶</a></p>
-<p id="section-8.3.3-12">
+ integer in network byte order, the HeaderIndex:32.<a href="#section-8.2.3-11" class="pilcrow">¶</a></p>
+<p id="section-8.2.3-12">
  HeaderIndex:32: Contains 0, 1, or 2 HID values.
- They are in the order found in the object.<a href="#section-8.3.3-12" class="pilcrow">¶</a></p>
-<p id="section-8.3.3-13">
+ They are in the order found in the object.<a href="#section-8.2.3-12" class="pilcrow">¶</a></p>
+<p id="section-8.2.3-13">
  ArrayIfHID: Keeps repeating until all of the
  headers in the list have been found in the message.
- The last one pads with zeros when needed.<a href="#section-8.3.3-13" class="pilcrow">¶</a></p>
-<p id="section-8.3.3-14">
+ The last one pads with zeros when needed.<a href="#section-8.2.3-13" class="pilcrow">¶</a></p>
+<p id="section-8.2.3-14">
  BodyPartIndex: When the object has body parts,
  there will be a BodyPartIndex for each body part,
  in the order they are in the object.
  The first 32-bits are the offset to the start
- of the body part. This does not include any boundary.<a href="#section-8.3.3-14" class="pilcrow">¶</a></p>
-<p id="section-8.3.3-15">
+ of the body part. This does not include any boundary.<a href="#section-8.2.3-14" class="pilcrow">¶</a></p>
+<p id="section-8.2.3-15">
  Body parts themselves may contain body parts,
- they are recursively included as needed.<a href="#section-8.3.3-15" class="pilcrow">¶</a></p>
+ they are recursively included as needed.<a href="#section-8.2.3-15" class="pilcrow">¶</a></p>
 </section>
-<section id="section-8.3.4">
+<section id="section-8.2.4">
           <h4 id="name-header-index-example-1">
-<a href="#section-8.3.4" class="section-number selfRef">8.3.4. </a><a href="#name-header-index-example-1" class="section-name selfRef">Header Index Example 1</a>
+<a href="#section-8.2.4" class="section-number selfRef">8.2.4. </a><a href="#name-header-index-example-1" class="section-name selfRef">Header Index Example 1</a>
           </h4>
-<p id="section-8.3.4-1">
+<p id="section-8.2.4-1">
  For example, if the client requested MIME object indexes for the
  "From", "Subject", "To", "Message-ID",
  "Content-Type", "MIME-Version", and "Date"
- header values.<a href="#section-8.3.4-1" class="pilcrow">¶</a></p>
-<p id="section-8.3.4-2">
+ header values.<a href="#section-8.2.4-1" class="pilcrow">¶</a></p>
+<p id="section-8.2.4-2">
  Assume this is an RFC-822 message with no body parts.
  So the body part header index has a count of zero (0).
  And the HID values assigned by the client when opening
- the folder are:<a href="#section-8.3.4-2" class="pilcrow">¶</a></p>
+ the folder are:<a href="#section-8.2.4-2" class="pilcrow">¶</a></p>
 <ul class="normal">
-<li class="normal" id="section-8.3.4-3.1">From: 0<a href="#section-8.3.4-3.1" class="pilcrow">¶</a>
+<li class="normal" id="section-8.2.4-3.1">From: 0<a href="#section-8.2.4-3.1" class="pilcrow">¶</a>
 </li>
-            <li class="normal" id="section-8.3.4-3.2">Subject: 1<a href="#section-8.3.4-3.2" class="pilcrow">¶</a>
+            <li class="normal" id="section-8.2.4-3.2">Subject: 1<a href="#section-8.2.4-3.2" class="pilcrow">¶</a>
 </li>
-            <li class="normal" id="section-8.3.4-3.3">To: 2<a href="#section-8.3.4-3.3" class="pilcrow">¶</a>
+            <li class="normal" id="section-8.2.4-3.3">To: 2<a href="#section-8.2.4-3.3" class="pilcrow">¶</a>
 </li>
-            <li class="normal" id="section-8.3.4-3.4">Message-ID: 3<a href="#section-8.3.4-3.4" class="pilcrow">¶</a>
+            <li class="normal" id="section-8.2.4-3.4">Message-ID: 3<a href="#section-8.2.4-3.4" class="pilcrow">¶</a>
 </li>
-            <li class="normal" id="section-8.3.4-3.5">Content-Type: 4<a href="#section-8.3.4-3.5" class="pilcrow">¶</a>
+            <li class="normal" id="section-8.2.4-3.5">Content-Type: 4<a href="#section-8.2.4-3.5" class="pilcrow">¶</a>
 </li>
-            <li class="normal" id="section-8.3.4-3.6">Data: 5<a href="#section-8.3.4-3.6" class="pilcrow">¶</a>
+            <li class="normal" id="section-8.2.4-3.6">Data: 5<a href="#section-8.2.4-3.6" class="pilcrow">¶</a>
 </li>
-            <li class="normal" id="section-8.3.4-3.7">MIME-Version: 6<a href="#section-8.3.4-3.7" class="pilcrow">¶</a>
+            <li class="normal" id="section-8.2.4-3.7">MIME-Version: 6<a href="#section-8.2.4-3.7" class="pilcrow">¶</a>
 </li>
           </ul>
-<p id="section-8.3.4-4">
+<p id="section-8.2.4-4">
  In the Message each line is terminated with a carriage
- return and line feed:<a href="#section-8.3.4-4" class="pilcrow">¶</a></p>
-<div class="sourcecode" id="section-8.3.4-5">
+ return and line feed:<a href="#section-8.2.4-4" class="pilcrow">¶</a></p>
+<div class="sourcecode" id="section-8.2.4-5">
 <pre>
 From: Doug@example.com
 To: Notices@example.com, Supervisors@example.com, Dave@example.com
@@ -4424,12 +4773,12 @@ Content-Type: text/plain
 
 A new draft has been published.
 
-</pre><a href="#section-8.3.4-5" class="pilcrow">¶</a>
+</pre><a href="#section-8.2.4-5" class="pilcrow">¶</a>
 </div>
 <span id="name-header-index-3"></span><div id="HeaderIndexFigure1">
-<figure id="figure-11">
-            <div id="section-8.3.4-6.1">
-              <div class="alignLeft art-svg artwork" id="section-8.3.4-6.1.2">
+<figure id="figure-13">
+            <div id="section-8.2.4-6.1">
+              <div class="alignLeft art-svg artwork" id="section-8.2.4-6.1.2">
 <svg xmlns="http://www.w3.org/2000/svg" version="1.1" height="640" width="608" viewBox="0 0 608 640" class="diagram" text-anchor="middle" font-family="monospace" font-size="13px" stroke-linecap="round">
                   <path d="M 8,16 L 8,624" fill="none" stroke="black"></path>
                   <path d="M 80,16 L 80,112" fill="none" stroke="black"></path>
@@ -4505,46 +4854,46 @@ A new draft has been published.
                     <text x="148" y="612">10</text>
                     <text x="360" y="612">LENGTH of: 10</text>
                   </g>
-                </svg><a href="#section-8.3.4-6.1.2" class="pilcrow">¶</a>
+                </svg><a href="#section-8.2.4-6.1.2" class="pilcrow">¶</a>
 </div>
 </div>
-<figcaption><a href="#figure-11" class="selfRef">Figure 11</a>:
+<figcaption><a href="#figure-13" class="selfRef">Figure 13</a>:
 <a href="#name-header-index-3" class="selfRef">Header Index</a>
             </figcaption></figure>
 </div>
 </section>
-<section id="section-8.3.5">
+<section id="section-8.2.5">
           <h4 id="name-header-index-example-2">
-<a href="#section-8.3.5" class="section-number selfRef">8.3.5. </a><a href="#name-header-index-example-2" class="section-name selfRef">Header Index Example 2</a>
+<a href="#section-8.2.5" class="section-number selfRef">8.2.5. </a><a href="#name-header-index-example-2" class="section-name selfRef">Header Index Example 2</a>
           </h4>
-<p id="section-8.3.5-1">
+<p id="section-8.2.5-1">
  For example, if the client requested MIME object indexes for the
  "From", "Subject", "To", "MIME-Version", and "Content-Type".
- header values.<a href="#section-8.3.5-1" class="pilcrow">¶</a></p>
-<p id="section-8.3.5-2">
+ header values.<a href="#section-8.2.5-1" class="pilcrow">¶</a></p>
+<p id="section-8.2.5-2">
  And when the folder was opened, the client asked for
- the "Content-Type" header.<a href="#section-8.3.5-2" class="pilcrow">¶</a></p>
-<p id="section-8.3.5-3">
+ the "Content-Type" header.<a href="#section-8.2.5-2" class="pilcrow">¶</a></p>
+<p id="section-8.2.5-3">
  Assume this is a MIME message with two body parts.
  So the body part header index has a count of two (2).
  And the HID values assigned by the client when opening
- the folder are:<a href="#section-8.3.5-3" class="pilcrow">¶</a></p>
+ the folder are:<a href="#section-8.2.5-3" class="pilcrow">¶</a></p>
 <ul class="normal">
-<li class="normal" id="section-8.3.5-4.1">From: 8<a href="#section-8.3.5-4.1" class="pilcrow">¶</a>
+<li class="normal" id="section-8.2.5-4.1">From: 8<a href="#section-8.2.5-4.1" class="pilcrow">¶</a>
 </li>
-            <li class="normal" id="section-8.3.5-4.2">Subject: 12<a href="#section-8.3.5-4.2" class="pilcrow">¶</a>
+            <li class="normal" id="section-8.2.5-4.2">Subject: 12<a href="#section-8.2.5-4.2" class="pilcrow">¶</a>
 </li>
-            <li class="normal" id="section-8.3.5-4.3">To: 4<a href="#section-8.3.5-4.3" class="pilcrow">¶</a>
+            <li class="normal" id="section-8.2.5-4.3">To: 4<a href="#section-8.2.5-4.3" class="pilcrow">¶</a>
 </li>
-            <li class="normal" id="section-8.3.5-4.4">Content-Type: 3<a href="#section-8.3.5-4.4" class="pilcrow">¶</a>
+            <li class="normal" id="section-8.2.5-4.4">Content-Type: 3<a href="#section-8.2.5-4.4" class="pilcrow">¶</a>
 </li>
-            <li class="normal" id="section-8.3.5-4.5">MIME-Version: 9<a href="#section-8.3.5-4.5" class="pilcrow">¶</a>
+            <li class="normal" id="section-8.2.5-4.5">MIME-Version: 9<a href="#section-8.2.5-4.5" class="pilcrow">¶</a>
 </li>
           </ul>
-<p id="section-8.3.5-5">
+<p id="section-8.2.5-5">
  In the Message each line is terminated with a carriage
- return and line feed:<a href="#section-8.3.5-5" class="pilcrow">¶</a></p>
-<div class="sourcecode" id="section-8.3.5-6">
+ return and line feed:<a href="#section-8.2.5-5" class="pilcrow">¶</a></p>
+<div class="sourcecode" id="section-8.2.5-6">
 <pre>
 From: User@example.com
 To: User2@example.com
@@ -4565,12 +4914,12 @@ Content-Transfer-Encoding: quoted-printable
 This is the body text of a sample message.
 --XXXXboundary text--￼
 
-</pre><a href="#section-8.3.5-6" class="pilcrow">¶</a>
+</pre><a href="#section-8.2.5-6" class="pilcrow">¶</a>
 </div>
 <span id="name-header-and-body-part-index"></span><div id="HeaderIndexFigure2">
-<figure id="figure-12">
-            <div id="section-8.3.5-7.1">
-              <div class="alignLeft art-svg artwork" id="section-8.3.5-7.1.2">
+<figure id="figure-14">
+            <div id="section-8.2.5-7.1">
+              <div class="alignLeft art-svg artwork" id="section-8.2.5-7.1.2">
 <svg xmlns="http://www.w3.org/2000/svg" version="1.1" height="816" width="616" viewBox="0 0 616 816" class="diagram" text-anchor="middle" font-family="monospace" font-size="13px" stroke-linecap="round">
                   <path d="M 8,16 L 8,400" fill="none" stroke="black"></path>
                   <path d="M 8,480 L 8,608" fill="none" stroke="black"></path>
@@ -4667,10 +5016,10 @@ This is the body text of a sample message.
                     <text x="148" y="788">26</text>
                     <text x="360" y="788">LENGTH of: 26</text>
                   </g>
-                </svg><a href="#section-8.3.5-7.1.2" class="pilcrow">¶</a>
+                </svg><a href="#section-8.2.5-7.1.2" class="pilcrow">¶</a>
 </div>
 </div>
-<figcaption><a href="#figure-12" class="selfRef">Figure 12</a>:
+<figcaption><a href="#figure-14" class="selfRef">Figure 14</a>:
 <a href="#name-header-and-body-part-index" class="selfRef">Header And Body Part Index</a>
             </figcaption></figure>
 </div>
@@ -4738,13 +5087,16 @@ This is the body text of a sample message.
 <a href="#section-11.2" class="section-number selfRef">11.2. </a><a href="#name-informative-references" class="section-name selfRef">Informative References</a>
         </h3>
 <dl class="references">
-<dt id="exampleRefMin">[exampleRefMin]</dt>
+<dt id="rpcgenopensource">[rpcgenopensource]</dt>
         <dd>
-<span class="refAuthor">Surname [REPLACE], Initials [REPLACE].</span>, <span class="refTitle">"Title [REPLACE]"</span>, <time datetime="2006" class="refDate">2006</time>. </dd>
+<span class="refAuthor">Unknown Author</span>, <span class="refTitle">"rpcgen++ Open Source Tool"</span>, <time datetime="1983-01" class="refDate">January 1983</time>, <span>&lt;<a href="https://github.com/RiverExplorer/Phoenix/tree/main/rpcgen%2B%2B-src">https://github.com/RiverExplorer/Phoenix/tree/main/rpcgen%2B%2B-src</a>&gt;</span>. </dd>
 <dd class="break"></dd>
-<dt id="exampleRefOrg">[exampleRefOrg]</dt>
+<dt id="rpcgendocs">[rpcgendocs]</dt>
+        <dd>
+<span class="refAuthor">Unknown Author</span>, <span class="refTitle">"rpcgen Protocol Compiler"</span>, <time datetime="2025-01" class="refDate">January 2025</time>, <span>&lt;<a href="https://www.ibm.com/docs/en/aix/7.2?topic=call-rpcgen-protocol-compiler">https://www.ibm.com/docs/en/aix/7.2?topic=call-rpcgen-protocol-compiler</a>&gt;</span>. </dd>
+<dd class="break"></dd><dt id="PhoenixImplementation">[PhoenixImplementation]</dt>
       <dd>
-<span class="refAuthor">Organization [REPLACE]</span>, <span class="refTitle">"Title [REPLACE]"</span>, <time datetime="1984" class="refDate">1984</time>, <span>&lt;<a href="http://www.example.com/">http://www.example.com/</a>&gt;</span>. </dd>
+<span class="refAuthor">Royer, D.</span>, <span class="refTitle">"Phoenix Sample Implementation"</span>, <time datetime="2025" class="refDate">2025</time>, <span>&lt;<a href="https://github.com/RiverExplorer/Phoenix">https://github.com/RiverExplorer/Phoenix</a>&gt;</span>. </dd>
 <dd class="break"></dd>
 </dl>
 </section>
@@ -4774,8 +5126,8 @@ This is the body text of a sample message.
  Some values may be reused if they are parameter arguments
  to other commands.
  For example xxxxxx.<a href="#appendix-A-5" class="pilcrow">¶</a></p>
-<table class="center" id="table-6">
-        <caption><a href="#table-6" class="selfRef">Table 6</a></caption>
+<table class="center" id="table-12">
+        <caption><a href="#table-12" class="selfRef">Table 12</a></caption>
 <thead>
           <tr>
             <th class="text-left" rowspan="1" colspan="1">Decimal Value</th>
@@ -4862,8 +5214,8 @@ This is the body text of a sample message.
  Some values may be reused if they are parameter arguments
  to other commands.
  For example xxxxxx.<a href="#appendix-B-5" class="pilcrow">¶</a></p>
-<table class="center" id="table-7">
-        <caption><a href="#table-7" class="selfRef">Table 7</a></caption>
+<table class="center" id="table-13">
+        <caption><a href="#table-13" class="selfRef">Table 13</a></caption>
 <thead>
           <tr>
             <th class="text-left" rowspan="1" colspan="1">Decimal Value</th>
@@ -4916,8 +5268,8 @@ This is the body text of a sample message.
  Some values may be reused if they are parameter arguments
  to other commands.
  For example xxxxxx.<a href="#appendix-C-5" class="pilcrow">¶</a></p>
-<table class="center" id="table-8">
-        <caption><a href="#table-8" class="selfRef">Table 8</a></caption>
+<table class="center" id="table-14">
+        <caption><a href="#table-14" class="selfRef">Table 14</a></caption>
 <thead>
           <tr>
             <th class="text-left" rowspan="1" colspan="1">Decimal Value</th>
@@ -4970,8 +5322,8 @@ This is the body text of a sample message.
  Some values may be reused if they are parameter arguments
  to other commands.
  For example xxxxxx.<a href="#appendix-D-5" class="pilcrow">¶</a></p>
-<table class="center" id="table-9">
-        <caption><a href="#table-9" class="selfRef">Table 9</a></caption>
+<table class="center" id="table-15">
+        <caption><a href="#table-15" class="selfRef">Table 15</a></caption>
 <thead>
           <tr>
             <th class="text-left" rowspan="1" colspan="1">Decimal Value</th>
@@ -6625,7 +6977,7 @@ class IoVec
       </h2>
 <address class="vcard">
         <div dir="auto" class="left"><span class="fn nameRole">Doug Royer</span></div>
-<div dir="auto" class="left"><span class="org">RiverExplorer Games LLC</span></div>
+<div dir="auto" class="left"><span class="org">RiverExplorer LLC</span></div>
 <div dir="auto" class="left"><span class="street-address">848 N. Rainbow Blvd #1120</span></div>
 <div dir="auto" class="left">
 <span class="locality">Las Vegas</span>, <span class="region">Nevada</span> <span class="postal-code">89107</span>
@@ -6641,7 +6993,7 @@ class IoVec
 </div>
 <div class="url">
 <span>URI:</span>
-<a href="https://RiverExplorer.games" class="url">https://RiverExplorer.games</a>
+<a href="https://DougRoyer.US" class="url">https://DougRoyer.US</a>
 </div>
 </address>
 </section>

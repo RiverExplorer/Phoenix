@@ -13,12 +13,12 @@
 </t>
 <t>
 	This application transport can also transfer non-MIME data.
-	It can be used as an XDR transport, or for opaue data (blobs of
+	It can be used as an XDR transport, or for opaque data (blobs of
 	known or unknown data) transport.
 </t>
 <t>
 	Another major concern is security and authentication.
-	This proposal allows for existing autnentication to continue to work.
+	This proposal allows for existing authentication to continue to work.
 </t>
 <t>
 	This is a MIME message transport that can facilitate
@@ -33,8 +33,10 @@
 </t>
 <t>
 	This proposal includes a sample implementation.
-	(<eref target="https://github.com/RiverExplorer/Phoenix"/>)
-	Which also includes a gateway from this proposal to existing system.
-	Thunderbid and Outlook plugins are part of the sample implementation.
+	(<eref target="https://github.com/RiverExplorer/Phoenix">Github - Phoenix</eref>)
+	Which also includes a gateway from this proposal to existing systems.
+	Thunderbird and Outlook plugins are part of the sample implementation.
+	A Linux, Windows DLL and .NET, and Android client library are part of
+	the sample implementation
 </t>
 </abstract>

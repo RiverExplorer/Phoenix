@@ -12,7 +12,7 @@
     <title abbrev="Phoenix: Lemonade Risen Again">Phoenix: Lemonade Risen Again</title>
     <seriesInfo name="Internet-Draft" value="draft-royer-phoenix-00"/>
     <author fullname="Doug Royer" initials="DM" surname="Royer">
-      <organization>RiverExplorer Games LLC</organization>
+      <organization>RiverExplorer LLC</organization>
       <address>
         <postal>
           <!-- Reorder these if your country does things differently -->
@@ -26,7 +26,7 @@
         <phone>1+714-989-6135</phone>
         <email>DouglasRoyer@gmail.com</email>
         <!-- Can have more than one <email> element -->
-        <uri>https://RiverExplorer.games</uri>
+        <uri>https://DougRoyer.US</uri>
       </address>
     </author>
     <date year="2025"/>
@@ -51,12 +51,12 @@
 </t>
       <t>
 	This application transport can also transfer non-MIME data.
-	It can be used as an XDR transport, or for opaue data (blobs of
+	It can be used as an XDR transport, or for opaque data (blobs of
 	known or unknown data) transport.
 </t>
       <t>
 	Another major concern is security and authentication.
-	This proposal allows for existing autnentication to continue to work.
+	This proposal allows for existing authentication to continue to work.
 </t>
       <t>
 	This is a MIME message transport that can facilitate
@@ -71,9 +71,11 @@
 </t>
       <t>
 	This proposal includes a sample implementation.
-	(<eref target="https://github.com/RiverExplorer/Phoenix"/>)
-	Which also includes a gateway from this proposal to existing system.
-	Thunderbid and Outlook plugins are part of the sample implementation.
+	(<eref target="https://github.com/RiverExplorer/Phoenix">Github - Phoenix</eref>)
+	Which also includes a gateway from this proposal to existing systems.
+	Thunderbird and Outlook plugins are part of the sample implementation.
+	A Linux, Windows DLL and .NET, and Android client library are part of
+	the sample implementation
 </t>
     </abstract>
   </front>
@@ -90,11 +92,98 @@
 	</t>
     </section>
     <section>
-      <name>ABNF Notes and Some Definitions</name>
+      <name>ABNF, Notes, and Definitions</name>
+      <section>
+        <name>XDR TYPE - Meaning - Informative</name>
+        <t>
+			The meaning of "XDR TYPE" in this specification refers
+			to the "C" code API.
+			For every "XDR TYPE" "foo", is a "C" code API of "xdr_foo(...)".
+			The purpose of "XDR TYPE" is to guide implementors and is to be
+			considered informative and not normative information.
+		</t>
+        <t>
+			In some cases the "xdr_foo(...)" API is part of system libraries,
+			and in other cases it is the result of processing the normative XDR
+			definition files provided in this specification with the tools
+			in the sample implementation or open-source XDR
+			<xref target="rpcgenopensource">"rpcgen / rpcgen++"</xref> tools.
+			<xref target="rpcgendocs">"rpcgen documentation"</xref>.
+		</t>
+        <t>
+			In most cases the "XDR TYPE" is used in a ".x" XDR definition
+			file as the variable type.
+			In some cases like "string", and "opaque", they must be
+			defined as arrays.
+			Any other exceptions are added to the informative description
+			in this specifications when needed:
+		</t>
+        <table>
+          <thead>
+            <tr>
+              <td>
+						ABNF NAME
+					</td>
+              <td>
+						XDR TYPE
+					</td>
+              <td>
+						Description:
+					</td>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>
+						string
+					</td>
+              <td>
+						string
+					</td>
+              <td>
+                <t>
+							Is an XDR array.
+							Example usage in XDR definition file (see rpcgen
+							open-source documentation):
+						</t>
+                <t><br/>
+							"string MyVariableName&lt;&gt;;"
+							<br/>
+						</t>
+                <t>
+							The ABNF definition for string is in <xref target="GenericAbnf"/>
+						</t>
+              </td>
+            </tr>
+            <tr>
+              <td>
+						opaque
+					</td>
+              <td>
+						opaque
+					</td>
+              <td>
+                <t>
+							Is an XDR array.
+							Example usage in XDR definition file (see rpcgen
+							open-source documentation):
+						</t>
+                <t><br/>
+							"opaque DataNotToBeAltered&lt;&gt;;"
+							<br/>
+						</t>
+                <t>
+							The ABNF definition for opaque is in <xref target="GenericAbnf"/>
+						</t>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </section>
       <section>
         <name>ABNF Number of bits in value</name>
         <t>
-			This specification adds some usage to <xref target="RFC5234">ABNF</xref>
+			This specification adds some syntax to <xref target="RFC5234">ABNF</xref>
 			to deal with bit width in a binary number.
 		</t>
         <t>
@@ -118,38 +207,41 @@
 			And must be an unsigned integer greater than zero.
 		</t>
         <t>
-			And they will pack when applied to to a rule:
-		</t>
-        <t>
 			When the left side has a width: 
 			The number of bits on the left side must equal
 			the number of bits on the right side.
 		</t>
         <t>
+			The most significant values are placed to the left of
+			lesser signification values in the rule:
+		</t>
+        <t>
 			In this example A Header is 32-bits in size
-			and is composed of an 8-bit and 24-bit value.
-			The most significant value are placed on the left of the rule:
+			and is composed of an 8-bit (Offset), 2-bit (Flags or F),
+			and 22-bit (Length) value.
 		</t>
         <artwork type="abnf" name="" align="left" alt=""><![CDATA[
-Header:32 = Offset:8 Length:24
+Header:32 = Offset:8 Flags:2 Length:22
 ]]></artwork>
         <t>
 		</t>
         <t>
-			The pseudo code could be:
+			Example pseudo code could be:
 		</t>
         <sourcecode>
 
 // Header is a 32-bit unsigned integer.
 // Offset is an 8-bit unsigned integer.
-// Length is a 24-bit unsigned integer
+// Flags (F) is a 2-bit unsigned integer.
+// Length is a 22-bit unsigned integer
 //
-Header = Offset &lt;&lt; 24 | Length;
+Header = (Offset &lt;&lt; 24) | (Flags &lt;&lt; 22) | Length;
 
 		</sourcecode>
         <t>
-			This shifts the 8-bit Offset over 24 bits to the left, then
-			adds the 24-bit Length.
+			This shifts the 8-bit "Offset" over 24 bits to the left, then
+			shifts the 2-bit value "Flags (F)" over 22 bits,
+			then, places the lower 24-bits "Length" into the results.
 
 			The result would be:
 		</t>
@@ -163,21 +255,46 @@ Header = Offset &lt;&lt; 24 | Length;
       </section>
       <section>
         <name>Some ABNF Definitions</name>
-        <artwork type="abnf" name="" align="center" alt=""><![CDATA[
+        <figure anchor="GenericAbnf">
+          <artwork type="abnf" name="" align="center" alt=""><![CDATA[
 
-             ; An 8-bit unsigned integer
-uint8_t    = 0x00 - 0xff
+             ; An 8-bit unsigned integer type
+uint8_t    = 0x00-ff:8
 		
-             ; A 16-bit unsigned integer
-uint16_t   = 0x0000 - 0xffff
+             ; A 16-bit unsigned integer type
+uint16_t   = 0x0000-ffff:16
 
-             ; A 32-bit unsigned integer
-uint32_t   = 0x00000000 - 0xffffffff
+             ; A 32-bit unsigned integer type
+uint32_t   = 0x00000000-ffffffff:32
 
-             ; A 64-bit unsigned integer
-uint64_t   = 0x0000000000000000 - 0xffffffffffffffff
+             ; A 64-bit unsigned integer type
+uint64_t   = 0x0000000000000000-ffffffffffffffff:64
+
+             ; This is a generic array of UTF-8 characters without
+             ; any terminating character.
+             ; They could be 1, 2, 3, or 4 octet UTF-8 characters.
+             ; The implemention must ensure that complete characters
+             ; are containd in the string.
+             ;
+             ; Specific uses in this or related specifications
+             ; could limit the set of characters that could be in the string.
+             ;
+             ; The uint32_t value is the total number of octets in the string.
+             ;
+             ; The UTF8-Char is any valid and complete UTF-8 character.
+             ;
+string     = uint32_t *UTF8-Char
+
+             ; This is a generic array of uint8_t values.
+             ; The data in an opaque array is not altered in any
+             ; way in the protocol. It is sent over the wire unaltered.
+             ;
+             ; The uint32_t value is the number of octets in the data.
+             ;
+opaque     = uint32_t *uint8_t
 
 ]]></artwork>
+        </figure>
         <table>
           <thead>
             <tr>
@@ -224,6 +341,67 @@ uint64_t   = 0x0000000000000000 - 0xffffffffffffffff
             </tr>
           </tbody>
         </table>
+      </section>
+      <section anchor="StringRef">
+        <name>StringRef</name>
+        <t>
+			This protocol references strings in existing MIME objects
+			by octet offset into the MIME object.
+			This is is called a StringRef.
+			All strings can be referenced by using a total of 8 octets.
+			A StringRef consists of two parts:
+		</t>
+        <t>
+			The StringRef does not contain the string, it is a 
+			reference an existing string in a MIME object.
+		</t>
+        <table>
+          <thead>
+            <tr>
+              <td>Name</td>
+              <td>XDR Type</td>
+              <td>Description</td>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Offset</td>
+              <td>uint32_t</td>
+              <td>
+						The octet count to the start of the string with zero being the
+						first octet in the message.
+					</td>
+            </tr>
+            <tr>
+              <td>Length</td>
+              <td>uint32_t</td>
+              <td>
+						The length in octets of the string.
+					</td>
+            </tr>
+          </tbody>
+        </table>
+        <t>
+			A StringRef over the wire is 8 octets in size.
+		</t>
+        <figure anchor="StringRefFigure" align="center">
+          <name>StringRef Format</name>
+          <artset>
+            <artwork type="ascii-art" src="StringRef-00.txt"/>
+            <artwork type="svg" src="StringRef-00.svg"/>
+          </artset>
+        </figure>
+        <t>
+			ABNF:
+		</t>
+        <artwork type="abnf" name="" align="left" alt=""><![CDATA[
+
+Offset        = uint32_t
+
+Length        = uint32_t
+
+StringRef     = Offset Length
+]]></artwork>
       </section>
     </section>
     <section xmlns:xi="http://www.w3.org/2001/XInclude">
@@ -748,44 +926,117 @@ uint64_t   = 0x0000000000000000 - 0xffffffffffffffff
             <li>The packet header.</li>
             <li>The packet body.</li>
           </ol>
-          <t>
-			The packet header has one value, the total length
-			of the packet body, and payload sent as an
-			unsigned 64-bit integer	in network byte order.
-			The length does not include its own length.
-			It is the total length that follows the length value.
-		</t>
-          <t>
-			The packet body is divided into three parts:
-		</t>
-          <ol>
-            <li>Command sequence (SEQ).</li>
-            <li>The Command (CMD).</li>
-            <li>The command specific data (Payload).</li>
-          </ol>
+          <section>
+            <name>Packet Header</name>
+            <t>
+				The packet header has one value, the total length
+				of the packet body, and payload sent as an
+				unsigned 64-bit integer	in network byte order.
+				The length does not include its own length.
+				It is the total length that follows the length value.
+			</t>
+            <table>
+              <thead>
+                <tr>
+                  <td>
+							Name
+						</td>
+                  <td>
+							XDR Type
+						</td>
+                  <td>
+							Description
+						</td>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>
+							PacketLength
+						</td>
+                  <td>
+							uint64_t
+						</td>
+                  <td>
+							The nuber of octets that follow this value that
+							are part of this packet.							
+						</td>
+                </tr>
+              </tbody>
+            </table>
+            <t>
+				ABNF:
+			</t>
+            <artwork type="abnf" name="" align="left" alt=""><![CDATA[
+PacketLength      = uint64_t
+]]></artwork>
+          </section>
+          <section>
+            <name>Packet Body</name>
+            <t>
+				The packet body is divided into three parts:
+			</t>
+            <table>
+              <thead>
+                <tr>
+                  <td>
+							Name
+						</td>
+                  <td>
+							XDR Type
+						</td>
+                  <td>
+							Description
+						</td>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>
+							SEQ
+						</td>
+                  <td>
+							SEQ
+						</td>
+                  <td>
+                    <t>
+								The Command SEQ is a 32-bit unsigned integer sent
+								in network byte order.
+								This SEQ is an even number when initiated from the client,
+								and an odd number when initiated from the server.
+							</t>
+                    <t>
+								The first SEQ value sent from the client is zero (0) and is
+								incremented by two each time.
+							</t>
+                    <t>
+								The first SEQ value sent from the server is one (1) and is
+								incremented by two each time.
+							</t>
+                    <t>
+								In the event an endpoint command SEQ reaches its maximum
+								value, then its numbering starts over at zero (0) for
+								the client and one (1) for the server.
+								An implementation must keep track of outstanding commands
+								and not accidentally re-issue the same SEQ that may still
+								get replies from the other endpoint.
+							</t>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+            <artwork type="abnf" name="" align="left" alt=""><![CDATA[
+xxx
+]]></artwork>
+            <ol>
+              <li>Command sequence (SEQ).</li>
+              <li>The Command (CMD).</li>
+              <li>The command specific data (Payload).</li>
+            </ol>
+          </section>
           <section anchor="SEQ">
             <name>Command Sequence Number (SEQ)</name>
             <t>
-				The Command SEQ is a 32-bit unsigned integer sent
-				in network byte order.
-				This SEQ is an even number when initiated from the client,
-				and an odd number when initiated from the server.
-			</t>
-            <t>
-				The first SEQ value sent from the client is zero (0) and is
-				incremented by two each time.
-			</t>
-            <t>
-				The first SEQ value sent from the server is one (1) and is
-				incremented by two each time.
-			</t>
-            <t>
-				In the event an endpoint command SEQ reaches its maximum value,
-				then its numbering starts over at zero (0) for the client
-				and one (1) for the server.
-				An implementation must keep track of outstanding commands
-				and not accidentally re-issue the same SEQ that may still
-				get replies from the other endpoint.
 			</t>
           </section>
           <section anchor="COMMAND">
@@ -1601,43 +1852,102 @@ uint64_t   = 0x0000000000000000 - 0xffffffffffffffff
 			This is a list of recipients email address that
 			that are on the distribution list effected by the MDN.
 		</t>
-        <t>
-			The format of an MDNData record is
-			a header, that has:
-		</t>
-        <ul>
-          <li>
-				COUNT: A 32-bit unsigned integer in network byte order
-				indicating how many were on the distribution list
-				for this MDN.
-			</li>
-          <li>
-				SENT: The UTC timestamp as a 64-bit unsigned integer
-				in network byte order of when the MDN reply was sent.
-			</li>
-        </ul>
-        <t>
-			Followed by COUNT detail records:
-		</t>
-        <ul>
-          <li>
-				UTC: The UTC timestamp as a 64-bit unsigned integer
-				in network byte order of when the MDN reply was received.
-				Set to zero if not received.
-			</li>
-          <li>
-				Email-Address: A PhoenixString with the associated
-				email address of the user that has or has not returned
-				the MDN.
-			</li>
-        </ul>
-        <figure anchor="MDNData" align="center">
-          <name>MDNData Attribute</name>
-          <artset>
-            <artwork type="ascii-art" src="MDN-00.txt"/>
-            <artwork type="svg" src="MDN-00.svg"/>
-          </artset>
-        </figure>
+        <section>
+          <name>MDNData Record</name>
+          <t>
+				The format of an MDNData record is
+				a header, that has:
+			</t>
+          <table>
+            <thead>
+              <tr>
+                <td>Name</td>
+                <td>XDR Type</td>
+                <td>Description</td>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>COUNT</td>
+                <td>uint32_t</td>
+                <td>
+							A 32-bit unsigned integer in network byte order
+							indicating how many were on the distribution list
+							for this MDN.
+						</td>
+              </tr>
+              <tr>
+                <td>SENT</td>
+                <td>uint64_t</td>
+                <td>
+							The UTC timestamp as a 64-bit unsigned integer
+							in network byte order of when the MDN reply was sent.
+						</td>
+              </tr>
+            </tbody>
+          </table>
+          <figure anchor="MDNData" align="center">
+            <name>MDNData Attribute</name>
+            <artset>
+              <artwork type="ascii-art" src="MDN-00.txt"/>
+              <artwork type="svg" src="MDN-00.svg"/>
+            </artset>
+          </figure>
+          <t>
+				ABNF:
+			</t>
+          <artwork type="abnf" name="" align="left" alt=""><![CDATA[
+MDNData    = COUNT SENT 1*MDNRecord
+]]></artwork>
+          <t>
+			Followed by COUNT MDNRecord's.
+			</t>
+        </section>
+        <section>
+          <name>MDNRecord</name>
+          <table>
+            <thead>
+              <tr>
+                <td>Name</td>
+                <td>XDR Type</td>
+                <td>Description</td>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>UTC</td>
+                <td>uint32_t</td>
+                <td>
+							The UTC timestamp as a 64-bit unsigned integer
+							in network byte order of when the MDN reply was received.
+							Set to zero if not received.
+						</td>
+              </tr>
+              <tr>
+                <td>Email-Address</td>
+                <td>string</td>
+                <td>
+							A string of the associated
+							email address of the user that has or has not returned
+							the MDN.
+						</td>
+              </tr>
+            </tbody>
+          </table>
+          <figure anchor="MDNRecord" align="center">
+            <name>MDNData Attribute</name>
+            <artset>
+              <artwork type="ascii-art" src="MDN-01.txt"/>
+              <artwork type="svg" src="MDN-01.svg"/>
+            </artset>
+          </figure>
+          <t>
+				ABNF:
+			</t>
+          <artwork type="abnf" name="" align="left" alt=""><![CDATA[
+MDNRecord  = UTC string
+]]></artwork>
+        </section>
       </section>
       <section>
         <name>Meta Data with Shared Objects</name>
@@ -1971,6 +2281,16 @@ LID    = uint8_t;
 					</t>
             </li>
           </ul>
+          <t>
+				ABNF:
+			</t>
+          <artwork type="abnf" name="" align="left" alt=""><![CDATA[
+IndexOpDefine   = 0x00:8
+
+IndexOpUse      = 0x01:8
+
+IndexOp         = IndexOpDefine / IndexOpUse
+]]></artwork>
         </section>
         <section anchor="InterestedHeaders-HID">
           <name>Header ID (HID)</name>
@@ -2033,9 +2353,29 @@ HID    = uint8_t;
 							uint8_t
 						</td>
                 <td>
-							IndexOPis used to specify headers the client
-							wishes the server to index in MIME objects.
-							It must be a zero (0) to set the list definition.
+							One of IndexOpDefine or IndexOpUse
+						</td>
+              </tr>
+              <tr>
+                <td>
+							IndexOPDefine
+						</td>
+                <td>
+							uint8_t
+						</td>
+                <td>
+							Define or redefine a list.
+						</td>
+              </tr>
+              <tr>
+                <td>
+							IndexOPUse
+						</td>
+                <td>
+							uint8_t
+						</td>
+                <td>
+							Use an already defined list.
 						</td>
               </tr>
               <tr>
@@ -2055,11 +2395,12 @@ HID    = uint8_t;
 							HDRCNT
 						</td>
                 <td>
-							uint8_t
+							uint32_t
 						</td>
                 <td>
-							HdrCnt is set by the client to the number of headers in the list.
-							With 255 reserved for	expansion.
+							HdrCnt is set by the client to the number of headers
+							in the list.
+							With 0xffffff reserved for	expansion.
 						</td>
               </tr>
             </tbody>
@@ -2074,11 +2415,11 @@ HID    = uint8_t;
           <t>
 				ABNF:
 			</t>
-          <sourcecode>
-DefineListOp  = 0x01:8
-				
-Interest-Header = DefineListOp LID HdrCnt
-			</sourcecode>
+          <artwork type="abnf" name="" align="left" alt=""><![CDATA[
+HdrCnt          = uint32_t
+
+Interest-Header = IndexOp LID HdrCnt
+]]></artwork>
           <section anchor="InterestedHeader-Entry">
             <name>Interested Headers - Single Entry</name>
             <t>
@@ -2123,7 +2464,7 @@ Interest-Header = DefineListOp LID HdrCnt
 								HEADER NAME
 							</td>
                   <td>
-								PhoenixString
+								StringRef
 							</td>
                   <td>
                     <t>
@@ -2145,9 +2486,9 @@ Interest-Header = DefineListOp LID HdrCnt
             <t>
 					ABNF:
 				</t>
-            <sourcecode>
-SingleHeader = HID PhoenixString
-				</sourcecode>
+            <artwork type="abnf" name="" align="left" alt=""><![CDATA[
+SingleHeader = HID StringRef
+]]></artwork>
           </section>
           <section anchor="InterestedHeader-GetIndex">
             <name>Interested Headers - Use Existing List</name>
@@ -2171,12 +2512,11 @@ SingleHeader = HID PhoenixString
             <t>
 					ABNF:
 				</t>
-            <sourcecode>
+            <artwork type="abnf" name="" align="left" alt=""><![CDATA[
 UseExistingOp      = 0x01:8
 					
 UseExistingList:32 = UseExistingOp LID 0x00:8
-
-				</sourcecode>
+]]></artwork>
           </section>
           <section>
             <name>Example: Setting the Interested Header List</name>
@@ -2283,43 +2623,6 @@ UseExistingList:32 = UseExistingOp LID 0x00:8
           </section>
         </section>
       </section>
-      <section anchor="PhoenixString">
-        <name>PhoenixString</name>
-        <t>
-			This protocol references the strings by octet offset into the entire
-			message.
-			All strings can be referenced by using a total of 8 octets.
-			A Phoenix string consists of two parts:
-		</t>
-        <ul>
-          <li>
-				Offset: A 32-bit unsigned integer in network byte order.
-				The octet count to the start of the string with zero being the
-				first octet in the message.
-				
-			</li>
-          <li>
-				Length: The length in octets of the string.
-				A 32-bit unsigned integer in network byte order.
-			</li>
-        </ul>
-        <t>
-			A Phoenix string over the wire is 8 octets in size.
-		</t>
-        <figure anchor="PhoenixStringFigure" align="center">
-          <name>Phoenix String Format</name>
-          <artset>
-            <artwork type="ascii-art" src="PhoenixString-00.txt"/>
-            <artwork type="svg" src="PhoenixString-00.svg"/>
-          </artset>
-        </figure>
-        <t>
-			ABNF:
-		</t>
-        <sourcecode>
-PhoenixString = Offset:32 Length:32 String
-		</sourcecode>
-      </section>
       <section>
         <name>MIME Folder Index</name>
         <t>
@@ -2379,9 +2682,9 @@ PhoenixString = Offset:32 Length:32 String
           <t>
 				ABNF:
 			</t>
-          <sourcecode>
+          <artwork type="abnf" name="" align="left" alt=""><![CDATA[
 FolderIndexHeader = FolderIndexSize:32 MessageCount:32 ArrayOfMsgIndex
-			</sourcecode>
+]]></artwork>
           <t>
 				The header is followed by an array of message indexes.
 				They are an ordered list of references to each message.
@@ -2413,11 +2716,11 @@ FolderIndexHeader = FolderIndexSize:32 MessageCount:32 ArrayOfMsgIndex
           <t>
 				ABNF:
 			</t>
-          <sourcecode>
+          <artwork type="abnf" name="" align="left" alt=""><![CDATA[
 MessageIndex = OfffsetIntoFolder:32 MessageLength:32 ArrayOfHeaderIndex
 				
-ArrayOfMsgIndex = MessageIndex*
-			</sourcecode>
+ArrayOfMsgIndex = *MessageIndex
+]]></artwork>
           <t>
 				For each message index is an ordered list of interested headers.
 				The interested header list is assignable by the client and body
@@ -2484,9 +2787,9 @@ ArrayOfMsgIndex = MessageIndex*
 				then padding is added and the extra are ignored and shown as
 				zero in this specification.
 			</t>
-          <sourcecode>
+          <artwork type="abnf" name="" align="left" alt=""><![CDATA[
 -Meta-Data-: Seen,Answered,$NotJunk
-			</sourcecode>
+]]></artwork>
           <figure anchor="HeaderIndex2" align="center">
             <name>Header Index</name>
             <artset>
@@ -2497,9 +2800,9 @@ ArrayOfMsgIndex = MessageIndex*
           <t>
 				ABNF:
 			</t>
-          <sourcecode>
-HeaderIndex          = HeaderIndexHeader:32 ArrayOfHID*
-                       PhoenixString* BodyPartIndex*
+          <artwork type="abnf" name="" align="left" alt=""><![CDATA[
+HeaderIndex          = HeaderIndexHeader:32 *ArrayOfHID
+                       *StringRef *BodyPartIndex
 
                        ; One HID (HeaderID) for each match header
                        ; in the LID provided. Padded out to multiples
@@ -2509,10 +2812,10 @@ HeaderIndexHeader:32 = ID-CNT:8 Body-Count:8
                        / (HID 0x00:8)
                        / (0x00:8 0x00:8)
 
-ArrayOfHid           = HIDEntry*
+ArrayOfHid           = *HIDEntry
 
-BodyPartIndex        = BodyPartOffset:32 HeaderIndexHeader:32 PhoenixString*
-                       BodyPartIndex*
+BodyPartIndex        = BodyPartOffset:32 HeaderIndexHeader:32 *StringRef
+                       *BodyPartIndex
 
 ID-CNT:8               ; The number of headers found in the
                        ; MIME object and requested in the interested
@@ -2525,7 +2828,7 @@ HidEntry             = (HID:8 HID:8 HID:8 HID:8)
                        / (HID:8 HID:8 HID:8 0x00:8)
                        / (HID:8 HID:8 0x00:8 0x00:8)
                        / (HID:8 0x00:8 0x00:8 0x00:8)
-			</sourcecode>
+]]></artwork>
           <t>
 				Where:
 			</t>
@@ -2773,26 +3076,67 @@ This is the body text of a sample message.
       </references>
       <references>
         <name>Informative References</name>
-        <reference anchor="exampleRefMin">
-          <!-- [REPLACE/DELETE] Example minimum reference -->
+        <reference anchor="rpcgenopensource" target="https://github.com/RiverExplorer/Phoenix/tree/main/rpcgen%2B%2B-src" xml:base="../References/reference.rpcgen++.xml">
           <front>
-            <title>Title [REPLACE]</title>
-            <author initials="Initials [REPLACE]" surname="Surname [REPLACE]">
-              <organization/>
-            </author>
-            <date year="2006"/>
-            <!-- [CHECK] -->
+            <title>rpcgen++ Open Source Tool</title>
+            <author fullname="Unknown Author" initials="" surname="Unknown Author"/>
+            <date month="January" year="1983"/>
+            <abstract>
+              <t>
+	rpcgen is an interface generator pre-compiler for Sun Microsystems ONC RPC. It uses an interface definition file to create client and server stubs in C.
+	</t>
+              <t>
+	rpcgen++ is an updated rpcgen that can generate C++ code.
+	</t>
+            </abstract>
           </front>
         </reference>
-        <reference anchor="exampleRefOrg" target="http://www.example.com/">
-          <!-- [REPLACE/DELETE] Example reference written by an organization not a person -->
+        <reference anchor="rpcgendocs" target="https://www.ibm.com/docs/en/aix/7.2?topic=call-rpcgen-protocol-compiler" xml:base="../References/reference.rpcgendocs.xml">
           <front>
-            <title>Title [REPLACE]</title>
-            <author>
-              <organization>Organization [REPLACE]</organization>
-            </author>
-            <date year="1984"/>
-            <!-- [CHECK] -->
+            <title>rpcgen Protocol Compiler</title>
+            <author fullname="Unknown Author" initials="" surname="Unknown Author"/>
+            <date month="January" year="2025"/>
+            <abstract>
+              <t>
+				The rpcgen protocol compiler accepts a remote program interface
+				definition written in the Remote Procedure Call language (RPCL),
+				which is similar to the C language.
+			</t>
+              <t>
+				rpcgen++ is an updated rpcgen that can generate C++ code.
+				And is available at
+				<eref target="https://github.com/RiverExplorer/Phoenix"/>
+			</t>
+            </abstract>
+          </front>
+        </reference>
+        <!--
+				<reference anchor="rpcgensource" target="https://github.com/RiverExplorer/Phoenix">
+					<front>
+						<title>rpcgen++ tool - source code</title>
+						<author initials="" surname="Unknown" fullname="Unknown"/>
+						<date year="2025"/>
+						<abstract>
+							<t>
+								rpcgen++ is an updated rpcgen that can generate C++ code.
+								And is available at
+								<eref target="https://github.com/RiverExplorer/Phoenix"/>
+							</t>
+						</abstract>
+					</front>
+					</reference>
+-->
+        <reference anchor="PhoenixImplementation" target="https://github.com/RiverExplorer/Phoenix">
+          <front>
+            <title>Phoenix Sample Implementation</title>
+            <author initials="D." surname="Royer" fullname="D. Royer"/>
+            <date year="2025"/>
+            <abstract>
+              <t>
+								A sample Phoenix implentation.
+								<eref target="https://github.com/RiverExplorer/Phoenix"/>
+							</t>
+            </abstract>
           </front>
         </reference>
       </references>

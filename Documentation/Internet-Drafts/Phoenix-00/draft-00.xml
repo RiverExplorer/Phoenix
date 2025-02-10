@@ -22,7 +22,7 @@
     <seriesInfo name="Internet-Draft" value="draft-royer-phoenix-00"/>
    
     <author fullname="Doug Royer" initials="DM" surname="Royer">
-      <organization>RiverExplorer Games LLC</organization>
+      <organization>RiverExplorer LLC</organization>
       <address>
         <postal>
           <!-- Reorder these if your country does things differently -->
@@ -36,7 +36,7 @@
         <phone>1+714-989-6135</phone>
         <email>DouglasRoyer@gmail.com</email>  
         <!-- Can have more than one <email> element -->
-        <uri>https://RiverExplorer.games</uri>
+        <uri>https://DougRoyer.US</uri>
       </address>
     </author>
    
@@ -94,31 +94,37 @@
  
       <references>
         <name>Informative References</name>
-       
-        <reference anchor="exampleRefMin">
-        <!-- [REPLACE/DELETE] Example minimum reference -->
-          <front>
-            <title>Title [REPLACE]</title>
-            <author initials="Initials [REPLACE]" surname="Surname [REPLACE]">
-              <organization/>
-            </author>
-            <date year="2006"/>
-            <!-- [CHECK] -->
-          </front>
-        </reference>
-
-        <reference anchor="exampleRefOrg" target="http://www.example.com/">
-        <!-- [REPLACE/DELETE] Example reference written by an organization not a person -->
-          <front>
-            <title>Title [REPLACE]</title>
-            <author>
-              <organization>Organization [REPLACE]</organization>
-            </author>
-            <date year="1984"/>
-            <!-- [CHECK] -->
-          </front>
-        </reference>       
-       
+				<xi:include href="../References/reference.rpcgen++.xml"/>
+				<xi:include href="../References/reference.rpcgendocs.xml"/>
+<!--
+				<reference anchor="rpcgensource" target="https://github.com/RiverExplorer/Phoenix">
+					<front>
+						<title>rpcgen++ tool - source code</title>
+						<author initials="" surname="Unknown" fullname="Unknown"/>
+						<date year="2025"/>
+						<abstract>
+							<t>
+								rpcgen++ is an updated rpcgen that can generate C++ code.
+								And is available at
+								<eref target="https://github.com/RiverExplorer/Phoenix"/>
+							</t>
+						</abstract>
+					</front>
+					</reference>
+-->
+					<reference anchor="PhoenixImplementation" target="https://github.com/RiverExplorer/Phoenix">
+					<front>
+						<title>Phoenix Sample Implementation</title>
+						<author initials="D." surname="Royer" fullname="D. Royer"/>
+						<date year="2025"/>
+						<abstract>
+							<t>
+								A sample Phoenix implentation.
+								<eref target="https://github.com/RiverExplorer/Phoenix"/>
+							</t>
+						</abstract>
+					</front>
+					</reference>
       </references>
     </references>
 

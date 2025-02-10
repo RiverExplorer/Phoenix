@@ -81,6 +81,16 @@ LID    = uint8_t;
 					</t>
 				</li>
 			</ul>
+			<t>
+				ABNF:
+			</t>
+			<artwork type="abnf" name="" align="left" alt=""><![CDATA[
+IndexOpDefine   = 0x00:8
+
+IndexOpUse      = 0x01:8
+
+IndexOp         = IndexOpDefine / IndexOpUse
+]]></artwork>
 		</section>
 		
 		<section anchor="InterestedHeaders-HID">
@@ -146,9 +156,29 @@ HID    = uint8_t;
 							uint8_t
 						</td>
 						<td>
-							IndexOPis used to specify headers the client
-							wishes the server to index in MIME objects.
-							It must be a zero (0) to set the list definition.
+							One of IndexOpDefine or IndexOpUse
+						</td>
+					</tr>
+					<tr>
+						<td>
+							IndexOPDefine
+						</td>
+						<td>
+							uint8_t
+						</td>
+						<td>
+							Define or redefine a list.
+						</td>
+					</tr>
+					<tr>
+						<td>
+							IndexOPUse
+						</td>
+						<td>
+							uint8_t
+						</td>
+						<td>
+							Use an already defined list.
 						</td>
 					</tr>
 					<tr>
@@ -168,11 +198,12 @@ HID    = uint8_t;
 							HDRCNT
 						</td>
 						<td>
-							uint8_t
+							uint32_t
 						</td>
 						<td>
-							HdrCnt is set by the client to the number of headers in the list.
-							With 255 reserved for	expansion.
+							HdrCnt is set by the client to the number of headers
+							in the list.
+							With 0xffffff reserved for	expansion.
 						</td>
 					</tr>
 				</tbody>
@@ -188,11 +219,11 @@ HID    = uint8_t;
 			<t>
 				ABNF:
 			</t>
-			<sourcecode>
-DefineListOp  = 0x01:8
-				
-Interest-Header = DefineListOp LID HdrCnt
-			</sourcecode>
+			<artwork type="abnf" name="" align="left" alt=""><![CDATA[
+HdrCnt          = uint32_t
+
+Interest-Header = IndexOp LID HdrCnt
+]]></artwork>
 			
 			<section anchor="InterestedHeader-Entry">
 				<name>Interested Headers - Single Entry</name>
@@ -239,7 +270,7 @@ Interest-Header = DefineListOp LID HdrCnt
 								HEADER NAME
 							</td>
 							<td>
-								PhoenixString
+								StringRef
 							</td>
 							<td>
 								<t>
@@ -263,9 +294,9 @@ Interest-Header = DefineListOp LID HdrCnt
 				<t>
 					ABNF:
 				</t>
-				<sourcecode>
-SingleHeader = HID PhoenixString
-				</sourcecode>
+			<artwork type="abnf" name="" align="left" alt=""><![CDATA[
+SingleHeader = HID StringRef
+]]></artwork>
 			</section>
 			
 			<section anchor="InterestedHeader-GetIndex">
@@ -290,12 +321,11 @@ SingleHeader = HID PhoenixString
 				<t>
 					ABNF:
 				</t>
-				<sourcecode>
+			<artwork type="abnf" name="" align="left" alt=""><![CDATA[
 UseExistingOp      = 0x01:8
 					
 UseExistingList:32 = UseExistingOp LID 0x00:8
-
-				</sourcecode>
+]]></artwork>
 			</section>
 
 			<section>
@@ -404,45 +434,6 @@ UseExistingList:32 = UseExistingOp LID 0x00:8
 		</section>
 	</section>
 
-	<section anchor="PhoenixString">
-		<name>PhoenixString</name>
-		<t>
-			This protocol references the strings by octet offset into the entire
-			message.
-			All strings can be referenced by using a total of 8 octets.
-			A Phoenix string consists of two parts:
-		</t>
-		<ul>
-			<li>
-				Offset: A 32-bit unsigned integer in network byte order.
-				The octet count to the start of the string with zero being the
-				first octet in the message.
-				
-			</li>
-			<li>
-				Length: The length in octets of the string.
-				A 32-bit unsigned integer in network byte order.
-			</li> 
-		</ul>
-		<t>
-			A Phoenix string over the wire is 8 octets in size.
-		</t>
-		<figure anchor="PhoenixStringFigure" align="center">
-			<name>Phoenix String Format</name>
-			<artset>
-				<artwork type="ascii-art" src="PhoenixString-00.txt"/>
-				<artwork type="svg" src="PhoenixString-00.svg"/>
-			</artset>
-		</figure>
-
-		<t>
-			ABNF:
-		</t>
-		<sourcecode>
-PhoenixString = Offset:32 Length:32 String
-		</sourcecode>
-	</section>
-	
 	<section>
 		<name>MIME Folder Index</name>
 		<t>
@@ -502,9 +493,9 @@ PhoenixString = Offset:32 Length:32 String
 			<t>
 				ABNF:
 			</t>
-			<sourcecode>
+		<artwork type="abnf" name="" align="left" alt=""><![CDATA[
 FolderIndexHeader = FolderIndexSize:32 MessageCount:32 ArrayOfMsgIndex
-			</sourcecode>
+]]></artwork>
 			<t>
 				The header is followed by an array of message indexes.
 				They are an ordered list of references to each message.
@@ -536,11 +527,11 @@ FolderIndexHeader = FolderIndexSize:32 MessageCount:32 ArrayOfMsgIndex
 			<t>
 				ABNF:
 			</t>
-			<sourcecode>
+			<artwork type="abnf" name="" align="left" alt=""><![CDATA[
 MessageIndex = OfffsetIntoFolder:32 MessageLength:32 ArrayOfHeaderIndex
 				
-ArrayOfMsgIndex = MessageIndex*
-			</sourcecode>
+ArrayOfMsgIndex = *MessageIndex
+]]></artwork>
 			<t>
 				For each message index is an ordered list of interested headers.
 				The interested header list is assignable by the client and body
@@ -608,9 +599,11 @@ ArrayOfMsgIndex = MessageIndex*
 				then padding is added and the extra are ignored and shown as
 				zero in this specification.
 			</t>
-			<sourcecode>
+			
+			<artwork type="abnf" name="" align="left" alt=""><![CDATA[
 -Meta-Data-: Seen,Answered,$NotJunk
-			</sourcecode>
+]]></artwork>
+			
 			<figure anchor="HeaderIndex2" align="center">
 				<name>Header Index</name>
 				<artset>
@@ -622,9 +615,9 @@ ArrayOfMsgIndex = MessageIndex*
 			<t>
 				ABNF:
 			</t>
-			<sourcecode>
-HeaderIndex          = HeaderIndexHeader:32 ArrayOfHID*
-                       PhoenixString* BodyPartIndex*
+			<artwork type="abnf" name="" align="left" alt=""><![CDATA[
+HeaderIndex          = HeaderIndexHeader:32 *ArrayOfHID
+                       *StringRef *BodyPartIndex
 
                        ; One HID (HeaderID) for each match header
                        ; in the LID provided. Padded out to multiples
@@ -634,10 +627,10 @@ HeaderIndexHeader:32 = ID-CNT:8 Body-Count:8
                        / (HID 0x00:8)
                        / (0x00:8 0x00:8)
 
-ArrayOfHid           = HIDEntry*
+ArrayOfHid           = *HIDEntry
 
-BodyPartIndex        = BodyPartOffset:32 HeaderIndexHeader:32 PhoenixString*
-                       BodyPartIndex*
+BodyPartIndex        = BodyPartOffset:32 HeaderIndexHeader:32 *StringRef
+                       *BodyPartIndex
 
 ID-CNT:8               ; The number of headers found in the
                        ; MIME object and requested in the interested
@@ -650,7 +643,7 @@ HidEntry             = (HID:8 HID:8 HID:8 HID:8)
                        / (HID:8 HID:8 HID:8 0x00:8)
                        / (HID:8 HID:8 0x00:8 0x00:8)
                        / (HID:8 0x00:8 0x00:8 0x00:8)
-			</sourcecode>
+]]></artwork>
 			<t>
 				Where:
 			</t>
