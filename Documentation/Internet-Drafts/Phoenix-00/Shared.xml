@@ -1,0 +1,86 @@
+<section>
+	<name>Meta Data with Shared Objects</name>
+	<t>
+		When a server implementation allows shared objects,
+		the meta data returned to the client may be different
+		depending on the authenticated user.
+		Some users may have read only copies, other may be
+		able to delete the object.
+	</t>
+	<t>
+		When a shared object is deleted, it is marked as deleted for
+		only the user that issued the delete.
+	</t>
+	<t>
+		When a shared object is expunged, its access is removed
+		for the user that issued the expunge.
+		After all users have expunged the object, then it is
+		removed by the server.
+	</t>
+	<t>
+		There are two kinds of expunge for shared objects.
+		Forced and Delayed.
+	</t>
+	<t>
+		Server implementations must reject attempts to fetch or view
+		a folder or file or any of its meta data when an expunge has started,
+		and not yet completed.
+	</t>
+	<ul>
+		<li>
+			<t>
+				Forced:
+			</t>
+			<t>
+				A forced expunge can be the result of security policies
+				at the server, site, or administrators discretion.
+				This also is how timed messages are deleted.
+			</t>
+			<t>
+				In order for a shared object that is expunged to not
+				force an immediate re-index for all clients, when
+				the server gets a forced expunge, the server sends
+				an expunge to all clients, where the client MUST immediately make
+				the object not show	to the user and MUST invalidate
+				any file, cached, or memory copy of the data the client
+				has control over.
+				Then when convenient, the client can do a re-index
+				of the folder.
+				When a user is viewing the object when an expunge
+				arrives, the client must inform the user that the data
+				is no longer available and replace the user view of
+				the data with an empty object or move the view to
+				another object.
+			</t>
+			<t>
+				Server implementations must prioritize forced expunge notices
+				to the clients and immediately reject all attempts to read,
+				view, copy, or access meta data.
+			</t>
+		</li>
+		<li>
+			<t>
+				Delayed:
+			</t>
+			<t>
+				The user is informed the MIME object is no longer available.
+				The client implementation may continue to show the object.
+				The client may copy the MIME object, unless tagged as
+				NoCopy.
+			</t>
+			<t>
+				The next time the client does an expunge the object will be
+				expunged from the client.
+			</t>
+			<t>
+				When a client application closes, all delayed expunges
+				MUST occur at exit.
+			</t>
+			<t>
+				When a client applications starts the client MUST check for
+				delayed expunges that have not been processed and expunge them
+				and not	allow the user to see them.
+			</t>
+		</li>
+	</ul>
+</section>

@@ -30,15 +30,15 @@
 		<table>
 			<thead>
 				<tr>
-					<td>
+					<th>
 						ABNF NAME
-					</td>
-					<td>
+					</th>
+					<th>
 						XDR TYPE
-					</td>
-					<td>
+					</th>
+					<th>
 						Description:
-					</td>
+					</th>
 				</tr>
 			</thead>
 			<tbody>
@@ -132,14 +132,18 @@
 			and is composed of an 8-bit (Offset), 2-bit (Flags or F),
 			and 22-bit (Length) value.
 		</t>
-		<artwork type="abnf" name="" align="left" alt=""><![CDATA[
+		<figure anchor="Header32Example">
+			<artwork type="abnf" name="" align="left" alt=""><![CDATA[
 Header:32 = Offset:8 Flags:2 Length:22
 ]]></artwork>
+		</figure>
 		<t>
 		</t>
 		<t>
-			Example pseudo code could be:
+			Example pseudo code for the ABNF in
+			<xref target="Header32Example"/> could be:
 		</t>
+		<figure anchor="Header32ExamplePseudo">
 		<sourcecode>
 
 // Header is a 32-bit unsigned integer.
@@ -150,13 +154,17 @@ Header:32 = Offset:8 Flags:2 Length:22
 Header = (Offset &lt;&lt; 24) | (Flags &lt;&lt; 22) | Length;
 
 		</sourcecode>
+		</figure>
 
 		<t>
-			This shifts the 8-bit "Offset" over 24 bits to the left, then
+			The pseudo code in
+			<xref target="Header32ExamplePseudo"/>
+			shifts the 8-bit "Offset" over 24 bits to the left, then
 			shifts the 2-bit value "Flags (F)" over 22 bits,
 			then, places the lower 24-bits "Length" into the results.
 
-			The result would be:
+			The result would be all three values into the
+			one 32-bit result as illustrated in <xref target="ABNF-00"/>:
 		</t>
 
 		<figure anchor="ABNF-00" align="center">
@@ -172,6 +180,7 @@ Header = (Offset &lt;&lt; 24) | (Flags &lt;&lt; 22) | Length;
 		<name>Some ABNF Definitions</name>
 
 		<figure anchor="GenericAbnf">
+			<name>Common ABNF Definitions</name>
 			<artwork type="abnf" name="" align="center" alt=""><![CDATA[
 
              ; An 8-bit unsigned integer type
@@ -209,17 +218,25 @@ string     = uint32_t *UTF8-Char
              ;
 opaque     = uint32_t *uint8_t
 
+             ; The time in seconds since January 1st, 1970 GMT
+             ; This is known as the epoch time on many systems.
+             ; And time_t on POSIX systems.
+UTC        = uint64_t
 ]]></artwork>
 		</figure>
 		<table>
+			<name>Common ABNF/XDR Mapping</name>
 			<thead>
 				<tr>
-					<td>
+					<th>
 						ABNF TYPE
-					</td>
-					<td>
+					</th>
+					<th>
 						XDR TYPE
-					</td>
+					</th>
+					<th>
+						Notes
+					</th>
 				</tr>
 			</thead>
 			<tbody>
@@ -230,6 +247,9 @@ opaque     = uint32_t *uint8_t
 					<td>
 						uint8_t
 					</td>
+					<td>
+						The associated "C" API function is xdr_uint8_t().
+					</td>
 				</tr>
 				<tr>
 					<td>
@@ -237,6 +257,9 @@ opaque     = uint32_t *uint8_t
 					</td>
 					<td>
 						uint16_t
+					</td>
+					<td>
+						The associated "C" API function is xdr_uint16_t().
 					</td>
 				</tr>
 				<tr>
@@ -246,6 +269,9 @@ opaque     = uint32_t *uint8_t
 					<td>
 						uint32_t
 					</td>
+					<td>
+						The associated "C" API function is xdr_uint32_t().
+					</td>
 				</tr>
 				<tr>
 					<td>
@@ -253,6 +279,31 @@ opaque     = uint32_t *uint8_t
 					</td>
 					<td>
 						uint64_t
+					</td>
+					<td>
+						The associated "C" API function is xdr_uint64_t().
+					</td>
+				</tr>
+				<tr>
+					<td>
+						string
+					</td>
+					<td>
+						string
+					</td>
+					<td>
+						The associated "C" API function is xdr_string().
+					</td>
+				</tr>
+				<tr>
+					<td>
+						opaque
+					</td>
+					<td>
+						opaque
+					</td>
+					<td>
+						The associated "C" API function is xdr_opaque().
 					</td>
 				</tr>
 			</tbody>
@@ -273,9 +324,12 @@ opaque     = uint32_t *uint8_t
 			reference an existing string in a MIME object.
 		</t>
 		<table>
+			<name>StringRef ABNF/XDR Mapping</name>
 			<thead>
 				<tr>
-					<td>Name</td><td>XDR Type</td><td>Description</td>
+					<th>ABNF Name</th>
+					<th>XDR Type</th>
+					<th>Description</th>
 				</tr>
 			</thead>
 			<tbody>
@@ -310,14 +364,33 @@ opaque     = uint32_t *uint8_t
 		<t>
 			ABNF:
 		</t>
-		<artwork type="abnf" name="" align="left" alt=""><![CDATA[
-
+		<section>
+			<name>StringRef ABNF</name>
+			<figure anchor="StringRefABNF" align="center">
+				<name>StringRef ABNF</name>
+				<artwork type="abnf" name="" align="left" alt=""><![CDATA[
 Offset        = uint32_t
 
 Length        = uint32_t
 
 StringRef     = Offset Length
 ]]></artwork>
+			</figure>
+		</section>
+		<section>
+			<name>StringRef XDR</name>
+			<t>
+				The XDR definitions are:
+			</t>
+			<figure>
+				<name>StringRef XDR</name>
+				<artwork type="abnf" name="" align="left" alt=""><![CDATA[
+typedef uint32_t Offset;
+			
+typedef uint32_t Length;
+]]></artwork>
+			</figure>
+		</section>
 	</section>
 	
 </section>

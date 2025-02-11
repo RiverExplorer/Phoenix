@@ -1,7 +1,7 @@
 <!-- Copyright 2025 RiverExplorer LLC and Douglas Mark Royer -->
 
-<section anchor="COMMANDS" xmlns:xi="http://www.w3.org/2001/XInclude">
-	<name>Commands Summary</name>
+<section xmlns:xi="http://www.w3.org/2001/XInclude">
+	<name>Commands</name>
 	<t>
 		The endpoint that initiates the connection is called the client.
     The endpoint that is connected to, is called the server.

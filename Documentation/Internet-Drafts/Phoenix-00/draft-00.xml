@@ -58,6 +58,7 @@
     <xi:include href="Introduction.xml"/>
     <xi:include href="Definitions.xml"/>
     <xi:include href="Commands.xml"/>
+    <xi:include href="Shared.xml"/>
     <xi:include href="MetaData.xml"/>
 		<xi:include href="ProtocolDetails.xml"/>
 		<xi:include href="Index.xml"/>

@@ -1,0 +1,44 @@
+<!-- Copyright 2025 RiverExplorer LLC and Douglas Mark Royer -->
+<section>
+	<name>Administration - SERVER_CONFIGURE (0x00:8)</name>
+	<t>
+		Remote administration of servers is an essential feature
+		in modern systems.
+		An implementation that supports SERVER_CONFIGURE
+		adds SERVER_CONFIGURE to the post authentication
+		capability command sent from the server to the client.
+		The server implementation only sends this capability
+		to authenticated and authorized users.
+		Users can become authorized with the
+		USER_PERMISSIONS command, or by server implementation
+		specific configuration methods.
+		Server specific configuration methods are out of
+		scope for this specification.
+	</t>
+	<t>
+		Server specific configuration options are unique to
+		each server implementation.
+		This specification defines a method to set, update,
+		delete, and view server configuration values.
+		Implementations may extend the SERVER_CONFIGURE
+		capabilities and commands.
+		Such extensions must start with "X-" and followed
+		by any vendor or agreed on name.
+		It is suggested that server implementations send
+		a post authentication implementation specific
+		capability to authenticated and authorized users
+		in order to identify themselves to their own client
+		implementations.
+		If the client does not send the correnct vendor ID information,
+		then the server would not send its capability to the client.
+	</t>
+	<t>
+		SERVER_CONFIGURE sends and receives the configuration
+		information in key + value pairs.
+		The key and value are each a string.
+	</t>
+	<t>
+		Multiple SERVER_CONFIGURE commands can be sent in the
+		same ADMIN packet.
+	</t>
+</section>

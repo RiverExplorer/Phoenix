@@ -344,7 +344,7 @@ union FolderReplyData switch (Folder_e FCmd)
 
 #ifdef RPC_HDR
 %/**
-% * An XML representation of a file, not the
+% * An XDR representation of a file, not the
 % * contents, but the information about the file.
 % *
 % * - Meta: Is an array of MetaData.
@@ -365,7 +365,7 @@ class FileInformation
 #ifdef RPC_HDR
 %/**
 % * @class RiverExplorer::Phonnix::FolderInformation
-% * An XML representation of a folder
+% * An XDR representation of a folder
 % *
 % * - Meta: Is an array of MetaData.
 % * - Name: This is the name excluding the path.

@@ -1,7 +1,6 @@
 <!-- Copyright 2025 RiverExplorer LLC and Douglas Mark Royer -->
-
-<section anchor="ADMIN_SUMMARY">
-	<name>Administration Commands Summary</name>
+<section xmlns:xi="http://www.w3.org/2001/XInclude">
+	<name>Administration Commands</name>
 	
 	<t>
 		Implementations are not required to implement any ADMIN command.
@@ -13,10 +12,10 @@
 		Administrative command can be used to configure, audit, and manage
 		the remote endpoint.
 		Administrative command can be used to configure, audit, and manage
-		user access.
+		user access for the server implementation.
 	</t>
 
-	<section anchor="ADMIN_CAP">
+	<section>
 		<name>Administration Capability Definitions</name>
 		<t>
 			Implementations MUST NOT send the ADMIN capability
@@ -30,7 +29,7 @@
 			send only those authenticated users the ADMIN capability.
 		</t>
 		<t>
-			The ADMIN capability include the list of ADMIN commands the user is
+			The ADMIN capability includes the list of ADMIN commands the user is
 			allowed to perform.
 			For example, if a user only has permission to only view user lists, then
 			only the USER_LIST ADMIN capability will be provided.
@@ -47,98 +46,151 @@
 		</t>
 	</section>
 
-	<section anchor="ADMIN_USER">
+	<section>
 		<name>Administration of users.</name>
 		<t>
 			The following operations are defined for administration.
+			Each is part of an ADMIN command or ADMIN reply.
+			They each have a unique identifier, and ADMIN Command ID (ACID).
 		</t>
 		<table>
+			<name>Administration Commands List</name>
 			<thead>
-				<tr><th>Command and Capability Name</th><th>Brief Description.</th></tr>
+				<tr>
+					<th>Command and Capability Name</th>
+					<th>ACID</th>
+					<th>Capability Description.</th>
+					<th>Command Description.</th>
+				</tr>
 			</thead>
 			<tbody>
 				<tr>
-					<td>USER_CREATE</td>
-					<td>
-						May create a new user.
-						And also the command to create a user.
-					</td>
-				</tr>
-				<tr>
-					<td>USER_DELETE</td>
-					<td>
-						May delete a user.
-						And the command to delete a user.
-					</td>
-				</tr>
-				<tr>
-					<td>USER_RENAME</td>
-					<td>
-						May rename a user.
-						And the command to rename a user.
-					</td>
-				</tr>
-				<tr>
-					<td>USER_LIST</td>
-					<td>
-						May list users and their capabilities.
-						And the command to list users.
-					</td>
-				</tr>
-				<tr>
-					<td>USER_PERMISSIONS</td>
-					<td>
-						May update other users permissions.
-						And the command to view and set user permissions.
-					</td>
-				</tr>
-				<tr>
-					<td>SERVER_SHUTDOWN</td>
-					<td>
-						May shutdown the server.
-						And the command to shutdown the server.
-					</td>
-				</tr>
-				<tr>
-					<td>SERVER_LOGS</td>
-					<td>
-						May view the server logs.
-						And the command to view server logs.
-					</td>
-				</tr>
-				<tr>
-					<td>SERVER_KICK_USER</td>
-					<td>
-						May logout a user. And limit when they can use the server again.
-						And the command to kick and limit a user.
-					</td>
-				</tr>
-				<tr>
-					<td>SERVER_MANAGE_BANS</td>
-					<td>
-						May manage IP and user bans.
-						And the command to manage ban users an IP addresses.
-					</td>
-				</tr>
-				<tr>
-					<td>SERVER_VIEW_STATS</td>
-					<td>
-						May view server statistics.
-						And the command to view statistics.
-					</td>
-				</tr>
-				<tr>
 					<td>SERVER_CONFIGURE</td>
+					<td>0x00:8</td>
 					<td>
 						May configure the server. If sent with a VIEW_ONLY
 						parameter, then the user may only view the configuration
 						information.
-						And the command to view and alter the server configuration
+					</td>
+					<td>
+						The command to view and alter the server configuration
 						information.
+					</td>
+				</tr>
+				<tr>
+					<td>SERVER_KICK_USER</td>
+					<td>0x01:8</td>
+					<td>
+						May logout a user. And limit when they can use the server again.
+					</td>
+					<td>
+						The command to kick and limit a user.
+					</td>
+				</tr>
+				<tr>
+					<td>SERVER_LOGS</td>
+					<td>0x02:8</td>
+					<td>
+						May view the server logs.
+					</td>
+					<td>
+						The command to view server logs.
+					</td>
+				</tr>
+				<tr>
+					<td>SERVER_MANAGE_BANS</td>
+					<td>0x03:8</td>
+					<td>
+						May manage IP and user bans.
+					</td>
+					<td>
+						The command to manage ban users and IP addresses.
+					</td>
+				</tr>
+				<tr>
+					<td>SERVER_SHUTDOWN</td>
+					<td>0x04:8</td>
+					<td>
+						May shutdown the server.
+					</td>
+					<td>
+						The command to shutdown the server.
+					</td>
+				</tr>
+				<tr>
+					<td>SERVER_VIEW_STATS</td>
+					<td>0x05:8</td>
+					<td>
+						May view server statistics.
+					</td>
+					<td>
+						The command to view statistics.
+					</td>
+				</tr>
+				<tr>
+					<td>USER_CREATE</td>
+					<td>0x06:8</td>
+					<td>
+						May create a new user.
+					</td>
+					<td>
+						The command to create a Phoenix server user.
+					</td>
+				</tr>
+				<tr>
+					<td>USER_DELETE</td>
+					<td>0x07:8</td>
+					<td>
+						May delete a user.
+					</td>
+					<td>
+						The command to delete a user.
+					</td>
+				</tr>
+				<tr>
+					<td>USER_LIST</td>
+					<td>0x08:8</td>
+					<td>
+						May list users and their capabilities.
+					</td>
+					<td>
+						The command to list users.
+					</td>
+				</tr>
+				<tr>
+					<td>USER_PERMISSIONS</td>
+					<td>0x0A:8</td>
+					<td>
+						May update other users permissions.
+					</td>
+					<td>
+						The command to view and set user permissions.
+					</td>
+				</tr>
+				<tr>
+					<td>USER_RENAME</td>
+					<td>0x0B:8</td>
+					<td>
+						May rename a user.
+					</td>
+					<td>	
+						The command to rename a user.
 					</td>
 				</tr>
 			</tbody>
 		</table>
+
+		<xi:include href="ServerConfigure.xml"/>
+		<xi:include href="ServerKickUser.xml"/>
+		<xi:include href="ServerLogs.xml"/>
+		<xi:include href="ServerManageBans.xml"/>
+		<xi:include href="ServerShutdown.xml"/>
+		<xi:include href="ServerViewStats.xml"/>
+		<xi:include href="UserCreate.xml"/>
+		<xi:include href="UserDelete.xml"/>
+		<xi:include href="UserList.xml"/>
+		<xi:include href="UserPermissions.xml"/>
+		<xi:include href="UserRename.xml"/>
 
 	</section>
 </section>

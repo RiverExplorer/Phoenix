@@ -4,7 +4,7 @@
 	<name>Ping Command Summary</name>
 
 	<t>
-		The ping command only sent when the client implementation
+		The ping command is only sent when the client implementation
 		has determined it has waited too long for a command reply.
 		The ping command is only initiated from the client.
 		It is not valid for the server to send a ping command to a client.
@@ -31,7 +31,8 @@
 	</t>
 	<ul>
 		<li>
-			When the server did not send PING capability to the client.
+			When the server did not send PING capability in the
+			post authentication capability list to the client.
 			Then the server replies with a NotSupported packet
 			with the sequence number the same as in the ping command.
 		</li>
@@ -70,11 +71,12 @@
 		reply.
 	</t>
 	<t>
-		Endpoints MUST NOT send a ping command if they are awaiting
+		A client MUST NOT send a ping command if it is waiting
 		the results of a previously sent ping command.
 	</t>
 	<t>
-		Endpoints MUST NOT send more than two ping commands per minute.
+		A client MUST NOT send a ping command more frequently
+		than 90% of the server timeout.
 	</t>
 	<t>
 		Clients and servers must give priority to ping commands.
@@ -87,6 +89,6 @@
 	<t>
 		Servers that are not threaded or can not reply to simultaneous
 		or overlapping commands, MUST NOT include PING in
-		their capability command.
+		their post authentication capability command.
 	</t>
 </section>

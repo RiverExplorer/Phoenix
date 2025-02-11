@@ -1,7 +1,7 @@
 <!-- Copyright 2025 RiverExplorer LLC and Douglas Mark Royer -->
 
-<section anchor="PROTO_SUMMARY">
-	<name>Protocol Commands Summary</name>
+<section>
+	<name>Commands Overview - Packet and Reply</name>
 	<t>
 		In addition to the protocols listed in this specification.
 		Additional protocols and commands can be added in the future.
@@ -69,7 +69,7 @@
 		are transmitted.
 	</t>
 	<section anchor="PACKET_SUMMARY">
-		<name>Packet Summary</name>
+		<name>Packet Overview</name>
 		<t>
 			All commands are sent in a packet.
 			A packet has two parts:
@@ -88,17 +88,18 @@
 				It is the total length that follows the length value.
 			</t>
 			<table>
+				<name>Packet Header ABNF/XDR Mapping</name>
 				<thead>
 					<tr>
-						<td>
-							Name
-						</td>
-						<td>
+						<th>
+							ABNF Name
+						</th>
+						<th>
 							XDR Type
-						</td>
-						<td>
+						</th>
+						<th>
 							Description
-						</td>
+						</th>
 					</tr>
 				</thead>
 				<tbody>
@@ -110,18 +111,43 @@
 							uint64_t
 						</td>
 						<td>
-							The nuber of octets that follow this value that
-							are part of this packet.							
+							<t>
+								The nuber of octets that follow this value that
+								are part of this packet.
+							</t>
+							<t>
+								<br/>
+								XDR API: xdr_PacketLength();
+							</t>
 						</td>
 					</tr>
 				</tbody>
 			</table>
-			<t>
-				ABNF:
-			</t>
-			<artwork type="abnf" name="" align="left" alt=""><![CDATA[
+			<section>
+				<name>Packet Header ABNF</name>
+				<t>
+					ABNF:
+				</t>
+				<figure>
+					<name>Packet Header ABNF</name>
+
+					<artwork type="abnf" name="" align="left" alt=""><![CDATA[
 PacketLength      = uint64_t
 ]]></artwork>
+				</figure>
+			</section>
+			<section>
+				<name>Packet Header XDR</name>
+				<t>
+					XDR Definition:
+				</t>
+				<figure>
+					<name>Packet Header XDR</name>
+					<artwork type="abnf" name="" align="left" alt=""><![CDATA[
+typedef uint64_t PacketLength;
+]]></artwork>
+				</figure>
+			</section>
 		</section>
 
 		<section>
@@ -130,17 +156,18 @@ PacketLength      = uint64_t
 				The packet body is divided into three parts:
 			</t>
 			<table>
+				<name>Packet Body ABNF/XDR Mapping</name>
 				<thead>
 					<tr>
-						<td>
-							Name
-						</td>
-						<td>
+						<th>
+							ABNF Name
+						</th>
+						<th>
 							XDR Type
-						</td>
-						<td>
+						</th>
+						<th>
 							Description
-						</td>
+						</th>
 					</tr>
 				</thead>
 				<tbody>
@@ -155,69 +182,135 @@ PacketLength      = uint64_t
 							<t>
 								The Command SEQ is a 32-bit unsigned integer sent
 								in network byte order.
-								This SEQ is an even number when initiated from the client,
-								and an odd number when initiated from the server.
+								This SEQ is an even number when initiated from
+								the client,	and an odd number when initiated
+								from the server.
 							</t>
 							<t>
-								The first SEQ value sent from the client is zero (0) and is
-								incremented by two each time.
+								The first SEQ value sent from the client is zero (0)
+								and is incremented by two each time.
 							</t>
 							<t>
-								The first SEQ value sent from the server is one (1) and is
-								incremented by two each time.
+								The first SEQ value sent from the server is one (1)
+								and is incremented by two each time.
 							</t>
 							<t>
 								In the event an endpoint command SEQ reaches its maximum
 								value, then its numbering starts over at zero (0) for
 								the client and one (1) for the server.
-								An implementation must keep track of outstanding commands
-								and not accidentally re-issue the same SEQ that may still
-								get replies from the other endpoint.
+								An implementation must keep track of outstanding
+								commands and not accidentally re-issue the same
+								SEQ that may still get replies from the other endpoint.
+							</t>
+							<t>
+								<br/>
+								XDR API: xdr_SEQ();
+							</t>
+						</td>
+					</tr>
+					<tr>
+						<td>
+							CMD
+						</td>
+						<td>
+							Command
+						</td>
+						<td>
+							<t>
+								A command (CMD) is a unsigned integer that
+								specifics a unique operation that describes
+								and defines the data that follows.
+								The command are specified in this specification.
+							</t>
+							<t>
+								<br/>
+								XDR API: xdr_Command();
+							</t>
+						</td>
+					</tr>
+					<tr>
+						<td>
+							CmdPayload
+						</td>
+						<td>
+							CmdPayload
+						</td>
+						<td>
+							<t>
+								The Payload is whatever data follows the command.
+								In some cases it is a blob of opaque data.
+								In other caes it is a structured XDR set of data.
+								See the specific CMD for details.
+							</t>
+							<t>
+								XDR API: xdr_CmdPayload();
+							</t>
+						</td>
+					</tr>
+					<tr>
+						<td>
+							PacketBody
+						</td>
+						<td>
+							PacketBody
+						</td>
+						<td>
+							<t>
+								The packet body.
+							</t>
+							<t>
+								XDR API: xdr_PacketBody();
 							</t>
 						</td>
 					</tr>
 				</tbody>
 			</table>
-		<artwork type="abnf" name="" align="left" alt=""><![CDATA[
-xxx
-]]></artwork>
+			<section>
+				<name>Packet Body ABNF</name>
+				<t>
+					ABNF:
+				</t>
+				<figure>
+					<name>Packet Body ABNF</name>
+					<artwork type="abnf" name="" align="left" alt=""><![CDATA[
+SEQ        = uint32_t
 
-			<ol>
-				<li>Command sequence (SEQ).</li>
-				<li>The Command (CMD).</li>
-				<li>The command specific data (Payload).</li>
-			</ol>
+CMD        = uint32_t
+
+CmdPayload = *uint8_t
+
+PacketBody = SEQ CMD CmdPayload
+]]></artwork>
+				</figure>
+			</section>
+			<section>
+				<name>Packet Body XDR</name>
+				<t>
+					XDR Definition:
+				</t>
+				<figure>
+					<name>Packet Body XDR</name>
+					<artwork type="abnf" name="" align="left" alt=""><![CDATA[
+typedef uint32_t  SEQ;
+
+typedef uint32_t  CMD;
+
+typedef uint8_t * CmdPayload;
+
+struct PacketBody {
+    SEQ Seq;
+    CMD Command;
+		PacketBody Payload;
+};
+PacketBody = SEQ CMD
+]]></artwork>
+				</figure>
+			</section>
 		</section>
 			
-		<section anchor="SEQ">
-			<name>Command Sequence Number (SEQ)</name>
-			<t>
-			</t>
-		</section>
-		<section anchor="COMMAND">
-			<name>The Command (CMD)</name>
-			<t>
-				The command is a predefined enumerated 32-bit unsigned
-				integer sent in network byte order.
-				The value (in hex) 0xFFFFFFFF is reserved for extensions
-				if the 32-bit range is exhausted.
-			</t>
-		</section>
-		<section anchor="PAYLOAD">
-			<name>The Payload (Payload)</name>
-			<t>
-				The payload has no predefined length, other what
-				what is specified for the CMD in the packet.
-				It could be zero to vary large in size.
-				It could be opaque data, or it could be data that
-				is XDR encoded.
-				The contents are specific to the CMD specified in
-				the in the packet body.
-			</t>
-		</section>
 	</section>
 	<section anchor="PACKET_REPLY_SUMMARY">
-		<name>Packet Reply Summary</name>
+		<name>Packet Reply Overview</name>
 		<t>
 			All replies to a command are also a command packet.
 			They contain the same command SEQ and command

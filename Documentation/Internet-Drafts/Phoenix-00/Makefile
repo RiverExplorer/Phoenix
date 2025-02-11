@@ -34,7 +34,18 @@ SOURCES.xml = \
 	ProtocolDetails.xml \
 	ProtocolSummary.xml \
 	RequirementsLanguage.xml \
-	SMimeSummary.xml
+	Shared.xml \
+	SMimeSummary.xml \
+	UserCreate.xml \
+	UserDelete.xml \
+	UserRename.xml \
+	UserList.xml \
+	ServerShutdown.xml \
+	ServerLogs.xml \
+	ServerKickUser.xml \
+	ServerManageBans.xml \
+	ServerViewStats.xml \
+	ServerConfigure.xml
 
 ARTWORK.txt = \
 	ABNF-00.txt \

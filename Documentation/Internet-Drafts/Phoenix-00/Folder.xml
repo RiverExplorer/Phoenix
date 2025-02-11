@@ -15,6 +15,7 @@
 		
 	</t>
 	<table>
+		<name>File and Folder Command List</name>
 		<thead>
 			<tr><th>Op Name</th><th>Brief Description.</th></tr>
 		</thead>
@@ -163,4 +164,81 @@
 			</tr>
 		</tbody>
 	</table>
+
+	<section>
+		<name>File and Folder - FOLDER_CAPABILITY</name>
+	</section>
+
+	<section>
+		<name>File and Folder - FOLDER_CREATE</name>
+	</section>
+
+	<section>
+		<name>File and Folder - FOLDER_COPY</name>
+	</section>
+
+	<section>
+		<name>File and Folder - FOLDER_DELETE</name>
+	</section>
+
+	<section>
+		<name>File and Folder - FOLDER_RENAME</name>
+	</section>
+
+	<section>
+		<name>File and Folder - FOLDER_METADATA</name>
+	</section>
+
+	<section>
+		<name>File and Folder - FOLDER_MOVE</name>
+	</section>
+
+	<section>
+		<name>File and Folder - FOLDER_OPEN</name>
+	</section>
+
+	<section>
+		<name>File and Folder - FOLDER_LIST</name>
+	</section>
+
+	<section>
+		<name>File and Folder - FOLDER_SHARE</name>
+	</section>
+
+	<section>
+		<name>File and Folder - FILE_CREATE</name>
+	</section>
+
+	<section>
+		<name>File and Folder - FILE_COPY</name>
+	</section>
+
+	<section>
+		<name>File and Folder - FILE_DELETE</name>
+	</section>
+
+	<section>
+		<name>File and Folder - FILE_RENAME</name>
+	</section>
+
+	<section>
+		<name>File and Folder - FILE_METADATA</name>
+	</section>
+
+	<section>
+		<name>File and Folder - FILE_MOVE</name>
+	</section>
+
+	<section>
+		<name>File and Folder - FILE_SHARE</name>
+	</section>
+
+	<section>
+		<name>File and Folder - FILE_GET</name>
+	</section>
+
+	<section>
+		<name>File and Folder - FILE_MODIFY</name>
+	</section>
+
 </section>
