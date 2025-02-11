@@ -1,6 +1,6 @@
 <!-- Copyright 2025 RiverExplorer LLC and Douglas Mark Royer -->
 
-<section anchor="WIREPROTOCOLDETAIL">
+<section xmlns:xi="http://www.w3.org/2001/XInclude">
 	<name>Over the Wire Protocol Detail</name>
 	<t>
 		This section specifies the details of what is
@@ -61,43 +61,57 @@
 		<artwork type="ascii-art" src="Packet-00.txt"/>
 		<artwork type="svg" src="Packet-00.svg"/>
 	</artset>
-	<t>
-		ABNF:
-	</t>
-	<sourcecode>
+	<section>
+		<name>Command - ABNF</name>
+		<t>
+			ABNF:
+		</t>
+		<figure>
+			<name>Command</name>
+			<xi:include href="include/09-Command-ABNF.xml"/>
+		</figure>
+	</section>
+	
+	<section>
+		<name>Command - XDR</name>
+		<t>
+			XDR:
+		</t>
+		<figure>
+			<name>Command</name>
+			<xi:include href="include/09-Command-XDR.xml"/>
+		</figure>
+	</section>
 
-CommandHeader : Length:32 Sequence:32 CMD:32
-
-Command : CommandHeader Payload
-
-	</sourcecode>
-	<t>
-		The payload size and format varies for each command.
-		The details of the payload content, and the format
-		of that content, is described in each specific CMD section.
-	</t>
-	<t>
-		An implementation can send, receive, and dispatch packets within
-		its implementation by looking at the length, SEQ, and CMD, then
-		passing the payload to code that can handle that payload.
-	</t>
-	<t>
-		- Read in a 64-bit value.
-		- Convert the value from network byte order, to host byte order. This is the
-		total length of the data that follows.
-		- Read in length octets into the packet payload.
-		- Get the 32-bit value in the payload, it is the SEQ in network byte order.
-		- Convert the SEQ from network byte order, to host byte order.
-		- Get another 32-bit value in the payload, it is the CMD in network byte order.
-		- Convert the CMD from network byte order, to host byte order.
-		- Dispatch the CMD with SEQ and all of the data that follows
-		to implementation 
-	</t>
-	<t>
-		The following is pseudo code that explains how processing incoming XDR
-		data can be handled:
-	</t>
-	<sourcecode>
+	<section>
+		<name>Command Payload</name>
+		<t>
+			The payload size and format varies for each command.
+			The details of the payload content, and the format
+			of that content, is described in each specific CMD section.
+		</t>
+		<t>
+			An implementation can send, receive, and dispatch packets within
+			its implementation by looking at the length, SEQ, and CMD, then
+			passing the payload to code that can handle that payload.
+		</t>
+		<t>
+			- Read in a 64-bit value.
+			- Convert the value from network byte order, to host byte order. This is the
+			total length of the data that follows.
+			- Read in length octets into the packet payload.
+			- Get the 32-bit value in the payload, it is the SEQ in network byte order.
+			- Convert the SEQ from network byte order, to host byte order.
+			- Get another 32-bit value in the payload, it is the CMD in network byte order.
+			- Convert the CMD from network byte order, to host byte order.
+			- Dispatch the CMD with SEQ and all of the data that follows
+			to implementation 
+		</t>
+		<t>
+			The following is pseudo code that explains how processing incoming XDR
+			data can be handled:
+		</t>
+		<sourcecode>
 <![CDATA[
   // Where:
   //  uint32_t, is a 32-bit unsigned integer.
@@ -171,5 +185,38 @@ Command : CommandHeader Payload
     }
   }
 ]]>
-	</sourcecode>
+		</sourcecode>
+	</section>
 </section>
+
+
+<artwork type="abnf" name="" align="left" alt=""><![CDATA[
+CommandLength = Length
+
+CommandHeader : CommandLength SEQ CMD
+
+Command : CommandHeader Payload
+]]></artwork>
+
+<artwork type="abnf" name="" align="left" alt=""><![CDATA[
+CommandLength = Length
+
+CommandHeader : CommandLength SEQ CMD
+
+Command : CommandHeader Payload
+
+struct Command {
+    uint32 CommandLength;
+    SEQ_t  SEQ;
+
+    union Payload switch(CMD_t CMD) {
+		
+		case xx:
+		foo;
+		
+		case yy:
+		fee;
+		
+		}
+};
+]]></artwork>

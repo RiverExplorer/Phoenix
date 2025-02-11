@@ -1,6 +1,6 @@
 <!-- Copyright 2025 RiverExplorer LLC and Douglas Mark Royer -->
 
-<section>
+<section xmlns:xi="http://www.w3.org/2001/XInclude">
 	<name>ABNF, Notes, and Definitions</name>
 	<section>
 		<name>XDR TYPE - Meaning - Informative</name>
@@ -133,10 +133,10 @@
 			and 22-bit (Length) value.
 		</t>
 		<figure anchor="Header32Example">
-			<artwork type="abnf" name="" align="left" alt=""><![CDATA[
+	<artwork type="abnf" name="" align="left" alt=""><![CDATA[
 Header:32 = Offset:8 Flags:2 Length:22
 ]]></artwork>
-		</figure>
+</figure>
 		<t>
 		</t>
 		<t>
@@ -177,53 +177,7 @@ Header = (Offset &lt;&lt; 24) | (Flags &lt;&lt; 22) | Length;
 	</section>
 
 	<section>
-		<name>Some ABNF Definitions</name>
-
-		<figure anchor="GenericAbnf">
-			<name>Common ABNF Definitions</name>
-			<artwork type="abnf" name="" align="center" alt=""><![CDATA[
-
-             ; An 8-bit unsigned integer type
-uint8_t    = 0x00-ff:8
-		
-             ; A 16-bit unsigned integer type
-uint16_t   = 0x0000-ffff:16
-
-             ; A 32-bit unsigned integer type
-uint32_t   = 0x00000000-ffffffff:32
-
-             ; A 64-bit unsigned integer type
-uint64_t   = 0x0000000000000000-ffffffffffffffff:64
-
-             ; This is a generic array of UTF-8 characters without
-             ; any terminating character.
-             ; They could be 1, 2, 3, or 4 octet UTF-8 characters.
-             ; The implemention must ensure that complete characters
-             ; are containd in the string.
-             ;
-             ; Specific uses in this or related specifications
-             ; could limit the set of characters that could be in the string.
-             ;
-             ; The uint32_t value is the total number of octets in the string.
-             ;
-             ; The UTF8-Char is any valid and complete UTF-8 character.
-             ;
-string     = uint32_t *UTF8-Char
-
-             ; This is a generic array of uint8_t values.
-             ; The data in an opaque array is not altered in any
-             ; way in the protocol. It is sent over the wire unaltered.
-             ;
-             ; The uint32_t value is the number of octets in the data.
-             ;
-opaque     = uint32_t *uint8_t
-
-             ; The time in seconds since January 1st, 1970 GMT
-             ; This is known as the epoch time on many systems.
-             ; And time_t on POSIX systems.
-UTC        = uint64_t
-]]></artwork>
-		</figure>
+		<name>Common Definitions</name>
 		<table>
 			<name>Common ABNF/XDR Mapping</name>
 			<thead>
@@ -248,7 +202,12 @@ UTC        = uint64_t
 						uint8_t
 					</td>
 					<td>
-						The associated "C" API function is xdr_uint8_t().
+						<t>
+							The associated "C" API function is xdr_uint8_t().
+						</t>
+						<t>
+							uint8_t is built into XDR.
+						</t>
 					</td>
 				</tr>
 				<tr>
@@ -259,7 +218,12 @@ UTC        = uint64_t
 						uint16_t
 					</td>
 					<td>
-						The associated "C" API function is xdr_uint16_t().
+						<t>
+							The associated "C" API function is xdr_uint16_t().
+						</t>
+						<t>
+							uint16_t is built into XDR.
+						</t>
 					</td>
 				</tr>
 				<tr>
@@ -270,7 +234,12 @@ UTC        = uint64_t
 						uint32_t
 					</td>
 					<td>
-						The associated "C" API function is xdr_uint32_t().
+						<t>
+							The associated "C" API function is xdr_uint32_t().
+						</t>
+						<t>
+							uint32_t is built into XDR.
+						</t>
 					</td>
 				</tr>
 				<tr>
@@ -281,7 +250,12 @@ UTC        = uint64_t
 						uint64_t
 					</td>
 					<td>
-						The associated "C" API function is xdr_uint64_t().
+						<t>
+							The associated "C" API function is xdr_uint64_t().
+						</t>
+						<t>
+							uint32_t is built into XDR.
+						</t>
 					</td>
 				</tr>
 				<tr>
@@ -292,7 +266,12 @@ UTC        = uint64_t
 						string
 					</td>
 					<td>
-						The associated "C" API function is xdr_string().
+						<t>
+							The associated "C" API function is xdr_string().
+						</t>
+						<t>
+							string is built into XDR.
+						</t>
 					</td>
 				</tr>
 				<tr>
@@ -303,11 +282,32 @@ UTC        = uint64_t
 						opaque
 					</td>
 					<td>
-						The associated "C" API function is xdr_opaque().
+						<t>
+							The associated "C" API function is xdr_opaque().
+						</t>
+						<t>
+							opaque is built into XDR.
+						</t>
 					</td>
 				</tr>
 			</tbody>
 		</table>
+
+		<section>
+			<name>Common Definitions - ABNF</name>
+			<figure anchor="GenericAbnf">
+				<name>Common ABNF Definitions</name>
+				<xi:include href="include/01-ABNF-ABNF.xml"/>
+			</figure>
+		</section>
+
+		<section>
+			<name>Common Definitions - XDR</name>
+			<figure>
+				<name>Common Definitions - XDR</name>
+				<xi:include href="include/01-ABNF-XDR.xml"/>
+			</figure>
+		</section>
 	</section>
 	
 	<section anchor="StringRef">
@@ -366,15 +366,9 @@ UTC        = uint64_t
 		</t>
 		<section>
 			<name>StringRef ABNF</name>
-			<figure anchor="StringRefABNF" align="center">
+			<figure anchor="StringRefABNF">
 				<name>StringRef ABNF</name>
-				<artwork type="abnf" name="" align="left" alt=""><![CDATA[
-Offset        = uint32_t
-
-Length        = uint32_t
-
-StringRef     = Offset Length
-]]></artwork>
+				<xi:include href="include/02-StringRef-ABNF.xml"/>
 			</figure>
 		</section>
 		<section>
@@ -382,13 +376,9 @@ StringRef     = Offset Length
 			<t>
 				The XDR definitions are:
 			</t>
-			<figure>
-				<name>StringRef XDR</name>
-				<artwork type="abnf" name="" align="left" alt=""><![CDATA[
-typedef uint32_t Offset;
-			
-typedef uint32_t Length;
-]]></artwork>
+			<figure anchor="StringRefXDR">
+				<name>StringRef ABNF</name>
+				<xi:include href="include/02-StringRef-XDR.xml"/>
 			</figure>
 		</section>
 	</section>

@@ -75,6 +75,13 @@ REFERENCES.xml = \
 	../References/reference.RFC.4506.xml \
 	../References/reference.RFC.8446.xml
 
+INCLUDES1 := $(shell /bin/ls include)
+INCLUDES	= $(addprefix include/,$(INCLUDES1))
+
+ABNF			:= $(shell /bin/ls include/*-ABNF.xml)
+
+XDR 			:= $(shell /bin/ls include/*-XDR.xml)
+
 GENERATED_ARTWORK.svg = $(ARTWORK.txt:.txt=.svg)
 
 DOCDIR			= ../..
@@ -97,17 +104,29 @@ pdf : $(TARGET.pdf) $(GENERATED_ARTWORK.svg)
 
 html : $(TARGET.html) (ARGWORK.svg)
 
-$(TARGET.txt) : $(ARTWORK.txt) $(TOPDOC.xml)  $(REFERENCES.xml)
+$(TARGET.txt) : ALL-ABNF.xml ALL-XDR.xml $(ARTWORK.txt) $(TOPDOC.xml)  $(REFERENCES.xml) $(INCLUDES)
 	xml2rfc -o $@ $(TOPDOC.xml)
 
-$(TARGET.pdf) : $(GENERATED_ARTWORK.svg) $(TOPDOC.xml) $(REFERENCES.xml)
+$(TARGET.pdf) : ALL-ABNF.xml ALL-XDR.xml $(GENERATED_ARTWORK.svg) $(TOPDOC.xml) $(REFERENCES.xml) $(INCLUDES)
 	xml2rfc --pdf -o $@ $(TOPDOC.xml)
 
-$(TARGET.html): $(GENERATED_ARTWORK.svg) $(TOPDOC.xml) $(REFERENCES.xml)
+$(TARGET.html): ALL-ABNF.xml ALL-XDR.xml $(GENERATED_ARTWORK.svg) $(TOPDOC.xml) $(REFERENCES.xml) $(INCLUDES)
 	xml2rfc --html -o $@ $(TOPDOC.xml)
 
-$(TOPDOC.xml) : draft-00.xml $(SOURCES.xml) $(REFERENCES.xml)
+$(TOPDOC.xml) : draft-00.xml ALL-ABNF.xml ALL-XDR.xml $(SOURCES.xml) $(REFERENCES.xml) $(INCLUDES)
 	xmllint --xinclude --format $< > $@
+
+ALL-ABNF.xml : $(ABNF)
+	echo "<section>" > $@
+	echo "<name>Complete ABNF</name>" >> $@
+	cat $(ABNF) >> $@
+	echo "</section>" >> $@
+
+ALL-XDR.xml : $(XDR)
+	echo "<section>" > $@
+	echo "<name>Complete XDR</name>" >> $@
+	cat $(XDR) >> $@
+	echo "</section>" >> $@
 
 scp : $(TARGET.html) $(TARGET.pdf) $(TARGET.txt)
 	scp $(TARGET.html) riverexplorer.games:~/public_html/Phoenix
@@ -118,6 +137,7 @@ clean :
 	$(RM) tmp.*
 	$(RM) $(GENERATED_ARTWORK.svg)
 	$(RM) $(TOPDOC.xml)
+	$(RM) ALL-ABNF.xml ALL-XDR.xml
 
 %.svg : %.txt
 	aasvg < $< > $@

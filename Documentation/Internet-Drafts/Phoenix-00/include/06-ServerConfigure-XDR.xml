@@ -1,0 +1,6 @@
+<artwork type="abnf" name="" align="left" alt=""><![CDATA[
+struct ServerConfigure {
+    uint8_t   AOID;    /* With the APID_e value cast to a (AOID) */
+    KeyPair   Values<>;
+};
+]]></artwork>

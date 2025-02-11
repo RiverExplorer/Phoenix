@@ -1,0 +1,14 @@
+<artwork type="abnf" name="" align="left" alt=""><![CDATA[
+typedef time_t UTC_t;
+
+typedef uint32_t Offset_t;
+
+typedef uint32_t Length_t;
+
+struct KeyPair {
+    string Key<>;
+    string Value<>;
+};
+
+typedef KeyPair KeyPairArray<>;
+]]></artwork>

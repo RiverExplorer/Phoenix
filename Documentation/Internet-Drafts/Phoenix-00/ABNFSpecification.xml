@@ -1,5 +1,5 @@
 <!-- Copyright 2025 RiverExplorer LLC and Douglas Mark Royer -->
 
 <section anchor="RPCGEN_SPEC_APPENDIX" xmlns:xi="http://www.w3.org/2001/XInclude">
-	<xi:include href="ALL-XDR.xml"/>
+		<xi:include href="ALL-ABNF.xml"/>
 </section>

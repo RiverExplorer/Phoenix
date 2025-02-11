@@ -1,0 +1,32 @@
+<artwork type="abnf" name="" align="left" alt=""><![CDATA[
+enum CMD_t {
+    ADMIN_CMD_t  = 0x00,
+    AUTH_CMD_t   = 0x01,
+    FILE_CMD_t   = 0x02,
+    PROTO_CMD_t  = 0x03
+};
+					
+/* Define a SEQ_t (sequence) type */					
+typedef uint32_t  SEQ_t;
+ 
+union CmdPayload_t switch (CMD_t Cmd) {
+
+    case ADMIN_CMD_t:
+        AdminCmdPayload AdminPayload;
+		
+    case AUTH_CMD_t:
+        AuthCmdPayload AuthPayload;
+
+		
+    case FILE_CMD_t:
+        FileCmdPayload FilePayload;
+		
+    case PROTO_CMD_t:
+        ProtoCmdPayload ProtoPayload;
+};
+
+struct PacketBody {
+    SEQ_t      SEQ;
+    CmdPayload_t Payload;
+};
+]]></artwork>

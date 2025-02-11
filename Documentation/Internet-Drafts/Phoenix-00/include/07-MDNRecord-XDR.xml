@@ -1,0 +1,12 @@
+<artwork type="abnf" name="" align="left" alt=""><![CDATA[
+typedef uint32_t MDNListCount;
+
+typedef time_t MDNSent;
+
+struct MDNRecord {
+    MDNSent   TimeSent;
+
+    /* The first item in an XDR array, is its size (MDNListCount) */
+    MDNRecord Entries<>; 
+};
+]]></artwork>

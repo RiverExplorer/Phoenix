@@ -1,0 +1,52 @@
+<artwork type="abnf" name="" align="center" alt=""><![CDATA[
+               ; An 8-bit unsigned integer type
+uint8_t      = 0x00-ff:8
+		
+               ; A 16-bit unsigned integer type
+uint16_t     = 0x0000-ffff:16
+
+               ; A 32-bit unsigned integer type
+uint32_t     = 0x00000000-ffffffff:32
+
+               ; A 64-bit unsigned integer type
+uint64_t     = 0x0000000000000000-ffffffffffffffff:64
+
+               ; This is a generic array of UTF-8 characters without
+               ; any terminating character.
+               ; They could be 1, 2, 3, or 4 octet UTF-8 characters.
+               ; The implemention must ensure that complete characters
+               ; are containd in the string.
+               ;
+               ; Specific uses in this or related specifications
+               ; could limit the set of characters that could be in the string.
+               ;
+               ; The uint32_t value is the total number of octets in the string.
+               ;
+               ; The UTF8-Char is any valid and complete UTF-8 character.
+               ;
+string       = uint32_t *UTF8-Char
+
+               ; This is a generic array of uint8_t values.
+               ; The data in an opaque array is not altered in any
+               ; way in the protocol. It is sent over the wire unaltered.
+               ;
+               ; The uint32_t value is the number of octets in the data.
+               ;
+opaque       = uint32_t *uint8_t
+
+               ; The time in seconds since January 1st, 1970 GMT
+               ; This is known as the epoch time on many systems.
+               ; And time_t on POSIX systems.
+UTC_t        = uint64_t
+
+Offset_t     = uint32_t
+
+Length_t     = uint32_t
+
+               ; Key and Value
+KeyPair      = string string
+
+               ; Length is the number of KeyPair that follow.
+KeyPairArray = Length 1*KeyPair
+							 
+]]></artwork>

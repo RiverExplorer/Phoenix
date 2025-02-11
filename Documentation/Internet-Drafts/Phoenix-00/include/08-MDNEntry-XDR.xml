@@ -1,0 +1,7 @@
+<artwork type="abnf" name="" align="left" alt=""><![CDATA[
+struct MDMEntry
+{
+    UTC    Received;
+    string EMail<>;
+};    
+]]></artwork>

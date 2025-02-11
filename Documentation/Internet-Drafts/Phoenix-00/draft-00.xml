@@ -60,7 +60,6 @@
     <xi:include href="Commands.xml"/>
     <xi:include href="Shared.xml"/>
     <xi:include href="MetaData.xml"/>
-		<xi:include href="ProtocolDetails.xml"/>
 		<xi:include href="Index.xml"/>
 		
     <section anchor="IANA">
@@ -137,7 +136,8 @@
 
     <xi:include href="ProtocolBinaryValues.xml"/>
 
-    <xi:include href="RpcgenSpecification.xml"/>
+    <xi:include href="ALL-ABNF.xml"/>
+    <xi:include href="ALL-XDR.xml"/>
 
     <section anchor="Acknowledgements" numbered="false">
       <!-- [REPLACE/DELETE] an Acknowledgements section is optional -->

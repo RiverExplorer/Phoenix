@@ -1,0 +1,25 @@
+<artwork type="abnf" name="" align="left" alt=""><![CDATA[
+AOID               = uint8_t
+				
+SERVER_CONFIGURE   = 0x00:8
+
+SERVER_KICK_USER   = 0x01:8
+
+SERVER_LOGS        = 0x02:8
+
+SERVER_MANAGE_BANS = 0x03:8
+
+SERVER_SHUTDOWN    = 0x04:8
+
+SERVER_VIEW_STATS  = 0x05:8
+
+USER_CREATE        = 0x06:8
+
+USER_DELETE        = 0x07:8
+
+USER_LIST          = 0x08:8
+
+USER_PERMISSIONS   = 0x09:8
+
+USER_RENAME        = 0x0A:8
+]]></artwork>

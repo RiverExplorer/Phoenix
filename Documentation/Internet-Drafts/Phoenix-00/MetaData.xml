@@ -1,6 +1,6 @@
 <!-- Copyright 2025 RiverExplorer LLC and Douglas Mark Royer -->
 
-<section anchor="META_DATA">
+<section anchor="META_DATA" xmlns:xi="http://www.w3.org/2001/XInclude">
 	<name>Meta Data</name>
 	<t>
 		In this specification a file and a MIME object are used
@@ -338,31 +338,17 @@
 				<t>
 					ABNF:
 				</t>
-				<artwork type="abnf" name="" align="left" alt=""><![CDATA[
-MDNListCount = uint32_t
-
-UTC          = uint64_t
-
-MDNRecord    = MDNSent MDNListCount 1*MDNRecord
-]]></artwork>
-				<t>
-					Followed by MDNListCount MDNRecord's.
-				</t>
+				<xi:include href="include/07-MDNRecord-ABNF.xml"/>
 			</section>
 			<section>
 				<name>MDNRecord - XDR</name>
-				<artwork type="abnf" name="" align="left" alt=""><![CDATA[
-typedef uint32_t MDNListCount;
-
-typedef time_t MDNSent;
-
-struct MDNRecord {
-    MDNSent   TimeSent;
-
-    /* The first item in an XDR array, is its size (MDNListCount) */
-    MDNRecord Entries<>; 
-};
-]]></artwork>
+				<t>
+					XDR:
+				</t>
+				<xi:include href="include/07-MDNRecord-ABNF.xml"/>
+				<t>
+					Followed by MDNListCount MDNEntry's.
+				</t>
 			</section>
 		</section>
 		<section>
@@ -414,9 +400,7 @@ struct MDNRecord {
 				</t>
 				<figure>
 					<name>MDNEntry - ABNF</name>
-					<artwork type="abnf" name="" align="left" alt=""><![CDATA[
-MDNEntry  = UTC string
-]]></artwork>
+					<xi:include href="include/08-MDNEntry-ABNF.xml"/>
 				</figure>
 			</section>
 			<section>
@@ -426,13 +410,7 @@ MDNEntry  = UTC string
 				</t>
 				<figure>
 					<name>MDNEntry - XDR</name>
-					<artwork type="abnf" name="" align="left" alt=""><![CDATA[
-struct MDMEntry
-{
-    time_t Received;
-    string EMail<>;
-};    
-]]></artwork>
+					<xi:include href="include/08-MDNEntry-XDR.xml"/>
 				</figure>
 			</section>
 		</section>

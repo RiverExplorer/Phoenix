@@ -1,0 +1,19 @@
+<artwork type="abnf" name="" align="left" alt=""><![CDATA[
+ADMIN_CMD_t  = 0x00:32
+AUTH_CMD_t   = 0x01:32
+FILE_CMD_t   = 0x02:32
+PROTO_CMD_t  = 0x03:32
+
+; Define a SEQ_t (sequence) type.
+SEQ_t        = uint32_t
+
+; Define a CMD_t (command) type.
+CMD_t        = uint32_t
+
+; Define a CmdPayload_t (blob of data) type.
+; The length of CmdPayload is determined by the CMD.
+CmdPayload_t = *uint8_t
+
+PacketBody = SEQ_t CMD_t
+             (AdminPayload / AuthPayload / FilePayload / PROTOPayload)
+]]></artwork>

@@ -528,7 +528,11 @@ FolderIndexHeader = FolderIndexSize:32 MessageCount:32 ArrayOfMsgIndex
 				ABNF:
 			</t>
 			<artwork type="abnf" name="" align="left" alt=""><![CDATA[
-MessageIndex = OfffsetIntoFolder:32 MessageLength:32 ArrayOfHeaderIndex
+MessageLength     = uint32_t
+
+OffsetIntoFolder = uint32_t
+
+MessageIndex     = OfffsetIntoFolder MessageLength ArrayOfHeaderIndex
 				
 ArrayOfMsgIndex = *MessageIndex
 ]]></artwork>

@@ -47,18 +47,18 @@
 	</section>
 
 	<section>
-		<name>Administration of users.</name>
+		<name>Administration Operations</name>
 		<t>
 			The following operations are defined for administration.
 			Each is part of an ADMIN command or ADMIN reply.
-			They each have a unique identifier, and ADMIN Command ID (ACID).
+			They each have a unique identifier, and ADMIN Operation ID (AOID).
 		</t>
 		<table>
-			<name>Administration Commands List</name>
+			<name>Administration Operations List</name>
 			<thead>
 				<tr>
 					<th>Command and Capability Name</th>
-					<th>ACID</th>
+					<th>AOID</th>
 					<th>Capability Description.</th>
 					<th>Command Description.</th>
 				</tr>
@@ -159,7 +159,7 @@
 				</tr>
 				<tr>
 					<td>USER_PERMISSIONS</td>
-					<td>0x0A:8</td>
+					<td>0x09:8</td>
 					<td>
 						May update other users permissions.
 					</td>
@@ -169,7 +169,7 @@
 				</tr>
 				<tr>
 					<td>USER_RENAME</td>
-					<td>0x0B:8</td>
+					<td>0x0A:8</td>
 					<td>
 						May rename a user.
 					</td>
@@ -180,6 +180,22 @@
 			</tbody>
 		</table>
 
+		<section>
+			<name>Administration Operations - ABNF</name>
+			<figure>
+				<name>Administration Operations - ABNF</name>
+				<xi:include href="include/05-AdministrationOperations-ABNF.xml"/>
+			</figure>
+		</section>
+		
+		<section>
+			<name>Administration Operations - XDR</name>
+			<figure>
+				<name>Administration Operations - XDR</name>
+				<xi:include href="include/05-AdministrationOperations-XDR.xml"/>
+			</figure>
+		</section>
+		
 		<xi:include href="ServerConfigure.xml"/>
 		<xi:include href="ServerKickUser.xml"/>
 		<xi:include href="ServerLogs.xml"/>

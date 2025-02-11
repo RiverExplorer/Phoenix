@@ -1,6 +1,6 @@
 <!-- Copyright 2025 RiverExplorer LLC and Douglas Mark Royer -->
 
-<section>
+<section xmlns:xi="http://www.w3.org/2001/XInclude">
 	<name>Commands Overview - Packet and Reply</name>
 	<t>
 		In addition to the protocols listed in this specification.
@@ -130,10 +130,7 @@
 				</t>
 				<figure>
 					<name>Packet Header ABNF</name>
-
-					<artwork type="abnf" name="" align="left" alt=""><![CDATA[
-PacketLength      = uint64_t
-]]></artwork>
+					<xi:include href="include/03-PacketHeader-ABNF.xml"/>
 				</figure>
 			</section>
 			<section>
@@ -143,9 +140,7 @@ PacketLength      = uint64_t
 				</t>
 				<figure>
 					<name>Packet Header XDR</name>
-					<artwork type="abnf" name="" align="left" alt=""><![CDATA[
-typedef uint64_t PacketLength;
-]]></artwork>
+					<xi:include href="include/03-PacketHeader-XDR.xml"/>
 				</figure>
 			</section>
 		</section>
@@ -272,15 +267,7 @@ typedef uint64_t PacketLength;
 				</t>
 				<figure>
 					<name>Packet Body ABNF</name>
-					<artwork type="abnf" name="" align="left" alt=""><![CDATA[
-SEQ        = uint32_t
-
-CMD        = uint32_t
-
-CmdPayload = *uint8_t
-
-PacketBody = SEQ CMD CmdPayload
-]]></artwork>
+					<xi:include href="include/04-PacketBody-ABNF.xml"/>
 				</figure>
 			</section>
 			<section>
@@ -290,20 +277,7 @@ PacketBody = SEQ CMD CmdPayload
 				</t>
 				<figure>
 					<name>Packet Body XDR</name>
-					<artwork type="abnf" name="" align="left" alt=""><![CDATA[
-typedef uint32_t  SEQ;
-
-typedef uint32_t  CMD;
-
-typedef uint8_t * CmdPayload;
-
-struct PacketBody {
-    SEQ Seq;
-    CMD Command;
-		PacketBody Payload;
-};
-PacketBody = SEQ CMD
-]]></artwork>
+					<xi:include href="include/04-PacketBody-XDR.xml"/>
 				</figure>
 			</section>
 		</section>

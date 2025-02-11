@@ -1,5 +1,5 @@
 <!-- Copyright 2025 RiverExplorer LLC and Douglas Mark Royer -->
-<section>
+<section xmlns:xi="http://www.w3.org/2001/XInclude">
 	<name>Administration - SERVER_CONFIGURE (0x00:8)</name>
 	<t>
 		Remote administration of servers is an essential feature
@@ -41,4 +41,60 @@
 		Multiple SERVER_CONFIGURE commands can be sent in the
 		same ADMIN packet.
 	</t>
+	
+	<table>
+		<name>SERVER_CONFIGURE - ABNF/XDR Mapping</name>
+		<thead>
+			<tr>
+				<th>
+					ABNF Name
+				</th>
+				<th>
+					XDR Type
+				</th>
+				<th>
+					Description
+				</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr>
+				<td>SERVER_CONFIGURE</td>
+				<td>AOID_e</td>
+				<td>
+					xdr_AOID();
+				</td>
+			</tr>
+			<tr>
+				<td>
+					ServerConfigure
+				</td>
+				<td>
+					ServerConfigure
+				</td>
+				<td>
+					<t>
+						xdr_ServerConfigure();
+					</t>
+				</td>
+			</tr>
+		</tbody>
+	</table>
+
+	<section>
+		<name>SERVER_CONFIGURE - ABNF</name>
+		<figure>
+			<name>SERVER_CONFIGURE - ABNF</name>
+			<xi:include href="include/06-ServerConfigure-ABNF.xml"/>
+		</figure>
+	</section>
+
+	<section>
+		<name>SERVER_CONFIGURE - XDR</name>
+		<figure>
+			<name>SERVER_CONFIGURE - XDR</name>
+			<xi:include href="include/06-ServerConfigure-XDR.xml"/>
+		</figure>
+	</section>
+
 </section>
