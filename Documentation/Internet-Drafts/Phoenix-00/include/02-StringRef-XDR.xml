@@ -1,6 +1,6 @@
 <artwork type="abnf" name="" align="left" alt=""><![CDATA[
 struct StringRef {
-    Offset StringStart;
-    Length StringLength;
+    Offset_t StringStart;
+    Length_t StringLength;
 };				
 ]]></artwork>

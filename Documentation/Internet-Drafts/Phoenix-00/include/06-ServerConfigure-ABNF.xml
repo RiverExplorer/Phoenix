@@ -1,3 +1,8 @@
 <artwork type="abnf" name="" align="left" alt=""><![CDATA[
-ServerConfigure  = SERVER_CONFIGURE Length 1*KeyPair
+
+ConfigOp         = OpSet / OpGet / OpUpdate / UpDelete
+                  
+OpSet            = ConfigOp Length_t 1*KeyPair
+
+ServerConfigure  = SERVER_CONFIGURE Length_t 1*OpSet
 ]]></artwork>

@@ -49,9 +49,16 @@
 	<section>
 		<name>Administration Operations</name>
 		<t>
+			To simplify naming, the capability names and command/reply names
+			are the same.
+		</t>
+		<t>
 			The following operations are defined for administration.
 			Each is part of an ADMIN command or ADMIN reply.
 			They each have a unique identifier, and ADMIN Operation ID (AOID).
+		</t>
+		<t>
+			All of their XDR API is: xdr_AOID().
 		</t>
 		<table>
 			<name>Administration Operations List</name>

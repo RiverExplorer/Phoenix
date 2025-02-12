@@ -20,22 +20,26 @@
 		each server implementation.
 		This specification defines a method to set, update,
 		delete, and view server configuration values.
-		Implementations may extend the SERVER_CONFIGURE
-		capabilities and commands.
-		Such extensions must start with "X-" and followed
-		by any vendor or agreed on name.
-		It is suggested that server implementations send
+	</t>
+	<t>
+		It is suggested that client implementations send
 		a post authentication implementation specific
 		capability to authenticated and authorized users
-		in order to identify themselves to their own client
+		in order to identify themselves to their own server
 		implementations.
 		If the client does not send the correnct vendor ID information,
-		then the server would not send its capability to the client.
+		then the server would not send its SERVER_CONFIGURE
+		capability to the client.
 	</t>
 	<t>
 		SERVER_CONFIGURE sends and receives the configuration
 		information in key + value pairs.
 		The key and value are each a string.
+	</t>
+	<t>
+		This specification does not define any configuration
+		information.
+		It provides a common way to set, get, update, and delete them.
 	</t>
 	<t>
 		Multiple SERVER_CONFIGURE commands can be sent in the
@@ -47,22 +51,40 @@
 		<thead>
 			<tr>
 				<th>
-					ABNF Name
-				</th>
-				<th>
-					XDR Type
+					Name
 				</th>
 				<th>
 					Description
+				</th>
+				<th>
+					XDR API
 				</th>
 			</tr>
 		</thead>
 		<tbody>
 			<tr>
-				<td>SERVER_CONFIGURE</td>
-				<td>AOID_e</td>
 				<td>
-					xdr_AOID();
+					ConfigOp
+				</td>
+				<td>
+					Indicates if the key/value pairs are to
+					get, set, update, or be deleted.
+				</td>
+				<td>
+					xdr_ConfigOp()
+				</td>
+			</tr>
+			<tr>
+				<td>
+					OpSet
+				</td>
+				<td>
+					A set of key/value paris with the same ConfigOp.
+					Allows the client to bundle multiple
+					key/paris per ConfigOp.
+				</td>
+				<td>
+					xdr_OpSet()
 				</td>
 			</tr>
 			<tr>
@@ -70,7 +92,8 @@
 					ServerConfigure
 				</td>
 				<td>
-					ServerConfigure
+					The ADMIN operation that sets and gets
+					server configuration information.
 				</td>
 				<td>
 					<t>

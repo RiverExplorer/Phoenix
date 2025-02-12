@@ -92,13 +92,13 @@
 				<thead>
 					<tr>
 						<th>
-							ABNF Name
-						</th>
-						<th>
-							XDR Type
+							Name
 						</th>
 						<th>
 							Description
+						</th>
+						<th>
+							XDR API
 						</th>
 					</tr>
 				</thead>
@@ -108,17 +108,13 @@
 							PacketLength
 						</td>
 						<td>
-							uint64_t
-						</td>
-						<td>
 							<t>
 								The nuber of octets that follow this value that
 								are part of this packet.
 							</t>
-							<t>
-								<br/>
-								XDR API: xdr_PacketLength();
-							</t>
+						</td>
+						<td>
+							xdr_PacketLength()
 						</td>
 					</tr>
 				</tbody>
@@ -155,23 +151,64 @@
 				<thead>
 					<tr>
 						<th>
-							ABNF Name
-						</th>
-						<th>
-							XDR Type
+							Name
 						</th>
 						<th>
 							Description
+						</th>
+						<th>
+							XDR API
 						</th>
 					</tr>
 				</thead>
 				<tbody>
 					<tr>
 						<td>
-							SEQ
+							ADMIN_CMD_t
 						</td>
 						<td>
-							SEQ
+							The payload is an administration command.
+						</td>
+						<td>
+							xdr_ADMIN_CMD_t()
+						</td>
+					</tr>
+					<tr>
+						<td>
+							AUTH_CMD_t
+						</td>
+						<td>
+							What follows in the payload, is an authentication command.
+						</td>
+						<td>
+							xdr_AUTH_CMD_t()
+						</td>
+					</tr>
+					<tr>
+						<td>
+							FILE_CMD_t
+						</td>
+						<td>
+							A FILE or FOLDER payload is included.
+						</td>
+						<td>
+							xdr_FILE_CMD_t()
+						</td>
+					</tr>
+					<tr>
+						<td>
+							PROTO_CMD_t
+						</td>
+						<td>
+							The playload includes one of many protocol packets.
+						</td>
+						<td>
+							xdr_PROTO_CMD_t()
+						</td>
+					</tr>
+					<tr>
+						<td>
+							SEQ_t
 						</td>
 						<td>
 							<t>
@@ -197,18 +234,14 @@
 								commands and not accidentally re-issue the same
 								SEQ that may still get replies from the other endpoint.
 							</t>
-							<t>
-								<br/>
-								XDR API: xdr_SEQ();
-							</t>
+						</td>
+						<td>
+							xdr_SEQ_t()
 						</td>
 					</tr>
 					<tr>
 						<td>
-							CMD
-						</td>
-						<td>
-							Command
+							CMD_t
 						</td>
 						<td>
 							<t>
@@ -217,16 +250,12 @@
 								and defines the data that follows.
 								The command are specified in this specification.
 							</t>
-							<t>
-								<br/>
-								XDR API: xdr_Command();
-							</t>
+						</td>
+						<td>
+							xdr_Cmd_t()
 						</td>
 					</tr>
 					<tr>
-						<td>
-							CmdPayload
-						</td>
 						<td>
 							CmdPayload
 						</td>
@@ -237,9 +266,9 @@
 								In other caes it is a structured XDR set of data.
 								See the specific CMD for details.
 							</t>
-							<t>
-								XDR API: xdr_CmdPayload();
-							</t>
+						</td>
+						<td>
+							xdr_CmdPayload()
 						</td>
 					</tr>
 					<tr>
@@ -247,15 +276,12 @@
 							PacketBody
 						</td>
 						<td>
-							PacketBody
-						</td>
-						<td>
 							<t>
 								The packet body.
 							</t>
-							<t>
-								XDR API: xdr_PacketBody();
-							</t>
+						</td>
+						<td>
+							xdr_PacketBody()
 						</td>
 					</tr>
 				</tbody>

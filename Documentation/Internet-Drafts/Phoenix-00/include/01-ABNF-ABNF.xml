@@ -48,5 +48,14 @@ KeyPair      = string string
 
                ; Length is the number of KeyPair that follow.
 KeyPairArray = Length 1*KeyPair
-							 
+
+OpSet_t      = 0x00:8
+
+OpGet_t      = 0x01:8
+
+OpUpdate_t   = 0x02:8
+
+OpDelete_t   = 0x03:8
+
+Op           = uint8_t
 ]]></artwork>

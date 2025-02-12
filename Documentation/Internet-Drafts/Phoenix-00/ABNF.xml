@@ -28,16 +28,17 @@
 			in this specifications when needed:
 		</t>
 		<table>
+			<name>XDR string and opaque are arrays.</name>
 			<thead>
 				<tr>
 					<th>
-						ABNF NAME
-					</th>
-					<th>
-						XDR TYPE
+						NAME
 					</th>
 					<th>
 						Description:
+					</th>
+					<th>
+						XDR API
 					</th>
 				</tr>
 			</thead>
@@ -47,22 +48,21 @@
 						string
 					</td>
 					<td>
-						string
-					</td>
-					<td>
 						<t>
 							Is an XDR array.
-							Example usage in XDR definition file (see rpcgen
-							open-source documentation):
+							See <xref target="rpcgendocs"/>.
+						</t>
+						<t>
+							The ABNF definition for opaque is in <xref target="GenericAbnf"/>
 						</t>
 						<t>
 							<br/>
 							"string MyVariableName&lt;&gt;;"
 							<br/>
 						</t>
-						<t>
-							The ABNF definition for string is in <xref target="GenericAbnf"/>
-						</t>
+					</td>
+					<td>
+						xdr_string()
 					</td>
 				</tr>
 				<tr>
@@ -70,22 +70,21 @@
 						opaque
 					</td>
 					<td>
-						opaque
-					</td>
-					<td>
 						<t>
 							Is an XDR array.
-							Example usage in XDR definition file (see rpcgen
-							open-source documentation):
-						</t>
-						<t>
-							<br/>
-							"opaque DataNotToBeAltered&lt;&gt;;"
-							<br/>
+							See <xref target="rpcgendocs"/>.
 						</t>
 						<t>
 							The ABNF definition for opaque is in <xref target="GenericAbnf"/>
 						</t>
+						<t>
+							<br/>
+							"opaque MyOpaqueData&lt;&gt;;"
+							<br/>
+						</t>
+					</td>
+					<td>
+						xdr_opaque()
 					</td>
 				</tr>
 			</tbody>
@@ -183,21 +182,18 @@ Header = (Offset &lt;&lt; 24) | (Flags &lt;&lt; 22) | Length;
 			<thead>
 				<tr>
 					<th>
-						ABNF TYPE
-					</th>
-					<th>
-						XDR TYPE
+						TYPE
 					</th>
 					<th>
 						Notes
+					</th>
+					<th>
+						XDR API
 					</th>
 				</tr>
 			</thead>
 			<tbody>
 				<tr>
-					<td>
-						uint8_t
-					</td>
 					<td>
 						uint8_t
 					</td>
@@ -209,11 +205,11 @@ Header = (Offset &lt;&lt; 24) | (Flags &lt;&lt; 22) | Length;
 							uint8_t is built into XDR.
 						</t>
 					</td>
+					<td>
+						xdr_uint8_t()
+					</td>
 				</tr>
 				<tr>
-					<td>
-						uint16_t
-					</td>
 					<td>
 						uint16_t
 					</td>
@@ -225,11 +221,11 @@ Header = (Offset &lt;&lt; 24) | (Flags &lt;&lt; 22) | Length;
 							uint16_t is built into XDR.
 						</t>
 					</td>
+					<td>
+						xdr_uint16_t()
+					</td>
 				</tr>
 				<tr>
-					<td>
-						uint32_t
-					</td>
 					<td>
 						uint32_t
 					</td>
@@ -241,11 +237,11 @@ Header = (Offset &lt;&lt; 24) | (Flags &lt;&lt; 22) | Length;
 							uint32_t is built into XDR.
 						</t>
 					</td>
+					<td>
+						xdr_uint32_t()
+					</td>
 				</tr>
 				<tr>
-					<td>
-						uint64_t
-					</td>
 					<td>
 						uint64_t
 					</td>
@@ -257,11 +253,11 @@ Header = (Offset &lt;&lt; 24) | (Flags &lt;&lt; 22) | Length;
 							uint32_t is built into XDR.
 						</t>
 					</td>
+					<td>
+						xdr_uint64_t()
+					</td>
 				</tr>
 				<tr>
-					<td>
-						string
-					</td>
 					<td>
 						string
 					</td>
@@ -273,11 +269,11 @@ Header = (Offset &lt;&lt; 24) | (Flags &lt;&lt; 22) | Length;
 							string is built into XDR.
 						</t>
 					</td>
+					<td>
+						xdr_string()
+					</td>
 				</tr>
 				<tr>
-					<td>
-						opaque
-					</td>
 					<td>
 						opaque
 					</td>
@@ -288,6 +284,53 @@ Header = (Offset &lt;&lt; 24) | (Flags &lt;&lt; 22) | Length;
 						<t>
 							opaque is built into XDR.
 						</t>
+					</td>
+					<td>
+						xdr_opaque()
+					</td>
+				</tr>
+				<tr>
+					<td>
+						OpSet_t
+					</td>
+					<td>
+						Signifies the operation will set a value.
+					</td>
+					<td>
+						xdr_Op() With the value set to OpSet_t.
+					</td>
+				</tr>
+				<tr>
+					<td>
+						OpGet_t
+					</td>
+					<td>
+						Signifies the operation will get a value.
+					</td>
+					<td>
+						xdr_Op() With the value set to OpGet_t.
+					</td>
+				</tr>
+				<tr>
+					<td>
+						OpUpdate_t
+					</td>
+					<td>
+						Signifies the operation will update an existing value.
+					</td>
+					<td>
+						xdr_Op() With the value set to OpUpdate_t.
+					</td>
+				</tr>
+				<tr>
+					<td>
+						OpDelete_t
+					</td>
+					<td>
+						Signifies the operation will delete key/value pair.
+					</td>
+					<td>
+						xdr_Op() With the value set to OpDelete_t.
 					</td>
 				</tr>
 			</tbody>
@@ -327,25 +370,38 @@ Header = (Offset &lt;&lt; 24) | (Flags &lt;&lt; 22) | Length;
 			<name>StringRef ABNF/XDR Mapping</name>
 			<thead>
 				<tr>
-					<th>ABNF Name</th>
-					<th>XDR Type</th>
+					<th>Name</th>
 					<th>Description</th>
+					<th>XDR API</th>
 				</tr>
 			</thead>
 			<tbody>
 				<tr>
-					<td>Offset</td>
-					<td>uint32_t</td>
+					<td>Offset_t</td>
 					<td>
 						The octet count to the start of the string with zero being the
 						first octet in the message.
 					</td>
+					<td>
+						xdr_Offset_t()
+					</td>
 				</tr>
 				<tr>
-					<td>Length</td>
-					<td>uint32_t</td>
+					<td>Length_t</td>
 					<td>
 						The length in octets of the string.
+					</td>
+					<td>
+						xdr_Length_t()
+					</td>
+				</tr>
+				<tr>
+					<td>StringRef</td>
+					<td>
+						A String reference object.
+					</td>
+					<td>
+						xdr_StringRef()
 					</td>
 				</tr>
 			</tbody>

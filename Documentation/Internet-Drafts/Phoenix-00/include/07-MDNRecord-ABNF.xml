@@ -1,7 +1,5 @@
 <artwork type="abnf" name="" align="left" alt=""><![CDATA[
-MDNListCount = uint32_t
-
-UTC          = uint64_t
+MDNListCount = Length_t
 
 MDNRecord    = MDNSent MDNListCount 1*MDNRecord
 ]]></artwork>

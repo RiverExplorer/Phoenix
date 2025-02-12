@@ -1,5 +1,5 @@
 <artwork type="abnf" name="" align="left" alt=""><![CDATA[
-typedef time_t UTC_t;
+typedef uint64_t UTC_t;
 
 typedef uint32_t Offset_t;
 
@@ -11,4 +11,13 @@ struct KeyPair {
 };
 
 typedef KeyPair KeyPairArray<>;
+
+enum Op_e {
+    OpSet_t    = 0x00,
+    OpGet_t    = 0x01,
+    OpUpdate_t = 0x02,
+    OpDelete_t = 0x03
+};
+typedef uint8_t Op;		
+
 ]]></artwork>

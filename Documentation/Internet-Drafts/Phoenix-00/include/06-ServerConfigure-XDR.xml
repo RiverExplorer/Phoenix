@@ -1,6 +1,21 @@
 <artwork type="abnf" name="" align="left" alt=""><![CDATA[
+
+typedef uint8_t ConfigOp;
+
+enum ConfigOp_e {
+    OpSet_t,
+    OpGet_t,
+		OpUpdate_t,
+		OpDelete_t
+};
+
+struct OpSet {
+    ConfigOp   Op;     /* With the ConfigOp_e cast to a (ConfigOp)
+    KeyValue	 OpValues<>;
+};
+
 struct ServerConfigure {
     uint8_t   AOID;    /* With the APID_e value cast to a (AOID) */
-    KeyPair   Values<>;
+    OpSet     SetValues<>;
 };
 ]]></artwork>

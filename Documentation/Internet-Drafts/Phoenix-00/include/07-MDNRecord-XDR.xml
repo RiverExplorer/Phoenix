@@ -1,7 +1,7 @@
 <artwork type="abnf" name="" align="left" alt=""><![CDATA[
-typedef uint32_t MDNListCount;
+typedef Length_t MDNListCount;
 
-typedef time_t MDNSent;
+typedef UTC_t MDNSent;
 
 struct MDNRecord {
     MDNSent   TimeSent;

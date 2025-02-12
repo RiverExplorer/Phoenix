@@ -54,8 +54,8 @@
 
   <middle> 
     <xi:include href="RequirementsLanguage.xml"/>
-    <xi:include href="ABNF.xml"/>
     <xi:include href="Introduction.xml"/>
+    <xi:include href="ABNF.xml"/>
     <xi:include href="Definitions.xml"/>
     <xi:include href="Commands.xml"/>
     <xi:include href="Shared.xml"/>

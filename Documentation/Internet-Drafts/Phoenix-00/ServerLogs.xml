@@ -1,4 +1,102 @@
 <!-- Copyright 2025 RiverExplorer LLC and Douglas Mark Royer -->
 <section>
 	<name>Administration - SERVER_LOGS</name>
+	<t>
+		Get information from the server about its implementation logs.
+		All log information is related to the server implementation.
+	</t>
+	<t>
+		A SERVER_LOGS ADMIN CMD can be sent with no information,
+		this causes the server to send all of the information
+		for the last 24 hours.
+	</t>
+	<t>
+		There are 4 categories of information:
+	</t>
+	<table>
+		<thead>
+			<tr>
+				<th>Category</th>
+				<th>Description</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr>
+				<td>Error</td>
+				<td>
+					These are anything the server implementation considers
+					as an error.
+				</td>
+			</tr>
+			<tr>
+				<td>Warning</td>
+				<td>
+					A warning is any non critical information the server
+					implementation thinks may be worth recording, and is
+					not an error.
+				</td>
+			</tr>
+			<tr>
+				<td>Information</td>
+				<td>
+					This could be accounting information such
+					as user login, logout records.
+					Number of connections, or any other information
+					the server implementation wishes to record.
+					It does not include warning or error messages.
+				</td>
+			</tr>
+		</tbody>
+	</table>
+	
+	<table>
+	<thead>
+		<tr>
+			<td>
+				Name
+			</td>
+			<td>
+				Description
+			</td>
+			<td>
+				XDR API
+			</td>
+		</tr>
+	</thead>
+	<tbody>
+		<tr>
+			<td>
+				Category
+			</td>
+			<td>
+				Category
+			</td>
+			<td>
+				xdr_Category
+			</td>
+		</tr>
+	</tbody>
+</table>
+
+<section>
+	<name>XXXX - ABNF</name>
+	<figure>
+		<name>xxxx</name>
+	<artwork type="abnf" name="" align="left" alt=""><![CDATA[
+xxx
+]]></artwork>
+	</figure>
+</section>
+
+<section>
+	<name>XXXX - XDR</name>
+	<figure>
+		<name>xxxx</name>
+	<artwork type="abnf" name="" align="left" alt=""><![CDATA[
+xxx
+]]></artwork>
+	</figure>
+</section>
+
+
 </section>

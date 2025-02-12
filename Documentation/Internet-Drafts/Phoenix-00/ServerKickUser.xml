@@ -1,4 +1,10 @@
 <!-- Copyright 2025 RiverExplorer LLC and Douglas Mark Royer -->
 <section>
 	<name>Administration - USER_KICK_USER</name>
+	<t>
+		There can be only one user per connection.
+		So the USER_KICK_USER ADMIN command has no data associated with it.
+		When this ADMIN CMD is received by a client, it is being informed
+		that the user is logged out and may not be able to login again.
+	</t>
 </section>
