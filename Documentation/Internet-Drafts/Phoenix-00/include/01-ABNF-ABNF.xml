@@ -39,23 +39,37 @@ opaque       = uint32_t *uint8_t
                ; And time_t on POSIX systems.
 UTC_t        = uint64_t
 
+               ; The number of octets from the beginning of the 
+               ; associated object.
 Offset_t     = uint32_t
 
+               ; The number of octets in the the associated object.
 Length_t     = uint32_t
 
                ; Key and Value
 KeyPair      = string string
 
                ; Length is the number of KeyPair that follow.
-KeyPairArray = Length 1*KeyPair
+KeyPairArray = Length_t 1*KeyPair
 
+               ; Setting a value.
 OpSet_t      = 0x00:8
 
+               ; Getting a value.
 OpGet_t      = 0x01:8
 
+               ; Updating an existing value.
 OpUpdate_t   = 0x02:8
 
+               ; Deleting an existing value.
 OpDelete_t   = 0x03:8
 
-Op           = uint8_t
+               ; Any one of the the operations.
+Op           = OpSet / OpGet / OpUpdate / OpDelete
+
+true_t       = 0x01:8
+
+false_t      = 0x00:8
+
+enabled      = true_t / false_t
 ]]></artwork>

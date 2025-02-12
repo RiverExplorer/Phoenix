@@ -1,8 +1,10 @@
 <artwork type="abnf" name="" align="left" alt=""><![CDATA[
+                   ; A Configuration operation.
+ConfigOp         = Op
 
-ConfigOp         = OpSet / OpGet / OpUpdate / UpDelete
-                  
-OpSet            = ConfigOp Length_t 1*KeyPair
+                   ; Setting or updating a configuration value. 
+ConfigSet        = ConfigOp Length_t 1*KeyPair
 
-ServerConfigure  = SERVER_CONFIGURE Length_t 1*OpSet
+                   ; The SERVER_CONFIGURE command.
+ServerConfigure  = SERVER_CONFIGURE Length_t 1*ConfigSet
 ]]></artwork>

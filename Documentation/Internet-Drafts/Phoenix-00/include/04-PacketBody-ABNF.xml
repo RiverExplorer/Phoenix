@@ -1,19 +1,27 @@
 <artwork type="abnf" name="" align="left" alt=""><![CDATA[
+               ; What follows is a ADMIN CMD
 ADMIN_CMD_t  = 0x00:32
+
+               ; What follows is a AUTH CMD
 AUTH_CMD_t   = 0x01:32
+
+               ; What follows is a FILE or FOLDE CMD.
 FILE_CMD_t   = 0x02:32
+
+               ; What follows is a protocol specific command.
 PROTO_CMD_t  = 0x03:32
 
-; Define a SEQ_t (sequence) type.
+               ; Define a SEQ_t (sequence) type.
 SEQ_t        = uint32_t
 
-; Define a CMD_t (command) type.
+               ; Define a CMD_t (command) type.
 CMD_t        = uint32_t
 
-; Define a CmdPayload_t (blob of data) type.
-; The length of CmdPayload is determined by the CMD.
+               ; Define a CmdPayload_t (blob of data) type.
+               ; The length of CmdPayload is determined by the CMD.
 CmdPayload_t = *uint8_t
 
+               ; A Phoenix packet
 PacketBody = SEQ_t CMD_t
              (AdminPayload / AuthPayload / FilePayload / PROTOPayload)
 ]]></artwork>

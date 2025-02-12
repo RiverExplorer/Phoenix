@@ -1,0 +1,46 @@
+<!-- Copyright 2025 RiverExplorer LLC and Douglas Mark Royer -->
+<section anchor="CapabilityIndex">
+	<name>Capability - Index</name>
+	<t>
+		Below is a comprehensive list of capability values
+		defined in this specification.
+	</t>
+	<t>
+		Some capabilities are only sent pre-authentication (P),
+		some are sent only post-authentication (O), and
+		some can be sent pre-authentication or post-authentication,
+		or both (B).
+	</t>
+		
+	<table>
+		<name>Capability - Index</name>
+		<thead>
+			<tr>
+				<th>Name</th>
+				<th>Value</th>
+				<th>Data Type</th>
+				<th>Required or Optional</th>
+				<th>Pre (P), Post (O), or Both (B)</th>
+				<th>Defined in</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr>
+				<td>AUTHMD5</td>
+				<td>0x00:31</td>
+				<td>Boolean</td>
+				<td>Required</td>
+				<td>P</td>
+				<td><xref target="CAPABILITY"/></td>
+			</tr>
+			<tr>
+				<td>AUTHCERT</td>
+				<td>0x01:31</td>
+				<td>Boolean</td>
+				<td>Optional</td>
+				<td>P</td>
+				<td><xref target="CAPABILITY"/></td>
+			</tr>
+		</tbody>
+	</table>
+</section>

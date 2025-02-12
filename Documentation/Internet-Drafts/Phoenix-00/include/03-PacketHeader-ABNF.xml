@@ -1,3 +1,4 @@
 <artwork type="abnf" name="" align="left" alt=""><![CDATA[
-PacketLength      = Length_t
+                  ; The length of a packet.
+PacketHeader    = Length_t
 ]]></artwork>

@@ -199,10 +199,7 @@ Header = (Offset &lt;&lt; 24) | (Flags &lt;&lt; 22) | Length;
 					</td>
 					<td>
 						<t>
-							The associated "C" API function is xdr_uint8_t().
-						</t>
-						<t>
-							uint8_t is built into XDR.
+							An 8-bit unsigned integer.
 						</t>
 					</td>
 					<td>
@@ -215,10 +212,7 @@ Header = (Offset &lt;&lt; 24) | (Flags &lt;&lt; 22) | Length;
 					</td>
 					<td>
 						<t>
-							The associated "C" API function is xdr_uint16_t().
-						</t>
-						<t>
-							uint16_t is built into XDR.
+							A 16-bit unsigned integer.
 						</t>
 					</td>
 					<td>
@@ -231,10 +225,7 @@ Header = (Offset &lt;&lt; 24) | (Flags &lt;&lt; 22) | Length;
 					</td>
 					<td>
 						<t>
-							The associated "C" API function is xdr_uint32_t().
-						</t>
-						<t>
-							uint32_t is built into XDR.
+							A 32-bit unsigned integer.
 						</t>
 					</td>
 					<td>
@@ -247,10 +238,7 @@ Header = (Offset &lt;&lt; 24) | (Flags &lt;&lt; 22) | Length;
 					</td>
 					<td>
 						<t>
-							The associated "C" API function is xdr_uint64_t().
-						</t>
-						<t>
-							uint32_t is built into XDR.
+							A 64-bit unsigned integer.
 						</t>
 					</td>
 					<td>
@@ -263,10 +251,7 @@ Header = (Offset &lt;&lt; 24) | (Flags &lt;&lt; 22) | Length;
 					</td>
 					<td>
 						<t>
-							The associated "C" API function is xdr_string().
-						</t>
-						<t>
-							string is built into XDR.
+							A string of UTF-8 characters.
 						</t>
 					</td>
 					<td>
@@ -279,10 +264,9 @@ Header = (Offset &lt;&lt; 24) | (Flags &lt;&lt; 22) | Length;
 					</td>
 					<td>
 						<t>
-							The associated "C" API function is xdr_opaque().
-						</t>
-						<t>
-							opaque is built into XDR.
+							An array of 8-bit values that will not be
+							XDR encoded or XDR decoded when tranfering the data
+							over this protcol.
 						</t>
 					</td>
 					<td>
@@ -291,13 +275,27 @@ Header = (Offset &lt;&lt; 24) | (Flags &lt;&lt; 22) | Length;
 				</tr>
 				<tr>
 					<td>
+						Op
+					</td>
+					<td>
+						An 8-bit value.
+					</td>
+					<td>
+						xdr_Op()
+					</td>
+				</tr>
+				<tr>
+					<td>
 						OpSet_t
 					</td>
 					<td>
+						An 8-bit value.
 						Signifies the operation will set a value.
+						This is used in a few places to signifiy
+						the operation to apply to any included data.
 					</td>
 					<td>
-						xdr_Op() With the value set to OpSet_t.
+						xdr_Op() With the value cat to a (Op).
 					</td>
 				</tr>
 				<tr>
@@ -305,10 +303,11 @@ Header = (Offset &lt;&lt; 24) | (Flags &lt;&lt; 22) | Length;
 						OpGet_t
 					</td>
 					<td>
+						An 8-bit value. 
 						Signifies the operation will get a value.
 					</td>
 					<td>
-						xdr_Op() With the value set to OpGet_t.
+						xdr_Op() With the value cat to a (Op).
 					</td>
 				</tr>
 				<tr>
@@ -316,10 +315,11 @@ Header = (Offset &lt;&lt; 24) | (Flags &lt;&lt; 22) | Length;
 						OpUpdate_t
 					</td>
 					<td>
+						An 8-bit value.
 						Signifies the operation will update an existing value.
 					</td>
 					<td>
-						xdr_Op() With the value set to OpUpdate_t.
+						xdr_Op() With the value cat to a (Op).
 					</td>
 				</tr>
 				<tr>
@@ -327,10 +327,47 @@ Header = (Offset &lt;&lt; 24) | (Flags &lt;&lt; 22) | Length;
 						OpDelete_t
 					</td>
 					<td>
+						An 8-bit value.
 						Signifies the operation will delete key/value pair.
 					</td>
 					<td>
-						xdr_Op() With the value set to OpDelete_t.
+						xdr_Op() With the value cat to a (Op).
+					</td>
+				</tr>
+				<tr>
+					<td>
+						true_t
+					</td>
+					<td>
+						An 8-bit value.
+						A value of true.
+					</td>
+					<td>
+						xdr_false_t()
+					</td>
+				</tr>
+				<tr>
+					<td>
+						false_t
+					</td>
+					<td>
+						An 8-bit value.
+						A value of false.
+					</td>
+					<td>
+						xdr_true_t()
+					</td>
+				</tr>
+				<tr>
+					<td>
+						enabled
+					</td>
+					<td>
+						An 8-bit value.
+						With a value of true_t or false_t
+					</td>
+					<td>
+						xdr_enabled()
 					</td>
 				</tr>
 			</tbody>

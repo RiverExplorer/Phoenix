@@ -1,8 +1,16 @@
 <artwork type="abnf" name="" align="left" alt=""><![CDATA[
+/**
+ * The number of emails in the MDN record set.
+ */
 typedef Length_t MDNListCount;
 
+/**
+ * When the MDN was sent.
+ */
 typedef UTC_t MDNSent;
 
+/**
+ * A list of all MDN records for the associated object.
 struct MDNRecord {
     MDNSent   TimeSent;
 

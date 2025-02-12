@@ -47,7 +47,7 @@
 	</section>
 
 	<section>
-		<name>Administration Operations</name>
+		<name>Administration Command Payload</name>
 		<t>
 			To simplify naming, the capability names and command/reply names
 			are the same.
@@ -61,7 +61,7 @@
 			All of their XDR API is: xdr_AOID().
 		</t>
 		<table>
-			<name>Administration Operations List</name>
+			<name>Administration Comamnd Payload Operations</name>
 			<thead>
 				<tr>
 					<th>Command and Capability Name</th>
@@ -71,6 +71,19 @@
 				</tr>
 			</thead>
 			<tbody>
+				<tr>
+					<td>AOID_t</td>
+					<td>uint8_t</td>
+					<td>
+						An Administrative Operation Identifier.
+					</td>
+					<td>
+						Holds the value of one of SERVER_CONFIGURE, SERVER_KICK_USER,
+						SERVER_LOGS, SERVER_MANAGE_BANS, SERVER_SHUTDOWN,
+						SERVER_VIEW_STATA, USER_CREATE, USER_CREATE, USER_DELETE,
+						USER_LIST, USER_PERMISSIONS, USER_RENAME
+					</td>
+				</tr>
 				<tr>
 					<td>SERVER_CONFIGURE</td>
 					<td>0x00:8</td>
@@ -188,17 +201,17 @@
 		</table>
 
 		<section>
-			<name>Administration Operations - ABNF</name>
+			<name>Administration Command Payload - Operations - ABNF</name>
 			<figure>
-				<name>Administration Operations - ABNF</name>
+				<name>Administration Command Payload - Operations - ABNF</name>
 				<xi:include href="include/05-AdministrationOperations-ABNF.xml"/>
 			</figure>
 		</section>
 		
 		<section>
-			<name>Administration Operations - XDR</name>
+			<name>Administration Command Payload - Operations - XDR</name>
 			<figure>
-				<name>Administration Operations - XDR</name>
+				<name>Administration Command Payload - Operations - XDR</name>
 				<xi:include href="include/05-AdministrationOperations-XDR.xml"/>
 			</figure>
 		</section>

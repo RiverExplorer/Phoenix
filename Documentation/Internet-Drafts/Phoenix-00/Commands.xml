@@ -8,7 +8,6 @@
     The client is the protocol authority, and the server responds
     to client commands as configured or instructed by the client.
   </t>
-
 	<t>
 		This section provides an overview of the basic commands.
 		Each command has a detailed section in this specification.
@@ -67,7 +66,6 @@
 			pre authentication capability list to the client.
 		</li>
 	</ul>
-
 	<t>
 		A server may automatically send its pre authentication
 		capability list to the client upon initial connection.
@@ -83,6 +81,8 @@
 	<xi:include href="ProtocolSummary.xml"/>
 	<xi:include href="AdminSummary.xml"/>
 	<xi:include href="AuthSummary.xml"/>
+	<xi:include href="AuthCert.xml"/>
+	<xi:include href="AuthMD5.xml"/>
 	<xi:include href="CalendarSummary.xml"/>
 	<xi:include href="CapabilitySummary.xml"/>
 	<xi:include href="EMailSummary.xml"/>

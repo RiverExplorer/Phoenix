@@ -83,7 +83,7 @@
 			<t>
 				The packet header has one value, the total length
 				of the packet body, and payload sent as an
-				unsigned 64-bit integer	in network byte order.
+				unsigned 32-bit integer	in network byte order.
 				The length does not include its own length.
 				It is the total length that follows the length value.
 			</t>
@@ -105,7 +105,7 @@
 				<tbody>
 					<tr>
 						<td>
-							PacketLength
+							PacketHeader
 						</td>
 						<td>
 							<t>
@@ -114,7 +114,7 @@
 							</t>
 						</td>
 						<td>
-							xdr_PacketLength()
+							xdr_PacketHeader()
 						</td>
 					</tr>
 				</tbody>
@@ -257,7 +257,7 @@
 					</tr>
 					<tr>
 						<td>
-							CmdPayload
+							CmdPayload_t
 						</td>
 						<td>
 							<t>

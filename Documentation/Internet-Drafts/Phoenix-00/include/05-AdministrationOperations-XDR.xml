@@ -1,4 +1,7 @@
 <artwork type="abnf" name="" align="left" alt=""><![CDATA[
+/**
+ * ADMIN commands.
+ */
 enum AOID_e {
     SERVER_CONFIGURE   = 0x00,
     SERVER_KICK_USER   = 0x01,
@@ -12,5 +15,8 @@ enum AOID_e {
     USER_PERMISSIONS   = 0x09,
     USER_RENAME        = 0x0A
 };
-typedef uint8_t AOID;
+/**
+ * All ADMIN commands are sent as 8-bit values.
+ */
+typedef uint8_t AOID_t;
 ]]></artwork>

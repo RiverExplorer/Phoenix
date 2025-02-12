@@ -1,21 +1,22 @@
 <artwork type="abnf" name="" align="left" alt=""><![CDATA[
+/**
+ * Configuration operations are 8-bit.
+ */
+typedef Op ConfigOp;
 
-typedef uint8_t ConfigOp;
-
-enum ConfigOp_e {
-    OpSet_t,
-    OpGet_t,
-		OpUpdate_t,
-		OpDelete_t
-};
-
-struct OpSet {
+/**
+ * Set or update a configuration value.
+ */
+struct ConfigSet {
     ConfigOp   Op;     /* With the ConfigOp_e cast to a (ConfigOp)
-    KeyValue	 OpValues<>;
+    KeyValue   OpValues<>;
 };
 
+/**
+ * An array of OpConfigSet values.
+ */
 struct ServerConfigure {
-    uint8_t   AOID;    /* With the APID_e value cast to a (AOID) */
-    OpSet     SetValues<>;
+    uint8_t      AOID;    /* With the APID_e value cast to a (AOID) */
+    OpConfigSet  SetValues<>;
 };
 ]]></artwork>

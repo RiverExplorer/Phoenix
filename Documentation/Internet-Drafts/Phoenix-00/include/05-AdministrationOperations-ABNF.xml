@@ -1,25 +1,37 @@
 <artwork type="abnf" name="" align="left" alt=""><![CDATA[
-AOID               = uint8_t
-				
+                     ; All ADMIN commands are 8-bit values.
+AOID_t             = uint8_t
+
+                     ; What follows is CONFIGURE operation.
 SERVER_CONFIGURE   = 0x00:8
 
+                     ; What follows is a KICK USER operation.
 SERVER_KICK_USER   = 0x01:8
 
+                     ; What follows is a LOGS operation.
 SERVER_LOGS        = 0x02:8
 
+                     ; What follows is a BAN USER operation.
 SERVER_MANAGE_BANS = 0x03:8
 
+                     ; What follows is a SERVER SHUTDOWN operation.
 SERVER_SHUTDOWN    = 0x04:8
 
+                     ; What follows is a VIEW STATS operation.
 SERVER_VIEW_STATS  = 0x05:8
 
+                     ; A USER CREATE (or enable) operation follows.
 USER_CREATE        = 0x06:8
 
+                     ; A USER DELETE (or disable) operation follows.
 USER_DELETE        = 0x07:8
 
+                     ; Get one or more USER info.
 USER_LIST          = 0x08:8
 
+                     ; Give or take away USER permissions.
 USER_PERMISSIONS   = 0x09:8
 
+                     ; Alter a users login name.
 USER_RENAME        = 0x0A:8
 ]]></artwork>

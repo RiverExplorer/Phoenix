@@ -22,19 +22,31 @@
 		delete, and view server configuration values.
 	</t>
 	<t>
-		It is suggested that client implementations send
-		a post authentication implementation specific
-		capability to authenticated and authorized users
-		in order to identify themselves to their own server
-		implementations.
-		If the client does not send the correnct vendor ID information,
+		A client implementation would generally only
+		support its own matching server implementation.
+		The client sends a VENDOR_ID capability
+		with a string that the server implementation will check
+		to see it is a compatible client. The value is out of
+		scope to this specification.
+		If the client does not send the correct VENDOR_ID information,
+		or the authentication user is not authorized,
 		then the server would not send its SERVER_CONFIGURE
-		capability to the client.
+		capability back to the client in the post authentication
+		capability list.
 	</t>
 	<t>
-		SERVER_CONFIGURE sends and receives the configuration
+		If a client or user is not authorized, then all
+		SERVER_CONFIGURE ADMIN command will be rejected
+		with a NotSupported Packet with the SEQ number
+		the same as in the SERVER_CONFIGURE ADMIN commmand
+		sent to the server.
+	</t>
+	<t>
+		The SERVER_CONFIGURE ADMIN command sends and receives the configuration
 		information in key + value pairs.
 		The key and value are each a string.
+		The values uses in the key or value are vendor specific and
+		out of scope in this specification.
 	</t>
 	<t>
 		This specification does not define any configuration
@@ -44,6 +56,7 @@
 	<t>
 		Multiple SERVER_CONFIGURE commands can be sent in the
 		same ADMIN packet.
+		They are processed in the order sent.
 	</t>
 	
 	<table>
@@ -76,7 +89,7 @@
 			</tr>
 			<tr>
 				<td>
-					OpSet
+					ConfigSet
 				</td>
 				<td>
 					A set of key/value paris with the same ConfigOp.
@@ -84,7 +97,7 @@
 					key/paris per ConfigOp.
 				</td>
 				<td>
-					xdr_OpSet()
+					xdr_ConfigSet()
 				</td>
 			</tr>
 			<tr>

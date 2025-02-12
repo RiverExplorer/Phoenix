@@ -1,4 +1,7 @@
 <artwork type="abnf" name="" align="left" alt=""><![CDATA[
+/**
+ * A single MDN entry, when (or zero) and the email.
+ */
 struct MDMEntry
 {
     UTC_t  Received;

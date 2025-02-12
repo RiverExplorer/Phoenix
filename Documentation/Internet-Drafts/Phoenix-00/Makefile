@@ -16,8 +16,11 @@ SOURCES.xml = \
 	AdminBinaryValues.xml \
 	AdminSummary.xml \
 	AuthBinaryValues.xml \
+	AuthCert.xml \
+	AuthMD5.xml \
 	AuthSummary.xml \
 	CalendarSummary.xml \
+	CapabilityIndex.xml \
 	CapabilitySummary.xml \
 	Commands.xml \
 	Definitions.xml \
@@ -36,16 +39,16 @@ SOURCES.xml = \
 	RequirementsLanguage.xml \
 	Shared.xml \
 	SMimeSummary.xml \
-	UserCreate.xml \
-	UserDelete.xml \
-	UserRename.xml \
-	UserList.xml \
 	ServerShutdown.xml \
 	ServerLogs.xml \
 	ServerKickUser.xml \
 	ServerManageBans.xml \
 	ServerViewStats.xml \
-	ServerConfigure.xml
+	ServerConfigure.xml \
+	UserCreate.xml \
+	UserDelete.xml \
+	UserList.xml \
+	UserRename.xml
 
 ARTWORK.txt = \
 	ABNF-00.txt \
@@ -59,6 +62,8 @@ ARTWORK.txt = \
 	IndexList-08.txt \
 	IndexList-09.txt \
 	IndexList-10.txt \
+	MD5-00.txt \
+	MD5-01.txt \
 	MDN-00.txt \
 	MDN-01.txt \
 	Packet-00.txt \

@@ -1,23 +1,47 @@
 <artwork type="abnf" name="" align="left" alt=""><![CDATA[
+
+/**
+ * The time in seconds since January 1 1970 in GMT.
+ */
 typedef uint64_t UTC_t;
 
+/**
+ * the number of octets from the beginning of 
+ * the associated object.
+ */
 typedef uint32_t Offset_t;
 
+/**
+ * The number of octets in the associated object.
+ */
 typedef uint32_t Length_t;
 
+/**
+ * A string Key and its associated Value.
+ */
 struct KeyPair {
     string Key<>;
     string Value<>;
 };
 
+/**
+ * An array of KeyPair objects.
+ */
 typedef KeyPair KeyPairArray<>;
 
+/**
+ * Operations
+ */
 enum Op_e {
     OpSet_t    = 0x00,
     OpGet_t    = 0x01,
     OpUpdate_t = 0x02,
     OpDelete_t = 0x03
 };
-typedef uint8_t Op;		
 
+/**
+ * Any one of OpSet_t, OpGet_t, OpUpdate_t, or OpDelete
+ * cast to a (Op).
+ */
+typedef uint8_t Op;		
 ]]></artwork>

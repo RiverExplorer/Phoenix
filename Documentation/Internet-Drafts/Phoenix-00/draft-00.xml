@@ -33,7 +33,7 @@
           <country>US</country>
           <!-- Uses two letter country code -->
         </postal>        
-        <phone>1+714-989-6135</phone>
+        <phone>1+208-806-1358</phone>
         <email>DouglasRoyer@gmail.com</email>  
         <!-- Can have more than one <email> element -->
         <uri>https://DougRoyer.US</uri>
@@ -127,15 +127,11 @@
 					</reference>
       </references>
     </references>
-
     <xi:include href="AdminBinaryValues.xml"/>
-
     <xi:include href="AuthBinaryValues.xml"/>
-
+    <xi:include href="CapabilityIndex.xml"/>
     <xi:include href="FileBinaryValues.xml"/>
-
     <xi:include href="ProtocolBinaryValues.xml"/>
-
     <xi:include href="ALL-ABNF.xml"/>
     <xi:include href="ALL-XDR.xml"/>
 

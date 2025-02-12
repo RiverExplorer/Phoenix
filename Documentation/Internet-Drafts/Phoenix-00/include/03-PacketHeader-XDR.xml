@@ -1,3 +1,6 @@
 <artwork type="abnf" name="" align="left" alt=""><![CDATA[
-typedef Length_t PacketLength_t;
+/**
+ * The length of a packet.
+ */
+typedef Length_t PacketHeader;
 ]]></artwork>

@@ -1,0 +1,27 @@
+<!-- Copyright 2025 RiverExplorer LLC and Douglas Mark Royer -->
+<section>
+	<name>Capability - VENDOR_ID</name>
+	<t>
+		When sent, the VENDOR_ID capability is accompanied
+		by a string.
+		This string is unique and defined by the server implementation
+		or instance.
+	</t>
+	<t>
+		When a server gets a VENDOR_ID capability, it compares
+		it to what it expects.
+		When they match, then after the user is authenticated
+		the server can then determine if it will send 
+		the SERVER_CONFIGURE capability to the client.
+	</t>
+	<t>
+		It would be expected that any client sending its VENDOR_ID
+		capability to the server is expecting the possibility
+		of receiving a SERVER_CONFIGURE capability back.
+	</t>
+	<t>
+		The purpose of the VENDOR_ID capability and its value
+		is to help ensure that any SERVER_CONFIGURE commands
+		are compatible between the client and server.
+	</t>
+</section>

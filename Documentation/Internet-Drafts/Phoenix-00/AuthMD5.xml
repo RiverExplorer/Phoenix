@@ -1,0 +1,40 @@
+<!-- Copyright 2025 RiverExplorer LLC and Douglas Mark Royer -->
+<section anchor="AUTHMD5">
+	<name>Authentication - MD5</name>
+	<t>
+		AUTHMD5 is both a capability and a command.
+	</t>
+	<section anchor="AUTHMD5-CAPABILITY">
+		<name>Authentication - MD5 - Capability</name>
+		<t>
+			When sent as a capability, a true or false value
+			follows.
+			When true, it means that AUTHMD5 is supported.
+			When false, it means that AUTHMD5 is not supported.
+		</t>
+		<t>
+			The highest bit is set to zero (0) which indicates
+			this is a Phoenix defined capability, and
+			not a vendor created and known capability.
+			Followed by the 31-bit capability value.
+		</t>
+		<figure>
+			<name>Capability - AUTHMD5</name>
+			<artset>
+				<artwork type="ascii-art" src="MD5-00.txt"/>
+				<artwork type="svg" src="MD5-00.svg"/>
+			</artset>
+		</figure>
+	</section>
+
+	<section anchor="AUTHMD5-COMMAND">
+		<name>Authentication - MD5 - Commnd</name>
+		<figure>
+			<name>Capability - AUTHMD5</name>
+			<artset>
+				<artwork type="ascii-art" src="MD5-01.txt"/>
+				<artwork type="svg" src="MD5-01.svg"/>
+			</artset>
+		</figure>
+	</section>
+</section>
