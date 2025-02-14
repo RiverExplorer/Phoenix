@@ -1,14 +1,37 @@
 <artwork type="abnf" name="" align="left" alt=""><![CDATA[
-/**
- * What follows is one of these commands.
+/*
+ * The ADMIN commands.
+ * An XDR enum is 32-bits in size.
+ * With the VENDOR_BIT set to zero, making it not a vendor command.
  */
 enum CMD_t {
+    /**
+     * The data that follows is ADMIN CMD data.
+     */
     ADMIN_CMD_t  = 0x00,
+		 
+    /**
+     * The data that follows is AUTH CMD data.
+     */
     AUTH_CMD_t   = 0x01,
+		 
+    /**
+     * The data that follows is FILE or FOLDER CMD data.
+     */
     FILE_CMD_t   = 0x02,
+		 
+    /**
+     * The data that follows is Phoenix PROTO CMD data.
+     */
     PROTO_CMD_t  = 0x03
 };
-					
+
+/**
+ * Mask to check if CMD_t value in packet
+ * is vendor extension.
+ */
+CMD_VENDOR_MASK_t = 0x80000000
+
 /**
  * Define a SEQ_t (sequence) type.
  */
@@ -16,7 +39,7 @@ typedef uint32_t  SEQ_t;
 
 /**
  * A CMD payload is one of these types.
- * With Cmd set to a CMD_T value.
+ * With Cmd set to a CMD_t value.
  */ 
 union CmdPayload_t switch (CMD_t Cmd) {
 
@@ -25,7 +48,6 @@ union CmdPayload_t switch (CMD_t Cmd) {
 		
     case AUTH_CMD_t:
         AuthCmdPayload AuthPayload;
-
 		
     case FILE_CMD_t:
         FileCmdPayload FilePayload;

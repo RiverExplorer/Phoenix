@@ -1,5 +1,5 @@
 <!-- Copyright 2025 RiverExplorer LLC and Douglas Mark Royer -->
-<section anchor="AUTHMD5">
+<section anchor="AUTHMD5" xmlns:xi="http://www.w3.org/2001/XInclude">
 	<name>Authentication - MD5</name>
 	<t>
 		AUTHMD5 is both a capability and a command.
@@ -28,7 +28,41 @@
 	</section>
 
 	<section anchor="AUTHMD5-COMMAND">
-		<name>Authentication - MD5 - Commnd</name>
+		<name>Authentication - MD5 - Command</name>
+		<t>
+			Once the connection is made the server sends its pre authentication
+			capability list to the client.
+			If AUTHMD5 is included in that list, then the client
+			may initiate an AUTHMD5 login.
+		</t>
+		<t>
+			If the client has already had a relationship with the server,
+			then the client may send the AUTHMD5 command to the server
+			before receiving the servers capability list, and only if AUTHMD5
+			was the last successful authentication method to that server.
+		</t>
+		<t>
+			If the server does not support (or no longer supports) an MD5
+			command, it will reply with a NotSupported packet with the
+			sequence number	the same as in the MD5 login request.
+		</t>
+		<t>
+			After the server receives an AUTHMD5, and if it supports it,
+			then it attempts to verify the provided information.
+			One of two replies are possible, success, or failure.
+		</t>
+		<t>
+			On failure the server replies with a AUTHMD5 packet,
+			with the sequence number the same that was in the
+			AUTHMD5 command it received.
+			With the login and password fields empty and their
+			lengths set to zero.
+		</t>
+		<t>
+			On success the server replies with a post authentication
+			capability command.
+		</t>
+			
 		<figure>
 			<name>Capability - AUTHMD5</name>
 			<artset>
@@ -36,5 +70,22 @@
 				<artwork type="svg" src="MD5-01.svg"/>
 			</artset>
 		</figure>
+
+		<section>
+			<name>Authentication - MD5 - ABNF</name>
+			<figure>
+				<name>Authentication - MD5 - ABNF</name>
+				<xi:include href="include/09-AuthMD5-ABNF.xml"/>
+			</figure>
+		</section>
+		
+		<section>
+			<name>Authentication - MD5 - XDR</name>
+			<figure>
+				<name>Authentication - MD5 - XDR</name>
+				<xi:include href="include/09-AuthMD5-XDR.xml"/>
+			</figure>
+		</section>
 	</section>
+	
 </section>

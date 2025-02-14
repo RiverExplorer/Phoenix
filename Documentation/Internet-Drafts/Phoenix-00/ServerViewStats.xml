@@ -1,4 +1,11 @@
 <!-- Copyright 2025 RiverExplorer LLC and Douglas Mark Royer -->
 <section>
 	<name>Administration - SERVER_VIEW_STATS</name>
+	<t>
+		This ADMIN command allows authorized and authenticated
+		users to view the system logs.
+	</t>
+	<t>
+		TODO ...
+	</t>
 </section>

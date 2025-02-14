@@ -1,37 +1,64 @@
 <artwork type="abnf" name="" align="left" alt=""><![CDATA[
-                     ; All ADMIN commands are 8-bit values.
-AOID_t             = uint8_t
-
                      ; What follows is CONFIGURE operation.
-SERVER_CONFIGURE   = 0x00:8
+SERVER_CONFIGURE   = %x00:8
 
                      ; What follows is a KICK USER operation.
-SERVER_KICK_USER   = 0x01:8
+SERVER_KICK_USER   = %x01:8
 
                      ; What follows is a LOGS operation.
-SERVER_LOGS        = 0x02:8
+SERVER_LOGS        = %x02:8
 
                      ; What follows is a BAN USER operation.
-SERVER_MANAGE_BANS = 0x03:8
+SERVER_MANAGE_BANS = %x03:8
 
                      ; What follows is a SERVER SHUTDOWN operation.
-SERVER_SHUTDOWN    = 0x04:8
+SERVER_SHUTDOWN    = %x04:8
 
                      ; What follows is a VIEW STATS operation.
-SERVER_VIEW_STATS  = 0x05:8
+SERVER_VIEW_STATS  = %x05:8
 
                      ; A USER CREATE (or enable) operation follows.
-USER_CREATE        = 0x06:8
+USER_CREATE        = %x06:8
 
                      ; A USER DELETE (or disable) operation follows.
-USER_DELETE        = 0x07:8
+USER_DELETE        = %x07:8
 
                      ; Get one or more USER info.
-USER_LIST          = 0x08:8
+USER_LIST          = %x08:8
 
                      ; Give or take away USER permissions.
-USER_PERMISSIONS   = 0x09:8
+USER_PERMISSIONS   = %x09:8
 
                      ; Alter a users login name.
-USER_RENAME        = 0x0A:8
+USER_RENAME        = %x0A:8
+										 
+                     ; All ADMIN commands are 32-bit values.
+AOID_t             = (VENDOR_BIT / PHOENIX_BIT) Unused23
+                     (SERVER_CONFIGURE
+                      / SERVER_KICK_USER
+                      / SERVER_LOGS
+                      / SERVER_MANAGE_BANS
+                      / SERVER_SHUTDOWN
+                      / SERVER_VIEW_STATS
+                      / USER_CREATE
+                      / USER_DELETE
+                      / USER_LIST
+                      / USER_PERMISSIONS
+                      / USER_RENAME)
+
+                     ; Where CmdPayload contents depend on the
+										 ; the value of AOID_t.		
+AdminPayload       = AOID_t
+                     *(ServerConfigPayload
+                     / ServerKickPayload
+										 / ServerLogsPayload
+										 / ServerBansPayload
+										 / ServerShutdownPayload
+										 / ServerStatsPayload
+										 / UserCreatePayload
+										 / UserDeletePayload
+										 / UserListPayload
+										 / UserPermissionsPayload
+										 / UserRenamePayload)
+										
 ]]></artwork>

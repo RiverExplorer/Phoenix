@@ -81,6 +81,7 @@
 	<xi:include href="ProtocolSummary.xml"/>
 	<xi:include href="AdminSummary.xml"/>
 	<xi:include href="AuthSummary.xml"/>
+	<xi:include href="AuthAnonymous.xml"/>
 	<xi:include href="AuthCert.xml"/>
 	<xi:include href="AuthMD5.xml"/>
 	<xi:include href="CalendarSummary.xml"/>

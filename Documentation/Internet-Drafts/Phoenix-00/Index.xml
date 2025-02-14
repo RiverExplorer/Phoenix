@@ -85,9 +85,9 @@ LID    = uint8_t;
 				ABNF:
 			</t>
 			<artwork type="abnf" name="" align="left" alt=""><![CDATA[
-IndexOpDefine   = 0x00:8
+IndexOpDefine   = %x00:8
 
-IndexOpUse      = 0x01:8
+IndexOpUse      = %x01:8
 
 IndexOp         = IndexOpDefine / IndexOpUse
 ]]></artwork>
@@ -203,7 +203,7 @@ HID    = uint8_t;
 						<td>
 							HdrCnt is set by the client to the number of headers
 							in the list.
-							With 0xffffff reserved for	expansion.
+							With %xffffff reserved for	expansion.
 						</td>
 					</tr>
 				</tbody>
@@ -322,9 +322,9 @@ SingleHeader = HID StringRef
 					ABNF:
 				</t>
 			<artwork type="abnf" name="" align="left" alt=""><![CDATA[
-UseExistingOp      = 0x01:8
+UseExistingOp      = %x01:8
 					
-UseExistingList:32 = UseExistingOp LID 0x00:8
+UseExistingList:32 = UseExistingOp LID %x00:8
 ]]></artwork>
 			</section>
 
@@ -356,7 +356,7 @@ UseExistingList:32 = UseExistingOp LID 0x00:8
 						<t>The first 8-bits are zero.</t>
 						<t>The IndexOP of zero, which means defining a list.</t>
 						<t>
-							And in this example two (0x02) MIME object headers
+							And in this example two (%x02) MIME object headers
 							are requested	to be indexed, "From", and "Subject".
 						</t>
 					</li>
@@ -421,7 +421,7 @@ UseExistingList:32 = UseExistingOp LID 0x00:8
 					</li>
 					<li>
 						(g) The second header will be identified as three (3).
-						The first body part header is 12 octets long (0xc): 'Content-Type'.
+						The first body part header is 12 octets long (%xc): 'Content-Type'.
 					</li>
 					<li>
 						(h) The value of the characters for 'Content-Type'.
@@ -628,8 +628,8 @@ HeaderIndex          = HeaderIndexHeader:32 *ArrayOfHID
                        ; of 32-bits.
 HeaderIndexHeader:32 = ID-CNT:8 Body-Count:8
                        / (HID HID)
-                       / (HID 0x00:8)
-                       / (0x00:8 0x00:8)
+                       / (HID %x00:8)
+                       / (%x00:8 %x00:8)
 
 ArrayOfHid           = *HIDEntry
 
@@ -644,9 +644,9 @@ Body-CNT:8             ; The number of body parts in the object
 
                        ; Padded out to multiples of 32-bits.
 HidEntry             = (HID:8 HID:8 HID:8 HID:8)
-                       / (HID:8 HID:8 HID:8 0x00:8)
-                       / (HID:8 HID:8 0x00:8 0x00:8)
-                       / (HID:8 0x00:8 0x00:8 0x00:8)
+                       / (HID:8 HID:8 HID:8 %x00:8)
+                       / (HID:8 HID:8 %x00:8 %x00:8)
+                       / (HID:8 %x00:8 %x00:8 %x00:8)
 ]]></artwork>
 			<t>
 				Where:

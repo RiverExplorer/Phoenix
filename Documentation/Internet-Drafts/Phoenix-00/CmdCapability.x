@@ -1,1 +1,0 @@
-../../../libPhoenix/CmdCapability.x

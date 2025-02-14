@@ -73,12 +73,13 @@
 			<tbody>
 				<tr>
 					<td>AOID_t</td>
-					<td>uint8_t</td>
+					<td>uint32_t</td>
 					<td>
 						An Administrative Operation Identifier.
 					</td>
 					<td>
-						Holds the value of one of SERVER_CONFIGURE, SERVER_KICK_USER,
+						Holds the (VENDOR_BIT or PHOENIX_BIT) value
+						and one of SERVER_CONFIGURE, SERVER_KICK_USER,
 						SERVER_LOGS, SERVER_MANAGE_BANS, SERVER_SHUTDOWN,
 						SERVER_VIEW_STATA, USER_CREATE, USER_CREATE, USER_DELETE,
 						USER_LIST, USER_PERMISSIONS, USER_RENAME
@@ -86,7 +87,7 @@
 				</tr>
 				<tr>
 					<td>SERVER_CONFIGURE</td>
-					<td>0x00:8</td>
+					<td>%x05:8</td>
 					<td>
 						May configure the server. If sent with a VIEW_ONLY
 						parameter, then the user may only view the configuration
@@ -99,7 +100,7 @@
 				</tr>
 				<tr>
 					<td>SERVER_KICK_USER</td>
-					<td>0x01:8</td>
+					<td>%x06:8</td>
 					<td>
 						May logout a user. And limit when they can use the server again.
 					</td>
@@ -109,7 +110,7 @@
 				</tr>
 				<tr>
 					<td>SERVER_LOGS</td>
-					<td>0x02:8</td>
+					<td>%x07:8</td>
 					<td>
 						May view the server logs.
 					</td>
@@ -119,7 +120,7 @@
 				</tr>
 				<tr>
 					<td>SERVER_MANAGE_BANS</td>
-					<td>0x03:8</td>
+					<td>%x08:8</td>
 					<td>
 						May manage IP and user bans.
 					</td>
@@ -129,7 +130,7 @@
 				</tr>
 				<tr>
 					<td>SERVER_SHUTDOWN</td>
-					<td>0x04:8</td>
+					<td>%x09:8</td>
 					<td>
 						May shutdown the server.
 					</td>
@@ -139,7 +140,7 @@
 				</tr>
 				<tr>
 					<td>SERVER_VIEW_STATS</td>
-					<td>0x05:8</td>
+					<td>%x0a:8</td>
 					<td>
 						May view server statistics.
 					</td>
@@ -149,7 +150,7 @@
 				</tr>
 				<tr>
 					<td>USER_CREATE</td>
-					<td>0x06:8</td>
+					<td>%x0b:8</td>
 					<td>
 						May create a new user.
 					</td>
@@ -159,7 +160,7 @@
 				</tr>
 				<tr>
 					<td>USER_DELETE</td>
-					<td>0x07:8</td>
+					<td>%x0c:8</td>
 					<td>
 						May delete a user.
 					</td>
@@ -169,7 +170,7 @@
 				</tr>
 				<tr>
 					<td>USER_LIST</td>
-					<td>0x08:8</td>
+					<td>%x0d:8</td>
 					<td>
 						May list users and their capabilities.
 					</td>
@@ -179,7 +180,7 @@
 				</tr>
 				<tr>
 					<td>USER_PERMISSIONS</td>
-					<td>0x09:8</td>
+					<td>%x0e:8</td>
 					<td>
 						May update other users permissions.
 					</td>
@@ -189,7 +190,7 @@
 				</tr>
 				<tr>
 					<td>USER_RENAME</td>
-					<td>0x0A:8</td>
+					<td>%x0f:8</td>
 					<td>
 						May rename a user.
 					</td>
@@ -215,18 +216,18 @@
 				<xi:include href="include/05-AdministrationOperations-XDR.xml"/>
 			</figure>
 		</section>
-		
-		<xi:include href="ServerConfigure.xml"/>
-		<xi:include href="ServerKickUser.xml"/>
-		<xi:include href="ServerLogs.xml"/>
-		<xi:include href="ServerManageBans.xml"/>
-		<xi:include href="ServerShutdown.xml"/>
-		<xi:include href="ServerViewStats.xml"/>
-		<xi:include href="UserCreate.xml"/>
-		<xi:include href="UserDelete.xml"/>
-		<xi:include href="UserList.xml"/>
-		<xi:include href="UserPermissions.xml"/>
-		<xi:include href="UserRename.xml"/>
-
 	</section>
+		
+	<xi:include href="ServerConfigure.xml"/>
+	<xi:include href="ServerKickUser.xml"/>
+	<xi:include href="ServerLogs.xml"/>
+	<xi:include href="ServerManageBans.xml"/>
+	<xi:include href="ServerShutdown.xml"/>
+	<xi:include href="ServerViewStats.xml"/>
+	<xi:include href="UserCreate.xml"/>
+	<xi:include href="UserDelete.xml"/>
+	<xi:include href="UserList.xml"/>
+	<xi:include href="UserPermissions.xml"/>
+	<xi:include href="UserRename.xml"/>
+
 </section>

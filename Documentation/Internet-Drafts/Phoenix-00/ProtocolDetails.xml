@@ -150,7 +150,7 @@
 
     // If the lowest bit is set, it is an odd number.
     //
-    if (Packet.Sequence & 0x01) {
+    if (Packet.Sequence & %x01) {
       SequenceIsEvenNumber = false;
     } else {
       SequenceIsEvenNumber = true;

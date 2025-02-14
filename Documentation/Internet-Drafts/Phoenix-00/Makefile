@@ -16,6 +16,7 @@ SOURCES.xml = \
 	AdminBinaryValues.xml \
 	AdminSummary.xml \
 	AuthBinaryValues.xml \
+	AuthAnonymous.xml \
 	AuthCert.xml \
 	AuthMD5.xml \
 	AuthSummary.xml \
@@ -37,6 +38,7 @@ SOURCES.xml = \
 	ProtocolDetails.xml \
 	ProtocolSummary.xml \
 	RequirementsLanguage.xml \
+	SecurityConsiderations.xml \
 	Shared.xml \
 	SMimeSummary.xml \
 	ServerShutdown.xml \
@@ -52,6 +54,10 @@ SOURCES.xml = \
 
 ARTWORK.txt = \
 	ABNF-00.txt \
+	ANONYMOUS-00.txt \
+	ANONYMOUS-01.txt \
+	AUTHCERT-00.txt \
+	AUTHCERT-01.txt \
 	IndexList-01.txt \
 	IndexList-02.txt \
 	IndexList-03.txt \
@@ -67,6 +73,8 @@ ARTWORK.txt = \
 	MDN-00.txt \
 	MDN-01.txt \
 	Packet-00.txt \
+	Packet-01.txt \
+	Packet-02.txt \
 	StringRef-00.txt
 
 REFERENCES.xml = \

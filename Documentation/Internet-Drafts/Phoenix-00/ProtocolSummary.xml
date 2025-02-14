@@ -109,7 +109,7 @@
 						</td>
 						<td>
 							<t>
-								The nuber of octets that follow this value that
+								The number of octets that follow this value that
 								are part of this packet.
 							</t>
 						</td>
@@ -154,6 +154,9 @@
 							Name
 						</th>
 						<th>
+							Value
+						</th>
+						<th>
 							Description
 						</th>
 						<th>
@@ -167,6 +170,9 @@
 							ADMIN_CMD_t
 						</td>
 						<td>
+							%x00:31
+						</td>
+						<td>
 							The payload is an administration command.
 						</td>
 						<td>
@@ -178,6 +184,9 @@
 							AUTH_CMD_t
 						</td>
 						<td>
+							%x01:31
+						</td>
+						<td>
 							What follows in the payload, is an authentication command.
 						</td>
 						<td>
@@ -186,7 +195,68 @@
 					</tr>
 					<tr>
 						<td>
+							CMD_t
+						</td>
+						<td>
+							1 bit + 31 bits.
+						</td>
+						<td>
+							<t>
+								The 1-bit, VENDOR_BIT or PHOENIX_BIT followed by one of
+								the 31-bit: ADMIN_CMD_t, AUTH_CMD_t, FILE_CMD_t, or PROTO_CMD_t.
+								For a total of 32-bits.
+							</t>
+							<t>
+								<br/>
+								A command (CMD) is a unsigned integer that
+								specifics a unique operation that describes
+								and defines the data that follows.
+							</t>
+							<t>
+								<br/>
+								The highest bit in the 32-bit value is
+								a VENDOR_BIT or PHOENIX_BIT.
+								So CMD_t covers vendor and phoenix commands.
+							</t>
+							<t>
+								-Phoenix CMD_t range is: %x00000000-7fffffff.
+							</t>
+							<t>
+								-Vendor CMD_t range is: 80000000-fffffffe.
+							</t>
+							<t>
+								-With %xffffffff reserved for future expansions.
+							</t>
+						</td>
+						<td>
+							xdr_Cmd_t()
+						</td>
+					</tr>
+					<tr>
+						<td>
+							CmdPayload_t
+						</td>
+						<td>
+							Variable
+						</td>
+						<td>
+							<t>
+								The Payload is whatever data follows the command.
+								In some cases it is a blob of opaque data.
+								In other cases it is a structured XDR set of data.
+								See the specific CMD for details.
+							</t>
+						</td>
+						<td>
+							xdr_CmdPayload()
+						</td>
+					</tr>
+					<tr>
+						<td>
 							FILE_CMD_t
+						</td>
+						<td>
+							%x03:31
 						</td>
 						<td>
 							A FILE or FOLDER payload is included.
@@ -200,7 +270,10 @@
 							PROTO_CMD_t
 						</td>
 						<td>
-							The playload includes one of many protocol packets.
+							%x04:31
+						</td>
+						<td>
+							The payload includes one of many protocol packets.
 						</td>
 						<td>
 							xdr_PROTO_CMD_t()
@@ -211,9 +284,11 @@
 							SEQ_t
 						</td>
 						<td>
+							uint32_t
+						</td>
+						<td>
 							<t>
-								The Command SEQ is a 32-bit unsigned integer sent
-								in network byte order.
+								The Command SEQ is a uint32_t.
 								This SEQ is an even number when initiated from
 								the client,	and an odd number when initiated
 								from the server.
@@ -241,39 +316,10 @@
 					</tr>
 					<tr>
 						<td>
-							CMD_t
-						</td>
-						<td>
-							<t>
-								A command (CMD) is a unsigned integer that
-								specifics a unique operation that describes
-								and defines the data that follows.
-								The command are specified in this specification.
-							</t>
-						</td>
-						<td>
-							xdr_Cmd_t()
-						</td>
-					</tr>
-					<tr>
-						<td>
-							CmdPayload_t
-						</td>
-						<td>
-							<t>
-								The Payload is whatever data follows the command.
-								In some cases it is a blob of opaque data.
-								In other caes it is a structured XDR set of data.
-								See the specific CMD for details.
-							</t>
-						</td>
-						<td>
-							xdr_CmdPayload()
-						</td>
-					</tr>
-					<tr>
-						<td>
 							PacketBody
+						</td>
+						<td>
+							Variable
 						</td>
 						<td>
 							<t>
@@ -286,6 +332,29 @@
 					</tr>
 				</tbody>
 			</table>
+
+			<t>
+				Any non-vendor command packet shown here:
+			</t>
+			<figure>
+				<name>Packet Body - Diagram</name>
+				<artset>
+					<artwork type="ascii-art" src="Packet-01.txt"/>
+          <artwork type="svg" src="Packet-01.svg"/>
+				</artset>
+			</figure>
+			
+			<t>
+				Any vendor command packet shown here:
+			</t>
+			<figure>
+				<name>Packet Body - Diagram</name>
+				<artset>
+					<artwork type="ascii-art" src="Packet-02.txt"/>
+          <artwork type="svg" src="Packet-02.svg"/>
+				</artset>
+			</figure>
+			
 			<section>
 				<name>Packet Body ABNF</name>
 				<t>

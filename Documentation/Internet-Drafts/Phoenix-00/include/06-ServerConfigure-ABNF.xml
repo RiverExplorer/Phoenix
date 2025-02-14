@@ -1,9 +1,6 @@
 <artwork type="abnf" name="" align="left" alt=""><![CDATA[
-                   ; A Configuration operation.
-ConfigOp         = Op
-
                    ; Setting or updating a configuration value. 
-ConfigSet        = ConfigOp Length_t 1*KeyPair
+ConfigSet        = Op Length_t 1*KeyPair
 
                    ; The SERVER_CONFIGURE command.
 ServerConfigure  = SERVER_CONFIGURE Length_t 1*ConfigSet

@@ -1,6 +1,6 @@
 <!-- Copyright 2025 RiverExplorer LLC and Douglas Mark Royer -->
 <section xmlns:xi="http://www.w3.org/2001/XInclude">
-	<name>Administration - SERVER_CONFIGURE (0x00:8)</name>
+	<name>Administration - SERVER_CONFIGURE (%x05:8)</name>
 	<t>
 		Remote administration of servers is an essential feature
 		in modern systems.
@@ -26,7 +26,7 @@
 		support its own matching server implementation.
 		The client sends a VENDOR_ID capability
 		with a string that the server implementation will check
-		to see it is a compatible client. The value is out of
+		to see if it is a compatible client. The value is out of
 		scope to this specification.
 		If the client does not send the correct VENDOR_ID information,
 		or the authentication user is not authorized,
@@ -77,14 +77,14 @@
 		<tbody>
 			<tr>
 				<td>
-					ConfigOp
+					Op
 				</td>
 				<td>
 					Indicates if the key/value pairs are to
 					get, set, update, or be deleted.
 				</td>
 				<td>
-					xdr_ConfigOp()
+					xdr_Op()
 				</td>
 			</tr>
 			<tr>
@@ -92,9 +92,9 @@
 					ConfigSet
 				</td>
 				<td>
-					A set of key/value paris with the same ConfigOp.
+					A set of key/value paris with the same Op.
 					Allows the client to bundle multiple
-					key/paris per ConfigOp.
+					key/paris per Op.
 				</td>
 				<td>
 					xdr_ConfigSet()

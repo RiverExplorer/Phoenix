@@ -16,7 +16,8 @@
   updates=""
   submissionType="IETF"
   xml:lang="en"
-  version="3">
+  version="3"
+	sortRefs="true">
   <front>
     <title abbrev="Phoenix: Lemonade Risen Again">Phoenix: Lemonade Risen Again</title>
     <seriesInfo name="Internet-Draft" value="draft-royer-phoenix-00"/>
@@ -67,12 +68,8 @@
       <name>IANA Considerations</name>
       <t>This memo includes no request to IANA. [CHECK]</t>
     </section>
-    
-    <section anchor="Security">
-      <!-- All drafts are required to have a security considerations section. See RFC 3552 for a guide. -->
-      <name>Security Considerations</name>
-      <t>This document should not affect the security of the Internet. [CHECK]</t>
-    </section>
+
+    <xi:include href="SecurityConsiderations.xml"/>
     
     <!-- NOTE: The Acknowledgements and Contributors sections are at the end of this template -->
   </middle>
@@ -90,6 +87,7 @@
         <xi:include href="../References/reference.RFC.8174.xml"/>
         <xi:include href="../References/reference.RFC.8446.xml"/>
         <xi:include href="../References/reference.RFC.9051.xml"/>
+        <xi:include href="../References/reference.POSIX.xml"/>
       </references>
  
       <references>

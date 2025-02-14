@@ -72,7 +72,7 @@
       <tr>
 				<td>4294967296</td>
 				<td>Reserved for future expansion.</td>
-				<td>4294967296 has a hex value of: 0xffffffff </td>
+				<td>4294967296 has a hex value of: %xffffffff </td>
 			</tr>
     </tbody>
 </table>

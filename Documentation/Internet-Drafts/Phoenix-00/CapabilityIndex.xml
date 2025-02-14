@@ -27,7 +27,7 @@
 		<tbody>
 			<tr>
 				<td>AUTHMD5</td>
-				<td>0x00:31</td>
+				<td>%x10:31</td>
 				<td>Boolean</td>
 				<td>Required</td>
 				<td>P</td>
@@ -35,7 +35,7 @@
 			</tr>
 			<tr>
 				<td>AUTHCERT</td>
-				<td>0x01:31</td>
+				<td>%x11:31</td>
 				<td>Boolean</td>
 				<td>Optional</td>
 				<td>P</td>

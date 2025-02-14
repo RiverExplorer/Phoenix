@@ -30,6 +30,20 @@ struct KeyPair {
 typedef KeyPair KeyPairArray<>;
 
 /**
+ * A 1-bit value;
+ * The highest bit in the value, 1 means it is
+ * a vendor extension.
+ */
+const VENDOR_BIT  = 0x1;
+
+/**
+ * A 1-bit value;
+ * The highest bit in the value, 0 means it is
+ * a Phoenix command or future Phoenix command.
+ */
+const PHOENIX_BIT = 0x0;
+
+/**
  * Operations
  */
 enum Op_e {
@@ -44,4 +58,5 @@ enum Op_e {
  * cast to a (Op).
  */
 typedef uint8_t Op;		
+
 ]]></artwork>

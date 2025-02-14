@@ -1,1 +1,0 @@
-../../../libPhoenix/CmdPing.x

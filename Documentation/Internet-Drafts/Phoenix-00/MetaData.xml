@@ -18,7 +18,7 @@
 		or FOLDER_METADATA commands.
 	</t>
 	<t>
-		Most are 8-bit boolean values that are set to false (0x00) or true (0x01).
+		Most are 8-bit boolean values that are set to false (%x00) or true (%x01).
 		A value that does not exists is the same as a false.
 	</t>
 	<t>

@@ -1,0 +1,89 @@
+<!-- Copyright 2025 RiverExplorer LLC and Douglas Mark Royer -->
+<section anchor="AUTHANONYMOUS" xmlns:xi="http://www.w3.org/2001/XInclude">
+	<name>Authentication - ANONYMOUS</name>
+	<t>
+		ANONYMOUS is both a capability and a command.
+	</t>
+	<section anchor="AUTHANONYMOUS-CAPABILITY">
+		<name>Authentication - AUTHANONYMOUS - Capability</name>
+		<t>
+			When sent as a capability, a true or false value
+			follows.
+			When true, it means that anonymous login is supported.
+			When false, it means that anonymous login is not supported.
+		</t>
+		<t>
+			The highest bit is set to zero (0) which indicates
+			this is a Phoenix defined capability, and
+			not a vendor created and known capability.
+			Followed by the 31-bit capability value.
+		</t>
+		<figure>
+			<name>Capability - AUTHANONYMOUS</name>
+			<artset>
+				<artwork type="ascii-art" src="ANONYMOUS-00.txt"/>
+				<artwork type="svg" src="ANONYMOUS-00.svg"/>
+			</artset>
+		</figure>
+	</section>
+
+	<section anchor="AUTHANONYMOUS-COMMAND">
+		<name>Authentication - AUTHANONYMOUS - Command</name>
+		<t>
+			Once the connection is made the server sends its pre authentication
+			capability list to the client.
+			If AUTHANONYMOUS is included in that list, then the client
+			may initiate an AUTHANONYMOUS login.
+		</t>
+		<t>
+			If the client has already had a relationship with the server,
+			then the client may send the AUTHANONYMOUS command to the server
+			before receiving the servers capability list, and only if AUTHANONYMOUS
+			was the last successful authentication method to that server.
+		</t>
+		<t>
+			If the server does not support (or no longer supports) an AUTHANONYMOUS
+			command, it will reply with a NotSupported packet with the
+			sequence number	the same as in the AUTHANONYMOUS login request.
+		</t>
+		<t>
+			After the server receives an AUTHANONYMOUS, and if it supports it,
+			it allows the connection and considers the user a valid
+			anonymouse user.
+		</t>
+		<t>
+			On failure the server replies with a AUTHANONYMOUS packet,
+			with the sequence number the same that was in the
+			ANONYMOUS command it received.
+		</t>
+		<t>
+			On success the server replies with a post authentication
+			capability command.
+		</t>
+			
+		<figure>
+			<name>Capability - AUTHANONYMOUS</name>
+			<artset>
+				<artwork type="ascii-art" src="ANONYMOUS-01.txt"/>
+				<artwork type="svg" src="ANONYMOUS-01.svg"/>
+			</artset>
+		</figure>
+
+		<section>
+			<name>Authentication - ANONYMOUS - ABNF</name>
+			<figure>
+				<name>Authentication - ANONYMOUS - ABNF</name>
+				<xi:include href="include/10-AuthAnonymous-ABNF.xml"/>
+			</figure>
+		</section>
+		
+		<section>
+			<name>Authentication - ANONYMOUS - XDR</name>
+			<figure>
+				<name>Authentication - ANONYMOUS - XDR</name>
+				<xi:include href="include/10-AuthAnonymous-XDR.xml"/>
+			</figure>
+		</section>
+	</section>
+	
+</section>

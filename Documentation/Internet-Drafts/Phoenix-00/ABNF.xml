@@ -27,6 +27,15 @@
 			Any other exceptions are added to the informative description
 			in this specifications when needed:
 		</t>
+		<t>
+			The UTC_t value used in this specification is designed
+			to be compatible with time_t on <xref target="POSIX"/>
+			compliant systems.
+			In POSIX systems, time_t is defined as an integer type used for
+			representing time in seconds since the UNIX epoch, which
+			is 00:00:00 UTC on January 1, 1970.
+			And in this specification is 64-bits in size.
+		</t>
 		<table>
 			<name>XDR string and opaque are arrays.</name>
 			<thead>
@@ -105,17 +114,21 @@
 			is within this specification defined to be:
 		</t>
 		<t>
-			b = binary / binary:width
+			b     = binary / binary:width
 			<br/>
 			<br/>
-			d = decimal / decimal:width
+			d     = decimal / decimal:width
 			<br/>
 			<br/>
-			x = hexadecimal / hexadecimal:width
+			x     = hexadecimal / hexadecimal:width
+			<br/>
+			<br/>
+			width = %d1-64
 		</t>
 		<t>
-			Where: with is the number of bits in the value.
+			Where: "width" is the number of bits in the value.
 			And must be an unsigned integer greater than zero.
+			And is always expressed in decimal.
 		</t>
 		<t>
 			When the left side has a width: 
@@ -136,8 +149,6 @@
 Header:32 = Offset:8 Flags:2 Length:22
 ]]></artwork>
 </figure>
-		<t>
-		</t>
 		<t>
 			Example pseudo code for the ABNF in
 			<xref target="Header32Example"/> could be:
@@ -279,6 +290,9 @@ Header = (Offset &lt;&lt; 24) | (Flags &lt;&lt; 22) | Length;
 					</td>
 					<td>
 						An 8-bit value.
+						When the highest bit is one (1)
+						it is a vendor specific Op.
+						Otherwise, it is set to zero (0).
 					</td>
 					<td>
 						xdr_Op()
@@ -303,7 +317,7 @@ Header = (Offset &lt;&lt; 24) | (Flags &lt;&lt; 22) | Length;
 						OpGet_t
 					</td>
 					<td>
-						An 8-bit value. 
+						An 8-bit value.
 						Signifies the operation will get a value.
 					</td>
 					<td>
@@ -363,11 +377,84 @@ Header = (Offset &lt;&lt; 24) | (Flags &lt;&lt; 22) | Length;
 						enabled
 					</td>
 					<td>
-						An 8-bit value.
-						With a value of true_t or false_t
+						A true_t or false_t value.
 					</td>
 					<td>
 						xdr_enabled()
+					</td>
+				</tr>
+				<tr>
+					<td>
+						Unused7
+					</td>
+					<td>
+						An 7-bit value, set to zeros.
+					</td>
+					<td>
+					</td>
+				</tr>
+				<tr>
+					<td>
+						Unused8
+					</td>
+					<td>
+						An 8-bit value, set to zeros.
+					</td>
+					<td>
+					</td>
+				</tr>
+				<tr>
+					<td>
+						Unused16
+					</td>
+					<td>
+						An 16-bit value, set to zeros.
+					</td>
+					<td>
+					</td>
+				</tr>
+				<tr>
+					<td>
+						Unused7
+					</td>
+					<td>
+						An 7-bit value, set to zeros.
+					</td>
+					<td>
+					</td>
+				</tr>
+				<tr>
+					<td>
+						Unused23
+					</td>
+					<td>
+						An 23-bit value, set to zeros.
+					</td>
+					<td>
+					</td>
+				</tr>
+				<tr>
+					<td>
+						VENDOR_BIT
+					</td>
+					<td>
+						A 1 bit value, set to 1.
+						It is placed in the highest bit
+						position in the value.
+					</td>
+					<td>
+					</td>
+				</tr>
+				<tr>
+					<td>
+						PHOENIX_BIT
+					</td>
+					<td>
+						A 1 bit value, set to 0.
+						It is placed in the highest bit
+						position in the value.
+					</td>
+					<td>
 					</td>
 				</tr>
 			</tbody>

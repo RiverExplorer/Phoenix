@@ -1,15 +1,18 @@
 <artwork type="abnf" name="" align="center" alt=""><![CDATA[
                ; An 8-bit unsigned integer type
-uint8_t      = 0x00-ff:8
+uint8_t      = %x00-ff:8
 		
                ; A 16-bit unsigned integer type
-uint16_t     = 0x0000-ffff:16
+uint16_t     = %x0000-ffff:16
 
                ; A 32-bit unsigned integer type
-uint32_t     = 0x00000000-ffffffff:32
+uint32_t     = %x00000000-ffffffff:32
 
                ; A 64-bit unsigned integer type
-uint64_t     = 0x0000000000000000-ffffffffffffffff:64
+uint64_t     = %x0000000000000000-ffffffffffffffff:64
+
+               ; The number of octets in the the associated object.
+Length_t     = uint32_t
 
                ; This is a generic array of UTF-8 characters without
                ; any terminating character.
@@ -24,7 +27,11 @@ uint64_t     = 0x0000000000000000-ffffffffffffffff:64
                ;
                ; The UTF8-Char is any valid and complete UTF-8 character.
                ;
-string       = uint32_t *UTF8-Char
+string       = Length_t *UTF8-Char
+
+               ; The UTF8-Char is any valid and complete UTF-8 character.
+               ;
+UTF8-Char    = 1*4uint8_t
 
                ; This is a generic array of uint8_t values.
                ; The data in an opaque array is not altered in any
@@ -32,19 +39,16 @@ string       = uint32_t *UTF8-Char
                ;
                ; The uint32_t value is the number of octets in the data.
                ;
-opaque       = uint32_t *uint8_t
+opaque       = Length_t *uint8_t
 
                ; The time in seconds since January 1st, 1970 GMT
                ; This is known as the epoch time on many systems.
-               ; And time_t on POSIX systems.
+               ; And time_t on POSIX compliant systems.
 UTC_t        = uint64_t
 
                ; The number of octets from the beginning of the 
                ; associated object.
 Offset_t     = uint32_t
-
-               ; The number of octets in the the associated object.
-Length_t     = uint32_t
 
                ; Key and Value
 KeyPair      = string string
@@ -53,23 +57,38 @@ KeyPair      = string string
 KeyPairArray = Length_t 1*KeyPair
 
                ; Setting a value.
-OpSet_t      = 0x00:8
+OpSet_t      = %x00:8
 
                ; Getting a value.
-OpGet_t      = 0x01:8
+OpGet_t      = %x01:8
 
                ; Updating an existing value.
-OpUpdate_t   = 0x02:8
+OpUpdate_t   = %x02:8
 
                ; Deleting an existing value.
-OpDelete_t   = 0x03:8
+OpDelete_t   = %x03:8
 
                ; Any one of the the operations.
 Op           = OpSet / OpGet / OpUpdate / OpDelete
 
-true_t       = 0x01:8
+true_t       = %x01:8
 
-false_t      = 0x00:8
+false_t      = %x00:8
 
 enabled      = true_t / false_t
+
+unused8      = %x00:8
+
+unused16     = %x00:16
+
+unused24     = %x00:24
+
+               ; The highest bit when, 1 means it is
+               ; a vendor extension.
+VENDOR_BIT   = %x01:1
+										
+               ; The highest bit when, 0 means it is
+               ; a Phoenix command or future Phoenix command.
+PHOENIX_BIT  = %x00:1
+
 ]]></artwork>

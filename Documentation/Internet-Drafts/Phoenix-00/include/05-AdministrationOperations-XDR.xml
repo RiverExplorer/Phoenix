@@ -1,6 +1,9 @@
 <artwork type="abnf" name="" align="left" alt=""><![CDATA[
 /**
  * ADMIN commands.
+ * In XDR, enum values are 32-bit.
+ * The high bit is zero, which means the PHOENIX_BIT is zero
+ * in these values.
  */
 enum AOID_e {
     SERVER_CONFIGURE   = 0x00,
@@ -15,8 +18,46 @@ enum AOID_e {
     USER_PERMISSIONS   = 0x09,
     USER_RENAME        = 0x0A
 };
+
 /**
- * All ADMIN commands are sent as 8-bit values.
+ * All ADMIN commands are sent as 32-bit values.
  */
-typedef uint8_t AOID_t;
+typedef uint32_t AOID_t;
+
+union AdminPayload switch(AOID_t Aoid) {
+
+  case SERVER_CONFIGURE:
+    ServerConfigPayload;
+
+  case SERVER_KICK_USER:
+    ServerKickPayload
+	
+	case SERVER_LOGS:
+    ServerLogsPayload;
+		
+  case SERVER_MANAGE_BANS:
+    ServerBansPayload;
+		
+  case SERVER_SHUTDOWN:
+    ServerShutdownPayload;
+		
+  case SERVER_VIEW_STATS:
+    ServerStatsPayload;
+		
+  case USER_CREATE:
+    UserCreatePayload;
+		
+  case USER_DELETE:
+    UserDeletePayload;
+		
+  case USER_LIST:
+    UserListPayload;
+		
+  case USER_PERMISSIONS:
+    UserPermissionsPayload;
+		
+  case USER_RENAME:
+    UserRenamePayload;
+};
+		
 ]]></artwork>

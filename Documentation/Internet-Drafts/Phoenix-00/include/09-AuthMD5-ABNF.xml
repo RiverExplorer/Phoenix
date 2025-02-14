@@ -1,0 +1,10 @@
+<artwork type="abnf" name="" align="left" alt=""><![CDATA[
+Login       = string
+
+Md5Password = string
+
+AuthMD5     = (VENDOR_BIT / PHOENIX_BIT) AUTHMD5 Login Md5Password
+]]></artwork>
+
+
+

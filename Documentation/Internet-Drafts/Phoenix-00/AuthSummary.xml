@@ -3,7 +3,16 @@
 <section anchor="AUTH_SUMMARY">
 	<name>Authentication Commands Summary</name>
 	<t>
-		TODO
+		The first thing a client must do, is authenticate
+		with the server.
+	</t>
+	<t>
+		Some users may also be administrators.
+		In those cases the user and client may wish to do further
+		authentication steps.
+		A user may wish to temporarrly step up their authentication
+		level to perform some operations, then step back down
+		to do their personal operations.
 	</t>
 </section>
 

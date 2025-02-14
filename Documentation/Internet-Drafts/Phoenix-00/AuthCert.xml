@@ -1,4 +1,101 @@
 <!-- Copyright 2025 RiverExplorer LLC and Douglas Mark Royer -->
 <section>
 	<name>Authentication - Certificate</name>
+	<t>
+		There are two kinds of AUTHCERT.
+	</t>
+	<ul>
+		<li>
+			Authentication by TLS certificate at connection time.
+			This is called an AUTHCERT_TLS.
+		</li>
+		<li>
+			Authentication challenge and response after connection time.
+			This is called an AUTHCERT_USER. 
+		</li>
+	</ul>
+
+	<section>
+		<name>Authentication - Certificate - Capability</name>
+		<t>
+			When the server sends the AUTHCERT capability to the
+			client, it is followed by two "enabled" values.
+			One for AUTHCERT_TLS and the other for AUTHCERT_USER.
+		</t>
+		
+	</section>
+
+	<section>
+		<name>AUTHCERT_TLS</name>
+		<t>
+			When the client connects to the server, it uses a
+			pre authorized digital certificate for the TLS connection.
+		</t>
+		<t>
+			The certificate itself could be sufficient.
+			Or the server may look into the contents of the client
+			public certificate supplied at TLS connection time
+			for information to help it determine the level of trust,
+			including none.
+		</t>
+		<t>
+			The server could be configured to accept self-signed
+			certificates, or it may be configured to verify
+			a certificate chain to a root certificate it trusts.
+			Or some combination.
+		</t>
+		<t>
+			A server could be configured to only allow AUTHCERT_TLS
+			from a subset of IP addresses or networks.
+		</t>
+		<t>
+			When the client successfully authenticates using AUTHCERT_TLS,
+			then the server replies with a CAPABILITY_POST
+			command to the client. And no CAPABILITY_PRE
+			command is sent by the server.
+		</t>
+		<t>
+			When a client fails the AUTHCERT_TLS, then the
+			server sends a CAPABILITY_PRE command	to the client.
+			The client can then proceed with other authentication
+			methods that were provided in the capability list supplied by
+			the server.
+		</t>
+		<t>
+			When a client gets a CAPABILITY_POST command from the
+			server after connection, without having sent any
+			authentication commands, the the client knows it has
+			been authenticated with AUTHCERT_TLS.
+		</t>
+		<t>
+			Clients expecting an AUTHCERT_TLS must wait for
+			the CAPABILITY_POST or CAPABILITY_PRE command before
+			continuting with client operations with associated
+			folders and files.
+		</t>
+		<t>
+			When a client that was not expecting an AUTHCERT_TLS
+			gets a CAPABILITY_POST after connection
+			and did not get a CAPABILITY_PRE, then the client know
+			they are authenticated using the supplied TLS certificate.
+		</t>
+	</section>
+	
+	<section>
+		<name>AUTHCERT_USER</name>
+		<t>
+			This authentication method still requires a valid TLS
+			connection certificate, as it does with all connections.
+			It also requires that the client send a public certificate
+			to the server as a separate authentication step for the
+			user.
+			This allows users to use clients that it normally would
+			not use.
+		</t>
+		<t>
+			The client sends a
+		</t>
+		
+	</section>
+	
 </section>
