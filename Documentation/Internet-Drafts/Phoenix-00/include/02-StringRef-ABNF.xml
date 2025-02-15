@@ -1,4 +1,4 @@
 <artwork type="abnf" name="" align="left" alt=""><![CDATA[
                 ; A reference to the start and length of a string.
-StringRef     = Offset_t Length_t
+StringRef     = Offset Length
 ]]></artwork>

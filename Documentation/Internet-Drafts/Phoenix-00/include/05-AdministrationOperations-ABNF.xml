@@ -33,7 +33,7 @@ USER_PERMISSIONS   = %x09:8
 USER_RENAME        = %x0A:8
 										 
                      ; All ADMIN commands are 32-bit values.
-AOID_t             = (VENDOR_BIT / PHOENIX_BIT) Unused23
+AOID               = (VENDOR_BIT / PHOENIX_BIT) Unused23
                      (SERVER_CONFIGURE
                       / SERVER_KICK_USER
                       / SERVER_LOGS
@@ -47,18 +47,17 @@ AOID_t             = (VENDOR_BIT / PHOENIX_BIT) Unused23
                       / USER_RENAME)
 
                      ; Where CmdPayload contents depend on the
-										 ; the value of AOID_t.		
-AdminPayload       = AOID_t
-                     *(ServerConfigPayload
+                     ; the value of AOID.
+AdminPayload       = AOID
+                     (ServerConfigPayload
                      / ServerKickPayload
-										 / ServerLogsPayload
-										 / ServerBansPayload
-										 / ServerShutdownPayload
-										 / ServerStatsPayload
-										 / UserCreatePayload
-										 / UserDeletePayload
-										 / UserListPayload
-										 / UserPermissionsPayload
-										 / UserRenamePayload)
-										
+                     / ServerLogsPayload
+                     / ServerBansPayload
+                     / ServerShutdownPayload
+                     / ServerStatsPayload
+                     / UserCreatePayload
+                     / UserDeletePayload
+                     / UserListPayload
+                     / UserPermissionsPayload
+                     / UserRenamePayload)
 ]]></artwork>

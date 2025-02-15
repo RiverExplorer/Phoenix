@@ -10,14 +10,14 @@
 	<dl newline="true">
 		<!-- Omit newline="true" if you want each definition to start on the sa\
 				 me line as the corresponding term -->
-		<dt>AdminCmd</dt>
+		<dt>ADMIN</dt>
 		<dd>
 			A general term for any administrative command.
 			Administrative and auditing operations.
 			This list includes commands for authorized users to configure,
 			query logs, errors,	possibly user activity.
 		</dd>
-		<dt>AuthCmd</dt>
+		<dt>AUTH</dt>
 		<dd>
 			A general term for any authentication command.
 			Authentication and authorization operations.

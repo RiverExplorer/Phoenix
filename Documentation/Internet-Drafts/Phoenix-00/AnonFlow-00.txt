@@ -1,0 +1,35 @@
+
+ CLIENT                        SERVER
+ ------                        ------
+
+Have Previous
+ Success
+ History?
+   .                            .
+  / \                          / \
+ /   \ YES -> AUTHANONYMOUS   /   \  NO
++     +----------------------+ Ok? +--.
+ \   /                        \   /   |
+  \ /                          \ /    |
+   +                            +     |
+   | NO                     YES |     |
+   |                            |     |
+   |                            |     |
++--+--+      <-CAPABILITY_POST  |     |
+|Wait |<------------------------+     |
+|     |<------------------------------+
++--+--+      <-CAPABILITY_PRE
+   |
+   |
+   +
+  / \
+ /   \  NO, try an AUTH in CAPABILITY_PRE
++Okay?+--------->..........................
+ \   /
+  \ /
+   + YES, Authenticated, continue...
+   |
+   V
+   .
+   .
+   .

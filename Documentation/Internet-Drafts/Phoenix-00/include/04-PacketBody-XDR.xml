@@ -4,55 +4,55 @@
  * An XDR enum is 32-bits in size.
  * With the VENDOR_BIT set to zero, making it not a vendor command.
  */
-enum CMD_t {
+enum CMD {
     /**
      * The data that follows is ADMIN CMD data.
      */
-    ADMIN_CMD_t  = 0x00,
+    ADMIN_CMD  = 0x00,
 		 
     /**
      * The data that follows is AUTH CMD data.
      */
-    AUTH_CMD_t   = 0x01,
+    AUTH_CMD   = 0x01,
 		 
     /**
      * The data that follows is FILE or FOLDER CMD data.
      */
-    FILE_CMD_t   = 0x02,
+    FILE_CMD   = 0x02,
 		 
     /**
      * The data that follows is Phoenix PROTO CMD data.
      */
-    PROTO_CMD_t  = 0x03
+    PROTO_CMD  = 0x03
 };
 
 /**
- * Mask to check if CMD_t value in packet
+ * Mask to check if CMD value in packet
  * is vendor extension.
  */
-CMD_VENDOR_MASK_t = 0x80000000
+CMD_VENDOR_MASK = 0x80000000
 
 /**
- * Define a SEQ_t (sequence) type.
+ * Define a SEQ (sequence) type.
  */
-typedef uint32_t  SEQ_t;
+typedef uint32  SEQ;
 
 /**
  * A CMD payload is one of these types.
- * With Cmd set to a CMD_t value.
+ * With Cmd set to a CMD value.
  */ 
-union CmdPayload_t switch (CMD_t Cmd) {
+union CmdPayload switch (CMD Cmd) {
 
-    case ADMIN_CMD_t:
+    case ADMIN_CMD:
         AdminCmdPayload AdminPayload;
 		
-    case AUTH_CMD_t:
+    case AUTH_CMD:
         AuthCmdPayload AuthPayload;
 		
-    case FILE_CMD_t:
+    case FILE_CMD:
         FileCmdPayload FilePayload;
 		
-    case PROTO_CMD_t:
+    case PROTO_CMD:
         ProtoCmdPayload ProtoPayload;
 };
 
@@ -60,7 +60,7 @@ union CmdPayload_t switch (CMD_t Cmd) {
  * A packet body.
  */
 struct PacketBody {
-    SEQ_t      SEQ;
-    CmdPayload_t Payload;
+    SEQ        SEQ;
+    CmdPayload Payload;
 };
 ]]></artwork>

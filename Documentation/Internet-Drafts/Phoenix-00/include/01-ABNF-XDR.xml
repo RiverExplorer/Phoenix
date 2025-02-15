@@ -3,18 +3,18 @@
 /**
  * The time in seconds since January 1 1970 in GMT.
  */
-typedef uint64_t UTC_t;
+typedef uint64_t UTC;
 
 /**
  * the number of octets from the beginning of 
  * the associated object.
  */
-typedef uint32_t Offset_t;
+typedef uint32_t Offset;
 
 /**
  * The number of octets in the associated object.
  */
-typedef uint32_t Length_t;
+typedef uint32_t Length;
 
 /**
  * A string Key and its associated Value.
@@ -46,15 +46,15 @@ const PHOENIX_BIT = 0x0;
 /**
  * Operations
  */
-enum Op_e {
-    OpSet_t    = 0x00,
-    OpGet_t    = 0x01,
-    OpUpdate_t = 0x02,
-    OpDelete_t = 0x03
+enum Op {
+    OpSet    = 0x00,
+    OpGet    = 0x01,
+    OpUpdate = 0x02,
+    OpDelete = 0x03
 };
 
 /**
- * Any one of OpSet_t, OpGet_t, OpUpdate_t, or OpDelete
+ * Any one of OpSet, OpGet, OpUpdate, or OpDelete
  * cast to a (Op).
  */
 typedef uint8_t Op;		

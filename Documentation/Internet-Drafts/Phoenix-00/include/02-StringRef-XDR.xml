@@ -3,7 +3,7 @@
  * A reference to the start and length of a string.
  */
 struct StringRef {
-    Offset_t Offset;
-    Length_t Length;
+    Offset StartOffset;
+    Length StringLength;
 };				
 ]]></artwork>

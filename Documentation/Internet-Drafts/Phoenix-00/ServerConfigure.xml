@@ -1,136 +1,177 @@
 <!-- Copyright 2025 RiverExplorer LLC and Douglas Mark Royer -->
 <section xmlns:xi="http://www.w3.org/2001/XInclude">
 	<name>Administration - SERVER_CONFIGURE (%x05:8)</name>
-	<t>
-		Remote administration of servers is an essential feature
-		in modern systems.
-		An implementation that supports SERVER_CONFIGURE
-		adds SERVER_CONFIGURE to the post authentication
-		capability command sent from the server to the client.
-		The server implementation only sends this capability
-		to authenticated and authorized users.
-		Users can become authorized with the
-		USER_PERMISSIONS command, or by server implementation
-		specific configuration methods.
-		Server specific configuration methods are out of
-		scope for this specification.
-	</t>
-	<t>
-		Server specific configuration options are unique to
-		each server implementation.
-		This specification defines a method to set, update,
-		delete, and view server configuration values.
-	</t>
-	<t>
-		A client implementation would generally only
-		support its own matching server implementation.
-		The client sends a VENDOR_ID capability
-		with a string that the server implementation will check
-		to see if it is a compatible client. The value is out of
-		scope to this specification.
-		If the client does not send the correct VENDOR_ID information,
-		or the authentication user is not authorized,
-		then the server would not send its SERVER_CONFIGURE
-		capability back to the client in the post authentication
-		capability list.
-	</t>
-	<t>
-		If a client or user is not authorized, then all
-		SERVER_CONFIGURE ADMIN command will be rejected
-		with a NotSupported Packet with the SEQ number
-		the same as in the SERVER_CONFIGURE ADMIN commmand
-		sent to the server.
-	</t>
-	<t>
-		The SERVER_CONFIGURE ADMIN command sends and receives the configuration
-		information in key + value pairs.
-		The key and value are each a string.
-		The values uses in the key or value are vendor specific and
-		out of scope in this specification.
-	</t>
-	<t>
-		This specification does not define any configuration
-		information.
-		It provides a common way to set, get, update, and delete them.
-	</t>
-	<t>
-		Multiple SERVER_CONFIGURE commands can be sent in the
-		same ADMIN packet.
-		They are processed in the order sent.
-	</t>
-	
-	<table>
-		<name>SERVER_CONFIGURE - ABNF/XDR Mapping</name>
-		<thead>
-			<tr>
-				<th>
-					Name
-				</th>
-				<th>
-					Description
-				</th>
-				<th>
-					XDR API
-				</th>
-			</tr>
-		</thead>
-		<tbody>
-			<tr>
-				<td>
-					Op
-				</td>
-				<td>
-					Indicates if the key/value pairs are to
-					get, set, update, or be deleted.
-				</td>
-				<td>
-					xdr_Op()
-				</td>
-			</tr>
-			<tr>
-				<td>
-					ConfigSet
-				</td>
-				<td>
-					A set of key/value paris with the same Op.
-					Allows the client to bundle multiple
-					key/paris per Op.
-				</td>
-				<td>
-					xdr_ConfigSet()
-				</td>
-			</tr>
-			<tr>
-				<td>
-					ServerConfigure
-				</td>
-				<td>
-					The ADMIN operation that sets and gets
-					server configuration information.
-				</td>
-				<td>
-					<t>
-						xdr_ServerConfigure();
-					</t>
-				</td>
-			</tr>
-		</tbody>
-	</table>
-
 	<section>
-		<name>SERVER_CONFIGURE - ABNF</name>
-		<figure>
-			<name>SERVER_CONFIGURE - ABNF</name>
-			<xi:include href="include/06-ServerConfigure-ABNF.xml"/>
+		<name>SERVER_CONFIGURE - Command</name>
+		<t>
+			Remote administration of Phoenix servers is an essential feature
+			in modern systems.
+			An implementation that supports SERVER_CONFIGURE
+			adds SERVER_CONFIGURE to the post authentication
+			capability command sent from the server to the client.
+			The server implementation only sends this capability
+			to authenticated and authorized users.
+			Users can become authorized with the
+			USER_PERMISSIONS command, or by server implementation
+			specific configuration methods.
+			Server specific configuration methods are out of
+			scope for this specification.
+		</t>
+		<t>
+			Server specific configuration options are unique to
+			each server implementation.
+			This specification defines a method to set, update,
+			delete, and view server configuration values.
+		</t>
+		<t>
+			A client implementation would generally only
+			support its own matching server implementation.
+			The client sends a VENDOR_ID capability
+			with a string that the server implementation will check
+			to see if it is a compatible client. The value is out of
+			scope to this specification.
+			If the client does not send the correct VENDOR_ID information,
+			or the authentication user is not authorized,
+			then the server would not send its SERVER_CONFIGURE
+			capability back to the client in the CAPABILITY_POST
+			list.
+		</t>
+		<t>
+			If a client or user is not authorized, then all
+			SERVER_CONFIGURE ADMIN command will be rejected
+			with a NotSupported Packet with the SEQ number
+			the same as in the SERVER_CONFIGURE ADMIN command
+			sent to the server.
+		</t>
+		<t>
+			The SERVER_CONFIGURE ADMIN command sends and receives the configuration
+			information in key + value pairs.
+			The key and value are each a string.
+			The values used in the key or value are vendor specific and
+			out of scope in this specification.
+		</t>
+		<t>
+			This specification does not define any configuration
+			information.
+			It provides a common way to set, get, update, and delete them.
+		</t>
+		<t>
+			Multiple SERVER_CONFIGURE commands can be sent in the
+			same ADMIN packet.
+			They are processed in the order sent.
+		</t>
+		
+		<table>
+			<name>SERVER_CONFIGURE - ABNF/XDR Mapping</name>
+			<thead>
+				<tr>
+					<th>
+						Name
+					</th>
+					<th>
+						Description
+					</th>
+					<th>
+						XDR API
+					</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr>
+					<td>
+						Op
+					</td>
+					<td>
+						Indicates if the key/value pairs are to
+						get, set, update, or be deleted.
+					</td>
+					<td>
+						xdr_Op()
+					</td>
+				</tr>
+				<tr>
+					<td>
+						ConfigSet
+					</td>
+					<td>
+						A set of key/value pairs with the same Op.
+						Allows the client to bundle multiple
+						key/pairs per Op.
+					</td>
+					<td>
+						xdr_ConfigSet()
+					</td>
+				</tr>
+				<tr>
+					<td>
+						ServerConfigure
+					</td>
+					<td>
+						The ADMIN operation that sets and gets
+						server configuration information.
+					</td>
+					<td>
+						<t>
+							xdr_ServerConfigure();
+						</t>
+					</td>
+				</tr>
+			</tbody>
+		</table>
+
+		<figure align="center">
+			<artset>
+				<artwork align="center" type="ascii-art" src="ServerConfigure-00.txt"/>
+				<artwork align="center" type="svg" src="ServerConfigure-00.svg"/>
+			</artset>
 		</figure>
+		<section>
+			<name>SERVER_CONFIGURE - ABNF</name>
+			<figure>
+				<name>SERVER_CONFIGURE - ABNF</name>
+				<xi:include href="include/06-ServerConfigure-ABNF.xml"/>
+			</figure>
+		</section>
+
+		<section>
+			<name>SERVER_CONFIGURE - XDR</name>
+			<figure>
+				<name>SERVER_CONFIGURE - XDR</name>
+				<xi:include href="include/06-ServerConfigure-XDR.xml"/>
+			</figure>
+		</section>
 	</section>
 
 	<section>
-		<name>SERVER_CONFIGURE - XDR</name>
-		<figure>
-			<name>SERVER_CONFIGURE - XDR</name>
-			<xi:include href="include/06-ServerConfigure-XDR.xml"/>
-		</figure>
+		<name>SERVER_CONFIGURE - Reply</name>
+		<t>
+			All SERVER_CONFIGURE operations result in a reply.
+			It will include any OpGet as well as the new value
+			for any OpSet or OpUpdate. And for OpDelete a reply
+			will show the value has been deleted.
+		</t>
+		<t>
+			The reason for always returning the values is because
+			sometimes not all configuration information can be altered.
+			So the client will need to compare the desired outcome
+			with the results.
+		</t>
+		<t>
+			The reply is a SERVER_CONFIGURE command with the
+			same SEQ number that was sent.
+			Followed by a list of KeyPair values.
+			One KeyPair value for each unique key in the ConfigSet values
+			sent in the SERVER_CONFIGURE command sent to the server.
+			The list is unordered.
+			And the list is the result of processing all ConfigSet values
+			sent.
+		</t>
+		<t>
+			On any error the server can perform some or none of the
+			operations.
+			The specifics are implementation dependent and out of scope
+			for this specification.
+		</t>
 	</section>
 
 </section>

@@ -28,7 +28,7 @@
 			in this specifications when needed:
 		</t>
 		<t>
-			The UTC_t value used in this specification is designed
+			The UTC value used in this specification is designed
 			to be compatible with time_t on <xref target="POSIX"/>
 			compliant systems.
 			In POSIX systems, time_t is defined as an integer type used for
@@ -300,7 +300,7 @@ Header = (Offset &lt;&lt; 24) | (Flags &lt;&lt; 22) | Length;
 				</tr>
 				<tr>
 					<td>
-						OpSet_t
+						OpSet
 					</td>
 					<td>
 						An 8-bit value.
@@ -314,7 +314,7 @@ Header = (Offset &lt;&lt; 24) | (Flags &lt;&lt; 22) | Length;
 				</tr>
 				<tr>
 					<td>
-						OpGet_t
+						OpGet
 					</td>
 					<td>
 						An 8-bit value.
@@ -326,7 +326,7 @@ Header = (Offset &lt;&lt; 24) | (Flags &lt;&lt; 22) | Length;
 				</tr>
 				<tr>
 					<td>
-						OpUpdate_t
+						OpUpdate
 					</td>
 					<td>
 						An 8-bit value.
@@ -338,7 +338,7 @@ Header = (Offset &lt;&lt; 24) | (Flags &lt;&lt; 22) | Length;
 				</tr>
 				<tr>
 					<td>
-						OpDelete_t
+						OpDelete
 					</td>
 					<td>
 						An 8-bit value.
@@ -350,26 +350,26 @@ Header = (Offset &lt;&lt; 24) | (Flags &lt;&lt; 22) | Length;
 				</tr>
 				<tr>
 					<td>
-						true_t
+						true
 					</td>
 					<td>
 						An 8-bit value.
 						A value of true.
 					</td>
 					<td>
-						xdr_false_t()
+						xdr_false()
 					</td>
 				</tr>
 				<tr>
 					<td>
-						false_t
+						false
 					</td>
 					<td>
 						An 8-bit value.
 						A value of false.
 					</td>
 					<td>
-						xdr_true_t()
+						xdr_true()
 					</td>
 				</tr>
 				<tr>
@@ -377,7 +377,7 @@ Header = (Offset &lt;&lt; 24) | (Flags &lt;&lt; 22) | Length;
 						enabled
 					</td>
 					<td>
-						A true_t or false_t value.
+						A true or false value.
 					</td>
 					<td>
 						xdr_enabled()
@@ -388,7 +388,7 @@ Header = (Offset &lt;&lt; 24) | (Flags &lt;&lt; 22) | Length;
 						Unused7
 					</td>
 					<td>
-						An 7-bit value, set to zeros.
+						A 7-bit value, set to zeros.
 					</td>
 					<td>
 					</td>
@@ -408,17 +408,7 @@ Header = (Offset &lt;&lt; 24) | (Flags &lt;&lt; 22) | Length;
 						Unused16
 					</td>
 					<td>
-						An 16-bit value, set to zeros.
-					</td>
-					<td>
-					</td>
-				</tr>
-				<tr>
-					<td>
-						Unused7
-					</td>
-					<td>
-						An 7-bit value, set to zeros.
+						A 16-bit value, set to zeros.
 					</td>
 					<td>
 					</td>
@@ -428,7 +418,7 @@ Header = (Offset &lt;&lt; 24) | (Flags &lt;&lt; 22) | Length;
 						Unused23
 					</td>
 					<td>
-						An 23-bit value, set to zeros.
+						A 23-bit value, set to zeros.
 					</td>
 					<td>
 					</td>
@@ -484,11 +474,9 @@ Header = (Offset &lt;&lt; 24) | (Flags &lt;&lt; 22) | Length;
 			by octet offset into the MIME object.
 			This is is called a StringRef.
 			All strings can be referenced by using a total of 8 octets.
-			A StringRef consists of two parts:
-		</t>
-		<t>
 			The StringRef does not contain the string, it is a 
 			reference an existing string in a MIME object.
+			A StringRef consists of two parts:
 		</t>
 		<table>
 			<name>StringRef ABNF/XDR Mapping</name>
@@ -501,22 +489,22 @@ Header = (Offset &lt;&lt; 24) | (Flags &lt;&lt; 22) | Length;
 			</thead>
 			<tbody>
 				<tr>
-					<td>Offset_t</td>
+					<td>Offset</td>
 					<td>
 						The octet count to the start of the string with zero being the
 						first octet in the message.
 					</td>
 					<td>
-						xdr_Offset_t()
+						xdr_Offset()
 					</td>
 				</tr>
 				<tr>
-					<td>Length_t</td>
+					<td>Length</td>
 					<td>
 						The length in octets of the string.
 					</td>
 					<td>
-						xdr_Length_t()
+						xdr_Length()
 					</td>
 				</tr>
 				<tr>

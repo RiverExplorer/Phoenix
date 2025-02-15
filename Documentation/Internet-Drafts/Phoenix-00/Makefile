@@ -35,7 +35,6 @@ SOURCES.xml = \
 	MetaData.xml \
 	PingSummary.xml \
 	ProtocolBinaryValues.xml \
-	ProtocolDetails.xml \
 	ProtocolSummary.xml \
 	RequirementsLanguage.xml \
 	SecurityConsiderations.xml \
@@ -54,10 +53,12 @@ SOURCES.xml = \
 
 ARTWORK.txt = \
 	ABNF-00.txt \
+	AnonFlow-00.txt \
 	ANONYMOUS-00.txt \
 	ANONYMOUS-01.txt \
 	AUTHCERT-00.txt \
 	AUTHCERT-01.txt \
+	AUTHCERT-02.txt \
 	IndexList-01.txt \
 	IndexList-02.txt \
 	IndexList-03.txt \
@@ -75,6 +76,7 @@ ARTWORK.txt = \
 	Packet-00.txt \
 	Packet-01.txt \
 	Packet-02.txt \
+	ServerConfigure-00.txt \
 	StringRef-00.txt
 
 REFERENCES.xml = \

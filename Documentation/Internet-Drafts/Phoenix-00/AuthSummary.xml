@@ -10,9 +10,39 @@
 		Some users may also be administrators.
 		In those cases the user and client may wish to do further
 		authentication steps.
-		A user may wish to temporarrly step up their authentication
+		A user may wish to temporarily step up their authentication
 		level to perform some operations, then step back down
 		to do their personal operations.
 	</t>
+	<t>
+		A server may if it wishes include AUTH capabilities in
+		the CAPABILITY_POST command.
+		It can decide which authenticated users can or must use
+		additional authentication.
+	</t>
+	<ul>
+		<li>
+			Some user accounts can be user only, without administrative
+			abilities of any kind.
+			Their CAPABILITY_POST list will not include any ADMIN capabilities.
+		</li>
+		<li>
+			Some user accounts can be administrative only, and are limited
+			to CAPABILITY_POST actions that only include ADMIN capabilities.
+		</li>
+		<li>
+			Some user accounts can be a normal user, with the ability
+			to step up their account to be able to do administrative actions.
+			While in stepped up mode, they are not able to act as their
+			original user account.
+			These users will get one or more AUTH capabilities in
+			their CAPABILITY_POST list.
+		</li>
+		<li>
+			And some user account can be allowed all operations.
+			This protocol does not limit users.
+			This protocol enables user permissions to be configured.
+		</li>
+	</ul>
 </section>
 

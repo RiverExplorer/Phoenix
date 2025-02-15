@@ -2,5 +2,5 @@
 /**
  * The length of a packet.
  */
-typedef Length_t PacketHeader;
+typedef Length PacketHeader;
 ]]></artwork>

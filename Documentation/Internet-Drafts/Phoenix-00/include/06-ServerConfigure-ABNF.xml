@@ -1,7 +1,7 @@
 <artwork type="abnf" name="" align="left" alt=""><![CDATA[
                    ; Setting or updating a configuration value. 
-ConfigSet        = Op Length_t 1*KeyPair
+ConfigSet        = Op Length 1*KeyPair
 
                    ; The SERVER_CONFIGURE command.
-ServerConfigure  = SERVER_CONFIGURE Length_t 1*ConfigSet
+ServerConfigure  = SERVER_CONFIGURE Length 1*ConfigSet
 ]]></artwork>

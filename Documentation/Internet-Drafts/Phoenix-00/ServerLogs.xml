@@ -6,12 +6,20 @@
 		All log information is related to the server implementation.
 	</t>
 	<t>
-		A SERVER_LOGS ADMIN CMD can be sent with no information,
-		this causes the server to send all of the information
-		for the last 24 hours.
+		A SERVER_LOGS ADMIN CMD is sent with two time range values.
+		The time values are a UTC object.
+		The first is the start time, and the second is the end time.
 	</t>
 	<t>
-		There are 4 categories of information:
+		When the start time is zero, it means start from the beginning
+		of the logs.
+	</t>
+	<t>
+		When the end time is zero, up to now.
+	</t>
+	<t>
+		There are three categories of information and four
+		request types.
 	</t>
 	<table>
 		<thead>
@@ -44,6 +52,13 @@
 					Number of connections, or any other information
 					the server implementation wishes to record.
 					It does not include warning or error messages.
+				</td>
+			</tr>
+			<tr>
+				<td>ALL</td>
+				<td>
+					Only used in the request signifying all Error,
+					Warning, and Information logs are to be sent.
 				</td>
 			</tr>
 		</tbody>

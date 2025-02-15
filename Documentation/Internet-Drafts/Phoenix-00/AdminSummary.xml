@@ -5,8 +5,8 @@
 	<t>
 		Implementations are not required to implement any ADMIN command.
 		A client will know the server supports one or more ADMIN
-		commands when it gets its post authentication capability command
-		from the server.
+		commands when it gets a CAPABILITY_POST with an ADMIN capability
+		in it, from the server.
 	</t>
 	<t>
 		Administrative command can be used to configure, audit, and manage
@@ -18,15 +18,15 @@
 	<section>
 		<name>Administration Capability Definitions</name>
 		<t>
-			Implementations MUST NOT send the ADMIN capability
-			in the pre authorization CAPABILITY list.
+			Implementations MUST NOT send any ADMIN capability
+			in the CAPABILITY_PRE list.
 		</t>
 		<t>
 			Implementations that support any administration command
-			MAY include ADMIN capability in the post authentication CAPABILITY list.
+			will include an ADMIN capability in the CAPABILITY_POST list.
 			An implementation may decide that only specified and
 			authorized users may issue administrative commands and
-			send only those authenticated users the ADMIN capability.
+			send only those authenticated users an ADMIN capability.
 		</t>
 		<t>
 			The ADMIN capability includes the list of ADMIN commands the user is
@@ -55,7 +55,7 @@
 		<t>
 			The following operations are defined for administration.
 			Each is part of an ADMIN command or ADMIN reply.
-			They each have a unique identifier, and ADMIN Operation ID (AOID).
+			They each have a unique identifier, called an ADMIN Operation ID (AOID).
 		</t>
 		<t>
 			All of their XDR API is: xdr_AOID().
@@ -72,7 +72,7 @@
 			</thead>
 			<tbody>
 				<tr>
-					<td>AOID_t</td>
+					<td>AOID</td>
 					<td>uint32_t</td>
 					<td>
 						An Administrative Operation Identifier.

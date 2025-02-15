@@ -1,5 +1,5 @@
 <!-- Copyright 2025 RiverExplorer LLC and Douglas Mark Royer -->
-<section>
+<section xmlns:xi="http://www.w3.org/2001/XInclude">
 	<name>Authentication - Certificate</name>
 	<t>
 		There are two kinds of AUTHCERT.
@@ -70,7 +70,7 @@
 		<t>
 			Clients expecting an AUTHCERT_TLS must wait for
 			the CAPABILITY_POST or CAPABILITY_PRE command before
-			continuting with client operations with associated
+			continuing with client operations with associated
 			folders and files.
 		</t>
 		<t>
@@ -89,13 +89,80 @@
 			It also requires that the client send a public certificate
 			to the server as a separate authentication step for the
 			user.
-			This allows users to use clients that it normally would
-			not use.
 		</t>
 		<t>
-			The client sends a
+			This type of login could be used when traveling or
+			the server requires more control over security.
+			The users certificates could be under the control
+			of the users company, and easier to create and
+			revoke than traditional certificate sources.
 		</t>
-		
+		<t>
+			In order for AUTHCERT_USER to work, the server MUST
+			already have the users public certificate.
+			This could have been setup by a servers implementation
+			configuration files, or from a previous successful
+			non-AUTHCERT_USER connection where the client informed
+			the server of the users public certificate.
+		</t>
+		<t>
+			To authenticate with a AUTHCERT_USER,
+			the client sends a AUTHCERT_USER command with
+			a clear text token over the TLS connection, followed by a
+			the both the secret login name and password encrypted with
+			the users private certificate.
+		</t>
+		<t>
+			The token could be one time, or reusable.
+			The server implementation is the authority on the token
+			and token usage.
+			It could be possible that the user never knows the
+			actual login and password.
+			They could be installed on a device for the user.
+			They, perhaps, go to a web page, or other method to get the token.
+			Then perhaps enter their personal password to allow
+			access to the certificates and secret login information
+			that is installed and already encrypted on the client.
+		</t>
+		<t>
+			The server decrypts the users login name
+			and password with the users public certificate
+			selected from the clear text token sent.
+		</t>
+		<t>
+			If the decrypted user login and password match
+			what is expected, then the authentication is successful and
+			the server replies with a CAPABILITY_POST
+			command.
+		</t>
+		<t>
+			If the authentication fails, then the server replies
+			back with a AUTHCERT_USER with the same SEQ number
+			and the token, login name, and password empty and
+			with their lengths set to zero.
+		</t>
+		<figure>
+			<name>AUTHCERT_USER</name>
+			<artset>
+				<artwork type="ascii-art" src="AUTHCERT-02.txt"/>
+				<artwork type="svg" src="AUTHCERT-02.svg"/>
+			</artset>
+		</figure>
 	</section>
-	
+
+	<section>
+		<name>Certificate Management</name>
+		<t>
+			A Phoenix server may use AUTHCERT_USER authentication.
+			When it does, it needs a way for the user, if authorized
+			to upload their public certificate to the server.
+			This can be enabled or disabled by server configuration
+			on the site, per user, or any other rules implemented
+			in the server.
+		</t>
+		<t>
+			User certificate management can only be used after
+			the user has authenticated with the server.
+		</t>
+	</section>
 </section>

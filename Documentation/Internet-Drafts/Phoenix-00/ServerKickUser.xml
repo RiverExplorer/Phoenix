@@ -7,4 +7,10 @@
 		When this ADMIN CMD is received by a client, it is being informed
 		that the user is logged out and may not be able to login again.
 	</t>
+	<t>
+		No specifics are given because the possible reasons are nearly
+		unlimited and locale dependent.
+		Any notifications the server may elect to provide to the user
+		is out of scope in this specification.
+	</t>
 </section>

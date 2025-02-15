@@ -1,4 +1,4 @@
 <artwork type="abnf" name="" align="left" alt=""><![CDATA[
             ; A single MDN Entry. When (or zero) and the email
-MDNEntry  = UTC_t string
+MDNEntry  = UTC string
 ]]></artwork>

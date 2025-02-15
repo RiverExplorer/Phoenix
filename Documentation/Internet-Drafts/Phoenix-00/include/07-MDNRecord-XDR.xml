@@ -2,12 +2,12 @@
 /**
  * The number of emails in the MDN record set.
  */
-typedef Length_t MDNListCount;
+typedef Length MDNListCount;
 
 /**
  * When the MDN was sent.
  */
-typedef UTC_t MDNSent;
+typedef UTC MDNSent;
 
 /**
  * A list of all MDN records for the associated object.

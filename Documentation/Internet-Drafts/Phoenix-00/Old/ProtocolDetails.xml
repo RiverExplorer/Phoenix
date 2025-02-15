@@ -207,9 +207,9 @@ Command : CommandHeader Payload
 
 struct Command {
     uint32 CommandLength;
-    SEQ_t  SEQ;
+    SEQ  SEQ;
 
-    union Payload switch(CMD_t CMD) {
+    union Payload switch(CMD Cmd) {
 		
 		case xx:
 		foo;

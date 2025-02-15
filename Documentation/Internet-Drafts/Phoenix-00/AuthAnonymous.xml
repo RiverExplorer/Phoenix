@@ -30,8 +30,8 @@
 	<section anchor="AUTHANONYMOUS-COMMAND">
 		<name>Authentication - AUTHANONYMOUS - Command</name>
 		<t>
-			Once the connection is made the server sends its pre authentication
-			capability list to the client.
+			Once the connection is made the server sends its CAPABILITY_PRE
+			list to the client.
 			If AUTHANONYMOUS is included in that list, then the client
 			may initiate an AUTHANONYMOUS login.
 		</t>
@@ -39,7 +39,7 @@
 			If the client has already had a relationship with the server,
 			then the client may send the AUTHANONYMOUS command to the server
 			before receiving the servers capability list, and only if AUTHANONYMOUS
-			was the last successful authentication method to that server.
+			had been successful in the past, to that same server.
 		</t>
 		<t>
 			If the server does not support (or no longer supports) an AUTHANONYMOUS
@@ -49,18 +49,25 @@
 		<t>
 			After the server receives an AUTHANONYMOUS, and if it supports it,
 			it allows the connection and considers the user a valid
-			anonymouse user.
+			anonymous user.
+			Then the server replies with a CAPABILITY_POST command.
+			When the client gets the CAPABILITY_POST command, it knows
+			the AUTHANONYMOUS was successful.
 		</t>
 		<t>
 			On failure the server replies with a AUTHANONYMOUS packet,
 			with the sequence number the same that was in the
 			ANONYMOUS command it received.
 		</t>
-		<t>
-			On success the server replies with a post authentication
-			capability command.
-		</t>
 			
+		<figure>
+			<name>AUTHANONYMOUS - Login Flow</name>
+			<artset>
+				<artwork align="center" type="ascii-art" src="AnonFlow-00.txt"/>
+				<artwork align="center" type="svg" src="AnonFlow-00.svg"/>
+			</artset>
+		</figure>
+
 		<figure>
 			<name>Capability - AUTHANONYMOUS</name>
 			<artset>

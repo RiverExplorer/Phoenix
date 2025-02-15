@@ -39,7 +39,7 @@
 			If the client has already had a relationship with the server,
 			then the client may send the AUTHMD5 command to the server
 			before receiving the servers capability list, and only if AUTHMD5
-			was the last successful authentication method to that server.
+			had been successful in the past, to that server.
 		</t>
 		<t>
 			If the server does not support (or no longer supports) an MD5

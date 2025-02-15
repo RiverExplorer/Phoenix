@@ -26,8 +26,8 @@
 	</t>
 	<t>
 		When the client connects to a server it immediately sends
-		its pre authentication capabilities to the server.
-		Or an Auth command.
+		a CAPABILITY_PRE list to the server.
+		Or the client sends an AUTH command.
 	</t>
 	<t>
 		When the server gets a new connection followed by

@@ -1,6 +1,6 @@
 <artwork type="abnf" name="" align="left" alt=""><![CDATA[
                ; The number of MDN emails in the list.
-MDNListCount = Length_t
+MDNListCount = Length
 
                ; A list of all MDN records for the associated object.
 MDNRecord    = MDNSent MDNListCount 1*MDNRecord

@@ -4,7 +4,7 @@
  */
 struct MDMEntry
 {
-    UTC_t  Received;
+    UTC  Received;
     string EMail<>;
 };    
 ]]></artwork>

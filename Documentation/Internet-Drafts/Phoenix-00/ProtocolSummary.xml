@@ -142,9 +142,24 @@
 		</section>
 
 		<section>
-			<name>Packet Body</name>
+			<name>Packet Body (PacketBody)</name>
 			<t>
 				The packet body is divided into three parts:
+			</t>
+			<ol>
+				<li>Sequence (SEQ)</li>
+				<li>
+					Command (CMD):
+					Which can be one of ADMIN_CMD, AUTH_CMD, FILE_CMD,
+					or PROTO_CMD.
+				</li>
+				<li>
+					Payload (CmdPayload):
+					The command specific data. 
+				</li>
+			</ol>
+			<t>
+				PacketBody details:
 			</t>
 			<table>
 				<name>Packet Body ABNF/XDR Mapping</name>
@@ -167,7 +182,7 @@
 				<tbody>
 					<tr>
 						<td>
-							ADMIN_CMD_t
+							ADMIN_CMD
 						</td>
 						<td>
 							%x00:31
@@ -176,12 +191,12 @@
 							The payload is an administration command.
 						</td>
 						<td>
-							xdr_ADMIN_CMD_t()
+							xdr_ADMIN_CMD()
 						</td>
 					</tr>
 					<tr>
 						<td>
-							AUTH_CMD_t
+							AUTH_CMD
 						</td>
 						<td>
 							%x01:31
@@ -190,12 +205,12 @@
 							What follows in the payload, is an authentication command.
 						</td>
 						<td>
-							xdr_AUTH_CMD_t()
+							xdr_AUTH_CMD()
 						</td>
 					</tr>
 					<tr>
 						<td>
-							CMD_t
+							CMD
 						</td>
 						<td>
 							1 bit + 31 bits.
@@ -203,7 +218,7 @@
 						<td>
 							<t>
 								The 1-bit, VENDOR_BIT or PHOENIX_BIT followed by one of
-								the 31-bit: ADMIN_CMD_t, AUTH_CMD_t, FILE_CMD_t, or PROTO_CMD_t.
+								the 31-bit: ADMIN_CMD, AUTH_CMD, FILE_CMD, or PROTO_CMD.
 								For a total of 32-bits.
 							</t>
 							<t>
@@ -216,25 +231,25 @@
 								<br/>
 								The highest bit in the 32-bit value is
 								a VENDOR_BIT or PHOENIX_BIT.
-								So CMD_t covers vendor and phoenix commands.
+								So CMD covers vendor and phoenix commands.
 							</t>
 							<t>
-								-Phoenix CMD_t range is: %x00000000-7fffffff.
+								-Phoenix CMD range is: %x00000000-7fffffff.
 							</t>
 							<t>
-								-Vendor CMD_t range is: 80000000-fffffffe.
+								-Vendor CMD range is: 80000000-fffffffe.
 							</t>
 							<t>
 								-With %xffffffff reserved for future expansions.
 							</t>
 						</td>
 						<td>
-							xdr_Cmd_t()
+							xdr_Cmd()
 						</td>
 					</tr>
 					<tr>
 						<td>
-							CmdPayload_t
+							CmdPayload
 						</td>
 						<td>
 							Variable
@@ -253,7 +268,7 @@
 					</tr>
 					<tr>
 						<td>
-							FILE_CMD_t
+							FILE_CMD
 						</td>
 						<td>
 							%x03:31
@@ -262,12 +277,12 @@
 							A FILE or FOLDER payload is included.
 						</td>
 						<td>
-							xdr_FILE_CMD_t()
+							xdr_FILE_CMD()
 						</td>
 					</tr>
 					<tr>
 						<td>
-							PROTO_CMD_t
+							PROTO_CMD
 						</td>
 						<td>
 							%x04:31
@@ -276,12 +291,12 @@
 							The payload includes one of many protocol packets.
 						</td>
 						<td>
-							xdr_PROTO_CMD_t()
+							xdr_PROTO_CMD()
 						</td>
 					</tr>
 					<tr>
 						<td>
-							SEQ_t
+							SEQ
 						</td>
 						<td>
 							uint32_t
@@ -311,7 +326,7 @@
 							</t>
 						</td>
 						<td>
-							xdr_SEQ_t()
+							xdr_SEQ()
 						</td>
 					</tr>
 					<tr>
