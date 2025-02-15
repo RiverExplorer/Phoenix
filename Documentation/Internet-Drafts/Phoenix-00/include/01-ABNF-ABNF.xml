@@ -29,6 +29,10 @@ Length       = uint32_t
                ;
 string       = Length *UTF8-Char
 
+               ; Like string, except when the length is 0xffffffff it means
+               ; the associated value has been deleted.
+stringD      = (0xffffffff:32) / string
+
                ; The UTF8-Char is any valid and complete UTF-8 character.
                ;
 UTF8-Char    = 1*4uint8_t
@@ -50,8 +54,10 @@ UTC          = uint64_t
                ; associated object.
 Offset       = uint32_t
 
-               ; Key and Value
-KeyPair      = string string
+               ; Key and Value. It uses stringD as the value
+               ; to enable an indicator that the key part (string part)
+               ; has been deleted.
+KeyPair      = string stringD
 
                ; Length is the number of KeyPair that follow.
 KeyPairArray = Length 1*KeyPair

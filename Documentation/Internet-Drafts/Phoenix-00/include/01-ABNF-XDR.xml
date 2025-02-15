@@ -17,11 +17,32 @@ typedef uint32_t Offset;
 typedef uint32_t Length;
 
 /**
+ * When a stringD value is set to this,
+ * The the associated value has been deleted.
+ */
+const Deleted = 0xffffffff;
+
+/**
+ * A stringD is a string, or Deleted (the associated
+ * data has been deleted).
+ */
+union stringD switch (uint32 LengthOrDeleted) {
+
+  case Deleted:
+    void;
+
+  default:
+    opaque String<>;
+};
+	
+/**
  * A string Key and its associated Value.
+ * It uses stringD as the value to enable an indicator that the
+ * key part (string part) has been deleted.
  */
 struct KeyPair {
     string Key<>;
-    string Value<>;
+    stringD Value<>;
 };
 
 /**

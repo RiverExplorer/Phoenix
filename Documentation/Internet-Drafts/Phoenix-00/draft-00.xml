@@ -80,20 +80,20 @@
       <references>
         <name>Normative References</name>
         
-        <xi:include href="../References/reference.RFC.0822.xml"/>
-        <xi:include href="../References/reference.RFC.2119.xml"/>
-        <xi:include href="../References/reference.RFC.4506.xml"/>
-        <xi:include href="../References/reference.RFC.5234.xml"/>
-        <xi:include href="../References/reference.RFC.8174.xml"/>
-        <xi:include href="../References/reference.RFC.8446.xml"/>
-        <xi:include href="../References/reference.RFC.9051.xml"/>
-        <xi:include href="../References/reference.POSIX.xml"/>
+        <xi:include href="References/reference.RFC.0822.xml"/>
+        <xi:include href="References/reference.RFC.2119.xml"/>
+        <xi:include href="References/reference.RFC.4506.xml"/>
+        <xi:include href="References/reference.RFC.5234.xml"/>
+        <xi:include href="References/reference.RFC.8174.xml"/>
+        <xi:include href="References/reference.RFC.8446.xml"/>
+        <xi:include href="References/reference.RFC.9051.xml"/>
+        <xi:include href="References/reference.POSIX.xml"/>
       </references>
  
       <references>
         <name>Informative References</name>
-				<xi:include href="../References/reference.rpcgen++.xml"/>
-				<xi:include href="../References/reference.rpcgendocs.xml"/>
+				<xi:include href="References/reference.rpcgen++.xml"/>
+				<xi:include href="References/reference.rpcgendocs.xml"/>
 <!--
 				<reference anchor="rpcgensource" target="https://github.com/RiverExplorer/Phoenix">
 					<front>

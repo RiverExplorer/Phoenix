@@ -1,0 +1,4 @@
+<artwork type="abnf" name="" align="left" alt=""><![CDATA[
+                   ; The SERVER_CONFIGURE Reply
+ServerConfigReplyPayload  = SERVER_CONFIGURE Length 1*KeyPair
+]]></artwork>

@@ -1257,7 +1257,7 @@ li > p:last-of-type:only-child {
 </tr></thead>
 <tfoot><tr>
 <td class="left">Royer</td>
-<td class="center">Expires 18 August 2025</td>
+<td class="center">Expires 19 August 2025</td>
 <td class="right">[Page]</td>
 </tr></tfoot>
 </table>
@@ -1270,12 +1270,12 @@ li > p:last-of-type:only-child {
 <dd class="internet-draft">draft-royer-phoenix-00</dd>
 <dt class="label-published">Published:</dt>
 <dd class="published">
-<time datetime="2025-02-14" class="published">14 February 2025</time>
+<time datetime="2025-02-15" class="published">15 February 2025</time>
     </dd>
 <dt class="label-intended-status">Intended Status:</dt>
 <dd class="intended-status">Informational</dd>
 <dt class="label-expires">Expires:</dt>
-<dd class="expires"><time datetime="2025-08-18">18 August 2025</time></dd>
+<dd class="expires"><time datetime="2025-08-19">19 August 2025</time></dd>
 <dt class="label-authors">Author:</dt>
 <dd class="authors">
 <div class="author">
@@ -1339,7 +1339,7 @@ li > p:last-of-type:only-child {
         time. It is inappropriate to use Internet-Drafts as reference
         material or to cite them other than as "work in progress."<a href="#section-boilerplate.1-3" class="pilcrow">¶</a></p>
 <p id="section-boilerplate.1-4">
-        This Internet-Draft will expire on 18 August 2025.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
+        This Internet-Draft will expire on 19 August 2025.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="copyright">
@@ -1493,6 +1493,9 @@ li > p:last-of-type:only-child {
 </li>
                   <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.5.2.5.2.3">
                     <p id="section-toc.1-1.5.2.5.2.3.1"><a href="#section-5.5.3" class="auto internal xref">5.5.3</a>.  <a href="#name-authcert_user" class="internal xref">AUTHCERT_USER</a></p>
+</li>
+                  <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.5.2.5.2.4">
+                    <p id="section-toc.1-1.5.2.5.2.4.1"><a href="#section-5.5.4" class="auto internal xref">5.5.4</a>.  <a href="#name-certificate-management" class="internal xref">Certificate Management</a></p>
 </li>
                 </ul>
 </li>
@@ -1903,7 +1906,7 @@ li > p:last-of-type:only-child {
  Any other exceptions are added to the informative description
  in this specifications when needed:<a href="#section-3.1-3" class="pilcrow">¶</a></p>
 <p id="section-3.1-4">
- The UTC_t value used in this specification is designed
+ The UTC value used in this specification is designed
  to be compatible with time_t on <span>[<a href="#POSIX" class="cite xref">POSIX</a>]</span>
  compliant systems.
  In POSIX systems, time_t is defined as an integer type used for
@@ -2187,7 +2190,7 @@ Header = (Offset &lt;&lt; 24) | (Flags &lt;&lt; 22) | Length;
             </tr>
             <tr>
               <td class="text-left" rowspan="1" colspan="1">
- OpSet_t
+ OpSet
  </td>
               <td class="text-left" rowspan="1" colspan="1">
  An 8-bit value.
@@ -2201,7 +2204,7 @@ Header = (Offset &lt;&lt; 24) | (Flags &lt;&lt; 22) | Length;
             </tr>
             <tr>
               <td class="text-left" rowspan="1" colspan="1">
- OpGet_t
+ OpGet
  </td>
               <td class="text-left" rowspan="1" colspan="1">
  An 8-bit value.
@@ -2213,7 +2216,7 @@ Header = (Offset &lt;&lt; 24) | (Flags &lt;&lt; 22) | Length;
             </tr>
             <tr>
               <td class="text-left" rowspan="1" colspan="1">
- OpUpdate_t
+ OpUpdate
  </td>
               <td class="text-left" rowspan="1" colspan="1">
  An 8-bit value.
@@ -2225,7 +2228,7 @@ Header = (Offset &lt;&lt; 24) | (Flags &lt;&lt; 22) | Length;
             </tr>
             <tr>
               <td class="text-left" rowspan="1" colspan="1">
- OpDelete_t
+ OpDelete
  </td>
               <td class="text-left" rowspan="1" colspan="1">
  An 8-bit value.
@@ -2237,26 +2240,26 @@ Header = (Offset &lt;&lt; 24) | (Flags &lt;&lt; 22) | Length;
             </tr>
             <tr>
               <td class="text-left" rowspan="1" colspan="1">
- true_t
+ true
  </td>
               <td class="text-left" rowspan="1" colspan="1">
  An 8-bit value.
  A value of true.
  </td>
               <td class="text-left" rowspan="1" colspan="1">
- xdr_false_t()
+ xdr_false()
  </td>
             </tr>
             <tr>
               <td class="text-left" rowspan="1" colspan="1">
- false_t
+ false
  </td>
               <td class="text-left" rowspan="1" colspan="1">
  An 8-bit value.
  A value of false.
  </td>
               <td class="text-left" rowspan="1" colspan="1">
- xdr_true_t()
+ xdr_true()
  </td>
             </tr>
             <tr>
@@ -2264,7 +2267,7 @@ Header = (Offset &lt;&lt; 24) | (Flags &lt;&lt; 22) | Length;
  enabled
  </td>
               <td class="text-left" rowspan="1" colspan="1">
- A true_t or false_t value.
+ A true or false value.
  </td>
               <td class="text-left" rowspan="1" colspan="1">
  xdr_enabled()
@@ -2275,7 +2278,7 @@ Header = (Offset &lt;&lt; 24) | (Flags &lt;&lt; 22) | Length;
  Unused7
  </td>
               <td class="text-left" rowspan="1" colspan="1">
- An 7-bit value, set to zeros.
+ A 7-bit value, set to zeros.
  </td>
               <td class="text-left" rowspan="1" colspan="1">
  </td>
@@ -2295,17 +2298,7 @@ Header = (Offset &lt;&lt; 24) | (Flags &lt;&lt; 22) | Length;
  Unused16
  </td>
               <td class="text-left" rowspan="1" colspan="1">
- An 16-bit value, set to zeros.
- </td>
-              <td class="text-left" rowspan="1" colspan="1">
- </td>
-            </tr>
-            <tr>
-              <td class="text-left" rowspan="1" colspan="1">
- Unused7
- </td>
-              <td class="text-left" rowspan="1" colspan="1">
- An 7-bit value, set to zeros.
+ A 16-bit value, set to zeros.
  </td>
               <td class="text-left" rowspan="1" colspan="1">
  </td>
@@ -2315,7 +2308,7 @@ Header = (Offset &lt;&lt; 24) | (Flags &lt;&lt; 22) | Length;
  Unused23
  </td>
               <td class="text-left" rowspan="1" colspan="1">
- An 23-bit value, set to zeros.
+ A 23-bit value, set to zeros.
  </td>
               <td class="text-left" rowspan="1" colspan="1">
  </td>
@@ -2367,7 +2360,7 @@ uint32_t     = %x00000000-ffffffff:32
 uint64_t     = %x0000000000000000-ffffffffffffffff:64
 
                ; The number of octets in the the associated object.
-Length_t     = uint32_t
+Length       = uint32_t
 
                ; This is a generic array of UTF-8 characters without
                ; any terminating character.
@@ -2382,7 +2375,11 @@ Length_t     = uint32_t
                ;
                ; The UTF8-Char is any valid and complete UTF-8 character.
                ;
-string       = Length_t *UTF8-Char
+string       = Length *UTF8-Char
+
+               ; Like string, except when the length is 0xffffffff it means
+               ; the associated value has been deleted.
+stringD      = (0xffffffff:32) / string
 
                ; The UTF8-Char is any valid and complete UTF-8 character.
                ;
@@ -2394,43 +2391,45 @@ UTF8-Char    = 1*4uint8_t
                ;
                ; The uint32_t value is the number of octets in the data.
                ;
-opaque       = Length_t *uint8_t
+opaque       = Length *uint8_t
 
                ; The time in seconds since January 1st, 1970 GMT
                ; This is known as the epoch time on many systems.
                ; And time_t on POSIX compliant systems.
-UTC_t        = uint64_t
+UTC          = uint64_t
 
                ; The number of octets from the beginning of the
                ; associated object.
-Offset_t     = uint32_t
+Offset       = uint32_t
 
-               ; Key and Value
-KeyPair      = string string
+               ; Key and Value. It uses stringD as the value
+               ; to enable an indicator that the key part (string part)
+               ; has been deleted.
+KeyPair      = string stringD
 
                ; Length is the number of KeyPair that follow.
-KeyPairArray = Length_t 1*KeyPair
+KeyPairArray = Length 1*KeyPair
 
                ; Setting a value.
-OpSet_t      = %x00:8
+OpSet        = %x00:8
 
                ; Getting a value.
-OpGet_t      = %x01:8
+OpGet        = %x01:8
 
                ; Updating an existing value.
-OpUpdate_t   = %x02:8
+OpUpdate     = %x02:8
 
                ; Deleting an existing value.
-OpDelete_t   = %x03:8
+OpDelete     = %x03:8
 
                ; Any one of the the operations.
 Op           = OpSet / OpGet / OpUpdate / OpDelete
 
-true_t       = %x01:8
+true         = %x01:8
 
-false_t      = %x00:8
+false        = %x00:8
 
-enabled      = true_t / false_t
+enabled      = true   / false
 
 unused8      = %x00:8
 
@@ -2464,25 +2463,46 @@ PHOENIX_BIT  = %x00:1
 /**
  * The time in seconds since January 1 1970 in GMT.
  */
-typedef uint64_t UTC_t;
+typedef uint64_t UTC;
 
 /**
  * the number of octets from the beginning of
  * the associated object.
  */
-typedef uint32_t Offset_t;
+typedef uint32_t Offset;
 
 /**
  * The number of octets in the associated object.
  */
-typedef uint32_t Length_t;
+typedef uint32_t Length;
+
+/**
+ * When a stringD value is set to this,
+ * The the associated value has been deleted.
+ */
+const Deleted = 0xffffffff;
+
+/**
+ * A stringD is a string, or Deleted (the associated
+ * data has been deleted).
+ */
+union stringD switch (uint32 LengthOrDeleted) {
+
+  case Deleted:
+    void;
+
+  default:
+    opaque String&lt;&gt;;
+};
 
 /**
  * A string Key and its associated Value.
+ * It uses stringD as the value to enable an indicator that the
+ * key part (string part) has been deleted.
  */
 struct KeyPair {
     string Key&lt;&gt;;
-    string Value&lt;&gt;;
+    stringD Value&lt;&gt;;
 };
 
 /**
@@ -2507,15 +2527,15 @@ const PHOENIX_BIT = 0x0;
 /**
  * Operations
  */
-enum Op_e {
-    OpSet_t    = 0x00,
-    OpGet_t    = 0x01,
-    OpUpdate_t = 0x02,
-    OpDelete_t = 0x03
+enum Op {
+    OpSet    = 0x00,
+    OpGet    = 0x01,
+    OpUpdate = 0x02,
+    OpDelete = 0x03
 };
 
 /**
- * Any one of OpSet_t, OpGet_t, OpUpdate_t, or OpDelete
+ * Any one of OpSet, OpGet, OpUpdate, or OpDelete
  * cast to a (Op).
  */
 typedef uint8_t Op;
@@ -2537,10 +2557,9 @@ typedef uint8_t Op;
  by octet offset into the MIME object.
  This is is called a StringRef.
  All strings can be referenced by using a total of 8 octets.
- A StringRef consists of two parts:<a href="#section-3.4-1" class="pilcrow">¶</a></p>
-<p id="section-3.4-2">
  The StringRef does not contain the string, it is a 
- reference an existing string in a MIME object.<a href="#section-3.4-2" class="pilcrow">¶</a></p>
+ reference an existing string in a MIME object.
+ A StringRef consists of two parts:<a href="#section-3.4-1" class="pilcrow">¶</a></p>
 <span id="name-stringref-abnf-xdr-mapping"></span><table class="center" id="table-3">
           <caption>
 <a href="#table-3" class="selfRef">Table 3</a>:
@@ -2555,22 +2574,22 @@ typedef uint8_t Op;
           </thead>
           <tbody>
             <tr>
-              <td class="text-left" rowspan="1" colspan="1">Offset_t</td>
+              <td class="text-left" rowspan="1" colspan="1">Offset</td>
               <td class="text-left" rowspan="1" colspan="1">
  The octet count to the start of the string with zero being the
  first octet in the message.
  </td>
               <td class="text-left" rowspan="1" colspan="1">
- xdr_Offset_t()
+ xdr_Offset()
  </td>
             </tr>
             <tr>
-              <td class="text-left" rowspan="1" colspan="1">Length_t</td>
+              <td class="text-left" rowspan="1" colspan="1">Length</td>
               <td class="text-left" rowspan="1" colspan="1">
  The length in octets of the string.
  </td>
               <td class="text-left" rowspan="1" colspan="1">
- xdr_Length_t()
+ xdr_Length()
  </td>
             </tr>
             <tr>
@@ -2584,12 +2603,12 @@ typedef uint8_t Op;
             </tr>
           </tbody>
         </table>
-<p id="section-3.4-4">
- A StringRef over the wire is 8 octets in size.<a href="#section-3.4-4" class="pilcrow">¶</a></p>
+<p id="section-3.4-3">
+ A StringRef over the wire is 8 octets in size.<a href="#section-3.4-3" class="pilcrow">¶</a></p>
 <span id="name-stringref-format"></span><div id="StringRefFigure">
 <figure id="figure-6">
-          <div id="section-3.4-5.1">
-            <div class="alignLeft art-svg artwork" id="section-3.4-5.1.2">
+          <div id="section-3.4-4.1">
+            <div class="alignLeft art-svg artwork" id="section-3.4-4.1.2">
 <svg xmlns="http://www.w3.org/2000/svg" version="1.1" height="96" width="296" viewBox="0 0 296 96" class="diagram" text-anchor="middle" font-family="monospace" font-size="13px" stroke-linecap="round">
                 <path d="M 8,16 L 8,80" fill="none" stroke="black"></path>
                 <path d="M 288,16 L 288,80" fill="none" stroke="black"></path>
@@ -2597,18 +2616,18 @@ typedef uint8_t Op;
                 <path d="M 8,48 L 288,48" fill="none" stroke="black"></path>
                 <path d="M 8,80 L 288,80" fill="none" stroke="black"></path>
                 <g class="text">
-                  <text x="44" y="36">OFFSET</text>
-                  <text x="44" y="68">LENGTH</text>
+                  <text x="140" y="36">Offset into object (Offset:32)</text>
+                  <text x="132" y="68">Length of string (Length:32)</text>
                 </g>
-              </svg><a href="#section-3.4-5.1.2" class="pilcrow">¶</a>
+              </svg><a href="#section-3.4-4.1.2" class="pilcrow">¶</a>
 </div>
 </div>
 <figcaption><a href="#figure-6" class="selfRef">Figure 6</a>:
 <a href="#name-stringref-format" class="selfRef">StringRef Format</a>
           </figcaption></figure>
 </div>
-<p id="section-3.4-6">
- ABNF:<a href="#section-3.4-6" class="pilcrow">¶</a></p>
+<p id="section-3.4-5">
+ ABNF:<a href="#section-3.4-5" class="pilcrow">¶</a></p>
 <section id="section-3.4.1">
           <h4 id="name-stringref-abnf">
 <a href="#section-3.4.1" class="section-number selfRef">3.4.1. </a><a href="#name-stringref-abnf" class="section-name selfRef">StringRef ABNF</a>
@@ -2618,7 +2637,7 @@ typedef uint8_t Op;
             <div class="alignLeft art-abnf art-text artwork" id="section-3.4.1-1.1">
 <pre>
                 ; A reference to the start and length of a string.
-StringRef     = Offset_t Length_t
+StringRef     = Offset Length
 </pre>
 </div>
 <figcaption><a href="#figure-7" class="selfRef">Figure 7</a>:
@@ -2640,8 +2659,8 @@ StringRef     = Offset_t Length_t
  * A reference to the start and length of a string.
  */
 struct StringRef {
-    Offset_t Offset;
-    Length_t Length;
+    Offset StartOffset;
+    Length StringLength;
 };
 </pre>
 </div>
@@ -2661,7 +2680,7 @@ struct StringRef {
  The following is a list of terms with their definitions as
  used in this specification.<a href="#section-4-1" class="pilcrow">¶</a></p>
 <span class="break"></span><dl class="dlNewline" id="section-4-2">
-        <dt id="section-4-2.1">AdminCmd</dt>
+        <dt id="section-4-2.1">ADMIN</dt>
         <dd style="margin-left: 1.5em" id="section-4-2.2">
  A general term for any administrative command.
  Administrative and auditing operations.
@@ -2669,7 +2688,7 @@ struct StringRef {
  query logs, errors, possibly user activity.<a href="#section-4-2.2" class="pilcrow">¶</a>
 </dd>
         <dd class="break"></dd>
-<dt id="section-4-2.3">AuthCmd</dt>
+<dt id="section-4-2.3">AUTH</dt>
         <dd style="margin-left: 1.5em" id="section-4-2.4">
  A general term for any authentication command.
  Authentication and authorization operations.
@@ -2934,8 +2953,8 @@ struct StringRef {
  Many commands are only valid after authentication.<a href="#section-5-4" class="pilcrow">¶</a></p>
 <p id="section-5-5">
  When the client connects to a server it immediately sends
- its pre authentication capabilities to the server.
- Or an Auth command.<a href="#section-5-5" class="pilcrow">¶</a></p>
+ a CAPABILITY_PRE list to the server.
+ Or the client sends an AUTH command.<a href="#section-5-5" class="pilcrow">¶</a></p>
 <p id="section-5-6">
  When the server gets a new connection followed by
  a pre authentication capability command, it immediately sends
@@ -3112,7 +3131,7 @@ struct StringRef {
                 <div class="alignLeft art-abnf art-text artwork" id="section-5.1.1.1.1-2.1">
 <pre>
                   ; The length of a packet.
-PacketHeader    = Length_t
+PacketHeader    = Length
 </pre>
 </div>
 <figcaption><a href="#figure-9" class="selfRef">Figure 9</a>:
@@ -3131,7 +3150,7 @@ PacketHeader    = Length_t
 /**
  * The length of a packet.
  */
-typedef Length_t PacketHeader;
+typedef Length PacketHeader;
 </pre>
 </div>
 <figcaption><a href="#figure-10" class="selfRef">Figure 10</a>:
@@ -3140,11 +3159,26 @@ typedef Length_t PacketHeader;
 </section>
 </section>
 <section id="section-5.1.1.2">
-            <h5 id="name-packet-body">
-<a href="#section-5.1.1.2" class="section-number selfRef">5.1.1.2. </a><a href="#name-packet-body" class="section-name selfRef">Packet Body</a>
+            <h5 id="name-packet-body-packetbody">
+<a href="#section-5.1.1.2" class="section-number selfRef">5.1.1.2. </a><a href="#name-packet-body-packetbody" class="section-name selfRef">Packet Body (PacketBody)</a>
             </h5>
 <p id="section-5.1.1.2-1">
  The packet body is divided into three parts:<a href="#section-5.1.1.2-1" class="pilcrow">¶</a></p>
+<ol start="1" type="1" class="normal type-1" id="section-5.1.1.2-2">
+              <li id="section-5.1.1.2-2.1">Sequence (SEQ)<a href="#section-5.1.1.2-2.1" class="pilcrow">¶</a>
+</li>
+              <li id="section-5.1.1.2-2.2">
+ Command (CMD):
+ Which can be one of ADMIN_CMD, AUTH_CMD, FILE_CMD,
+ or PROTO_CMD.<a href="#section-5.1.1.2-2.2" class="pilcrow">¶</a>
+</li>
+              <li id="section-5.1.1.2-2.3">
+ Payload (CmdPayload):
+ The command specific data.<a href="#section-5.1.1.2-2.3" class="pilcrow">¶</a>
+</li>
+            </ol>
+<p id="section-5.1.1.2-3">
+ PacketBody details:<a href="#section-5.1.1.2-3" class="pilcrow">¶</a></p>
 <span id="name-packet-body-abnf-xdr-mappin"></span><table class="center" id="table-5">
               <caption>
 <a href="#table-5" class="selfRef">Table 5</a>:
@@ -3169,7 +3203,7 @@ typedef Length_t PacketHeader;
               <tbody>
                 <tr>
                   <td class="text-left" rowspan="1" colspan="1">
- ADMIN_CMD_t
+ ADMIN_CMD
  </td>
                   <td class="text-left" rowspan="1" colspan="1">
  %x00:31
@@ -3178,12 +3212,12 @@ typedef Length_t PacketHeader;
  The payload is an administration command.
  </td>
                   <td class="text-left" rowspan="1" colspan="1">
- xdr_ADMIN_CMD_t()
+ xdr_ADMIN_CMD()
  </td>
                 </tr>
                 <tr>
                   <td class="text-left" rowspan="1" colspan="1">
- AUTH_CMD_t
+ AUTH_CMD
  </td>
                   <td class="text-left" rowspan="1" colspan="1">
  %x01:31
@@ -3192,53 +3226,53 @@ typedef Length_t PacketHeader;
  What follows in the payload, is an authentication command.
  </td>
                   <td class="text-left" rowspan="1" colspan="1">
- xdr_AUTH_CMD_t()
+ xdr_AUTH_CMD()
  </td>
                 </tr>
                 <tr>
                   <td class="text-left" rowspan="1" colspan="1">
- CMD_t
+ CMD
  </td>
                   <td class="text-left" rowspan="1" colspan="1">
  1 bit + 31 bits.
  </td>
                   <td class="text-left" rowspan="1" colspan="1">
-                    <p id="section-5.1.1.2-2.2.3.3.1">
+                    <p id="section-5.1.1.2-4.2.3.3.1">
  The 1-bit, VENDOR_BIT or PHOENIX_BIT followed by one of
- the 31-bit: ADMIN_CMD_t, AUTH_CMD_t, FILE_CMD_t, or PROTO_CMD_t.
- For a total of 32-bits.<a href="#section-5.1.1.2-2.2.3.3.1" class="pilcrow">¶</a></p>
-<p id="section-5.1.1.2-2.2.3.3.2"><br>
+ the 31-bit: ADMIN_CMD, AUTH_CMD, FILE_CMD, or PROTO_CMD.
+ For a total of 32-bits.<a href="#section-5.1.1.2-4.2.3.3.1" class="pilcrow">¶</a></p>
+<p id="section-5.1.1.2-4.2.3.3.2"><br>
  A command (CMD) is a unsigned integer that
  specifics a unique operation that describes
- and defines the data that follows.<a href="#section-5.1.1.2-2.2.3.3.2" class="pilcrow">¶</a></p>
-<p id="section-5.1.1.2-2.2.3.3.3"><br>
+ and defines the data that follows.<a href="#section-5.1.1.2-4.2.3.3.2" class="pilcrow">¶</a></p>
+<p id="section-5.1.1.2-4.2.3.3.3"><br>
  The highest bit in the 32-bit value is
  a VENDOR_BIT or PHOENIX_BIT.
- So CMD_t covers vendor and phoenix commands.<a href="#section-5.1.1.2-2.2.3.3.3" class="pilcrow">¶</a></p>
-<p id="section-5.1.1.2-2.2.3.3.4">
- -Phoenix CMD_t range is: %x00000000-7fffffff.<a href="#section-5.1.1.2-2.2.3.3.4" class="pilcrow">¶</a></p>
-<p id="section-5.1.1.2-2.2.3.3.5">
- -Vendor CMD_t range is: 80000000-fffffffe.<a href="#section-5.1.1.2-2.2.3.3.5" class="pilcrow">¶</a></p>
-<p id="section-5.1.1.2-2.2.3.3.6">
- -With %xffffffff reserved for future expansions.<a href="#section-5.1.1.2-2.2.3.3.6" class="pilcrow">¶</a></p>
+ So CMD covers vendor and phoenix commands.<a href="#section-5.1.1.2-4.2.3.3.3" class="pilcrow">¶</a></p>
+<p id="section-5.1.1.2-4.2.3.3.4">
+ -Phoenix CMD range is: %x00000000-7fffffff.<a href="#section-5.1.1.2-4.2.3.3.4" class="pilcrow">¶</a></p>
+<p id="section-5.1.1.2-4.2.3.3.5">
+ -Vendor CMD range is: 80000000-fffffffe.<a href="#section-5.1.1.2-4.2.3.3.5" class="pilcrow">¶</a></p>
+<p id="section-5.1.1.2-4.2.3.3.6">
+ -With %xffffffff reserved for future expansions.<a href="#section-5.1.1.2-4.2.3.3.6" class="pilcrow">¶</a></p>
 </td>
                   <td class="text-left" rowspan="1" colspan="1">
- xdr_Cmd_t()
+ xdr_Cmd()
  </td>
                 </tr>
                 <tr>
                   <td class="text-left" rowspan="1" colspan="1">
- CmdPayload_t
+ CmdPayload
  </td>
                   <td class="text-left" rowspan="1" colspan="1">
  Variable
  </td>
                   <td class="text-left" rowspan="1" colspan="1">
-                    <p id="section-5.1.1.2-2.2.4.3.1">
+                    <p id="section-5.1.1.2-4.2.4.3.1">
  The Payload is whatever data follows the command.
  In some cases it is a blob of opaque data.
  In other cases it is a structured XDR set of data.
- See the specific CMD for details.<a href="#section-5.1.1.2-2.2.4.3.1" class="pilcrow">¶</a></p>
+ See the specific CMD for details.<a href="#section-5.1.1.2-4.2.4.3.1" class="pilcrow">¶</a></p>
 </td>
                   <td class="text-left" rowspan="1" colspan="1">
  xdr_CmdPayload()
@@ -3246,7 +3280,7 @@ typedef Length_t PacketHeader;
                 </tr>
                 <tr>
                   <td class="text-left" rowspan="1" colspan="1">
- FILE_CMD_t
+ FILE_CMD
  </td>
                   <td class="text-left" rowspan="1" colspan="1">
  %x03:31
@@ -3255,12 +3289,12 @@ typedef Length_t PacketHeader;
  A FILE or FOLDER payload is included.
  </td>
                   <td class="text-left" rowspan="1" colspan="1">
- xdr_FILE_CMD_t()
+ xdr_FILE_CMD()
  </td>
                 </tr>
                 <tr>
                   <td class="text-left" rowspan="1" colspan="1">
- PROTO_CMD_t
+ PROTO_CMD
  </td>
                   <td class="text-left" rowspan="1" colspan="1">
  %x04:31
@@ -3269,38 +3303,38 @@ typedef Length_t PacketHeader;
  The payload includes one of many protocol packets.
  </td>
                   <td class="text-left" rowspan="1" colspan="1">
- xdr_PROTO_CMD_t()
+ xdr_PROTO_CMD()
  </td>
                 </tr>
                 <tr>
                   <td class="text-left" rowspan="1" colspan="1">
- SEQ_t
+ SEQ
  </td>
                   <td class="text-left" rowspan="1" colspan="1">
  uint32_t
  </td>
                   <td class="text-left" rowspan="1" colspan="1">
-                    <p id="section-5.1.1.2-2.2.7.3.1">
+                    <p id="section-5.1.1.2-4.2.7.3.1">
  The Command SEQ is a uint32_t.
  This SEQ is an even number when initiated from
  the client, and an odd number when initiated
- from the server.<a href="#section-5.1.1.2-2.2.7.3.1" class="pilcrow">¶</a></p>
-<p id="section-5.1.1.2-2.2.7.3.2">
+ from the server.<a href="#section-5.1.1.2-4.2.7.3.1" class="pilcrow">¶</a></p>
+<p id="section-5.1.1.2-4.2.7.3.2">
  The first SEQ value sent from the client is zero (0)
- and is incremented by two each time.<a href="#section-5.1.1.2-2.2.7.3.2" class="pilcrow">¶</a></p>
-<p id="section-5.1.1.2-2.2.7.3.3">
+ and is incremented by two each time.<a href="#section-5.1.1.2-4.2.7.3.2" class="pilcrow">¶</a></p>
+<p id="section-5.1.1.2-4.2.7.3.3">
  The first SEQ value sent from the server is one (1)
- and is incremented by two each time.<a href="#section-5.1.1.2-2.2.7.3.3" class="pilcrow">¶</a></p>
-<p id="section-5.1.1.2-2.2.7.3.4">
+ and is incremented by two each time.<a href="#section-5.1.1.2-4.2.7.3.3" class="pilcrow">¶</a></p>
+<p id="section-5.1.1.2-4.2.7.3.4">
  In the event an endpoint command SEQ reaches its maximum
  value, then its numbering starts over at zero (0) for
  the client and one (1) for the server.
  An implementation must keep track of outstanding
  commands and not accidentally re-issue the same
- SEQ that may still get replies from the other endpoint.<a href="#section-5.1.1.2-2.2.7.3.4" class="pilcrow">¶</a></p>
+ SEQ that may still get replies from the other endpoint.<a href="#section-5.1.1.2-4.2.7.3.4" class="pilcrow">¶</a></p>
 </td>
                   <td class="text-left" rowspan="1" colspan="1">
- xdr_SEQ_t()
+ xdr_SEQ()
  </td>
                 </tr>
                 <tr>
@@ -3311,8 +3345,8 @@ typedef Length_t PacketHeader;
  Variable
  </td>
                   <td class="text-left" rowspan="1" colspan="1">
-                    <p id="section-5.1.1.2-2.2.8.3.1">
- The packet body.<a href="#section-5.1.1.2-2.2.8.3.1" class="pilcrow">¶</a></p>
+                    <p id="section-5.1.1.2-4.2.8.3.1">
+ The packet body.<a href="#section-5.1.1.2-4.2.8.3.1" class="pilcrow">¶</a></p>
 </td>
                   <td class="text-left" rowspan="1" colspan="1">
  xdr_PacketBody()
@@ -3320,36 +3354,9 @@ typedef Length_t PacketHeader;
                 </tr>
               </tbody>
             </table>
-<p id="section-5.1.1.2-3">
- Any non-vendor command packet shown here:<a href="#section-5.1.1.2-3" class="pilcrow">¶</a></p>
-<span id="name-packet-body-diagram"></span><figure id="figure-11">
-              <div id="section-5.1.1.2-4.1">
-                <div class="alignLeft art-svg artwork" id="section-5.1.1.2-4.1.2">
-<svg xmlns="http://www.w3.org/2000/svg" version="1.1" height="160" width="296" viewBox="0 0 296 160" class="diagram" text-anchor="middle" font-family="monospace" font-size="13px" stroke-linecap="round">
-                    <path d="M 8,16 L 8,144" fill="none" stroke="black"></path>
-                    <path d="M 24,80 L 24,112" fill="none" stroke="black"></path>
-                    <path d="M 288,16 L 288,112" fill="none" stroke="black"></path>
-                    <path d="M 8,16 L 288,16" fill="none" stroke="black"></path>
-                    <path d="M 8,48 L 288,48" fill="none" stroke="black"></path>
-                    <path d="M 8,80 L 288,80" fill="none" stroke="black"></path>
-                    <path d="M 8,112 L 288,112" fill="none" stroke="black"></path>
-                    <path d="M 8,144 L 288,144" fill="none" stroke="black"></path>
-                    <g class="text">
-                      <text x="108" y="36">PacketLength_t 32-bits</text>
-                      <text x="72" y="68">SEQ_t 32-bits</text>
-                      <text x="16" y="100">0</text>
-                      <text x="88" y="100">CMD_t 31-bits</text>
-                      <text x="76" y="132">CmdPayload ...</text>
-                    </g>
-                  </svg><a href="#section-5.1.1.2-4.1.2" class="pilcrow">¶</a>
-</div>
-</div>
-<figcaption><a href="#figure-11" class="selfRef">Figure 11</a>:
-<a href="#name-packet-body-diagram" class="selfRef">Packet Body - Diagram</a>
-              </figcaption></figure>
 <p id="section-5.1.1.2-5">
- Any vendor command packet shown here:<a href="#section-5.1.1.2-5" class="pilcrow">¶</a></p>
-<span id="name-packet-body-diagram-2"></span><figure id="figure-12">
+ Any non-vendor command packet shown here:<a href="#section-5.1.1.2-5" class="pilcrow">¶</a></p>
+<span id="name-packet-body-diagram"></span><figure id="figure-11">
               <div id="section-5.1.1.2-6.1">
                 <div class="alignLeft art-svg artwork" id="section-5.1.1.2-6.1.2">
 <svg xmlns="http://www.w3.org/2000/svg" version="1.1" height="160" width="296" viewBox="0 0 296 160" class="diagram" text-anchor="middle" font-family="monospace" font-size="13px" stroke-linecap="round">
@@ -3362,13 +3369,40 @@ typedef Length_t PacketHeader;
                     <path d="M 8,112 L 288,112" fill="none" stroke="black"></path>
                     <path d="M 8,144 L 288,144" fill="none" stroke="black"></path>
                     <g class="text">
-                      <text x="108" y="36">PacketLength_t 32-bits</text>
-                      <text x="72" y="68">SEQ_t 32-bits</text>
-                      <text x="16" y="100">1</text>
-                      <text x="88" y="100">CMD_t 31-bits</text>
+                      <text x="144" y="36">Packet Length (PacketLength:32)</text>
+                      <text x="88" y="68">Sequence (SEQ:32)</text>
+                      <text x="16" y="100">0</text>
+                      <text x="100" y="100">Command (CMD:31)</text>
                       <text x="76" y="132">CmdPayload ...</text>
                     </g>
                   </svg><a href="#section-5.1.1.2-6.1.2" class="pilcrow">¶</a>
+</div>
+</div>
+<figcaption><a href="#figure-11" class="selfRef">Figure 11</a>:
+<a href="#name-packet-body-diagram" class="selfRef">Packet Body - Diagram</a>
+              </figcaption></figure>
+<p id="section-5.1.1.2-7">
+ Any vendor command packet shown here:<a href="#section-5.1.1.2-7" class="pilcrow">¶</a></p>
+<span id="name-packet-body-diagram-2"></span><figure id="figure-12">
+              <div id="section-5.1.1.2-8.1">
+                <div class="alignLeft art-svg artwork" id="section-5.1.1.2-8.1.2">
+<svg xmlns="http://www.w3.org/2000/svg" version="1.1" height="160" width="296" viewBox="0 0 296 160" class="diagram" text-anchor="middle" font-family="monospace" font-size="13px" stroke-linecap="round">
+                    <path d="M 8,16 L 8,144" fill="none" stroke="black"></path>
+                    <path d="M 24,80 L 24,112" fill="none" stroke="black"></path>
+                    <path d="M 288,16 L 288,112" fill="none" stroke="black"></path>
+                    <path d="M 8,16 L 288,16" fill="none" stroke="black"></path>
+                    <path d="M 8,48 L 288,48" fill="none" stroke="black"></path>
+                    <path d="M 8,80 L 288,80" fill="none" stroke="black"></path>
+                    <path d="M 8,112 L 288,112" fill="none" stroke="black"></path>
+                    <path d="M 8,144 L 288,144" fill="none" stroke="black"></path>
+                    <g class="text">
+                      <text x="144" y="36">Packet Length (PacketLength:32)</text>
+                      <text x="88" y="68">Sequence (SEQ:32)</text>
+                      <text x="16" y="100">1</text>
+                      <text x="100" y="100">Command (CMD:31)</text>
+                      <text x="76" y="132">CmdPayload ...</text>
+                    </g>
+                  </svg><a href="#section-5.1.1.2-8.1.2" class="pilcrow">¶</a>
 </div>
 </div>
 <figcaption><a href="#figure-12" class="selfRef">Figure 12</a>:
@@ -3384,32 +3418,39 @@ typedef Length_t PacketHeader;
                 <div class="alignLeft art-abnf art-text artwork" id="section-5.1.1.2.1-2.1">
 <pre>
                     ; The data that follows is ADMIN CMD data.
-ADMIN_CMD_t       = %x00:31
+ADMIN_CMD         = %x00:31
 
                     ; The data that follows is AUTH CMD data.
-AUTH_CMD_t        = %x01:31
+AUTH_CMD          = %x01:31
 
                     ; The data that follows is FILE or FOLDER CMD data.
-FILE_CMD_t        = %x02:31
+FILE_CMD          = %x02:31
 
                     ; The data that follows is Phoenix PROTO CMD
                     ; specific command data.
-PROTO_CMD_t       = %x03:31
+PROTO_CMD         = %x03:31
 
-                    ; Define a SEQ_t (sequence) type.
-SEQ_t             = uint32_t
+                    ; Define a SEQ (sequence) type.
+SEQ               = uint32_t
 
                     ; Any command. A 32-bit value.
-CMD_t             = (VENDOR_BIT / PHOENIX_BIT)
-                    (ADMIN_CMD_t / AUTH_CMD_t / FILE_CMD_t / PROTO_CMD_t)
+CMD               = (VENDOR_BIT / PHOENIX_BIT)
+                    (ADMIN_CMD / AUTH_CMD / FILE_CMD / PROTO_CMD)
 
-                    ; Define a CmdPayload_t (blob of data) type.
+                    ; Define a CmdPayload (blob of data) type.
                     ; The length of CmdPayload is determined by the CMD.
-CmdPayload_t      = *uint8_t
+CmdPayload        = *uint8_t
 
                     ; A Phoenix packet
-PacketBody        = SEQ_t CMD_t (AdminPayload / AuthPayload
-                    / FilePayload / PROTOPayload)
+PacketBody        = SEQ CMD
+                    (AdminPayload
+                    / AdminReplyPayload
+                    / AuthPayload
+                    / AuthReplyPayload
+                    / FilePayload
+                    / FileReplyPayload
+                    / ProtoPayload
+                    / ProtoReplyPayload)
 </pre>
 </div>
 <figcaption><a href="#figure-13" class="selfRef">Figure 13</a>:
@@ -3430,55 +3471,55 @@ PacketBody        = SEQ_t CMD_t (AdminPayload / AuthPayload
  * An XDR enum is 32-bits in size.
  * With the VENDOR_BIT set to zero, making it not a vendor command.
  */
-enum CMD_t {
+enum CMD {
     /**
      * The data that follows is ADMIN CMD data.
      */
-    ADMIN_CMD_t  = 0x00,
+    ADMIN_CMD  = 0x00,
 
     /**
      * The data that follows is AUTH CMD data.
      */
-    AUTH_CMD_t   = 0x01,
+    AUTH_CMD   = 0x01,
 
     /**
      * The data that follows is FILE or FOLDER CMD data.
      */
-    FILE_CMD_t   = 0x02,
+    FILE_CMD   = 0x02,
 
     /**
      * The data that follows is Phoenix PROTO CMD data.
      */
-    PROTO_CMD_t  = 0x03
+    PROTO_CMD  = 0x03
 };
 
 /**
- * Mask to check if CMD_t value in packet
+ * Mask to check if CMD value in packet
  * is vendor extension.
  */
-CMD_VENDOR_MASK_t = 0x80000000
+CMD_VENDOR_MASK = 0x80000000
 
 /**
- * Define a SEQ_t (sequence) type.
+ * Define a SEQ (sequence) type.
  */
-typedef uint32_t  SEQ_t;
+typedef uint32  SEQ;
 
 /**
  * A CMD payload is one of these types.
- * With Cmd set to a CMD_t value.
+ * With Cmd set to a CMD value.
  */
-union CmdPayload_t switch (CMD_t Cmd) {
+union CmdPayload switch (CMD Cmd) {
 
-    case ADMIN_CMD_t:
+    case ADMIN_CMD:
         AdminCmdPayload AdminPayload;
 
-    case AUTH_CMD_t:
+    case AUTH_CMD:
         AuthCmdPayload AuthPayload;
 
-    case FILE_CMD_t:
+    case FILE_CMD:
         FileCmdPayload FilePayload;
 
-    case PROTO_CMD_t:
+    case PROTO_CMD:
         ProtoCmdPayload ProtoPayload;
 };
 
@@ -3486,8 +3527,8 @@ union CmdPayload_t switch (CMD_t Cmd) {
  * A packet body.
  */
 struct PacketBody {
-    SEQ_t      SEQ;
-    CmdPayload_t Payload;
+    SEQ        SEQ;
+    CmdPayload Payload;
 };
 </pre>
 </div>
@@ -3540,8 +3581,8 @@ struct PacketBody {
 <p id="section-5.2-1">
  Implementations are not required to implement any ADMIN command.
  A client will know the server supports one or more ADMIN
- commands when it gets its post authentication capability command
- from the server.<a href="#section-5.2-1" class="pilcrow">¶</a></p>
+ commands when it gets a CAPABILITY_POST with an ADMIN capability
+ in it, from the server.<a href="#section-5.2-1" class="pilcrow">¶</a></p>
 <p id="section-5.2-2">
  Administrative command can be used to configure, audit, and manage
  the remote endpoint.
@@ -3552,14 +3593,14 @@ struct PacketBody {
 <a href="#section-5.2.1" class="section-number selfRef">5.2.1. </a><a href="#name-administration-capability-d" class="section-name selfRef">Administration Capability Definitions</a>
           </h4>
 <p id="section-5.2.1-1">
- Implementations MUST NOT send the ADMIN capability
- in the pre authorization CAPABILITY list.<a href="#section-5.2.1-1" class="pilcrow">¶</a></p>
+ Implementations MUST NOT send any ADMIN capability
+ in the CAPABILITY_PRE list.<a href="#section-5.2.1-1" class="pilcrow">¶</a></p>
 <p id="section-5.2.1-2">
  Implementations that support any administration command
- MAY include ADMIN capability in the post authentication CAPABILITY list.
+ will include an ADMIN capability in the CAPABILITY_POST list.
  An implementation may decide that only specified and
  authorized users may issue administrative commands and
- send only those authenticated users the ADMIN capability.<a href="#section-5.2.1-2" class="pilcrow">¶</a></p>
+ send only those authenticated users an ADMIN capability.<a href="#section-5.2.1-2" class="pilcrow">¶</a></p>
 <p id="section-5.2.1-3">
  The ADMIN capability includes the list of ADMIN commands the user is
  allowed to perform.
@@ -3584,7 +3625,7 @@ struct PacketBody {
 <p id="section-5.2.2-2">
  The following operations are defined for administration.
  Each is part of an ADMIN command or ADMIN reply.
- They each have a unique identifier, and ADMIN Operation ID (AOID).<a href="#section-5.2.2-2" class="pilcrow">¶</a></p>
+ They each have a unique identifier, called an ADMIN Operation ID (AOID).<a href="#section-5.2.2-2" class="pilcrow">¶</a></p>
 <p id="section-5.2.2-3">
  All of their XDR API is: xdr_AOID().<a href="#section-5.2.2-3" class="pilcrow">¶</a></p>
 <span id="name-administration-comamnd-payl"></span><table class="center" id="table-6">
@@ -3602,7 +3643,7 @@ struct PacketBody {
             </thead>
             <tbody>
               <tr>
-                <td class="text-left" rowspan="1" colspan="1">AOID_t</td>
+                <td class="text-left" rowspan="1" colspan="1">AOID</td>
                 <td class="text-left" rowspan="1" colspan="1">uint32_t</td>
                 <td class="text-left" rowspan="1" colspan="1">
  An Administrative Operation Identifier.
@@ -3771,7 +3812,7 @@ USER_PERMISSIONS   = %x09:8
 USER_RENAME        = %x0A:8
 
                      ; All ADMIN commands are 32-bit values.
-AOID_t             = (VENDOR_BIT / PHOENIX_BIT) Unused23
+AOID               = (VENDOR_BIT / PHOENIX_BIT) Unused23
                      (SERVER_CONFIGURE
                       / SERVER_KICK_USER
                       / SERVER_LOGS
@@ -3785,20 +3826,34 @@ AOID_t             = (VENDOR_BIT / PHOENIX_BIT) Unused23
                       / USER_RENAME)
 
                      ; Where CmdPayload contents depend on the
-                                                                                 ; the value of AOID_t.
-AdminPayload       = AOID_t
-                     *(ServerConfigPayload
+                     ; the value of AOID.
+AdminPayload       = AOID
+                     (ServerConfigPayload
                      / ServerKickPayload
-                                                                                 / ServerLogsPayload
-                                                                                 / ServerBansPayload
-                                                                                 / ServerShutdownPayload
-                                                                                 / ServerStatsPayload
-                                                                                 / UserCreatePayload
-                                                                                 / UserDeletePayload
-                                                                                 / UserListPayload
-                                                                                 / UserPermissionsPayload
-                                                                                 / UserRenamePayload)
+                     / ServerLogsPayload
+                     / ServerBansPayload
+                     / ServerShutdownPayload
+                     / ServerStatsPayload
+                     / UserCreatePayload
+                     / UserDeletePayload
+                     / UserListPayload
+                     / UserPermissionsPayload
+                     / UserRenamePayload)
 
+                     ; Where CmdPayload contents depend on the
+                     ; the value of AOID.
+AdminReplyPayload  = AOID
+                     (ServerConfigReplyPayload
+                     / ServerKickReplyPayload
+                     / ServerLogsReplyPayload
+                     / ServerBansReplyPayload
+                     / ServerShutdownReplyPayload
+                     / ServerStatsReplyPayload
+                     / UserCreateReplyPayload
+                     / UserDeleteReplyPayload
+                     / UserListReplyPayload
+                     / UserPermissionsReplyPayload
+                     / UserRenameReplyPayload)
 </pre>
 </div>
 <figcaption><a href="#figure-15" class="selfRef">Figure 15</a>:
@@ -3818,7 +3873,7 @@ AdminPayload       = AOID_t
  * The high bit is zero, which means the PHOENIX_BIT is zero
  * in these values.
  */
-enum AOID_e {
+enum AOID {
     SERVER_CONFIGURE   = 0x00,
     SERVER_KICK_USER   = 0x01,
     SERVER_LOGS        = 0x02,
@@ -3835,9 +3890,9 @@ enum AOID_e {
 /**
  * All ADMIN commands are sent as 32-bit values.
  */
-typedef uint32_t AOID_t;
+typedef uint32_t AOID;
 
-union AdminPayload switch(AOID_t Aoid) {
+union AdminPayload switch(AOID Aoid) {
 
   case SERVER_CONFIGURE:
     ServerConfigPayload;
@@ -3873,6 +3928,42 @@ union AdminPayload switch(AOID_t Aoid) {
     UserRenamePayload;
 };
 
+union AdminReplyPayload switch(AOID Aoid) {
+
+  case SERVER_CONFIGURE:
+    ServerConfigReplyPayload;
+
+  case SERVER_KICK_USER:
+    ServerKickReplyPayload
+
+        case SERVER_LOGS:
+    ServerLogsReplyPayload;
+
+  case SERVER_MANAGE_BANS:
+    ServerBansReplyPayload;
+
+  case SERVER_SHUTDOWN:
+    ServerShutdownReplyPayload;
+
+  case SERVER_VIEW_STATS:
+    ServerStatsReplyPayload;
+
+  case USER_CREATE:
+    UserCreateReplyPayload;
+
+  case USER_DELETE:
+    UserDeleteReplyPayload;
+
+  case USER_LIST:
+    UserListReplyPayload;
+
+  case USER_PERMISSIONS:
+    UserPermissionsReplyPayload;
+
+  case USER_RENAME:
+    UserRenameReplyPayload;
+};
+
 </pre>
 </div>
 <figcaption><a href="#figure-16" class="selfRef">Figure 16</a>:
@@ -3885,8 +3976,27 @@ union AdminPayload switch(AOID_t Aoid) {
 <a href="#section-5.2.3" class="section-number selfRef">5.2.3. </a><a href="#name-administration-server_confi" class="section-name selfRef">Administration - SERVER_CONFIGURE (%x05:8)</a>
           </h4>
 <p id="section-5.2.3-1">
- Remote administration of servers is an essential feature
- in modern systems.
+ SERVER_CONFIGURE is optional and what can be configured
+ is unique to specific implementations.
+ Phoenix provides a way to transport key + value pairs
+ to and from the server as a way to configure remote
+ Phoenix servers.<a href="#section-5.2.3-1" class="pilcrow">¶</a></p>
+<p id="section-5.2.3-2">
+ A Phoenix server provides the SERVER_CONFIGURE in
+ the CAPABILITY_POST list it provides to the client.
+ This being sent, and the VENDOR_ID sent from the client
+ allows the endpoints to determine if the client implementation
+ is compatible to the servers implementation.<a href="#section-5.2.3-2" class="pilcrow">¶</a></p>
+<p id="section-5.2.3-3">
+ The keys and their values can be anything the server
+ implementation supports.
+ The content of configuration keys and configuration values is
+ out of scope for this specification.<a href="#section-5.2.3-3" class="pilcrow">¶</a></p>
+<section id="section-5.2.3.1">
+            <h5 id="name-server_configure-command">
+<a href="#section-5.2.3.1" class="section-number selfRef">5.2.3.1. </a><a href="#name-server_configure-command" class="section-name selfRef">SERVER_CONFIGURE - Command</a>
+            </h5>
+<p id="section-5.2.3.1-1">
  An implementation that supports SERVER_CONFIGURE
  adds SERVER_CONFIGURE to the post authentication
  capability command sent from the server to the client.
@@ -3896,13 +4006,13 @@ union AdminPayload switch(AOID_t Aoid) {
  USER_PERMISSIONS command, or by server implementation
  specific configuration methods.
  Server specific configuration methods are out of
- scope for this specification.<a href="#section-5.2.3-1" class="pilcrow">¶</a></p>
-<p id="section-5.2.3-2">
+ scope for this specification.<a href="#section-5.2.3.1-1" class="pilcrow">¶</a></p>
+<p id="section-5.2.3.1-2">
  Server specific configuration options are unique to
  each server implementation.
  This specification defines a method to set, update,
- delete, and view server configuration values.<a href="#section-5.2.3-2" class="pilcrow">¶</a></p>
-<p id="section-5.2.3-3">
+ delete, and view server configuration values.<a href="#section-5.2.3.1-2" class="pilcrow">¶</a></p>
+<p id="section-5.2.3.1-3">
  A client implementation would generally only
  support its own matching server implementation.
  The client sends a VENDOR_ID capability
@@ -3912,132 +4022,272 @@ union AdminPayload switch(AOID_t Aoid) {
  If the client does not send the correct VENDOR_ID information,
  or the authentication user is not authorized,
  then the server would not send its SERVER_CONFIGURE
- capability back to the client in the post authentication
- capability list.<a href="#section-5.2.3-3" class="pilcrow">¶</a></p>
-<p id="section-5.2.3-4">
+ capability back to the client in the CAPABILITY_POST
+ list.<a href="#section-5.2.3.1-3" class="pilcrow">¶</a></p>
+<p id="section-5.2.3.1-4">
  If a client or user is not authorized, then all
  SERVER_CONFIGURE ADMIN command will be rejected
  with a NotSupported Packet with the SEQ number
- the same as in the SERVER_CONFIGURE ADMIN commmand
- sent to the server.<a href="#section-5.2.3-4" class="pilcrow">¶</a></p>
-<p id="section-5.2.3-5">
+ the same as in the SERVER_CONFIGURE ADMIN command
+ sent to the server.<a href="#section-5.2.3.1-4" class="pilcrow">¶</a></p>
+<p id="section-5.2.3.1-5">
  The SERVER_CONFIGURE ADMIN command sends and receives the configuration
  information in key + value pairs.
  The key and value are each a string.
- The values uses in the key or value are vendor specific and
- out of scope in this specification.<a href="#section-5.2.3-5" class="pilcrow">¶</a></p>
-<p id="section-5.2.3-6">
+ The values used in the key or value are vendor specific and
+ out of scope in this specification.<a href="#section-5.2.3.1-5" class="pilcrow">¶</a></p>
+<p id="section-5.2.3.1-6">
  This specification does not define any configuration
  information.
- It provides a common way to set, get, update, and delete them.<a href="#section-5.2.3-6" class="pilcrow">¶</a></p>
-<p id="section-5.2.3-7">
+ It provides a common way to set, get, update, and delete them.<a href="#section-5.2.3.1-6" class="pilcrow">¶</a></p>
+<p id="section-5.2.3.1-7">
  Multiple SERVER_CONFIGURE commands can be sent in the
  same ADMIN packet.
- They are processed in the order sent.<a href="#section-5.2.3-7" class="pilcrow">¶</a></p>
+ They are processed in the order sent.<a href="#section-5.2.3.1-7" class="pilcrow">¶</a></p>
 <span id="name-server_configure-abnf-xdr-m"></span><table class="center" id="table-7">
-            <caption>
+              <caption>
 <a href="#table-7" class="selfRef">Table 7</a>:
 <a href="#name-server_configure-abnf-xdr-m" class="selfRef">SERVER_CONFIGURE - ABNF/XDR Mapping</a>
-            </caption>
+              </caption>
 <thead>
-              <tr>
-                <th class="text-left" rowspan="1" colspan="1">
+                <tr>
+                  <th class="text-left" rowspan="1" colspan="1">
  Name
  </th>
-                <th class="text-left" rowspan="1" colspan="1">
+                  <th class="text-left" rowspan="1" colspan="1">
  Description
  </th>
-                <th class="text-left" rowspan="1" colspan="1">
+                  <th class="text-left" rowspan="1" colspan="1">
  XDR API
  </th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td class="text-left" rowspan="1" colspan="1">
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td class="text-left" rowspan="1" colspan="1">
  Op
  </td>
-                <td class="text-left" rowspan="1" colspan="1">
+                  <td class="text-left" rowspan="1" colspan="1">
  Indicates if the key/value pairs are to
  get, set, update, or be deleted.
  </td>
-                <td class="text-left" rowspan="1" colspan="1">
+                  <td class="text-left" rowspan="1" colspan="1">
  xdr_Op()
  </td>
-              </tr>
-              <tr>
-                <td class="text-left" rowspan="1" colspan="1">
+                </tr>
+                <tr>
+                  <td class="text-left" rowspan="1" colspan="1">
  ConfigSet
  </td>
-                <td class="text-left" rowspan="1" colspan="1">
- A set of key/value paris with the same Op.
+                  <td class="text-left" rowspan="1" colspan="1">
+ A set of key/value pairs with the same Op.
  Allows the client to bundle multiple
- key/paris per Op.
+ key/pairs per Op.
  </td>
-                <td class="text-left" rowspan="1" colspan="1">
+                  <td class="text-left" rowspan="1" colspan="1">
  xdr_ConfigSet()
  </td>
-              </tr>
-              <tr>
-                <td class="text-left" rowspan="1" colspan="1">
+                </tr>
+                <tr>
+                  <td class="text-left" rowspan="1" colspan="1">
  ServerConfigure
  </td>
-                <td class="text-left" rowspan="1" colspan="1">
+                  <td class="text-left" rowspan="1" colspan="1">
  The ADMIN operation that sets and gets
  server configuration information.
  </td>
-                <td class="text-left" rowspan="1" colspan="1">
-                  <p id="section-5.2.3-8.2.3.3.1">
- xdr_ServerConfigure();<a href="#section-5.2.3-8.2.3.3.1" class="pilcrow">¶</a></p>
+                  <td class="text-left" rowspan="1" colspan="1">
+                    <p id="section-5.2.3.1-8.2.3.3.1">
+ xdr_ServerConfigure();<a href="#section-5.2.3.1-8.2.3.3.1" class="pilcrow">¶</a></p>
 </td>
-              </tr>
-            </tbody>
-          </table>
-<section id="section-5.2.3.1">
-            <h5 id="name-server_configure-abnf">
-<a href="#section-5.2.3.1" class="section-number selfRef">5.2.3.1. </a><a href="#name-server_configure-abnf" class="section-name selfRef">SERVER_CONFIGURE - ABNF</a>
-            </h5>
-<span id="name-server_configure-abnf-2"></span><figure id="figure-17">
-              <div class="alignLeft art-abnf art-text artwork" id="section-5.2.3.1-1.1">
-<pre>
-                   ; Setting or updating a configuration value.
-ConfigSet        = Op Length_t 1*KeyPair
-
-                   ; The SERVER_CONFIGURE command.
-ServerConfigure  = SERVER_CONFIGURE Length_t 1*ConfigSet
-</pre>
+                </tr>
+              </tbody>
+            </table>
+<span id="name-server_configure-command-2"></span><figure id="figure-17">
+              <div id="section-5.2.3.1-9.1">
+                <div class="alignCenter art-svg artwork" id="section-5.2.3.1-9.1.2">
+<svg xmlns="http://www.w3.org/2000/svg" version="1.1" height="384" width="288" viewBox="0 0 288 384" class="diagram" text-anchor="middle" font-family="monospace" font-size="13px" stroke-linecap="round">
+                    <path d="M 8,16 L 8,208" fill="none" stroke="black"></path>
+                    <path d="M 8,272 L 8,368" fill="none" stroke="black"></path>
+                    <path d="M 208,272 L 208,296" fill="none" stroke="black"></path>
+                    <path d="M 280,16 L 280,176" fill="none" stroke="black"></path>
+                    <path d="M 280,272 L 280,336" fill="none" stroke="black"></path>
+                    <path d="M 8,16 L 280,16" fill="none" stroke="black"></path>
+                    <path d="M 8,48 L 280,48" fill="none" stroke="black"></path>
+                    <path d="M 8,80 L 280,80" fill="none" stroke="black"></path>
+                    <path d="M 8,112 L 280,112" fill="none" stroke="black"></path>
+                    <path d="M 8,144 L 280,144" fill="none" stroke="black"></path>
+                    <path d="M 8,176 L 280,176" fill="none" stroke="black"></path>
+                    <path d="M 8,208 L 280,208" fill="none" stroke="black"></path>
+                    <path d="M 8,272 L 280,272" fill="none" stroke="black"></path>
+                    <path d="M 8,304 L 280,304" fill="none" stroke="black"></path>
+                    <path d="M 8,336 L 280,336" fill="none" stroke="black"></path>
+                    <path d="M 8,368 L 280,368" fill="none" stroke="black"></path>
+                    <g class="text">
+                      <text x="120" y="36">Packet Length (Length:32)</text>
+                      <text x="88" y="68">Sequence (SEQ:32)</text>
+                      <text x="100" y="100">0| ADMIN_CMD (%x00:31)</text>
+                      <text x="128" y="132">0| SERVER_CONFIGURE (%x05:31)</text>
+                      <text x="116" y="164">ConfigSet Length:32 (L1)</text>
+                      <text x="96" y="196">L1*L1 ConfigSet ...</text>
+                      <text x="64" y="244">Each ConfigSet:</text>
+                      <text x="52" y="292">Unused24</text>
+                      <text x="236" y="292">Op:8</text>
+                      <text x="96" y="324">ConfigSet Length:32</text>
+                      <text x="244" y="324">(L2)</text>
+                      <text x="88" y="356">L2*L2 KeyPair ...</text>
+                    </g>
+                  </svg><a href="#section-5.2.3.1-9.1.2" class="pilcrow">¶</a>
+</div>
 </div>
 <figcaption><a href="#figure-17" class="selfRef">Figure 17</a>:
-<a href="#name-server_configure-abnf-2" class="selfRef">SERVER_CONFIGURE - ABNF</a>
+<a href="#name-server_configure-command-2" class="selfRef">SERVER_CONFIGURE Command</a>
               </figcaption></figure>
+<section id="section-5.2.3.1.1">
+              <h6 id="name-server_configure-abnf">
+<a href="#section-5.2.3.1.1" class="section-number selfRef">5.2.3.1.1. </a><a href="#name-server_configure-abnf" class="section-name selfRef">SERVER_CONFIGURE - ABNF</a>
+              </h6>
+<span id="name-server_configure-abnf-2"></span><figure id="figure-18">
+                <div class="alignLeft art-abnf art-text artwork" id="section-5.2.3.1.1-1.1">
+<pre>
+                       ; Setting or updating a configuration value.
+ConfigSet            = (Unused24:24 Op:8):32 Length 1*KeyPair
+
+                       ; The SERVER_CONFIGURE command.
+ServerConfigPayload  = SERVER_CONFIGURE Length 1*ConfigSet
+</pre>
+</div>
+<figcaption><a href="#figure-18" class="selfRef">Figure 18</a>:
+<a href="#name-server_configure-abnf-2" class="selfRef">SERVER_CONFIGURE - ABNF</a>
+                </figcaption></figure>
 </section>
-<section id="section-5.2.3.2">
-            <h5 id="name-server_configure-xdr">
-<a href="#section-5.2.3.2" class="section-number selfRef">5.2.3.2. </a><a href="#name-server_configure-xdr" class="section-name selfRef">SERVER_CONFIGURE - XDR</a>
-            </h5>
-<span id="name-server_configure-xdr-2"></span><figure id="figure-18">
-              <div class="alignLeft art-abnf art-text artwork" id="section-5.2.3.2-1.1">
+<section id="section-5.2.3.1.2">
+              <h6 id="name-server_configure-xdr">
+<a href="#section-5.2.3.1.2" class="section-number selfRef">5.2.3.1.2. </a><a href="#name-server_configure-xdr" class="section-name selfRef">SERVER_CONFIGURE - XDR</a>
+              </h6>
+<span id="name-server_configure-xdr-2"></span><figure id="figure-19">
+                <div class="alignLeft art-abnf art-text artwork" id="section-5.2.3.1.2-1.1">
 <pre>
 /**
  * Set or update a configuration value.
  */
 struct ConfigSet {
-    Op         ConfigOp;
-    KeyValue   OpValues&lt;&gt;; /* XDR arrays start with a length */
+    Op         ConfigOp;   /* The upper 24 bits are zero in an enum Op. */
+    KeyValue   OpValues&lt;&gt;; /* XDR arrays start with a length. */
 };
 
 /**
  * An array of OpConfigSet values.
  */
-struct ServerConfigure {
-    uint8_t      AOID;      /* With the APID_e value cast to a (AOID) */
-    ConfigSet    Values&lt;&gt;;  /* XDR arrays start with a length */
+struct ServerConfigPayload {
+    AOID         Aoid;      /* Set to SERVER_CONFIGURE. */
+    ConfigSet    Values&lt;&gt;;  /* XDR arrays start with a length. */
 };
 </pre>
 </div>
-<figcaption><a href="#figure-18" class="selfRef">Figure 18</a>:
+<figcaption><a href="#figure-19" class="selfRef">Figure 19</a>:
 <a href="#name-server_configure-xdr-2" class="selfRef">SERVER_CONFIGURE - XDR</a>
+                </figcaption></figure>
+</section>
+</section>
+<section id="section-5.2.3.2">
+            <h5 id="name-server_configure-reply">
+<a href="#section-5.2.3.2" class="section-number selfRef">5.2.3.2. </a><a href="#name-server_configure-reply" class="section-name selfRef">SERVER_CONFIGURE - Reply</a>
+            </h5>
+<p id="section-5.2.3.2-1">
+ All SERVER_CONFIGURE operations result in a reply.
+ It will include any OpGet as well as the new value
+ for any OpSet or OpUpdate. And for OpDelete a reply
+ will show the value has been deleted.<a href="#section-5.2.3.2-1" class="pilcrow">¶</a></p>
+<p id="section-5.2.3.2-2">
+ The reason for always returning the values is because
+ sometimes not all configuration information can be altered.
+ So the client will need to compare the desired outcome
+ with the results.<a href="#section-5.2.3.2-2" class="pilcrow">¶</a></p>
+<p id="section-5.2.3.2-3">
+ The reply is a SERVER_CONFIGURE command with the
+ same SEQ number that was sent.
+ Followed by a list of KeyPair values.
+ One KeyPair value for each unique key in the ConfigSet values
+ sent in the SERVER_CONFIGURE command sent to the server.
+ The list is unordered.
+ And the list is the result of processing all ConfigSet values
+ sent.<a href="#section-5.2.3.2-3" class="pilcrow">¶</a></p>
+<p id="section-5.2.3.2-4">
+ On any error the server can perform some or none of the
+ operations.
+ The specifics are implementation dependent and out of scope
+ for this specification.<a href="#section-5.2.3.2-4" class="pilcrow">¶</a></p>
+<p id="section-5.2.3.2-5">
+ Empty Keys have a value length set to zero.
+ These keys exist, and have empty content
+ and have zero octets for the value.<a href="#section-5.2.3.2-5" class="pilcrow">¶</a></p>
+<p id="section-5.2.3.2-6">
+ Keys that have been deleted, have a value with
+ the value length set to 0xffffffff:32 and
+ and have zero octets for the value.<a href="#section-5.2.3.2-6" class="pilcrow">¶</a></p>
+<span id="name-server_configure-reply-2"></span><figure id="figure-20">
+              <div id="section-5.2.3.2-7.1">
+                <div class="alignCenter art-svg artwork" id="section-5.2.3.2-7.1.2">
+<svg xmlns="http://www.w3.org/2000/svg" version="1.1" height="224" width="288" viewBox="0 0 288 224" class="diagram" text-anchor="middle" font-family="monospace" font-size="13px" stroke-linecap="round">
+                    <path d="M 8,16 L 8,208" fill="none" stroke="black"></path>
+                    <path d="M 280,16 L 280,176" fill="none" stroke="black"></path>
+                    <path d="M 8,16 L 280,16" fill="none" stroke="black"></path>
+                    <path d="M 8,48 L 280,48" fill="none" stroke="black"></path>
+                    <path d="M 8,80 L 280,80" fill="none" stroke="black"></path>
+                    <path d="M 8,112 L 280,112" fill="none" stroke="black"></path>
+                    <path d="M 8,144 L 280,144" fill="none" stroke="black"></path>
+                    <path d="M 8,176 L 280,176" fill="none" stroke="black"></path>
+                    <path d="M 8,208 L 280,208" fill="none" stroke="black"></path>
+                    <g class="text">
+                      <text x="120" y="36">Packet Length (Length:32)</text>
+                      <text x="88" y="68">Sequence (SEQ:32)</text>
+                      <text x="100" y="100">0| ADMIN_CMD (%x00:31)</text>
+                      <text x="128" y="132">0| SERVER_CONFIGURE (%x05:31)</text>
+                      <text x="96" y="164">ConfigSet Length:32</text>
+                      <text x="96" y="196">Length KeyPairs ...</text>
+                    </g>
+                  </svg><a href="#section-5.2.3.2-7.1.2" class="pilcrow">¶</a>
+</div>
+</div>
+<figcaption><a href="#figure-20" class="selfRef">Figure 20</a>:
+<a href="#name-server_configure-reply-2" class="selfRef">SERVER_CONFIGURE Reply</a>
               </figcaption></figure>
+<section id="section-5.2.3.2.1">
+              <h6 id="name-server_configure-reply-abnf">
+<a href="#section-5.2.3.2.1" class="section-number selfRef">5.2.3.2.1. </a><a href="#name-server_configure-reply-abnf" class="section-name selfRef">SERVER_CONFIGURE Reply - ABNF</a>
+              </h6>
+<span id="name-server_configure-abnf-3"></span><figure id="figure-21">
+                <div class="alignLeft art-abnf art-text artwork" id="section-5.2.3.2.1-1.1">
+<pre>
+                   ; The SERVER_CONFIGURE Reply
+ServerConfigReplyPayload  = SERVER_CONFIGURE Length 1*KeyPair
+</pre>
+</div>
+<figcaption><a href="#figure-21" class="selfRef">Figure 21</a>:
+<a href="#name-server_configure-abnf-3" class="selfRef">SERVER_CONFIGURE - ABNF</a>
+                </figcaption></figure>
+</section>
+<section id="section-5.2.3.2.2">
+              <h6 id="name-server_configure-reply-xdr">
+<a href="#section-5.2.3.2.2" class="section-number selfRef">5.2.3.2.2. </a><a href="#name-server_configure-reply-xdr" class="section-name selfRef">SERVER_CONFIGURE Reply - XDR</a>
+              </h6>
+<span id="name-server_configure-xdr-3"></span><figure id="figure-22">
+                <div class="alignLeft art-abnf art-text artwork" id="section-5.2.3.2.2-1.1">
+<pre>
+/**
+ * Reply to SERVER_CONFIGURE
+ */
+struct ServerConfigReplyPayload {
+    AOID       ACmd;           /* Set to SERVER_CONFIGURE */
+    KeyValue   ResultValues&lt;&gt;; /* XDR arrays start with a length */
+};
+</pre>
+</div>
+<figcaption><a href="#figure-22" class="selfRef">Figure 22</a>:
+<a href="#name-server_configure-xdr-3" class="selfRef">SERVER_CONFIGURE - XDR</a>
+                </figcaption></figure>
+</section>
 </section>
 </section>
 <section id="section-5.2.4">
@@ -4049,6 +4299,11 @@ struct ServerConfigure {
  So the USER_KICK_USER ADMIN command has no data associated with it.
  When this ADMIN CMD is received by a client, it is being informed
  that the user is logged out and may not be able to login again.<a href="#section-5.2.4-1" class="pilcrow">¶</a></p>
+<p id="section-5.2.4-2">
+ No specifics are given because the possible reasons are nearly
+ unlimited and locale dependent.
+ Any notifications the server may elect to provide to the user
+ is out of scope in this specification.<a href="#section-5.2.4-2" class="pilcrow">¶</a></p>
 </section>
 <section id="section-5.2.5">
           <h4 id="name-administration-server_logs">
@@ -4058,11 +4313,17 @@ struct ServerConfigure {
  Get information from the server about its implementation logs.
  All log information is related to the server implementation.<a href="#section-5.2.5-1" class="pilcrow">¶</a></p>
 <p id="section-5.2.5-2">
- A SERVER_LOGS ADMIN CMD can be sent with no information,
- this causes the server to send all of the information
- for the last 24 hours.<a href="#section-5.2.5-2" class="pilcrow">¶</a></p>
+ A SERVER_LOGS ADMIN CMD is sent with two time range values.
+ The time values are a UTC object.
+ The first is the start time, and the second is the end time.<a href="#section-5.2.5-2" class="pilcrow">¶</a></p>
 <p id="section-5.2.5-3">
- There are 4 categories of information:<a href="#section-5.2.5-3" class="pilcrow">¶</a></p>
+ When the start time is zero, it means start from the beginning
+ of the logs.<a href="#section-5.2.5-3" class="pilcrow">¶</a></p>
+<p id="section-5.2.5-4">
+ When the end time is zero, up to now.<a href="#section-5.2.5-4" class="pilcrow">¶</a></p>
+<p id="section-5.2.5-5">
+ There are three categories of information and four
+ request types.<a href="#section-5.2.5-5" class="pilcrow">¶</a></p>
 <table class="center" id="table-8">
             <caption><a href="#table-8" class="selfRef">Table 8</a></caption>
 <thead>
@@ -4095,6 +4356,13 @@ struct ServerConfigure {
  Number of connections, or any other information
  the server implementation wishes to record.
  It does not include warning or error messages.
+ </td>
+              </tr>
+              <tr>
+                <td class="text-left" rowspan="1" colspan="1">ALL</td>
+                <td class="text-left" rowspan="1" colspan="1">
+ Only used in the request signifying all Error,
+ Warning, and Information logs are to be sent.
  </td>
               </tr>
             </tbody>
@@ -4132,13 +4400,13 @@ struct ServerConfigure {
             <h5 id="name-xxxx-abnf">
 <a href="#section-5.2.5.1" class="section-number selfRef">5.2.5.1. </a><a href="#name-xxxx-abnf" class="section-name selfRef">XXXX - ABNF</a>
             </h5>
-<span id="name-xxxx"></span><figure id="figure-19">
+<span id="name-xxxx"></span><figure id="figure-23">
               <div class="alignLeft art-abnf art-text artwork" id="section-5.2.5.1-1.1">
 <pre>
 xxx
 </pre>
 </div>
-<figcaption><a href="#figure-19" class="selfRef">Figure 19</a>:
+<figcaption><a href="#figure-23" class="selfRef">Figure 23</a>:
 <a href="#name-xxxx" class="selfRef">xxxx</a>
               </figcaption></figure>
 </section>
@@ -4146,13 +4414,13 @@ xxx
             <h5 id="name-xxxx-xdr">
 <a href="#section-5.2.5.2" class="section-number selfRef">5.2.5.2. </a><a href="#name-xxxx-xdr" class="section-name selfRef">XXXX - XDR</a>
             </h5>
-<span id="name-xxxx-2"></span><figure id="figure-20">
+<span id="name-xxxx-2"></span><figure id="figure-24">
               <div class="alignLeft art-abnf art-text artwork" id="section-5.2.5.2-1.1">
 <pre>
 xxx
 </pre>
 </div>
-<figcaption><a href="#figure-20" class="selfRef">Figure 20</a>:
+<figcaption><a href="#figure-24" class="selfRef">Figure 24</a>:
 <a href="#name-xxxx-2" class="selfRef">xxxx</a>
               </figcaption></figure>
 </section>
@@ -4232,9 +4500,38 @@ xxx
  Some users may also be administrators.
  In those cases the user and client may wish to do further
  authentication steps.
- A user may wish to temporarrly step up their authentication
+ A user may wish to temporarily step up their authentication
  level to perform some operations, then step back down
  to do their personal operations.<a href="#section-5.3-2" class="pilcrow">¶</a></p>
+<p id="section-5.3-3">
+ A server may if it wishes include AUTH capabilities in
+ the CAPABILITY_POST command.
+ It can decide which authenticated users can or must use
+ additional authentication.<a href="#section-5.3-3" class="pilcrow">¶</a></p>
+<ul class="normal">
+<li class="normal" id="section-5.3-4.1">
+ Some user accounts can be user only, without administrative
+ abilities of any kind.
+ Their CAPABILITY_POST list will not include any ADMIN capabilities.<a href="#section-5.3-4.1" class="pilcrow">¶</a>
+</li>
+          <li class="normal" id="section-5.3-4.2">
+ Some user accounts can be administrative only, and are limited
+ to CAPABILITY_POST actions that only include ADMIN capabilities.<a href="#section-5.3-4.2" class="pilcrow">¶</a>
+</li>
+          <li class="normal" id="section-5.3-4.3">
+ Some user accounts can be a normal user, with the ability
+ to step up their account to be able to do administrative actions.
+ While in stepped up mode, they are not able to act as their
+ original user account.
+ These users will get one or more AUTH capabilities in
+ their CAPABILITY_POST list.<a href="#section-5.3-4.3" class="pilcrow">¶</a>
+</li>
+          <li class="normal" id="section-5.3-4.4">
+ And some user account can be allowed all operations.
+ This protocol does not limit users.
+ This protocol enables user permissions to be configured.<a href="#section-5.3-4.4" class="pilcrow">¶</a>
+</li>
+        </ul>
 </section>
 </div>
 <div id="AUTHANONYMOUS">
@@ -4259,26 +4556,27 @@ xxx
  this is a Phoenix defined capability, and
  not a vendor created and known capability.
  Followed by the 31-bit capability value.<a href="#section-5.4.1-2" class="pilcrow">¶</a></p>
-<span id="name-capability-authanonymous"></span><figure id="figure-21">
+<span id="name-capability-authanonymous"></span><figure id="figure-25">
             <div id="section-5.4.1-3.1">
               <div class="alignLeft art-svg artwork" id="section-5.4.1-3.1.2">
 <svg xmlns="http://www.w3.org/2000/svg" version="1.1" height="96" width="288" viewBox="0 0 288 96" class="diagram" text-anchor="middle" font-family="monospace" font-size="13px" stroke-linecap="round">
                   <path d="M 8,16 L 8,80" fill="none" stroke="black"></path>
                   <path d="M 24,16 L 24,48" fill="none" stroke="black"></path>
-                  <path d="M 88,48 L 88,80" fill="none" stroke="black"></path>
-                  <path d="M 280,16 L 280,48" fill="none" stroke="black"></path>
+                  <path d="M 200,56 L 200,80" fill="none" stroke="black"></path>
+                  <path d="M 280,16 L 280,80" fill="none" stroke="black"></path>
                   <path d="M 8,16 L 280,16" fill="none" stroke="black"></path>
                   <path d="M 8,48 L 280,48" fill="none" stroke="black"></path>
-                  <path d="M 8,80 L 88,80" fill="none" stroke="black"></path>
+                  <path d="M 8,80 L 280,80" fill="none" stroke="black"></path>
                   <g class="text">
                     <text x="16" y="36">0</text>
                     <text x="120" y="36">AUTHANONYMOUS %x26:32</text>
-                    <text x="48" y="68">enabled:8</text>
+                    <text x="52" y="68">Unused24</text>
+                    <text x="240" y="68">enabled:8</text>
                   </g>
                 </svg><a href="#section-5.4.1-3.1.2" class="pilcrow">¶</a>
 </div>
 </div>
-<figcaption><a href="#figure-21" class="selfRef">Figure 21</a>:
+<figcaption><a href="#figure-25" class="selfRef">Figure 25</a>:
 <a href="#name-capability-authanonymous" class="selfRef">Capability - AUTHANONYMOUS</a>
             </figcaption></figure>
 </section>
@@ -4289,15 +4587,15 @@ xxx
 <a href="#section-5.4.2" class="section-number selfRef">5.4.2. </a><a href="#name-authentication-authanonymous" class="section-name selfRef">Authentication - AUTHANONYMOUS - Command</a>
           </h4>
 <p id="section-5.4.2-1">
- Once the connection is made the server sends its pre authentication
- capability list to the client.
+ Once the connection is made the server sends its CAPABILITY_PRE
+ list to the client.
  If AUTHANONYMOUS is included in that list, then the client
  may initiate an AUTHANONYMOUS login.<a href="#section-5.4.2-1" class="pilcrow">¶</a></p>
 <p id="section-5.4.2-2">
  If the client has already had a relationship with the server,
  then the client may send the AUTHANONYMOUS command to the server
  before receiving the servers capability list, and only if AUTHANONYMOUS
- was the last successful authentication method to that server.<a href="#section-5.4.2-2" class="pilcrow">¶</a></p>
+ had been successful in the past, to that same server.<a href="#section-5.4.2-2" class="pilcrow">¶</a></p>
 <p id="section-5.4.2-3">
  If the server does not support (or no longer supports) an AUTHANONYMOUS
  command, it will reply with a NotSupported packet with the
@@ -4305,48 +4603,115 @@ xxx
 <p id="section-5.4.2-4">
  After the server receives an AUTHANONYMOUS, and if it supports it,
  it allows the connection and considers the user a valid
- anonymouse user.<a href="#section-5.4.2-4" class="pilcrow">¶</a></p>
+ anonymous user.
+ Then the server replies with a CAPABILITY_POST command.
+ When the client gets the CAPABILITY_POST command, it knows
+ the AUTHANONYMOUS was successful.<a href="#section-5.4.2-4" class="pilcrow">¶</a></p>
 <p id="section-5.4.2-5">
  On failure the server replies with a AUTHANONYMOUS packet,
  with the sequence number the same that was in the
  ANONYMOUS command it received.<a href="#section-5.4.2-5" class="pilcrow">¶</a></p>
-<p id="section-5.4.2-6">
- On success the server replies with a post authentication
- capability command.<a href="#section-5.4.2-6" class="pilcrow">¶</a></p>
-<span id="name-capability-authanonymous-2"></span><figure id="figure-22">
+<span id="name-authanonymous-login-flow"></span><figure id="figure-26">
+            <div id="section-5.4.2-6.1">
+              <div class="alignCenter art-svg artwork" id="section-5.4.2-6.1.2">
+<svg xmlns="http://www.w3.org/2000/svg" version="1.1" height="576" width="352" viewBox="0 0 352 576" class="diagram" text-anchor="middle" font-family="monospace" font-size="13px" stroke-linecap="round">
+                  <path d="M 8,288 L 8,336" fill="none" stroke="black"></path>
+                  <path d="M 32,224 L 32,288" fill="none" stroke="black"></path>
+                  <path d="M 32,336 L 32,384" fill="none" stroke="black"></path>
+                  <path d="M 32,480 L 32,520" fill="none" stroke="black"></path>
+                  <path d="M 56,288 L 56,336" fill="none" stroke="black"></path>
+                  <path d="M 264,224 L 264,304" fill="none" stroke="black"></path>
+                  <path d="M 312,176 L 312,320" fill="none" stroke="black"></path>
+                  <path d="M 16,48 L 56,48" fill="none" stroke="black"></path>
+                  <path d="M 256,48 L 296,48" fill="none" stroke="black"></path>
+                  <path d="M 56,176 L 240,176" fill="none" stroke="black"></path>
+                  <path d="M 288,176 L 312,176" fill="none" stroke="black"></path>
+                  <path d="M 8,288 L 56,288" fill="none" stroke="black"></path>
+                  <path d="M 64,304 L 264,304" fill="none" stroke="black"></path>
+                  <path d="M 64,320 L 312,320" fill="none" stroke="black"></path>
+                  <path d="M 8,336 L 56,336" fill="none" stroke="black"></path>
+                  <path d="M 56,432 L 136,432" fill="none" stroke="black"></path>
+                  <path d="M 8,432 L 32,480" fill="none" stroke="black"></path>
+                  <path d="M 32,384 L 56,432" fill="none" stroke="black"></path>
+                  <path d="M 8,176 L 32,224" fill="none" stroke="black"></path>
+                  <path d="M 32,128 L 56,176" fill="none" stroke="black"></path>
+                  <path d="M 240,176 L 264,224" fill="none" stroke="black"></path>
+                  <path d="M 264,128 L 288,176" fill="none" stroke="black"></path>
+                  <path d="M 8,176 L 32,128" fill="none" stroke="black"></path>
+                  <path d="M 32,224 L 56,176" fill="none" stroke="black"></path>
+                  <path d="M 8,432 L 32,384" fill="none" stroke="black"></path>
+                  <path d="M 32,480 L 56,432" fill="none" stroke="black"></path>
+                  <path d="M 240,176 L 264,128" fill="none" stroke="black"></path>
+                  <path d="M 264,224 L 288,176" fill="none" stroke="black"></path>
+                  <polygon class="arrowhead" points="144,432 132,426.4 132,437.6" fill="black" transform="rotate(0,136,432)"></polygon>
+                  <polygon class="arrowhead" points="72,320 60,314.4 60,325.6" fill="black" transform="rotate(180,64,320)"></polygon>
+                  <polygon class="arrowhead" points="72,304 60,298.4 60,309.6" fill="black" transform="rotate(180,64,304)"></polygon>
+                  <polygon class="arrowhead" points="40,520 28,514.4 28,525.6" fill="black" transform="rotate(90,32,520)"></polygon>
+                  <g class="text">
+                    <text x="36" y="36">CLIENT</text>
+                    <text x="276" y="36">SERVER</text>
+                    <text x="56" y="84">Have Previous</text>
+                    <text x="40" y="100">Success</text>
+                    <text x="44" y="116">History?</text>
+                    <text x="140" y="164">YES -&gt; AUTHANONYMOUS</text>
+                    <text x="308" y="164">NO</text>
+                    <text x="264" y="180">Ok?</text>
+                    <text x="52" y="244">NO</text>
+                    <text x="240" y="244">YES</text>
+                    <text x="176" y="292">&lt;-CAPABILITY_POST</text>
+                    <text x="28" y="308">Wait</text>
+                    <text x="172" y="340">&lt;-CAPABILITY_PRE</text>
+                    <text x="200" y="420">NO, try an AUTH in CAPABILITY_PRE</text>
+                    <text x="32" y="436">Okay?</text>
+                    <text x="244" y="436">..........................</text>
+                    <text x="168" y="484">YES, Authenticated, continue...</text>
+                    <text x="32" y="532">.</text>
+                    <text x="32" y="548">.</text>
+                    <text x="32" y="564">.</text>
+                  </g>
+                </svg><a href="#section-5.4.2-6.1.2" class="pilcrow">¶</a>
+</div>
+</div>
+<figcaption><a href="#figure-26" class="selfRef">Figure 26</a>:
+<a href="#name-authanonymous-login-flow" class="selfRef">AUTHANONYMOUS - Login Flow</a>
+            </figcaption></figure>
+<span id="name-capability-authanonymous-2"></span><figure id="figure-27">
             <div id="section-5.4.2-7.1">
               <div class="alignLeft art-svg artwork" id="section-5.4.2-7.1.2">
-<svg xmlns="http://www.w3.org/2000/svg" version="1.1" height="128" width="288" viewBox="0 0 288 128" class="diagram" text-anchor="middle" font-family="monospace" font-size="13px" stroke-linecap="round">
-                  <path d="M 8,16 L 8,112" fill="none" stroke="black"></path>
-                  <path d="M 24,80 L 24,112" fill="none" stroke="black"></path>
-                  <path d="M 280,16 L 280,112" fill="none" stroke="black"></path>
+<svg xmlns="http://www.w3.org/2000/svg" version="1.1" height="160" width="288" viewBox="0 0 288 160" class="diagram" text-anchor="middle" font-family="monospace" font-size="13px" stroke-linecap="round">
+                  <path d="M 8,16 L 8,144" fill="none" stroke="black"></path>
+                  <path d="M 24,80 L 24,144" fill="none" stroke="black"></path>
+                  <path d="M 280,16 L 280,144" fill="none" stroke="black"></path>
                   <path d="M 8,16 L 280,16" fill="none" stroke="black"></path>
                   <path d="M 8,48 L 280,48" fill="none" stroke="black"></path>
                   <path d="M 8,80 L 280,80" fill="none" stroke="black"></path>
                   <path d="M 8,112 L 280,112" fill="none" stroke="black"></path>
+                  <path d="M 8,144 L 280,144" fill="none" stroke="black"></path>
                   <g class="text">
-                    <text x="124" y="36">PacketHeader (Length_t:32)</text>
-                    <text x="100" y="68">AUTH_CMD_t (%x01:32)</text>
+                    <text x="116" y="36">PacketHeader (Length:32)</text>
+                    <text x="88" y="68">Sequence (SEQ:32)</text>
                     <text x="16" y="100">0</text>
-                    <text x="128" y="100">AUTHANONYMOUS (%x26:31)</text>
+                    <text x="108" y="100">AUTH_CMD (%x01:31)</text>
+                    <text x="16" y="132">0</text>
+                    <text x="128" y="132">AUTHANONYMOUS (%x26:31)</text>
                   </g>
                 </svg><a href="#section-5.4.2-7.1.2" class="pilcrow">¶</a>
 </div>
 </div>
-<figcaption><a href="#figure-22" class="selfRef">Figure 22</a>:
+<figcaption><a href="#figure-27" class="selfRef">Figure 27</a>:
 <a href="#name-capability-authanonymous-2" class="selfRef">Capability - AUTHANONYMOUS</a>
             </figcaption></figure>
 <section id="section-5.4.2.1">
             <h5 id="name-authentication-anonymous-ab">
 <a href="#section-5.4.2.1" class="section-number selfRef">5.4.2.1. </a><a href="#name-authentication-anonymous-ab" class="section-name selfRef">Authentication - ANONYMOUS - ABNF</a>
             </h5>
-<span id="name-authentication-anonymous-abn"></span><figure id="figure-23">
+<span id="name-authentication-anonymous-abn"></span><figure id="figure-28">
               <div class="alignLeft art-abnf art-text artwork" id="section-5.4.2.1-1.1">
 <pre>
 AuthAnonymous  = (VENDOR_BIT / PHOENIX_BIT) AUTHANONYMOUS
 </pre>
 </div>
-<figcaption><a href="#figure-23" class="selfRef">Figure 23</a>:
+<figcaption><a href="#figure-28" class="selfRef">Figure 28</a>:
 <a href="#name-authentication-anonymous-abn" class="selfRef">Authentication - ANONYMOUS - ABNF</a>
               </figcaption></figure>
 </section>
@@ -4354,7 +4719,7 @@ AuthAnonymous  = (VENDOR_BIT / PHOENIX_BIT) AUTHANONYMOUS
             <h5 id="name-authentication-anonymous-xd">
 <a href="#section-5.4.2.2" class="section-number selfRef">5.4.2.2. </a><a href="#name-authentication-anonymous-xd" class="section-name selfRef">Authentication - ANONYMOUS - XDR</a>
             </h5>
-<span id="name-authentication-anonymous-xdr"></span><figure id="figure-24">
+<span id="name-authentication-anonymous-xdr"></span><figure id="figure-29">
               <div class="alignLeft art-abnf art-text artwork" id="section-5.4.2.2-1.1">
 <pre>
 struct AuthAnonymous {
@@ -4362,7 +4727,7 @@ struct AuthAnonymous {
 };
 </pre>
 </div>
-<figcaption><a href="#figure-24" class="selfRef">Figure 24</a>:
+<figcaption><a href="#figure-29" class="selfRef">Figure 29</a>:
 <a href="#name-authentication-anonymous-xdr" class="selfRef">Authentication - ANONYMOUS - XDR</a>
               </figcaption></figure>
 </section>
@@ -4435,7 +4800,7 @@ struct AuthAnonymous {
 <p id="section-5.5.2-8">
  Clients expecting an AUTHCERT_TLS must wait for
  the CAPABILITY_POST or CAPABILITY_PRE command before
- continuting with client operations with associated
+ continuing with client operations with associated
  folders and files.<a href="#section-5.5.2-8" class="pilcrow">¶</a></p>
 <p id="section-5.5.2-9">
  When a client that was not expecting an AUTHCERT_TLS
@@ -4452,11 +4817,98 @@ struct AuthAnonymous {
  connection certificate, as it does with all connections.
  It also requires that the client send a public certificate
  to the server as a separate authentication step for the
- user.
- This allows users to use clients that it normally would
- not use.<a href="#section-5.5.3-1" class="pilcrow">¶</a></p>
+ user.<a href="#section-5.5.3-1" class="pilcrow">¶</a></p>
 <p id="section-5.5.3-2">
- The client sends a<a href="#section-5.5.3-2" class="pilcrow">¶</a></p>
+ This type of login could be used when traveling or
+ the server requires more control over security.
+ The users certificates could be under the control
+ of the users company, and easier to create and
+ revoke than traditional certificate sources.<a href="#section-5.5.3-2" class="pilcrow">¶</a></p>
+<p id="section-5.5.3-3">
+ In order for AUTHCERT_USER to work, the server MUST
+ already have the users public certificate.
+ This could have been setup by a servers implementation
+ configuration files, or from a previous successful
+ non-AUTHCERT_USER connection where the client informed
+ the server of the users public certificate.<a href="#section-5.5.3-3" class="pilcrow">¶</a></p>
+<p id="section-5.5.3-4">
+ To authenticate with a AUTHCERT_USER,
+ the client sends a AUTHCERT_USER command with
+ a clear text token over the TLS connection, followed by a
+ the both the secret login name and password encrypted with
+ the users private certificate.<a href="#section-5.5.3-4" class="pilcrow">¶</a></p>
+<p id="section-5.5.3-5">
+ The token could be one time, or reusable.
+ The server implementation is the authority on the token
+ and token usage.
+ It could be possible that the user never knows the
+ actual login and password.
+ They could be installed on a device for the user.
+ They, perhaps, go to a web page, or other method to get the token.
+ Then perhaps enter their personal password to allow
+ access to the certificates and secret login information
+ that is installed and already encrypted on the client.<a href="#section-5.5.3-5" class="pilcrow">¶</a></p>
+<p id="section-5.5.3-6">
+ The server decrypts the users login name
+ and password with the users public certificate
+ selected from the clear text token sent.<a href="#section-5.5.3-6" class="pilcrow">¶</a></p>
+<p id="section-5.5.3-7">
+ If the decrypted user login and password match
+ what is expected, then the authentication is successful and
+ the server replies with a CAPABILITY_POST
+ command.<a href="#section-5.5.3-7" class="pilcrow">¶</a></p>
+<p id="section-5.5.3-8">
+ If the authentication fails, then the server replies
+ back with a AUTHCERT_USER with the same SEQ number
+ and the token, login name, and password empty and
+ with their lengths set to zero.<a href="#section-5.5.3-8" class="pilcrow">¶</a></p>
+<span id="name-authcert_user-2"></span><figure id="figure-30">
+            <div id="section-5.5.3-9.1">
+              <div class="alignLeft art-svg artwork" id="section-5.5.3-9.1.2">
+<svg xmlns="http://www.w3.org/2000/svg" version="1.1" height="256" width="288" viewBox="0 0 288 256" class="diagram" text-anchor="middle" font-family="monospace" font-size="13px" stroke-linecap="round">
+                  <path d="M 8,16 L 8,240" fill="none" stroke="black"></path>
+                  <path d="M 24,80 L 24,144" fill="none" stroke="black"></path>
+                  <path d="M 280,16 L 280,144" fill="none" stroke="black"></path>
+                  <path d="M 8,16 L 280,16" fill="none" stroke="black"></path>
+                  <path d="M 8,48 L 280,48" fill="none" stroke="black"></path>
+                  <path d="M 8,80 L 280,80" fill="none" stroke="black"></path>
+                  <path d="M 8,112 L 280,112" fill="none" stroke="black"></path>
+                  <path d="M 8,144 L 280,144" fill="none" stroke="black"></path>
+                  <path d="M 8,176 L 280,176" fill="none" stroke="black"></path>
+                  <path d="M 8,208 L 280,208" fill="none" stroke="black"></path>
+                  <path d="M 8,240 L 280,240" fill="none" stroke="black"></path>
+                  <g class="text">
+                    <text x="116" y="36">PacketHeader (Length:32)</text>
+                    <text x="88" y="68">Sequence (SEQ:32)</text>
+                    <text x="16" y="100">0</text>
+                    <text x="108" y="100">AUTH_CMD (%x01:31)</text>
+                    <text x="16" y="132">0</text>
+                    <text x="128" y="132">AUTHCERT_USER (%x28:31)</text>
+                    <text x="148" y="164">string - Token .................</text>
+                    <text x="152" y="196">string - Encrypted Login Name ...</text>
+                    <text x="152" y="228">string - Encrypted Password......</text>
+                  </g>
+                </svg><a href="#section-5.5.3-9.1.2" class="pilcrow">¶</a>
+</div>
+</div>
+<figcaption><a href="#figure-30" class="selfRef">Figure 30</a>:
+<a href="#name-authcert_user-2" class="selfRef">AUTHCERT_USER</a>
+            </figcaption></figure>
+</section>
+<section id="section-5.5.4">
+          <h4 id="name-certificate-management">
+<a href="#section-5.5.4" class="section-number selfRef">5.5.4. </a><a href="#name-certificate-management" class="section-name selfRef">Certificate Management</a>
+          </h4>
+<p id="section-5.5.4-1">
+ A Phoenix server may use AUTHCERT_USER authentication.
+ When it does, it needs a way for the user, if authorized
+ to upload their public certificate to the server.
+ This can be enabled or disabled by server configuration
+ on the site, per user, or any other rules implemented
+ in the server.<a href="#section-5.5.4-1" class="pilcrow">¶</a></p>
+<p id="section-5.5.4-2">
+ User certificate management can only be used after
+ the user has authenticated with the server.<a href="#section-5.5.4-2" class="pilcrow">¶</a></p>
 </section>
 </section>
 <div id="AUTHMD5">
@@ -4481,7 +4933,7 @@ struct AuthAnonymous {
  this is a Phoenix defined capability, and
  not a vendor created and known capability.
  Followed by the 31-bit capability value.<a href="#section-5.6.1-2" class="pilcrow">¶</a></p>
-<span id="name-capability-authmd5"></span><figure id="figure-25">
+<span id="name-capability-authmd5"></span><figure id="figure-31">
             <div id="section-5.6.1-3.1">
               <div class="alignLeft art-svg artwork" id="section-5.6.1-3.1.2">
 <svg xmlns="http://www.w3.org/2000/svg" version="1.1" height="96" width="288" viewBox="0 0 288 96" class="diagram" text-anchor="middle" font-family="monospace" font-size="13px" stroke-linecap="round">
@@ -4501,7 +4953,7 @@ struct AuthAnonymous {
                 </svg><a href="#section-5.6.1-3.1.2" class="pilcrow">¶</a>
 </div>
 </div>
-<figcaption><a href="#figure-25" class="selfRef">Figure 25</a>:
+<figcaption><a href="#figure-31" class="selfRef">Figure 31</a>:
 <a href="#name-capability-authmd5" class="selfRef">Capability - AUTHMD5</a>
             </figcaption></figure>
 </section>
@@ -4520,7 +4972,7 @@ struct AuthAnonymous {
  If the client has already had a relationship with the server,
  then the client may send the AUTHMD5 command to the server
  before receiving the servers capability list, and only if AUTHMD5
- was the last successful authentication method to that server.<a href="#section-5.6.2-2" class="pilcrow">¶</a></p>
+ had been successful in the past, to that server.<a href="#section-5.6.2-2" class="pilcrow">¶</a></p>
 <p id="section-5.6.2-3">
  If the server does not support (or no longer supports) an MD5
  command, it will reply with a NotSupported packet with the
@@ -4538,39 +4990,41 @@ struct AuthAnonymous {
 <p id="section-5.6.2-6">
  On success the server replies with a post authentication
  capability command.<a href="#section-5.6.2-6" class="pilcrow">¶</a></p>
-<span id="name-capability-authmd5-2"></span><figure id="figure-26">
+<span id="name-capability-authmd5-2"></span><figure id="figure-32">
             <div id="section-5.6.2-7.1">
               <div class="alignLeft art-svg artwork" id="section-5.6.2-7.1.2">
-<svg xmlns="http://www.w3.org/2000/svg" version="1.1" height="192" width="288" viewBox="0 0 288 192" class="diagram" text-anchor="middle" font-family="monospace" font-size="13px" stroke-linecap="round">
-                  <path d="M 8,16 L 8,176" fill="none" stroke="black"></path>
-                  <path d="M 24,48 L 24,112" fill="none" stroke="black"></path>
-                  <path d="M 280,16 L 280,112" fill="none" stroke="black"></path>
+<svg xmlns="http://www.w3.org/2000/svg" version="1.1" height="224" width="288" viewBox="0 0 288 224" class="diagram" text-anchor="middle" font-family="monospace" font-size="13px" stroke-linecap="round">
+                  <path d="M 8,16 L 8,208" fill="none" stroke="black"></path>
+                  <path d="M 24,80 L 24,144" fill="none" stroke="black"></path>
+                  <path d="M 280,16 L 280,144" fill="none" stroke="black"></path>
                   <path d="M 8,16 L 280,16" fill="none" stroke="black"></path>
                   <path d="M 8,48 L 280,48" fill="none" stroke="black"></path>
                   <path d="M 8,80 L 280,80" fill="none" stroke="black"></path>
                   <path d="M 8,112 L 280,112" fill="none" stroke="black"></path>
                   <path d="M 8,144 L 280,144" fill="none" stroke="black"></path>
                   <path d="M 8,176 L 280,176" fill="none" stroke="black"></path>
+                  <path d="M 8,208 L 280,208" fill="none" stroke="black"></path>
                   <g class="text">
-                    <text x="124" y="36">PacketHeader (Length_t:32)</text>
-                    <text x="16" y="68">0</text>
-                    <text x="116" y="68">AUTH_CMD_t (%x01:31)</text>
+                    <text x="116" y="36">PacketHeader (Length:32)</text>
+                    <text x="88" y="68">Sequence (SEQ:32)</text>
                     <text x="16" y="100">0</text>
-                    <text x="104" y="100">AUTHMD5 (%x10:31)</text>
-                    <text x="148" y="132">string - Login Name ............</text>
-                    <text x="148" y="164">string - MD5 password...........</text>
+                    <text x="108" y="100">AUTH_CMD (%x01:31)</text>
+                    <text x="16" y="132">0</text>
+                    <text x="104" y="132">AUTHMD5 (%x10:31)</text>
+                    <text x="148" y="164">string - Login Name ............</text>
+                    <text x="148" y="196">string - MD5 password...........</text>
                   </g>
                 </svg><a href="#section-5.6.2-7.1.2" class="pilcrow">¶</a>
 </div>
 </div>
-<figcaption><a href="#figure-26" class="selfRef">Figure 26</a>:
+<figcaption><a href="#figure-32" class="selfRef">Figure 32</a>:
 <a href="#name-capability-authmd5-2" class="selfRef">Capability - AUTHMD5</a>
             </figcaption></figure>
 <section id="section-5.6.2.1">
             <h5 id="name-authentication-md5-abnf">
 <a href="#section-5.6.2.1" class="section-number selfRef">5.6.2.1. </a><a href="#name-authentication-md5-abnf" class="section-name selfRef">Authentication - MD5 - ABNF</a>
             </h5>
-<span id="name-authentication-md5-abnf-2"></span><figure id="figure-27">
+<span id="name-authentication-md5-abnf-2"></span><figure id="figure-33">
               <div class="alignLeft art-abnf art-text artwork" id="section-5.6.2.1-1.1">
 <pre>
 Login       = string
@@ -4580,7 +5034,7 @@ Md5Password = string
 AuthMD5     = (VENDOR_BIT / PHOENIX_BIT) AUTHMD5 Login Md5Password
 </pre>
 </div>
-<figcaption><a href="#figure-27" class="selfRef">Figure 27</a>:
+<figcaption><a href="#figure-33" class="selfRef">Figure 33</a>:
 <a href="#name-authentication-md5-abnf-2" class="selfRef">Authentication - MD5 - ABNF</a>
               </figcaption></figure>
 </section>
@@ -4588,7 +5042,7 @@ AuthMD5     = (VENDOR_BIT / PHOENIX_BIT) AUTHMD5 Login Md5Password
             <h5 id="name-authentication-md5-xdr">
 <a href="#section-5.6.2.2" class="section-number selfRef">5.6.2.2. </a><a href="#name-authentication-md5-xdr" class="section-name selfRef">Authentication - MD5 - XDR</a>
             </h5>
-<span id="name-authentication-md5-xdr-2"></span><figure id="figure-28">
+<span id="name-authentication-md5-xdr-2"></span><figure id="figure-34">
               <div class="alignLeft art-abnf art-text artwork" id="section-5.6.2.2-1.1">
 <pre>
 struct AuthMD5 {
@@ -4598,7 +5052,7 @@ struct AuthMD5 {
 };
 </pre>
 </div>
-<figcaption><a href="#figure-28" class="selfRef">Figure 28</a>:
+<figcaption><a href="#figure-34" class="selfRef">Figure 34</a>:
 <a href="#name-authentication-md5-xdr-2" class="selfRef">Authentication - MD5 - XDR</a>
               </figcaption></figure>
 </section>
@@ -5603,7 +6057,7 @@ struct AuthMD5 {
             </tbody>
           </table>
 <span id="name-mdnrecord-2"></span><div id="MDNData">
-<figure id="figure-29">
+<figure id="figure-35">
             <div id="section-7.17.1-3.1">
               <div class="alignLeft art-svg artwork" id="section-7.17.1-3.1.2">
 <svg xmlns="http://www.w3.org/2000/svg" version="1.1" height="96" width="592" viewBox="0 0 592 96" class="diagram" text-anchor="middle" font-family="monospace" font-size="13px" stroke-linecap="round">
@@ -5620,7 +6074,7 @@ struct AuthMD5 {
                 </svg><a href="#section-7.17.1-3.1.2" class="pilcrow">¶</a>
 </div>
 </div>
-<figcaption><a href="#figure-29" class="selfRef">Figure 29</a>:
+<figcaption><a href="#figure-35" class="selfRef">Figure 35</a>:
 <a href="#name-mdnrecord-2" class="selfRef">MDNRecord</a>
             </figcaption></figure>
 </div>
@@ -5633,7 +6087,7 @@ struct AuthMD5 {
 <div class="alignLeft art-abnf art-text artwork" id="section-7.17.1.1-2">
 <pre>
                ; The number of MDN emails in the list.
-MDNListCount = Length_t
+MDNListCount = Length
 
                ; A list of all MDN records for the associated object.
 MDNRecord    = MDNSent MDNListCount 1*MDNRecord
@@ -5649,7 +6103,7 @@ MDNRecord    = MDNSent MDNListCount 1*MDNRecord
 <div class="alignLeft art-abnf art-text artwork" id="section-7.17.1.2-2">
 <pre>
                ; The number of MDN emails in the list.
-MDNListCount = Length_t
+MDNListCount = Length
 
                ; A list of all MDN records for the associated object.
 MDNRecord    = MDNSent MDNListCount 1*MDNRecord
@@ -5705,7 +6159,7 @@ MDNRecord    = MDNSent MDNListCount 1*MDNRecord
             </tbody>
           </table>
 <span id="name-mdnentry-2"></span><div id="MDNRecord">
-<figure id="figure-30">
+<figure id="figure-36">
             <div id="section-7.17.2-2.1">
               <div class="alignLeft art-svg artwork" id="section-7.17.2-2.1.2">
 <svg xmlns="http://www.w3.org/2000/svg" version="1.1" height="128" width="592" viewBox="0 0 592 128" class="diagram" text-anchor="middle" font-family="monospace" font-size="13px" stroke-linecap="round">
@@ -5724,7 +6178,7 @@ MDNRecord    = MDNSent MDNListCount 1*MDNRecord
                 </svg><a href="#section-7.17.2-2.1.2" class="pilcrow">¶</a>
 </div>
 </div>
-<figcaption><a href="#figure-30" class="selfRef">Figure 30</a>:
+<figcaption><a href="#figure-36" class="selfRef">Figure 36</a>:
 <a href="#name-mdnentry-2" class="selfRef">MDNEntry</a>
             </figcaption></figure>
 </div>
@@ -5734,14 +6188,14 @@ MDNRecord    = MDNSent MDNListCount 1*MDNRecord
             </h5>
 <p id="section-7.17.2.1-1">
  ABNF:<a href="#section-7.17.2.1-1" class="pilcrow">¶</a></p>
-<span id="name-mdnentry-abnf-2"></span><figure id="figure-31">
+<span id="name-mdnentry-abnf-2"></span><figure id="figure-37">
               <div class="alignLeft art-abnf art-text artwork" id="section-7.17.2.1-2.1">
 <pre>
             ; A single MDN Entry. When (or zero) and the email
-MDNEntry  = UTC_t string
+MDNEntry  = UTC string
 </pre>
 </div>
-<figcaption><a href="#figure-31" class="selfRef">Figure 31</a>:
+<figcaption><a href="#figure-37" class="selfRef">Figure 37</a>:
 <a href="#name-mdnentry-abnf-2" class="selfRef">MDNEntry - ABNF</a>
               </figcaption></figure>
 </section>
@@ -5751,7 +6205,7 @@ MDNEntry  = UTC_t string
             </h5>
 <p id="section-7.17.2.2-1">
  XDR:<a href="#section-7.17.2.2-1" class="pilcrow">¶</a></p>
-<span id="name-mdnentry-xdr-2"></span><figure id="figure-32">
+<span id="name-mdnentry-xdr-2"></span><figure id="figure-38">
               <div class="alignLeft art-abnf art-text artwork" id="section-7.17.2.2-2.1">
 <pre>
 /**
@@ -5759,12 +6213,12 @@ MDNEntry  = UTC_t string
  */
 struct MDMEntry
 {
-    UTC_t  Received;
+    UTC  Received;
     string EMail&lt;&gt;;
 };
 </pre>
 </div>
-<figcaption><a href="#figure-32" class="selfRef">Figure 32</a>:
+<figcaption><a href="#figure-38" class="selfRef">Figure 38</a>:
 <a href="#name-mdnentry-xdr-2" class="selfRef">MDNEntry - XDR</a>
               </figcaption></figure>
 </section>
@@ -5905,7 +6359,7 @@ HID    = uint8_t;
  Or it can use an already defined list.
  Or it can not request any header indexes by defining or using
  a list that has zero entries.<a href="#section-8.1.4-2" class="pilcrow">¶</a></p>
-<p id="section-8.1.4-3"><a href="#Interisting-S0-01" class="auto internal xref">Figure 33</a>, shows the interisted
+<p id="section-8.1.4-3"><a href="#Interisting-S0-01" class="auto internal xref">Figure 39</a>, shows the interisted
  header list prefix.
  This interisted header list prefix is followed by zero or more
  SingleEntry objects.<a href="#section-8.1.4-3" class="pilcrow">¶</a></p>
@@ -5986,26 +6440,27 @@ HID    = uint8_t;
             </tbody>
           </table>
 <span id="name-interest-header-list-prefix"></span><div id="Interisting-S0-01">
-<figure id="figure-33">
+<figure id="figure-39">
             <div id="section-8.1.4-5.1">
               <div class="alignLeft art-svg artwork" id="section-8.1.4-5.1.2">
-<svg xmlns="http://www.w3.org/2000/svg" version="1.1" height="128" width="288" viewBox="0 0 288 128" class="diagram" text-anchor="middle" font-family="monospace" font-size="13px" stroke-linecap="round">
-                  <path d="M 8,16 L 8,112" fill="none" stroke="black"></path>
-                  <path d="M 80,16 L 80,80" fill="none" stroke="black"></path>
-                  <path d="M 280,80 L 280,112" fill="none" stroke="black"></path>
-                  <path d="M 8,16 L 80,16" fill="none" stroke="black"></path>
-                  <path d="M 8,48 L 80,48" fill="none" stroke="black"></path>
+<svg xmlns="http://www.w3.org/2000/svg" version="1.1" height="96" width="288" viewBox="0 0 288 96" class="diagram" text-anchor="middle" font-family="monospace" font-size="13px" stroke-linecap="round">
+                  <path d="M 8,16 L 8,80" fill="none" stroke="black"></path>
+                  <path d="M 128,16 L 128,48" fill="none" stroke="black"></path>
+                  <path d="M 208,16 L 208,48" fill="none" stroke="black"></path>
+                  <path d="M 280,16 L 280,80" fill="none" stroke="black"></path>
+                  <path d="M 8,16 L 280,16" fill="none" stroke="black"></path>
+                  <path d="M 8,48 L 280,48" fill="none" stroke="black"></path>
                   <path d="M 8,80 L 280,80" fill="none" stroke="black"></path>
-                  <path d="M 8,112 L 280,112" fill="none" stroke="black"></path>
                   <g class="text">
-                    <text x="48" y="36">IndexOP</text>
-                    <text x="40" y="68">LID</text>
-                    <text x="44" y="100">HdrCnt</text>
+                    <text x="52" y="36">Unused16</text>
+                    <text x="168" y="36">IndexOP:8</text>
+                    <text x="240" y="36">LID:8</text>
+                    <text x="44" y="68">HdrCnt</text>
                   </g>
                 </svg><a href="#section-8.1.4-5.1.2" class="pilcrow">¶</a>
 </div>
 </div>
-<figcaption><a href="#figure-33" class="selfRef">Figure 33</a>:
+<figcaption><a href="#figure-39" class="selfRef">Figure 39</a>:
 <a href="#name-interest-header-list-prefix" class="selfRef">Interest Header List Prefix</a>
             </figcaption></figure>
 </div>
@@ -6030,7 +6485,7 @@ Interest-Header = IndexOp LID HdrCnt
  This list informs the server the HID value that
  will be used for each interested header in the index
  that the server replies with.
- As shown in  <a href="#Interisting-S0-02" class="auto internal xref">Figure 34</a>, where:<a href="#section-8.1.4.1-1" class="pilcrow">¶</a></p>
+ As shown in  <a href="#Interisting-S0-02" class="auto internal xref">Figure 40</a>, where:<a href="#section-8.1.4.1-1" class="pilcrow">¶</a></p>
 <table class="center" id="table-16">
               <caption><a href="#table-16" class="selfRef">Table 16</a></caption>
 <thead>
@@ -6077,20 +6532,21 @@ Interest-Header = IndexOp LID HdrCnt
               </tbody>
             </table>
 <span id="name-setting-the-interest-list-c"></span><div id="Interisting-S0-02">
-<figure id="figure-34">
+<figure id="figure-40">
               <div id="section-8.1.4.1-3.1">
                 <div class="alignLeft art-svg artwork" id="section-8.1.4.1-3.1.2">
 <svg xmlns="http://www.w3.org/2000/svg" version="1.1" height="128" width="304" viewBox="0 0 304 128" class="diagram" text-anchor="middle" font-family="monospace" font-size="13px" stroke-linecap="round">
                     <path d="M 8,16 L 8,112" fill="none" stroke="black"></path>
-                    <path d="M 80,16 L 80,48" fill="none" stroke="black"></path>
                     <path d="M 80,80 L 80,112" fill="none" stroke="black"></path>
-                    <path d="M 272,48 L 272,72" fill="none" stroke="black"></path>
-                    <path d="M 8,16 L 80,16" fill="none" stroke="black"></path>
+                    <path d="M 200,16 L 200,48" fill="none" stroke="black"></path>
+                    <path d="M 272,16 L 272,72" fill="none" stroke="black"></path>
+                    <path d="M 8,16 L 272,16" fill="none" stroke="black"></path>
                     <path d="M 8,48 L 272,48" fill="none" stroke="black"></path>
                     <path d="M 8,80 L 280,80" fill="none" stroke="black"></path>
                     <path d="M 8,112 L 280,112" fill="none" stroke="black"></path>
                     <g class="text">
-                      <text x="32" y="36">HID</text>
+                      <text x="52" y="36">Unused24</text>
+                      <text x="224" y="36">HID</text>
                       <text x="44" y="68">Length</text>
                       <text x="292" y="84">..</text>
                       <text x="44" y="100">Octets</text>
@@ -6100,7 +6556,7 @@ Interest-Header = IndexOp LID HdrCnt
                   </svg><a href="#section-8.1.4.1-3.1.2" class="pilcrow">¶</a>
 </div>
 </div>
-<figcaption><a href="#figure-34" class="selfRef">Figure 34</a>:
+<figcaption><a href="#figure-40" class="selfRef">Figure 40</a>:
 <a href="#name-setting-the-interest-list-c" class="selfRef">Setting the Interest List - Contents</a>
               </figcaption></figure>
 </div>
@@ -6126,28 +6582,30 @@ SingleHeader = HID StringRef
 <p id="section-8.1.4.2-3">
  This is sent as a 32-bit unsigned integer in network byte order.<a href="#section-8.1.4.2-3" class="pilcrow">¶</a></p>
 <span id="name-using-existing-header-index"></span><div id="Interisting-S0-03">
-<figure id="figure-35">
+<figure id="figure-41">
               <div id="section-8.1.4.2-4.1">
                 <div class="alignLeft art-svg artwork" id="section-8.1.4.2-4.1.2">
-<svg xmlns="http://www.w3.org/2000/svg" version="1.1" height="128" width="288" viewBox="0 0 288 128" class="diagram" text-anchor="middle" font-family="monospace" font-size="13px" stroke-linecap="round">
-                    <path d="M 8,16 L 8,112" fill="none" stroke="black"></path>
-                    <path d="M 80,16 L 80,80" fill="none" stroke="black"></path>
-                    <path d="M 280,80 L 280,112" fill="none" stroke="black"></path>
-                    <path d="M 8,16 L 80,16" fill="none" stroke="black"></path>
-                    <path d="M 8,48 L 80,48" fill="none" stroke="black"></path>
-                    <path d="M 8,80 L 280,80" fill="none" stroke="black"></path>
-                    <path d="M 8,112 L 280,112" fill="none" stroke="black"></path>
+<svg xmlns="http://www.w3.org/2000/svg" version="1.1" height="144" width="288" viewBox="0 0 288 144" class="diagram" text-anchor="middle" font-family="monospace" font-size="13px" stroke-linecap="round">
+                    <path d="M 8,64 L 8,128" fill="none" stroke="black"></path>
+                    <path d="M 144,64 L 144,88" fill="none" stroke="black"></path>
+                    <path d="M 216,64 L 216,88" fill="none" stroke="black"></path>
+                    <path d="M 280,64 L 280,128" fill="none" stroke="black"></path>
+                    <path d="M 8,64 L 280,64" fill="none" stroke="black"></path>
+                    <path d="M 8,96 L 280,96" fill="none" stroke="black"></path>
+                    <path d="M 8,128 L 280,128" fill="none" stroke="black"></path>
                     <g class="text">
-                      <text x="44" y="36">%x01</text>
-                      <text x="144" y="36">UseExistingOp</text>
-                      <text x="40" y="68">LID</text>
-                      <text x="136" y="68">The List ID</text>
-                      <text x="44" y="100">%x00</text>
+                      <text x="112" y="20">UseExistingOp (%0x01:8)</text>
+                      <text x="72" y="36">LID = List ID</text>
+                      <text x="8" y="52"> </text>
+                      <text x="52" y="84">Unused16</text>
+                      <text x="176" y="84">%x01:08</text>
+                      <text x="248" y="84">LID</text>
+                      <text x="44" y="116">%x00</text>
                     </g>
                   </svg><a href="#section-8.1.4.2-4.1.2" class="pilcrow">¶</a>
 </div>
 </div>
-<figcaption><a href="#figure-35" class="selfRef">Figure 35</a>:
+<figcaption><a href="#figure-41" class="selfRef">Figure 41</a>:
 <a href="#name-using-existing-header-index" class="selfRef">Using Existing Header Index by List ID (LID)</a>
               </figcaption></figure>
 </div>
@@ -6173,7 +6631,7 @@ UseExistingList:32 = UseExistingOp LID %x00:8
  for the following MIME headers (1) From, and (2) Subject.
  And for the following Body part headers (1) Content-Type.<a href="#section-8.1.4.3-1" class="pilcrow">¶</a></p>
 <span id="name-example-setting-a-list"></span><div id="Interisting-S0-04">
-<figure id="figure-36">
+<figure id="figure-42">
               <div id="section-8.1.4.3-2.1">
                 <div class="alignLeft art-svg artwork" id="section-8.1.4.3-2.1.2">
 <svg xmlns="http://www.w3.org/2000/svg" version="1.1" height="496" width="568" viewBox="0 0 568 496" class="diagram" text-anchor="middle" font-family="monospace" font-size="13px" stroke-linecap="round">
@@ -6271,7 +6729,7 @@ UseExistingList:32 = UseExistingOp LID %x00:8
                   </svg><a href="#section-8.1.4.3-2.1.2" class="pilcrow">¶</a>
 </div>
 </div>
-<figcaption><a href="#figure-36" class="selfRef">Figure 36</a>:
+<figcaption><a href="#figure-42" class="selfRef">Figure 42</a>:
 <a href="#name-example-setting-a-list" class="selfRef">Example Setting a List</a>
               </figcaption></figure>
 </div>
@@ -6281,7 +6739,7 @@ UseExistingList:32 = UseExistingOp LID %x00:8
 <li class="normal" id="section-8.1.4.3-4.1">
                 <p id="section-8.1.4.3-4.1.1">
  (a): A 32-bit unsigned integer in network byte order
- as described in <a href="#Interisting-S0-01" class="auto internal xref">Figure 33</a>.<a href="#section-8.1.4.3-4.1.1" class="pilcrow">¶</a></p>
+ as described in <a href="#Interisting-S0-01" class="auto internal xref">Figure 39</a>.<a href="#section-8.1.4.3-4.1.1" class="pilcrow">¶</a></p>
 <p id="section-8.1.4.3-4.1.2">The first 8-bits are zero.<a href="#section-8.1.4.3-4.1.2" class="pilcrow">¶</a></p>
 <p id="section-8.1.4.3-4.1.3">The IndexOP of zero, which means defining a list.<a href="#section-8.1.4.3-4.1.3" class="pilcrow">¶</a></p>
 <p id="section-8.1.4.3-4.1.4">
@@ -6291,7 +6749,7 @@ UseExistingList:32 = UseExistingOp LID %x00:8
               <li class="normal" id="section-8.1.4.3-4.2">
                 <p id="section-8.1.4.3-4.2.1">
  (b): A 32-bit unsigned integer in network byte order
- as described in <a href="#Interisting-S0-02" class="auto internal xref">Figure 34</a>.<a href="#section-8.1.4.3-4.2.1" class="pilcrow">¶</a></p>
+ as described in <a href="#Interisting-S0-02" class="auto internal xref">Figure 40</a>.<a href="#section-8.1.4.3-4.2.1" class="pilcrow">¶</a></p>
 <p id="section-8.1.4.3-4.2.2">
  The header ID that the client and server will use to
  to identify the "From" header name will be zero (0)
@@ -6311,7 +6769,7 @@ UseExistingList:32 = UseExistingOp LID %x00:8
               <li class="normal" id="section-8.1.4.3-4.4">
                 <p id="section-8.1.4.3-4.4.1">
  (d): A 32-bit unsigned integer in network byte order
- as described in <a href="#Interisting-S0-02" class="auto internal xref">Figure 34</a>.<a href="#section-8.1.4.3-4.4.1" class="pilcrow">¶</a></p>
+ as described in <a href="#Interisting-S0-02" class="auto internal xref">Figure 40</a>.<a href="#section-8.1.4.3-4.4.1" class="pilcrow">¶</a></p>
 <p id="section-8.1.4.3-4.4.2">
  The header ID that the client and server will use to
  to identify the "Subject" header name will be one (1)
@@ -6401,7 +6859,7 @@ UseExistingList:32 = UseExistingOp LID %x00:8
  The index header is 8 octets, that is followed by
  the each message index:<a href="#section-8.2.1-3" class="pilcrow">¶</a></p>
 <span id="name-folder-index"></span><div id="FolderIndexHeaderFigure">
-<figure id="figure-37">
+<figure id="figure-43">
             <div id="section-8.2.1-4.1">
               <div class="alignLeft art-svg artwork" id="section-8.2.1-4.1.2">
 <svg xmlns="http://www.w3.org/2000/svg" version="1.1" height="128" width="304" viewBox="0 0 304 128" class="diagram" text-anchor="middle" font-family="monospace" font-size="13px" stroke-linecap="round">
@@ -6419,7 +6877,7 @@ UseExistingList:32 = UseExistingOp LID %x00:8
                 </svg><a href="#section-8.2.1-4.1.2" class="pilcrow">¶</a>
 </div>
 </div>
-<figcaption><a href="#figure-37" class="selfRef">Figure 37</a>:
+<figcaption><a href="#figure-43" class="selfRef">Figure 43</a>:
 <a href="#name-folder-index" class="selfRef">Folder Index</a>
             </figcaption></figure>
 </div>
@@ -6453,7 +6911,7 @@ FolderIndexHeader = FolderIndexSize:32 MessageCount:32 ArrayOfMsgIndex
 </li>
           </ul>
 <span id="name-message-index-2"></span><div id="MessageIndexFigure">
-<figure id="figure-38">
+<figure id="figure-44">
             <div id="section-8.2.2-2.1">
               <div class="alignLeft art-svg artwork" id="section-8.2.2-2.1.2">
 <svg xmlns="http://www.w3.org/2000/svg" version="1.1" height="128" width="296" viewBox="0 0 296 128" class="diagram" text-anchor="middle" font-family="monospace" font-size="13px" stroke-linecap="round">
@@ -6471,7 +6929,7 @@ FolderIndexHeader = FolderIndexSize:32 MessageCount:32 ArrayOfMsgIndex
                 </svg><a href="#section-8.2.2-2.1.2" class="pilcrow">¶</a>
 </div>
 </div>
-<figcaption><a href="#figure-38" class="selfRef">Figure 38</a>:
+<figcaption><a href="#figure-44" class="selfRef">Figure 44</a>:
 <a href="#name-message-index-2" class="selfRef">Message Index</a>
             </figcaption></figure>
 </div>
@@ -6557,45 +7015,47 @@ ArrayOfMsgIndex = *MessageIndex
 </pre><a href="#section-8.2.3-6" class="pilcrow">¶</a>
 </div>
 <span id="name-header-index-2"></span><div id="HeaderIndex2">
-<figure id="figure-39">
+<figure id="figure-45">
             <div id="section-8.2.3-7.1">
               <div class="alignLeft art-svg artwork" id="section-8.2.3-7.1.2">
-<svg xmlns="http://www.w3.org/2000/svg" version="1.1" height="448" width="352" viewBox="0 0 352 448" class="diagram" text-anchor="middle" font-family="monospace" font-size="13px" stroke-linecap="round">
-                  <path d="M 8,64 L 8,192" fill="none" stroke="black"></path>
-                  <path d="M 8,272 L 8,432" fill="none" stroke="black"></path>
-                  <path d="M 80,64 L 80,128" fill="none" stroke="black"></path>
-                  <path d="M 80,304 L 80,368" fill="none" stroke="black"></path>
-                  <path d="M 8,64 L 80,64" fill="none" stroke="black"></path>
-                  <path d="M 8,96 L 80,96" fill="none" stroke="black"></path>
-                  <path d="M 8,128 L 88,128" fill="none" stroke="black"></path>
+<svg xmlns="http://www.w3.org/2000/svg" version="1.1" height="384" width="352" viewBox="0 0 352 384" class="diagram" text-anchor="middle" font-family="monospace" font-size="13px" stroke-linecap="round">
+                  <path d="M 8,64 L 8,160" fill="none" stroke="black"></path>
+                  <path d="M 8,240 L 8,368" fill="none" stroke="black"></path>
+                  <path d="M 88,64 L 88,96" fill="none" stroke="black"></path>
+                  <path d="M 88,272 L 88,304" fill="none" stroke="black"></path>
+                  <path d="M 184,64 L 184,96" fill="none" stroke="black"></path>
+                  <path d="M 184,272 L 184,304" fill="none" stroke="black"></path>
+                  <path d="M 288,64 L 288,96" fill="none" stroke="black"></path>
+                  <path d="M 288,240 L 288,304" fill="none" stroke="black"></path>
+                  <path d="M 8,64 L 288,64" fill="none" stroke="black"></path>
+                  <path d="M 8,96 L 288,96" fill="none" stroke="black"></path>
+                  <path d="M 8,128 L 288,128" fill="none" stroke="black"></path>
                   <path d="M 8,160 L 288,160" fill="none" stroke="black"></path>
-                  <path d="M 8,192 L 288,192" fill="none" stroke="black"></path>
+                  <path d="M 8,240 L 288,240" fill="none" stroke="black"></path>
                   <path d="M 8,272 L 288,272" fill="none" stroke="black"></path>
                   <path d="M 8,304 L 288,304" fill="none" stroke="black"></path>
-                  <path d="M 8,336 L 80,336" fill="none" stroke="black"></path>
-                  <path d="M 8,368 L 88,368" fill="none" stroke="black"></path>
-                  <path d="M 8,400 L 288,400" fill="none" stroke="black"></path>
-                  <path d="M 8,432 L 288,432" fill="none" stroke="black"></path>
+                  <path d="M 8,336 L 288,336" fill="none" stroke="black"></path>
+                  <path d="M 8,368 L 288,368" fill="none" stroke="black"></path>
                   <g class="text">
                     <text x="76" y="36">The Message Index:</text>
-                    <text x="44" y="84">Body-CNT</text>
-                    <text x="48" y="116">HID-CNT</text>
-                    <text x="124" y="132">........</text>
-                    <text x="84" y="148">Array of HID ...</text>
-                    <text x="108" y="180">Array of StringRef ...</text>
-                    <text x="176" y="228">One for each Body-CNT in the Message Index.</text>
-                    <text x="84" y="244">The body part Index:</text>
-                    <text x="156" y="292">32-bit Offset, start of Body Part|</text>
-                    <text x="44" y="324">Body-CNT</text>
-                    <text x="48" y="356">HID-CNT</text>
-                    <text x="124" y="372">........</text>
-                    <text x="84" y="388">Array of HID ...</text>
-                    <text x="108" y="420">Array of StringRef ...</text>
+                    <text x="52" y="84">Unused16</text>
+                    <text x="140" y="84">Body-CNT:8</text>
+                    <text x="232" y="84">HID-CNT:8</text>
+                    <text x="84" y="116">Array of HID ...</text>
+                    <text x="108" y="148">Array of StringRef ...</text>
+                    <text x="176" y="196">One for each Body-CNT in the Message Index.</text>
+                    <text x="84" y="212">The body part Index:</text>
+                    <text x="152" y="260">32-bit Offset, start of Body Part</text>
+                    <text x="52" y="292">Unused16</text>
+                    <text x="140" y="292">Body-CNT:8</text>
+                    <text x="232" y="292">HID-CNT:8</text>
+                    <text x="84" y="324">Array of HID ...</text>
+                    <text x="108" y="356">Array of StringRef ...</text>
                   </g>
                 </svg><a href="#section-8.2.3-7.1.2" class="pilcrow">¶</a>
 </div>
 </div>
-<figcaption><a href="#figure-39" class="selfRef">Figure 39</a>:
+<figcaption><a href="#figure-45" class="selfRef">Figure 45</a>:
 <a href="#name-header-index-2" class="selfRef">Header Index</a>
             </figcaption></figure>
 </div>
@@ -6701,7 +7161,7 @@ A new draft has been published.
 </pre><a href="#section-8.2.4-5" class="pilcrow">¶</a>
 </div>
 <span id="name-header-index-3"></span><div id="HeaderIndexFigure1">
-<figure id="figure-40">
+<figure id="figure-46">
             <div id="section-8.2.4-6.1">
               <div class="alignLeft art-svg artwork" id="section-8.2.4-6.1.2">
 <svg xmlns="http://www.w3.org/2000/svg" version="1.1" height="640" width="608" viewBox="0 0 608 640" class="diagram" text-anchor="middle" font-family="monospace" font-size="13px" stroke-linecap="round">
@@ -6782,7 +7242,7 @@ A new draft has been published.
                 </svg><a href="#section-8.2.4-6.1.2" class="pilcrow">¶</a>
 </div>
 </div>
-<figcaption><a href="#figure-40" class="selfRef">Figure 40</a>:
+<figcaption><a href="#figure-46" class="selfRef">Figure 46</a>:
 <a href="#name-header-index-3" class="selfRef">Header Index</a>
             </figcaption></figure>
 </div>
@@ -6842,7 +7302,7 @@ This is the body text of a sample message.
 </pre><a href="#section-8.2.5-6" class="pilcrow">¶</a>
 </div>
 <span id="name-header-and-body-part-index"></span><div id="HeaderIndexFigure2">
-<figure id="figure-41">
+<figure id="figure-47">
             <div id="section-8.2.5-7.1">
               <div class="alignLeft art-svg artwork" id="section-8.2.5-7.1.2">
 <svg xmlns="http://www.w3.org/2000/svg" version="1.1" height="816" width="616" viewBox="0 0 616 816" class="diagram" text-anchor="middle" font-family="monospace" font-size="13px" stroke-linecap="round">
@@ -6944,7 +7404,7 @@ This is the body text of a sample message.
                 </svg><a href="#section-8.2.5-7.1.2" class="pilcrow">¶</a>
 </div>
 </div>
-<figcaption><a href="#figure-41" class="selfRef">Figure 41</a>:
+<figcaption><a href="#figure-47" class="selfRef">Figure 47</a>:
 <a href="#name-header-and-body-part-index" class="selfRef">Header And Body Part Index</a>
             </figcaption></figure>
 </div>
@@ -6967,6 +7427,8 @@ This is the body text of a sample message.
 <p id="section-10-1">
  Robust digital certificate control.
  Especially with AUTHCERT_TLS.<a href="#section-10-1" class="pilcrow">¶</a></p>
+<p id="section-10-2">
+ MORE TODO ...<a href="#section-10-2" class="pilcrow">¶</a></p>
 </section>
 <section id="section-11">
       <h2 id="name-references">
@@ -7353,7 +7815,7 @@ uint32_t     = %x00000000-ffffffff:32
 uint64_t     = %x0000000000000000-ffffffffffffffff:64
 
                ; The number of octets in the the associated object.
-Length_t     = uint32_t
+Length       = uint32_t
 
                ; This is a generic array of UTF-8 characters without
                ; any terminating character.
@@ -7368,7 +7830,11 @@ Length_t     = uint32_t
                ;
                ; The UTF8-Char is any valid and complete UTF-8 character.
                ;
-string       = Length_t *UTF8-Char
+string       = Length *UTF8-Char
+
+               ; Like string, except when the length is 0xffffffff it means
+               ; the associated value has been deleted.
+stringD      = (0xffffffff:32) / string
 
                ; The UTF8-Char is any valid and complete UTF-8 character.
                ;
@@ -7380,43 +7846,45 @@ UTF8-Char    = 1*4uint8_t
                ;
                ; The uint32_t value is the number of octets in the data.
                ;
-opaque       = Length_t *uint8_t
+opaque       = Length *uint8_t
 
                ; The time in seconds since January 1st, 1970 GMT
                ; This is known as the epoch time on many systems.
                ; And time_t on POSIX compliant systems.
-UTC_t        = uint64_t
+UTC          = uint64_t
 
                ; The number of octets from the beginning of the
                ; associated object.
-Offset_t     = uint32_t
+Offset       = uint32_t
 
-               ; Key and Value
-KeyPair      = string string
+               ; Key and Value. It uses stringD as the value
+               ; to enable an indicator that the key part (string part)
+               ; has been deleted.
+KeyPair      = string stringD
 
                ; Length is the number of KeyPair that follow.
-KeyPairArray = Length_t 1*KeyPair
+KeyPairArray = Length 1*KeyPair
 
                ; Setting a value.
-OpSet_t      = %x00:8
+OpSet        = %x00:8
 
                ; Getting a value.
-OpGet_t      = %x01:8
+OpGet        = %x01:8
 
                ; Updating an existing value.
-OpUpdate_t   = %x02:8
+OpUpdate     = %x02:8
 
                ; Deleting an existing value.
-OpDelete_t   = %x03:8
+OpDelete     = %x03:8
 
                ; Any one of the the operations.
 Op           = OpSet / OpGet / OpUpdate / OpDelete
 
-true_t       = %x01:8
+true         = %x01:8
 
-false_t      = %x00:8
+false        = %x00:8
 
-enabled      = true_t / false_t
+enabled      = true   / false
 
 unused8      = %x00:8
 
@@ -7437,44 +7905,51 @@ PHOENIX_BIT  = %x00:1
 <div class="alignLeft art-abnf art-text artwork" id="appendix-F-2">
 <pre>
                 ; A reference to the start and length of a string.
-StringRef     = Offset_t Length_t
+StringRef     = Offset Length
 </pre><a href="#appendix-F-2" class="pilcrow">¶</a>
 </div>
 <div class="alignLeft art-abnf art-text artwork" id="appendix-F-3">
 <pre>
                   ; The length of a packet.
-PacketHeader    = Length_t
+PacketHeader    = Length
 </pre><a href="#appendix-F-3" class="pilcrow">¶</a>
 </div>
 <div class="alignLeft art-abnf art-text artwork" id="appendix-F-4">
 <pre>
                     ; The data that follows is ADMIN CMD data.
-ADMIN_CMD_t       = %x00:31
+ADMIN_CMD         = %x00:31
 
                     ; The data that follows is AUTH CMD data.
-AUTH_CMD_t        = %x01:31
+AUTH_CMD          = %x01:31
 
                     ; The data that follows is FILE or FOLDER CMD data.
-FILE_CMD_t        = %x02:31
+FILE_CMD          = %x02:31
 
                     ; The data that follows is Phoenix PROTO CMD
                     ; specific command data.
-PROTO_CMD_t       = %x03:31
+PROTO_CMD         = %x03:31
 
-                    ; Define a SEQ_t (sequence) type.
-SEQ_t             = uint32_t
+                    ; Define a SEQ (sequence) type.
+SEQ               = uint32_t
 
                     ; Any command. A 32-bit value.
-CMD_t             = (VENDOR_BIT / PHOENIX_BIT)
-                    (ADMIN_CMD_t / AUTH_CMD_t / FILE_CMD_t / PROTO_CMD_t)
+CMD               = (VENDOR_BIT / PHOENIX_BIT)
+                    (ADMIN_CMD / AUTH_CMD / FILE_CMD / PROTO_CMD)
 
-                    ; Define a CmdPayload_t (blob of data) type.
+                    ; Define a CmdPayload (blob of data) type.
                     ; The length of CmdPayload is determined by the CMD.
-CmdPayload_t      = *uint8_t
+CmdPayload        = *uint8_t
 
                     ; A Phoenix packet
-PacketBody        = SEQ_t CMD_t (AdminPayload / AuthPayload
-                    / FilePayload / PROTOPayload)
+PacketBody        = SEQ CMD
+                    (AdminPayload
+                    / AdminReplyPayload
+                    / AuthPayload
+                    / AuthReplyPayload
+                    / FilePayload
+                    / FileReplyPayload
+                    / ProtoPayload
+                    / ProtoReplyPayload)
 </pre><a href="#appendix-F-4" class="pilcrow">¶</a>
 </div>
 <div class="alignLeft art-abnf art-text artwork" id="appendix-F-5">
@@ -7513,7 +7988,7 @@ USER_PERMISSIONS   = %x09:8
 USER_RENAME        = %x0A:8
 
                      ; All ADMIN commands are 32-bit values.
-AOID_t             = (VENDOR_BIT / PHOENIX_BIT) Unused23
+AOID               = (VENDOR_BIT / PHOENIX_BIT) Unused23
                      (SERVER_CONFIGURE
                       / SERVER_KICK_USER
                       / SERVER_LOGS
@@ -7527,59 +8002,79 @@ AOID_t             = (VENDOR_BIT / PHOENIX_BIT) Unused23
                       / USER_RENAME)
 
                      ; Where CmdPayload contents depend on the
-                                                                                 ; the value of AOID_t.
-AdminPayload       = AOID_t
-                     *(ServerConfigPayload
+                     ; the value of AOID.
+AdminPayload       = AOID
+                     (ServerConfigPayload
                      / ServerKickPayload
-                                                                                 / ServerLogsPayload
-                                                                                 / ServerBansPayload
-                                                                                 / ServerShutdownPayload
-                                                                                 / ServerStatsPayload
-                                                                                 / UserCreatePayload
-                                                                                 / UserDeletePayload
-                                                                                 / UserListPayload
-                                                                                 / UserPermissionsPayload
-                                                                                 / UserRenamePayload)
+                     / ServerLogsPayload
+                     / ServerBansPayload
+                     / ServerShutdownPayload
+                     / ServerStatsPayload
+                     / UserCreatePayload
+                     / UserDeletePayload
+                     / UserListPayload
+                     / UserPermissionsPayload
+                     / UserRenamePayload)
 
+                     ; Where CmdPayload contents depend on the
+                     ; the value of AOID.
+AdminReplyPayload  = AOID
+                     (ServerConfigReplyPayload
+                     / ServerKickReplyPayload
+                     / ServerLogsReplyPayload
+                     / ServerBansReplyPayload
+                     / ServerShutdownReplyPayload
+                     / ServerStatsReplyPayload
+                     / UserCreateReplyPayload
+                     / UserDeleteReplyPayload
+                     / UserListReplyPayload
+                     / UserPermissionsReplyPayload
+                     / UserRenameReplyPayload)
 </pre><a href="#appendix-F-5" class="pilcrow">¶</a>
 </div>
 <div class="alignLeft art-abnf art-text artwork" id="appendix-F-6">
 <pre>
-                   ; Setting or updating a configuration value.
-ConfigSet        = Op Length_t 1*KeyPair
+                       ; Setting or updating a configuration value.
+ConfigSet            = (Unused24:24 Op:8):32 Length 1*KeyPair
 
-                   ; The SERVER_CONFIGURE command.
-ServerConfigure  = SERVER_CONFIGURE Length_t 1*ConfigSet
+                       ; The SERVER_CONFIGURE command.
+ServerConfigPayload  = SERVER_CONFIGURE Length 1*ConfigSet
 </pre><a href="#appendix-F-6" class="pilcrow">¶</a>
 </div>
 <div class="alignLeft art-abnf art-text artwork" id="appendix-F-7">
 <pre>
-               ; The number of MDN emails in the list.
-MDNListCount = Length_t
-
-               ; A list of all MDN records for the associated object.
-MDNRecord    = MDNSent MDNListCount 1*MDNRecord
+                   ; The SERVER_CONFIGURE Reply
+ServerConfigReplyPayload  = SERVER_CONFIGURE Length 1*KeyPair
 </pre><a href="#appendix-F-7" class="pilcrow">¶</a>
 </div>
 <div class="alignLeft art-abnf art-text artwork" id="appendix-F-8">
 <pre>
-            ; A single MDN Entry. When (or zero) and the email
-MDNEntry  = UTC_t string
+               ; The number of MDN emails in the list.
+MDNListCount = Length
+
+               ; A list of all MDN records for the associated object.
+MDNRecord    = MDNSent MDNListCount 1*MDNRecord
 </pre><a href="#appendix-F-8" class="pilcrow">¶</a>
 </div>
 <div class="alignLeft art-abnf art-text artwork" id="appendix-F-9">
+<pre>
+            ; A single MDN Entry. When (or zero) and the email
+MDNEntry  = UTC string
+</pre><a href="#appendix-F-9" class="pilcrow">¶</a>
+</div>
+<div class="alignLeft art-abnf art-text artwork" id="appendix-F-10">
 <pre>
 Login       = string
 
 Md5Password = string
 
 AuthMD5     = (VENDOR_BIT / PHOENIX_BIT) AUTHMD5 Login Md5Password
-</pre><a href="#appendix-F-9" class="pilcrow">¶</a>
+</pre><a href="#appendix-F-10" class="pilcrow">¶</a>
 </div>
-<div class="alignLeft art-abnf art-text artwork" id="appendix-F-10">
+<div class="alignLeft art-abnf art-text artwork" id="appendix-F-11">
 <pre>
 AuthAnonymous  = (VENDOR_BIT / PHOENIX_BIT) AUTHANONYMOUS
-</pre><a href="#appendix-F-10" class="pilcrow">¶</a>
+</pre><a href="#appendix-F-11" class="pilcrow">¶</a>
 </div>
 </section>
 <section id="appendix-G">
@@ -7592,25 +8087,46 @@ AuthAnonymous  = (VENDOR_BIT / PHOENIX_BIT) AUTHANONYMOUS
 /**
  * The time in seconds since January 1 1970 in GMT.
  */
-typedef uint64_t UTC_t;
+typedef uint64_t UTC;
 
 /**
  * the number of octets from the beginning of
  * the associated object.
  */
-typedef uint32_t Offset_t;
+typedef uint32_t Offset;
 
 /**
  * The number of octets in the associated object.
  */
-typedef uint32_t Length_t;
+typedef uint32_t Length;
+
+/**
+ * When a stringD value is set to this,
+ * The the associated value has been deleted.
+ */
+const Deleted = 0xffffffff;
+
+/**
+ * A stringD is a string, or Deleted (the associated
+ * data has been deleted).
+ */
+union stringD switch (uint32 LengthOrDeleted) {
+
+  case Deleted:
+    void;
+
+  default:
+    opaque String&lt;&gt;;
+};
 
 /**
  * A string Key and its associated Value.
+ * It uses stringD as the value to enable an indicator that the
+ * key part (string part) has been deleted.
  */
 struct KeyPair {
     string Key&lt;&gt;;
-    string Value&lt;&gt;;
+    stringD Value&lt;&gt;;
 };
 
 /**
@@ -7635,15 +8151,15 @@ const PHOENIX_BIT = 0x0;
 /**
  * Operations
  */
-enum Op_e {
-    OpSet_t    = 0x00,
-    OpGet_t    = 0x01,
-    OpUpdate_t = 0x02,
-    OpDelete_t = 0x03
+enum Op {
+    OpSet    = 0x00,
+    OpGet    = 0x01,
+    OpUpdate = 0x02,
+    OpDelete = 0x03
 };
 
 /**
- * Any one of OpSet_t, OpGet_t, OpUpdate_t, or OpDelete
+ * Any one of OpSet, OpGet, OpUpdate, or OpDelete
  * cast to a (Op).
  */
 typedef uint8_t Op;
@@ -7656,8 +8172,8 @@ typedef uint8_t Op;
  * A reference to the start and length of a string.
  */
 struct StringRef {
-    Offset_t Offset;
-    Length_t Length;
+    Offset StartOffset;
+    Length StringLength;
 };
 </pre><a href="#appendix-G-2" class="pilcrow">¶</a>
 </div>
@@ -7666,7 +8182,7 @@ struct StringRef {
 /**
  * The length of a packet.
  */
-typedef Length_t PacketHeader;
+typedef Length PacketHeader;
 </pre><a href="#appendix-G-3" class="pilcrow">¶</a>
 </div>
 <div class="alignLeft art-abnf art-text artwork" id="appendix-G-4">
@@ -7676,55 +8192,55 @@ typedef Length_t PacketHeader;
  * An XDR enum is 32-bits in size.
  * With the VENDOR_BIT set to zero, making it not a vendor command.
  */
-enum CMD_t {
+enum CMD {
     /**
      * The data that follows is ADMIN CMD data.
      */
-    ADMIN_CMD_t  = 0x00,
+    ADMIN_CMD  = 0x00,
 
     /**
      * The data that follows is AUTH CMD data.
      */
-    AUTH_CMD_t   = 0x01,
+    AUTH_CMD   = 0x01,
 
     /**
      * The data that follows is FILE or FOLDER CMD data.
      */
-    FILE_CMD_t   = 0x02,
+    FILE_CMD   = 0x02,
 
     /**
      * The data that follows is Phoenix PROTO CMD data.
      */
-    PROTO_CMD_t  = 0x03
+    PROTO_CMD  = 0x03
 };
 
 /**
- * Mask to check if CMD_t value in packet
+ * Mask to check if CMD value in packet
  * is vendor extension.
  */
-CMD_VENDOR_MASK_t = 0x80000000
+CMD_VENDOR_MASK = 0x80000000
 
 /**
- * Define a SEQ_t (sequence) type.
+ * Define a SEQ (sequence) type.
  */
-typedef uint32_t  SEQ_t;
+typedef uint32  SEQ;
 
 /**
  * A CMD payload is one of these types.
- * With Cmd set to a CMD_t value.
+ * With Cmd set to a CMD value.
  */
-union CmdPayload_t switch (CMD_t Cmd) {
+union CmdPayload switch (CMD Cmd) {
 
-    case ADMIN_CMD_t:
+    case ADMIN_CMD:
         AdminCmdPayload AdminPayload;
 
-    case AUTH_CMD_t:
+    case AUTH_CMD:
         AuthCmdPayload AuthPayload;
 
-    case FILE_CMD_t:
+    case FILE_CMD:
         FileCmdPayload FilePayload;
 
-    case PROTO_CMD_t:
+    case PROTO_CMD:
         ProtoCmdPayload ProtoPayload;
 };
 
@@ -7732,8 +8248,8 @@ union CmdPayload_t switch (CMD_t Cmd) {
  * A packet body.
  */
 struct PacketBody {
-    SEQ_t      SEQ;
-    CmdPayload_t Payload;
+    SEQ        SEQ;
+    CmdPayload Payload;
 };
 </pre><a href="#appendix-G-4" class="pilcrow">¶</a>
 </div>
@@ -7745,7 +8261,7 @@ struct PacketBody {
  * The high bit is zero, which means the PHOENIX_BIT is zero
  * in these values.
  */
-enum AOID_e {
+enum AOID {
     SERVER_CONFIGURE   = 0x00,
     SERVER_KICK_USER   = 0x01,
     SERVER_LOGS        = 0x02,
@@ -7762,9 +8278,9 @@ enum AOID_e {
 /**
  * All ADMIN commands are sent as 32-bit values.
  */
-typedef uint32_t AOID_t;
+typedef uint32_t AOID;
 
-union AdminPayload switch(AOID_t Aoid) {
+union AdminPayload switch(AOID Aoid) {
 
   case SERVER_CONFIGURE:
     ServerConfigPayload;
@@ -7800,6 +8316,42 @@ union AdminPayload switch(AOID_t Aoid) {
     UserRenamePayload;
 };
 
+union AdminReplyPayload switch(AOID Aoid) {
+
+  case SERVER_CONFIGURE:
+    ServerConfigReplyPayload;
+
+  case SERVER_KICK_USER:
+    ServerKickReplyPayload
+
+        case SERVER_LOGS:
+    ServerLogsReplyPayload;
+
+  case SERVER_MANAGE_BANS:
+    ServerBansReplyPayload;
+
+  case SERVER_SHUTDOWN:
+    ServerShutdownReplyPayload;
+
+  case SERVER_VIEW_STATS:
+    ServerStatsReplyPayload;
+
+  case USER_CREATE:
+    UserCreateReplyPayload;
+
+  case USER_DELETE:
+    UserDeleteReplyPayload;
+
+  case USER_LIST:
+    UserListReplyPayload;
+
+  case USER_PERMISSIONS:
+    UserPermissionsReplyPayload;
+
+  case USER_RENAME:
+    UserRenameReplyPayload;
+};
+
 </pre><a href="#appendix-G-5" class="pilcrow">¶</a>
 </div>
 <div class="alignLeft art-abnf art-text artwork" id="appendix-G-6">
@@ -7808,30 +8360,41 @@ union AdminPayload switch(AOID_t Aoid) {
  * Set or update a configuration value.
  */
 struct ConfigSet {
-    Op         ConfigOp;
-    KeyValue   OpValues&lt;&gt;; /* XDR arrays start with a length */
+    Op         ConfigOp;   /* The upper 24 bits are zero in an enum Op. */
+    KeyValue   OpValues&lt;&gt;; /* XDR arrays start with a length. */
 };
 
 /**
  * An array of OpConfigSet values.
  */
-struct ServerConfigure {
-    uint8_t      AOID;      /* With the APID_e value cast to a (AOID) */
-    ConfigSet    Values&lt;&gt;;  /* XDR arrays start with a length */
+struct ServerConfigPayload {
+    AOID         Aoid;      /* Set to SERVER_CONFIGURE. */
+    ConfigSet    Values&lt;&gt;;  /* XDR arrays start with a length. */
 };
 </pre><a href="#appendix-G-6" class="pilcrow">¶</a>
 </div>
 <div class="alignLeft art-abnf art-text artwork" id="appendix-G-7">
 <pre>
 /**
+ * Reply to SERVER_CONFIGURE
+ */
+struct ServerConfigReplyPayload {
+    AOID       ACmd;           /* Set to SERVER_CONFIGURE */
+    KeyValue   ResultValues&lt;&gt;; /* XDR arrays start with a length */
+};
+</pre><a href="#appendix-G-7" class="pilcrow">¶</a>
+</div>
+<div class="alignLeft art-abnf art-text artwork" id="appendix-G-8">
+<pre>
+/**
  * The number of emails in the MDN record set.
  */
-typedef Length_t MDNListCount;
+typedef Length MDNListCount;
 
 /**
  * When the MDN was sent.
  */
-typedef UTC_t MDNSent;
+typedef UTC MDNSent;
 
 /**
  * A list of all MDN records for the associated object.
@@ -7841,35 +8404,35 @@ struct MDNRecord {
     /* The first item in an XDR array, is its size (MDNListCount) */
     MDNRecord Entries&lt;&gt;;
 };
-</pre><a href="#appendix-G-7" class="pilcrow">¶</a>
+</pre><a href="#appendix-G-8" class="pilcrow">¶</a>
 </div>
-<div class="alignLeft art-abnf art-text artwork" id="appendix-G-8">
+<div class="alignLeft art-abnf art-text artwork" id="appendix-G-9">
 <pre>
 /**
  * A single MDN entry, when (or zero) and the email.
  */
 struct MDMEntry
 {
-    UTC_t  Received;
+    UTC  Received;
     string EMail&lt;&gt;;
 };
-</pre><a href="#appendix-G-8" class="pilcrow">¶</a>
+</pre><a href="#appendix-G-9" class="pilcrow">¶</a>
 </div>
-<div class="alignLeft art-abnf art-text artwork" id="appendix-G-9">
+<div class="alignLeft art-abnf art-text artwork" id="appendix-G-10">
 <pre>
 struct AuthMD5 {
     uint32_t Cmd; /* Set to AUTHMD5 */
     string   Login&lt;&gt;;
     string   Md5Password&lt;&gt;
 };
-</pre><a href="#appendix-G-9" class="pilcrow">¶</a>
+</pre><a href="#appendix-G-10" class="pilcrow">¶</a>
 </div>
-<div class="alignLeft art-abnf art-text artwork" id="appendix-G-10">
+<div class="alignLeft art-abnf art-text artwork" id="appendix-G-11">
 <pre>
 struct AuthAnonymous {
     uint32_t Cmd; /* Set to AUTHANONYMOUS (%x26) */
 };
-</pre><a href="#appendix-G-10" class="pilcrow">¶</a>
+</pre><a href="#appendix-G-11" class="pilcrow">¶</a>
 </div>
 </section>
 <div id="Acknowledgements">

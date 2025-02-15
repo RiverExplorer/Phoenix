@@ -24,6 +24,13 @@ CMD               = (VENDOR_BIT / PHOENIX_BIT)
 CmdPayload        = *uint8_t
 
                     ; A Phoenix packet
-PacketBody        = SEQ CMD (AdminPayload / AuthPayload
-                    / FilePayload / PROTOPayload)
+PacketBody        = SEQ CMD
+                    (AdminPayload
+                    / AdminReplyPayload
+                    / AuthPayload
+                    / AuthReplyPayload
+                    / FilePayload
+                    / FileReplyPayload
+                    / ProtoPayload
+                    / ProtoReplyPayload)
 ]]></artwork>

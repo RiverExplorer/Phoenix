@@ -1,0 +1,7 @@
+<artwork type="abnf" name="" align="left" alt=""><![CDATA[
+                       ; Setting or updating a configuration value. 
+ConfigSet            = (Unused24:24 Op:8):32 Length 1*KeyPair
+
+                       ; The SERVER_CONFIGURE command.
+ServerConfigPayload  = SERVER_CONFIGURE Length 1*ConfigSet
+]]></artwork>

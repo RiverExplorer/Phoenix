@@ -60,4 +60,19 @@ AdminPayload       = AOID
                      / UserListPayload
                      / UserPermissionsPayload
                      / UserRenamePayload)
+										 
+                     ; Where CmdPayload contents depend on the
+                     ; the value of AOID.
+AdminReplyPayload  = AOID
+                     (ServerConfigReplyPayload
+                     / ServerKickReplyPayload
+                     / ServerLogsReplyPayload
+                     / ServerBansReplyPayload
+                     / ServerShutdownReplyPayload
+                     / ServerStatsReplyPayload
+                     / UserCreateReplyPayload
+                     / UserDeleteReplyPayload
+                     / UserListReplyPayload
+                     / UserPermissionsReplyPayload
+                     / UserRenameReplyPayload)
 ]]></artwork>

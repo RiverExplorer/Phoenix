@@ -5,7 +5,7 @@
  * The high bit is zero, which means the PHOENIX_BIT is zero
  * in these values.
  */
-enum AOID_e {
+enum AOID {
     SERVER_CONFIGURE   = 0x00,
     SERVER_KICK_USER   = 0x01,
     SERVER_LOGS        = 0x02,
@@ -58,6 +58,42 @@ union AdminPayload switch(AOID Aoid) {
 		
   case USER_RENAME:
     UserRenamePayload;
+};
+
+union AdminReplyPayload switch(AOID Aoid) {
+
+  case SERVER_CONFIGURE:
+    ServerConfigReplyPayload;
+
+  case SERVER_KICK_USER:
+    ServerKickReplyPayload
+	
+	case SERVER_LOGS:
+    ServerLogsReplyPayload;
+		
+  case SERVER_MANAGE_BANS:
+    ServerBansReplyPayload;
+		
+  case SERVER_SHUTDOWN:
+    ServerShutdownReplyPayload;
+		
+  case SERVER_VIEW_STATS:
+    ServerStatsReplyPayload;
+		
+  case USER_CREATE:
+    UserCreateReplyPayload;
+		
+  case USER_DELETE:
+    UserDeleteReplyPayload;
+		
+  case USER_LIST:
+    UserListReplyPayload;
+		
+  case USER_PERMISSIONS:
+    UserPermissionsReplyPayload;
+		
+  case USER_RENAME:
+    UserRenameReplyPayload;
 };
 		
 ]]></artwork>

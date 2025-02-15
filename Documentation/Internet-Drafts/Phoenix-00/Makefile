@@ -77,18 +77,19 @@ ARTWORK.txt = \
 	Packet-01.txt \
 	Packet-02.txt \
 	ServerConfigure-00.txt \
+	ServerConfigure-01.txt \
 	StringRef-00.txt
 
 REFERENCES.xml = \
-	../References/reference.RFC.0822.xml \
-	../References/reference.RFC.5234.xml \
-	../References/reference.RFC.9051.xml \
-	../References/reference.RFC.2119.xml \
-	../References/reference.RFC.8174.xml \
-	../References/reference.rpcgen++.xml \
-	../References/reference.rpcgendocs.xml \
-	../References/reference.RFC.4506.xml \
-	../References/reference.RFC.8446.xml
+	References/reference.RFC.0822.xml \
+	References/reference.RFC.5234.xml \
+	References/reference.RFC.9051.xml \
+	References/reference.RFC.2119.xml \
+	References/reference.RFC.8174.xml \
+	References/reference.rpcgen++.xml \
+	References/reference.rpcgendocs.xml \
+	References/reference.RFC.4506.xml \
+	References/reference.RFC.8446.xml
 
 INCLUDES1 := $(shell /bin/ls include)
 INCLUDES	= $(addprefix include/,$(INCLUDES1))
