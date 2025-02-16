@@ -5,5 +5,5 @@
 struct StringRef {
     Offset StartOffset;
     Length StringLength;
-};				
+};
 ]]></artwork>

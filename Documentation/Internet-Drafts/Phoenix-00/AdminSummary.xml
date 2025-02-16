@@ -213,7 +213,8 @@
 			<name>Administration Command Payload - Operations - XDR</name>
 			<figure>
 				<name>Administration Command Payload - Operations - XDR</name>
-				<xi:include href="include/05-AdministrationOperations-XDR.xml"/>
+				<xi:include href="include/05-1-AOID-XDR.xml"/>
+				<xi:include href="include/05-2-AdministrationOperations-XDR.xml"/>
 			</figure>
 		</section>
 	</section>

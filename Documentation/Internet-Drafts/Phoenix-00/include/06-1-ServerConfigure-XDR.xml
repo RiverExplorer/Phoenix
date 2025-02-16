@@ -3,15 +3,14 @@
  * Set or update a configuration value.
  */
 struct ConfigSet {
-    Op         ConfigOp;   /* The upper 24 bits are zero in an enum Op. */
-    KeyValue   OpValues<>; /* XDR arrays start with a length. */
+    Op_e ConfigOp; /* The upper 24 bits are zero in an enum Op. */
+    KeyPair OpValues<>; /* XDR arrays start with a length. */
 };
-
 /**
  * An array of OpConfigSet values.
  */
 struct ServerConfigPayload {
-    AOID         Aoid;      /* Set to SERVER_CONFIGURE. */
-    ConfigSet    Values<>;  /* XDR arrays start with a length. */
+    AOID_e Aoid; /* Set to SERVER_CONFIGURE. */
+    ConfigSet Values<>; /* XDR arrays start with a length. */
 };
 ]]></artwork>

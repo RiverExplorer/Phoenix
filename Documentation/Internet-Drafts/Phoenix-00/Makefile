@@ -2,7 +2,7 @@
 # Build the draft
 #
 #
-.SUFFIXES:	.txt .svg
+.SUFFIXES:	.txt .svg .cpp .xml
 
 TOP			=	../..
 
@@ -91,12 +91,43 @@ REFERENCES.xml = \
 	References/reference.RFC.4506.xml \
 	References/reference.RFC.8446.xml
 
+# These files get processed by:
+#
+# cpp -P -nostdinc -C -undef <InFileName> > <OutFileName>
+#
+# to producte the INCLUDE.xml files.
+#
+INCLUDE.cpp = \
+	include/01-ABNF-XDR.cpp \
+	include/02-StringRef-XDR.cpp \
+	include/03-PacketHeader-XDR.cpp \
+	include/04-PacketBody-XDR.cpp \
+	include/05-1-AOID-XDR.cpp \
+	include/05-2-AdministrationOperations-XDR.cpp \
+	include/06-1-ServerConfigure-XDR.cpp \
+	include/06-2-ServerConfigure-XDR.cpp \
+	include/07-MDNRecord-XDR.cpp \
+	include/08-MDNEntry-XDR.cpp \
+	include/09-AuthMD5-XDR.cpp \
+	include/10-AuthAnonymous-XDR.cpp
+
+INCLUDE.xml = $(INCLUDE.cpp:.cpp=.xml)
+
 INCLUDES1 := $(shell /bin/ls include)
 INCLUDES	= $(addprefix include/,$(INCLUDES1))
 
 ABNF			:= $(shell /bin/ls include/*-ABNF.xml)
 
-XDR 			:= $(shell /bin/ls include/*-XDR.xml)
+# The XDR.cpp files are preprocessed with
+# "cpp -P -nostdinc -C -undef"
+# to produce GENERATED.XDR
+#
+# The .cpp files include data from the source code.
+# this is done so that the source code and the documentation
+# are in sync.
+#
+XDR.cpp 			:= $(shell /bin/ls include/*-XDR.cpp)
+GENERATED.XDR = $(XDR.cpp:.cpp=.xml)
 
 GENERATED_ARTWORK.svg = $(ARTWORK.txt:.txt=.svg)
 
@@ -138,11 +169,13 @@ ALL-ABNF.xml : $(ABNF)
 	cat $(ABNF) >> $@
 	echo "</section>" >> $@
 
-ALL-XDR.xml : $(XDR)
+ALL-XDR.xml : $(INCLUDE.xml) $(GENERATED.XDR)
 	echo "<section>" > $@
 	echo "<name>Complete XDR</name>" >> $@
-	cat $(XDR) >> $@
+	cat $(GENERATED.XDR) >> $@
 	echo "</section>" >> $@
+
+$(INCLUDE.xml) : $(INCLUDE.cpp)
 
 scp : $(TARGET.html) $(TARGET.pdf) $(TARGET.txt)
 	scp $(TARGET.html) riverexplorer.games:~/public_html/Phoenix
@@ -154,6 +187,10 @@ clean :
 	$(RM) $(GENERATED_ARTWORK.svg)
 	$(RM) $(TOPDOC.xml)
 	$(RM) ALL-ABNF.xml ALL-XDR.xml
+	$(RM) $(GENERATED.XDR)
 
 %.svg : %.txt
 	aasvg < $< > $@
+
+include/%.xml : include/%.cpp
+	cpp -P -nostdinc -C -undef $< > $@

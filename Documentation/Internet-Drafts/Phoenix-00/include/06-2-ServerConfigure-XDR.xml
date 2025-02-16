@@ -3,7 +3,7 @@
  * Reply to SERVER_CONFIGURE
  */
 struct ServerConfigReplyPayload {
-    AOID       ACmd;           /* Set to SERVER_CONFIGURE */
-    KeyValue   ResultValues<>; /* XDR arrays start with a length */
+    AOID ACmd; /* Set to SERVER_CONFIGURE */
+    KeyValue ResultValues<>; /* XDR arrays start with a length */
 };
 ]]></artwork>
