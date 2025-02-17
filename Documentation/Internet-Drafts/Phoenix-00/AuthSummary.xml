@@ -1,6 +1,6 @@
 <!-- Copyright 2025 RiverExplorer LLC and Douglas Mark Royer -->
 
-<section anchor="AUTH_SUMMARY">
+<section anchor="AUTH_SUMMARY" xmlns:xi="http://www.w3.org/2001/XInclude">
 	<name>Authentication Commands Summary</name>
 	<t>
 		The first thing a client must do, is authenticate
@@ -44,5 +44,22 @@
 			This protocol enables user permissions to be configured.
 		</li>
 	</ul>
-</section>
 
+	<section>
+		<name>Authentication - ABNF</name>
+		<figure>
+			<name>Authentication - ABNF</name>
+			<xi:include href="include/10-Auth-ABNF.xml"/>
+		</figure>
+	</section>
+			
+	<section>
+		<name>Authentication - XDR</name>
+		<figure>
+			<name>Authentication - XDR</name>
+			<xi:include href="include/10-Auth_e-XDR.xml"/>
+			<xi:include href="include/10-Auth-XDR.xml"/>
+		</figure>
+	</section>
+
+</section>

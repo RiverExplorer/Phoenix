@@ -1,0 +1,20 @@
+<artwork type="abnf" name="" align="left" alt=""><![CDATA[
+AUTHANONYMOUS    = %x26
+AUTHMD5          = %x10
+AUTHCERT         = %x11
+AUTHCERT_TLS     = %x27
+AUTHCERT_USER    = %x28
+
+AuthPayload      = (AuthAnonymousPayload
+                 / AuthMD5Payload
+                 / AuthCertPayload
+                 / AuthCertTlsPayload
+                 / AuthCertUserPayload)
+								 
+AuthReplyPayload = (AuthReplyAnonymousPayload
+                 / AuthReplyMD5Payload
+                 / AuthReplyCertPayload
+                 / AuthReplyCertTlsPayload
+                 / AuthReplyCertUserPayload)
+								 
+]]></artwork>

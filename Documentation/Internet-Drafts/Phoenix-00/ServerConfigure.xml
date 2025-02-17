@@ -149,7 +149,7 @@
 			<name>SERVER_CONFIGURE - ABNF</name>
 			<figure>
 				<name>SERVER_CONFIGURE - ABNF</name>
-				<xi:include href="include/06-1-ServerConfigure-ABNF.xml"/>
+				<xi:include href="include/06-01-ServerConfigure-ABNF.xml"/>
 			</figure>
 		</section>
 
@@ -157,7 +157,7 @@
 			<name>SERVER_CONFIGURE - XDR</name>
 			<figure>
 				<name>SERVER_CONFIGURE - XDR</name>
-				<xi:include href="include/06-1-ServerConfigure-XDR.xml"/>
+				<xi:include href="include/06-01-ServerConfigure-XDR.xml"/>
 			</figure>
 		</section>
 	</section>
@@ -214,7 +214,7 @@
 			<name>SERVER_CONFIGURE Reply - ABNF</name>
 			<figure>
 				<name>SERVER_CONFIGURE - ABNF</name>
-				<xi:include href="include/06-2-ServerConfigure-ABNF.xml"/>
+				<xi:include href="include/06-02-ServerConfigure-ABNF.xml"/>
 			</figure>
 		</section>
 
@@ -222,7 +222,7 @@
 			<name>SERVER_CONFIGURE Reply - XDR</name>
 			<figure>
 				<name>SERVER_CONFIGURE - XDR</name>
-				<xi:include href="include/06-2-ServerConfigure-XDR.xml"/>
+				<xi:include href="include/06-02-ServerConfigure-XDR.xml"/>
 			</figure>
 		</section>
 	</section>

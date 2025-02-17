@@ -1,4 +1,4 @@
-<reference anchor="rpcgendocs" target="https://www.ibm.com/docs/en/aix/7.3?topic=call-rpcgen-protocol-compiler">
+<reference anchor="rpcgendocs" target="https://docs.oracle.com/cd/E37838_01/html/E61058/rpcgenpguide-12915.html">
   <front>
     <title>rpcgen Protocol Compiler</title>
     <author fullname="Unknown Author" initials="" surname="Unknown Author"/>

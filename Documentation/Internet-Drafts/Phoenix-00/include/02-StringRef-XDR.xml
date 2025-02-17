@@ -1,9 +1,0 @@
-<artwork type="abnf" name="" align="left" alt=""><![CDATA[
-/**
- * A reference to the start and length of a string.
- */
-struct StringRef {
-    Offset StartOffset;
-    Length StringLength;
-};
-]]></artwork>

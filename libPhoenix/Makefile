@@ -78,10 +78,22 @@ SOURCES.cpp = \
 	Server.cpp
 
 SOURCES.x = \
+	AdminKick.x \
+	Admin.x \
+	AOID.x \
+	AuthAnonymousPayload.x \
+	AuthAnonymous.x \
+	AuthCertPayload.x \
+	AuthCertTlsPayload.x \
+	AuthCertUserPayload.x \
+	Auth_e.x \
+	AuthMD5Payload.x \
+	AuthMD5.x \
+	Auth.x \
 	CmdAcl.x \
 	CmdAddMessage.x \
-	CmdAuthenticate.x \
 	CmdAdministration.x \
+	CmdAuthenticate.x \
 	CmdCapability.x \
 	CmdCopyMessage.x \
 	CmdExpunge.x \
@@ -95,12 +107,53 @@ SOURCES.x = \
 	CmdTimeout.x \
 	CmdUpdateMessage.x \
 	Commands.x \
+	CommonDefinitions.x \
+	ConfigSet.x \
 	Email.x \
+	FileCopy.x \
+	FileCreate.x \
+	FileDelete.x \
+	File_e.x \
+	FileGet.x \
+	FileMetaData.x \
+	FileModify.x \
+	FileMove.x \
+	FilePayload.x \
+	FileRename.x \
+	FileShare.x \
+	FolderCapability.x \
+	FolderCopy.x \
+	FolderCreate.x \
+	FolderDelete.x \
+	FolderList.x \
+	FolderMetaData.x \
+	FolderMove.x \
+	FolderOpen.x \
+	FolderRename.x \
+	FolderShare.x \
 	Index.x \
+	ManageBans.x \
+	MDNEntry.x \
+	MDNRecord.x \
 	MetaData.x \
 	Mime.x \
+	PacketBody.x \
+	PacketHeader.x \
 	PhoenixString.x \
-	Types.x
+	ProtoPayload.x \
+	ServerConfigPayload.x \
+	ServerConfigReplyPayload.x \
+	ServerLogs.x \
+	ServerStats.x \
+	Shutdown.x \
+	StringRef.x \
+	Types.x \
+	UserCreate.x \
+	UserDelete.x \
+	UserList.x \
+	UserPermissions.x \
+	UserRename.x
+
 
 SOURCES.hpp += \
 	Certs.hpp \
@@ -135,7 +188,7 @@ GENERATED_OBJECTS = \
 C_OBJECTS         = $(SOURCES.c:.c=.o)
 CPP_OBJECTS       = $(SOURCES.cpp:.cpp=.o)
 
-CPPFLAGS					+=	-I/usr/include/tirpc
+CPPFLAGS					+=	-I../libPhoenixServer -I../libPhoenixClient -I/usr/include/tirpc
 
 CPPFLAGS.debug		=
 

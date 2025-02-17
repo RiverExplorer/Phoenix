@@ -1,6 +1,3 @@
 <artwork type="abnf" name="" align="left" alt=""><![CDATA[
-/**
- * The length of a packet.
- */
-typedef Length PacketHeader;
+#include "../../../../libPhoenix/ServerStats.x"
 ]]></artwork>

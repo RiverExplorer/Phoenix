@@ -1,5 +1,3 @@
-<artwork type="abnf" name="" align="left" alt=""><![CDATA[
 struct AuthAnonymous {
     uint32_t Cmd; /* Set to AUTHANONYMOUS (%x26) */
 };
-]]></artwork>

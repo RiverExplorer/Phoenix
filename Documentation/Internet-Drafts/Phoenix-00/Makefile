@@ -104,11 +104,23 @@ INCLUDE.cpp = \
 	include/04-PacketBody-XDR.cpp \
 	include/05-1-AOID-XDR.cpp \
 	include/05-2-AdministrationOperations-XDR.cpp \
-	include/06-1-ServerConfigure-XDR.cpp \
-	include/06-2-ServerConfigure-XDR.cpp \
+	include/06-01-ServerConfigure-XDR.cpp \
+	include/06-02-ServerConfigure-XDR.cpp \
+	include/06-03-AdminKick-XDR.cpp \
+	include/06-04-ServerLogs-XDR.cpp \
+	include/06-05-ManangeBans-XDR.cpp \
+	include/06-06-Shutdown-XDR.cpp \
+	include/06-07-UserCreate-XDR.cpp \
+	include/06-08-UserDelete-XDR.cpp \
+	include/06-09-UserList-XDR.cpp \
+	include/06-10-UserPermissions-XDR.cpp \
+	include/06-11-UserRename-XDR.cpp \
+	include/06-12-ServerStats-XDR.cpp \
 	include/07-MDNRecord-XDR.cpp \
 	include/08-MDNEntry-XDR.cpp \
 	include/09-AuthMD5-XDR.cpp \
+	include/10-Auth_e-XDR.cpp \
+	include/10-Auth-XDR.cpp \
 	include/10-AuthAnonymous-XDR.cpp
 
 INCLUDE.xml = $(INCLUDE.cpp:.cpp=.xml)
