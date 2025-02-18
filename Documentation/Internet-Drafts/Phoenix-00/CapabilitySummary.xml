@@ -7,7 +7,6 @@
 		implementation.
 		Some may provide a superset or subset when compared
 		to other implementations.
-		And this is fine.
 		This can be done to split workload or just because
 		they specialize in specific operations.
 	</t>
@@ -25,21 +24,35 @@
 
 	<t>
 		Capabilities from the server arrive twice.
-		Once before any user is authenticated, and one after.
+		Once before the user is authenticated (CAPABILITY_PRE),
+		and once after (CAPABILITY_POST).
 	</t>
 	<t>
-		Capabilities from the arrive arrive once or twice.
-		Once before any user is authenticated.
-		And MAY send another capability set after.
+		Capabilities from the client may be sent, zero, once, or twice
+		per authentication process.
+		Optionally once included with the AUTH command packet (CAPABILITY_PRE),
+		to inform the	server of any required vendor or authentication
+		specific information.
+		And optionally once after the user is authenticated (CAPABILITY_POST).
 	</t>
 	<t>
-		Table <xref target="PreAuthCap"/> lists the Pre-Authentication
+		There is no requirement that a server provides
+		an authentication method for any client.
+		There is no requirement that a server provide
+		any non-vendor capability for any client.
+		They could be configured to only allow vendor
+		specific authentication or only vendor specific commands because they
+		are not servers open to the public and require
+		non standard authentication methods,
+		or only from clients providing a correct CAPABILITY_PRE
+		value.
+	</t>
+	<t>
+		Table <xref target="PreAuthCap"/> lists the CAPABILITY_PRE
 		capabilities.
-		Pre-Authentication capabilities are sent to the client before
-		any user is authenticated.
 	</t>
 	<table anchor="PreAuthCap">
-		<name>Capabilities - Pre-Authentication</name>
+		<name>Capabilities - CAPABILITY_PRE</name>
 		<thead>
 			<tr>
 				<th>Name</th>
@@ -59,7 +72,7 @@
 					<t>
 						No authentication required.
 						An example usage could be a shared company
-						bulliton board where most employees had
+						bulletin board where most employees had
 						view only access to the messages.
 						And perhaps the server only allowed
 						company local IP addresses to use this
@@ -122,13 +135,13 @@
 	</table>
 			
 	<t>
-		Table <xref target="PostAuthCap"/> lists the Post-Authentication
+		Table <xref target="PostAuthCap"/> lists the CAPABILITY_POST
 		capabilities.
 		Post-Authentication capabilities are sent to the client after
-		any user is authenticated.
+		a user authenticates.
 	</t>
 	<table anchor="PostAuthCap">
-		<name>Capabilities - Post-Authentication</name>
+		<name>Capabilities - CAPABILITY_POST</name>
 		<thead>
 			<tr>
 				<th>Name</th><th>Value</th><th>Description</th>

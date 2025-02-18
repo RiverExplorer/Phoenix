@@ -59,6 +59,7 @@ ARTWORK.txt = \
 	AUTHCERT-00.txt \
 	AUTHCERT-01.txt \
 	AUTHCERT-02.txt \
+	AuthSummary-00.txt \
 	IndexList-01.txt \
 	IndexList-02.txt \
 	IndexList-03.txt \
@@ -73,11 +74,13 @@ ARTWORK.txt = \
 	MD5-01.txt \
 	MDN-00.txt \
 	MDN-01.txt \
-	Packet-00.txt \
 	Packet-01.txt \
+	Packet-01-01.txt \
 	Packet-02.txt \
+	Packet-03.txt \
 	ServerConfigure-00.txt \
 	ServerConfigure-01.txt \
+	ServerKickUser-00.txt \
 	StringRef-00.txt
 
 REFERENCES.xml = \
@@ -153,6 +156,12 @@ TARGET.html	=	$(DOCDIR)/$(TITLE).html
 
 TARGET.pdf	=	$(DOCDIR)/$(TITLE).pdf
 
+#
+# The:  "2> >(grep -v 'Warning: Found SVG with width')" below
+# stops a warning message I do not care about from beeing shown.
+#
+REMOVE_SVG_WARNING = 2> >(grep -v 'Warning: Found SVG with width')
+
 CPP = $(TOP)/MyTools/SimpleCpp
 
 all : $(TARGET.html) $(TARGET.pdf) $(TARGET.txt)
@@ -161,16 +170,16 @@ txt : $(TARGET.txt) $(ARTWORK.txt)
 
 pdf : $(TARGET.pdf) $(GENERATED_ARTWORK.svg)
 
-html : $(TARGET.html) (ARGWORK.svg)
+html : $(TARGET.html) $(ARTWORK.svg)
 
-$(TARGET.txt) : ALL-ABNF.xml ALL-XDR.xml $(ARTWORK.txt) $(TOPDOC.xml)  $(REFERENCES.xml) $(INCLUDES)
-	xml2rfc -o $@ $(TOPDOC.xml)
+$(TARGET.txt) : ALL-ABNF.xml ALL-XDR.xml $(GENERATED_ARTWORK.svg) $(ARTWORK.txt) $(TOPDOC.xml)  $(REFERENCES.xml) $(INCLUDES)
+	xml2rfc -o $@ $(TOPDOC.xml) $(REMOVE_SVG_WARNING)
 
 $(TARGET.pdf) : ALL-ABNF.xml ALL-XDR.xml $(GENERATED_ARTWORK.svg) $(TOPDOC.xml) $(REFERENCES.xml) $(INCLUDES)
-	xml2rfc --pdf -o $@ $(TOPDOC.xml)
+	xml2rfc --pdf -o $@ $(TOPDOC.xml) $(REMOVE_SVG_WARNING)
 
 $(TARGET.html): ALL-ABNF.xml ALL-XDR.xml $(GENERATED_ARTWORK.svg) $(TOPDOC.xml) $(REFERENCES.xml) $(INCLUDES)
-	xml2rfc --html -o $@ $(TOPDOC.xml)
+	xml2rfc --html -o $@ $(TOPDOC.xml) $(REMOVE_SVG_WARNING)
 
 $(TOPDOC.xml) : draft-00.xml ALL-ABNF.xml ALL-XDR.xml $(SOURCES.xml) $(REFERENCES.xml) $(INCLUDES)
 	xmllint --xinclude --format $< > $@
@@ -202,7 +211,7 @@ clean :
 	$(RM) $(GENERATED.XDR)
 
 %.svg : %.txt
-	aasvg < $< > $@
+	aasvg < $< > $@ 
 
 include/%.xml : include/%.cpp
 	cpp -P -nostdinc -C -undef $< > $@

@@ -1,3 +1,3 @@
 <artwork type="abnf" name="" align="left" alt=""><![CDATA[
-#include "../../../../libPhoenix/AuthAnonymous.x"
+#include "../../../../libPhoenix/AuthAnonymousPayload.x"
 ]]></artwork>

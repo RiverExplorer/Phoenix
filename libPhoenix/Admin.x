@@ -74,7 +74,7 @@ union AdminReplyPayload switch(AOID_e Aoid) {
     ServerConfigReplyPayload    ConfigPayload;
 
   case SERVER_KICK_USER:
-    ServerKickReplyPayload      KickPayload;
+		void; /* No reply allowd for SERVER_KICK_USER */
 	
 	case SERVER_LOGS:
     ServerLogsReplyPayload      LogsPayload;

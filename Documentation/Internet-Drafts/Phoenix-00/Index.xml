@@ -211,8 +211,8 @@ HID    = uint8_t;
 			<figure anchor="Interisting-S0-01" align="center">
 				<name>Interest Header List Prefix</name>
 				<artset>
-					<artwork type="ascii-art" src="IndexList-01.txt"/>
-					<artwork type="svg" src="IndexList-01.svg"/>
+					<artwork align="center" type="ascii-art" src="IndexList-01.txt"/>
+					<artwork align="center" type="svg" src="IndexList-01.svg"/>
 				</artset>
 			</figure>
 
@@ -286,8 +286,8 @@ Interest-Header = IndexOp LID HdrCnt
 				<figure anchor="Interisting-S0-02" align="center">
 					<name>Setting the Interest List - Contents</name>
 					<artset>
-						<artwork type="ascii-art" src="IndexList-02.txt"/>
-						<artwork type="svg" src="IndexList-02.svg"/>
+						<artwork align="center" type="ascii-art" src="IndexList-02.txt"/>
+						<artwork align="center" type="svg" src="IndexList-02.svg"/>
 					</artset>
 				</figure>
 
@@ -314,8 +314,8 @@ SingleHeader = HID StringRef
 				<figure anchor="Interisting-S0-03" align="center">
 					<name>Using Existing Header Index by List ID (LID)</name>
 					<artset>
-						<artwork type="ascii-art" src="IndexList-03.txt"/>
-						<artwork type="svg" src="IndexList-03.svg"/>
+						<artwork align="center" type="ascii-art" src="IndexList-03.txt"/>
+						<artwork align="center" type="svg" src="IndexList-03.svg"/>
 					</artset>
 				</figure>
 				<t>
@@ -340,8 +340,8 @@ UseExistingList:32 = UseExistingOp LID %x00:8
 				<figure anchor="Interisting-S0-04" align="center">
 					<name>Example Setting a List</name>
 					<artset>
-						<artwork type="ascii-art" src="IndexList-04.txt"/>
-						<artwork type="svg" src="IndexList-04.svg"/>
+						<artwork align="center" type="ascii-art" src="IndexList-04.txt"/>
+						<artwork align="center" type="svg" src="IndexList-04.svg"/>
 					</artset>
 				</figure>
 				<t>
@@ -486,15 +486,16 @@ UseExistingList:32 = UseExistingOp LID %x00:8
 			<figure anchor="FolderIndexHeaderFigure" align="center">
 				<name>Folder Index</name>
 				<artset>
-					<artwork type="ascii-art" src="IndexList-05.txt"/>
-					<artwork type="svg" src="IndexList-05.svg"/>
+					<artwork align="center" type="ascii-art" src="IndexList-05.txt"/>
+					<artwork align="center" type="svg" src="IndexList-05.svg"/>
 				</artset>
 			</figure>
 			<t>
 				ABNF:
 			</t>
 		<artwork type="abnf" name="" align="left" alt=""><![CDATA[
-FolderIndexHeader = FolderIndexSize:32 MessageCount:32 ArrayOfMsgIndex
+FolderIndexHeader = FolderIndexSize:32
+                   MessageCount:32 ArrayOfMsgIndex
 ]]></artwork>
 			<t>
 				The header is followed by an array of message indexes.
@@ -520,8 +521,8 @@ FolderIndexHeader = FolderIndexSize:32 MessageCount:32 ArrayOfMsgIndex
 			<figure anchor="MessageIndexFigure" align="center">
 				<name>Message Index</name>
 				<artset>
-					<artwork type="ascii-art" src="IndexList-07.txt"/>
-					<artwork type="svg" src="IndexList-07.svg"/>
+					<artwork align="center" type="ascii-art" src="IndexList-07.txt"/>
+					<artwork align="center" type="svg" src="IndexList-07.svg"/>
 				</artset>
 			</figure>
 			<t>
@@ -611,8 +612,8 @@ ArrayOfMsgIndex = *MessageIndex
 			<figure anchor="HeaderIndex2" align="center">
 				<name>Header Index</name>
 				<artset>
-					<artwork type="ascii-art" src="IndexList-10.txt"/>
-					<artwork type="svg" src="IndexList-10.svg"/>
+					<artwork align="center" type="ascii-art" src="IndexList-10.txt"/>
+					<artwork align="center" type="svg" src="IndexList-10.svg"/>
 				</artset>
 			</figure>
 
@@ -620,12 +621,13 @@ ArrayOfMsgIndex = *MessageIndex
 				ABNF:
 			</t>
 			<artwork type="abnf" name="" align="left" alt=""><![CDATA[
-HeaderIndex          = HeaderIndexHeader:32 *ArrayOfHID
+HeaderIndex          = HeaderIndexHeader:32
+                       *ArrayOfHID
                        *StringRef *BodyPartIndex
 
-                       ; One HID (HeaderID) for each match header
-                       ; in the LID provided. Padded out to multiples
-                       ; of 32-bits.
+                       ; One HID (HeaderID) for each match
+                       ; header in the LID provided. Padded
+                       ; out to multiples of 32-bits.
 HeaderIndexHeader:32 = ID-CNT:8 Body-Count:8
                        / (HID HID)
                        / (HID %x00:8)
@@ -633,13 +635,13 @@ HeaderIndexHeader:32 = ID-CNT:8 Body-Count:8
 
 ArrayOfHid           = *HIDEntry
 
-BodyPartIndex        = BodyPartOffset:32 HeaderIndexHeader:32 *StringRef
-                       *BodyPartIndex
+BodyPartIndex        = BodyPartOffset:32 HeaderIndexHeader:32
+                       *StringRef *BodyPartIndex
 
 ID-CNT:8               ; The number of headers found in the
-                       ; MIME object and requested in the interested
-                       ; header list.
-
+                       ; MIME object and requested in the 
+                       ; interested header list.
+                       
 Body-CNT:8             ; The number of body parts in the object
 
                        ; Padded out to multiples of 32-bits.
@@ -720,8 +722,8 @@ A new draft has been published.
 			<figure anchor="HeaderIndexFigure1" align="center">
 				<name>Header Index</name>
 				<artset>
-					<artwork type="ascii-art" src="IndexList-08.txt"/>
-					<artwork type="svg" src="IndexList-08.svg"/>
+					<artwork align="center" type="ascii-art" src="IndexList-08.txt"/>
+					<artwork align="center" type="svg" src="IndexList-08.svg"/>
 				</artset>
 			</figure>
 		</section>
@@ -781,8 +783,8 @@ This is the body text of a sample message.
 			<figure anchor="HeaderIndexFigure2" align="center">
 				<name>Header And Body Part Index</name>
 				<artset>
-					<artwork type="ascii-art" src="IndexList-09.txt"/>
-					<artwork type="svg" src="IndexList-09.svg"/>
+					<artwork align="center" type="ascii-art" src="IndexList-09.txt"/>
+					<artwork align="center" type="svg" src="IndexList-09.svg"/>
 				</artset>
 			</figure>
 		</section>

@@ -10,11 +10,13 @@ AuthPayload      = (AuthAnonymousPayload
                  / AuthCertPayload
                  / AuthCertTlsPayload
                  / AuthCertUserPayload)
-								 
-AuthReplyPayload = (AuthReplyAnonymousPayload
-                 / AuthReplyMD5Payload
-                 / AuthReplyCertPayload
-                 / AuthReplyCertTlsPayload
-                 / AuthReplyCertUserPayload)
-								 
+
+; There is no AUTH... REPLY payload.
+; An authentication replies with:
+;
+;   CAPABILITY_POST: Authentication passed.
+;
+;   CAPABILITY_PRE:  Authentication failed.
+;
+;   NotSupported:    Authentication method not supported.
 ]]></artwork>

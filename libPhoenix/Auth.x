@@ -36,20 +36,13 @@ union AuthPayload switch(Auth_e Auth) {
     AuthCertUserPayload CertUserPayload;
 };
 
-union AuthReplyPayload switch(Auth_e Auth) {
-
-  case AUTHANONYMOUS:
-    AuthAnonymousReplyPayload AnonymousPayload;
-
-  case AUTHMD5:
-    AuthMD5ReplyPayload MD5Payload;
-	
-	case AUTHCERT:
-    AuthCertReplyPayload CertPayload;
-		
-  case AUTHCERT_TLS:
-    AuthCertTlsReplyPayload CertTlsPayload;
-		
-  case AUTHCERT_USER:
-    AuthCertUserReplyPayload CertUserPayload;
-};
+/**
+ * There is no AUTH... REPLY payload.
+ * An authentication replies with:
+ *
+ * CAPABILITY_POST: Authentication passed.
+ *
+ * CAPABILITY_PRE: Authentication failed.
+ *
+ * NotSupported:   Authentication method not supported.
+ */

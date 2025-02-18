@@ -40,7 +40,7 @@
 		</t>
 		<t>
 			When a user attempts to send a commmand they are not authorized
-			to send, the remote endpoint will reply with a NotSupported command
+			to send, the remote endpoint will reply with a NOT_SUPPORTED command
 			with its sequence number set to the sequence number from offending
 			command.
 		</t>

@@ -329,8 +329,8 @@
 			<figure anchor="MDNData" align="center">
 				<name>MDNRecord</name>
 				<artset>
-					<artwork type="ascii-art" src="MDN-00.txt"/>
-					<artwork type="svg" src="MDN-00.svg"/>
+					<artwork align="center" type="ascii-art" src="MDN-00.txt"/>
+					<artwork align="center" type="svg" src="MDN-00.svg"/>
 				</artset>
 			</figure>
 			<section>
@@ -389,8 +389,8 @@
 			<figure anchor="MDNRecord" align="center">
 				<name>MDNEntry</name>
 				<artset>
-					<artwork type="ascii-art" src="MDN-01.txt"/>
-					<artwork type="svg" src="MDN-01.svg"/>
+					<artwork align="center" type="ascii-art" src="MDN-01.txt"/>
+					<artwork align="center" type="svg" src="MDN-01.svg"/>
 				</artset>
 			</figure>
 			<section>

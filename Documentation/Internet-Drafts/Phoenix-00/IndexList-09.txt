@@ -1,50 +1,50 @@
 +--------+--------+--------+--------+ 
-|   5    |    2   |    8   |   4    | ID CNT, Body Cnt, From ID, To ID,
+|   5    |    2   |    8   |   4    |CNT, Body Cnt, From, To,
 +--------+--------+--------+--------+
-|   12   |    9   |    3   |   0    | Subject ID, MIME ID, Content-Type ID
+|   12   |    9   |    3   |   0    |Subject,MIME,Content-Type
 +--------+--------+--------+--------+
-|                 6                 | OFFSET to: User@example.com
+|                 6                 |OFFSET: User@example.com
 +-----------------------------------+
-|                16                 | LENGTH of: 16
+|                16                 |LENGTH: 16
 +-----------------------------------+
-|                28                 | OFFSET to: User2@example.com
+|                28                 |OFFSET: User2@example.com
 +-----------------------------------+
-|                17                 | LENGTH of: 17
+|                17                 |LENGTH: 17
 +-----------------------------------+
-|                56                 | OFFSET to: This is the subject ...
+|                56                 |OFFSET: This is the subject
 +-----------------------------------+
-|                39                 | LENGTH of: 39
+|                39                 |LENGTH: 39
 +-----------------------------------+
-|               111                 | OFFSET to: 1.0
+|               111                 |OFFSET: 1.0
 +-----------------------------------+
-|                 3                 | LENGTH of: 3
+|                 3                 |LENGTH: 3
 +-----------------------------------+
-|               130                 | OFFSET to: multiplar/alternative...
+|               130                 |OFFSET: multiplar/alternative
 +-----------------------------------+
-|                50                 | LENGTH of: 50
+|                50                 |LENGTH: 50
 +-----------------------------------+
 
 Next is the data for the first body part.
 This one body part has no body parts, so its Body Cnt is zero.
 
 +-----------------------------------+
-|               206                 | Offset to start of Body Part
+|               206                 |Offset to start of Body Part
 +-----------------------------------+
-|   1    |    0   |    3   |   0    | ID CNT, Body Cnt, Content-Type ID, pad
+|   1    |    0   |    3   |   0    |CNT, BodyCnt,Content-Type,pad
 +-----------------------------------+
-|               220                 | OFFSET to: Content/Type
+|               220                 |OFFSET to: Content/Type
 +-----------------------------------+
-|                27                 | LENGTH of: 27
+|                27                 |LENGTH of: 27
 +-----------------------------------+
 
 Then the second body part:
 
 +-----------------------------------+
-|               361                 | Offset to start of Body Part
+|               361                 |Offset to start of Body Part
 +-----------------------------------+
-|   1    |    0   |    3   |   0    | ID CNT, Body Cnt, Content-Type ID, pad
+|   1    |    0   |    3   |   0    |CNT,BodyCnt,Content-Type,pad
 +-----------------------------------+
-|               376                 | OFFSET to: Content/Type
+|               376                 |OFFSET: Content/Type
 +-----------------------------------+
-|                26                 | LENGTH of: 26
+|                26                 |LENGTH: 26
 +-----------------------------------+

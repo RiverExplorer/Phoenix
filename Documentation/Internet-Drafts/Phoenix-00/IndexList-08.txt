@@ -1,39 +1,39 @@
 +--------+--------+--------+--------+ 
-|   7    |    0   |    0   |   2    | ID CNT, Body Cnt, From ID, To ID,
+|   7    |    0   |    0   |   2    | CNT,BodyCnt,From,To,
 +--------+--------+--------+--------+
-|   2    |    2   |    5   |   3    | To ID, To ID, Date ID, Message-ID ID,
+|   2    |    2   |    5   |   3    | To,To,Date,Message-ID,
 +--------+--------+--------+--------+
-|   1    |    4   |    0   |   0    | Subject ID, Content-Type ID, pads 0
+|   1    |    4   |    0   |   0    | Subject,Content-Type,pads 0
 +--------+--------+--------+--------+
-|                 6                 | OFFSET to: Doug@example.com
+|                 6                 | OFFSET: Doug@example.com
 +-----------------------------------+
-|                16                 | LENGTH of: 16
+|                16                 | LENGTH: 16
 +-----------------------------------+
-|                28                 | OFFSET to: Notices@example.com
+|                28                 | OFFSET: Notices@example.com
 +-----------------------------------+
-|                19                 | LENGTH of: 19
+|                19                 | LENGTH: 19
 +-----------------------------------+
-|                49                 | OFFSET to: Supervisors@example.com
+|                49                 | OFFSET: Supervisors@example.com
 +-----------------------------------+
-|                23                 | LENGTH of: 23
+|                23                 | LENGTH: 23
 +-----------------------------------+
-|                74                 | OFFSET to: Dave@example.com
+|                74                 | OFFSET: Dave@example.com
 +-----------------------------------+
-|                16                 | LENGTH of: 16
+|                16                 | LENGTH: 16
 +-----------------------------------+
-|                98                 | OFFSET to: 06 Feb ...
+|                98                 | OFFSET: 06 Feb ...
 +-----------------------------------+
-|                31                 | LENGTH of: 31
+|                31                 | LENGTH: 31
 +-----------------------------------+
-|               142                 | OFFSET to: <732er ....>
+|               142                 | OFFSET: <732er ....>
 +-----------------------------------+
-|                50                 | LENGTH of: 50
+|                50                 | LENGTH: 50
 +-----------------------------------+
-|               204                 | OFFSET to: A new draft ...
+|               204                 | OFFSET: A new draft ...
 +-----------------------------------+
-|                42                 | LENGTH of: 42
+|                42                 | LENGTH: 42
 +-----------------------------------+
-|               249                 | OFFSET to: Content/Type
+|               249                 | OFFSET: Content/Type
 +-----------------------------------+
-|                10                 | LENGTH of: 10
+|                10                 | LENGTH: 10
 +-----------------------------------+

@@ -118,7 +118,7 @@
 						<abstract>
 							<t>
 								A sample Phoenix implentation.
-								<eref target="https://github.com/RiverExplorer/Phoenix"/>
+								<xref target="PhoenixImplementation"/>
 							</t>
 						</abstract>
 					</front>

@@ -82,7 +82,6 @@ SOURCES.x = \
 	Admin.x \
 	AOID.x \
 	AuthAnonymousPayload.x \
-	AuthAnonymous.x \
 	AuthCertPayload.x \
 	AuthCertTlsPayload.x \
 	AuthCertUserPayload.x \

@@ -135,19 +135,7 @@
 			the server replies with a CAPABILITY_POST
 			command.
 		</t>
-		<t>
-			If the authentication fails, then the server replies
-			back with a AUTHCERT_USER with the same SEQ number
-			and the token, login name, and password empty and
-			with their lengths set to zero.
-		</t>
-		<figure>
-			<name>AUTHCERT_USER</name>
-			<artset>
-				<artwork type="ascii-art" src="AUTHCERT-02.txt"/>
-				<artwork type="svg" src="AUTHCERT-02.svg"/>
-			</artset>
-		</figure>
+
 	</section>
 
 	<section>

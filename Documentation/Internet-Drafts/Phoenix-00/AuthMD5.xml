@@ -21,8 +21,8 @@
 		<figure>
 			<name>Capability - AUTHMD5</name>
 			<artset>
-				<artwork type="ascii-art" src="MD5-00.txt"/>
-				<artwork type="svg" src="MD5-00.svg"/>
+				<artwork align="center" type="ascii-art" src="MD5-00.txt"/>
+				<artwork align="center" type="svg" src="MD5-00.svg"/>
 			</artset>
 		</figure>
 	</section>
@@ -66,8 +66,8 @@
 		<figure>
 			<name>Capability - AUTHMD5</name>
 			<artset>
-				<artwork type="ascii-art" src="MD5-01.txt"/>
-				<artwork type="svg" src="MD5-01.svg"/>
+				<artwork align="center" type="ascii-art" src="MD5-01.txt"/>
+				<artwork align="center" type="svg" src="MD5-01.svg"/>
 			</artset>
 		</figure>
 

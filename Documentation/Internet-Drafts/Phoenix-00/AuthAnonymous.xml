@@ -21,8 +21,8 @@
 		<figure>
 			<name>Capability - AUTHANONYMOUS</name>
 			<artset>
-				<artwork type="ascii-art" src="ANONYMOUS-00.txt"/>
-				<artwork type="svg" src="ANONYMOUS-00.svg"/>
+				<artwork align="center" type="ascii-art" src="ANONYMOUS-00.txt"/>
+				<artwork align="center" type="svg" src="ANONYMOUS-00.svg"/>
 			</artset>
 		</figure>
 	</section>
@@ -71,8 +71,8 @@
 		<figure>
 			<name>Capability - AUTHANONYMOUS</name>
 			<artset>
-				<artwork type="ascii-art" src="ANONYMOUS-01.txt"/>
-				<artwork type="svg" src="ANONYMOUS-01.svg"/>
+				<artwork align="center" type="ascii-art" src="ANONYMOUS-01.txt"/>
+				<artwork align="center" type="svg" src="ANONYMOUS-01.svg"/>
 			</artset>
 		</figure>
 

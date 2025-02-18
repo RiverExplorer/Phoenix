@@ -6,7 +6,6 @@
 %#endif
 #endif
 
-struct ServerKickPayload
-{
-	AOID_e Kick; /* With Kick set to SERVER_KICK_USER */
+struct AuthAnonymous {
+	AOID_e Anonymous; /* Set to AUTHANONYMOUS (%x26) */
 };

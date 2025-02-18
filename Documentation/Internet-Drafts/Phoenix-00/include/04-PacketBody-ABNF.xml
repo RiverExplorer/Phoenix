@@ -1,36 +1,39 @@
 <artwork type="abnf" name="" align="left" alt=""><![CDATA[
-                    ; The data that follows is ADMIN CMD data.
-ADMIN_CMD         = %x00:31
+             ; The data that follows is ADMIN CMD data.
+ADMIN_CMD  = %x00:31
 
-                    ; The data that follows is AUTH CMD data.
-AUTH_CMD          = %x01:31
+             ; The data that follows is AUTH CMD data.
+AUTH_CMD   = %x01:31
 
-                    ; The data that follows is FILE or FOLDER CMD data.
-FILE_CMD          = %x02:31
+             ; The data that follows is FILE or FOLDER CMD data.
+FILE_CMD   = %x02:31
 
-                    ; The data that follows is Phoenix PROTO CMD
-                    ; specific command data.
-PROTO_CMD         = %x03:31
+             ; The data that follows is Phoenix PROTO CMD
+             ; specific command data.
+PROTO_CMD  = %x03:31
 
-                    ; Define a SEQ (sequence) type.
-SEQ               = uint32_t
+             ; Define a SEQ (sequence) type.
+SEQ        = uint32_t
 
-                    ; Any command. A 32-bit value.
-CMD               = (VENDOR_BIT / PHOENIX_BIT)
-                    (ADMIN_CMD / AUTH_CMD / FILE_CMD / PROTO_CMD)
+             ; Any command. A 32-bit value.
+CMD        = (VENDOR_BIT / PHOENIX_BIT)
+             (ADMIN_CMD / AUTH_CMD / FILE_CMD / PROTO_CMD)
 
-                    ; Define a CmdPayload (blob of data) type.
-                    ; The length of CmdPayload is determined by the CMD.
-CmdPayload        = *uint8_t
+             ; Define a CmdPayload (blob of data) type.
+             ; The length of CmdPayload is determined by the CMD.
+CmdPayload = *uint8_t
 
-                    ; A Phoenix packet
-PacketBody        = SEQ CMD
-                    (AdminPayload
-                    / AdminReplyPayload
-                    / AuthPayload
-                    / AuthReplyPayload
-                    / FilePayload
-                    / FileReplyPayload
-                    / ProtoPayload
-                    / ProtoReplyPayload)
+             ; A Phoenix packet
+CommandSet = SEQ CMD
+             (AdminPayload
+             / AdminReplyPayload
+             / AuthPayload
+             / AuthReplyPayload
+             / FilePayload
+             / FileReplyPayload
+             / ProtoPayload
+             / ProtoReplyPayload)
+
+             ; Length: The number of CommandSet objects.
+PacketBody = Length 1*CommandSet;
 ]]></artwork>

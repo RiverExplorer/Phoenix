@@ -1,16 +1,65 @@
 <!-- Copyright 2025 RiverExplorer LLC and Douglas Mark Royer -->
-<section>
+<section xmlns:xi="http://www.w3.org/2001/XInclude">
 	<name>Administration - USER_KICK_USER</name>
 	<t>
 		There can be only one user per connection.
 		So the USER_KICK_USER ADMIN command has no data associated with it.
 		When this ADMIN CMD is received by a client, it is being informed
-		that the user is logged out and may not be able to login again.
+		that the user is logged out and may not or may be able to login again.
 	</t>
 	<t>
 		No specifics are given because the possible reasons are nearly
 		unlimited and locale dependent.
-		Any notifications the server may elect to provide to the user
+		Any notifications the server may elect to provide 
 		is out of scope in this specification.
+		The user may have to contact the service provider for details.
 	</t>
+	<t>
+		A SERVER_KICK_USER is only sent from the server to the client.
+		If a server gets a SERVER_KICK_USER from a client, the
+		server replies with a NotSupported with the sequence
+		number the same as the invalid command.
+	</t>
+	<t>
+		There is no reply to a SERVER_KICK_USER.
+		The client is no longer authenticated.
+		The server may allow the client to re-authenticate, or
+		the server may terminate the connection.
+	</t>
+	<t>
+		If the server allows the client to re-authenticate, the server
+		next sends a CAPABILITY_PRE to the client
+	</t>
+	<t>
+		If the server is terminating the connection, the server then
+		sends a SERVER_SHUTDOWN to the client.
+	</t>
+	<t>
+		The server may elect to send both packet sets in
+		one packet to the server.
+	</t>
+	<figure align="center">
+		<name>SERVER_KICK_USER</name>
+		<artset>
+			<artwork align="center" type="ascii-art" src="ServerKickUser-00.txt"/>
+			<artwork align="center" type="svg" src="ServerKickUser-00.svg"/>
+		</artset>
+	</figure>
+
+	<section>
+		<name>SERVER_KICK_USER - ABNF</name>
+		<figure>
+			<name>SERVER_KICK_USER - ABNF</name>
+			<xi:include href="include/06-03-AdminKick-ABNF.xml"/>
+		</figure>
+	</section>
+
+	<section>
+		<name>SERVER_KICK_USER - XDR</name>
+		<figure>
+			<name>SERVER_KICK_USER - XDR</name>
+			<xi:include href="include/06-03-AdminKick-XDR.xml"/>
+		</figure>
+	</section>
+	
 </section>

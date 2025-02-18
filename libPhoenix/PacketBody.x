@@ -50,29 +50,37 @@ const CMD_VENDOR_MASK = 0x80000000;
  */
 typedef uint32_t  SEQ_t;
 
+
 /**
  * A CMD payload is one of these types.
  * With Cmd set to a CMD value.
  */ 
 union CmdPayload switch (CMD Cmd) {
 
-    case ADMIN_CMD:
-        AdminPayload AdminBodyPayload;
+  case ADMIN_CMD:
+    AdminPayload AdminBodyPayload;
 		
-    case AUTH_CMD:
-        AuthPayload  AuthBodyPayload;
+  case AUTH_CMD:
+    AuthPayload  AuthBodyPayload;
 		
-    case FILE_CMD:
-        FilePayload  FileBodyPayload;
+  case FILE_CMD:
+    FilePayload  FileBodyPayload;
 		
-    case PROTO_CMD:
-        ProtoPayload ProtoBodyPayload;
+  case PROTO_CMD:
+    ProtoPayload ProtoBodyPayload;
+};
+
+/*
+ * One comand.
+ */
+struct CommandSet {
+    SEQ_t      SEQ;
+    CmdPayload Payload;
 };
 
 /**
  * A packet body.
  */
 struct PacketBody {
-    SEQ_t      SEQ;
-    CmdPayload Payload;
+  CommandSet Commands<>; /* XDR arrays start with the Length */
 };

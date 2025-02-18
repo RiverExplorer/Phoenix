@@ -296,6 +296,22 @@
 					</tr>
 					<tr>
 						<td>
+							NOT_SUPPORTED
+						</td>
+						<td>
+							%x2b:31
+						</td>
+						<td>
+							The endpoint is replying that the
+							command sent with the SEQ value in this packet,
+							was not a supported command or operation.
+						</td>
+						<td>
+							xdr_NOT_SUPPORTED()
+						</td>
+					</tr>
+					<tr>
+						<td>
 							SEQ
 						</td>
 						<td>
@@ -349,24 +365,98 @@
 			</table>
 
 			<t>
-				Any non-vendor command packet shown here:
+				A command conforming to this specification is not
+				a vendor command.
+				A command created by any vendor that implements
+				vendor specific commands or operations is a vendor
+				command.
+				Vendor commands have the VENDOR_BIT set in the
+				commands or operations.
+			</t>
+			<t>
+				If any operation in a command has the VENDOR_BIT set
+				it may effect implementations that do not support that
+				specific vendor operation.
+				So caution must be used when creating vendor command
+				operation extensions.
+				If the vendor operation can not be performed by
+				client conforming to this specification, then
+				the command must also have the VENDOR_BIT set.
+			</t>
+			<t>
+				In this example the server is sending a CAPABILITY_PRE
+				command telling the client that the server supports
+				AUTHMD5 and some made up vendor authentication AUTH_Vendor_3.
+				The AUTHMD5 does not have the VENDOR_BIT set, and
+				AUTH_Vendor_e has the VENDOR_BIT set.
+			</t>
+			<t>
+				Clients or servers that are not using vendor specific
+				extensions, can:
+			</t>
+			<ul>
+				<li>Send a VENDOR_ID with the value as an	empty string.</li>
+				<li>
+					Or set the string, and just do not send
+					any command or command operations with extensions.
+				</li>
+			</ul>
+			<t>
+				Clients that do not understand the string value in VENDOR_ID
+				would ignore the commands and capabilities with the
+				VENDOR_BIT set.
+				Which is AUTH_Vendor_e in this example.
+			</t>
+			<t>
+				This is an example of a CAPABILITY_PRE being sent
+				from the server to the client.
+				A conforming client could ignore the AUTH_Vendor_3
+				and authenticate with AUTHMD5.
 			</t>
 			<figure>
-				<name>Packet Body - Diagram</name>
+				<name>Packet Body Non-Vendor- Diagram</name>
 				<artset>
-					<artwork type="ascii-art" src="Packet-01.txt"/>
-          <artwork type="svg" src="Packet-01.svg"/>
+					<artwork align="center" type="ascii-art" src="Packet-01.txt"/>
+          <artwork align="center" type="svg" src="Packet-01.svg"/>
 				</artset>
 			</figure>
 			
 			<t>
-				Any vendor command packet shown here:
+				In this example, the server is telling the
+				client that it is using a vendor specific AUTHMD5
+				and a vendor specific AUTH_Vendor_e only.
+			</t>
+			<t>
+				When when vendor specific extensions make the connection
+				incompatible with implementations conforming to this
+				specification, then it MUST also set the VENDOR_BIT in the command.
+				In this example it is being set in the CAPABILITY_PRE command.
+				A conforming client would then know that there are zero compatible
+				authentication methods to this server.
+				A client implementations that understand the contents of the string
+				value for VENDOR_ID, may also understand these extensions.
 			</t>
 			<figure>
-				<name>Packet Body - Diagram</name>
+				<name>Packet Body Vendor - Diagram</name>
 				<artset>
-					<artwork type="ascii-art" src="Packet-02.txt"/>
-          <artwork type="svg" src="Packet-02.svg"/>
+					<artwork align="center" type="ascii-art" src="Packet-01-01.txt"/>
+          <artwork align="center" type="svg" src="Packet-01-01.svg"/>
+				</artset>
+			</figure>
+
+			<t>
+				Multiple commands may be sent in one packet.
+				And PHOENIX and non-vendor (NON-PHOENIX) commands may be sent
+				in one packet body by setting VENDOR_BIT (1)
+				or PHOENIX_BIT (0) in the packet.
+				This example shows two commands, one that is a PHOENIX command
+				the other is a vendor command.
+			</t>
+			<figure>
+				<name>Packet Body Multiple Commands - Diagram</name>
+				<artset>
+					<artwork align="center" type="ascii-art" src="Packet-03.txt"/>
+          <artwork align="center" type="svg" src="Packet-03.svg"/>
 				</artset>
 			</figure>
 			
@@ -389,6 +479,10 @@
 					<name>Packet Body XDR</name>
 					<xi:include href="include/04-PacketBody-XDR.xml"/>
 				</figure>
+			</section>
+
+			<section>
+				<name>Multiple Commands per Packet</name>
 			</section>
 		</section>
 			
@@ -423,6 +517,10 @@
 			be sent from the server with a command SEQ of 20.
 			And over time, the client may get many with a SEQ of 20
 			as new emails arrive on the server.
+		</t>
+		<t>
+			And like the original command, multiple replies may be
+			in one packet.
 		</t>
 	</section>
 </section>

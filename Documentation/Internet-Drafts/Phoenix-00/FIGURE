@@ -1,0 +1,23 @@
+<figure align="center">
+  <name>NAME</name>
+  <artset>
+    <artwork align="center" type="ascii-art" src="XXXX.txt"/>
+    <artwork align="center" type="svg" src="XXXX.svg"/>
+  </artset>
+</figure>
+
+<section>
+  <name>NAME - ABNF</name>
+	<figure>
+    <name>NAME - ABNF</name>
+    <xi:include href="include/xx-yy-XXXX-ABNF.xml"/>
+  </figure>
+</section>
+
+<section>
+  <name>NAME - XDR</name>
+  <figure>
+    <name>NAME - XDR</name>
+    <xi:include href="include/xx-yy-XXXX-XDR.xml"/>
+  </figure>
+</section>

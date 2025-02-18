@@ -1,4 +1,4 @@
-<artwork type="abnf" name="" align="center" alt=""><![CDATA[
+<artwork type="abnf" name="" align="left" alt=""><![CDATA[
                ; An 8-bit unsigned integer type
 uint8_t      = %x00-ff:8
 		
@@ -11,37 +11,46 @@ uint32_t     = %x00000000-ffffffff:32
                ; A 64-bit unsigned integer type
 uint64_t     = %x0000000000000000-ffffffffffffffff:64
 
-               ; The number of octets in the the associated object.
+               ; The number of octets in the the
+               ;  associated object.
 Length       = uint32_t
 
-               ; This is a generic array of UTF-8 characters without
-               ; any terminating character.
-               ; They could be 1, 2, 3, or 4 octet UTF-8 characters.
-               ; The implemention must ensure that complete characters
-               ; are containd in the string.
+               ; This is a generic array of UTF-8 characters
+               ; without any terminating character.
+               ; They could be 1, 2, 3, or 4 octet UTF-8
+               ; characters. The implemention must ensure
+               ; that complete characters are containd in
+               ; the string.
                ;
                ; Specific uses in this or related specifications
-               ; could limit the set of characters that could be in the string.
+               ; could limit the set of characters that could be
+               ; in the string.
                ;
-               ; The uint32_t value is the total number of octets in the string.
+               ; The uint32_t value is the total number
+               ; of octets in the string.
                ;
-               ; The UTF8-Char is any valid and complete UTF-8 character.
+               ; The UTF8-Char is any valid and complete
+               ; UTF-8 character.
                ;
 string       = Length *UTF8-Char
 
-               ; Like string, except when the length is 0xffffffff it means
-               ; the associated value has been deleted.
+               ; Like string, except when the length is
+               ; 0xffffffff it means the associated value has
+               ; been deleted.
 stringD      = (0xffffffff:32) / string
 
-               ; The UTF8-Char is any valid and complete UTF-8 character.
+               ; The UTF8-Char is any valid and complete
+               ; UTF-8 character.
                ;
 UTF8-Char    = 1*4uint8_t
 
                ; This is a generic array of uint8_t values.
-               ; The data in an opaque array is not altered in any
-               ; way in the protocol. It is sent over the wire unaltered.
+               ; The data in an opaque array is not altered
+               ; in any way in the protocol. It is sent over
+               ; the wire unaltered.
                ;
-               ; The uint32_t value is the number of octets in the data.
+               ; The uint32_t value is the number of octets
+               ; in the data.
                ;
 opaque       = Length *uint8_t
 
@@ -55,8 +64,8 @@ UTC          = uint64_t
 Offset       = uint32_t
 
                ; Key and Value. It uses stringD as the value
-               ; to enable an indicator that the key part (string part)
-               ; has been deleted.
+               ; to enable an indicator that the key part
+               ; (string part) has been deleted.
 KeyPair      = string stringD
 
                ; Length is the number of KeyPair that follow.
