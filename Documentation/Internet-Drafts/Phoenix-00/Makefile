@@ -76,6 +76,7 @@ ARTWORK.txt = \
 	MDN-01.txt \
 	Packet-01.txt \
 	Packet-01-01.txt \
+	Packet-01-02.txt \
 	Packet-02.txt \
 	Packet-03.txt \
 	ServerConfigure-00.txt \

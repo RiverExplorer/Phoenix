@@ -1,39 +1,99 @@
 <artwork type="abnf" name="" align="left" alt=""><![CDATA[
-             ; The data that follows is ADMIN CMD data.
-ADMIN_CMD  = %x00:31
-
-             ; The data that follows is AUTH CMD data.
-AUTH_CMD   = %x01:31
-
-             ; The data that follows is FILE or FOLDER CMD data.
-FILE_CMD   = %x02:31
-
-             ; The data that follows is Phoenix PROTO CMD
-             ; specific command data.
-PROTO_CMD  = %x03:31
-
              ; Define a SEQ (sequence) type.
-SEQ        = uint32_t
+SEQ          = uint32_t
 
-             ; Any command. A 32-bit value.
-CMD        = (VENDOR_BIT / PHOENIX_BIT)
-             (ADMIN_CMD / AUTH_CMD / FILE_CMD / PROTO_CMD)
+OneCommand   = AUTHANONYMOUS AuthAnonymousPayload
+             / AUTHCERT_TLS AuthCertTlsPayload
+             / AUTHCERT_USER AuthCertUserPayload
+             / AUTHMD5 AuthMD5Payload
+             / AUTHMD5 AuthMD5ReplyPayload
+             / CAPABILITY_PRE CapabilityPrePayload
+             / FILE_CREATE FileCreatePayload
+             / FILE_COPY FileCopyPayload
+             / FILE_DELETE FileDeletePayload
+             / FILE_RENAME FileRenamePayload
+             / FILE_METADATA FileMetaDataPayload
+             / FILE_MOVE FileMovePayload
+             / FILE_SHARE FileSharePayload
+             / FILE_GET FileGetPayload
+             / FILE_MODIFY FileModifyPayload
+             / FOLDER_CREATE FolderCreatePayload
+             / FOLDER_COPY FolderCopyPayload
+             / FOLDER_DELETE FolderDeletePayload
+             / FOLDER_RENAME FolderRenamePayload
+             / FOLDER_METADATA FolderMetaDataPayload
+             / FOLDER_MOVE FolderMovePayload
+             / FOLDER_OPEN FolderOpenPayload
+             / FOLDER_SHARE FolderSharePayload
+             / FOLDER_LIST FolderListPayload
+             / NOT_SUPPORTED
+             / SERVER_CONFIGURE ServerConfigurePayload
+             / SERVER_KICK_USER
+             / SERVER_LOGS ServerLogsPayload
+             / SERVER_MANAGE_BANS ServerManageBansPayload
+             / SERVER_SHUTDOWN ServerShutdownPayload
+             / SERVER_VIEW_STATS ServerViewStatsPayload
+             / USER_CREATE UserCreatePayload
+             / USER_DELETE UserDeletePayload
+             / USER_LIST UserListPayload
+             / USER_PERMISSIONS UserPermissionsPayload
+             / USER_RENAME UserRenamePayload
+             / VENDOR_ID VendorIDPayload
+             / RESERVED_CMD
 
-             ; Define a CmdPayload (blob of data) type.
-             ; The length of CmdPayload is determined by the CMD.
-CmdPayload = *uint8_t
+OneReply     = AUTHANONYMOUS AuthAnonymousReplyPayload
+             / AUTHCERT_TLS AuthCertTlsReplyPayload
+             / AUTHCERT_USER AuthCertUserReplyPayload
+             / AUTHMD5 AuthMD5ReplyPayload
+             / FILE_CREATE FileCreateReplyPayload
+             / FILE_COPY FileCopyReplyPayload
+             / FILE_DELETE FileDeleteReplyPayload
+             / FILE_RENAME FileRenameReplyPayload
+             / FILE_METADATA FileMetaDataReplyPayload
+             / FILE_MOVE FileMoveReplyPayload
+             / FILE_SHARE FileShareReplyPayload
+             / FILE_GET FileGetReplyPayload
+             / FILE_MODIFY FileModifyReplyPayload
+             / FOLDER_CREATE FolderCreateReplyPayload
+             / FOLDER_COPY FolderCopyReplyPayload
+             / FOLDER_DELETE FolderDeleteReplyPayload
+             / FOLDER_RENAME FolderRenameReplyPayload
+             / FOLDER_METADATA FolderMetaDataReplyPayload
+             / FOLDER_MOVE FolderMoveReplyPayload
+             / FOLDER_OPEN FolderOpenReplyPayload
+             / FOLDER_SHARE FolderShareReplyPayload
+             / FOLDER_LIST FolderListReplyPayload
+             / SERVER_LOGS ServerLogsReplyPayload
+             / SERVER_MANAGE_BANS ServerManageBansReplyPayload
+             / SERVER_SHUTDOWN ServerShutdownReplyPayload
+             / SERVER_VIEW_STATS ServerViewStatsReplyPayload
+             / USER_CREATE UserCreateReplyPayload
+             / USER_DELETE UserDeleteReplyPayload
+             / USER_LIST UserListReplyPayload
+             / USER_PERMISSIONS UserPermissionsReplyPayload
+             / USER_RENAME UserRenameReplyPayload
+             / RESERVED_CMD
 
-             ; A Phoenix packet
-CommandSet = SEQ CMD
-             (AdminPayload
-             / AdminReplyPayload
-             / AuthPayload
-             / AuthReplyPayload
-             / FilePayload
-             / FileReplyPayload
-             / ProtoPayload
-             / ProtoReplyPayload)
+RESERVED_CMD = %xffffffff
+						 
+             ; VendorDefined are only valid when both the
+             ; client and server agree on compatible
+             ; VENDOR_ID values.
+             ;
+             ; Where:
+             ; Length is the length of data that follows
+             ; *uint8_t Is an array of Length 8-bit values.
+             ; 
+VendorDefined = %x80000000-fffffffe Length *uint8_t
 
+Command = SEQ (Command / VendorDefined)
+CommandReply = SEQ (CommandReply / VendorDefined)
+						 
              ; Length: The number of CommandSet objects.
-PacketBody = Length 1*CommandSet;
+PacketCommand = Length 1*CommandSet
+
+             ; Length: The number of CommandReply objects.
+PacketReply = Length 1*CommandReply
+
+						 
 ]]></artwork>

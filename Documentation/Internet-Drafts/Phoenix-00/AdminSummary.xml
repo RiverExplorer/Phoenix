@@ -64,7 +64,7 @@
 			<name>Administration Comamnd Payload Operations</name>
 			<thead>
 				<tr>
-					<th>Command and Capability Name</th>
+					<th>Name</th>
 					<th>AOID</th>
 					<th>Capability Description.</th>
 					<th>Command Description.</th>

@@ -372,6 +372,12 @@
 				command.
 				Vendor commands have the VENDOR_BIT set in the
 				commands or operations.
+				And vendor commands MUST have a Length value
+				that follows the command that indicates how
+				many octets follow the length.
+				This is so that implementations that do not understand
+				the vendor extension can skip that many more octets
+				to find the next command or operation.
 			</t>
 			<t>
 				If any operation in a command has the VENDOR_BIT set
@@ -405,7 +411,7 @@
 				Clients that do not understand the string value in VENDOR_ID
 				would ignore the commands and capabilities with the
 				VENDOR_BIT set.
-				Which is AUTH_Vendor_e in this example.
+				Which is AUTH_Vendor_3 in this example.
 			</t>
 			<t>
 				This is an example of a CAPABILITY_PRE being sent
@@ -436,11 +442,29 @@
 				A client implementations that understand the contents of the string
 				value for VENDOR_ID, may also understand these extensions.
 			</t>
-			<figure>
+			<t>
+				After each entry that has the VENDOR_BIT set, the next
+				value must be a Length indicating how many octets of data
+				follow the Length, even when zero.
+			</t>
+			<figure anchor="P01-01">
 				<name>Packet Body Vendor - Diagram</name>
 				<artset>
 					<artwork align="center" type="ascii-art" src="Packet-01-01.txt"/>
           <artwork align="center" type="svg" src="Packet-01-01.svg"/>
+				</artset>
+			</figure>
+
+			<t>
+				And the matching data for <xref target="P01-01"/> could be (assumeing
+				all vendor extensions have 0 octets
+				of additional data):
+			</t>				
+			<figure>
+				<name>Packet Body Vendor - Diagram Data</name>
+				<artset>
+					<artwork align="center" type="ascii-art" src="Packet-01-02.txt"/>
+          <artwork align="center" type="svg" src="Packet-01-02.svg"/>
 				</artset>
 			</figure>
 

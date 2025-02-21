@@ -2,10 +2,11 @@
 <section>
 	<name>Administration - SERVER_MANANGE_BANS</name>
 	<t>
-		Perform an Op on users, hosts, IP addresses, IP address ranges,
+		The SERVERM_MANAGE_BANS command allows administrators
+		to ban, or block, specific users hosts, IP addresses, IP address ranges
 		networks.
 	</t>
 	<t>
-		TODO...
+		
 	</t>
 </section>

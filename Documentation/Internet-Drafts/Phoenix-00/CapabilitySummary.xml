@@ -3,6 +3,13 @@
 <section anchor="CAPABILITY"  xmlns:xi="http://www.w3.org/2001/XInclude">
 	<name>Capability Commands Summary</name>
 	<t>
+		The purpose of this protocol is to facilitate the transfer
+		of MIME objects, not to define how they are used.
+		Capabilities allow each endpoint to ensure the other
+		endpoint is capable of transferring the desired content
+		and optionally allow control of the other endpoint.
+	</t>
+	<t>
 		Capabilities are attributes of both a client and server
 		implementation.
 		Some may provide a superset or subset when compared
@@ -11,7 +18,7 @@
 		they specialize in specific operations.
 	</t>
 	<t>
-		A capability is a 31-bit integer.
+		A capability is a 31-bit unsigned integer.
 		Plus a 1-bit identifier signifying if it is a Phoenix capability
 		or vendor specific capability, for a total of 32-bits.
 	</t>
@@ -19,13 +26,21 @@
 		This specification describes several capabilities.
 		Some are described in other sections, and some are
 		described in this section.
-		See appendix XREF-TODO for a complete list in this specification.
+		See the <xref target="CapabilityIndex">Capability Index</xref>
+		for a complete list	in this specification.
+	</t>
+	<t>
+		These are not a negotiation.
+		Each sends their abilities to the other.
+		Once before authentication, and once after.
 	</t>
 
 	<t>
-		Capabilities from the server arrive twice.
+		Capabilities from the server are sent twice.
 		Once before the user is authenticated (CAPABILITY_PRE),
 		and once after (CAPABILITY_POST).
+		If a user logs out and stays connected, then the process starts
+		over with the server assuming a new client just connected.
 	</t>
 	<t>
 		Capabilities from the client may be sent, zero, once, or twice
@@ -48,111 +63,152 @@
 		value.
 	</t>
 	<t>
-		Table <xref target="PreAuthCap"/> lists the CAPABILITY_PRE
-		capabilities.
+		<em>NOTE: Vendor specific capabilities MUST have no data.
+		This is because there is no way a non compatible implementation
+		could calculate the length of the data that would follow it
+		in order to find the next capability or command in the packet.
+		When any additional data is needed, it must be done with
+		a vendor specific command, that could also be included
+		in the same packet, and separate from the CAPABILITY_PRE
+		and CAPABILITY_POST list.
+		In such cases, the vendor specific capability would inform
+		the other endpoint to look for the additional vendor
+		specific command data in the packet.
+		</em>
 	</t>
-	<table anchor="PreAuthCap">
-		<name>Capabilities - CAPABILITY_PRE</name>
-		<thead>
-			<tr>
-				<th>Name</th>
-				<th>Value</th>
-				<th>Data Type</th>
-				<th>Required or Optional</th>
-				<th>Description</th>
-			</tr>
-		</thead>
-		<tbody>
-			<tr>
-				<td>AUTHANONYMOUS</td>
-				<td>%x26:31</td>
-				<td>Boolean</td>
-				<td>Optional</td>
-				<td>
-					<t>
-						No authentication required.
-						An example usage could be a shared company
-						bulletin board where most employees had
-						view only access to the messages.
-						And perhaps the server only allowed
-						company local IP addresses to use this
-						authentication method.
-					</t>
-					<t>
-					</t>
-				</td>
-			</tr>
-			<tr>
-				<td>AUTHMD5</td>
-				<td>%x10:31</td>
-				<td>Boolean</td>
-				<td>Required</td>
-				<td>
-					<t>
-						Authenticate by providing an MD5 password.
-					</t>
-					<t>
-						If not supported, the value must be false.
-						When supported, the value must be true.
-					</t>
-				</td>
-			</tr>
-			<tr>
-				<td>AUTHCERT</td>
-				<td>%x11:31</td>
-				<td>Boolean</td>
-				<td>Optional</td>
-				<td>
-					<t>
-						Authenticate by providing a certificate.
-						This can be used for humans, and can be used
-						by automated connections.
-					</t>
-					<t>
-						Not being provided is the same as false.
-						May have a true or false value as needed.
-					</t>
-				</td>
-			</tr>
-			<tr>
-				<td>VENDOR_ID</td>
-				<td>%x12:31</td>
-				<td>string</td>
-				<td>Optional</td>
-				<td>
-					<t>
-						VENDOR_ID includes a vendor ID
-						string that can be used to help the server determine
-						if it will send a post-authentication ADMIN capability.
-					</t>
-					<t>
-						The specific string value is determined by the server
-						implementation and is out of scope for this specification.
-					</t>
-				</td>
-			</tr>
-		</tbody>
-	</table>
-			
+
 	<t>
-		Table <xref target="PostAuthCap"/> lists the CAPABILITY_POST
+		Table <xref target="PreAuthCap"/> lists some CAPABILITY_PRE
 		capabilities.
-		Post-Authentication capabilities are sent to the client after
-		a user authenticates.
 	</t>
-	<table anchor="PostAuthCap">
-		<name>Capabilities - CAPABILITY_POST</name>
-		<thead>
-			<tr>
-				<th>Name</th><th>Value</th><th>Description</th>
-			</tr>
-		</thead>
-		<tbody>
-			<tr>
-				<td>x</td><td>x1</td><td>x2</td>
-			</tr>
-		</tbody>
-	</table>
+
+	<t>
+		Some capabilities have data associated with them, others do not.
+	</t>
+	<section>
+		<name>Capability - CAPABILITY_PRE</name>
+		<t>
+			Capabilities sent before authentication are called
+			CAPABILITY_PRE and are sent from the server to the client
+			and optionally from the client to the server.
+		</t>
+		<t>
+			The only CAPABILITY_PRE that the client sends to the server
+			is the VENDOR_ID.
+			Vendors may add new client to server capabilities as long
+			as they set the VENDOR_BIT in the command and are implemented
+			to understand that not all server will understand their
+			vendor specific extensions.
+		</t>
+		<table anchor="PreAuthCap">
+			<name>Capabilities - CAPABILITY_PRE</name>
+			<thead>
+				<tr>
+					<th>Name</th>
+					<th>Value</th>
+					<th>Value Type</th>
+					<th>Description</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr>
+					<td>AUTHANONYMOUS</td>
+					<td>%x26:31</td>
+					<td></td>
+					<td>
+						<t>
+							No authentication required.
+							An example usage could be a shared company
+							bulletin board where most employees had
+							view only access to the messages.
+							And perhaps the server only allowed
+							company local IP addresses to use this
+							authentication method.
+						</t>
+						<t>
+						</t>
+					</td>
+				</tr>
+				<tr>
+					<td>AUTHMD5</td>
+					<td>%x10:31</td>
+					<td></td>
+					<td>
+						<t>
+							Authenticate by providing an account name
+							and an MD5 password.
+						</t>
+					</td>
+				</tr>
+				<tr>
+					<td>AUTHCERT</td>
+					<td>%x11:31</td>
+					<td>
+						AuthcertType
+					</td>
+					<td>
+						<t>
+							Authenticate by providing a certificate.
+						</t>
+						<t>
+							There are two AuthcertType values:
+						</t>
+						<ul>
+							<li>
+								AUTHCERT_TLS: Authenticate using the
+								connected TLS certificate.
+							</li>
+							<li>
+								AUTHCERT_USER: A second certificate
+								is available to use that must match
+								what the client is using.
+							</li>
+						</ul>
+					</td>
+				</tr>
+				<tr>
+					<td>VENDOR_ID</td>
+					<td>%x12:31</td>
+					<td>string</td>
+					<td>
+						<t>
+							VENDOR_ID includes a vendor ID
+							string that can be used to help the server determine
+							if it will send a post-authentication ADMIN capability.
+						</t>
+						<t>
+							The specific string value is determined by the server
+							implementation and is out of scope for this specification.
+						</t>
+					</td>
+				</tr>
+			</tbody>
+		</table>
+	</section>
+
+	<section>
+		<name>Capability - CAPABILITY_POST</name>
+		<t>
+			Table <xref target="PostAuthCap"/> lists the CAPABILITY_POST
+			capabilities.
+			Post-Authentication capabilities are sent to the client after
+			a user authenticates.
+		</t>
+
+		<table anchor="PostAuthCap">
+			<name>Capabilities - CAPABILITY_POST</name>
+			<thead>
+				<tr>
+					<th>Name</th><th>Value</th><th>Description</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr>
+					<td>x</td><td>x1</td><td>x2</td>
+				</tr>
+			</tbody>
+		</table>
+	</section>
 
 	<xi:include href="VendorID.xml"/>
 </section>
