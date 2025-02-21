@@ -52,11 +52,15 @@ Android:
 	$(MAKE) -$(MAKEFLAGS) AndroidRelease
 	$(MAKE) -$(MAKEFLAGS) AndroidTcov
 
-LinuxDebug : LocalNeeds LinuxDebugIncludes Dirs $(LINUX_TARGET.Debug)
+LinuxDebug : LocalNeeds LinuxDebugIncludes Dirs $(LINUX_TARGET.Debug) $(LINUX_TARGET.Debug.Static)
 
 $(LINUX_TARGET.Debug) : $(XDR_GENERATED.all) $(LINUX_OBJECTS.Debug)
 	$(LINUX_CXX) $(LINUX_LDFLAGS.Debug) -o $(LINUX_TARGET.Debug) $(LINUX_OBJECTS.Debug) $(LIBS) $(LINUX_LIBS)
 	install $(LINUX_TARGET.Debug) $(LINUX_INSTALL_DIR.Debug)/bin
+
+$(LINUX_TARGET.Debug.Static) : $(XDR_GENERATED.all) $(LINUX_OBJECTS.Debug)
+	$(LINUX_CXX) $(LINUX_LDFLAGS.Debug) -o $(LINUX_TARGET.Debug.Static) $(LINUX_OBJECTS.Debug) $(SLIBS) $(LINUX_LIBS)
+	install $(LINUX_TARGET.Debug.Static) $(LINUX_INSTALL_DIR.Debug)/sbin
 
 LinuxRelease : LocalNeeds LinuxReleaseIncludes Dirs $(LINUX_TARGET.Release)
 
@@ -64,17 +68,29 @@ $(LINUX_TARGET.Release) : $(XDR_GENERATED.all) $(LINUX_OBJECTS.Release)
 	$(LINUX_CXX) $(LINUX_LDFLAGS.Release) -o $(LINUX_TARGET.Release) $(LINUX_OBJECTS.Release) $(LIBS) $(LINUX_LIBS)
 	install $(LINUX_TARGET.Release) $(LINUX_INSTALL_DIR.Release)/bin
 
+$(LINUX_TARGET.Release.Static) : $(XDR_GENERATED.all) $(LINUX_OBJECTS.Release)
+	$(LINUX_CXX) $(LINUX_LDFLAGS.Release) -o $(LINUX_TARGET.Release.Static) $(LINUX_OBJECTS.Release) $(SLIBS) $(LINUX_LIBS)
+	install $(LINUX_TARGET.Release.Static) $(LINUX_INSTALL_DIR.Release)/sbin
+
 LinuxTcov : LocalNeeds LinuxTcovIncludes Dirs $(LINUX_TARGET.Tcov)
 
 $(LINUX_TARGET.Tcov) : $(XDR_GENERATED.all) $(LINUX_OBJECTS.Tcov)
 	$(LINUX_CXX) $(LINUX_LDFLAGS.Tcov) -o $(LINUX_TARGET.Tcov) $(LINUX_OBJECTS.Tcov) $(LIBS) $(LINUX_LIBS)
 	install $(LINUX_TARGET.Tcov) $(LINUX_INSTALL_DIR.Tcov)/bin
 
+$(LINUX_TARGET.Tcov.Static) : $(XDR_GENERATED.all) $(LINUX_OBJECTS.Tcov)
+	$(LINUX_CXX) $(LINUX_LDFLAGS.Tcov) -o $(LINUX_TARGET.Tcov.Static) $(LINUX_OBJECTS.Tcov) $(SLIBS) $(LINUX_LIBS)
+	install $(LINUX_TARGET.Tcov.Static) $(LINUX_INSTALL_DIR.Tcov)/sbin
+
 W64Debug : LocalNeeds W64DebugIncludes Dirs $(W64_TARGET.Debug)
 
 $(W64_TARGET.Debug) :	$(XDR_GENERATED.all) $(W64_OBJECTS.Debug)
 	$(W64_CXX) -fPIC $(W64_LDFLAGS.Debug) -o $(W64_TARGET.Debug) $(W64_OBJECTS.Debug) $(LIBS) $(W64_LIBS)
 	if [ -r $(W64_TARGET.Debug) ]; then install $(W64_TARGET.Debug) $(W64_INSTALL_DIR.Debug)/bin ; fi;
+
+$(W64_TARGET.Debug.Static) :	$(XDR_GENERATED.all) $(W64_OBJECTS.Debug)
+	$(W64_CXX) -fPIC $(W64_LDFLAGS.Debug) -o $(W64_TARGET.Debug.Static) $(W64_OBJECTS.Debug) $(SLIBS) $(W64_LIBS)
+	if [ -r $(W64_TARGET.Debug.Static) ]; then install $(W64_TARGET.Debug.Static) $(W64_INSTALL_DIR.Debug)/sbin ; fi;
 
 W64Release : LocalNeeds W64ReleaseIncludes Dirs $(W64_TARGET.Release)
 
@@ -83,17 +99,30 @@ $(W64_TARGET.Release) : $(XDR_GENERATED.all) $(W64_OBJECTS.Release)
 	$(W64_STRIP) $(W64_TARGET.Release)
 	if [ -r $(W64_TARGET.Release) ]; then install $(W64_TARGET.Release) $(W64_INSTALL_DIR.Release)/bin ; fi;
 
+$(W64_TARGET.Release.Static) : $(XDR_GENERATED.all) $(W64_OBJECTS.Release)
+	$(W64_CXX) -fPIC $(W64_LDFLAGS.Release.Static) -o $(W64_TARGET.Release) $(W64_OBJECTS.Release) $(SLIBS) $(W64_LIBS)
+	$(W64_STRIP) $(W64_TARGET.Release.Static)
+	if [ -r $(W64_TARGET.Release.Static) ]; then install $(W64_TARGET.Release.Static) $(W64_INSTALL_DIR.Release)/sbin ; fi;
+
 W64Tcov : LocalNeeds W64TcovIncludes Dirs $(W64_TARGET.Tcov)
 
 $(W64_TARGET.Tcov) :	$(XDR_GENERATED.all) $(W64_OBJECTS.Tcov)
-	$(W64_CXX) -fPIC $(W64_LDFLAGS.Tcov) -o $(W64_TARGET.Tcov).dll $(W64_OBJECTS.Tcov) $(LIBS) $(W64_LIBS)
-	if [ -r $(W64_TARGET.Tcov).dll ]; then install $(W64_TARGET.Tcov).dll $(W64_INSTALL_DIR.Tcov)/bin ; fi;
+	$(W64_CXX) -fPIC $(W64_LDFLAGS.Tcov) -o $(W64_TARGET.Tcov) $(W64_OBJECTS.Tcov) $(LIBS) $(W64_LIBS)
+	if [ -r $(W64_TARGET.Tcov).dll ]; then install $(W64_TARGET.Tcov) $(W64_INSTALL_DIR.Tcov)/bin ; fi;
+
+$(W64_TARGET.Tcov.Static) :	$(XDR_GENERATED.all) $(W64_OBJECTS.Tcov)
+	$(W64_CXX) -fPIC $(W64_LDFLAGS.Tcov) -o $(W64_TARGET.Tcov.Static) $(W64_OBJECTS.Tcov) $(SLIBS) $(W64_LIBS)
+	if [ -r $(W64_TARGET.Tcov.Static).dll ]; then install $(W64_TARGET.Tcov.Static) $(W64_INSTALL_DIR.Tcov)/sbin ; fi;
 
 AndroidDebug : LocalNeeds AndroidDebugIncludes Dirs $(ANDROID_TARGET.Debug)
 
 $(ANDROID_TARGET.Debug) :	$(XDR_GENERATED.all) $(ANDROID_OBJECTS.Debug)
 	$(ANDROID_CXX) -fPIC $(ANDROID_LDFLAGS.Debug) $(LIBS) -o $(ANDROID_TARGET.Debug) $(ANDROID_OBJECTS.Debug) $(ANDROID_LIBS)
 	install $(ANDROID_TARGET.Debug) $(ANDROID_INSTALL_DIR.Debug)/bin
+
+$(ANDROID_TARGET.Debug.Static) :	$(XDR_GENERATED.all) $(ANDROID_OBJECTS.Debug)
+	$(ANDROID_CXX) -fPIC $(ANDROID_LDFLAGS.Debug) $(SLIBS) -o $(ANDROID_TARGET.Debug.Static) $(ANDROID_OBJECTS.Debug) $(ANDROID_LIBS)
+	install $(ANDROID_TARGET.Debug.Static) $(ANDROID_INSTALL_DIR.Debug)/sbin
 
 AndroidRelease : LocalNeeds AndroidReleaseIncludes Dirs $(ANDROID_TARGET.Release)
 
@@ -102,17 +131,26 @@ $(ANDROID_TARGET.Release) : $(XDR_GENERATED.all) $(ANDROID_OBJECTS.Release)
 	$(ANDROID_STRIP) $(ANDROID_TARGET.Release)
 	install $(ANDROID_TARGET.Release) $(ANDROID_INSTALL_DIR.Release)/bin
 
+$(ANDROID_TARGET.Release.Static) : $(XDR_GENERATED.all) $(ANDROID_OBJECTS.Release)
+	$(ANDROID_CXX) -fPIC $(ANDROID_LDFLAGS.Release) $(SLIBS) -o $(ANDROID_TARGET.Release.Static) $(ANDROID_OBJECTS.Release) $(ANDROID_LIBS)
+	$(ANDROID_STRIP) $(ANDROID_TARGET.Release.Static)
+	install $(ANDROID_TARGET.Release.Static) $(ANDROID_INSTALL_DIR.Release)/sbin
+
 AndroidTcov : LocalNeeds AndroidTcovIncludes Dirs $(ANDROID_TARGET.Tcov)
 
 $(ANDROID_TARGET.Tcov) :	$(XDR_GENERATED.all) $(ANDROID_OBJECTS.Tcov)
 	$(ANDROID_CXX) -fPIC $(ANDROID_LDFLAGS.Tcov) $(LIBS) -o $(ANDROID_TARGET.Tcov) $(ANDROID_OBJECTS.Tcov) $(ANDROID_LIBS)
 	install $(ANDROID_TARGET.Tcov) $(ANDROID_INSTALL_DIR.Tcov)/bin
 
+$(ANDROID_TARGET.Tcov.Static) :	$(XDR_GENERATED.all) $(ANDROID_OBJECTS.Tcov)
+	$(ANDROID_CXX) -fPIC $(ANDROID_LDFLAGS.Tcov) $(SLIBS) -o $(ANDROID_TARGET.Tcov.Static) $(ANDROID_OBJECTS.Tcov) $(ANDROID_LIBS)
+	install $(ANDROID_TARGET.Tcov.Static) $(ANDROID_INSTALL_DIR.Tcov)/sbin
+
 LinuxDebugIncludes : $(LINUX_INCLUDE_DIR.Debug) $(SOURCES.h) $(SOURCES.hpp)
 ifneq ($(SOURCES.h),)
 	install --mode=444 $(SOURCES.h) $(LINUX_INCLUDE_DIR.Debug)/$(TARGET)
 endif	
-ifneq ($(SOURCES.hpp),)
+ ifneq ($(SOURCES.hpp),)
 	install --mode=444 $(SOURCES.hpp) $(LINUX_INCLUDE_DIR.Debug)/$(TARGET)
 endif
 
@@ -123,7 +161,7 @@ endif
 ifneq ($(SOURCES.hpp),)
 	install --mode=444 $(SOURCES.hpp) $(LINUX_INCLUDE_DIR.Tcov)/$(TARGET)
 endif	
-	
+
 LinuxReleaseIncludes : $(LINUX_INCLUDE_DIR.Release) $(SOURCES.h) $(SOURCES.hpp)
 ifneq ($(SOURCES.h),)
 	install --mode=444 $(SOURCES.h) $(LINUX_INCLUDE_DIR.Release)/$(TARGET)
@@ -131,7 +169,7 @@ endif
 ifneq ($(SOURCES.hpp),)
 	install --mode=444 $(SOURCES.hpp) $(LINUX_INCLUDE_DIR.Release)/$(TARGET)
 endif	
-	
+
 W64DebugIncludes : $(W64_INCLUDE_DIR.Debug) $(SOURCES.h) $(SOURCES.hpp)
 ifneq ($(SOURCES.h),)
 	install --mode=444 $(SOURCES.h) $(W64_INCLUDE_DIR.Debug)/$(TARGET)
@@ -139,7 +177,7 @@ endif
 ifneq ($(SOURCES.hpp),)
 	install --mode=444 $(SOURCES.hpp) $(W64_INCLUDE_DIR.Debug)/$(TARGET)
 endif	
-	
+
 W64TcovIncludes : $(W64_INCLUDE_DIR.Tcov) $(SOURCES.h) $(SOURCES.hpp)
 ifneq ($(SOURCES.h),)
 	install --mode=444 $(SOURCES.h) $(W64_INCLUDE_DIR.Tcov)/$(TARGET)
@@ -147,7 +185,7 @@ endif
 ifneq ($(SOURCES.hpp),)
 	install --mode=444 $(SOURCES.hpp) $(W64_INCLUDE_DIR.Tcov)/$(TARGET)
 endif	
-	
+
 W64ReleaseIncludes : $(W64_INCLUDE_DIR.Release) $(SOURCES.h) $(SOURCES.hpp)
 ifneq ($(SOURCES.h),)
 	install --mode=444 $(SOURCES.h) $(W64_INCLUDE_DIR.Release)/$(TARGET)
@@ -155,7 +193,7 @@ endif
 ifneq ($(SOURCES.hpp),)
 	install --mode=444 $(SOURCES.hpp) $(W64_INCLUDE_DIR.Release)/$(TARGET)
 endif	
-	
+
 AndroidDebugIncludes : $(ANDROID_INCLUDE_DIR.Debug) $(SOURCES.h) $(SOURCES.hpp)
 ifneq ($(SOURCES.h),)
 	install --mode=444 $(SOURCES.h) $(ANDROID_INCLUDE_DIR.Debug)/$(TARGET)
@@ -163,7 +201,7 @@ endif
 ifneq ($(SOURCES.hpp),)
 	install --mode=444 $(SOURCES.hpp) $(ANDROID_INCLUDE_DIR.Debug)/$(TARGET)
 endif	
-	
+
 AndroidTcovIncludes : $(ANDROID_INCLUDE_DIR.Tcov) $(SOURCES.h) $(SOURCES.hpp)
 ifneq ($(SOURCES.h),)
 	install --mode=444 $(SOURCES.h) $(ANDROID_INCLUDE_DIR.Tcov)/$(TARGET)
@@ -171,7 +209,7 @@ endif
 ifneq ($(SOURCES.hpp),)
 	install --mode=444 $(SOURCES.hpp) $(ANDROID_INCLUDE_DIR.Tcov)/$(TARGET)
 endif	
-	
+
 AndroidReleaseIncludes : $(ANDROID_INCLUDE_DIR.Releaes) $(ANDROID_INCLUDE_DIR) $(SOURCES.h) $(SOURCES.hpp)
 ifneq ($(SOURCES.h),)
 	install --mode=444 $(SOURCES.h) $(ANDROID_INCLUDE_DIR.Release)/$(TARGET)

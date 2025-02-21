@@ -40,9 +40,14 @@
 # Or for library (NO FILE extension)
 #  example: TARGET		= libMyLibrary
 #
-TARGET.Release  =		$(TARGET)
-TARGET.Debug		=		$(TARGET)
-TARGET.Tcov			=		$(TARGET)
+TARGET.Release  				=		$(TARGET)
+TARGET.Release.Static  	=		$(TARGET)
+
+TARGET.Debug						=		$(TARGET)
+TARGET.Debug.Static			=		$(TARGET)
+
+TARGET.Tcov							=		$(TARGET)
+TARGET.Tcov.Static			=		$(TARGET)
 
 ####
 ### HEADER FILES
@@ -94,16 +99,31 @@ ANDROID_CXX			=~doug/Android/android-ndk-r26/toolchains/llvm/prebuilt/linux-x86_
 ANDROID_STRIP		= ~/Android/android-ndk-r26/toolchains/llvm/prebuilt/linux-x86_64/bin/llvm-strip
 
 LINUX_TARGET.Release = $(BUILD_DIR)/Linux/Release/bin/$(TARGET.Release)
+LINUX_TARGET.Release.Static = $(BUILD_DIR)/Linux/Release/sbin/$(TARGET.Release)
+
 LINUX_TARGET.Debug = $(BUILD_DIR)/Linux/Debug/bin/$(TARGET.Debug)
+LINUX_TARGET.Debug.Static = $(BUILD_DIR)/Linux/Debug/sbin/$(TARGET.Debug)
+
 LINUX_TARGET.Tcov = $(BUILD_DIR)/Linux/Tcov/bin/$(TARGET.Tcov)
+LINUX_TARGET.Tcov.Static = $(BUILD_DIR)/Linux/Tcov/sbin/$(TARGET.Tcov)
 
 W64_TARGET.Release = $(BUILD_DIR)/W64/Release/bin/$(TARGET.Release).exe
+W64_TARGET.Release.Static = $(BUILD_DIR)/W64/Release/sbin/$(TARGET.Release).exe
+
 W64_TARGET.Debug = $(BUILD_DIR)/W64/Debug/bin/$(TARGET.Debug).exe
+W64_TARGET.Debug.Static = $(BUILD_DIR)/W64/Debug/sbin/$(TARGET.Debug).exe
+
 W64_TARGET.Tcov = $(BUILD_DIR)/W64/Tcov/bin/$(TARGET.Tcov).exe
+W64_TARGET.Tcov.Static = $(BUILD_DIR)/W64/Tcov/sbin/$(TARGET.Tcov).exe
 
 ANDROID_TARGET.Release = $(BUILD_DIR)/Android/Release/bin/$(TARGET.Release)
+ANDROID_TARGET.Release.Static = $(BUILD_DIR)/Android/Release/sbin/$(TARGET.Release)
+
 ANDROID_TARGET.Debug = $(BUILD_DIR)/Android/Debug/bin/$(TARGET.Debug)
+ANDROID_TARGET.Debug.Static = $(BUILD_DIR)/Android/Debug/sbin/$(TARGET.Debug)
+
 ANDROID_TARGET.Tcov = $(BUILD_DIR)/Android/Tcov/bin/$(TARGET.Tcov)
+ANDROID_TARGET.Tcov.Static = $(BUILD_DIR)/Android/Tcov/sbin/$(TARGET.Tcov)
 
 # C++ source files.
 #
@@ -280,7 +300,7 @@ LINUX_CPPFLAGS.Release += \
 							-I$(LINUX_INSTALL_DIR.Release)/include \
 							-I$(LINUX_INSTALL_DIR.Release)/include/$(TARGET.Release) \
 							-I$(BUILD_DIR)/Linux/Release/include
-											 
+
 # Flags for LINUX Debug builds.
 #
 LINUX_CPPFLAGS.Debug += \
@@ -313,7 +333,7 @@ W64_CPPFLAGS.Release += \
 							-I$(W64_INSTALL_DIR.Release)/include \
 							-I$(W64_INSTALL_DIR.Release)/include/$(TARGET.Release) \
 							-I$(BUILD_DIR)/W64/Release \
-										 
+
 # Flags for WINDOWS Debug builds.
 #
 W64_CPPFLAGS.Debug += \
@@ -342,7 +362,7 @@ ANDROID_CPPFLAGS.Release += \
 							-I$(ANDROID_INSTALL_DIR.Release)/include \
 							-I$(ANDROID_INSTALL_DIR.Release)/include/$(TARGET.Release) \
 							-I$(BUILD_DIR)/Android/Release
-												 
+
 # Flags common to all ANDROID Debug builds
 #
 ANDROID_CPPFLAGS.Debug += \

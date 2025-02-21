@@ -75,11 +75,11 @@ Android:
 	$(MAKE) -$(MAKEFLAGS) AndroidTcov.Pic
 	$(MAKE) -$(MAKEFLAGS) AndroidTcov.Static
 
-LinuxDebug : LinuxDebug.Pic LinuxDebug.Static
+LinuxDebug : LinuxDebug.Pic LinuxDebug.Static TestSubDirs
 
-LinuxDebug.Pic : LocalNeeds Dirs LinuxDebugIncludes PreBuildDirs $(LINUX_TARGET.Debug.Pic) PostBuild_LinuxDebug SubDirs TestSubDirs
+LinuxDebug.Pic : LocalNeeds Dirs LinuxDebugIncludes PreBuildDirs $(LINUX_TARGET.Debug.Pic) PostBuild_LinuxDebug SubDirs 
 
-LinuxDebug.Static : LocalNeeds Dirs LinuxDebugIncludes PreBuildDirs $(LINUX_TARGET.Debug.Static) PostBuild_LinuxDebug SubDirs TestSubDirs
+LinuxDebug.Static : LocalNeeds Dirs LinuxDebugIncludes PreBuildDirs $(LINUX_TARGET.Debug.Static) PostBuild_LinuxDebug SubDirs
 
 $(LINUX_TARGET.Debug.Pic) : $(XDR_GENERATED.all) $(LINUX_OBJECTS.Debug.Pic)
 	$(LINUX_CXX) -shared $(LINUX_LDFLAGS.Debug.Pic) -o $(LINUX_TARGET.Debug.Pic) $(LINUX_OBJECTS.Debug.Pic) $(LIBS) $(LINUX_LIBS)
@@ -91,9 +91,11 @@ $(LINUX_TARGET.Debug.Static) : $(XDR_GENERATED.all) $(LINUX_OBJECTS.Debug.Static
 	$(AR) rv $(LINUX_TARGET.Debug.Static) $(LINUX_OBJECTS.Debug.Static)
 	$(INSTALL.RO) $(LINUX_TARGET.Debug.Static) $(LINUX_INSTALL_DIR.Debug)/lib
 
-LinuxRelease.Pic : LocalNeeds Dirs LinuxReleaseIncludes PreBuildDirs $(LINUX_TARGET.Release.Pic) PostBuild_LinuxRelease SubDirs TestSubDirs
+LinuxRelease : LinuxRelease.Pic LinuxRelease.Static TestSubDirs
 
-LinuxRelease.Static : LocalNeeds Dirs LinuxReleaseIncludes  PreBuildDirs $(LINUX_TARGET.Release.Static) PostBuild_LinuxRelease SubDirs TestSubDirs
+LinuxRelease.Pic : LocalNeeds Dirs LinuxReleaseIncludes PreBuildDirs $(LINUX_TARGET.Release.Pic) PostBuild_LinuxRelease SubDirs
+
+LinuxRelease.Static : LocalNeeds Dirs LinuxReleaseIncludes  PreBuildDirs $(LINUX_TARGET.Release.Static) PostBuild_LinuxRelease SubDirs
 
 $(LINUX_TARGET.Release.Pic) : $(XDR_GENERATED.all) $(LINUX_OBJECTS.Release.Pic)
 	$(LINUX_CXX) -shared $(LINUX_LDFLAGS.Release.Pic) -o $(LINUX_TARGET.Release.Pic) $(LINUX_OBJECTS.Release.Pic) $(LIBS) $(LINUX_LIBS)
@@ -102,12 +104,14 @@ $(LINUX_TARGET.Release.Pic) : $(XDR_GENERATED.all) $(LINUX_OBJECTS.Release.Pic)
 	(cd $(LINUX_INSTALL_DIR.Release)/lib ; $(RM) lib$(TARGET).so ; ln -s lib$(TARGET).so.$(VERSION) lib$(TARGET).so)
 
 $(LINUX_TARGET.Release.Static) : $(XDR_GENERATED.all) $(LINUX_OBJECTS.Release.Static)
-	$(AR) rv $(LINUX_TARGET.Release.Static).a $(LINUX_OBJECTS.Release.Static)
+	$(AR) rv $(LINUX_TARGET.Release.Static) $(LINUX_OBJECTS.Release.Static)
 	$(INSTALL.RO) $(LINUX_TARGET.Release.Static) $(LINUX_INSTALL_DIR.Release)/lib
 
-LinuxTcov.Pic : LocalNeeds Dirs LinuxTcovIncludes PreBuildDirs $(LINUX_TARGET.Tcov.Pic) PostBuild_LinuxTcov SubDirs TestSubDirs
+LinuxTcov : LinuxTcov.Pic LinuxTcov.Static TestSubDirs
 
-LinuxTcov.Static : LocalNeeds Dirs LinuxTcovIncludes PreBuildDirs $(LINUX_TARGET.Tcov.Static) PostBuild_LinuxTcov SubDirs TestSubDirs
+LinuxTcov.Pic : LocalNeeds Dirs LinuxTcovIncludes PreBuildDirs $(LINUX_TARGET.Tcov.Pic) PostBuild_LinuxTcov SubDirs
+
+LinuxTcov.Static : LocalNeeds Dirs LinuxTcovIncludes PreBuildDirs $(LINUX_TARGET.Tcov.Static) PostBuild_LinuxTcov SubDirs
 
 $(LINUX_TARGET.Tcov.Pic) : $(XDR_GENERATED.all) $(LINUX_OBJECTS.Tcov.Pic)
 	$(LINUX_CXX) -shared $(LINUX_LDFLAGS.Tcov.Pic) -o $(LINUX_TARGET.Tcov.Pic) $(LINUX_OBJECTS.Tcov.Pic) $(LIBS) $(LINUX_LIBS)
@@ -122,11 +126,11 @@ $(LINUX_TARGET.Tcov.Static) : $(XDR_GENERATED.all) $(LINUX_OBJECTS.Tcov.Static)
 W64Debug : W64Debug.Pic W64Debug.Static
 
 ifneq ($(W64_SOURCES.cs),)
-W64Debug.Pic : LocalNeeds Dirs W64DebugIncludes  PreBuildDirs $(W64_TARGET.Debug.Pic) $(W64_TARGET_CS.Debug).dll PostBuild_W64Debug SubDirs TestSubDirs
-W64Debug.Static : LocalNeeds Dirs W64DebugIncludes  PreBuildDirs $(W64_TARGET.Debug.Static) $(W64_TARGET_CS.Debug).dll PostBuild_W64Debug SubDirs TestSubDirs
+W64Debug.Pic : LocalNeeds Dirs W64DebugIncludes  PreBuildDirs $(W64_TARGET.Debug.Pic) $(W64_TARGET_CS.Debug).dll PostBuild_W64Debug SubDirs
+W64Debug.Static : LocalNeeds Dirs W64DebugIncludes  PreBuildDirs $(W64_TARGET.Debug.Static) $(W64_TARGET_CS.Debug).dll PostBuild_W64Debug SubDirs
 else
-W64Debug.Pic : LocalNeeds Dirs W64DebugIncludes  PreBuildDirs $(W64_TARGET.Debug.Pic) PostBuild_W64Debug SubDirs TestSubDirs
-W64Debug.Static : LocalNeeds Dirs W64DebugIncludes  PreBuildDirs $(W64_TARGET.Debug.Static) PostBuild_W64Debug SubDirs TestSubDirs
+W64Debug.Pic : LocalNeeds Dirs W64DebugIncludes  PreBuildDirs $(W64_TARGET.Debug.Pic) PostBuild_W64Debug SubDirs
+W64Debug.Static : LocalNeeds Dirs W64DebugIncludes  PreBuildDirs $(W64_TARGET.Debug.Static) PostBuild_W64Debug SubDirs
 endif
 
 $(W64_TARGET.Debug.Pic) : $(XDR_GENERATED.all) $(W64_OBJECTS.Debug.Pic)
@@ -143,11 +147,11 @@ $(W64_TARGET.Debug.Static) : $(XDR_GENERATED.all) $(W64_OBJECTS.Debug.Static)
 W64Release : W64Release.Pic W64Release.Static
 
 ifneq ($(W64_SOURCES.cs),)
-W64Release.Pic : LocalNeeds Dirs W64ReleaseIncludes  PreBuildDirs $(W64_TARGET.Release.Pic) $(W64_TARGET_CS.Release).dll PostBuild_W64Release SubDirs TestSubDirs
-W64Release.Static : LocalNeeds Dirs W64ReleaseIncludes  PreBuildDirs $(W64_TARGET.Release.Static) $(W64_TARGET_CS.Release).dll PostBuild_W64Release SubDirs TestSubDirs
+W64Release.Pic : LocalNeeds Dirs W64ReleaseIncludes  PreBuildDirs $(W64_TARGET.Release.Pic) $(W64_TARGET_CS.Release).dll PostBuild_W64Release SubDirs
+W64Release.Static : LocalNeeds Dirs W64ReleaseIncludes  PreBuildDirs $(W64_TARGET.Release.Static) $(W64_TARGET_CS.Release).dll PostBuild_W64Release SubDirs
 else
-W64Release.Pic : LocalNeeds Dirs W64ReleaseIncludes  PreBuildDirs $(W64_TARGET.Release.Pic) PostBuild_W64Release SubDirs TestSubDirs
-W64Release.Static : LocalNeeds Dirs W64ReleaseIncludes  PreBuildDirs $(W64_TARGET.Release.Static) PostBuild_W64Release SubDirs TestSubDirs
+W64Release.Pic : LocalNeeds Dirs W64ReleaseIncludes  PreBuildDirs $(W64_TARGET.Release.Pic) PostBuild_W64Release SubDirs
+W64Release.Static : LocalNeeds Dirs W64ReleaseIncludes  PreBuildDirs $(W64_TARGET.Release.Static) PostBuild_W64Release SubDirs
 endif
 
 $(W64_TARGET.Release.Pic) : $(XDR_GENERATED.all) $(W64_OBJECTS.Release.Pic)
@@ -168,11 +172,11 @@ endif
 W64Tcov : W64Tcov.Pic W64Tcov.Static
 
 ifneq ($(W64_SOURCES.cs),)
-W64Tcov.Pic : LocalNeeds Dirs W64TcovIncludes  PreBuildDirs $(W64_TARGET.Tcov.Pic) $(W64_TARGET_CS.Tcov).dll PostBuild_W64Tcov SubDirs TestSubDirs
-W64Tcov.Static : LocalNeeds Dirs W64TcovIncludes  PreBuildDirs $(W64_TARGET.Tcov.Static) $(W64_TARGET_CS.Tcov).dll PostBuild_W64Tcov SubDirs TestSubDirs
+W64Tcov.Pic : LocalNeeds Dirs W64TcovIncludes  PreBuildDirs $(W64_TARGET.Tcov.Pic) $(W64_TARGET_CS.Tcov).dll PostBuild_W64Tcov SubDirs
+W64Tcov.Static : LocalNeeds Dirs W64TcovIncludes  PreBuildDirs $(W64_TARGET.Tcov.Static) $(W64_TARGET_CS.Tcov).dll PostBuild_W64Tcov SubDirs
 else
-W64Tcov.Pic : LocalNeeds Dirs W64TcovIncludes  PreBuildDirs $(W64_TARGET.Tcov.Pic) PostBuild_W64Tcov SubDirs TestSubDirs
-W64Tcov.Static : LocalNeeds Dirs W64TcovIncludes  PreBuildDirs $(W64_TARGET.Tcov.Static) PostBuild_W64Tcov SubDirs TestSubDirs
+W64Tcov.Pic : LocalNeeds Dirs W64TcovIncludes  PreBuildDirs $(W64_TARGET.Tcov.Pic) PostBuild_W64Tcov SubDirs
+W64Tcov.Static : LocalNeeds Dirs W64TcovIncludes  PreBuildDirs $(W64_TARGET.Tcov.Static) PostBuild_W64Tcov SubDirs
 endif
 
 $(W64_TARGET.Tcov.Pic) : $(XDR_GENERATED.all) $(W64_OBJECTS.Tcov.Pic)
@@ -191,9 +195,9 @@ endif
 
 AndroidDebug : AndroidDebug.Pic AndroidDebug.Static
 
-AndroidDebug.Pic : LocalNeeds Dirs AndroidDebugIncludes  PreBuildDirs $(ANDROID_TARGET.Debug.Pic) PostBuild_AndroidDebug SubDirs TestSubDirs
+AndroidDebug.Pic : LocalNeeds Dirs AndroidDebugIncludes  PreBuildDirs $(ANDROID_TARGET.Debug.Pic) PostBuild_AndroidDebug SubDirs
 
-AndroidDebug.Static : LocalNeeds Dirs AndroidDebugIncludes  PreBuildDirs $(ANDROID_TARGET.Debug.Static) PostBuild_AndroidDebug SubDirs TestSubDirs
+AndroidDebug.Static : LocalNeeds Dirs AndroidDebugIncludes  PreBuildDirs $(ANDROID_TARGET.Debug.Static) PostBuild_AndroidDebug SubDirs
 
 $(ANDROID_TARGET.Debug.Pic) :	$(XDR_GENERATED.all) $(ANDROID_OBJECTS.Debug.Pic)
 	$(ANDROID_CXX) -shared -fPIC $(ANDROID_LDFLAGS.Debug.Pic) $(LIBS) -o $(ANDROID_TARGET.Debug.Pic) $(ANDROID_OBJECTS.Debug.Pic) $(ANDROID_LIBS)
@@ -207,9 +211,9 @@ $(ANDROID_TARGET.Debug.Static) : $(XDR_GENERATED.all) $(ANDROID_OBJECTS.Debug.St
 
 AndroidRelease : AndroidRelease.Pic AndroidRelease.Static
 
-AndroidRelease.Pic : LocalNeeds Dirs AndroidReleaseIncludes  PreBuildDirs $(ANDROID_TARGET.Release.Pic) PostBuild_AndroidRelease SubDirs TestSubDirs
+AndroidRelease.Pic : LocalNeeds Dirs AndroidReleaseIncludes  PreBuildDirs $(ANDROID_TARGET.Release.Pic) PostBuild_AndroidRelease SubDirs
 
-AndroidRelease.Static : LocalNeeds Dirs AndroidReleaseIncludes  PreBuildDirs $(ANDROID_TARGET.Release.Static) PostBuild_AndroidRelease SubDirs TestSubDirs
+AndroidRelease.Static : LocalNeeds Dirs AndroidReleaseIncludes  PreBuildDirs $(ANDROID_TARGET.Release.Static) PostBuild_AndroidRelease SubDirs
 
 $(ANDROID_TARGET.Release.Pic) : $(XDR_GENERATED.all) $(ANDROID_OBJECTS.Release.Pic)
 	$(ANDROID_CXX) -shared -fPIC $(ANDROID_LDFLAGS.Release.Pic) $(LIBS) -o $(ANDROID_TARGET.Release.Pic) $(ANDROID_OBJECTS.Release.Pic) $(ANDROID_LIBS)
@@ -224,9 +228,9 @@ $(ANDROID_TARGET.Release.Static) : $(XDR_GENERATED.all) $(ANDROID_OBJECTS.Releas
 
 AndroidTcov : AndroidTcov.Pic AndroidTcov.Static
 
-AndroidTcov.Pic : LocalNeeds Dirs AndroidTcovIncludes  PreBuildDirs $(ANDROID_TARGET.Tcov.Pic) PostBuild_AndroidTcov SubDirs TestSubDirs
+AndroidTcov.Pic : LocalNeeds Dirs AndroidTcovIncludes  PreBuildDirs $(ANDROID_TARGET.Tcov.Pic) PostBuild_AndroidTcov SubDirs
 
-AndroidTcov.Static : LocalNeeds Dirs AndroidTcovIncludes  PreBuildDirs $(ANDROID_TARGET.Tcov.Static) PostBuild_AndroidTcov SubDirs TestSubDirs
+AndroidTcov.Static : LocalNeeds Dirs AndroidTcovIncludes  PreBuildDirs $(ANDROID_TARGET.Tcov.Static) PostBuild_AndroidTcov SubDirs
 
 $(ANDROID_TARGET.Tcov.Pic) : $(XDR_GENERATED.all) $(ANDROID_OBJECTS.Tcov.Pic)
 	$(ANDROID_CXX) -shared -fPIC $(ANDROID_LDFLAGS.Tcov.Pic) $(LIBS) -o $(ANDROID_TARGET.Tcov.Pic) $(ANDROID_OBJECTS.Tcov.Pic) $(ANDROID_LIBS)
@@ -247,7 +251,7 @@ LinuxTcovIncludes : Dirs $(SOURCES.h) $(SOURCES.hpp) $(LINUX_XDR_GENERATED_ALL.h
 	if [ -d $(GENERATED_FROM_XDR) ];	then $(INSTALL.RO) $(GENERATED_FROM_XDR)/*.hpp $(LINUX_INCLUDE_DIR.Tcov)/$(VENDER)/$(TARGET) ; fi
 
 LinuxReleaseIncludes : Dirs $(SOURCES.h) $(SOURCES.hpp) $(LINUX_XDR_GENERATED_ALL.hpp)
-	$(INSTALL.RO) $(SOURCES.h) $(SOURCES.hpp) $(LINUX_INCLUDE_DIR.Release)/$(TARGET)
+	$(INSTALL.RO) $(SOURCES.h) $(SOURCES.hpp) $(LINUX_INCLUDE_DIR.Release)/$(VENDER)/$(TARGET)
 	if [ -d $(GENERATED_FROM_XDR) ];	then $(INSTALL.RO) $(GENERATED_FROM_XDR)/*.hpp $(LINUX_INCLUDE_DIR.Release)/$(VENDER)/$(TARGET) ; fi
 
 W64DebugIncludes : Dirs $(SOURCES.h) $(SOURCES.hpp) $(W64_XDR_GENERATED_ALL.hpp)
@@ -556,10 +560,15 @@ $(BUILD_DIR)/Linux/Tcov/Static/%.o : $(BUILD_DIR)/Linux/Tcov/%.cpp
 	$(LINUX_CXX) -c $(LINUX_CXXFLAGS.Tcov.Static) $(COMMON_CPPFLAGS) $(LINUX_CPPFLAGS) $(LINUX_CPPFLAGS.Tcov) $< -o $@
 
 $(LINUX_OBJECTS.Relase.Pic) : $(SOURCES.h) $(SOURCES.hpp)
+
 $(LINUX_OBJECTS.Relase.Static) : $(SOURCES.h) $(SOURCES.hpp)
+
 $(LINUX_OBJECTS.Debug.Pic) : $(SOURCES.h) $(SOURCES.hpp)
+
 $(LINUX_OBJECTS.Debug.Static) : $(SOURCES.h) $(SOURCES.hpp)
+
 $(LINUX_OBJECTS.Tcov.Pic) : $(SOURCES.h) $(SOURCES.hpp)
+
 $(LINUX_OBJECTS.Tcov.Static) : $(SOURCES.h) $(SOURCES.hpp)
 
 #
@@ -674,10 +683,15 @@ $(BUILD_DIR)/W64/Tcov/Static/%.o : $(BUILD_DIR)/W64/Tcov/%.cpp
 	$(W64_CXX) -c $(W64_CXXFLAGS.Tcov.Static) $(COMMON_CPPFLAGS) $(W64_CPPFLAGS) $(W64_CPPFLAGS.Tcov) $< -o $@
 
 $(W64_OBJECTS.Relase.Pic) : $(SOURCES.h) $(SOURCES.hpp)
+
 $(W64_OBJECTS.Relase.Static) : $(SOURCES.h) $(SOURCES.hpp)
+
 $(W64_OBJECTS.Debug.Pic) : $(SOURCES.h) $(SOURCES.hpp)
+
 $(W64_OBJECTS.Debug.Static) : $(SOURCES.h) $(SOURCES.hpp)
+
 $(W64_OBJECTS.Tcov.Pic) : $(SOURCES.h) $(SOURCES.hpp)
+
 $(W64_OBJECTS.Tcov.Static) : $(SOURCES.h) $(SOURCES.hpp)
 
 #
@@ -792,10 +806,15 @@ $(BUILD_DIR)/Android/Tcov/Static/%.o : $(BUILD_DIR)/Android/Tcov/%.cpp
 	$(ANDROID_CXX) -c $(ANDROID_CXXFLAGS.Tcov.Static) $(COMMON_CPPFLAGS) $(ANDROID_CPPFLAGS) $(ANDROID_CPPFLAGS.Tcov) $< -o $@
 
 $(ANDROID_OBJECTS.Relase.Pic) : $(SOURCES.h) $(SOURCES.hpp)
+
 $(ANDROID_OBJECTS.Relase.Static) : $(SOURCES.h) $(SOURCES.hpp)
+
 $(ANDROID_OBJECTS.Debug.Pic) : $(SOURCES.h) $(SOURCES.hpp)
+
 $(ANDROID_OBJECTS.Debug.Static) : $(SOURCES.h) $(SOURCES.hpp)
+
 $(ANDROID_OBJECTS.Tcov.Pic) : $(SOURCES.h) $(SOURCES.hpp)
+
 $(ANDROID_OBJECTS.Tcov.Static) : $(SOURCES.h) $(SOURCES.hpp)
 
 ifneq ($(W64_SOURCES.cs),)
