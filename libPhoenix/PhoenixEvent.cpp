@@ -8,94 +8,41 @@
 
 namespace RiverExplorer::Phoenix
 {
-	// The list of known PhoenixEvent's by name.
-	//
-	std::map<std::string,PhoenixEvent::_EventMap*>		PhoenixEvent::_EventByName;
-	
-	// The list of known PhoenixEvent's by ID.
-	//
-	std::map<PhoenixEvent::EventID,PhoenixEvent::_EventMap*>PhoenixEvent::_EventByID;
-	
 	// The list of all known PhoenixEvent's.
 	//
-	std::multimap<PhoenixEvent::EventID,PhoenixEvent::_Register*>	PhoenixEvent::_Registered;
+	std::multimap<Event::Event_e,Event::_Register*>	Event::_Registered;
 
-	// When registring an new event, use this as its ID.
-	//
-	uint64_t		PhoenixEvent::_NextEventID = 1;
-
-	// Predefined event "LogError".
-	//
-	const char * const PhoenixEvent::LogError_s = "LogError";
-
-	// Predefined event "LogWarning".
-	//
-	const char * const PhoenixEvent::LogWarning_s = "LogWarning";
-
-	PhoenixEvent::EventID
-	PhoenixEvent::Register(std::string Name, PhoenixEventCallback Cb)
+	void
+	Event::Register(Event_e Name, EventCallback Cb)
 	{
-		EventID Results = 0;
-
-		std::map<std::string,_EventMap*>::iterator ByNameIt;
-		_EventMap * Map = nullptr;
-
-		// Look to see if Name is already known.
-		//
-		ByNameIt = _EventByName.find(Name);
-
-		if (ByNameIt != _EventByName.end()) {
-			// Name is known, use the existing ID.
-			//
-			Results = ByNameIt->second->ID;
-			Map = ByNameIt->second;
-			
-		} else {
-			// Name was not known, use a new ID.
-			// Create a new callback map for it.
-			//
-			Results = _NextEventID++;	// Get and setup for next.
-			Map = new _EventMap();
-			Map->Name = Name;
-			Map->ID = Results;
-		}
+		Event_e Results = Name;
 
 		//
 		_Register * NewRegister = new _Register;
 
 		// Fill in the details of the registration map.
 		//
-		NewRegister->EventMap = Map;
+		NewRegister->_Event = Name;
 		NewRegister->Callback = Cb;
 
-		// Add the new map to the list of callbacks for Name PhoenixEvent.
-		// An index by PhoenixEvent Name.
-		//
-		_EventByName.insert(std::make_pair(Name,Map));
-
-		// Add the new map to the list of callbacks for Name PhoenixEvent.
-		// An index by PhoenixEvent ID.
-		//
-		_EventByID.insert(std::make_pair(Results,Map));
-
 		// Add the new map to the list of all registered maps, by
-		// PhoenixEvent ID.
+		// Event ID.
 		//
 		_Registered.insert(std::make_pair(Results,NewRegister));
 
-		return(Results);
+		return;
 	}
 	
 	void
-	PhoenixEvent::Unregister(EventID ID, PhoenixEventCallback Cb)
+	Event::Unregister(Event_e ID, EventCallback Cb)
 	{
-		std::multimap<EventID,_Register*>::iterator It;
+		std::multimap<Event_e,_Register*>::iterator It;
 
 		_Register * Item;
 
 		// A list of iterators to be erased.
 		//
-		std::vector<std::multimap<EventID,_Register*>::iterator> ToBeErased;
+		std::vector<std::multimap<Event_e,_Register*>::iterator> ToBeErased;
 		
 		// Unregister the callback
 		//
@@ -105,14 +52,14 @@ namespace RiverExplorer::Phoenix
 			// If Cb is provided, unregister the specific Callback.
 			//
 			if (Cb != nullptr) {
-				if (Item->EventMap->ID == ID && Item->Callback == Cb) {
+				if (Item->_Event == ID && Item->Callback == Cb) {
 					ToBeErased.push_back(It);
 					break;
 				}
 			} else {
 				// Erase all callbacks for ID.
 				//
-				if (Item->EventMap->ID == ID) {
+				if (Item->_Event == ID) {
 					ToBeErased.push_back(It);
 					break;
 				}
@@ -121,7 +68,7 @@ namespace RiverExplorer::Phoenix
 
 		// Now remove the ones we collected for erasure.
 		//
-		std::vector<std::multimap<EventID,_Register*>::iterator>::iterator EraseIt;
+		std::vector<std::multimap<Event_e,_Register*>::iterator>::iterator EraseIt;
 
 		for (EraseIt = ToBeErased.begin()
 					 ; EraseIt != ToBeErased.end()
@@ -135,37 +82,29 @@ namespace RiverExplorer::Phoenix
 		return;
 	}
 
-	PhoenixEvent::_EventMap::~_EventMap()
-	{
-		Name = "";
-		ID = 0;
-
-		return;
-	}
-
-	PhoenixEvent::_Register::~_Register()
+	Event::_Register::~_Register()
 	{
 		// We do not delete it, others may be using it.
 		//
-		EventMap = nullptr;
+		_Event = NoEvent_Event;
 		Callback = nullptr;
 
 		return;
 	}
 	
 	bool
-	PhoenixEvent::DispatchCallbacks(int Fd, EventID ID, void * Data)
+	Event::DispatchCallbacks(int Fd, Event_e ID, void * Data)
 	{
 		bool Results = true;
 
 		// The result set from any match found for ID.
 		//
-		std::pair<std::multimap<EventID,_Register*>::iterator,
-							std::multimap<EventID,_Register*>::iterator> Match;
+		std::pair<std::multimap<Event_e,_Register*>::iterator,
+							std::multimap<Event_e,_Register*>::iterator> Match;
 
 		// The iterator for Match.
 		//
-		std::multimap<EventID,_Register*>::iterator MIt;
+		std::multimap<Event_e,_Register*>::iterator MIt;
 
 		// Look for all matches that are callbacks for ID.
 		//
@@ -206,19 +145,8 @@ namespace RiverExplorer::Phoenix
 	}
 
 	bool
-	PhoenixEvent::InvokeMessage(int Fd, const char * Event, const char * Msg)
+	Event::InvokeMessage(int Fd, Event_e Event, const char * Msg)
 	{
-		EventID ID;
-		std::map<std::string,_EventMap*>::iterator ByNameIt;
-
-		ByNameIt = _EventByName.find(Event);
-
-		if (ByNameIt == _EventByName.end()) {
-			ID = Register(Event, nullptr);
-		} else {
-			ID = ByNameIt->second->ID;
-		}
-
 		if (Msg != nullptr) {
 			std::string Msg2 = Msg;
 
@@ -227,7 +155,7 @@ namespace RiverExplorer::Phoenix
 			}
 			Msg = Msg2.c_str();
 		} 
-		return(DispatchCallbacks(Fd, ID, (void*)Msg));
+		return(DispatchCallbacks(Fd, Event, (void*)Msg));
 	}
 	
 }

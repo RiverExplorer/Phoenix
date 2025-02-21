@@ -12,20 +12,21 @@
 
 namespace RiverExplorer::Phoenix
 {
+	
 	/**
-	 * @defgroup PhoenixEvent RiverExplorer::Phoenix::PhoenixEvent
+	 * @defgroup Event RiverExplorer::Phoenix::Event
 	 *
 	 * This library implements a signaling mechanism
 	 * that notifies other segments of this code about significant
-	 * events. These are called a PhoenixEvent.
+	 * events. These are called a Event.
 	 *
-	 * The PhoenixEvent class is a pure virtual base class
+	 * The Event class is a pure virtual base class
 	 * because at least one method is defined a pure virtual.
 	 * This means that you can not use this class directly.
 	 * You must derive from this class and implement your
-	 * own PhoenixEvent lists and implantation. This
+	 * own Event lists and implantation. This
 	 * base class handles the details and processing
-	 * as described in the PhoenixEvent class object.
+	 * as described in the Event class object.
 	 *
 	 * @note
 	 * These are not the same as notifications sent to client
@@ -33,14 +34,14 @@ namespace RiverExplorer::Phoenix
 	 */
 	
 	/**
-	 * @class PhoenixEvent
-	 * @section PhoenixEvent The PhoenixEvent object.
+	 * @class Event
+	 * @section Event The Event object.
 	 *
-	 * @addtogroup PhoenixEvent
+	 * @addtogroup Event
 	 *
-	 * PhoenixEvent is a pure virtual base class for PhoenixEvents.
+	 * Event is a pure virtual base class for Events.
 	 * 
-	 * PhoenixEvent object is a simple INTERNAL event system.
+	 * Event object is a simple INTERNAL event system.
 	 * Code can send and receive these events.
 	 *
 	 * The caller registers for an event by providing
@@ -61,68 +62,222 @@ namespace RiverExplorer::Phoenix
 	 *
 	 * using RiverExplorer::Phoenix;
 	 *
-	 * PhoenixEvent::EventID ID = PhoenixEvent::Register(Server::Ready_t, MyServerReadyCallback);
+	 * Event::Register(Server::Ready_t, MyServerReadyCallback);
 	 *
 	 * @endcode
 	 *
 	 * Now, when the server is ready, it will call
 	 * the MyServerReadyCallback() method in your server implementation.
 	 */
-	class PhoenixEvent
+	class Event
 	{
 	public:
 
 		/**
-		 * A predefined Event name: Log Warning.
+		 * @addtogroup Event
+		 * The enumerated Phoenix Events.
 		 */
-		static const char * const LogWarning_s;
-		
-		/**
-		 * A predefined Event name: Log Error.
-		 */
-		static const char * const LogError_s;
-		
-		/**
-		 * @addtogroup PhoenixEvent
-		 *
-		 * An EventID is returned from Register() as a handle
-		 * to the specific PhoenixEvent that was registered for.
-		 *
-		 * It is also used in Unregister() and in the
-		 * protected method Dispatch().
-		 *
-		 * @property EventID
-		 * An event ID.
-		 */
-		typedef uint64_t	EventID;
+		enum Event_e {
+			/**
+			 * No event.
+			 */
+			NoEvent_Event,
+			
+			/**
+			 * This event will be sent just after authentication is
+			 * successful.
+			 *
+			 * All callbacks registered for this Event will be
+			 * called when the Server has authenticated the client.
+			 * 
+			 * This is the name of an Event that callers
+			 * can register for with the Server to be informed
+			 * that a client was blocked.
+			 *
+			 * The callback is supplied with the socket file descriptor
+			 * of the incoming connection and Data is set to
+			 * point to the associated (PeerInfo*).
+			 */
+			Authenticated_Event,
+			
+			/**
+			 * This event will be sent just before it replies
+			 * to the BYE.
+			 *
+			 * All callbacks registered for this Event will be
+			 * called when the Server has receives a BYE command
+			 * 
+			 * This is the name of an Event that callers
+			 * can register for with the Server to be informed
+			 * that a client was is quitting.
+			 *
+			 * The callback is supplied with the socket file descriptor
+			 * of the incoming connection and Data is set to
+			 * point to the associated (PeerInfo*).
+			 */
+			Bye_Event,
+
+			/**
+			 * All callbacks registered for this Event will be
+			 * called when the Server has determined that this
+			 * client should be blocked. It will be called from
+			 * the server library at the time all NewClientConnected
+			 * Events have been called.
+			 * 
+			 * This is the name of an Event that callers
+			 * can register for with the Server to be informed
+			 * that a client was blocked.
+			 *
+			 * The callback is supplied with the socket file descriptor
+			 * of the incoming connection and Data is set to
+			 * point to the associated (PeerInfo*).
+			 */
+			ClientBlocked_Event,
+			
+			/**
+			 * All callbacks registered for this Event will be
+			 * called when a client disconnects, or when the server
+			 * disconnects a client. The callback is called after
+			 * the socket connection has been terminated.
+			 * 
+			 * This is the name of an Event that callers
+			 * can register for with the Server.
+			 *
+			 * The callback is supplied with the socket file descriptor
+			 * of the incoming connection.
+			 */
+			ClientDisconnected_Event,
+
+			/**
+			 * All callbacks registered for this Event will
+			 * be called when there is some kind of error on a
+			 * socket file descriptor. This means the whatever
+			 * is associated with Fd, will no longer function.
+			 *
+			 * Watch for this event to detect that connections have been
+			 * unexpectedly shut down.
+			 *
+			 * This is the name of an Event that callers
+			 * can register for with the Server.
+			 *
+			 * No optional data is passed with this Event.
+			 *
+			 * @note
+			 * ClientDisconnected_Event is also sent with this event when the
+			 * error is on a client connection.
+			 */
+			ErrorOnFd_Event,
+			
+			/**
+			 * This event will be sent when an error is logged.
+			 */
+			LogError_Event,
+
+			/**
+			 * This event will be sent when an warning is logged.
+			 */
+			LogWarning_Event,
+
+			/**
+			 * All callbacks registered for this Event will be
+			 * called when the server code logs a message.
+			 *
+			 * This is the name of an Event that callers
+			 * can register for with the Server.
+			 *
+			 * The callback is supplied with:
+			 *
+			 * -The socket file descriptor of the incoming connection.
+			 * When the file descriptor is (-1) then no file descriptor
+			 * is associated with the message.
+			 *
+			 * -A text message that is being logged.
+			 */
+			LoggingMessage_Event,
+	
+			/**
+			 * All callbacks registered for this Event
+			 * will be called when a new client connection has happened.
+			 * The callback will be called before the server starts
+			 * to accept I/O on this connection.
+			 *
+			 * This is the name of an Event that callers
+			 * can register for with the Server.
+			 *
+			 * The callback is supplied with the socket file descriptor
+			 * of the incoming connection.
+			 *
+			 * The callback is supplied a PeerInfo object set to
+			 * the peer's IP address as the 'Data'.
+			 *
+			 * The user supplied callback must return false when
+			 * it wishes the connection to fail.
+			 *
+			 * @note
+			 * If an implementation desires to do IP filtering,
+			 * they would register for this Event
+			 * and have the callback return true when okay,
+			 * or false if the IP should be blocked.
+			 *
+			 * @note
+			 * If any of the callbacks registered for this event
+			 * return false, then the servers invoks a "ServerClientBlocked"
+			 * Event.
+			 */
+			NewClientConnection_Event,
+
+			/**
+			 * All callbacks registered for this Event will
+			 * be called prior to the shutdown. After all callbacks
+			 * have been called, the shutdown will continue.
+			 *
+			 * This is the name of an Event that callers
+			 * can register for with the Server.
+			 *
+			 * No optional data is passed with this Event.
+			 */
+			ShuttingDown_Event,
+
+			/**
+			 * All callbacks registered for this Event
+			 * will be called with the server is ready to start
+			 * processing clients.
+			 *
+			 * This is the name of an Event that callers
+			 * can register for with the Server.
+			 *
+			 * No optional data is passed with this Event.
+			 */
+			ServerReady_Event,
+		};
 
 		/**
-		 * @addtogroup PhoenixEvent
+		 * @addtogroup Event
 		 *
-		 * @typedef PhoenixEventCallback
+		 * @typedef EventCallback
 		 *
-		 * @addtogroup PhoenixEvent
+		 * @addtogroup Event
 		 *
-		 * @ref PhoenixEventCallback is the callback signature
+		 * @ref EventCallback is the callback signature
 		 * for when an event happens.
 		 *
 		 * Example, you write a callback to filter blocked IP address.
 		 * It would  return false to tell the caller not to proceed.
 		 *
-		 * When the server starts, it creates a PhoenixEvent.
+		 * When the server starts, it creates a Event.
 		 * In this example, it creates the Server::Ready_s
-		 * PhoenixEvent. This is done by calling Register().
+		 * Event. This is done by calling Register().
 		 *
 		 * The Server object predefines the Ready_s string to
 		 * "ServerReady".
 		 * @see Server
 		 *
 		 * In this example that is from the Server code, it is creating a new
-		 * PhoenixEvent that it allows other code to register to receive
+		 * Event that it allows other code to register to receive
 		 * a Server::Ready_s
 		 * @code
 		 *
-		 * PhoenixEvent::EventID EventID = PhoenixEvent::Register(Server::Ready_s, nullptr);
+		 * Event::Register(Server::Ready_s, nullptr);
 		 *
 		 * @endcode
 		 *
@@ -135,12 +290,12 @@ namespace RiverExplorer::Phoenix
 		 * is threaded, so the assigned ID's can happen in random order.
 		 *
 		 * By passing in nullptr to the second parameter, it creates
-		 * the Server::Ready_s PhoenixEvent for others to use. If the
+		 * the Server::Ready_s Event for others to use. If the
 		 * second parameter had been a method name, it would create
-		 * the PhoenixEvent (if it had not already been created),
+		 * the Event (if it had not already been created),
 		 * and it would also register the method provided as one of the
 		 * callback methods to be invoked when the
-		 * EventID PhoenixEvent happens.
+		 * Event_e Event happens.
 		 *
 		 * In your own code in the server implementation,
 		 * if you want a notification of when a new client
@@ -150,7 +305,7 @@ namespace RiverExplorer::Phoenix
 		 *
 		 * @code{.cpp}
 		 *
-		 * PhoenixEvent::EventID NewOneID = PhoenixEvent::Register(Server::NewClientConnections_s, MyValidateIPAddress);
+		 * Event::Register(Server::NewClientConnections_s, MyValidateIPAddress);
 		 *
 		 * @endcode
 		 *
@@ -163,11 +318,11 @@ namespace RiverExplorer::Phoenix
 		 *
 		 * @code{.cpp}
 		 *
-		 * bool MyValidateIPAddress(int Fd, PhoenixEvent::EventID ID, void * Data)
+		 * bool MyValidateIPAddress(int Fd, Event::Event_e ID, void * Data)
 		 * {
 		 *		bool Results = true;
 		 *
-		 *		// If you use this callback from multiple PhoenixEvents,
+		 *		// If you use this callback from multiple Events,
 		 *		// You might want to make sure that (ID == NewOneID). Where
 		 *		// NewOneID is the value returned from Register() in the previous
 		 *		// example.
@@ -187,7 +342,7 @@ namespace RiverExplorer::Phoenix
 		 *
 		 * @endcode
 		 *
-		 * When any @ref PhoenixEventCallback method type is called,
+		 * When any @ref EventCallback method type is called,
 		 * it is called with
 		 * three (3) parameters:
 		 *
@@ -203,14 +358,14 @@ namespace RiverExplorer::Phoenix
 		 * @return false if the callback does not want the associated
 		 * and original action to go forward.
 		 *
-		 * Read the specific PhoenixEvent description for details
+		 * Read the specific Event description for details
 		 * on what it expects when false is returned.
 		 *
 		 */
-		typedef bool (*PhoenixEventCallback)(int Fd, EventID ID, void * Data);
+		typedef bool (*EventCallback)(int Fd, Event_e ID, void * Data);
 		
 		/**
-		 * @addtogroup PhoenixEvent
+		 * @addtogroup Event
 		 *
 		 * To get events, you must call Register() for each event.
 		 * More than one callback can be registered for the same event.
@@ -235,10 +390,10 @@ namespace RiverExplorer::Phoenix
 		 * running application. Do not save the results and use it
 		 * the next time the application starts.
 		 */
-		static EventID Register(std::string EventName, PhoenixEventCallback Cb);
+		static void Register(Event_e EventName, EventCallback Cb);
 
 		/**
-		 * @addtogroup PhoenixEvent
+		 * @addtogroup Event
 		 *
 		 * Call Unregister() to stop receiving calls for an event.
 		 * Unregister() takes the same parameters as Register(),
@@ -249,7 +404,7 @@ namespace RiverExplorer::Phoenix
 		 *
 		 * using RiverExplorer::Phoenix;
 		 *
-		 * PhoenixEvent::EventID ID = PhoenixEvent::Unregister(Server::Ready_s, MyServerReadyCallback);
+		 * Event::Unregister(Server::Ready_s, MyServerReadyCallback);
 		 *
 		 * @endcode
 		 *
@@ -260,15 +415,15 @@ namespace RiverExplorer::Phoenix
 		 * When calling with Cb nullptr, then remove
 		 * the event as a valid event.
 		 */
-		static void Unregister(EventID ID, PhoenixEventCallback Cb);
+		static void Unregister(Event_e ID, EventCallback Cb);
 
 		/**
-		 * @addtogroup PhoenixEvent
+		 * @addtogroup Event
 		 *
 		 * To Invoke an event, call Invoke();
 		 *
 		 * @note
-		 * This Invoke is a pure virtual method in PhoenixEvent.
+		 * This Invoke is a pure virtual method in Event.
 		 * Derived classes must implement this method.
 		 *
 		 * This Invoke() takes 3 parameters:
@@ -289,12 +444,12 @@ namespace RiverExplorer::Phoenix
 		 * would then terminate the connection.
 		 *
 		 * Many callbacks may ignore the results. See the specific
-		 * PhoenixEvent for details.
+		 * Event for details.
 		 */
-		virtual bool	Invoke(int Fd, EventID ID, void * Data = nullptr) = 0;
+		virtual bool	Invoke(int Fd, Event_e ID, void * Data = nullptr) = 0;
 
 		/**
-		 * @addtogroup PhoenixEvent
+		 * @addtogroup Event
 		 *
 		 * To Invoke an event, call Invoke();
 		 *
@@ -316,14 +471,14 @@ namespace RiverExplorer::Phoenix
 		 * would then terminate the connection.
 		 *
 		 * Many callbacks may ignore the results. See the specific
-		 * PhoenixEvent for details.
+		 * Event for details.
 		 */
-		static bool InvokeMessage(int Fd, const char * Event, const char * Msg);
+		static bool InvokeMessage(int Fd, Event_e Event, const char * Msg);
 		
 	protected:
 
 		/**
-		 * @addtogroup PhoenixEvent
+		 * @addtogroup Event
 		 *
 		 * Derived classes call Dispatch() to call the callbacks.
 		 * Dispatch() takes 3 parameters:
@@ -343,55 +498,24 @@ namespace RiverExplorer::Phoenix
 		 * to stop.
 		 * This does not stop all of the other callbacks from being called.
 		 */
-		static bool DispatchCallbacks(int Fd, EventID ID, void * Data = nullptr);
+		static bool DispatchCallbacks(int Fd, Event_e ID, void * Data = nullptr);
 		
 	private:
 
 		/**
-		 * Information about known events.
-		 */
-		struct _EventMap
-		{
-			/**
-			 * The name of the event.
-			 */
-			std::string Name;
-
-			/**
-			 * The ID of the event.
-			 */
-			uint64_t		ID;
-
-			/**
-			 * _EventMap - Destructor.
-			 */
-			~_EventMap();
-		};
-
-		/**
-		 * Lookup map for PhoenixEvent by name.
-		 */
-		static std::map<std::string,_EventMap*> _EventByName;
-
-		/**
-		 * Lookup map for PhoenixEvent by ID.
-		 */
-		static std::map<EventID,_EventMap*>	_EventByID;
-
-		/**
-		 * List of registered PhoenixEvents.
+		 * List of registered Events.
 		 */
 		struct _Register
 		{
 			/**
-			 * Link to PhoenixEvent description.
+			 * Link to Event description.
 			 */
-			_EventMap			*	EventMap;
+			Event_e			_Event;
 
 			/**
 			 * The registered callback.
 			 */
-			PhoenixEventCallback		 Callback;
+			EventCallback		 Callback;
 
 			/**
 			 * _Register - Destructor.
@@ -400,18 +524,13 @@ namespace RiverExplorer::Phoenix
 		};
 
 		/**
-		 * List of all callbacks registered for all PhoenixEvents.
+		 * List of all callbacks registered for all Events.
 		 *
 		 * @note
 		 * It is a multimap because more than one callback
-		 * can be registered for any specific PhoenixEvent.
+		 * can be registered for any specific Event.
 		 */
-		static std::multimap<EventID,_Register*>	_Registered;
-
-		/**
-		 * Use this as the next EventID to return.
-		 */
-		static uint64_t _NextEventID;
+		static std::multimap<Event_e,_Register*>	_Registered;
 	};
 
 }

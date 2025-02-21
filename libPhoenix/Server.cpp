@@ -125,37 +125,16 @@ namespace RiverExplorer::Phoenix
 	//
 	static IO						*	IOInstance = nullptr;
 
-	// These are the names of PhoenixEvent events.
-	// The event names are strings. You register with a name and get a random ID back.
-	//
-	const char * const			Server::ClientBlocked_s = "ServerClientBlocked";
-	const char * const			Server::ClientDisconnected_s = "ServerClientDisconnected";
-	const char * const			Server::LoggingMessage_s = "ServerLoggingMessage";
-	const char * const			Server::NewClientConnection_s = "ServerNewClientConnection";
-	const char * const			Server::Ready_s = "ServerReady";
-	const char * const			Server::ShuttingDown_s = "ServerShuttingDown";
-	const char * const			Server::ErrorOnFd_s = "ServerErrorOnFd";
-
-	// The randomly assigned PhoenixEvent ID's used when calling PhoenixEvent::Invoke().
-	//
-	PhoenixEvent::EventID		Server::_ClientBlockedID = 0;
-	PhoenixEvent::EventID		Server::_ClientDisconnectedID = 0;
-	PhoenixEvent::EventID		Server::_LoggingMessageID = 0;
-	PhoenixEvent::EventID		Server::_NewClientConnectionID = 0;
-	PhoenixEvent::EventID		Server::_ReadyID = 0;
-	PhoenixEvent::EventID		Server::_ShuttingDownID = 0;
-	PhoenixEvent::EventID		Server::_ErrorOnFdID = 0;
-
-	int32_t
-		Server::_NetWrite(int Fd, Iov * IovData)
+	ssize_t
+	Server::_NetWrite(int Fd, Iov * IovData)
 	{
-		int32_t	Results = 0;
+		ssize_t	Results = 0;
 		
 		// Get a pointer to the next Blob.
 		//
-		uint32_t	Len = 0;
+		ssize_t	Len = 0;
 		
-		uint8_t * Data = IovData->Take(Len);
+		uint8_t * Data = IovData->Take((uint32_t&)Len);
 
 		if (Len > 0 && Data != nullptr) {
 			// There was something to write to this file descriptor.
@@ -166,13 +145,13 @@ namespace RiverExplorer::Phoenix
 				if (Results == (int32_t)Len) {
 					// We are done with this Blob.
 					//
-					IovData->WeUsed(Len); // We took it all.
+					IovData->WeUsed((uint32_t)Len); // We took it all.
 					
 				} else {
 					// It write less than we asked.
 					// Return the unwritten back to the Q for next time.
 					//
-					IovData->WeUsed(Len - Results);
+					IovData->WeUsed((uint32_t)(Len - Results));
 				}
 
 			} else {
@@ -186,9 +165,9 @@ namespace RiverExplorer::Phoenix
 				} else if (errno == EBADF) {
 					// Bad file descriptor.
 					//
-					_Event::Invoke(Fd, ErrorOnFdID(),
+					_Event::Invoke(Fd, Event::ErrorOnFd_Event,
 												 "Server.cpp:_NetWrite:ERROR:EBANF:Closed socket.\n");
-					_Event::Invoke(Fd, ClientDisconnectedID(),
+					_Event::Invoke(Fd, Event::ClientDisconnected_Event,
 												 "Server.cpp:_NetWrite:ERROR:EBANF:Closed socket.\n");
 					RemoveFd(Fd);
 					Results = -1;
@@ -198,9 +177,9 @@ namespace RiverExplorer::Phoenix
 					//
 					RemoveFd(Fd);
 					Results = -1;
-					_Event::Invoke(Fd, ErrorOnFdID(),
+					_Event::Invoke(Fd, Event::ErrorOnFd_Event,
 												 "Server.cpp:_NetWrite:ERROR:EPIPE:Closed socket.\n");
-					_Event::Invoke(Fd, ClientDisconnectedID(),
+					_Event::Invoke(Fd, Event::ClientDisconnected_Event,
 												 "Server.cpp:_NetWrite:ERROR:EPIPE:Closed socket.\n");
 				}
 			}
@@ -366,7 +345,7 @@ namespace RiverExplorer::Phoenix
 										 "Could not parse configuration file: %s: error: %s",
 										 ConfigFile.c_str(),
 										 SErr.c_str());
-						_Event::Invoke(-1, LoggingMessageID(), Buf);
+						_Event::Invoke(-1, Event::LoggingMessage_Event, Buf);
 					}
 				
 				} else {
@@ -382,24 +361,13 @@ namespace RiverExplorer::Phoenix
 				_WakeUpPoll = open(Fifo, O_RDWR);
 				sem_init(&_WorkThreadReady, 0, 0);
 
-				// Register the server PhoenixEvent names.
-				//
-				_ReadyID = PhoenixEvent::Register(Ready_s, nullptr);
-				_ClientBlockedID = PhoenixEvent::Register(ClientBlocked_s, nullptr);
-				_NewClientConnectionID = PhoenixEvent::Register(NewClientConnection_s, nullptr);
-				_ClientDisconnectedID = PhoenixEvent::Register(ClientDisconnected_s, nullptr);
-				_ShuttingDownID = PhoenixEvent::Register(ShuttingDown_s, nullptr);
-				_ErrorOnFdID = PhoenixEvent::Register(ErrorOnFd_s, nullptr);
-			
 				// Register to listen for _Event::InvokeMessage().
 				//
-				_LoggingMessageID = PhoenixEvent::Register(LoggingMessage_s, _LogMessage);
+				Event::Register(Event::LoggingMessage_Event, _LogMessage);
 
 				// Register for new client connections and validate their IP.
 				//
-				PhoenixEvent::Register(NewClientConnection_s, _ValidateIP);
-				_Event::Invoke(-1, ReadyID(), (char*)nullptr);
-			
+				Event::Register(Event::NewClientConnection_Event, _ValidateIP);
 			}
 			// else - ignore us!
 			//
@@ -461,7 +429,7 @@ namespace RiverExplorer::Phoenix
 		_WorkThread.detach();
 		Results = &_WorkThread;
 #ifdef DEBUG
-		_Event::Invoke(-1, LoggingMessageID(), "DEBUG:_Work thread started\n");
+		_Event::Invoke(-1, Event::LoggingMessage_Event, "DEBUG:_Work thread started\n");
 #endif
 		sem_wait(&_WorkThreadReady);
 
@@ -659,7 +627,7 @@ namespace RiverExplorer::Phoenix
 							uint32_t	NTotal;
 
 							memcpy(&NTotal, Buffer, sizeof(uint64_t));
-							Clients[Fd]->InboundData.TotalLength = ntohll(NTotal);
+							Clients[Fd]->InboundData.TotalLength = ntohl(NTotal);
 							DidRead -= (int)sizeof(uint32_t);
 
 							if (DidRead == 0) {
@@ -735,7 +703,7 @@ namespace RiverExplorer::Phoenix
 							// Data contans the incomming packet in XDR format.
 							// DataLenght is the length of the packet.
 							//
-							CmdPacket *	Pkt = new CmdPacket();
+							PacketBody *	Pkt = new PacketBody();
 							XDR					Xdrs;
 
 							// WHAT ABOUT MASSIVE DATA IN THE PACKETS ???
@@ -747,10 +715,10 @@ namespace RiverExplorer::Phoenix
 
 							// Decode the XDR data and dispatch the correct code.
 							//
-							if (xdr_CmdPacket(&Xdrs, Pkt)) {
-								Register::Dispatch((int)Fd, Pkt);
+							if (xdr_PacketBody(&Xdrs, Pkt)) {
+ 								Register::Dispatch((int)Fd, Pkt);
 							} else {
-								PhoenixEvent::InvokeMessage((int)Fd, PhoenixEvent::LogError_s,
+								Event::InvokeMessage((int)Fd, Event::LogError_Event,
 																						"Server.cpp:poll():xdr_CmdPacket() failed.");
 							}
 
@@ -760,7 +728,7 @@ namespace RiverExplorer::Phoenix
 
 							// Free internal data.
 							//
-							xdr_free((xdrproc_t)xdr_CmdPacket, &Pkt);
+							xdr_free((xdrproc_t)xdr_PacketBody, &Pkt);
 
 							// Delete the XDR data.
 							//
@@ -902,7 +870,7 @@ namespace RiverExplorer::Phoenix
 								if (Clients[NewFd] != nullptr) {
 									delete Clients[NewFd];
 								}
-								if (_Event::Invoke(NewFd, NewClientConnectionID(),
+								if (_Event::Invoke(NewFd, Event::NewClientConnection_Event,
 																	 &Tmp)) {
 
 									// Set to non-blocking.
@@ -926,12 +894,12 @@ namespace RiverExplorer::Phoenix
 									AddFd(NewFd);
 
 								} else {
-									// When any NewClientConnection PhoenixEvent callback
+									// When any NewClientConnection Event callback
 									// returns false, then this clinet was blocked for some
 									// reason.
 									//
 									Clients[NewFd] = nullptr;
-									_Event::Invoke(NewFd, ClientBlockedID(), &Tmp);
+									_Event::Invoke(NewFd, Event::ClientBlocked_Event, &Tmp);
 									shutdown(NewFd, SHUT_RDWR);
 									close(NewFd);
 								}
@@ -967,7 +935,7 @@ namespace RiverExplorer::Phoenix
 							DidSomething = true;
 #ifdef DEBUG
 							_Event::Invoke((int)Fd,
-														 LoggingMessageID(),
+														 Event::LoggingMessage_Event,
 														 "DEBUG:Poll() got POLLIN.");
 #endif
 							// Let SSL_READ read some.
@@ -977,21 +945,21 @@ namespace RiverExplorer::Phoenix
 						if ((_Entries[Fd].revents & POLLHUP) > 0) {
 							DidSomething = true;
 							_Event::Invoke((int)Fd,
-														 ErrorOnFdID(),
+														 Event::ErrorOnFd_Event,
 														 "Server.cpp:poll():Closed socket:POLLHUP.\n");
 							RemoveFd(_Entries[Fd].fd);
 						}
 						if ((_Entries[Fd].revents & POLLRDHUP) > 0) {
 							DidSomething = true;
 							_Event::Invoke((int)Fd,
-														 ErrorOnFdID(),
+														 Event::ErrorOnFd_Event,
 														 "Server.cpp:poll():Closed socket:POLLRDHUP.\n");
 							RemoveFd(_Entries[Fd].fd);
 						}
 						if ((_Entries[Fd].revents & POLLERR) > 0) {
 							DidSomething = true;
 							_Event::Invoke((int)Fd,
-														 ErrorOnFdID(),
+														 Event::ErrorOnFd_Event,
 														 "Server.cpp:poll():Closed socket:POLLERR.\n");
 							RemoveFd(_Entries[Fd].fd);
 						}
@@ -1050,7 +1018,7 @@ namespace RiverExplorer::Phoenix
 	}
 
 	bool
-		Server::_LogMessage(int Fd, PhoenixEvent::EventID /*ID*/, void * Data)
+		Server::_LogMessage(int Fd, Event::Event_e /*ID*/, void * Data)
 	{
 		const char * CData = (char*)Data;
 
@@ -1072,73 +1040,31 @@ namespace RiverExplorer::Phoenix
 	}
 
 	bool
-	Server::_Event::Invoke(int Fd, PhoenixEvent::EventID ID, void * Data)
+	Server::_Event::Invoke(int Fd, Event::Event_e ID, void * Data)
 	{
 		return(DispatchCallbacks(Fd, ID, Data));
 	}
 
 	bool
-	Server::_Event::Invoke(int Fd, PhoenixEvent::EventID ID, const IPPeer * Peer)
+	Server::_Event::Invoke(int Fd, Event::Event_e ID, const IPPeer * Peer)
 	{
 		return(DispatchCallbacks(Fd, ID, (void*) Peer));
 	}
 
 	bool
-	Server::_Event::Invoke(int Fd, PhoenixEvent::EventID ID, const char * Data)
+	Server::_Event::Invoke(int Fd, Event::Event_e ID, const char * Data)
 	{
 		return(DispatchCallbacks(Fd, ID, (void*)Data));
 	}
 
 	bool
-	Server::_ValidateIP(int Fd, PhoenixEvent::EventID ID, void * VPeer)
+	Server::_ValidateIP(int Fd, Event::Event_e ID, void * VPeer)
 	{
 		IPPeer * Peer = (IPPeer*)VPeer;
 		
 		/**@todo add IP checking, and return false if should block the IP.*/
 		
 		return(true);
-	}
-
-	PhoenixEvent::EventID
-		Server::ReadyID()
-	{
-		return(_ReadyID);
-	}
-	
-	PhoenixEvent::EventID
-		Server::NewClientConnectionID()
-	{
-		return(_NewClientConnectionID);
-	}
-		
-  PhoenixEvent::EventID
-		Server::ClientDisconnectedID()
-	{
-		return(_ClientDisconnectedID);
-	}
-	
-	PhoenixEvent::EventID
-		Server::ClientBlockedID()
-	{
-		return(_ClientBlockedID);
-	}
-
-	PhoenixEvent::EventID
-		Server::LoggingMessageID()
-	{
-		return(_LoggingMessageID);
-	}
-	
-	PhoenixEvent::EventID
-		Server::ShuttingDownID()
-	{
-		return(_ShuttingDownID);
-	}
-	
-	PhoenixEvent::EventID
-		Server::ErrorOnFdID()
-	{
-		return(_ErrorOnFdID);
 	}
 
 	Server::ClientInfo::ClientInfo()

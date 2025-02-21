@@ -54,8 +54,9 @@ SOURCES.c =
 SOURCES.cpp = \
 	Certs.cpp \
 	CppAcl.cpp \
+	CppAuthMD5.cpp \
 	CppAddMessage.cpp \
-	CppAuthenticate.cpp \
+	CppBye.cpp \
 	CppCapability.cpp \
 	CppCopyMessage.cpp \
 	CppExpunge.cpp \
@@ -78,29 +79,23 @@ SOURCES.cpp = \
 	Server.cpp
 
 SOURCES.x = \
-	AdminKick.x \
 	Admin.x \
-	AOID.x \
-	AuthAnonymousPayload.x \
-	AuthCertPayload.x \
-	AuthCertTlsPayload.x \
-	AuthCertUserPayload.x \
-	Auth_e.x \
-	AuthMD5Payload.x \
+	AuthAnonymous.x \
+	AuthCert.x \
+	AuthCertTls.x \
+	AuthCertUser.x \
 	AuthMD5.x \
-	Auth.x \
+	Bye.x \
+	Capability.x \
 	CmdAcl.x \
 	CmdAddMessage.x \
 	CmdAdministration.x \
-	CmdAuthenticate.x \
-	CmdCapability.x \
 	CmdCopyMessage.x \
 	CmdExpunge.x \
 	CmdFolder.x \
 	CmdGetMessage.x \
 	CmdKeepAlive.x \
 	CmdNotSupported.x \
-	CmdPing.x \
 	CmdSearch.x \
 	CmdSubscribe.x \
 	CmdTimeout.x \
@@ -112,12 +107,10 @@ SOURCES.x = \
 	FileCopy.x \
 	FileCreate.x \
 	FileDelete.x \
-	File_e.x \
 	FileGet.x \
 	FileMetaData.x \
 	FileModify.x \
 	FileMove.x \
-	FilePayload.x \
 	FileRename.x \
 	FileShare.x \
 	FolderCapability.x \
@@ -131,7 +124,6 @@ SOURCES.x = \
 	FolderRename.x \
 	FolderShare.x \
 	Index.x \
-	ManageBans.x \
 	MDNEntry.x \
 	MDNRecord.x \
 	MetaData.x \
@@ -139,10 +131,13 @@ SOURCES.x = \
 	PacketBody.x \
 	PacketHeader.x \
 	PhoenixString.x \
-	ProtoPayload.x \
-	ServerConfigPayload.x \
-	ServerConfigReplyPayload.x \
+	Ping.x \
+	SEQ_t.x \
+	ServerConfigure.x \
+	ServerConfigureReply.x \
+	ServerKick.x \
 	ServerLogs.x \
+	ServerManageBans.x \
 	ServerStats.x \
 	Shutdown.x \
 	StringRef.x \
@@ -156,9 +151,12 @@ SOURCES.x = \
 
 SOURCES.hpp += \
 	Certs.hpp \
+	CppAuthMD5.hpp \
+	CppCapability.hpp \
 	CppCommands.hpp \
 	CppMime.hpp \
 	CppTypes.hpp \
+	CppBye.hpp \
 	IO.hpp \
 	Iov.hpp \
 	IPPeer.hpp \

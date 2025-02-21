@@ -5,18 +5,20 @@ der CC BY 4.0
  */
 
 
-#include <Commands.hpp>
-#include <CmdNotSupported.hpp>
+#include "Commands.hpp"
+#include "CmdNotSupported.hpp"
+#include "PacketBody.hpp"
 
 namespace RiverExplorer::Phoenix
 {
-	CmdPacket *
-	NewNotSupported(CommandSequence ID)
+	Command *
+	NewNotSupported(SEQ_t ID)
 	{
-		CmdPacket * Results = new CmdPacket();
+		Command * Results = new Command();
 
+		Results->Payload.Cmd = NOT_SUPPORTED;
 		Results->Sequence = ID;
-		Results->Data.Cmd = NotSupported_Cmd;
+		
 
 		return(Results);
 	}

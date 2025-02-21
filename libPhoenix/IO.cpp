@@ -33,7 +33,7 @@ namespace RiverExplorer::Phoenix
 	 * A list of commands we issued, and do not have a reply yet.
 	 * Commands that do not get a reply, are not added.
 	 */
-	std::map<CommandSequence, CmdPacket*> IO::_CommandsWeIssued;
+	std::map<SEQ_t, Command*> IO::_CommandsWeIssued;
 
 	/**
 	 * Mutex lock for CommandsWeIssued.

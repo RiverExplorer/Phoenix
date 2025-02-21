@@ -71,9 +71,9 @@ namespace RiverExplorer::Phoenix
 			} else {
 				// Should never get executed.
 				//
-				PhoenixEvent::InvokeMessage(-1,
-																		PhoenixEvent::LogWarning_s,
-																		"Iov.cpp:WARNING:MMapped segment, with data or length 0\n");
+				Event::InvokeMessage(-1,
+														 Event::LogWarning_Event,
+														 "Iov.cpp:WARNING:MMapped segment, with data or length 0\n");
 			}
 
 		} else {
@@ -136,18 +136,18 @@ namespace RiverExplorer::Phoenix
 				if (B->Data > B->OriginalData + B->Length) {
 					// OOPS, someone returned more than we had - error..
 					//
-					PhoenixEvent::InvokeMessage(-1,
-																			PhoenixEvent::LogError_s,
-																			"Iov.cpp::WeUsed():More returned that existed.");
+					Event::InvokeMessage(-1,
+															 Event::LogError_Event,
+															 "Iov.cpp::WeUsed():More returned that existed.");
 					_Q.pop_front(); // The best hack we can use.
 				}
 			}
 		} else {
 			// OOPS, someone returned more than we had - error..
 			//
-			PhoenixEvent::InvokeMessage(-1,
-																	PhoenixEvent::LogError_s,
-																	"Iov.cpp::WeUsed():Nothing existed to return unused.");
+			Event::InvokeMessage(-1,
+													 Event::LogError_Event,
+													 "Iov.cpp::WeUsed():Nothing existed to return unused.");
 		}
 
 		return;

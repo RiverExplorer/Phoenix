@@ -1,12 +1,11 @@
 #ifdef RPC_HDR
 %#ifdef BUILDING_LIBPHOENIX
 %#include "CommonDefinitions.hpp"
-%#include "AOID.hpp"
-%#include "ServerConfigPayload.hpp"
-%#include "ServerConfigReplyPayload.hpp"
-%#include "AdminKick.hpp"
+%#include "Commands.hpp"
+%#include "ServerConfigure.hpp"
+%#include "ServerKick.hpp"
 %#include "ServerLogs.hpp"
-%#include "ManageBans.hpp"
+%#include "ServerManageBans.hpp"
 %#include "Shutdown.hpp"
 %#include "ServerStats.hpp"
 %#include "UserCreate.hpp"
@@ -16,12 +15,11 @@
 %#include "UserRename.hpp"
 %#else
 %#include <RiverExplorer/Phoenix/CommonDefinitions.hpp>
-%#include <RiverExplorer/Phoenix/AOID.hpp>
-%#include <RiverExplorer/Phoenix/ServerConfigPayload.hpp>
-%#include <RiverExplorer/Phoenix/ServerConfigReplyPayload.hpp>
-%#include <RiverExplorer/Phoenix/AdminKick.hpp>
+%#include <RiverExplorer/Phoenix/Commands.hpp>
+%#include <RiverExplorer/Phoenix/ServerConfigure.hpp>
+%#include <RiverExplorer/Phoenix/ServerKick.hpp>
 %#include <RiverExplorer/Phoenix/ServerLogs.hpp>
-%#include <RiverExplorer/Phoenix/ManageBans.hpp>
+%#include <RiverExplorer/Phoenix/ServerManageBans.hpp>
 %#include <RiverExplorer/Phoenix/Shutdown.hpp>
 %#include <RiverExplorer/Phoenix/ServerStats.hpp>
 %#include <RiverExplorer/Phoenix/UserCreate.hpp>
@@ -32,10 +30,10 @@
 %#endif
 #endif
 
-union AdminPayload switch(AOID_e Aoid) {
+union AdminPayload switch(CMD_e Cmd) {
 
   case SERVER_CONFIGURE:
-    ServerConfigPayload ConfigPayload;
+    ServerConfigurePayload ConfigPayload;
 
   case SERVER_KICK_USER:
     ServerKickPayload   KickPayload;
@@ -44,7 +42,7 @@ union AdminPayload switch(AOID_e Aoid) {
     ServerLogsPayload   LogsPayload;
 		
   case SERVER_MANAGE_BANS:
-    ServerBansPayload   BansPayload;
+    ServerManageBansPayload   BansPayload;
 		
   case SERVER_SHUTDOWN:
     ServerShutdownPayload ShutdownPayload;
@@ -68,10 +66,10 @@ union AdminPayload switch(AOID_e Aoid) {
     UserRenamePayload   URenamePayload;
 };
 
-union AdminReplyPayload switch(AOID_e Aoid) {
+union AdminReplyPayload switch(CMD_e Cmd) {
 
   case SERVER_CONFIGURE:
-    ServerConfigReplyPayload    ConfigPayload;
+    ServerConfigureReplyPayload    ConfigPayload;
 
   case SERVER_KICK_USER:
 		void; /* No reply allowd for SERVER_KICK_USER */
@@ -80,7 +78,7 @@ union AdminReplyPayload switch(AOID_e Aoid) {
     ServerLogsReplyPayload      LogsPayload;
 		
   case SERVER_MANAGE_BANS:
-    ServerBansReplyPayload      BansPayload;
+    ServerManageBansReplyPayload      BansPayload;
 		
   case SERVER_SHUTDOWN:
     ServerShutdownReplyPayload  ShutdownPayload;

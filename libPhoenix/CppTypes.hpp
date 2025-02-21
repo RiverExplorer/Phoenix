@@ -3,13 +3,15 @@
 #define _RIVEREXPLORER_MIME_CPPMIME_HPP_
 
 #ifdef BUILDING_LIBPHOENIX
-#include "Types.hpp"
+//#include "Types.hpp"
 #else
-#include <RiverExplorer/Phoenix/Types.hpp>
+//#include <RiverExplorer/Phoenix/Types.hpp>
 #endif
 
 namespace RiverExplorer::Phoenix
 {
+	class Command;
+	
 	/**
 	 * 64 bit network to host byte order conversion.
 	 *
@@ -27,10 +29,6 @@ namespace RiverExplorer::Phoenix
 	 * @return A uint64_t value in network byte order.
 	 */
 	extern uint64_t htonll(uint64_t NetValue);
-
-	// Forward reference.
-	//
-	class CmdPacket;
 	
 	/**
 	 * Commands come in from the remote endpoint.
@@ -56,7 +54,7 @@ namespace RiverExplorer::Phoenix
 	 * When there is more than one function registered for any specific
 	 * command, they are processed in random order.
 	 */
-	typedef bool (*CommandCallback)(int Fd, CmdPacket * Pkt, XDR * ReadXdrs);
+	typedef bool (*CommandCallback)(int Fd, Command * Pkt, XDR * ReadXdrs);
 
 }
 #endif // _RIVEREXPLORER_MIME_CPPMIME_HPP_

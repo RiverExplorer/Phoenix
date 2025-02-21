@@ -18,14 +18,6 @@
 
 #ifdef RPC_HDR
 %/**
-% * Each command sent, has a command identifier, and a sequence.
-% * Each reply to a command has the same CommandID and sequence.
-% */
-#endif
-typedef uint64_t CommandSequence;
-
-#ifdef RPC_HDR
-%/**
 % * An array of strings.
 % */
 #endif
@@ -37,7 +29,6 @@ typedef string StringType<>;
 % */
 #endif
 typedef StringType ArrayOfStrings<>;
-
 
 #ifdef RPC_HDR
 %/**

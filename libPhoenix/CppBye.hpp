@@ -3,8 +3,8 @@
  * RiverExplorer is a trademark of RiverExplorer Games LLC.
  */
 
-#ifndef _RIVEREXPLORER_PHOENIX_PING_HPP_
-#define _RIVEREXPLORER_PHOENIX_PING_HPP_
+#ifndef _RIVEREXPLORER_PHOENIX_BYE_HPP_
+#define _RIVEREXPLORER_PHOENIX_BYE_HPP_
 
 #include "Commands.hpp"
 #include "Register.hpp"
@@ -12,7 +12,7 @@
 
 namespace RiverExplorer::Phoenix
 {
-	class CppPing
+	class CppBye
 		: public PluginBase
 	{
 	public:
@@ -30,7 +30,7 @@ namespace RiverExplorer::Phoenix
 		static std::vector<Register::PluginCapability*>  PostAuth;
 
 		/**
-		 * When a Ping command comes in, call this method.
+		 * When a BYE command comes in, call this method.
 		 *
 		 * @param Fd the associated socket file descriptor.
 		 *
@@ -48,4 +48,4 @@ namespace RiverExplorer::Phoenix
 		
 	};
 }
-#endif // _RIVEREXPLORER_PHOENIX_PING_HPP_
+#endif // _RIVEREXPLORER_PHOENIX_BYE_HPP_

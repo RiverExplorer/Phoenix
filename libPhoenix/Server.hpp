@@ -56,151 +56,6 @@ namespace RiverExplorer::Phoenix
 	{
 	public:
 
-
-		/**
-		 * @addtogroup PhoenixEvent
-		 * Contains the string "ServerClientBlocked" PhoenixEvent.
-		 *
-		 * All callbacks registered for this PhoenixEvent will be
-		 * called when the Server has determined that this
-		 * client should be blocked. It will be called from
-		 * the server library at the time all NewClientConnected
-		 * PhoenixEvents have been called.
-		 * 
-		 * This is the name of an PhoenixEvent that callers
-		 * can register for with the Server to be informed
-		 * that a client was blocked.
-		 *
-		 * The callback is supplied with the socket file descriptor
-		 * of the incoming connection and Data is set to
-		 * point to the associated (PeerInfo*).
-		 */
-		static const char * const ClientBlocked_s;
-
-		/**
-		 * @addtogroup PhoenixEvent
-		 * Contains the string "ServerClientDisconnected" PhoenixEvent.
-		 *
-		 * All callbacks registered for this PhoenixEvent will be
-		 * called when a client disconnects, or when the server
-		 * disconnects a client. The callback is called after
-		 * the socket connection has been terminated.
-		 * 
-		 * This is the name of an PhoenixEvent that callers
-		 * can register for with the Server.
-		 *
-		 * The callback is supplied with the socket file descriptor
-		 * of the incoming connection.
-		 */
-		static const char * const ClientDisconnected_s;
-
-		/**
-		 * @addtogroup PhoenixEvent
-		 * Contains the string "ServerReady" PhoenixEvent.
-		 *
-		 * All callbacks registered for this PhoenixEvent
-		 * will be called with the server is ready to start
-		 * processing clients.
-		 *
-		 * This is the name of an PhoenixEvent that callers
-		 * can register for with the Server.
-		 *
-		 * No optional data is passed with this PhoenixEvent.
-		 */
-		static const char * const Ready_s;
-			
-		/**
-		 * @addtogroup PhoenixEvent
-		 * Contains the string "ServerNewClientConnection" PhoenixEvent.
-		 *
-		 * All callbacks registered for this PhoenixEvent
-		 * will be called when a new client connection has happened.
-		 * The callback will be called before the server starts
-		 * to accept I/O on this connection.
-		 *
-		 * This is the name of an PhoenixEvent that callers
-		 * can register for with the Server.
-		 *
-		 * The callback is supplied with the socket file descriptor
-		 * of the incoming connection.
-		 *
-		 * The callback is supplied a PeerInfo object set to
-		 * the peer's IP address as the 'Data'.
-		 *
-		 * The user supplied callback must return false when
-		 * it wishes the connection to fail.
-		 *
-		 * @note
-		 * If an implementation desires to do IP filtering,
-		 * they would register for this PhoenixEvent
-		 * and have the callback return true when okay,
-		 * or false if the IP should be blocked.
-		 *
-		 * @note
-		 * If any of the callbacks registered for this event
-		 * return false, then the servers invoks a "ServerClientBlocked"
-		 * PhoenixEvent.
-		 */
-		static const char * const NewClientConnection_s;
-
-		/**
-		 * @addtogroup PhoenixEvent
-		 * Contains the string "ServerLogMessage" PhoenixEvent.
-		 *
-		 * All callbacks registered for this PhoenixEvent will be
-		 * called when the server code logs a message.
-		 *
-		 * This is the name of an PhoenixEvent that callers
-		 * can register for with the Server.
-		 *
-		 * The callback is supplied with:
-		 *
-		 * -The socket file descriptor of the incoming connection.
-		 * When the file descriptor is (-1) then no file descriptor
-		 * is associated with the message.
-		 *
-		 * -A text message that is being logged.
-		 */
-		static const char * const LoggingMessage_s;
-		 
-		/**
-		 * @addtogroup PhoenixEvent
-		 * Contains the string "ServerShuttingDown" PhoenixEvent.
-		 *
-		 * All callbacks registered for this PhoenixEvent will
-		 * be called prior to the shutdown. After all callbacks
-		 * have been called, the shutdown will continue.
-		 *
-		 * This is the name of an PhoenixEvent that callers
-		 * can register for with the Server.
-		 *
-		 * No optional data is passed with this PhoenixEvent.
-		 */
-		static const char * const ShuttingDown_s;
-
-		/**
-		 * @addtogroup PhoenixEvent
-		 * Contains the string "ServerErrorOnFd" PhoenixEvent.
-		 *
-		 * All callbacks registered for this PhoenixEvent will
-		 * be called when there is some kind of error on a
-		 * socket file descriptor. This means the whatever
-		 * is associated with Fd, will no longer function.
-		 *
-		 * Watch for this event to detect that connections have been
-		 * unexpectedly shut down.
-		 *
-		 * This is the name of an PhoenixEvent that callers
-		 * can register for with the Server.
-		 *
-		 * No optional data is passed with this PhoenixEvent.
-		 *
-		 * @note
-		 * ClientDisconnected_s is also sent with this event when the
-		 * error is on a client connection.
-		 */
-		static const char * const ErrorOnFd_s;
-
 		/**
 		 * Server - Default Constructor.
 		 *
@@ -330,130 +185,8 @@ namespace RiverExplorer::Phoenix
 		 * @return The peer address, or nullptr when not known.
 		 */
 		const IPPeer * GetPeer(int FdToGet);
-			
-		/**
-		 * @addtogroup PhoenixEvent
-		 * The ID for the Server "ServerReady" PhoenixEvent.
-		 *
-		 * When the registered callback is called, nothing
-		 * is supplied in the optional Data.
-		 *
-		 * @return The Phoenix::EventID that identifies a "ServerReady" message.
-		 */
-		static PhoenixEvent::EventID	ReadyID();
-
-		/**
-		 * @addtogroup PhoenixEvent
-		 * The ID for the Server "ServerNewClientConnection" PhoenixEvent.
-		 *
-		 * When the registered callback is called, a PeerInfo
-		 * is supplied in the optional Data.
-		 *
-		 * @return The Phoenix::EventID that identifies a "ServerNewClientConnectio+n"
-		 * message.
-		 */
-		static PhoenixEvent::EventID	NewClientConnectionID();
-
-		/**
-		 * @addtogroup PhoenixEvent
-		 * The ID for the Server "ServerClientDisconnected" PhoenixEvent.
-		 *
-		 * When the registered callback is called, nothing
-		 * is supplied in the optional Data.
-		 *
-		 * @return The Phoenix::EventID that identifies a "ServerClientDisconnected"
-		 * message.
-		 */
-		static PhoenixEvent::EventID	ClientDisconnectedID();
-			
-		/**
-		 * @addtogroup PhoenixEvent
-		 * The ID for the Server "ServerClientBlocked" PhoenixEvent.
-		 *
-		 * When the registered callback is called, nothing
-		 * is supplied in the optional Data.
-		 *
-		 * @return The Phoenix::EventID that identifies a "ServerClientBlocked"
-		 * message.
-		 */
-		static PhoenixEvent::EventID	ClientBlockedID();
-
-		/**
-		 * @addtogroup PhoenixEvent
-		 * The ID for the Server "ServerLoggingMessage" PhoenixEvent.
-		 *
-		 * When the registered callback is called, A (char*)
-		 * is supplied in the optional Data that is the message.
-		 *
-		 * @return The Phoenix::EventID that identifies a "ServerLoggingMessage"
-		 * message.
-		 */
-		static PhoenixEvent::EventID	LoggingMessageID();
-
-		/**
-		 * @addtogroup PhoenixEvent
-		 * The ID for the Server "ServerShuttingDown" PhoenixEvent.
-		 *
-		 * When the registered callback is called, nothing
-		 * is supplied in the optional Data.
-		 *
-		 * @return The Phoenix::EventID that identifies a "ServerShuttingDown"
-		 * message.
-		 */
-		static PhoenixEvent::EventID	ShuttingDownID();
-			
-		/**
-		 * @addtogroup PhoenixEvent
-		 * The ID for the Server "ServerErrorOnFd" PhoenixEvent.
-		 *
-		 * When the registered callback is called, Data
-		 * may have a (char*) message, or be nullptr.
-		 */
-		static PhoenixEvent::EventID	ErrorOnFdID();
 
 	private:
-
-		/**
-		 * @addtogroup PhoenixEvent
-		 * The ID for the Server "Ready" PhoenixEvent.
-		 */
-		static PhoenixEvent::EventID	_ClientBlockedID;
-
-		/**
-		 * @addtogroup PhoenixEvent
-		 * The ID for the Server "Ready" PhoenixEvent.
-		 */
-		static PhoenixEvent::EventID	_ReadyID;
-
-		/**
-		 * @addtogroup PhoenixEvent
-		 * The ID for the Server "NewClientConnection" PhoenixEvent.
-		 */
-		static PhoenixEvent::EventID	_NewClientConnectionID;
-
-		/**
-		 * @addtogroup PhoenixEvent
-		 * The ID for the Server "ClientDisconnected" PhoenixEvent.
-		 */
-		static PhoenixEvent::EventID	_ClientDisconnectedID;
-
-		/**
-		 * @addtogroup PhoenixEvent
-		 * The ID for the Server "LoggingMessage" PhoenixEvent.
-		 */
-		static PhoenixEvent::EventID	_LoggingMessageID;
-
-		/**
-		 * @addtogroup PhoenixEvent
-		 * The ID for the Server "ShuttingDown" PhoenixEvent.
-		 */
-		static PhoenixEvent::EventID	_ShuttingDownID;
-			
-		/**
-		 * @addtogroup PhoenixEvent
-		 * The ID for the Server "ErrorOnFd" PhoenixEvent.
-		 */
-		static PhoenixEvent::EventID	_ErrorOnFdID;
 
 		/**
 		 * Called each time Server::Event::InvokeMessage() is called.
@@ -468,7 +201,7 @@ namespace RiverExplorer::Phoenix
 		 *
 		 * @return Always returns true.
 		 */
-		static bool _LogMessage(int Fd, PhoenixEvent::EventID ID, void *Data);
+		static bool _LogMessage(int Fd, Event::Event_e ID, void *Data);
 
 		/**
 		 * Check for blocked or other IP's
@@ -487,7 +220,7 @@ namespace RiverExplorer::Phoenix
 		 * @return true if the IP is allowed.
 		 * Returns false if the IP is not allowed.
 		 */
-		static bool _ValidateIP(int Fd, PhoenixEvent::EventID ID, void * Peer);
+		static bool _ValidateIP(int Fd, Event::Event_e ID, void * Peer);
 		 
 		/**
 		 * @addtogroup PhoenixEvent
@@ -496,29 +229,29 @@ namespace RiverExplorer::Phoenix
 		 * these messages.
 		 * Others can register to get the notifications.
 		 *
-		 * - "ServerReady"
+		 * - ServerReady_Event
 		 * The server has started is ready to start processing.
 		 *
-		 * - "ServerNewClientConnection"
+		 * - NewClientConnection
 		 * Is sent each time a new connection is made to the server.
 		 *
-		 * - "ServerClientDisconnected:
+		 * - ClientDisconnected
 		 * When the client connection is terminated by the client, or the server.
 		 *
-		 * - "ServerLoggingMessage"
+		 * - ServerLoggingMessage
 		 * A new log message has been saved.
 		 *
-		 * - "ServerShuttingDown"
+		 * - ServerShuttingDown
 		 * The server is shutting down very soon.
 		 *
-		 * - "ServerErrorOnFd"
+		 * - ServerErrorOnFd
 		 * A socket connected to a client has had some kind of error.
 		 * It could be they hung up without logging out, network error.
 		 * It is unknown why. Code that handles the connection should
 		 * register for this PhoenixEvent to know that the connection is now dead.
 		 */			 
 		class _Event
-			: public PhoenixEvent
+			: public Event
 		{
 		public:
 
@@ -530,7 +263,7 @@ namespace RiverExplorer::Phoenix
 			 * @param Fd The associated file descriptor, or (-1)
 			 * if not associated with a file descriptor.
 			 *
-			 * @param EventID The ID of the event being invoked.
+			 * @param ID The ID of the event being invoked.
 			 *
 			 * @param Data Any extra data.
 			 * Currently the Server class does not send extra data
@@ -540,7 +273,7 @@ namespace RiverExplorer::Phoenix
 			 * May return false for NewClientConnection, if the
 			 * callback is telling the server to block this connection.
 			 */
-			static bool Invoke(int Fd, PhoenixEvent::EventID ID, const char * Msg = nullptr);
+			static bool Invoke(int Fd, Event::Event_e ID, const char * Msg = nullptr);
 
 			/**
 			 * @addtogroup PhoenixEvent
@@ -550,7 +283,7 @@ namespace RiverExplorer::Phoenix
 			 * @param Fd The associated file descriptor, or (-1)
 			 * if not associated with a file descriptor.
 			 *
-			 * @param EventID The ID of the event being invoked.
+			 * @param ID The ID of the event being invoked.
 			 *
 			 * @param Peer The associated PeerInfo.
 			 *
@@ -558,7 +291,7 @@ namespace RiverExplorer::Phoenix
 			 * May return false for NewClientConnection, if the
 			 * callback is telling the server to block this connection.
 			 */
-			static bool Invoke(int Fd, PhoenixEvent::EventID ID, const IPPeer * Peer);
+			static bool Invoke(int Fd, Event::Event_e ID, const IPPeer * Peer);
 
 		private:
 		
@@ -581,7 +314,7 @@ namespace RiverExplorer::Phoenix
 			 * @param Fd The associated file descriptor, or (-1)
 			 * if not associated with a file descriptor.
 			 *
-			 * @param EventID The ID of the event being invoked.
+			 * @para ID The ID of the event being invoked.
 			 *
 			 * @param Data Any extra data.
 			 * Currently the Server class does not send extra data
@@ -591,7 +324,7 @@ namespace RiverExplorer::Phoenix
 			 * May return false for NewClientConnection, if the
 			 * callback is telling the server to block this connection.
 			 */
-			virtual bool Invoke(int Fd, EventID ID, void * Data = nullptr);
+			virtual bool Invoke(int Fd, Event_e ID, void * Data = nullptr);
 
 		};
 
@@ -697,7 +430,7 @@ namespace RiverExplorer::Phoenix
 		 * Returns (-1) If the socket is invalid for any reason and this
 		 * should not be attempted again.
 		 */
-		static int32_t		_NetWrite(int Fd, Iov * IovData);
+		static ssize_t		_NetWrite(int Fd, Iov * IovData);
 		
 		/**
 		 * The thread that we use to send out data.

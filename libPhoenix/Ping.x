@@ -1,8 +1,8 @@
 %
 %#ifdef BUILDING_LIBPHOENIX
-%#include "Types.hpp"
+%#include "PacketBody.hpp"
 %#else
-%#include <RiverExplorer/Phoenix/Types.hpp>
+%#include <RiverExplorer/Phoenix/PacketBody.hpp>
 %#endif
 
 #ifdef RPC_HDR
@@ -14,7 +14,7 @@
 % * The reply is required.
 % */
 #endif
-class Ping
+class PingPayload
 {
 	int foo;
 };
@@ -28,7 +28,7 @@ class Ping
 % * The reply is required.
 % */
 #endif
-class PingReply
+class PingReplyPayload
 {
 	int foo;
 };
@@ -41,7 +41,7 @@ class PingReply
 #endif
 %namespace RiverExplorer::Phoenix
 %{
-%class CmdPacket;
-%extern CmdPacket * NewPing(CommandSequence Seq);
+%class Command;
+%extern Command * NewPing(SEQ_t Seq);
 %}
 

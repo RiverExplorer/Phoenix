@@ -8,9 +8,17 @@ der CC BY 4.0
 #ifndef _RIVEREXPLORER_PHOENIX_REGISTER_HPP_
 #define _RIVEREXPLORER_PHOENIX_REGISTER_HPP_
 
-#include <Commands.hpp>
-#include <CmdNotSupported.hpp>
-#include <IO.hpp>
+#ifdef BUILDING_LIBPHOENIX
+#include "Commands.hpp"
+#include "CmdNotSupported.hpp"
+#include "IO.hpp"
+#include "PhoenixEvent.hpp"
+#else
+#include <RiverExplorer/Phoenix/Commands.hpp>
+#include <RiverExplorer/Phoenix/CmdNotSupported.hpp>
+#include <RiverExplorer/Phoenix/IO.hpp>
+#include <RiverExplorer/Phoenix/PhoenixEvent.hpp>
+#endif
 
 #include <map>
 #include <mutex>
@@ -29,15 +37,6 @@ namespace RiverExplorer::Phoenix
 	 * An 'PhoenixEvent' is a string.
 	 * These events are sent to all registered listeners.
 	 * These events can only be sent by registered senders.
-	 *
-	 * Built in PhoenixEvent's include:
-	 *
-	 * -"New-Clinet-Connected"
-	 * -"Client-Disconnected"
-	 * -"Account-Authenticated"
-	 * -"Account-Logout"
-	 *
-	 * More can be added ...
 	 */
 	class  Register
 	{
@@ -90,7 +89,7 @@ namespace RiverExplorer::Phoenix
 		 * to list during the inital connection suppored by this
 		 * callback. The list may be empty when none.
 		 */
-		static bool RegisterCallback(Command_e Cmd,
+		static bool RegisterCallback(CMD_e Cmd,
 																 CommandCallback Cb,
 																 std::vector<PluginCapability*> & PreAuth,
 																 std::vector<PluginCapability*> & PostAuth);
@@ -104,7 +103,7 @@ namespace RiverExplorer::Phoenix
 		 *
 		 * @param Pkt The packet received.
 		 */
-		static void Dispatch(int Fd, CmdPacket * Pkt);
+		static void Dispatch(int Fd, PacketBody * Pkt);
 
 		/**
 		 * Initialize all known commands.
@@ -119,7 +118,7 @@ namespace RiverExplorer::Phoenix
 		 * This is a one to many mapping. More than one function
 		 * may register for a command.
 		 */
-		static std::multimap<Command_e, CommandCallback> _Callbacks;
+		static std::multimap<CMD_e, CommandCallback> _Callbacks;
 
 		/**
 		 * A mutex lock for Callbacks.

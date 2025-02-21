@@ -9,12 +9,14 @@ der CC BY 4.0
 
 namespace RiverExplorer::Phoenix
 {
+#ifdef WHAT	
 	int
 	xdr_CommandID(XDR * xdrs, CommandSequence * ID)
 	{
 		return(xdr_uint64_t(xdrs, ID));
 	}
-
+#endif
+	
 	bool
 	xdr_bool_t(XDR * xdrs, bool_t * Val)
 	{

@@ -24,7 +24,10 @@ der CC BY 4.0
  * @see InitializeKnown()
  */
 #include "CppPing.hpp"
+#include "Capability.hpp"
 #include "CppCapability.hpp"
+#include "CppAuthMD5.hpp"
+#include "CppBye.hpp"
 
 #include <sys/socket.h>
 
@@ -37,7 +40,7 @@ namespace RiverExplorer::Phoenix
 	 * This is a one to many mapping. More than one function
 	 * may register for a command.
 	 */
-	std::multimap<Command_e, CommandCallback> Register::_Callbacks;
+	std::multimap<CMD_e, CommandCallback> Register::_Callbacks;
 
 	/**
 	 * A mutex lock for Callbacks.
@@ -51,7 +54,7 @@ namespace RiverExplorer::Phoenix
 	static std::vector<Register::PluginCapability*> PostAuthCapabilities;
 	
 	bool
-	Register::RegisterCallback(Command_e Cmd,
+	Register::RegisterCallback(CMD_e Cmd,
 														 CommandCallback Cb,
 														 std::vector<Register::PluginCapability*> & Pre,
 														 std::vector<Register::PluginCapability*> & Post)
@@ -83,12 +86,15 @@ namespace RiverExplorer::Phoenix
 	}
 	
 	void
-	Register::Dispatch(int Fd, CmdPacket * Pkt)
+	Register::Dispatch(int Fd, PacketBody * Pkt)
 	{
 		if (!KnownInitialized) {
 			InitializeKnown();
 		}
-		// ,,,
+		// A PacketBody can have 1 or more commands.
+		// ...
+
+		/**@todo Register::Dispatch() */
 		
 		return;
 	}
@@ -96,17 +102,33 @@ namespace RiverExplorer::Phoenix
 	void
 	Register::InitializeKnown()
 	{
-		RegisterCallback(Ping_Cmd,
+		RegisterCallback(PING,
 										 CppPing::Callback,
 										 CppPing::PreAuth,
-										 CppPing::PreAuth);
+										 CppPing::PostAuth);
 		
-		RegisterCallback(Capability_Cmd,
-										 CppCapability::Callback,
-										 CppCapability::PreAuth,
-										 CppCapability::PreAuth);
+		RegisterCallback(CAPABILITY_PRE,
+										 CppCapabilityPre::Callback,
+										 CppCapabilityPre::PreAuth,
+										 CppCapabilityPre::PostAuth);
 
-		
+		RegisterCallback(CAPABILITY_POST,
+										 CppCapabilityPost::Callback,
+										 CppCapabilityPost::PreAuth,
+										 CppCapabilityPost::PostAuth);
+
+		RegisterCallback(AUTHMD5,
+										 CppAuthMD5::Callback,
+										 CppAuthMD5::PreAuth,
+										 CppAuthMD5::PostAuth);
+										 
+		RegisterCallback(BYE,
+										 CppBye::Callback,
+										 CppBye::PreAuth,
+										 CppBye::PostAuth);
+										 
+
 	}
 
+	
 }

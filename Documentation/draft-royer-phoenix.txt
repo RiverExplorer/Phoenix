@@ -4,8 +4,8 @@
 
 Internet Engineering Task Force                                DM. Royer
 Internet-Draft                                         RiverExplorer LLC
-Intended status: Informational                          17 February 2025
-Expires: 21 August 2025
+Intended status: Informational                          21 February 2025
+Expires: 25 August 2025
 
 
                      Phoenix: Lemonade Risen Again
@@ -53,7 +53,7 @@ Status of This Memo
 
 
 
-Royer                    Expires 21 August 2025                 [Page 1]
+Royer                    Expires 25 August 2025                 [Page 1]
 
 Internet-Draft        Phoenix: Lemonade Risen Again        February 2025
 
@@ -68,7 +68,7 @@ Internet-Draft        Phoenix: Lemonade Risen Again        February 2025
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 21 August 2025.
+   This Internet-Draft will expire on 25 August 2025.
 
 Copyright Notice
 
@@ -101,22 +101,22 @@ Table of Contents
    5.  Commands  . . . . . . . . . . . . . . . . . . . . . . . . . .  19
      5.1.  Commands Overview - Packet and Reply  . . . . . . . . . .  20
        5.1.1.  Packet Overview . . . . . . . . . . . . . . . . . . .  21
-       5.1.2.  Packet Reply Overview . . . . . . . . . . . . . . . .  31
-     5.2.  Administration Commands . . . . . . . . . . . . . . . . .  31
-       5.2.1.  Administration Capability Definitions . . . . . . . .  32
-       5.2.2.  Administration Command Payload  . . . . . . . . . . .  32
-       5.2.3.  Administration - SERVER_CONFIGURE (%x05:8)  . . . . .  37
+       5.1.2.  Packet Reply Overview . . . . . . . . . . . . . . . .  35
+     5.2.  Administration Commands . . . . . . . . . . . . . . . . .  35
+       5.2.1.  Administration Capability Definitions . . . . . . . .  35
+       5.2.2.  Administration Command Payload  . . . . . . . . . . .  36
+       5.2.3.  Administration - SERVER_CONFIGURE (%x05:8)  . . . . .  38
 
 
 
-Royer                    Expires 21 August 2025                 [Page 2]
+Royer                    Expires 25 August 2025                 [Page 2]
 
 Internet-Draft        Phoenix: Lemonade Risen Again        February 2025
 
 
        5.2.4.  Administration - USER_KICK_USER . . . . . . . . . . .  42
        5.2.5.  Administration - SERVER_LOGS  . . . . . . . . . . . .  43
-       5.2.6.  Administration - SERVER_MANANGE_BANS  . . . . . . . .  44
+       5.2.6.  Administration - SERVER_MANANGE_BANS  . . . . . . . .  45
        5.2.7.  Administration - SERVER_SHUTDOWN  . . . . . . . . . .  45
        5.2.8.  Administration - SERVER_VIEW_STATS  . . . . . . . . .  45
        5.2.9.  Administration - USER_CREATE  . . . . . . . . . . . .  45
@@ -125,23 +125,23 @@ Internet-Draft        Phoenix: Lemonade Risen Again        February 2025
        5.2.12. Administration - USER_PERMISSIONS . . . . . . . . . .  45
        5.2.13. Administration - USER_RENAME  . . . . . . . . . . . .  45
      5.3.  Authentication Commands Summary . . . . . . . . . . . . .  45
-       5.3.1.  Authentication - ABNF . . . . . . . . . . . . . . . .  46
-       5.3.2.  Authentication - XDR  . . . . . . . . . . . . . . . .  46
-       5.3.3.  Authentication Failure  . . . . . . . . . . . . . . .  47
-     5.4.  Authentication - ANONYMOUS  . . . . . . . . . . . . . . .  48
-       5.4.1.  Authentication - AUTHANONYMOUS - Capability . . . . .  48
-       5.4.2.  Authentication - AUTHANONYMOUS - Command  . . . . . .  49
-     5.5.  Authentication - Certificate  . . . . . . . . . . . . . .  51
-       5.5.1.  Authentication - Certificate - Capability . . . . . .  51
-       5.5.2.  AUTHCERT_TLS  . . . . . . . . . . . . . . . . . . . .  51
-       5.5.3.  AUTHCERT_USER . . . . . . . . . . . . . . . . . . . .  52
-       5.5.4.  Certificate Management  . . . . . . . . . . . . . . .  53
-     5.6.  Authentication - MD5  . . . . . . . . . . . . . . . . . .  53
-       5.6.1.  Authentication - MD5 - Capability . . . . . . . . . .  53
-       5.6.2.  Authentication - MD5 - Command  . . . . . . . . . . .  54
-     5.7.  Calendar Commands Summary . . . . . . . . . . . . . . . .  55
-     5.8.  Capability Commands Summary . . . . . . . . . . . . . . .  55
-       5.8.1.  Capability - VENDOR_ID  . . . . . . . . . . . . . . .  57
+       5.3.1.  Authentication Failure  . . . . . . . . . . . . . . .  46
+     5.4.  Authentication - ANONYMOUS  . . . . . . . . . . . . . . .  47
+       5.4.1.  Authentication - AUTHANONYMOUS - Capability . . . . .  47
+       5.4.2.  Authentication - AUTHANONYMOUS - Command  . . . . . .  48
+     5.5.  Authentication - Certificate  . . . . . . . . . . . . . .  50
+       5.5.1.  Authentication - Certificate - Capability . . . . . .  50
+       5.5.2.  AUTHCERT_TLS  . . . . . . . . . . . . . . . . . . . .  50
+       5.5.3.  AUTHCERT_USER . . . . . . . . . . . . . . . . . . . .  51
+       5.5.4.  Certificate Management  . . . . . . . . . . . . . . .  52
+     5.6.  Authentication - MD5  . . . . . . . . . . . . . . . . . .  52
+       5.6.1.  Authentication - MD5 - Capability . . . . . . . . . .  52
+       5.6.2.  Authentication - MD5 - Command  . . . . . . . . . . .  53
+     5.7.  Calendar Commands Summary . . . . . . . . . . . . . . . .  54
+     5.8.  Capability Commands Summary . . . . . . . . . . . . . . .  54
+       5.8.1.  Capability - CAPABILITY_PRE . . . . . . . . . . . . .  55
+       5.8.2.  Capability - CAPABILITY_POST  . . . . . . . . . . . .  57
+       5.8.3.  Capability - VENDOR_ID  . . . . . . . . . . . . . . .  57
      5.9.  EMail Commands Summary  . . . . . . . . . . . . . . . . .  58
      5.10. File and Folder Commands Summary  . . . . . . . . . . . .  58
        5.10.1.  File and Folder - FOLDER_CAPABILITY  . . . . . . . .  60
@@ -156,8 +156,8 @@ Internet-Draft        Phoenix: Lemonade Risen Again        February 2025
        5.10.10. File and Folder - FOLDER_SHARE . . . . . . . . . . .  60
        5.10.11. File and Folder - FILE_CREATE  . . . . . . . . . . .  60
        5.10.12. File and Folder - FILE_COPY  . . . . . . . . . . . .  60
-       5.10.13. File and Folder - FILE_DELETE  . . . . . . . . . . .  60
-       5.10.14. File and Folder - FILE_RENAME  . . . . . . . . . . .  60
+       5.10.13. File and Folder - FILE_DELETE  . . . . . . . . . . .  61
+       5.10.14. File and Folder - FILE_RENAME  . . . . . . . . . . .  61
        5.10.15. File and Folder - FILE_METADATA  . . . . . . . . . .  61
        5.10.16. File and Folder - FILE_MOVE  . . . . . . . . . . . .  61
        5.10.17. File and Folder - FILE_SHARE . . . . . . . . . . . .  61
@@ -165,7 +165,7 @@ Internet-Draft        Phoenix: Lemonade Risen Again        February 2025
 
 
 
-Royer                    Expires 21 August 2025                 [Page 3]
+Royer                    Expires 25 August 2025                 [Page 3]
 
 Internet-Draft        Phoenix: Lemonade Risen Again        February 2025
 
@@ -182,7 +182,7 @@ Internet-Draft        Phoenix: Lemonade Risen Again        February 2025
      7.4.  Meta Data - Draft . . . . . . . . . . . . . . . . . . . .  66
      7.5.  Meta Data - Flagged . . . . . . . . . . . . . . . . . . .  66
      7.6.  Meta Data - Forwarded . . . . . . . . . . . . . . . . . .  66
-     7.7.  Meta Data - Hide  . . . . . . . . . . . . . . . . . . . .  66
+     7.7.  Meta Data - Hide  . . . . . . . . . . . . . . . . . . . .  67
      7.8.  Meta Data - Junk  . . . . . . . . . . . . . . . . . . . .  67
      7.9.  Meta Data - MDNSent . . . . . . . . . . . . . . . . . . .  67
      7.10. Meta Data - NoCopy  . . . . . . . . . . . . . . . . . . .  67
@@ -221,15 +221,15 @@ Internet-Draft        Phoenix: Lemonade Risen Again        February 2025
 
 
 
-Royer                    Expires 21 August 2025                 [Page 4]
+Royer                    Expires 25 August 2025                 [Page 4]
 
 Internet-Draft        Phoenix: Lemonade Risen Again        February 2025
 
 
-   Appendix G.  Complete XDR . . . . . . . . . . . . . . . . . . . .  97
-   Acknowledgments . . . . . . . . . . . . . . . . . . . . . . . . . 105
-   Contributors  . . . . . . . . . . . . . . . . . . . . . . . . . . 105
-   Author's Address  . . . . . . . . . . . . . . . . . . . . . . . . 105
+   Appendix G.  Complete XDR . . . . . . . . . . . . . . . . . . . .  98
+   Acknowledgments . . . . . . . . . . . . . . . . . . . . . . . . . 109
+   Contributors  . . . . . . . . . . . . . . . . . . . . . . . . . . 109
+   Author's Address  . . . . . . . . . . . . . . . . . . . . . . . . 109
 
 1.  Requirements Language
 
@@ -277,7 +277,7 @@ Internet-Draft        Phoenix: Lemonade Risen Again        February 2025
 
 
 
-Royer                    Expires 21 August 2025                 [Page 5]
+Royer                    Expires 25 August 2025                 [Page 5]
 
 Internet-Draft        Phoenix: Lemonade Risen Again        February 2025
 
@@ -333,7 +333,7 @@ Internet-Draft        Phoenix: Lemonade Risen Again        February 2025
 
 
 
-Royer                    Expires 21 August 2025                 [Page 6]
+Royer                    Expires 25 August 2025                 [Page 6]
 
 Internet-Draft        Phoenix: Lemonade Risen Again        February 2025
 
@@ -389,7 +389,7 @@ Internet-Draft        Phoenix: Lemonade Risen Again        February 2025
 
 
 
-Royer                    Expires 21 August 2025                 [Page 7]
+Royer                    Expires 25 August 2025                 [Page 7]
 
 Internet-Draft        Phoenix: Lemonade Risen Again        February 2025
 
@@ -445,7 +445,7 @@ Internet-Draft        Phoenix: Lemonade Risen Again        February 2025
 
 
 
-Royer                    Expires 21 August 2025                 [Page 8]
+Royer                    Expires 25 August 2025                 [Page 8]
 
 Internet-Draft        Phoenix: Lemonade Risen Again        February 2025
 
@@ -501,7 +501,7 @@ Internet-Draft        Phoenix: Lemonade Risen Again        February 2025
 
 
 
-Royer                    Expires 21 August 2025                 [Page 9]
+Royer                    Expires 25 August 2025                 [Page 9]
 
 Internet-Draft        Phoenix: Lemonade Risen Again        February 2025
 
@@ -557,7 +557,7 @@ Internet-Draft        Phoenix: Lemonade Risen Again        February 2025
 
 
 
-Royer                    Expires 21 August 2025                [Page 10]
+Royer                    Expires 25 August 2025                [Page 10]
 
 Internet-Draft        Phoenix: Lemonade Risen Again        February 2025
 
@@ -613,7 +613,7 @@ Internet-Draft        Phoenix: Lemonade Risen Again        February 2025
 
 
 
-Royer                    Expires 21 August 2025                [Page 11]
+Royer                    Expires 25 August 2025                [Page 11]
 
 Internet-Draft        Phoenix: Lemonade Risen Again        February 2025
 
@@ -669,7 +669,7 @@ Internet-Draft        Phoenix: Lemonade Risen Again        February 2025
 
 
 
-Royer                    Expires 21 August 2025                [Page 12]
+Royer                    Expires 25 August 2025                [Page 12]
 
 Internet-Draft        Phoenix: Lemonade Risen Again        February 2025
 
@@ -725,7 +725,7 @@ Internet-Draft        Phoenix: Lemonade Risen Again        February 2025
 
 
 
-Royer                    Expires 21 August 2025                [Page 13]
+Royer                    Expires 25 August 2025                [Page 13]
 
 Internet-Draft        Phoenix: Lemonade Risen Again        February 2025
 
@@ -781,7 +781,7 @@ Internet-Draft        Phoenix: Lemonade Risen Again        February 2025
 
 
 
-Royer                    Expires 21 August 2025                [Page 14]
+Royer                    Expires 25 August 2025                [Page 14]
 
 Internet-Draft        Phoenix: Lemonade Risen Again        February 2025
 
@@ -837,7 +837,7 @@ Internet-Draft        Phoenix: Lemonade Risen Again        February 2025
 
 
 
-Royer                    Expires 21 August 2025                [Page 15]
+Royer                    Expires 25 August 2025                [Page 15]
 
 Internet-Draft        Phoenix: Lemonade Risen Again        February 2025
 
@@ -893,7 +893,7 @@ Internet-Draft        Phoenix: Lemonade Risen Again        February 2025
 
 
 
-Royer                    Expires 21 August 2025                [Page 16]
+Royer                    Expires 25 August 2025                [Page 16]
 
 Internet-Draft        Phoenix: Lemonade Risen Again        February 2025
 
@@ -949,7 +949,7 @@ Internet-Draft        Phoenix: Lemonade Risen Again        February 2025
 
 
 
-Royer                    Expires 21 August 2025                [Page 17]
+Royer                    Expires 25 August 2025                [Page 17]
 
 Internet-Draft        Phoenix: Lemonade Risen Again        February 2025
 
@@ -1005,7 +1005,7 @@ Internet-Draft        Phoenix: Lemonade Risen Again        February 2025
 
 
 
-Royer                    Expires 21 August 2025                [Page 18]
+Royer                    Expires 25 August 2025                [Page 18]
 
 Internet-Draft        Phoenix: Lemonade Risen Again        February 2025
 
@@ -1061,7 +1061,7 @@ Internet-Draft        Phoenix: Lemonade Risen Again        February 2025
 
 
 
-Royer                    Expires 21 August 2025                [Page 19]
+Royer                    Expires 25 August 2025                [Page 19]
 
 Internet-Draft        Phoenix: Lemonade Risen Again        February 2025
 
@@ -1117,7 +1117,7 @@ Internet-Draft        Phoenix: Lemonade Risen Again        February 2025
 
 
 
-Royer                    Expires 21 August 2025                [Page 20]
+Royer                    Expires 25 August 2025                [Page 20]
 
 Internet-Draft        Phoenix: Lemonade Risen Again        February 2025
 
@@ -1173,7 +1173,7 @@ Internet-Draft        Phoenix: Lemonade Risen Again        February 2025
 
 
 
-Royer                    Expires 21 August 2025                [Page 21]
+Royer                    Expires 25 August 2025                [Page 21]
 
 Internet-Draft        Phoenix: Lemonade Risen Again        February 2025
 
@@ -1229,7 +1229,7 @@ Internet-Draft        Phoenix: Lemonade Risen Again        February 2025
 
 
 
-Royer                    Expires 21 August 2025                [Page 22]
+Royer                    Expires 25 August 2025                [Page 22]
 
 Internet-Draft        Phoenix: Lemonade Risen Again        February 2025
 
@@ -1285,7 +1285,7 @@ Internet-Draft        Phoenix: Lemonade Risen Again        February 2025
 
 
 
-Royer                    Expires 21 August 2025                [Page 23]
+Royer                    Expires 25 August 2025                [Page 23]
 
 Internet-Draft        Phoenix: Lemonade Risen Again        February 2025
 
@@ -1341,7 +1341,7 @@ Internet-Draft        Phoenix: Lemonade Risen Again        February 2025
 
 
 
-Royer                    Expires 21 August 2025                [Page 24]
+Royer                    Expires 25 August 2025                [Page 24]
 
 Internet-Draft        Phoenix: Lemonade Risen Again        February 2025
 
@@ -1373,7 +1373,11 @@ Internet-Draft        Phoenix: Lemonade Risen Again        February 2025
    A command conforming to this specification is not a vendor command.
    A command created by any vendor that implements vendor specific
    commands or operations is a vendor command.  Vendor commands have the
-   VENDOR_BIT set in the commands or operations.
+   VENDOR_BIT set in the commands or operations.  And vendor commands
+   MUST have a Length value that follows the command that indicates how
+   many octets follow the length.  This is so that implementations that
+   do not understand the vendor extension can skip that many more octets
+   to find the next command or operation.
 
    If any operation in a command has the VENDOR_BIT set it may effect
    implementations that do not support that specific vendor operation.
@@ -1390,21 +1394,22 @@ Internet-Draft        Phoenix: Lemonade Risen Again        February 2025
    Clients or servers that are not using vendor specific extensions,
    can:
 
+
+
+
+Royer                    Expires 25 August 2025                [Page 25]
+
+Internet-Draft        Phoenix: Lemonade Risen Again        February 2025
+
+
    *  Send a VENDOR_ID with the value as an empty string.
 
    *  Or set the string, and just do not send any command or command
       operations with extensions.
 
-
-
-Royer                    Expires 21 August 2025                [Page 25]
-
-Internet-Draft        Phoenix: Lemonade Risen Again        February 2025
-
-
    Clients that do not understand the string value in VENDOR_ID would
    ignore the commands and capabilities with the VENDOR_BIT set.  Which
-   is AUTH_Vendor_e in this example.
+   is AUTH_Vendor_3 in this example.
 
    This is an example of a CAPABILITY_PRE being sent from the server to
    the client.  A conforming client could ignore the AUTH_Vendor_3 and
@@ -1425,6 +1430,8 @@ Internet-Draft        Phoenix: Lemonade Risen Again        February 2025
                +-+--------------------------------+
                |1| AUTH_Vendor_3 (?)              |
                +----------------------------------+
+               | Length:32 (Size of AUTH_Vendor_3)|
+               +----------------------------------+
                | ......                             CMD-1...
 
                  Figure 11: Packet Body Non-Vendor- Diagram
@@ -1440,79 +1447,80 @@ Internet-Draft        Phoenix: Lemonade Risen Again        February 2025
    server.  A client implementations that understand the contents of the
    string value for VENDOR_ID, may also understand these extensions.
 
+   After each entry that has the VENDOR_BIT set, the next value must be
+   a Length indicating how many octets of data follow the Length, even
+   when zero.
 
 
 
-
-
-
-
-
-
-
-
-
-
-Royer                    Expires 21 August 2025                [Page 26]
+Royer                    Expires 25 August 2025                [Page 26]
 
 Internet-Draft        Phoenix: Lemonade Risen Again        February 2025
 
 
-               +----------------------------------+
-               | Packet Length (PacketLength:32)  |
-               +----------------------------------+
-               | Length:32 (Number of Commands)   |
-               +----------------------------------+
-               | Sequence (SEQ:32)                | CMD-0
-               +-+--------------------------------+
-               |1| CAPABILITY_PRE (%x29:31)       |
-               +-+--------------------------------+
-               | VENDOR_ID ...
-               +-+--------------------------------+
-               |1| AUTHMD5 (%x10:31)              |
-               +-+--------------------------------+
-               |1| AUTH_Vendor_3 (?)              |
-               +----------------------------------+
-               | ......                             CMD-1...
+                +----------------------------------+
+                | Packet Length (PacketLength:32)  |
+                +----------------------------------+
+                | Length:32 (Number of Commands)   |
+                +----------------------------------+
+                | Sequence (SEQ:32)                | CMD-0
+                +-+--------------------------------+
+                |1| CAPABILITY_PRE (%x29:31)       |
+                +-+--------------------------------+
+                | Length:32 (Length of CAPABILITY) |
+                +-+--------------------------------+
+                |1| AUTHMD5 (%x10:31)              |
+                +-+--------------------------------+
+                | Length:32 (Length of AUTHMD5)    |
+                +-+--------------------------------+
+                |1| AUTH_Vendor_3 (%xff)           |
+                +-+--------------------------------+
+                | Length:32 (Length of Auth_..3)   |
+                +----------------------------------+
+                |0| VENDOR_ID:31 ... (+6 octets)
+                +-+--------------------------------+
 
                   Figure 12: Packet Body Vendor - Diagram
+
+   And the matching data for Figure 12 could be (assumeing all vendor
+   extensions have 0 octets of additional data):
+
+           +----------------------------------+
+           |            %x26                  | 38 octets Follow
+           +----------------------------------+
+           |            %x01                  | 1 Command
+           +----------------------------------+
+           |            %x03                  | SEQ
+           +-+--------------------------------+
+           |         %x80000029 (VENDOR+cmd)  | CAPABILITY_PRE
+           +-+--------------------------------+
+           |            0x10                  | 16 octets Follow
+           +-+--------------------------------+
+           |         %x80000029 (VENDOR+MD5)  | Vendor AUTH_MD5
+           +-+--------------------------------+
+           |            %x00                  | Zero data
+           +-+--------------------------------+
+           |         %x800000ff (VENDOR+..3)  | AUTH_Vendor_3
+           +-+--------------------------------+
+           |            %x00                  | Zero data
+           +----------------------------------+
+           |0| VENDOR_ID:31 ... (+6 octets)
+           +----------------------------------+
+
+
+
+Royer                    Expires 25 August 2025                [Page 27]
+
+Internet-Draft        Phoenix: Lemonade Risen Again        February 2025
+
+
+                Figure 13: Packet Body Vendor - Diagram Data
 
    Multiple commands may be sent in one packet.  And PHOENIX and non-
    vendor (NON-PHOENIX) commands may be sent in one packet body by
    setting VENDOR_BIT (1) or PHOENIX_BIT (0) in the packet.  This
    example shows two commands, one that is a PHOENIX command the other
    is a vendor command.
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-Royer                    Expires 21 August 2025                [Page 27]
-
-Internet-Draft        Phoenix: Lemonade Risen Again        February 2025
-
 
           +----------------------------------+
           | Packet Length (PacketLength:32)  |
@@ -1529,6 +1537,8 @@ Internet-Draft        Phoenix: Lemonade Risen Again        February 2025
           +-+--------------------------------+
           |1| Command (CMD:31)               | (Vendor Command)
           +-+--------------------------------+
+          | Length:32 (Size of Command)      |
+          +----------------------------------+
           | CmdPayload ...
           +----------------------------------+
           | Sequence (SEQ:32)                | CMD-2...
@@ -1539,76 +1549,126 @@ Internet-Draft        Phoenix: Lemonade Risen Again        February 2025
           +----------------------------------+
           | ...
 
-             Figure 13: Packet Body Multiple Commands - Diagram
+             Figure 14: Packet Body Multiple Commands - Diagram
 
 5.1.1.2.1.  Packet Body ABNF
 
    ABNF:
 
+                ; Define a SEQ (sequence) type.
+   SEQ          = uint32_t
+
+   OneCommand   = AUTHANONYMOUS AuthAnonymousPayload
+                / AUTHCERT_TLS AuthCertTlsPayload
+                / AUTHCERT_USER AuthCertUserPayload
+                / AUTHMD5 AuthMD5Payload
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-Royer                    Expires 21 August 2025                [Page 28]
+Royer                    Expires 25 August 2025                [Page 28]
 
 Internet-Draft        Phoenix: Lemonade Risen Again        February 2025
 
 
-                ; The data that follows is ADMIN CMD data.
-   ADMIN_CMD  = %x00:31
+                / AUTHMD5 AuthMD5ReplyPayload
+                / CAPABILITY_PRE CapabilityPrePayload
+                / FILE_CREATE FileCreatePayload
+                / FILE_COPY FileCopyPayload
+                / FILE_DELETE FileDeletePayload
+                / FILE_RENAME FileRenamePayload
+                / FILE_METADATA FileMetaDataPayload
+                / FILE_MOVE FileMovePayload
+                / FILE_SHARE FileSharePayload
+                / FILE_GET FileGetPayload
+                / FILE_MODIFY FileModifyPayload
+                / FOLDER_CREATE FolderCreatePayload
+                / FOLDER_COPY FolderCopyPayload
+                / FOLDER_DELETE FolderDeletePayload
+                / FOLDER_RENAME FolderRenamePayload
+                / FOLDER_METADATA FolderMetaDataPayload
+                / FOLDER_MOVE FolderMovePayload
+                / FOLDER_OPEN FolderOpenPayload
+                / FOLDER_SHARE FolderSharePayload
+                / FOLDER_LIST FolderListPayload
+                / NOT_SUPPORTED
+                / SERVER_CONFIGURE ServerConfigurePayload
+                / SERVER_KICK_USER
+                / SERVER_LOGS ServerLogsPayload
+                / SERVER_MANAGE_BANS ServerManageBansPayload
+                / SERVER_SHUTDOWN ServerShutdownPayload
+                / SERVER_VIEW_STATS ServerViewStatsPayload
+                / USER_CREATE UserCreatePayload
+                / USER_DELETE UserDeletePayload
+                / USER_LIST UserListPayload
+                / USER_PERMISSIONS UserPermissionsPayload
+                / USER_RENAME UserRenamePayload
+                / VENDOR_ID VendorIDPayload
+                / RESERVED_CMD
 
-                ; The data that follows is AUTH CMD data.
-   AUTH_CMD   = %x01:31
+   OneReply     = AUTHANONYMOUS AuthAnonymousReplyPayload
+                / AUTHCERT_TLS AuthCertTlsReplyPayload
+                / AUTHCERT_USER AuthCertUserReplyPayload
+                / AUTHMD5 AuthMD5ReplyPayload
+                / FILE_CREATE FileCreateReplyPayload
+                / FILE_COPY FileCopyReplyPayload
+                / FILE_DELETE FileDeleteReplyPayload
+                / FILE_RENAME FileRenameReplyPayload
+                / FILE_METADATA FileMetaDataReplyPayload
+                / FILE_MOVE FileMoveReplyPayload
+                / FILE_SHARE FileShareReplyPayload
+                / FILE_GET FileGetReplyPayload
+                / FILE_MODIFY FileModifyReplyPayload
 
-                ; The data that follows is FILE or FOLDER CMD data.
-   FILE_CMD   = %x02:31
 
-                ; The data that follows is Phoenix PROTO CMD
-                ; specific command data.
-   PROTO_CMD  = %x03:31
 
-                ; Define a SEQ (sequence) type.
-   SEQ        = uint32_t
+Royer                    Expires 25 August 2025                [Page 29]
+
+Internet-Draft        Phoenix: Lemonade Risen Again        February 2025
 
-                ; Any command. A 32-bit value.
-   CMD        = (VENDOR_BIT / PHOENIX_BIT)
-                (ADMIN_CMD / AUTH_CMD / FILE_CMD / PROTO_CMD)
 
-                ; Define a CmdPayload (blob of data) type.
-                ; The length of CmdPayload is determined by the CMD.
-   CmdPayload = *uint8_t
+                / FOLDER_CREATE FolderCreateReplyPayload
+                / FOLDER_COPY FolderCopyReplyPayload
+                / FOLDER_DELETE FolderDeleteReplyPayload
+                / FOLDER_RENAME FolderRenameReplyPayload
+                / FOLDER_METADATA FolderMetaDataReplyPayload
+                / FOLDER_MOVE FolderMoveReplyPayload
+                / FOLDER_OPEN FolderOpenReplyPayload
+                / FOLDER_SHARE FolderShareReplyPayload
+                / FOLDER_LIST FolderListReplyPayload
+                / SERVER_LOGS ServerLogsReplyPayload
+                / SERVER_MANAGE_BANS ServerManageBansReplyPayload
+                / SERVER_SHUTDOWN ServerShutdownReplyPayload
+                / SERVER_VIEW_STATS ServerViewStatsReplyPayload
+                / USER_CREATE UserCreateReplyPayload
+                / USER_DELETE UserDeleteReplyPayload
+                / USER_LIST UserListReplyPayload
+                / USER_PERMISSIONS UserPermissionsReplyPayload
+                / USER_RENAME UserRenameReplyPayload
+                / RESERVED_CMD
 
-                ; A Phoenix packet
-   CommandSet = SEQ CMD
-                (AdminPayload
-                / AdminReplyPayload
-                / AuthPayload
-                / AuthReplyPayload
-                / FilePayload
-                / FileReplyPayload
-                / ProtoPayload
-                / ProtoReplyPayload)
+   RESERVED_CMD = %xffffffff
+
+                ; VendorDefined are only valid when both the
+                ; client and server agree on compatible
+                ; VENDOR_ID values.
+                ;
+                ; Where:
+                ; Length is the length of data that follows
+                ; *uint8_t Is an array of Length 8-bit values.
+                ;
+   VendorDefined = %x80000000-fffffffe Length *uint8_t
+
+   Command = SEQ (Command / VendorDefined)
+   CommandReply = SEQ (CommandReply / VendorDefined)
 
                 ; Length: The number of CommandSet objects.
-   PacketBody = Length 1*CommandSet;
+   PacketCommand = Length 1*CommandSet
 
-                        Figure 14: Packet Body ABNF
+                ; Length: The number of CommandReply objects.
+   PacketReply = Length 1*CommandReply
+
+
+                        Figure 15: Packet Body ABNF
 
 5.1.1.2.2.  Packet Body XDR
 
@@ -1617,84 +1677,242 @@ Internet-Draft        Phoenix: Lemonade Risen Again        February 2025
 
 
 
-
-
-
-
-Royer                    Expires 21 August 2025                [Page 29]
+Royer                    Expires 25 August 2025                [Page 30]
 
 Internet-Draft        Phoenix: Lemonade Risen Again        February 2025
 
 
-   /*
-    * The ADMIN commands.
-    * An XDR enum is 32-bits in size.
-    * With the VENDOR_BIT set to zero, making it not a vendor command.
-    */
-   enum CMD {
-       /**
-        * The data that follows is ADMIN CMD data.
-        */
-       ADMIN_CMD = 0x00,
-       /**
-        * The data that follows is AUTH CMD data.
-        */
-       AUTH_CMD = 0x01,
-       /**
-        * The data that follows is FILE or FOLDER CMD data.
-        */
-       FILE_CMD = 0x02,
-       /**
-        * The data that follows is Phoenix PROTO CMD data.
-        */
-       PROTO_CMD = 0x03
-   };
    /**
     * Mask to check if CMD value in packet
     * is vendor extension.
     */
    const CMD_VENDOR_MASK = 0x80000000;
-   /**
-    * Define a SEQ (sequence) type.
-    */
-   typedef uint32_t SEQ_t;
+   struct VendorDefined {
+    uint32_t VendorCommand; /* 0x80000000-fffffffe */
+    opaque Data<>; /* XDR arrays start with a length. */
+   };
    /**
     * A CMD payload is one of these types.
     * With Cmd set to a CMD value.
     */
-   union CmdPayload switch (CMD Cmd) {
-     case ADMIN_CMD:
-       AdminPayload AdminBodyPayload;
-     case AUTH_CMD:
-       AuthPayload AuthBodyPayload;
-     case FILE_CMD:
-       FilePayload FileBodyPayload;
-     case PROTO_CMD:
-       ProtoPayload ProtoBodyPayload;
-   };
-   /*
-    * One comand.
+   union OneCommand switch (CMD_e Cmd) {
+    case AUTHANONYMOUS:
+     AuthAnonymousPayload AuthAnonymousCmd;
+    case AUTHCERT_TLS:
+     AuthCertTlsPayload AuthCertTlsCmd;
+    case AUTHCERT_USER:
+     AuthCertUserPayload AuthCertUserCmd;
+    case AUTHMD5:
+     AuthMD5Payload AuthMD5Cmd;
+    case BYE:
+     ByePayload ByeCmd;
+    case CAPABILITY_PRE:
+     CapabilityPrePayload CapabilityPreCmd;
+    case CAPABILITY_POST:
+     CapabilityPostPayload CapabilityPostCmd;
+    case FILE_CREATE:
+     FileCreatePayload FileCreateCmd;
+    case FILE_COPY:
+     FileCopyPayload FileCopyCmd;
+    case FILE_DELETE:
+     FileDeletePayload FileDeleteCmd;
+    case FILE_RENAME:
+     FileRenamePayload FileRenameCmd;
+    case FILE_METADATA:
+     FileMetaDataPayload FileMetaDataCmd;
+    case FILE_MOVE:
+     FileMovePayload FileMoveCmd;
+    case FILE_SHARE:
+     FileSharePayload FileShareCmd;
+    case FILE_GET:
+     FileGetPayload FileGetCmd;
+    case FILE_MODIFY:
+     FileModifyPayload FileModifyCmd;
+    case FOLDER_CREATE:
+     FolderCreatePayload FolderCreateCmd;
 
 
 
-Royer                    Expires 21 August 2025                [Page 30]
+Royer                    Expires 25 August 2025                [Page 31]
 
 Internet-Draft        Phoenix: Lemonade Risen Again        February 2025
 
 
+    case FOLDER_COPY:
+     FolderCopyPayload FolderCopyCmd;
+    case FOLDER_DELETE:
+     FolderDeletePayload FolderDeleteCmd;
+    case FOLDER_RENAME:
+     FolderRenamePayload FolderRenameCmd;
+    case FOLDER_METADATA:
+     FolderMetaDataPayload FolderMetaDataCmd;
+    case FOLDER_MOVE:
+     FolderMovePayload FolderMoveCmd;
+    case FOLDER_OPEN:
+     FolderOpenPayload FolderOpenCmd;
+    case FOLDER_SHARE:
+     FolderSharePayload FolderShareCmd;
+    case FOLDER_LIST:
+     FolderListPayload FolderListCmd;
+    case NOT_SUPPORTED:
+     void;
+    case RESERVED_CMD:
+     void;
+    case SERVER_CONFIGURE:
+     ServerConfigurePayload ServerConfigCmd;
+    case SERVER_KICK_USER:
+     void;
+    case SERVER_LOGS:
+     ServerLogsPayload ServerLogsCmd;
+    case SERVER_MANAGE_BANS:
+     ServerManageBansPayload ServerBansCmd;
+    case SERVER_SHUTDOWN:
+     ServerShutdownPayload ServerShutdownCmd;
+    case SERVER_VIEW_STATS:
+     ServerStatsPayload ServerStatsCmd;
+    case USER_CREATE:
+     UserCreatePayload UserCreateCmd;
+    case USER_DELETE:
+     UserDeletePayload UserDeleteCmd;
+    case USER_LIST:
+     UserListPayload UserListCmd;
+    case USER_PERMISSIONS:
+     UserPermissionsPayload UserPermissionsCmd;
+    case USER_RENAME:
+     UserRenamePayload UserRenameCmd;
+    case VENDOR_ID:
+     string VendorIDCmd<>;
+    default:
+     VendorDefined Vendor;
+   };
+   /**
+
+
+
+Royer                    Expires 25 August 2025                [Page 32]
+
+Internet-Draft        Phoenix: Lemonade Risen Again        February 2025
+
+
+    * A CMDReply payload is one of these types.
+    * With Cmd set to a CMD value.
     */
-   struct CommandSet {
-       SEQ_t SEQ;
-       CmdPayload Payload;
+   union OneReply switch (CMD_e Cmd) {
+    case AUTHANONYMOUS:
+     void; /* Replies with CAPABILITY_PRE or CAPABILITY_POST */
+    case AUTHCERT_TLS:
+     AuthCertTlsReplyPayload AuthCertTlsCmd;
+    case AUTHCERT_USER:
+     AuthCertUserReplyPayload AuthCertUserCmd;
+    case AUTHMD5:
+     void;
+    case BYE:
+     ByeReplyPayload ByeCmd;
+    case FILE_CREATE:
+     FileCreateReplyPayload FileCreateCmd;
+    case FILE_COPY:
+     FileCopyReplyPayload FileCopyCmd;
+    case FILE_DELETE:
+     FileDeleteReplyPayload FileDeleteCmd;
+    case FILE_RENAME:
+     FileRenameReplyPayload FileRenameCmd;
+    case FILE_METADATA:
+     FileMetaDataReplyPayload FileMetaDataCmd;
+    case FILE_MOVE:
+     FileMoveReplyPayload FileMoveCmd;
+    case FILE_SHARE:
+     FileShareReplyPayload FileShareCmd;
+    case FILE_GET:
+     FileGetReplyPayload FileGetCmd;
+    case FILE_MODIFY:
+     FileModifyReplyPayload FileModifyCmd;
+    case FOLDER_CREATE:
+     FolderCreateReplyPayload FolderCreateCmd;
+    case FOLDER_COPY:
+     FolderCopyReplyPayload FolderCopyCmd;
+    case FOLDER_DELETE:
+     FolderDeleteReplyPayload FolderDeleteCmd;
+    case FOLDER_RENAME:
+     FolderRenameReplyPayload FolderRenameCmd;
+    case FOLDER_METADATA:
+     FolderMetaDataReplyPayload FolderMetaDataCmd;
+    case FOLDER_MOVE:
+     FolderMoveReplyPayload FolderMoveCmd;
+    case FOLDER_OPEN:
+     FolderOpenReplyPayload FolderOpenCmd;
+    case FOLDER_SHARE:
+     FolderShareReplyPayload FolderShareCmd;
+
+
+
+Royer                    Expires 25 August 2025                [Page 33]
+
+Internet-Draft        Phoenix: Lemonade Risen Again        February 2025
+
+
+    case FOLDER_LIST:
+     FolderListReplyPayload FolderListCmd;
+    case RESERVED_CMD:
+     void;
+    case SERVER_CONFIGURE:
+     ServerConfigureReplyPayload ServerConfigCmd;
+    case SERVER_LOGS:
+     ServerLogsReplyPayload ServerLogsCmd;
+    case SERVER_MANAGE_BANS:
+     ServerManageBansReplyPayload ServerManageBansCmd;
+    case SERVER_SHUTDOWN:
+     ServerShutdownReplyPayload ServerShutdownCmd;
+    case SERVER_VIEW_STATS:
+     ServerStatsReplyPayload ServerViewStatsCmd;
+    case USER_CREATE:
+     UserCreateReplyPayload UserCreateCmd;
+    case USER_DELETE:
+     UserDeleteReplyPayload UserDeleteCmd;
+    case USER_LIST:
+     UserListReplyPayload UserListCmd;
+    case USER_PERMISSIONS:
+     UserPermissionsReplyPayload UserPermissionsCmd;
+    case USER_RENAME:
+     UserRenameReplyPayload UserRenameCmd;
+    default:
+     VendorDefined Vendor;
+   };
+   /*
+    * One command.
+    */
+   struct Command {
+    SEQ_t Sequence;
+    OneCommand Payload;
+   };
+   /*
+    * One Reply
+    */
+   struct CommandReply {
+    SEQ_t Sequence;
+    OneReply Payload;
    };
    /**
     * A packet body.
     */
    struct PacketBody {
-     CommandSet Commands<>; /* XDR arrays start with the Length */
+     Command Commands<>; /* XDR arrays start with the Length */
+   };
+   /**
+
+
+
+Royer                    Expires 25 August 2025                [Page 34]
+
+Internet-Draft        Phoenix: Lemonade Risen Again        February 2025
+
+
+    * A packet reply.
+    */
+   struct PacketReply {
+     CommandReply Commands<>; /* XDR arrays start with the Length */
    };
 
-                         Figure 15: Packet Body XDR
+                         Figure 16: Packet Body XDR
 
 5.1.1.2.3.  Multiple Commands per Packet
 
@@ -1727,17 +1945,6 @@ Internet-Draft        Phoenix: Lemonade Risen Again        February 2025
    it gets a CAPABILITY_POST with an ADMIN capability in it, from the
    server.
 
-
-
-
-
-
-
-Royer                    Expires 21 August 2025                [Page 31]
-
-Internet-Draft        Phoenix: Lemonade Risen Again        February 2025
-
-
    Administrative command can be used to configure, audit, and manage
    the remote endpoint.  Administrative command can be used to
    configure, audit, and manage user access for the server
@@ -1747,6 +1954,13 @@ Internet-Draft        Phoenix: Lemonade Risen Again        February 2025
 
    Implementations MUST NOT send any ADMIN capability in the
    CAPABILITY_PRE list.
+
+
+
+Royer                    Expires 25 August 2025                [Page 35]
+
+Internet-Draft        Phoenix: Lemonade Risen Again        February 2025
+
 
    Implementations that support any administration command will include
    an ADMIN capability in the CAPABILITY_POST list.  An implementation
@@ -1774,281 +1988,100 @@ Internet-Draft        Phoenix: Lemonade Risen Again        February 2025
 
    The following operations are defined for administration.  Each is
    part of an ADMIN command or ADMIN reply.  They each have a unique
-   identifier, called an ADMIN Operation ID (AOID).
+   identifier, called an ADMIN CMD.
 
-   All of their XDR API is: xdr_AOID().
+   All of their XDR API is: xdr_CMD().
 
-   +====================+========+==============+=====================+
-   | Command and        |AOID    |Capability    | Command             |
-   | Capability Name    |        |Description.  | Description.        |
-   +====================+========+==============+=====================+
-   | AOID               |uint32_t|An            | Holds the           |
-   |                    |        |Administrative| (VENDOR_BIT or      |
-   |                    |        |Operation     | PHOENIX_BIT) value  |
-   |                    |        |Identifier.   | and one of          |
+   +====================+======+================+=====================+
+   | Name               |CMD   | Capability     | Command             |
+   |                    |      | Description.   | Description.        |
+   +====================+======+================+=====================+
+   |                    |CMD   | An             | Holds the           |
+   |                    |      | Administrative | (VENDOR_BIT or      |
+   |                    |      | Operation      | PHOENIX_BIT) value  |
+   |                    |      | Identifier.    | and one of          |
+   |                    |      |                | SERVER_CONFIGURE,   |
+   |                    |      |                | SERVER_KICK_USER,   |
+   |                    |      |                | SERVER_LOGS,        |
+   |                    |      |                | SERVER_MANAGE_BANS, |
+   |                    |      |                | SERVER_SHUTDOWN,    |
+   |                    |      |                | SERVER_VIEW_STATA,  |
+   |                    |      |                | USER_CREATE,        |
+   |                    |      |                | USER_CREATE,        |
+   |                    |      |                | USER_DELETE,        |
+   |                    |      |                | USER_LIST,          |
 
 
 
-Royer                    Expires 21 August 2025                [Page 32]
+Royer                    Expires 25 August 2025                [Page 36]
 
 Internet-Draft        Phoenix: Lemonade Risen Again        February 2025
 
 
-   |                    |        |              | SERVER_CONFIGURE,   |
-   |                    |        |              | SERVER_KICK_USER,   |
-   |                    |        |              | SERVER_LOGS,        |
-   |                    |        |              | SERVER_MANAGE_BANS, |
-   |                    |        |              | SERVER_SHUTDOWN,    |
-   |                    |        |              | SERVER_VIEW_STATA,  |
-   |                    |        |              | USER_CREATE,        |
-   |                    |        |              | USER_CREATE,        |
-   |                    |        |              | USER_DELETE,        |
-   |                    |        |              | USER_LIST,          |
-   |                    |        |              | USER_PERMISSIONS,   |
-   |                    |        |              | USER_RENAME         |
-   +--------------------+--------+--------------+---------------------+
-   | SERVER_CONFIGURE   |%x05:8  |May configure | The command to view |
-   |                    |        |the server.   | and alter the       |
-   |                    |        |If sent with a| server              |
-   |                    |        |VIEW_ONLY     | configuration       |
-   |                    |        |parameter,    | information.        |
-   |                    |        |then the user |                     |
-   |                    |        |may only view |                     |
-   |                    |        |the           |                     |
-   |                    |        |configuration |                     |
-   |                    |        |information.  |                     |
-   +--------------------+--------+--------------+---------------------+
-   | SERVER_KICK_USER   |%x06:8  |May logout a  | The command to kick |
-   |                    |        |user.  And    | and limit a user.   |
-   |                    |        |limit when    |                     |
-   |                    |        |they can use  |                     |
-   |                    |        |the server    |                     |
-   |                    |        |again.        |                     |
-   +--------------------+--------+--------------+---------------------+
-   | SERVER_LOGS        |%x07:8  |May view the  | The command to view |
-   |                    |        |server logs.  | server logs.        |
-   +--------------------+--------+--------------+---------------------+
-   | SERVER_MANAGE_BANS |%x08:8  |May manage IP | The command to      |
-   |                    |        |and user bans.| manage ban users    |
-   |                    |        |              | and IP addresses.   |
-   +--------------------+--------+--------------+---------------------+
-   | SERVER_SHUTDOWN    |%x09:8  |May shutdown  | The command to      |
-   |                    |        |the server.   | shutdown the        |
-   |                    |        |              | server.             |
-   +--------------------+--------+--------------+---------------------+
-   | SERVER_VIEW_STATS  |%x0a:8  |May view      | The command to view |
-   |                    |        |server        | statistics.         |
-   |                    |        |statistics.   |                     |
-   +--------------------+--------+--------------+---------------------+
-   | USER_CREATE        |%x0b:8  |May create a  | The command to      |
-   |                    |        |new user.     | create a Phoenix    |
+   |                    |      |                | USER_PERMISSIONS,   |
+   |                    |      |                | USER_RENAME         |
+   +--------------------+------+----------------+---------------------+
+   | SERVER_CONFIGURE   |%x05:8| May configure  | The command to view |
+   |                    |      | the server.    | and alter the       |
+   |                    |      | If sent with a | server              |
+   |                    |      | VIEW_ONLY      | configuration       |
+   |                    |      | parameter,     | information.        |
+   |                    |      | then the user  |                     |
+   |                    |      | may only view  |                     |
+   |                    |      | the            |                     |
+   |                    |      | configuration  |                     |
+   |                    |      | information.   |                     |
+   +--------------------+------+----------------+---------------------+
+   | SERVER_KICK_USER   |%x06:8| May logout a   | The command to kick |
+   |                    |      | user.  And     | and limit a user.   |
+   |                    |      | limit when     |                     |
+   |                    |      | they can use   |                     |
+   |                    |      | the server     |                     |
+   |                    |      | again.         |                     |
+   +--------------------+------+----------------+---------------------+
+   | SERVER_LOGS        |%x07:8| May view the   | The command to view |
+   |                    |      | server logs.   | server logs.        |
+   +--------------------+------+----------------+---------------------+
+   | SERVER_MANAGE_BANS |%x08:8| May manage IP  | The command to      |
+   |                    |      | and user bans. | manage ban users    |
+   |                    |      |                | and IP addresses.   |
+   +--------------------+------+----------------+---------------------+
+   | SERVER_SHUTDOWN    |%x09:8| May shutdown   | The command to      |
+   |                    |      | the server.    | shutdown the        |
+   |                    |      |                | server.             |
+   +--------------------+------+----------------+---------------------+
+   | SERVER_VIEW_STATS  |%x0a:8| May view       | The command to view |
+   |                    |      | server         | statistics.         |
+   |                    |      | statistics.    |                     |
+   +--------------------+------+----------------+---------------------+
+   | USER_CREATE        |%x0b:8| May create a   | The command to      |
+   |                    |      | new user.      | create a Phoenix    |
+   |                    |      |                | server user.        |
+   +--------------------+------+----------------+---------------------+
+   | USER_DELETE        |%x0c:8| May delete a   | The command to      |
+   |                    |      | user.          | delete a user.      |
+   +--------------------+------+----------------+---------------------+
+   | USER_LIST          |%x0d:8| May list users | The command to list |
+   |                    |      | and their      | users.              |
+   |                    |      | capabilities.  |                     |
+   +--------------------+------+----------------+---------------------+
+   | USER_PERMISSIONS   |%x0e:8| May update     | The command to view |
 
 
 
-Royer                    Expires 21 August 2025                [Page 33]
+Royer                    Expires 25 August 2025                [Page 37]
 
 Internet-Draft        Phoenix: Lemonade Risen Again        February 2025
 
 
-   |                    |        |              | server user.        |
-   +--------------------+--------+--------------+---------------------+
-   | USER_DELETE        |%x0c:8  |May delete a  | The command to      |
-   |                    |        |user.         | delete a user.      |
-   +--------------------+--------+--------------+---------------------+
-   | USER_LIST          |%x0d:8  |May list users| The command to list |
-   |                    |        |and their     | users.              |
-   |                    |        |capabilities. |                     |
-   +--------------------+--------+--------------+---------------------+
-   | USER_PERMISSIONS   |%x0e:8  |May update    | The command to view |
-   |                    |        |other users   | and set user        |
-   |                    |        |permissions.  | permissions.        |
-   +--------------------+--------+--------------+---------------------+
-   | USER_RENAME        |%x0f:8  |May rename a  | The command to      |
-   |                    |        |user.         | rename a user.      |
-   +--------------------+--------+--------------+---------------------+
+   |                    |      | other users    | and set user        |
+   |                    |      | permissions.   | permissions.        |
+   +--------------------+------+----------------+---------------------+
+   | USER_RENAME        |%x0f:8| May rename a   | The command to      |
+   |                    |      | user.          | rename a user.      |
+   +--------------------+------+----------------+---------------------+
 
             Table 6: Administration Comamnd Payload Operations
-
-5.2.2.1.  Administration Command Payload - Operations - ABNF
-
-                        ; What follows is CONFIGURE operation.
-   SERVER_CONFIGURE   = %x00:8
-
-                        ; What follows is a KICK USER operation.
-   SERVER_KICK_USER   = %x01:8
-
-                        ; What follows is a LOGS operation.
-   SERVER_LOGS        = %x02:8
-
-                        ; What follows is a BAN USER operation.
-   SERVER_MANAGE_BANS = %x03:8
-
-                        ; What follows is a SERVER SHUTDOWN operation.
-   SERVER_SHUTDOWN    = %x04:8
-
-                        ; What follows is a VIEW STATS operation.
-   SERVER_VIEW_STATS  = %x05:8
-
-                        ; A USER CREATE (or enable) operation follows.
-   USER_CREATE        = %x06:8
-
-                        ; A USER DELETE (or disable) operation follows.
-   USER_DELETE        = %x07:8
-
-                        ; Get one or more USER info.
-   USER_LIST          = %x08:8
-
-
-
-
-Royer                    Expires 21 August 2025                [Page 34]
-
-Internet-Draft        Phoenix: Lemonade Risen Again        February 2025
-
-
-                        ; Give or take away USER permissions.
-   USER_PERMISSIONS   = %x09:8
-
-                        ; Alter a users login name.
-   USER_RENAME        = %x0A:8
-
-                        ; All ADMIN commands are 32-bit values.
-   AOID               = (VENDOR_BIT / PHOENIX_BIT) Unused23
-                        (SERVER_CONFIGURE
-                         / SERVER_KICK_USER
-                         / SERVER_LOGS
-                         / SERVER_MANAGE_BANS
-                         / SERVER_SHUTDOWN
-                         / SERVER_VIEW_STATS
-                         / USER_CREATE
-                         / USER_DELETE
-                         / USER_LIST
-                         / USER_PERMISSIONS
-                         / USER_RENAME)
-
-                        ; Where CmdPayload contents depend on the
-                        ; the value of AOID.
-   AdminPayload       = AOID
-                        (ServerConfigPayload
-                        / ServerKickPayload
-                        / ServerLogsPayload
-                        / ServerBansPayload
-                        / ServerShutdownPayload
-                        / ServerStatsPayload
-                        / UserCreatePayload
-                        / UserDeletePayload
-                        / UserListPayload
-                        / UserPermissionsPayload
-                        / UserRenamePayload)
-
-                        ; Where CmdPayload contents depend on the
-                        ; the value of AOID.
-   AdminReplyPayload  = AOID
-                        (ServerConfigReplyPayload
-                        / ServerKickReplyPayload
-                        / ServerLogsReplyPayload
-                        / ServerBansReplyPayload
-                        / ServerShutdownReplyPayload
-                        / ServerStatsReplyPayload
-                        / UserCreateReplyPayload
-                        / UserDeleteReplyPayload
-                        / UserListReplyPayload
-                        / UserPermissionsReplyPayload
-
-
-
-Royer                    Expires 21 August 2025                [Page 35]
-
-Internet-Draft        Phoenix: Lemonade Risen Again        February 2025
-
-
-                        / UserRenameReplyPayload)
-
-       Figure 16: Administration Command Payload - Operations - ABNF
-
-5.2.2.2.  Administration Command Payload - Operations - XDR
-
-   /**
-    * ADMIN commands.
-    * In XDR, enum values are 32-bit.
-    * The high bit is zero, which means the PHOENIX_BIT is zero
-    * in these values.
-    */
-   enum AOID_e {
-       SERVER_CONFIGURE = 0x00,
-       SERVER_KICK_USER = 0x01,
-       SERVER_LOGS = 0x02,
-       SERVER_MANAGE_BANS = 0x03,
-       SERVER_SHUTDOWN = 0x04,
-       SERVER_VIEW_STATS = 0x05,
-       USER_CREATE = 0x06,
-       USER_DELETE = 0x07,
-       USER_LIST = 0x08,
-       USER_PERMISSIONS = 0x09,
-       USER_RENAME = 0x0A
-   };
-   /**
-    * All ADMIN commands are sent as 32-bit values.
-    */
-   typedef AOID_e AOID;
-   union AdminPayload switch(AOID_e Aoid) {
-     case SERVER_CONFIGURE:
-       ServerConfigPayload ConfigPayload;
-     case SERVER_KICK_USER:
-       ServerKickPayload KickPayload;
-    case SERVER_LOGS:
-       ServerLogsPayload LogsPayload;
-     case SERVER_MANAGE_BANS:
-       ServerBansPayload BansPayload;
-     case SERVER_SHUTDOWN:
-       ServerShutdownPayload ShutdownPayload;
-     case SERVER_VIEW_STATS:
-       ServerStatsPayload StatsPayload;
-     case USER_CREATE:
-       UserCreatePayload UCreatePayload;
-     case USER_DELETE:
-       UserDeletePayload UDeletePayload;
-     case USER_LIST:
-       UserListPayload UListPayload;
-
-
-
-Royer                    Expires 21 August 2025                [Page 36]
-
-Internet-Draft        Phoenix: Lemonade Risen Again        February 2025
-
-
-     case USER_PERMISSIONS:
-       UserPermissionsPayload UPermissionsPayload;
-     case USER_RENAME:
-       UserRenamePayload URenamePayload;
-   };
-   union AdminReplyPayload switch(AOID_e Aoid) {
-     case SERVER_CONFIGURE:
-       ServerConfigReplyPayload ConfigPayload;
-     case SERVER_KICK_USER:
-     void; /* No reply allowd for SERVER_KICK_USER */
-    case SERVER_LOGS:
-       ServerLogsReplyPayload LogsPayload;
-     case SERVER_MANAGE_BANS:
-       ServerBansReplyPayload BansPayload;
-     case SERVER_SHUTDOWN:
-       ServerShutdownReplyPayload ShutdownPayload;
-     case SERVER_VIEW_STATS:
-       ServerStatsReplyPayload StatsPayload;
-     case USER_CREATE:
-       UserCreateReplyPayload UCreatePayload;
-     case USER_DELETE:
-       UserDeleteReplyPayload UDeletePayload;
-     case USER_LIST:
-       UserListReplyPayload UListPayload;
-     case USER_PERMISSIONS:
-       UserPermissionsReplyPayload UPermissionsPayload;
-     case USER_RENAME:
-       UserRenameReplyPayload URenamePayload;
-   };
-
-        Figure 17: Administration Command Payload - Operations - XDR
 
 5.2.3.  Administration - SERVER_CONFIGURE (%x05:8)
 
@@ -2065,14 +2098,6 @@ Internet-Draft        Phoenix: Lemonade Risen Again        February 2025
    The keys and their values can be anything the server implementation
    supports.  The content of configuration keys and configuration values
    is out of scope for this specification.
-
-
-
-
-Royer                    Expires 21 August 2025                [Page 37]
-
-Internet-Draft        Phoenix: Lemonade Risen Again        February 2025
-
 
 5.2.3.1.  SERVER_CONFIGURE - Command
 
@@ -2097,6 +2122,14 @@ Internet-Draft        Phoenix: Lemonade Risen Again        February 2025
    its SERVER_CONFIGURE capability back to the client in the
    CAPABILITY_POST list.
 
+
+
+
+Royer                    Expires 25 August 2025                [Page 38]
+
+Internet-Draft        Phoenix: Lemonade Risen Again        February 2025
+
+
    If a client or user is not authorized, then all SERVER_CONFIGURE
    ADMIN command will be rejected with a NotSupported Packet with the
    SEQ number the same as in the SERVER_CONFIGURE ADMIN command sent to
@@ -2112,23 +2145,6 @@ Internet-Draft        Phoenix: Lemonade Risen Again        February 2025
 
    Multiple SERVER_CONFIGURE commands can be sent in the same ADMIN
    packet.  They are processed in the order sent.
-
-
-
-
-
-
-
-
-
-
-
-
-
-Royer                    Expires 21 August 2025                [Page 38]
-
-Internet-Draft        Phoenix: Lemonade Risen Again        February 2025
-
 
    +=================+========================+========================+
    | Name            | Description            | XDR API                |
@@ -2165,23 +2181,7 @@ Internet-Draft        Phoenix: Lemonade Risen Again        February 2025
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-Royer                    Expires 21 August 2025                [Page 39]
+Royer                    Expires 25 August 2025                [Page 39]
 
 Internet-Draft        Phoenix: Lemonade Risen Again        February 2025
 
@@ -2210,7 +2210,7 @@ Internet-Draft        Phoenix: Lemonade Risen Again        February 2025
                     | L2*L2 KeyPair ...
                     +---------------------------------+
 
-                    Figure 18: SERVER_CONFIGURE Command
+                    Figure 17: SERVER_CONFIGURE Command
 
 5.2.3.1.1.  SERVER_CONFIGURE - ABNF
 
@@ -2220,24 +2220,24 @@ Internet-Draft        Phoenix: Lemonade Risen Again        February 2025
                           ; The SERVER_CONFIGURE command.
    ServerConfigPayload  = SERVER_CONFIGURE Length 1*ConfigSet
 
-                     Figure 19: SERVER_CONFIGURE - ABNF
+                     Figure 18: SERVER_CONFIGURE - ABNF
 
 5.2.3.1.2.  SERVER_CONFIGURE - XDR
 
    /**
     * An array of OpConfigSet values.
     */
-   struct ServerConfigPayload {
-       AOID_e Aoid; /* Set to SERVER_CONFIGURE. */
-       ConfigSet Values<>; /* XDR arrays start with a length. */
+   struct ServerConfigurePayload {
+    CMD_e Aoid; /* Set to SERVER_CONFIGURE. */
+    ConfigSet Values<>; /* XDR arrays start with a length. */
    };
 
-                     Figure 20: SERVER_CONFIGURE - XDR
+                     Figure 19: SERVER_CONFIGURE - XDR
 
 
 
 
-Royer                    Expires 21 August 2025                [Page 40]
+Royer                    Expires 25 August 2025                [Page 40]
 
 Internet-Draft        Phoenix: Lemonade Risen Again        February 2025
 
@@ -2282,18 +2282,18 @@ Internet-Draft        Phoenix: Lemonade Risen Again        February 2025
                     | Length KeyPairs ...
                     +---------------------------------+
 
-                     Figure 21: SERVER_CONFIGURE Reply
+                     Figure 20: SERVER_CONFIGURE Reply
 
 5.2.3.2.1.  SERVER_CONFIGURE Reply - ABNF
 
                       ; The SERVER_CONFIGURE Reply
    ServerConfigReplyPayload  = SERVER_CONFIGURE Length 1*KeyPair
 
-                     Figure 22: SERVER_CONFIGURE - ABNF
+                     Figure 21: SERVER_CONFIGURE - ABNF
 
 
 
-Royer                    Expires 21 August 2025                [Page 41]
+Royer                    Expires 25 August 2025                [Page 41]
 
 Internet-Draft        Phoenix: Lemonade Risen Again        February 2025
 
@@ -2303,12 +2303,12 @@ Internet-Draft        Phoenix: Lemonade Risen Again        February 2025
    /**
     * Reply to SERVER_CONFIGURE
     */
-   struct ServerConfigReplyPayload {
-       AOID_e ACmd; /* Set to SERVER_CONFIGURE */
-       KeyPair ResultValues<>; /* XDR arrays start with a length */
+   struct ServerConfigureReplyPayload {
+    CMD_e ACmd; /* Set to SERVER_CONFIGURE */
+    KeyPair ResultValues<>; /* XDR arrays start with a length */
    };
 
-                     Figure 23: SERVER_CONFIGURE - XDR
+                     Figure 22: SERVER_CONFIGURE - XDR
 
 5.2.4.  Administration - USER_KICK_USER
 
@@ -2349,7 +2349,7 @@ Internet-Draft        Phoenix: Lemonade Risen Again        February 2025
 
 
 
-Royer                    Expires 21 August 2025                [Page 42]
+Royer                    Expires 25 August 2025                [Page 42]
 
 Internet-Draft        Phoenix: Lemonade Risen Again        February 2025
 
@@ -2359,27 +2359,39 @@ Internet-Draft        Phoenix: Lemonade Risen Again        February 2025
                     +---------------------------------+
                     | Sequence (SEQ:32)               |
                     +-+-------------------------------+
-                    |0| AUTH_CMD (%x01:31)            |
+                    |0| SERVER_KICK_USER (%x06:31)    |
+                    +-+-------------------------------+
+                    |0| CAPABILITY_PRE (%x29:31) ...
+                    +-+-------------------------------+
+
+                    OR
+
+                    +---------------------------------+
+                    | PacketHeader (Length:32)        |
+                    +---------------------------------+
+                    | Sequence (SEQ:32)               |
                     +-+-------------------------------+
                     |0| SERVER_KICK_USER (%x06:31)    |
                     +-+-------------------------------+
+                    |0| SERVER_SHUTDOWN (%x09:31)  ...
+                    +-+-------------------------------+
 
-                        Figure 24: SERVER_KICK_USER
+                        Figure 23: SERVER_KICK_USER
 
 5.2.4.1.  SERVER_KICK_USER - ABNF
 
    ServerKickPayload  = (VENDOR_BIT / PHOENIX_BIT) SERVER_KICK_PAYLOAD
 
-                     Figure 25: SERVER_KICK_USER - ABNF
+                     Figure 24: SERVER_KICK_USER - ABNF
 
 5.2.4.2.  SERVER_KICK_USER - XDR
 
    struct ServerKickPayload
    {
-    AOID_e Kick; /* With Kick set to SERVER_KICK_USER */
+    CMD_e Kick; /* With Kick set to SERVER_KICK_USER */
    };
 
-                     Figure 26: SERVER_KICK_USER - XDR
+                     Figure 25: SERVER_KICK_USER - XDR
 
 5.2.5.  Administration - SERVER_LOGS
 
@@ -2390,25 +2402,20 @@ Internet-Draft        Phoenix: Lemonade Risen Again        February 2025
    values are a UTC object.  The first is the start time, and the second
    is the end time.
 
+
+
+
+Royer                    Expires 25 August 2025                [Page 43]
+
+Internet-Draft        Phoenix: Lemonade Risen Again        February 2025
+
+
    When the start time is zero, it means start from the beginning of the
    logs.
 
    When the end time is zero, up to now.
 
    There are three categories of information and four request types.
-
-
-
-
-
-
-
-
-
-Royer                    Expires 21 August 2025                [Page 43]
-
-Internet-Draft        Phoenix: Lemonade Risen Again        February 2025
-
 
        +=============+=============================================+
        | Category    | Description                                 |
@@ -2445,28 +2452,28 @@ Internet-Draft        Phoenix: Lemonade Risen Again        February 2025
 
    xxx
 
-                              Figure 27: xxxx
+                              Figure 26: xxxx
 
 5.2.5.2.  XXXX - XDR
 
    xxx
 
-                              Figure 28: xxxx
-
-5.2.6.  Administration - SERVER_MANANGE_BANS
-
-   Perform an Op on users, hosts, IP addresses, IP address ranges,
-   networks.
 
 
 
-
-Royer                    Expires 21 August 2025                [Page 44]
+Royer                    Expires 25 August 2025                [Page 44]
 
 Internet-Draft        Phoenix: Lemonade Risen Again        February 2025
 
 
-   TODO...
+                              Figure 27: xxxx
+
+5.2.6.  Administration - SERVER_MANANGE_BANS
+
+   The SERVERM_MANAGE_BANS command allows administrators to ban, or
+   block, specific users hosts, IP addresses, IP address ranges
+   networks.
+
 
 5.2.7.  Administration - SERVER_SHUTDOWN
 
@@ -2508,19 +2515,16 @@ Internet-Draft        Phoenix: Lemonade Risen Again        February 2025
    to temporarily step up their authentication level to perform some
    operations, then step back down to do their personal operations.
 
-   A server may if it wishes include AUTH capabilities in the
-   CAPABILITY_POST command.  It can decide which authenticated users can
-   or must use additional authentication.
 
 
-
-
-
-
-Royer                    Expires 21 August 2025                [Page 45]
+Royer                    Expires 25 August 2025                [Page 45]
 
 Internet-Draft        Phoenix: Lemonade Risen Again        February 2025
 
+
+   A server may if it wishes include AUTH capabilities in the
+   CAPABILITY_POST command.  It can decide which authenticated users can
+   or must use additional authentication.
 
    *  Some user accounts can be user only, without administrative
       abilities of any kind.  Their CAPABILITY_POST list will not
@@ -2539,78 +2543,7 @@ Internet-Draft        Phoenix: Lemonade Risen Again        February 2025
       protocol does not limit users.  This protocol enables user
       permissions to be configured.
 
-5.3.1.  Authentication - ABNF
-
-   AUTHANONYMOUS    = %x26
-   AUTHMD5          = %x10
-   AUTHCERT         = %x11
-   AUTHCERT_TLS     = %x27
-   AUTHCERT_USER    = %x28
-
-   AuthPayload      = (AuthAnonymousPayload
-                    / AuthMD5Payload
-                    / AuthCertPayload
-                    / AuthCertTlsPayload
-                    / AuthCertUserPayload)
-
-   ; There is no AUTH... REPLY payload.
-   ; An authentication replies with:
-   ;
-   ;   CAPABILITY_POST: Authentication passed.
-   ;
-   ;   CAPABILITY_PRE:  Authentication failed.
-   ;
-   ;   NotSupported:    Authentication method not supported.
-
-                      Figure 29: Authentication - ABNF
-
-5.3.2.  Authentication - XDR
-
-
-
-
-
-
-
-
-Royer                    Expires 21 August 2025                [Page 46]
-
-Internet-Draft        Phoenix: Lemonade Risen Again        February 2025
-
-
-   enum Auth_e {
-       AUTHANONYMOUS = 0x26,
-       AUTHMD5 = 0x10,
-       AUTHCERT = 0x11,
-       AUTHCERT_TLS = 0x27,
-       AUTHCERT_USER = 0x28
-   };
-   union AuthPayload switch(Auth_e Auth) {
-     case AUTHANONYMOUS:
-       AuthAnonymousPayload AnonymousPayload;
-     case AUTHMD5:
-       AuthMD5Payload MD5Payload;
-    case AUTHCERT:
-       AuthCertPayload CertPayload;
-     case AUTHCERT_TLS:
-       AuthCertTlsPayload CertTlsPayload;
-     case AUTHCERT_USER:
-       AuthCertUserPayload CertUserPayload;
-   };
-   /**
-    * There is no AUTH... REPLY payload.
-    * An authentication replies with:
-    *
-    * CAPABILITY_POST: Authentication passed.
-    *
-    * CAPABILITY_PRE: Authentication failed.
-    *
-    * NotSupported:   Authentication method not supported.
-    */
-
-                      Figure 30: Authentication - XDR
-
-5.3.3.  Authentication Failure
+5.3.1.  Authentication Failure
 
    If the authentication fails, then the server replies back with a
    CAPABILITY_PRE with the sequence number the same as in the
@@ -2629,7 +2562,18 @@ Internet-Draft        Phoenix: Lemonade Risen Again        February 2025
 
 
 
-Royer                    Expires 21 August 2025                [Page 47]
+
+
+
+
+
+
+
+
+
+
+
+Royer                    Expires 25 August 2025                [Page 46]
 
 Internet-Draft        Phoenix: Lemonade Risen Again        February 2025
 
@@ -2656,7 +2600,7 @@ Internet-Draft        Phoenix: Lemonade Risen Again        February 2025
                |0| NOT_SUPPORTED (%x2b:31)       |
                +-+-------------------------------+
 
-                          Figure 31: AUTHCERT_USER
+                          Figure 28: AUTHCERT_USER
 
 5.4.  Authentication - ANONYMOUS
 
@@ -2678,14 +2622,14 @@ Internet-Draft        Phoenix: Lemonade Risen Again        February 2025
                     | Unused24              |enabled:8|
                     +-----------------------+---------+
 
-                   Figure 32: Capability - AUTHANONYMOUS
+                   Figure 29: Capability - AUTHANONYMOUS
 
 
 
 
 
 
-Royer                    Expires 21 August 2025                [Page 48]
+Royer                    Expires 25 August 2025                [Page 47]
 
 Internet-Draft        Phoenix: Lemonade Risen Again        February 2025
 
@@ -2741,7 +2685,7 @@ Internet-Draft        Phoenix: Lemonade Risen Again        February 2025
 
 
 
-Royer                    Expires 21 August 2025                [Page 49]
+Royer                    Expires 25 August 2025                [Page 48]
 
 Internet-Draft        Phoenix: Lemonade Risen Again        February 2025
 
@@ -2781,7 +2725,7 @@ Internet-Draft        Phoenix: Lemonade Risen Again        February 2025
                    .
                    .
 
-                   Figure 33: AUTHANONYMOUS - Login Flow
+                   Figure 30: AUTHANONYMOUS - Login Flow
 
                     +---------------------------------+
                     | PacketHeader (Length:32)        |
@@ -2793,11 +2737,11 @@ Internet-Draft        Phoenix: Lemonade Risen Again        February 2025
                     |0| AUTHANONYMOUS (%x26:31)       |
                     +-+-------------------------------+
 
-                   Figure 34: Capability - AUTHANONYMOUS
+                   Figure 31: Capability - AUTHANONYMOUS
 
 
 
-Royer                    Expires 21 August 2025                [Page 50]
+Royer                    Expires 25 August 2025                [Page 49]
 
 Internet-Draft        Phoenix: Lemonade Risen Again        February 2025
 
@@ -2806,16 +2750,16 @@ Internet-Draft        Phoenix: Lemonade Risen Again        February 2025
 
    AuthAnonymous  = (VENDOR_BIT / PHOENIX_BIT) AUTHANONYMOUS
 
-                Figure 35: Authentication - ANONYMOUS - ABNF
+                Figure 32: Authentication - ANONYMOUS - ABNF
 
 5.4.2.2.  Authentication - ANONYMOUS - XDR
 
    struct AuthAnonymousPayload
    {
-    AOID_e Anonymous; /* Set to AUTHANONYMOUS (%x26) */
+    CMD_e Anonymous; /* Set to AUTHANONYMOUS (%x26) */
    };
 
-                Figure 36: Authentication - ANONYMOUS - XDR
+                Figure 33: Authentication - ANONYMOUS - XDR
 
 5.5.  Authentication - Certificate
 
@@ -2853,7 +2797,7 @@ Internet-Draft        Phoenix: Lemonade Risen Again        February 2025
 
 
 
-Royer                    Expires 21 August 2025                [Page 51]
+Royer                    Expires 25 August 2025                [Page 50]
 
 Internet-Draft        Phoenix: Lemonade Risen Again        February 2025
 
@@ -2909,7 +2853,7 @@ Internet-Draft        Phoenix: Lemonade Risen Again        February 2025
 
 
 
-Royer                    Expires 21 August 2025                [Page 52]
+Royer                    Expires 25 August 2025                [Page 51]
 
 Internet-Draft        Phoenix: Lemonade Risen Again        February 2025
 
@@ -2958,14 +2902,14 @@ Internet-Draft        Phoenix: Lemonade Risen Again        February 2025
                     |Unused24               |enabled:8|
                     +-----------------------+---------+
 
-                      Figure 37: Capability - AUTHMD5
+                      Figure 34: Capability - AUTHMD5
 
 
 
 
 
 
-Royer                    Expires 21 August 2025                [Page 53]
+Royer                    Expires 25 August 2025                [Page 52]
 
 Internet-Draft        Phoenix: Lemonade Risen Again        February 2025
 
@@ -3011,7 +2955,7 @@ Internet-Draft        Phoenix: Lemonade Risen Again        February 2025
                     | string - MD5 password...........
                     +---------------------------------+
 
-                      Figure 38: Capability - AUTHMD5
+                      Figure 35: Capability - AUTHMD5
 
 5.6.2.1.  Authentication - MD5 - ABNF
 
@@ -3021,7 +2965,7 @@ Internet-Draft        Phoenix: Lemonade Risen Again        February 2025
 
 
 
-Royer                    Expires 21 August 2025                [Page 54]
+Royer                    Expires 25 August 2025                [Page 53]
 
 Internet-Draft        Phoenix: Lemonade Risen Again        February 2025
 
@@ -3032,17 +2976,28 @@ Internet-Draft        Phoenix: Lemonade Risen Again        February 2025
 
    AuthMD5     = (VENDOR_BIT / PHOENIX_BIT) AUTHMD5 Login Md5Password
 
-                   Figure 39: Authentication - MD5 - ABNF
+                   Figure 36: Authentication - MD5 - ABNF
 
 5.6.2.2.  Authentication - MD5 - XDR
 
-   struct AuthMD5 {
-       uint32_t Cmd; /* Set to AUTHMD5 */
-       string Login<>;
-       string Md5Password<>;
+   %
+   %#ifdef BUILDING_LIBPHOENIX
+   %#include "AuthMD5.hpp"
+   %#include "Commands.hpp"
+   %#include "SEQ_t.hpp"
+   %#else
+   %#include <RiverExplorer/Phoenix/AuthMD5.hpp>
+   %#include <RiverExplorer/Phoenix/Commands.hpp>
+   %#include <RiverExplorer/Phoenix/SEQ_t.hpp>
+   %#endif
+   %#include <string>
+   struct AuthMD5Payload
+   {
+    string AccountName<>;
+    string Md5Password<>;
    };
 
-                   Figure 40: Authentication - MD5 - XDR
+                   Figure 37: Authentication - MD5 - XDR
 
 5.7.  Calendar Commands Summary
 
@@ -3050,37 +3005,45 @@ Internet-Draft        Phoenix: Lemonade Risen Again        February 2025
 
 5.8.  Capability Commands Summary
 
+   The purpose of this protocol is to facilitate the transfer of MIME
+   objects, not to define how they are used.  Capabilities allow each
+   endpoint to ensure the other endpoint is capable of transferring the
+   desired content and optionally allow control of the other endpoint.
+
    Capabilities are attributes of both a client and server
    implementation.  Some may provide a superset or subset when compared
    to other implementations.  This can be done to split workload or just
    because they specialize in specific operations.
 
-   A capability is a 31-bit integer.  Plus a 1-bit identifier signifying
-   if it is a Phoenix capability or vendor specific capability, for a
-   total of 32-bits.
+   A capability is a 31-bit unsigned integer.  Plus a 1-bit identifier
+   signifying if it is a Phoenix capability or vendor specific
+   capability, for a total of 32-bits.
+
+
+
+Royer                    Expires 25 August 2025                [Page 54]
+
+Internet-Draft        Phoenix: Lemonade Risen Again        February 2025
+
 
    This specification describes several capabilities.  Some are
    described in other sections, and some are described in this section.
-   See appendix XREF-TODO for a complete list in this specification.
+   See the Capability Index (Appendix C) for a complete list in this
+   specification.
 
-   Capabilities from the server arrive twice.  Once before the user is
-   authenticated (CAPABILITY_PRE), and once after (CAPABILITY_POST).
+   These are not a negotiation.  Each sends their abilities to the
+   other.  Once before authentication, and once after.
+
+   Capabilities from the server are sent twice.  Once before the user is
+   authenticated (CAPABILITY_PRE), and once after (CAPABILITY_POST).  If
+   a user logs out and stays connected, then the process starts over
+   with the server assuming a new client just connected.
 
    Capabilities from the client may be sent, zero, once, or twice per
    authentication process.  Optionally once included with the AUTH
    command packet (CAPABILITY_PRE), to inform the server of any required
    vendor or authentication specific information.  And optionally once
    after the user is authenticated (CAPABILITY_POST).
-
-
-
-
-
-
-Royer                    Expires 21 August 2025                [Page 55]
-
-Internet-Draft        Phoenix: Lemonade Risen Again        February 2025
-
 
    There is no requirement that a server provides an authentication
    method for any client.  There is no requirement that a server provide
@@ -3090,80 +3053,111 @@ Internet-Draft        Phoenix: Lemonade Risen Again        February 2025
    non standard authentication methods, or only from clients providing a
    correct CAPABILITY_PRE value.
 
-   Table Table 10 lists the CAPABILITY_PRE capabilities.
+   _NOTE: Vendor specific capabilities MUST have no data.  This is
+   because there is no way a non compatible implementation could
+   calculate the length of the data that would follow it in order to
+   find the next capability or command in the packet.  When any
+   additional data is needed, it must be done with a vendor specific
+   command, that could also be included in the same packet, and separate
+   from the CAPABILITY_PRE and CAPABILITY_POST list.  In such cases, the
+   vendor specific capability would inform the other endpoint to look
+   for the additional vendor specific command data in the packet._
 
-   +===============+=======+=========+==========+======================+
-   | Name          |Value  | Data    | Required | Description          |
-   |               |       | Type    | or       |                      |
-   |               |       |         | Optional |                      |
-   +===============+=======+=========+==========+======================+
-   | AUTHANONYMOUS |%x26:31| Boolean | Optional | No authentication    |
-   |               |       |         |          | required.  An        |
-   |               |       |         |          | example usage could  |
-   |               |       |         |          | be a shared company  |
-   |               |       |         |          | bulletin board       |
-   |               |       |         |          | where most           |
-   |               |       |         |          | employees had view   |
-   |               |       |         |          | only access to the   |
-   |               |       |         |          | messages.  And       |
-   |               |       |         |          | perhaps the server   |
-   |               |       |         |          | only allowed         |
-   |               |       |         |          | company local IP     |
-   |               |       |         |          | addresses to use     |
-   |               |       |         |          | this authentication  |
-   |               |       |         |          | method.              |
-   |               |       |         |          |                      |
-   +---------------+-------+---------+----------+----------------------+
-   | AUTHMD5       |%x10:31| Boolean | Required | Authenticate by      |
-   |               |       |         |          | providing an MD5     |
-   |               |       |         |          | password.            |
-   |               |       |         |          |                      |
-   |               |       |         |          | If not supported,    |
-   |               |       |         |          | the value must be    |
-   |               |       |         |          | false.  When         |
-   |               |       |         |          | supported, the       |
-   |               |       |         |          | value must be true.  |
-   +---------------+-------+---------+----------+----------------------+
-   | AUTHCERT      |%x11:31| Boolean | Optional | Authenticate by      |
-   |               |       |         |          | providing a          |
-   |               |       |         |          | certificate.  This   |
-   |               |       |         |          | can be used for      |
-   |               |       |         |          | humans, and can be   |
-   |               |       |         |          | used by automated    |
+   Table Table 10 lists some CAPABILITY_PRE capabilities.
+
+   Some capabilities have data associated with them, others do not.
+
+5.8.1.  Capability - CAPABILITY_PRE
+
+   Capabilities sent before authentication are called CAPABILITY_PRE and
+   are sent from the server to the client and optionally from the client
+   to the server.
 
 
 
-Royer                    Expires 21 August 2025                [Page 56]
+
+
+Royer                    Expires 25 August 2025                [Page 55]
 
 Internet-Draft        Phoenix: Lemonade Risen Again        February 2025
 
 
-   |               |       |         |          | connections.         |
-   |               |       |         |          |                      |
-   |               |       |         |          | Not being provided   |
-   |               |       |         |          | is the same as       |
-   |               |       |         |          | false.  May have a   |
-   |               |       |         |          | true or false value  |
-   |               |       |         |          | as needed.           |
-   +---------------+-------+---------+----------+----------------------+
-   | VENDOR_ID     |%x12:31| string  | Optional | VENDOR_ID includes   |
-   |               |       |         |          | a vendor ID string   |
-   |               |       |         |          | that can be used to  |
-   |               |       |         |          | help the server      |
-   |               |       |         |          | determine if it      |
-   |               |       |         |          | will send a post-    |
-   |               |       |         |          | authentication       |
-   |               |       |         |          | ADMIN capability.    |
-   |               |       |         |          |                      |
-   |               |       |         |          | The specific string  |
-   |               |       |         |          | value is determined  |
-   |               |       |         |          | by the server        |
-   |               |       |         |          | implementation and   |
-   |               |       |         |          | is out of scope for  |
-   |               |       |         |          | this specification.  |
-   +---------------+-------+---------+----------+----------------------+
+   The only CAPABILITY_PRE that the client sends to the server is the
+   VENDOR_ID.  Vendors may add new client to server capabilities as long
+   as they set the VENDOR_BIT in the command and are implemented to
+   understand that not all server will understand their vendor specific
+   extensions.
+
+   +===============+=========+==============+==========================+
+   | Name          | Value   | Value Type   | Description              |
+   +===============+=========+==============+==========================+
+   | AUTHANONYMOUS | %x26:31 |              | No authentication        |
+   |               |         |              | required.  An example    |
+   |               |         |              | usage could be a         |
+   |               |         |              | shared company           |
+   |               |         |              | bulletin board where     |
+   |               |         |              | most employees had       |
+   |               |         |              | view only access to      |
+   |               |         |              | the messages.  And       |
+   |               |         |              | perhaps the server       |
+   |               |         |              | only allowed company     |
+   |               |         |              | local IP addresses to    |
+   |               |         |              | use this                 |
+   |               |         |              | authentication           |
+   |               |         |              | method.                  |
+   |               |         |              |                          |
+   +---------------+---------+--------------+--------------------------+
+   | AUTHMD5       | %x10:31 |              | Authenticate by          |
+   |               |         |              | providing an account     |
+   |               |         |              | name and an MD5          |
+   |               |         |              | password.                |
+   +---------------+---------+--------------+--------------------------+
+   | AUTHCERT      | %x11:31 | AuthcertType | Authenticate by          |
+   |               |         |              | providing a              |
+   |               |         |              | certificate.             |
+   |               |         |              |                          |
+   |               |         |              | There are two            |
+   |               |         |              | AuthcertType values:     |
+   |               |         |              |                          |
+   |               |         |              | *  AUTHCERT_TLS:         |
+   |               |         |              |    Authenticate using    |
+   |               |         |              |    the connected TLS     |
+   |               |         |              |    certificate.          |
+   |               |         |              |                          |
+   |               |         |              | *  AUTHCERT_USER: A      |
+   |               |         |              |    second certificate    |
+   |               |         |              |    is available to       |
+   |               |         |              |    use that must         |
+   |               |         |              |    match what the        |
+   |               |         |              |    client is using.      |
+
+
+
+Royer                    Expires 25 August 2025                [Page 56]
+
+Internet-Draft        Phoenix: Lemonade Risen Again        February 2025
+
+
+   +---------------+---------+--------------+--------------------------+
+   | VENDOR_ID     | %x12:31 | string       | VENDOR_ID includes a     |
+   |               |         |              | vendor ID string that    |
+   |               |         |              | can be used to help      |
+   |               |         |              | the server determine     |
+   |               |         |              | if it will send a        |
+   |               |         |              | post-authentication      |
+   |               |         |              | ADMIN capability.        |
+   |               |         |              |                          |
+   |               |         |              | The specific string      |
+   |               |         |              | value is determined      |
+   |               |         |              | by the server            |
+   |               |         |              | implementation and is    |
+   |               |         |              | out of scope for this    |
+   |               |         |              | specification.           |
+   +---------------+---------+--------------+--------------------------+
 
                   Table 10: Capabilities - CAPABILITY_PRE
+
+5.8.2.  Capability - CAPABILITY_POST
 
    Table Table 11 lists the CAPABILITY_POST capabilities.  Post-
    Authentication capabilities are sent to the client after a user
@@ -3178,21 +3172,11 @@ Internet-Draft        Phoenix: Lemonade Risen Again        February 2025
                          Table 11: Capabilities -
                              CAPABILITY_POST
 
-5.8.1.  Capability - VENDOR_ID
+5.8.3.  Capability - VENDOR_ID
 
    When sent, the VENDOR_ID capability is accompanied by a string.  This
    string is unique and defined by the server implementation or
    instance.
-
-
-
-
-
-
-Royer                    Expires 21 August 2025                [Page 57]
-
-Internet-Draft        Phoenix: Lemonade Risen Again        February 2025
-
 
    When a server gets a VENDOR_ID capability, it compares it to what it
    expects.  When they match, then after the user is authenticated the
@@ -3202,6 +3186,13 @@ Internet-Draft        Phoenix: Lemonade Risen Again        February 2025
    It would be expected that any client sending its VENDOR_ID capability
    to the server is expecting the possibility of receiving a
    SERVER_CONFIGURE capability back.
+
+
+
+Royer                    Expires 25 August 2025                [Page 57]
+
+Internet-Draft        Phoenix: Lemonade Risen Again        February 2025
+
 
    The purpose of the VENDOR_ID capability and its value is to help
    ensure that any SERVER_CONFIGURE commands are compatible between the
@@ -3242,14 +3233,6 @@ Internet-Draft        Phoenix: Lemonade Risen Again        February 2025
    |                   |         | name of the capability for          |
    |                   |         | this permission.                    |
    +-------------------+---------+-------------------------------------+
-
-
-
-Royer                    Expires 21 August 2025                [Page 58]
-
-Internet-Draft        Phoenix: Lemonade Risen Again        February 2025
-
-
    | FOLDER_RENAME     | %x17:32 | Rename a folder.  Also the          |
    |                   |         | name of the capability for          |
    |                   |         | this permission.                    |
@@ -3259,6 +3242,14 @@ Internet-Draft        Phoenix: Lemonade Risen Again        February 2025
    |                   |         | the folder.  File meta data is      |
    |                   |         | also returned with the              |
    |                   |         | FOLDER_OPEN command.                |
+
+
+
+Royer                    Expires 25 August 2025                [Page 58]
+
+Internet-Draft        Phoenix: Lemonade Risen Again        February 2025
+
+
    +-------------------+---------+-------------------------------------+
    | FOLDER_MOVE       | %x19:32 | Move a folder.  Also the name       |
    |                   |         | of the capability for this          |
@@ -3298,14 +3289,6 @@ Internet-Draft        Phoenix: Lemonade Risen Again        February 2025
    |                   |         | also returned with the              |
    |                   |         | FOLDER_OPEN command.                |
    +-------------------+---------+-------------------------------------+
-
-
-
-Royer                    Expires 21 August 2025                [Page 59]
-
-Internet-Draft        Phoenix: Lemonade Risen Again        February 2025
-
-
    | FILE_MOVE         | %x22:32 | Move a file.  Also the name of      |
    |                   |         | the capability for this             |
    |                   |         | permission.                         |
@@ -3315,6 +3298,14 @@ Internet-Draft        Phoenix: Lemonade Risen Again        February 2025
    |                   |         | permission.                         |
    +-------------------+---------+-------------------------------------+
    | FILE_GET          | %x24:32 | Get a file.  Also the name of       |
+
+
+
+Royer                    Expires 25 August 2025                [Page 59]
+
+Internet-Draft        Phoenix: Lemonade Risen Again        February 2025
+
+
    |                   |         | the capability for this             |
    |                   |         | permission.                         |
    +-------------------+---------+-------------------------------------+
@@ -3350,17 +3341,30 @@ Internet-Draft        Phoenix: Lemonade Risen Again        February 2025
 
 5.10.12.  File and Folder - FILE_COPY
 
-5.10.13.  File and Folder - FILE_DELETE
-
-5.10.14.  File and Folder - FILE_RENAME
 
 
 
 
-Royer                    Expires 21 August 2025                [Page 60]
+
+
+
+
+
+
+
+
+
+
+
+
+Royer                    Expires 25 August 2025                [Page 60]
 
 Internet-Draft        Phoenix: Lemonade Risen Again        February 2025
 
+
+5.10.13.  File and Folder - FILE_DELETE
+
+5.10.14.  File and Folder - FILE_RENAME
 
 5.10.15.  File and Folder - FILE_METADATA
 
@@ -3407,16 +3411,16 @@ Internet-Draft        Phoenix: Lemonade Risen Again        February 2025
       determines nothing significant has happened in 5 minutes (300
       seconds).
 
-   Servers that are not threaded or can not reply to simultaneous or
-   overlapping commands, MUST set their IdleTimeout to zero (0) or a
-   negative number.
 
 
-
-Royer                    Expires 21 August 2025                [Page 61]
+Royer                    Expires 25 August 2025                [Page 61]
 
 Internet-Draft        Phoenix: Lemonade Risen Again        February 2025
 
+
+   Servers that are not threaded or can not reply to simultaneous or
+   overlapping commands, MUST set their IdleTimeout to zero (0) or a
+   negative number.
 
    Clients MUST NOT send KeepAlive commands to a server that has an
    IdleTimeout of zero (0) or negative (< 0).
@@ -3459,20 +3463,22 @@ Internet-Draft        Phoenix: Lemonade Risen Again        February 2025
       the server replies with a NotSupported packet with the sequence
       number the same as in the ping command.
 
+
+
+
+
+
+
+Royer                    Expires 25 August 2025                [Page 62]
+
+Internet-Draft        Phoenix: Lemonade Risen Again        February 2025
+
+
    *  When the server has received an authentication command, and has
       not yet replied to an authentication command.  Then the server
       sends a ping reply, with the same sequence number that was in the
       ping command.  This could happen when the client implementation
       had determined it has waited too long for an authentication reply.
-
-
-
-
-
-Royer                    Expires 21 August 2025                [Page 62]
-
-Internet-Draft        Phoenix: Lemonade Risen Again        February 2025
-
 
    *  When the client is authenticated, and when the server is available
       for processing commands.  Then the server replies with a ping
@@ -3517,18 +3523,15 @@ Internet-Draft        Phoenix: Lemonade Risen Again        February 2025
    authenticated user.  Some users may have read only copies, other may
    be able to delete the object.
 
-   When a shared object is deleted, it is marked as deleted for only the
-   user that issued the delete.
 
 
-
-
-
-
-Royer                    Expires 21 August 2025                [Page 63]
+Royer                    Expires 25 August 2025                [Page 63]
 
 Internet-Draft        Phoenix: Lemonade Risen Again        February 2025
 
+
+   When a shared object is deleted, it is marked as deleted for only the
+   user that issued the delete.
 
    When a shared object is expunged, its access is removed for the user
    that issued the expunge.  After all users have expunged the object,
@@ -3574,17 +3577,18 @@ Internet-Draft        Phoenix: Lemonade Risen Again        February 2025
       When a client application closes, all delayed expunges MUST occur
       at exit.
 
-      When a client applications starts the client MUST check for
-      delayed expunges that have not been processed and expunge them and
-      not allow the user to see them.
 
 
 
 
-Royer                    Expires 21 August 2025                [Page 64]
+Royer                    Expires 25 August 2025                [Page 64]
 
 Internet-Draft        Phoenix: Lemonade Risen Again        February 2025
 
+
+      When a client applications starts the client MUST check for
+      delayed expunges that have not been processed and expunge them and
+      not allow the user to see them.
 
 7.  Meta Data
 
@@ -3630,17 +3634,16 @@ Internet-Draft        Phoenix: Lemonade Risen Again        February 2025
    between implementations and no attempt should be made to copy these
    between implementations.
 
-   Non user defined attributes are described in other sections or
-   specifications.
 
 
 
-
-
-Royer                    Expires 21 August 2025                [Page 65]
+Royer                    Expires 25 August 2025                [Page 65]
 
 Internet-Draft        Phoenix: Lemonade Risen Again        February 2025
 
+
+   Non user defined attributes are described in other sections or
+   specifications.
 
    This can be user specific meta data or global meta data.  See the
    specific attribute documentation.
@@ -3684,19 +3687,22 @@ Internet-Draft        Phoenix: Lemonade Risen Again        February 2025
    This value can be set and unset.  This is user specific meta data
    because it also applies to shared folders and files.
 
+
+
+
+
+
+
+Royer                    Expires 25 August 2025                [Page 66]
+
+Internet-Draft        Phoenix: Lemonade Risen Again        February 2025
+
+
 7.7.  Meta Data - Hide
 
    With NotExpungable objects, the user may wish to not view the object.
    In these cases the attribute Hide can be set.  The attribute does not
    effect the view of other users.
-
-
-
-
-Royer                    Expires 21 August 2025                [Page 66]
-
-Internet-Draft        Phoenix: Lemonade Risen Again        February 2025
-
 
    This value can be set and unset.  This is user specific meta data
    because it also applies to shared folders and files.
@@ -3741,18 +3747,15 @@ Internet-Draft        Phoenix: Lemonade Risen Again        February 2025
    A client implementation could use the Hide attribute to not show the
    object to the user.
 
-   This value can be set and unset by the owner of the file or folder.
-   This value can not be unset by non owners.  This is global meta data.
 
 
-
-
-
-
-Royer                    Expires 21 August 2025                [Page 67]
+Royer                    Expires 25 August 2025                [Page 67]
 
 Internet-Draft        Phoenix: Lemonade Risen Again        February 2025
 
+
+   This value can be set and unset by the owner of the file or folder.
+   This value can not be unset by non owners.  This is global meta data.
 
 7.13.  Meta Data - Phishing
 
@@ -3799,16 +3802,16 @@ Internet-Draft        Phoenix: Lemonade Risen Again        February 2025
    This Meta Data Attribute is only visible to the owner of the object
    for which MDN has been set.
 
-   This is a list of recipients email address that that are on the
-   distribution list effected by the MDN.
 
 
 
-
-Royer                    Expires 21 August 2025                [Page 68]
+Royer                    Expires 25 August 2025                [Page 68]
 
 Internet-Draft        Phoenix: Lemonade Risen Again        February 2025
 
+
+   This is a list of recipients email address that that are on the
+   distribution list effected by the MDN.
 
 7.17.1.  MDNRecord
 
@@ -3834,7 +3837,7 @@ Internet-Draft        Phoenix: Lemonade Risen Again        February 2025
    |  32-bit COUNT                     |
    +--------+--------------------------+
 
-                            Figure 41: MDNRecord
+                            Figure 38: MDNRecord
 
 7.17.1.1.  MDNRecord - ABNF
 
@@ -3856,15 +3859,14 @@ Internet-Draft        Phoenix: Lemonade Risen Again        February 2025
                   ; A list of all MDN records for the associated object.
    MDNRecord    = MDNSent MDNListCount 1*MDNRecord
 
-   Followed by MDNListCount MDNEntry's.
 
 
-
-
-Royer                    Expires 21 August 2025                [Page 69]
+Royer                    Expires 25 August 2025                [Page 69]
 
 Internet-Draft        Phoenix: Lemonade Risen Again        February 2025
 
+
+   Followed by MDNListCount MDNEntry's.
 
 7.17.2.  MDNEntry
 
@@ -3895,7 +3897,7 @@ Internet-Draft        Phoenix: Lemonade Risen Again        February 2025
    |  Email-Address ...
    +-----------------------------------+
 
-                            Figure 42: MDNEntry
+                            Figure 39: MDNEntry
 
 7.17.2.1.  MDNEntry ABNF
 
@@ -3904,7 +3906,7 @@ Internet-Draft        Phoenix: Lemonade Risen Again        February 2025
                ; A single MDN Entry. When (or zero) and the email
    MDNEntry  = UTC string
 
-                         Figure 43: MDNEntry - ABNF
+                         Figure 40: MDNEntry - ABNF
 
 7.17.2.2.  MDNEntry - XDR
 
@@ -3915,9 +3917,7 @@ Internet-Draft        Phoenix: Lemonade Risen Again        February 2025
 
 
 
-
-
-Royer                    Expires 21 August 2025                [Page 70]
+Royer                    Expires 25 August 2025                [Page 70]
 
 Internet-Draft        Phoenix: Lemonade Risen Again        February 2025
 
@@ -3931,7 +3931,7 @@ Internet-Draft        Phoenix: Lemonade Risen Again        February 2025
        string EMail<>;
    };
 
-                         Figure 44: MDNEntry - XDR
+                         Figure 41: MDNEntry - XDR
 
 8.  Index
 
@@ -3973,7 +3973,7 @@ Internet-Draft        Phoenix: Lemonade Risen Again        February 2025
 
 
 
-Royer                    Expires 21 August 2025                [Page 71]
+Royer                    Expires 25 August 2025                [Page 71]
 
 Internet-Draft        Phoenix: Lemonade Risen Again        February 2025
 
@@ -4029,12 +4029,12 @@ Internet-Draft        Phoenix: Lemonade Risen Again        February 2025
 
 
 
-Royer                    Expires 21 August 2025                [Page 72]
+Royer                    Expires 25 August 2025                [Page 72]
 
 Internet-Draft        Phoenix: Lemonade Risen Again        February 2025
 
 
-   Figure 45, shows the interisted header list prefix.  This interisted
+   Figure 42, shows the interisted header list prefix.  This interisted
    header list prefix is followed by zero or more SingleEntry objects.
 
     +---------------+----------+--------------------------------------+
@@ -4063,7 +4063,7 @@ Internet-Draft        Phoenix: Lemonade Risen Again        February 2025
                     | HdrCnt                          |
                     +---------------------------------+
 
-                   Figure 45: Interest Header List Prefix
+                   Figure 42: Interest Header List Prefix
 
    ABNF:
 
@@ -4077,7 +4077,7 @@ Internet-Draft        Phoenix: Lemonade Risen Again        February 2025
    single header entries.  One sent for each HdrCnt in the prefix.  This
    list informs the server the HID value that will be used for each
    interested header in the index that the server replies with.  As
-   shown in Figure 46, where:
+   shown in Figure 43, where:
 
 
 
@@ -4085,7 +4085,7 @@ Internet-Draft        Phoenix: Lemonade Risen Again        February 2025
 
 
 
-Royer                    Expires 21 August 2025                [Page 73]
+Royer                    Expires 25 August 2025                [Page 73]
 
 Internet-Draft        Phoenix: Lemonade Risen Again        February 2025
 
@@ -4112,7 +4112,7 @@ Internet-Draft        Phoenix: Lemonade Risen Again        February 2025
                    | Octets of the string ...
                    +--------+------------------------...
 
-              Figure 46: Setting the Interest List - Contents
+              Figure 43: Setting the Interest List - Contents
 
    ABNF:
 
@@ -4136,12 +4136,12 @@ Internet-Draft        Phoenix: Lemonade Risen Again        February 2025
                     |  %x00                           |
                     +---------------------------------+
 
-          Figure 47: Using Existing Header Index by List ID (LID)
+          Figure 44: Using Existing Header Index by List ID (LID)
 
 
 
 
-Royer                    Expires 21 August 2025                [Page 74]
+Royer                    Expires 25 August 2025                [Page 74]
 
 Internet-Draft        Phoenix: Lemonade Risen Again        February 2025
 
@@ -4190,20 +4190,20 @@ Internet-Draft        Phoenix: Lemonade Risen Again        February 2025
       |  %x74  |  %x79  |  %x70  |  %x74  |
       +--------+--------+--------+--------+
 
-                     Figure 48: Example Setting a List
+                     Figure 45: Example Setting a List
 
    Where:
 
 
 
 
-Royer                    Expires 21 August 2025                [Page 75]
+Royer                    Expires 25 August 2025                [Page 75]
 
 Internet-Draft        Phoenix: Lemonade Risen Again        February 2025
 
 
    *  (a): A 32-bit unsigned integer in network byte order as described
-      in Figure 45.
+      in Figure 42.
 
       The first 8-bits are zero.
 
@@ -4213,7 +4213,7 @@ Internet-Draft        Phoenix: Lemonade Risen Again        February 2025
       to be indexed, "From", and "Subject".
 
    *  (b): A 32-bit unsigned integer in network byte order as described
-      in Figure 46.
+      in Figure 43.
 
       The header ID that the client and server will use to to identify
       the "From" header name will be zero (0) in this example.
@@ -4228,7 +4228,7 @@ Internet-Draft        Phoenix: Lemonade Risen Again        February 2025
       is a multiple of 32-bits, no padding is done.
 
    *  (d): A 32-bit unsigned integer in network byte order as described
-      in Figure 46.
+      in Figure 43.
 
       The header ID that the client and server will use to to identify
       the "Subject" header name will be one (1) in this example.
@@ -4253,7 +4253,7 @@ Internet-Draft        Phoenix: Lemonade Risen Again        February 2025
 
 
 
-Royer                    Expires 21 August 2025                [Page 76]
+Royer                    Expires 25 August 2025                [Page 76]
 
 Internet-Draft        Phoenix: Lemonade Risen Again        February 2025
 
@@ -4305,11 +4305,11 @@ Internet-Draft        Phoenix: Lemonade Risen Again        February 2025
                    | Array of Message Indexes ...
                    +-----------------------------------+
 
-                          Figure 49: Folder Index
+                          Figure 46: Folder Index
 
 
 
-Royer                    Expires 21 August 2025                [Page 77]
+Royer                    Expires 25 August 2025                [Page 77]
 
 Internet-Draft        Phoenix: Lemonade Risen Again        February 2025
 
@@ -4341,7 +4341,7 @@ Internet-Draft        Phoenix: Lemonade Risen Again        February 2025
                    | Header Index List Description ...
                    +----------------------------------+
 
-                          Figure 50: Message Index
+                          Figure 47: Message Index
 
    ABNF:
 
@@ -4365,7 +4365,7 @@ Internet-Draft        Phoenix: Lemonade Risen Again        February 2025
 
 
 
-Royer                    Expires 21 August 2025                [Page 78]
+Royer                    Expires 25 August 2025                [Page 78]
 
 Internet-Draft        Phoenix: Lemonade Risen Again        February 2025
 
@@ -4421,7 +4421,7 @@ Internet-Draft        Phoenix: Lemonade Risen Again        February 2025
 
 
 
-Royer                    Expires 21 August 2025                [Page 79]
+Royer                    Expires 25 August 2025                [Page 79]
 
 Internet-Draft        Phoenix: Lemonade Risen Again        February 2025
 
@@ -4449,7 +4449,7 @@ Internet-Draft        Phoenix: Lemonade Risen Again        February 2025
                 | Array of StringRef ...
                 +-----------------------------------
 
-                          Figure 51: Header Index
+                          Figure 48: Header Index
 
    ABNF:
 
@@ -4477,7 +4477,7 @@ Internet-Draft        Phoenix: Lemonade Risen Again        February 2025
 
 
 
-Royer                    Expires 21 August 2025                [Page 80]
+Royer                    Expires 25 August 2025                [Page 80]
 
 Internet-Draft        Phoenix: Lemonade Risen Again        February 2025
 
@@ -4533,7 +4533,7 @@ Internet-Draft        Phoenix: Lemonade Risen Again        February 2025
 
 
 
-Royer                    Expires 21 August 2025                [Page 81]
+Royer                    Expires 25 August 2025                [Page 81]
 
 Internet-Draft        Phoenix: Lemonade Risen Again        February 2025
 
@@ -4589,7 +4589,7 @@ Internet-Draft        Phoenix: Lemonade Risen Again        February 2025
 
 
 
-Royer                    Expires 21 August 2025                [Page 82]
+Royer                    Expires 25 August 2025                [Page 82]
 
 Internet-Draft        Phoenix: Lemonade Risen Again        February 2025
 
@@ -4634,7 +4634,7 @@ Internet-Draft        Phoenix: Lemonade Risen Again        February 2025
    |                10                 | LENGTH: 10
    +-----------------------------------+
 
-                          Figure 52: Header Index
+                          Figure 49: Header Index
 
 8.2.5.  Header Index Example 2
 
@@ -4645,7 +4645,7 @@ Internet-Draft        Phoenix: Lemonade Risen Again        February 2025
 
 
 
-Royer                    Expires 21 August 2025                [Page 83]
+Royer                    Expires 25 August 2025                [Page 83]
 
 Internet-Draft        Phoenix: Lemonade Risen Again        February 2025
 
@@ -4701,7 +4701,7 @@ Internet-Draft        Phoenix: Lemonade Risen Again        February 2025
 
 
 
-Royer                    Expires 21 August 2025                [Page 84]
+Royer                    Expires 25 August 2025                [Page 84]
 
 Internet-Draft        Phoenix: Lemonade Risen Again        February 2025
 
@@ -4748,7 +4748,7 @@ Internet-Draft        Phoenix: Lemonade Risen Again        February 2025
     |                26                 |LENGTH: 26
     +-----------------------------------+
 
-                   Figure 53: Header And Body Part Index
+                   Figure 50: Header And Body Part Index
 
 9.  IANA Considerations
 
@@ -4757,7 +4757,7 @@ Internet-Draft        Phoenix: Lemonade Risen Again        February 2025
 
 
 
-Royer                    Expires 21 August 2025                [Page 85]
+Royer                    Expires 25 August 2025                [Page 85]
 
 Internet-Draft        Phoenix: Lemonade Risen Again        February 2025
 
@@ -4813,7 +4813,7 @@ Internet-Draft        Phoenix: Lemonade Risen Again        February 2025
 
 
 
-Royer                    Expires 21 August 2025                [Page 86]
+Royer                    Expires 25 August 2025                [Page 86]
 
 Internet-Draft        Phoenix: Lemonade Risen Again        February 2025
 
@@ -4869,7 +4869,7 @@ Appendix A.  Administrative Enumerated Binary Values
 
 
 
-Royer                    Expires 21 August 2025                [Page 87]
+Royer                    Expires 25 August 2025                [Page 87]
 
 Internet-Draft        Phoenix: Lemonade Risen Again        February 2025
 
@@ -4925,7 +4925,7 @@ Appendix B.  Authentication Enumerated Binary Values
 
 
 
-Royer                    Expires 21 August 2025                [Page 88]
+Royer                    Expires 25 August 2025                [Page 88]
 
 Internet-Draft        Phoenix: Lemonade Risen Again        February 2025
 
@@ -4981,7 +4981,7 @@ Appendix D.  File and Folder Enumerated Binary Values
 
 
 
-Royer                    Expires 21 August 2025                [Page 89]
+Royer                    Expires 25 August 2025                [Page 89]
 
 Internet-Draft        Phoenix: Lemonade Risen Again        February 2025
 
@@ -5037,7 +5037,7 @@ Appendix E.  Protocol Enumerated Binary Values
 
 
 
-Royer                    Expires 21 August 2025                [Page 90]
+Royer                    Expires 25 August 2025                [Page 90]
 
 Internet-Draft        Phoenix: Lemonade Risen Again        February 2025
 
@@ -5093,7 +5093,7 @@ Appendix F.  Complete ABNF
 
 
 
-Royer                    Expires 21 August 2025                [Page 91]
+Royer                    Expires 25 August 2025                [Page 91]
 
 Internet-Draft        Phoenix: Lemonade Risen Again        February 2025
 
@@ -5149,7 +5149,7 @@ Internet-Draft        Phoenix: Lemonade Risen Again        February 2025
 
 
 
-Royer                    Expires 21 August 2025                [Page 92]
+Royer                    Expires 25 August 2025                [Page 92]
 
 Internet-Draft        Phoenix: Lemonade Risen Again        February 2025
 
@@ -5189,64 +5189,118 @@ Internet-Draft        Phoenix: Lemonade Risen Again        February 2025
                      ; The length of a packet.
    PacketHeader    = Length
 
+                ; Define a SEQ (sequence) type.
+   SEQ          = uint32_t
+
+   OneCommand   = AUTHANONYMOUS AuthAnonymousPayload
+                / AUTHCERT_TLS AuthCertTlsPayload
+                / AUTHCERT_USER AuthCertUserPayload
+                / AUTHMD5 AuthMD5Payload
+                / AUTHMD5 AuthMD5ReplyPayload
+                / CAPABILITY_PRE CapabilityPrePayload
+                / FILE_CREATE FileCreatePayload
+                / FILE_COPY FileCopyPayload
+                / FILE_DELETE FileDeletePayload
+                / FILE_RENAME FileRenamePayload
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-Royer                    Expires 21 August 2025                [Page 93]
+Royer                    Expires 25 August 2025                [Page 93]
 
 Internet-Draft        Phoenix: Lemonade Risen Again        February 2025
 
 
-                ; The data that follows is ADMIN CMD data.
-   ADMIN_CMD  = %x00:31
+                / FILE_METADATA FileMetaDataPayload
+                / FILE_MOVE FileMovePayload
+                / FILE_SHARE FileSharePayload
+                / FILE_GET FileGetPayload
+                / FILE_MODIFY FileModifyPayload
+                / FOLDER_CREATE FolderCreatePayload
+                / FOLDER_COPY FolderCopyPayload
+                / FOLDER_DELETE FolderDeletePayload
+                / FOLDER_RENAME FolderRenamePayload
+                / FOLDER_METADATA FolderMetaDataPayload
+                / FOLDER_MOVE FolderMovePayload
+                / FOLDER_OPEN FolderOpenPayload
+                / FOLDER_SHARE FolderSharePayload
+                / FOLDER_LIST FolderListPayload
+                / NOT_SUPPORTED
+                / SERVER_CONFIGURE ServerConfigurePayload
+                / SERVER_KICK_USER
+                / SERVER_LOGS ServerLogsPayload
+                / SERVER_MANAGE_BANS ServerManageBansPayload
+                / SERVER_SHUTDOWN ServerShutdownPayload
+                / SERVER_VIEW_STATS ServerViewStatsPayload
+                / USER_CREATE UserCreatePayload
+                / USER_DELETE UserDeletePayload
+                / USER_LIST UserListPayload
+                / USER_PERMISSIONS UserPermissionsPayload
+                / USER_RENAME UserRenamePayload
+                / VENDOR_ID VendorIDPayload
+                / RESERVED_CMD
 
-                ; The data that follows is AUTH CMD data.
-   AUTH_CMD   = %x01:31
+   OneReply     = AUTHANONYMOUS AuthAnonymousReplyPayload
+                / AUTHCERT_TLS AuthCertTlsReplyPayload
+                / AUTHCERT_USER AuthCertUserReplyPayload
+                / AUTHMD5 AuthMD5ReplyPayload
+                / FILE_CREATE FileCreateReplyPayload
+                / FILE_COPY FileCopyReplyPayload
+                / FILE_DELETE FileDeleteReplyPayload
+                / FILE_RENAME FileRenameReplyPayload
+                / FILE_METADATA FileMetaDataReplyPayload
+                / FILE_MOVE FileMoveReplyPayload
+                / FILE_SHARE FileShareReplyPayload
+                / FILE_GET FileGetReplyPayload
+                / FILE_MODIFY FileModifyReplyPayload
+                / FOLDER_CREATE FolderCreateReplyPayload
+                / FOLDER_COPY FolderCopyReplyPayload
+                / FOLDER_DELETE FolderDeleteReplyPayload
+                / FOLDER_RENAME FolderRenameReplyPayload
+                / FOLDER_METADATA FolderMetaDataReplyPayload
+                / FOLDER_MOVE FolderMoveReplyPayload
 
-                ; The data that follows is FILE or FOLDER CMD data.
-   FILE_CMD   = %x02:31
 
-                ; The data that follows is Phoenix PROTO CMD
-                ; specific command data.
-   PROTO_CMD  = %x03:31
 
-                ; Define a SEQ (sequence) type.
-   SEQ        = uint32_t
+Royer                    Expires 25 August 2025                [Page 94]
+
+Internet-Draft        Phoenix: Lemonade Risen Again        February 2025
 
-                ; Any command. A 32-bit value.
-   CMD        = (VENDOR_BIT / PHOENIX_BIT)
-                (ADMIN_CMD / AUTH_CMD / FILE_CMD / PROTO_CMD)
 
-                ; Define a CmdPayload (blob of data) type.
-                ; The length of CmdPayload is determined by the CMD.
-   CmdPayload = *uint8_t
+                / FOLDER_OPEN FolderOpenReplyPayload
+                / FOLDER_SHARE FolderShareReplyPayload
+                / FOLDER_LIST FolderListReplyPayload
+                / SERVER_LOGS ServerLogsReplyPayload
+                / SERVER_MANAGE_BANS ServerManageBansReplyPayload
+                / SERVER_SHUTDOWN ServerShutdownReplyPayload
+                / SERVER_VIEW_STATS ServerViewStatsReplyPayload
+                / USER_CREATE UserCreateReplyPayload
+                / USER_DELETE UserDeleteReplyPayload
+                / USER_LIST UserListReplyPayload
+                / USER_PERMISSIONS UserPermissionsReplyPayload
+                / USER_RENAME UserRenameReplyPayload
+                / RESERVED_CMD
 
-                ; A Phoenix packet
-   CommandSet = SEQ CMD
-                (AdminPayload
-                / AdminReplyPayload
-                / AuthPayload
-                / AuthReplyPayload
-                / FilePayload
-                / FileReplyPayload
-                / ProtoPayload
-                / ProtoReplyPayload)
+   RESERVED_CMD = %xffffffff
+
+                ; VendorDefined are only valid when both the
+                ; client and server agree on compatible
+                ; VENDOR_ID values.
+                ;
+                ; Where:
+                ; Length is the length of data that follows
+                ; *uint8_t Is an array of Length 8-bit values.
+                ;
+   VendorDefined = %x80000000-fffffffe Length *uint8_t
+
+   Command = SEQ (Command / VendorDefined)
+   CommandReply = SEQ (CommandReply / VendorDefined)
 
                 ; Length: The number of CommandSet objects.
-   PacketBody = Length 1*CommandSet;
+   PacketCommand = Length 1*CommandSet
+
+                ; Length: The number of CommandReply objects.
+   PacketReply = Length 1*CommandReply
+
 
                         ; What follows is CONFIGURE operation.
    SERVER_CONFIGURE   = %x00:8
@@ -5258,15 +5312,15 @@ Internet-Draft        Phoenix: Lemonade Risen Again        February 2025
    SERVER_LOGS        = %x02:8
 
                         ; What follows is a BAN USER operation.
+   SERVER_MANAGE_BANS = %x03:8
 
 
 
-Royer                    Expires 21 August 2025                [Page 94]
+
+Royer                    Expires 25 August 2025                [Page 95]
 
 Internet-Draft        Phoenix: Lemonade Risen Again        February 2025
 
-
-   SERVER_MANAGE_BANS = %x03:8
 
                         ; What follows is a SERVER SHUTDOWN operation.
    SERVER_SHUTDOWN    = %x04:8
@@ -5314,16 +5368,16 @@ Internet-Draft        Phoenix: Lemonade Risen Again        February 2025
                         / ServerStatsPayload
                         / UserCreatePayload
                         / UserDeletePayload
+                        / UserListPayload
+                        / UserPermissionsPayload
 
 
 
-Royer                    Expires 21 August 2025                [Page 95]
+Royer                    Expires 25 August 2025                [Page 96]
 
 Internet-Draft        Phoenix: Lemonade Risen Again        February 2025
 
 
-                        / UserListPayload
-                        / UserPermissionsPayload
                         / UserRenamePayload)
 
                         ; Where CmdPayload contents depend on the
@@ -5373,7 +5427,9 @@ Internet-Draft        Phoenix: Lemonade Risen Again        February 2025
 
 
 
-Royer                    Expires 21 August 2025                [Page 96]
+
+
+Royer                    Expires 25 August 2025                [Page 97]
 
 Internet-Draft        Phoenix: Lemonade Risen Again        February 2025
 
@@ -5429,7 +5485,7 @@ Appendix G.  Complete XDR
 
 
 
-Royer                    Expires 21 August 2025                [Page 97]
+Royer                    Expires 25 August 2025                [Page 98]
 
 Internet-Draft        Phoenix: Lemonade Risen Again        February 2025
 
@@ -5485,7 +5541,7 @@ Internet-Draft        Phoenix: Lemonade Risen Again        February 2025
 
 
 
-Royer                    Expires 21 August 2025                [Page 98]
+Royer                    Expires 25 August 2025                [Page 99]
 
 Internet-Draft        Phoenix: Lemonade Risen Again        February 2025
 
@@ -5503,114 +5559,245 @@ Internet-Draft        Phoenix: Lemonade Risen Again        February 2025
     */
    typedef Length PacketHeader;
 
-   /*
-    * The ADMIN commands.
-    * An XDR enum is 32-bits in size.
-    * With the VENDOR_BIT set to zero, making it not a vendor command.
-    */
-   enum CMD {
-       /**
-        * The data that follows is ADMIN CMD data.
-        */
-       ADMIN_CMD = 0x00,
-       /**
-        * The data that follows is AUTH CMD data.
-        */
-       AUTH_CMD = 0x01,
-       /**
-        * The data that follows is FILE or FOLDER CMD data.
-        */
-       FILE_CMD = 0x02,
-       /**
-        * The data that follows is Phoenix PROTO CMD data.
-        */
-       PROTO_CMD = 0x03
-   };
    /**
     * Mask to check if CMD value in packet
     * is vendor extension.
     */
    const CMD_VENDOR_MASK = 0x80000000;
-   /**
-    * Define a SEQ (sequence) type.
-    */
-   typedef uint32_t SEQ_t;
+   struct VendorDefined {
+    uint32_t VendorCommand; /* 0x80000000-fffffffe */
+    opaque Data<>; /* XDR arrays start with a length. */
+   };
    /**
     * A CMD payload is one of these types.
     * With Cmd set to a CMD value.
+    */
+   union OneCommand switch (CMD_e Cmd) {
+    case AUTHANONYMOUS:
+     AuthAnonymousPayload AuthAnonymousCmd;
+    case AUTHCERT_TLS:
+     AuthCertTlsPayload AuthCertTlsCmd;
+    case AUTHCERT_USER:
+     AuthCertUserPayload AuthCertUserCmd;
+    case AUTHMD5:
+     AuthMD5Payload AuthMD5Cmd;
+    case BYE:
+     ByePayload ByeCmd;
+    case CAPABILITY_PRE:
+     CapabilityPrePayload CapabilityPreCmd;
+    case CAPABILITY_POST:
+     CapabilityPostPayload CapabilityPostCmd;
+    case FILE_CREATE:
+     FileCreatePayload FileCreateCmd;
+    case FILE_COPY:
+     FileCopyPayload FileCopyCmd;
+    case FILE_DELETE:
+     FileDeletePayload FileDeleteCmd;
+    case FILE_RENAME:
 
 
 
-Royer                    Expires 21 August 2025                [Page 99]
+Royer                    Expires 25 August 2025               [Page 100]
 
 Internet-Draft        Phoenix: Lemonade Risen Again        February 2025
 
 
+     FileRenamePayload FileRenameCmd;
+    case FILE_METADATA:
+     FileMetaDataPayload FileMetaDataCmd;
+    case FILE_MOVE:
+     FileMovePayload FileMoveCmd;
+    case FILE_SHARE:
+     FileSharePayload FileShareCmd;
+    case FILE_GET:
+     FileGetPayload FileGetCmd;
+    case FILE_MODIFY:
+     FileModifyPayload FileModifyCmd;
+    case FOLDER_CREATE:
+     FolderCreatePayload FolderCreateCmd;
+    case FOLDER_COPY:
+     FolderCopyPayload FolderCopyCmd;
+    case FOLDER_DELETE:
+     FolderDeletePayload FolderDeleteCmd;
+    case FOLDER_RENAME:
+     FolderRenamePayload FolderRenameCmd;
+    case FOLDER_METADATA:
+     FolderMetaDataPayload FolderMetaDataCmd;
+    case FOLDER_MOVE:
+     FolderMovePayload FolderMoveCmd;
+    case FOLDER_OPEN:
+     FolderOpenPayload FolderOpenCmd;
+    case FOLDER_SHARE:
+     FolderSharePayload FolderShareCmd;
+    case FOLDER_LIST:
+     FolderListPayload FolderListCmd;
+    case NOT_SUPPORTED:
+     void;
+    case RESERVED_CMD:
+     void;
+    case SERVER_CONFIGURE:
+     ServerConfigurePayload ServerConfigCmd;
+    case SERVER_KICK_USER:
+     void;
+    case SERVER_LOGS:
+     ServerLogsPayload ServerLogsCmd;
+    case SERVER_MANAGE_BANS:
+     ServerManageBansPayload ServerBansCmd;
+    case SERVER_SHUTDOWN:
+     ServerShutdownPayload ServerShutdownCmd;
+    case SERVER_VIEW_STATS:
+     ServerStatsPayload ServerStatsCmd;
+    case USER_CREATE:
+     UserCreatePayload UserCreateCmd;
+    case USER_DELETE:
+
+
+
+Royer                    Expires 25 August 2025               [Page 101]
+
+Internet-Draft        Phoenix: Lemonade Risen Again        February 2025
+
+
+     UserDeletePayload UserDeleteCmd;
+    case USER_LIST:
+     UserListPayload UserListCmd;
+    case USER_PERMISSIONS:
+     UserPermissionsPayload UserPermissionsCmd;
+    case USER_RENAME:
+     UserRenamePayload UserRenameCmd;
+    case VENDOR_ID:
+     string VendorIDCmd<>;
+    default:
+     VendorDefined Vendor;
+   };
+   /**
+    * A CMDReply payload is one of these types.
+    * With Cmd set to a CMD value.
     */
-   union CmdPayload switch (CMD Cmd) {
-     case ADMIN_CMD:
-       AdminPayload AdminBodyPayload;
-     case AUTH_CMD:
-       AuthPayload AuthBodyPayload;
-     case FILE_CMD:
-       FilePayload FileBodyPayload;
-     case PROTO_CMD:
-       ProtoPayload ProtoBodyPayload;
+   union OneReply switch (CMD_e Cmd) {
+    case AUTHANONYMOUS:
+     void; /* Replies with CAPABILITY_PRE or CAPABILITY_POST */
+    case AUTHCERT_TLS:
+     AuthCertTlsReplyPayload AuthCertTlsCmd;
+    case AUTHCERT_USER:
+     AuthCertUserReplyPayload AuthCertUserCmd;
+    case AUTHMD5:
+     void;
+    case BYE:
+     ByeReplyPayload ByeCmd;
+    case FILE_CREATE:
+     FileCreateReplyPayload FileCreateCmd;
+    case FILE_COPY:
+     FileCopyReplyPayload FileCopyCmd;
+    case FILE_DELETE:
+     FileDeleteReplyPayload FileDeleteCmd;
+    case FILE_RENAME:
+     FileRenameReplyPayload FileRenameCmd;
+    case FILE_METADATA:
+     FileMetaDataReplyPayload FileMetaDataCmd;
+    case FILE_MOVE:
+     FileMoveReplyPayload FileMoveCmd;
+    case FILE_SHARE:
+     FileShareReplyPayload FileShareCmd;
+    case FILE_GET:
+     FileGetReplyPayload FileGetCmd;
+    case FILE_MODIFY:
+     FileModifyReplyPayload FileModifyCmd;
+    case FOLDER_CREATE:
+     FolderCreateReplyPayload FolderCreateCmd;
+    case FOLDER_COPY:
+
+
+
+Royer                    Expires 25 August 2025               [Page 102]
+
+Internet-Draft        Phoenix: Lemonade Risen Again        February 2025
+
+
+     FolderCopyReplyPayload FolderCopyCmd;
+    case FOLDER_DELETE:
+     FolderDeleteReplyPayload FolderDeleteCmd;
+    case FOLDER_RENAME:
+     FolderRenameReplyPayload FolderRenameCmd;
+    case FOLDER_METADATA:
+     FolderMetaDataReplyPayload FolderMetaDataCmd;
+    case FOLDER_MOVE:
+     FolderMoveReplyPayload FolderMoveCmd;
+    case FOLDER_OPEN:
+     FolderOpenReplyPayload FolderOpenCmd;
+    case FOLDER_SHARE:
+     FolderShareReplyPayload FolderShareCmd;
+    case FOLDER_LIST:
+     FolderListReplyPayload FolderListCmd;
+    case RESERVED_CMD:
+     void;
+    case SERVER_CONFIGURE:
+     ServerConfigureReplyPayload ServerConfigCmd;
+    case SERVER_LOGS:
+     ServerLogsReplyPayload ServerLogsCmd;
+    case SERVER_MANAGE_BANS:
+     ServerManageBansReplyPayload ServerManageBansCmd;
+    case SERVER_SHUTDOWN:
+     ServerShutdownReplyPayload ServerShutdownCmd;
+    case SERVER_VIEW_STATS:
+     ServerStatsReplyPayload ServerViewStatsCmd;
+    case USER_CREATE:
+     UserCreateReplyPayload UserCreateCmd;
+    case USER_DELETE:
+     UserDeleteReplyPayload UserDeleteCmd;
+    case USER_LIST:
+     UserListReplyPayload UserListCmd;
+    case USER_PERMISSIONS:
+     UserPermissionsReplyPayload UserPermissionsCmd;
+    case USER_RENAME:
+     UserRenameReplyPayload UserRenameCmd;
+    default:
+     VendorDefined Vendor;
    };
    /*
-    * One comand.
+    * One command.
     */
-   struct CommandSet {
-       SEQ_t SEQ;
-       CmdPayload Payload;
+   struct Command {
+    SEQ_t Sequence;
+    OneCommand Payload;
+   };
+   /*
+
+
+
+Royer                    Expires 25 August 2025               [Page 103]
+
+Internet-Draft        Phoenix: Lemonade Risen Again        February 2025
+
+
+    * One Reply
+    */
+   struct CommandReply {
+    SEQ_t Sequence;
+    OneReply Payload;
    };
    /**
     * A packet body.
     */
    struct PacketBody {
-     CommandSet Commands<>; /* XDR arrays start with the Length */
-   };
-
-   /**
-    * ADMIN commands.
-    * In XDR, enum values are 32-bit.
-    * The high bit is zero, which means the PHOENIX_BIT is zero
-    * in these values.
-    */
-   enum AOID_e {
-       SERVER_CONFIGURE = 0x00,
-       SERVER_KICK_USER = 0x01,
-       SERVER_LOGS = 0x02,
-       SERVER_MANAGE_BANS = 0x03,
-       SERVER_SHUTDOWN = 0x04,
-       SERVER_VIEW_STATS = 0x05,
-       USER_CREATE = 0x06,
-       USER_DELETE = 0x07,
-       USER_LIST = 0x08,
-       USER_PERMISSIONS = 0x09,
-       USER_RENAME = 0x0A
+     Command Commands<>; /* XDR arrays start with the Length */
    };
    /**
-    * All ADMIN commands are sent as 32-bit values.
+    * A packet reply.
     */
-   typedef AOID_e AOID;
+   struct PacketReply {
+     CommandReply Commands<>; /* XDR arrays start with the Length */
+   };
 
-
-
-Royer                    Expires 21 August 2025               [Page 100]
-
-Internet-Draft        Phoenix: Lemonade Risen Again        February 2025
-
-
-   union AdminPayload switch(AOID_e Aoid) {
+   union AdminPayload switch(CMD_e Cmd) {
      case SERVER_CONFIGURE:
-       ServerConfigPayload ConfigPayload;
+       ServerConfigurePayload ConfigPayload;
      case SERVER_KICK_USER:
        ServerKickPayload KickPayload;
     case SERVER_LOGS:
        ServerLogsPayload LogsPayload;
      case SERVER_MANAGE_BANS:
-       ServerBansPayload BansPayload;
+       ServerManageBansPayload BansPayload;
      case SERVER_SHUTDOWN:
        ServerShutdownPayload ShutdownPayload;
      case SERVER_VIEW_STATS:
@@ -5626,15 +5813,23 @@ Internet-Draft        Phoenix: Lemonade Risen Again        February 2025
      case USER_RENAME:
        UserRenamePayload URenamePayload;
    };
-   union AdminReplyPayload switch(AOID_e Aoid) {
+   union AdminReplyPayload switch(CMD_e Cmd) {
      case SERVER_CONFIGURE:
-       ServerConfigReplyPayload ConfigPayload;
+       ServerConfigureReplyPayload ConfigPayload;
      case SERVER_KICK_USER:
      void; /* No reply allowd for SERVER_KICK_USER */
+
+
+
+Royer                    Expires 25 August 2025               [Page 104]
+
+Internet-Draft        Phoenix: Lemonade Risen Again        February 2025
+
+
     case SERVER_LOGS:
        ServerLogsReplyPayload LogsPayload;
      case SERVER_MANAGE_BANS:
-       ServerBansReplyPayload BansPayload;
+       ServerManageBansReplyPayload BansPayload;
      case SERVER_SHUTDOWN:
        ServerShutdownReplyPayload ShutdownPayload;
      case SERVER_VIEW_STATS:
@@ -5651,33 +5846,41 @@ Internet-Draft        Phoenix: Lemonade Risen Again        February 2025
        UserRenameReplyPayload URenamePayload;
    };
 
-
-
-Royer                    Expires 21 August 2025               [Page 101]
-
-Internet-Draft        Phoenix: Lemonade Risen Again        February 2025
-
-
    /**
     * An array of OpConfigSet values.
     */
-   struct ServerConfigPayload {
-       AOID_e Aoid; /* Set to SERVER_CONFIGURE. */
-       ConfigSet Values<>; /* XDR arrays start with a length. */
+   struct ServerConfigurePayload {
+    CMD_e Aoid; /* Set to SERVER_CONFIGURE. */
+    ConfigSet Values<>; /* XDR arrays start with a length. */
    };
 
    /**
     * Reply to SERVER_CONFIGURE
     */
-   struct ServerConfigReplyPayload {
-       AOID_e ACmd; /* Set to SERVER_CONFIGURE */
-       KeyPair ResultValues<>; /* XDR arrays start with a length */
+   struct ServerConfigureReplyPayload {
+    CMD_e ACmd; /* Set to SERVER_CONFIGURE */
+    KeyPair ResultValues<>; /* XDR arrays start with a length */
    };
 
    struct ServerKickPayload
    {
-    AOID_e Kick; /* With Kick set to SERVER_KICK_USER */
+    CMD_e Kick; /* With Kick set to SERVER_KICK_USER */
    };
+
+
+
+
+
+
+
+
+
+
+
+Royer                    Expires 25 August 2025               [Page 105]
+
+Internet-Draft        Phoenix: Lemonade Risen Again        February 2025
+
 
    struct ServerLogsPayload
    {
@@ -5688,11 +5891,11 @@ Internet-Draft        Phoenix: Lemonade Risen Again        February 2025
     int foo;
    };
 
-   struct ServerBansPayload
+   struct ServerManageBansPayload
    {
     int foo;
    };
-   struct ServerBansReplyPayload
+   struct ServerManageBansReplyPayload
    {
     int foo;
    };
@@ -5705,14 +5908,6 @@ Internet-Draft        Phoenix: Lemonade Risen Again        February 2025
    {
     int foo;
    };
-
-
-
-
-Royer                    Expires 21 August 2025               [Page 102]
-
-Internet-Draft        Phoenix: Lemonade Risen Again        February 2025
-
 
    struct UserCreatePayload
    {
@@ -5731,6 +5926,17 @@ Internet-Draft        Phoenix: Lemonade Risen Again        February 2025
    {
     int foo;
    };
+
+
+
+
+
+
+
+Royer                    Expires 25 August 2025               [Page 106]
+
+Internet-Draft        Phoenix: Lemonade Risen Again        February 2025
+
 
    struct UserListPayload
    {
@@ -5759,17 +5965,6 @@ Internet-Draft        Phoenix: Lemonade Risen Again        February 2025
     int foo;
    };
 
-
-
-
-
-
-
-Royer                    Expires 21 August 2025               [Page 103]
-
-Internet-Draft        Phoenix: Lemonade Risen Again        February 2025
-
-
    struct ServerStatsPayload
    {
     int foo;
@@ -5778,6 +5973,26 @@ Internet-Draft        Phoenix: Lemonade Risen Again        February 2025
    {
     int foo;
    };
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Royer                    Expires 25 August 2025               [Page 107]
+
+Internet-Draft        Phoenix: Lemonade Risen Again        February 2025
+
 
    /**
     * The number of emails in the MDN record set.
@@ -5805,23 +6020,32 @@ Internet-Draft        Phoenix: Lemonade Risen Again        February 2025
        string EMail<>;
    };
 
-   struct AuthMD5 {
-       uint32_t Cmd; /* Set to AUTHMD5 */
-       string Login<>;
-       string Md5Password<>;
+   %
+   %#ifdef BUILDING_LIBPHOENIX
+   %#include "AuthMD5.hpp"
+   %#include "Commands.hpp"
+   %#include "SEQ_t.hpp"
+   %#else
+   %#include <RiverExplorer/Phoenix/AuthMD5.hpp>
+   %#include <RiverExplorer/Phoenix/Commands.hpp>
+   %#include <RiverExplorer/Phoenix/SEQ_t.hpp>
+   %#endif
+   %#include <string>
+   struct AuthMD5Payload
+   {
+    string AccountName<>;
+    string Md5Password<>;
    };
 
    struct AuthAnonymousPayload
    {
-    AOID_e Anonymous; /* Set to AUTHANONYMOUS (%x26) */
+    CMD_e Anonymous; /* Set to AUTHANONYMOUS (%x26) */
    };
 
 
 
 
-
-
-Royer                    Expires 21 August 2025               [Page 104]
+Royer                    Expires 25 August 2025               [Page 108]
 
 Internet-Draft        Phoenix: Lemonade Risen Again        February 2025
 
@@ -5833,29 +6057,6 @@ Internet-Draft        Phoenix: Lemonade Risen Again        February 2025
        AUTHCERT_TLS = 0x27,
        AUTHCERT_USER = 0x28
    };
-
-   union AuthPayload switch(Auth_e Auth) {
-     case AUTHANONYMOUS:
-       AuthAnonymousPayload AnonymousPayload;
-     case AUTHMD5:
-       AuthMD5Payload MD5Payload;
-    case AUTHCERT:
-       AuthCertPayload CertPayload;
-     case AUTHCERT_TLS:
-       AuthCertTlsPayload CertTlsPayload;
-     case AUTHCERT_USER:
-       AuthCertUserPayload CertUserPayload;
-   };
-   /**
-    * There is no AUTH... REPLY payload.
-    * An authentication replies with:
-    *
-    * CAPABILITY_POST: Authentication passed.
-    *
-    * CAPABILITY_PRE: Authentication failed.
-    *
-    * NotSupported:   Authentication method not supported.
-    */
 
 Acknowledgments
 
@@ -5877,4 +6078,27 @@ Author's Address
 
 
 
-Royer                    Expires 21 August 2025               [Page 105]
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Royer                    Expires 25 August 2025               [Page 109]

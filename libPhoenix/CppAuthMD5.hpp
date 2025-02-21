@@ -3,16 +3,22 @@
  * RiverExplorer is a trademark of RiverExplorer Games LLC.
  */
 
-#ifndef _RIVEREXPLORER_PHOENIX_PING_HPP_
-#define _RIVEREXPLORER_PHOENIX_PING_HPP_
+#ifndef _RIVEREXPLORER_PHOENIX_AUTHMD5_HPP_
+#define _RIVEREXPLORER_PHOENIX_AUTHMD5_HPP_
 
+#ifdef BUILDING_LIBPHOENIX
 #include "Commands.hpp"
 #include "Register.hpp"
-#include "Ping.hpp"
+#include "AuthMD5.hpp"
+#else
+#include <RiverExplorer/Phoenix/Commands.hpp>
+#include <RiverExplorer/Phoenix/Register.hpp>
+#include <RiverExplorer/Phoenix/AuthMD5.hpp>
+#endif
 
 namespace RiverExplorer::Phoenix
 {
-	class CppPing
+	class CppAuthMD5
 		: public PluginBase
 	{
 	public:
@@ -30,7 +36,7 @@ namespace RiverExplorer::Phoenix
 		static std::vector<Register::PluginCapability*>  PostAuth;
 
 		/**
-		 * When a Ping command comes in, call this method.
+		 * When a AUTHMD5 command comes in, call this method.
 		 *
 		 * @param Fd the associated socket file descriptor.
 		 *
@@ -48,4 +54,4 @@ namespace RiverExplorer::Phoenix
 		
 	};
 }
-#endif // _RIVEREXPLORER_PHOENIX_PING_HPP_
+#endif // _RIVEREXPLORER_PHOENIX_AUTHMD5_HPP_

@@ -1,7 +1,7 @@
 #ifdef RPC_HDR
 %#ifdef BUILDING_LIBPHOENIX
 %#include "CommonDefinitions.hpp"
-%#include "AOID.hpp"
+%#include "Commands.hpp"
 %#else
 %#include <RiverExplorer/Phoenix/CommonDefinitions.hpp>
 %#include <RiverExplorer/Phoenix/AOID.hpp>
@@ -11,6 +11,6 @@
  * Reply to SERVER_CONFIGURE
  */
 struct ServerConfigReplyPayload {
-    AOID_e    ACmd;           /* Set to SERVER_CONFIGURE */
-    KeyPair   ResultValues<>; /* XDR arrays start with a length */
+	CMD_e    ACmd;           /* Set to SERVER_CONFIGURE */
+	KeyPair   ResultValues<>; /* XDR arrays start with a length */
 };

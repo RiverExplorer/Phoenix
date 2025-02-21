@@ -3,22 +3,22 @@
  * RiverExplorer is a trademark of RiverExplorer Games LLC
  */
 
-#include "CppPing.hpp"
+#include "CppBye.hpp"
 #include "IO.hpp"
 
 namespace RiverExplorer::Phoenix
 {
-	std::vector<Register::PluginCapability*>  CppPing::PreAuth;
-	std::vector<Register::PluginCapability*>  CppPing::PostAuth;
+	std::vector<Register::PluginCapability*>  CppBye::PreAuth;
+	std::vector<Register::PluginCapability*>  CppBye::PostAuth;
 	
-	// Someone said we got a ping packet.
+	// Someone said we got a bye packet.
 	//
 	bool
-	CppPing::Callback(int Fd, Command * Pkt, XDR * ReadXdrs)
+	CppBye::Callback(int Fd, Command * Pkt, XDR * ReadXdrs)
 	{
 		bool Results = false;
 
-		Command * Reply = NewPing(Pkt->Sequence);
+		Command * Reply = NewBye(Pkt->Sequence);
 		
 		XDR WriteXdrs;
 		uint64_t BlobSize = sizeof(*Reply) * 2;
@@ -42,12 +42,12 @@ namespace RiverExplorer::Phoenix
 		return(Results);
 	}
 
-	Command * NewPing(SEQ_t Seq)
+	Command * NewBye(SEQ_t Seq)
 	{
 		Command	*	Results = new Command();
 
 		Results->Sequence = Seq;
-		Results->Payload.Cmd = PING;
+		Results->Payload.Cmd = BYE;
 
 		return(Results);
 	}

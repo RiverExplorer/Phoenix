@@ -8,10 +8,12 @@
 
 #ifdef BUILDING_LIBPHOENIX
 #include "Commands.hpp"
+#include "PacketBody.hpp"
 #include "CmdNotSupported.hpp"
 #include "Iov.hpp"
 #else
 #include <RiverExplorer/Phoenix/Commands.hpp>
+#include <RiverExplorer/Phoenix/PacketBody.hpp>
 #include <RiverExplorer/Phoenix/CmdNotSupported.hpp>
 #include <RiverExplorer/Phoenix/Iov.hpp>
 #endif
@@ -140,7 +142,7 @@ namespace RiverExplorer::Phoenix
 		 * A list of commands we issued, and do not have a reply yet.
 		 * Commands that do not get a reply, are not added.
 		 */
-		static std::map<CommandSequence, CmdPacket*> _CommandsWeIssued;
+		static std::map<SEQ_t, Command*> _CommandsWeIssued;
 
 		/**
 		 * Mutex lock for CommandsWeIssued.
