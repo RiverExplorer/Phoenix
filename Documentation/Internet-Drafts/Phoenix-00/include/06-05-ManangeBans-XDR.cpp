@@ -1,3 +1,3 @@
 <artwork type="abnf" name="" align="left" alt=""><![CDATA[
-#include "../../../../libPhoenix/ManageBans.x"
+#include "../../../../libPhoenix/ServerManageBans.x"
 ]]></artwork>

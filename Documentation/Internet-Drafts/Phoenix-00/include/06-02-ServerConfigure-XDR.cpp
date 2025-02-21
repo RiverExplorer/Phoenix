@@ -1,3 +1,3 @@
 <artwork type="abnf" name="" align="left" alt=""><![CDATA[
-#include "../../../../libPhoenix/ServerConfigReplyPayload.x"
+#include "../../../../libPhoenix/ServerConfigureReply.x"
 ]]></artwork>

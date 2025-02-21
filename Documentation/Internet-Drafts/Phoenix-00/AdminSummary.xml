@@ -55,25 +55,25 @@
 		<t>
 			The following operations are defined for administration.
 			Each is part of an ADMIN command or ADMIN reply.
-			They each have a unique identifier, called an ADMIN Operation ID (AOID).
+			They each have a unique identifier, called an ADMIN CMD.
 		</t>
 		<t>
-			All of their XDR API is: xdr_AOID().
+			All of their XDR API is: xdr_CMD().
 		</t>
 		<table>
 			<name>Administration Comamnd Payload Operations</name>
 			<thead>
 				<tr>
 					<th>Name</th>
-					<th>AOID</th>
+					<th>CMD</th>
 					<th>Capability Description.</th>
 					<th>Command Description.</th>
 				</tr>
 			</thead>
 			<tbody>
 				<tr>
-					<td>AOID</td>
-					<td>uint32_t</td>
+					<td></td>
+					<td>CMD</td>
 					<td>
 						An Administrative Operation Identifier.
 					</td>
@@ -201,22 +201,6 @@
 			</tbody>
 		</table>
 
-		<section>
-			<name>Administration Command Payload - Operations - ABNF</name>
-			<figure>
-				<name>Administration Command Payload - Operations - ABNF</name>
-				<xi:include href="include/05-AdministrationOperations-ABNF.xml"/>
-			</figure>
-		</section>
-		
-		<section>
-			<name>Administration Command Payload - Operations - XDR</name>
-			<figure>
-				<name>Administration Command Payload - Operations - XDR</name>
-				<xi:include href="include/05-1-AOID-XDR.xml"/>
-				<xi:include href="include/05-2-AdministrationOperations-XDR.xml"/>
-			</figure>
-		</section>
 	</section>
 		
 	<xi:include href="ServerConfigure.xml"/>

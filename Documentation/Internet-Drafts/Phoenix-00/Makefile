@@ -106,7 +106,6 @@ INCLUDE.cpp = \
 	include/02-StringRef-XDR.cpp \
 	include/03-PacketHeader-XDR.cpp \
 	include/04-PacketBody-XDR.cpp \
-	include/05-1-AOID-XDR.cpp \
 	include/05-2-AdministrationOperations-XDR.cpp \
 	include/06-01-ServerConfigure-XDR.cpp \
 	include/06-02-ServerConfigure-XDR.cpp \
@@ -124,7 +123,6 @@ INCLUDE.cpp = \
 	include/08-MDNEntry-XDR.cpp \
 	include/09-AuthMD5-XDR.cpp \
 	include/10-Auth_e-XDR.cpp \
-	include/10-Auth-XDR.cpp \
 	include/10-AuthAnonymous-XDR.cpp
 
 INCLUDE.xml = $(INCLUDE.cpp:.cpp=.xml)
