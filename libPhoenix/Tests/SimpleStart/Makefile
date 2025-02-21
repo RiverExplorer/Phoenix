@@ -59,19 +59,14 @@ include $(TOP)/BuildTools/Makefile.top
 SOURCES.cpp = SimpleStart.cpp
 SOURCES.hpp = SimpleStart.hpp
 
-W64_CPPFLAGS	+=
+W64_CPPFLAGS			+=
 
-ANDROID_CPPFLAGS += 
+ANDROID_CPPFLAGS 	+= 
 
-ANDROID_LIBS	+= -L/usr/local/Phoenix/Linux/Debug/lib
+ANDROID_LIBS			+= -L/usr/local/Phoenix/Linux/Debug/lib
 
 LIBS		+= -lPhoenix -ltirpc -lcrypto -lssl -lz -Wl,--as-needed
-
-#LIBS		+= \
-#			-Wl,-Bstatic -lPhoenix -Wl,-Bdynamic \
-#			-ltirpc -lcrypto -lssl -lz \
-#			-Wl,--as-needed
-
+SLIBS		+= -Wl,-Bstatic -lPhoenix -lcrypto -Wl,-Bdynamic -lssl -ltirpc
 
 include $(TOP)/BuildTools/Makefile.bottom
 
@@ -79,7 +74,3 @@ clean ::
 
 LinuxDebugRun : LinuxDebug
 	BuildTemp/Linux/Debug/bin/SimpleStart
-
-
-
-

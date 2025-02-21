@@ -1,4 +1,4 @@
-
+#
 # @copyright (C) 2025 RiverExplorer® Games LLC, All Rights Reserved.
 #
 # RiverExplorer is a registered trademark of RiverExplorer Games LLC.
@@ -28,74 +28,56 @@
 # SEE TITLE 17, UNITED STATES CODE, SECTIONS 504, 505.
 #
 
-SUBDIRS	= \
-	SimpleStart \
-	ParseOnly \
-	TestServer1 \
-	TestClient1
+# Version of this program/library
+#
+VERSION			= 0.0.1
+VENDER			= RiverExplorer
 
-all : Android Linux W64
+# TOP of the build tree where BuildTools/Make... files exist
+#
+TOP			= ../../..
+LIBTOP			= ../..
 
-Android : AndroidDebug AndroidRelease AndroidTcov
+# What to call this program.
+# And what the include/RiverExplorer/$(TARGET) header directory will be.
+#
+TARGET			= TestClient1
 
-W64 : W64Debug W64Release W64Tcov
+CPPFLAGS		+= 
 
-Linux : LinuxDebug LinuxRelease LinuxTcov
+NOW = $(shell date +%Y%m%dT%H%M%S)
 
-AndroidDebug:
-	for dir in $(SUBDIRS); do \
-		$(MAKE) -C $$dir $(MAKECMDGOALS) ; \
-	done
+LINUX_CPPFLAGS	+= \
+	-I/usr/include/tirpc \
+	-DTARG_BINARY_s='"$(TARGET)"' \
+	-DFULLVERSION_s='"$(NOW)"' \
+	-DOS_s='"Linux"' \
+	-DOSVER_s='"$(shell uname -r)"'
 
-AndroidRelease:
-	for dir in $(SUBDIRS); do \
-		$(MAKE) -C $$dir $(MAKECMDGOALS) ; \
-	done
+include $(TOP)/BuildTools/Makefile.top
 
-AndroidTcov:
-	for dir in $(SUBDIRS); do \
-		$(MAKE) -C $$dir $(MAKECMDGOALS) ; \
-	done
+SOURCES.cpp = TestClient.cpp
+SOURCES.hpp = TestClient.hpp
 
-Linux : LinuxDebug LinuxRelease LinuxTcov
+W64_CPPFLAGS	+=
 
-LinuxDebug:
-	for dir in $(SUBDIRS); do \
-		$(MAKE) -C $$dir $(MAKECMDGOALS) ; \
-	done
+ANDROID_CPPFLAGS += 
 
-LinuxRelease:
-	for dir in $(SUBDIRS); do \
-		$(MAKE) -C $$dir $(MAKECMDGOALS) ; \
-	done
+ANDROID_LIBS	+= -L/usr/local/Phoenix/Linux/Debug/lib
 
-LinuxTcov:
-	for dir in $(SUBDIRS); do \
-		$(MAKE) -C $$dir $(MAKECMDGOALS) ; \
-	done
+LIBS		+= -lPhoenix -ltirpc -lcrypto -lssl -lz -Wl,--as-needed
 
-W64 : W64Debug W64Release W64Tcov
-	for dir in $(SUBDIRS); do \
-		$(MAKE) -C $$dir $(MAKECMDGOALS) ; \
-	done
+# Build as much as possible, with static libs.
+#
+SLIBS		+= -Wl,-Bstatic -lPhoenix -lcrypto -Wl,-Bdynamic -ltirpc -lssl
 
-W64Debug:
-	for dir in $(SUBDIRS); do \
-		$(MAKE) -C $$dir $(MAKECMDGOALS) ; \
-	done
-
-W64Release:
-	for dir in $(SUBDIRS); do \
-		$(MAKE) -C $$dir $(MAKECMDGOALS) ; \
-	done
-
-W64Tcov:
-	for dir in $(SUBDIRS); do \
-		$(MAKE) -C $$dir $(MAKECMDGOALS) ; \
-	done
+include $(TOP)/BuildTools/Makefile.bottom
 
 clean ::
-	for dir in $(SUBDIRS); do \
-		$(MAKE) -C $$dir clean; \
-	done
+
+LinuxDebugRun : LinuxDebug
+	BuildTemp/Linux/Debug/bin/SimpleStart
+
+
+
 

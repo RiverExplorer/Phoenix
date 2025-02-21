@@ -41,7 +41,7 @@ LIBTOP			= ../..
 # What to call this program.
 # And what the include/RiverExplorer/$(TARGET) header directory will be.
 #
-TARGET			= ParseOnlyTest
+TARGET			= TestServer
 
 CPPFLAGS		+= 
 
@@ -66,12 +66,7 @@ ANDROID_CPPFLAGS +=
 ANDROID_LIBS	+= -L/usr/local/Phoenix/Linux/Debug/lib
 
 LIBS		+= -lPhoenix -ltirpc -lcrypto -lssl -lz -Wl,--as-needed
-
-#LIBS		+= \
-#			-Wl,-Bstatic -lPhoenix -Wl,-Bdynamic \
-#			-ltirpc -lcrypto -lssl -lz \
-#			-Wl,--as-needed
-
+SLIBS		+= -Wl,-Bstatic -lPhoenix -lcrypto -lssl -Wl,-Bdynamic -ltirpc
 
 include $(TOP)/BuildTools/Makefile.bottom
 
@@ -79,7 +74,3 @@ clean ::
 
 LinuxDebugRun : LinuxDebug
 	BuildTemp/Linux/Debug/bin/SimpleStart
-
-
-
-
