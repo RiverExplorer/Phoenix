@@ -1,7 +1,23 @@
 /**
+ * Project: Phoenix
+ *
+ * @file Server.cpp
+ * @copyright (C) 2025 by Douglas Mark Royer (A.K.A. RiverExplorer)
+ * @author Douglas Mark Royer
+ * Time-stamp: "2025-02-26 17:34:16 doug"
+ * @date 24-FEB-20205
+ *
+ * licensed under CC BY 4.0.
+ *
+ * RiverExplorer is a trademark of Douglas Mark Royer
+ */
+
+/**
  * Phoenix (C) 2025 by Douglas Mark Royer (A.K.A. RiverExplorer) is licensed under CC BY 4.0
  * RiverExplorer is a trademark of RiverExplorer Games LLC
  */
+#include "Configuration.hpp"
+#include "Log.hpp"
 #include "Server.hpp"
 #include "Register.hpp"
 
@@ -21,7 +37,6 @@
 
 #include <semaphore.h>
 #include <iostream>
-#include <toml++/toml.hpp>
 #include <dirent.h>
 #include <endian.h>
 
@@ -38,15 +53,6 @@
 
 namespace RiverExplorer::Phoenix
 {
-	/**
-	 * We use TOML (toml++) for our configuration file.
-	 */
-	toml::table TomlConfigFile;
-	static const char * const DefaultConfig =
-		"[Administration]\n"
-		"LogFile = \"Phoenix.log\"\n"
-		"ListenBacklog = 10\n";
-
 	// List of peer IP, by socket file descriptor.
 	// An array of _FdMax ClientInfo objects.
 	//
@@ -96,6 +102,10 @@ namespace RiverExplorer::Phoenix
 	//
 	FILE									*	Server::_LogFp;
 
+	// The name of the server program.
+	//
+	const char						*	Server::_ServerProgramName = nullptr;
+	
 	// The thread that runs the server.
 	//
 	std::thread							_WorkThread;
@@ -200,188 +210,134 @@ namespace RiverExplorer::Phoenix
 
 		return;
 	}
-
 	
 	Server::Server()
-		{
-			if (Instance == nullptr) {
-				_FdMax = sysconf(_SC_OPEN_MAX);
+	{
+		if (Instance == nullptr) {
+			_FdMax = sysconf(_SC_OPEN_MAX);
 				
-				Clients = new ClientInfo*[_FdMax];
-				_Entries = new struct pollfd[_FdMax];
+			Clients = new ClientInfo*[_FdMax];
+			_Entries = new struct pollfd[_FdMax];
 
-				for (nfds_t i = 0; i < _FdMax; i++) {
-					_Entries[i].fd = -1;
-					_Entries[i].events = 0;
-					_Entries[i].revents = 0;
-				}
+			for (nfds_t i = 0; i < _FdMax; i++) {
+				_Entries[i].fd = -1;
+				_Entries[i].events = 0;
+				_Entries[i].revents = 0;
+			}
 				
-				// Ignore SIGPIPE
-				//
-				struct sigaction SigPipe;
-				SigPipe.sa_handler = SIG_IGN;
-				SigPipe.sa_flags = 0;
-				sigaction(SIGPIPE, &SigPipe, nullptr);
+			// Ignore SIGPIPE
+			//
+			struct sigaction SigPipe;
+			SigPipe.sa_handler = SIG_IGN;
+			SigPipe.sa_flags = 0;
+			sigaction(SIGPIPE, &SigPipe, nullptr);
 				
-				std::string	HomeDirectory;
+			std::string	HomeDirectory;
 			
-				Instance = this;
+			Instance = this;
 
-				// Remove ALL preexisting FIFO's from the FIFO dir.
-				//
-				DIR * OpenDir;
-				struct dirent * Entry;
+			// Remove ALL preexisting FIFO's from the FIFO dir.
+			//
+			DIR * OpenDir;
+			struct dirent * Entry;
 
-				std::string RmPath = INSTALL_DIR;
-				std::string File;
+			std::string RmPath = INSTALL_DIR;
+			std::string File;
 			
-				RmPath += "/NamedPipe";
+			RmPath += "/NamedPipe";
 
-				OpenDir = opendir(RmPath.c_str());
+			OpenDir = opendir(RmPath.c_str());
 
-				if (OpenDir != nullptr) {
-					while ((Entry = readdir(OpenDir)) != nullptr) {
-						if (strncmp(Entry->d_name, "PollLoopback.", 13) == 0) {
-							File = RmPath;
-							File += "/";
-							File += Entry->d_name;
-							unlink(File.c_str());
-						}
+			if (OpenDir != nullptr) {
+				while ((Entry = readdir(OpenDir)) != nullptr) {
+					if (strncmp(Entry->d_name, "PollLoopback.", 13) == 0) {
+						File = RmPath;
+						File += "/";
+						File += Entry->d_name;
+						unlink(File.c_str());
 					}
-					closedir(OpenDir);
 				}
+				closedir(OpenDir);
+			}
 			
-				// Create the loopback connection
-				// to read from to wakup poll() to re-read its configration data.
-				//
-				pid_t OurPid = getpid();
-				snprintf(Fifo, sizeof(Fifo), "%s/NamedPipe/PollLoopback.%u", INSTALL_DIR, OurPid);
+			// Create the loopback connection
+			// to read from to wakup poll() to re-read its configration data.
+			//
+			pid_t OurPid = getpid();
+			snprintf(Fifo, sizeof(Fifo), "%s/NamedPipe/PollLoopback.%u", INSTALL_DIR, OurPid);
 
-				// We don't use them.
-				//
-				//fclose(stdin);
-				//fclose(stdout);
+			// We don't use them.
+			//
+			//fclose(stdin);
+			//fclose(stdout);
 
-				// Where we write logs and messages.
-				//
-				//fclose(stderr);
+			// Where we write logs and messages.
+			//
+			//fclose(stderr);
 #ifndef W64
-				// User ~/.config/RiverExplorer/Phoenix.conf
-				//
-				struct passwd		Pw;
-				struct passwd * PwResult;
-				char					* IPBuf;
-				long						IPBufSize;
-				int							Found = -1;
-				std::string			ConfigFile;
+			// User ~/.config/RiverExplorer/Phoenix.conf
+			//
+			struct passwd		Pw;
+			struct passwd * PwResult;
+			char					* IPBuf;
+			long						IPBufSize;
+			int							Found = -1;
+			std::string			ConfigFile;
 			
-				IPBufSize = sysconf(_SC_GETPW_R_SIZE_MAX);
-				if (IPBufSize == -1) {
-					IPBufSize = 16384;
-				}
-				IPBuf = new char[IPBufSize];
+			IPBufSize = sysconf(_SC_GETPW_R_SIZE_MAX);
+			if (IPBufSize == -1) {
+				IPBufSize = 16384;
+			}
+			IPBuf = new char[IPBufSize];
 
-				Found = getpwuid_r(getuid(), &Pw, IPBuf, IPBufSize, &PwResult);
+			Found = getpwuid_r(getuid(), &Pw, IPBuf, IPBufSize, &PwResult);
 
-				if (Found == 0) {
-					if (PwResult != nullptr) {
-						HomeDirectory = Pw.pw_dir;
-						ConfigFile = Pw.pw_dir;
-						ConfigFile += "/.config/RiverExplorer/Phoenix/Phoenix.conf";
-					}
+			if (Found == 0) {
+				if (PwResult != nullptr) {
+					HomeDirectory = Pw.pw_dir;
+					ConfigFile = Pw.pw_dir;
+					ConfigFile += "/.config/RiverExplorer/Phoenix/Server/";
+					ConfigFile += _ServerProgramName;
+					ConfigFile += ".xml";
 				}
+			}
 #else
-				/**@todo*/
+			/**@todo*/
 #endif			
 
-				// Create an empty config file, if it does not exist.
-				//
-				if (access(ConfigFile.c_str(), R_OK) != 0) {
-					std::string Dir = HomeDirectory;
-
-					Dir += "/.config";;
-					mkdir(Dir.c_str(), 0700);
-					Dir += "/RiverExplorer";
-					mkdir(Dir.c_str(), 0700);
-					Dir += "/Phoenix";
-					mkdir(Dir.c_str(), 0700);
-							
-					FILE * Tmp = fopen(ConfigFile.c_str(), "w");
-
-					if (Tmp != nullptr) {
-						fprintf(Tmp, DefaultConfig);
-						fclose(Tmp);
-					}
-				}
+			Configuration::ServerInitializeConfiguration(_ServerProgramName);
+			Configuration::ServerLoadConfig();
 			
-				if (access(ConfigFile.c_str(), R_OK) == 0) {
-					try {
-						toml::table Config = toml::parse_file(ConfigFile);
-
-						std::optional<std::string> LogFile = Config["Administration"]["LogFile"].value<std::string>();
-
-						if (LogFile) {
-							std::string Path = *LogFile;
-						
-							if ((*LogFile)[0] == '~') {
-								Path = HomeDirectory;
-							
-								Path += "/";
-								Path += LogFile->substr(1);
-							}
-					
-							_LogFp = fopen(Path.c_str(), "a");
-						}
-
-					} catch (const toml::parse_error & Err) {
-						_LogFp = stderr;
-					
-						char Buf[1024];
-
-						std::string SErr = Err.description().data();
-					
-						snprintf(Buf,
-										 sizeof(Buf),
-										 "Could not parse configuration file: %s: error: %s",
-										 ConfigFile.c_str(),
-										 SErr.c_str());
-						_Event::Invoke(-1, Event::LoggingMessage_Event, Buf);
-					}
-				
-				} else {
-					_LogFp = stderr;
-				}
-			
-				if (access(Fifo, R_OK|W_OK) != F_OK) {
-					unlink(Fifo); // In case it exsts and has incorrect permissions.
-					mkfifo(Fifo, 0600);
-					atexit(_Cleanup);
-				}
-				
-				_WakeUpPoll = open(Fifo, O_RDWR);
-				sem_init(&_WorkThreadReady, 0, 0);
-
-				// Register to listen for _Event::InvokeMessage().
-				//
-				Event::Register(Event::LoggingMessage_Event, _LogMessage);
-
-				// Register for new client connections and validate their IP.
-				//
-				Event::Register(Event::NewClientConnection_Event, _ValidateIP);
+			if (access(Fifo, R_OK|W_OK) != F_OK) {
+				unlink(Fifo); // In case it exsts and has incorrect permissions.
+				mkfifo(Fifo, 0600);
+				atexit(_Cleanup);
 			}
-			// else - ignore us!
-			//
+				
+			_WakeUpPoll = open(Fifo, O_RDWR);
+			sem_init(&_WorkThreadReady, 0, 0);
 
-			return;
+			// Register to listen for _Event::InvokeMessage().
+			//
+			Event::Register(Event::LoggingMessage_Event, _LogMessage);
+
+			// Register for new client connections and validate their IP.
+			//
+			Event::Register(Event::NewClientConnection_Event, _ValidateIP);
 		}
+		// else - ignore us!
+		//
+
+		return;
+	}
 
 	Server::~Server()
-		{
-			/*@todo - empty for now, nothing to do*/
-		}
+	{
+		/*@todo - empty for now, nothing to do*/
+	}
 
 	FILE *
-		Server::GetLogFp()
+	Server::GetLogFp()
 	{
 		return(_LogFp);
 	}
@@ -389,13 +345,13 @@ namespace RiverExplorer::Phoenix
 	// This is run as a thread.
 	//
 	std::thread *
-		Server::Start(uint16_t Port, const char * Device)
+	Server::Start(uint16_t Port, const char * Device)
 	{
 		std::thread * Results = nullptr;
 
 		char On = 1;
 
-		IOInstance = new IO();
+		IOInstance = new IO(true);
 		
 		memset(&_ServerAddress, 0, sizeof(_ServerAddress));
 
@@ -437,7 +393,7 @@ namespace RiverExplorer::Phoenix
 	}
 
 	bool
-		Server::Send(IO::SendPacket * Pkt)
+	Server::Send(IO::SendPacket * Pkt)
 	{
 		bool Results = false;
 
@@ -452,7 +408,7 @@ namespace RiverExplorer::Phoenix
 	}
 
 	void
-		Server::AddFd(int Fd)
+	Server::AddFd(int Fd)
 	{
 		std::set<int>::iterator Found = _NewFds.find(Fd);
 
@@ -465,7 +421,7 @@ namespace RiverExplorer::Phoenix
 	}
 	
 	void
-		Server::RemoveFd(int Fd)
+	Server::RemoveFd(int Fd)
 	{
 		std::set<int>::iterator Found = _RemoveFds.find(Fd);
 
@@ -489,7 +445,7 @@ namespace RiverExplorer::Phoenix
 	// This runs as a thread.
 	//
 	void
-		Server::_Work()
+	Server::_Work()
 	{
 		char On = 1;
 
@@ -719,7 +675,7 @@ namespace RiverExplorer::Phoenix
  								Register::Dispatch((int)Fd, Pkt);
 							} else {
 								Event::InvokeMessage((int)Fd, Event::LogError_Event,
-																						"Server.cpp:poll():xdr_CmdPacket() failed.");
+																		 "Server.cpp:poll():xdr_CmdPacket() failed.");
 							}
 
 							// Clear out the inbound data, await more.
@@ -978,7 +934,7 @@ namespace RiverExplorer::Phoenix
 	}
 
 	void
-		Server::_ReloadPoll()
+	Server::_ReloadPoll()
 	{
 		// Cause poll() to wake up and notice it should update..
 		//
@@ -1018,7 +974,7 @@ namespace RiverExplorer::Phoenix
 	}
 
 	bool
-		Server::_LogMessage(int Fd, Event::Event_e /*ID*/, void * Data)
+	Server::_LogMessage(int Fd, Event::Event_e /*ID*/, void * Data)
 	{
 		const char * CData = (char*)Data;
 
@@ -1029,9 +985,9 @@ namespace RiverExplorer::Phoenix
 				SData += '\n';
 			}
 			if (Fd > -1) {
-				fprintf(_LogFp, "File Descriptor: %d, %s", Fd, SData.c_str());
+				Log::PrintInformation("File Descriptor: %d, %s", Fd, SData.c_str());
 			} else {
-				fprintf(_LogFp, "%s", SData.c_str());
+				Log::PrintInformation("%s", SData.c_str());
 			}
 			fflush(_LogFp);
 		}

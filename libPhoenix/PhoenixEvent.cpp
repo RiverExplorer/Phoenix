@@ -11,7 +11,58 @@ namespace RiverExplorer::Phoenix
 	// The list of all known PhoenixEvent's.
 	//
 	std::multimap<Event::Event_e,Event::_Register*>	Event::_Registered;
+	std::multimap<CMD_e, CommandCallback>	_CommandCallbacks;
 
+	void
+	Event::Register(CMD_e Cmd, CommandCallback Cb)
+	{
+		_CommandCallbacks.insert(std::make_pair(Cmd, Cb));
+
+		return;
+	}
+	
+	void
+	Event::Unregister(CMD_e Cmd, CommandCallback Cb)
+	{
+		std::multimap<CMD_e,CommandCallback>::iterator It;
+
+		// A list of iterators to be erased.
+		//
+		std::vector<std::multimap<CMD_e,CommandCallback>::iterator> ToBeErased;
+		
+		// Unregister the callback
+		//
+		for (It = _CommandCallbacks.begin(); It != _CommandCallbacks.end(); It++) {
+			// If Cb is provided, unregister the specific Callback.
+			//
+			if (Cb != nullptr) {
+				if (It->first == Cmd && It->second == Cb) {
+					ToBeErased.push_back(It);
+					break;
+				}
+			} else {
+				// Erase all callbacks for ID.
+				//
+				if (It->first == Cmd) {
+					ToBeErased.push_back(It);
+					break;
+				}
+			}
+		}
+
+		// Now remove the ones we collected for erasure.
+		//
+		std::vector<std::multimap<CMD_e,CommandCallback>::iterator>::iterator EraseIt;
+
+		for (EraseIt = ToBeErased.begin()
+					 ; EraseIt != ToBeErased.end()
+					 ; EraseIt++) {
+			_CommandCallbacks.erase(*EraseIt);
+		}
+
+		return;
+	}
+	
 	void
 	Event::Register(Event_e Name, EventCallback Cb)
 	{
@@ -157,5 +208,5 @@ namespace RiverExplorer::Phoenix
 		} 
 		return(DispatchCallbacks(Fd, Event, (void*)Msg));
 	}
-	
+
 }

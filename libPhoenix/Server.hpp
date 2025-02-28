@@ -7,11 +7,13 @@
 #define _RIVEREXPLORER_PHOENIX_SERVER_HPP_
 
 #ifdef BUILDING_LIBPHOENIX
+#include "Log.hpp"
 #include "IO.hpp"
 #include "PhoenixEvent.hpp"
 #include "Certs.hpp"
 #include "IPPeer.hpp"
 #else
+#include <RiverExplorer/Phoenix/Log.hpp>
 #include <RiverExplorer/Phoenix/IO.hpp>
 #include <RiverExplorer/Phoenix/PhoenixEvent.hpp>
 #include <RiverExplorer/Phoenix/Certs.hpp>
@@ -437,6 +439,12 @@ namespace RiverExplorer::Phoenix
 		 */
 		static void 	_Work();
 
+		/**
+		 * The name of the server program.
+		 * This is used in log and configuration file names.
+		 */
+		static const char * _ServerProgramName;
+		
 	};
 }
 #endif // _RIVEREXPLORER_PHOENIX_SERVER_HPP_

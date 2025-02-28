@@ -65,11 +65,11 @@ ANDROID_CPPFLAGS +=
 
 ANDROID_LIBS	+= -L/usr/local/Phoenix/Linux/Debug/lib
 
-LIBS		+= -lPhoenix -ltirpc -lcrypto -lssl -lz -Wl,--as-needed
+LIBS		+= -lPhoenix -lxslt -lxml2 -ltirpc -lcrypto -lssl -lz -Wl,--as-needed
 
 # Build as much as possible, with static libs.
 #
-SLIBS		+= -Wl,-Bstatic -lPhoenix -lcrypto -Wl,-Bdynamic -ltirpc -lssl
+SLIBS		+= -Wl,-Bstatic -lPhoenix -lcrypto -Wl,-Bdynamic -lxslt -lxml2 -ltirpc -lssl -lmd
 
 include $(TOP)/BuildTools/Makefile.bottom
 

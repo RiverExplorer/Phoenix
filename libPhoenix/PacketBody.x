@@ -4,7 +4,6 @@
 %#include "SEQ_t.hpp"
 %#include "Commands.hpp"
 %#include "Capability.hpp"
-%#include "Admin.hpp"
 %#include "AuthAnonymous.hpp"
 %#include "AuthCertTls.hpp"
 %#include "AuthCertUser.hpp"
@@ -29,16 +28,22 @@
 %#include "FolderRename.hpp"
 %#include "FolderShare.hpp"
 %#include "ServerConfigure.hpp"
+%#include "ServerConfigureReply.hpp"
 %#include "ServerLogs.hpp"
 %#include "ServerManageBans.hpp"
 %#include "ServerStats.hpp"
+%#include "Shutdown.hpp"
+%#include "UserCreate.hpp"
+%#include "UserDelete.hpp"
+%#include "UserList.hpp"
+%#include "UserPermissions.hpp"
+%#include "UserRename.hpp"
 
 %#else
 %#include <RiverExplorer/Phoenix/CommonDefinitions.hpp>
 %#include <RiverExplorer/Phoenix/SEQ_t.hpp>
 %#include <RiverExplorer/Phoenix/Commands.hpp>
 %#include <RiverExplorer/Phoenix/Capability.hpp>
-%#include <RiverExplorer/Phoenix/Admin.hpp>
 %#include <RiverExplorer/Phoenix/AuthAnonymous.hpp>
 %#include <RiverExplorer/Phoenix/AuthCertTls.hpp>
 %#include <RiverExplorer/Phoenix/AuthCertUser.hpp>
@@ -63,9 +68,16 @@
 %#include <RiverExplorer/Phoenix/FolderRename.hpp>
 %#include <RiverExplorer/Phoenix/FolderShare.hpp>
 %#include <RiverExplorer/Phoenix/ServerConfigure.hpp>
+%#include <RiverExplorer/Phoenix/ServerConfigureReply.hpp>
 %#include <RiverExplorer/Phoenix/ServerLogs.hpp>
 %#include <RiverExplorer/Phoenix/ServerManageBans.hpp>
 %#include <RiverExplorer/Phoenix/ServerStats.hpp>
+%#include <RiverExplorer/Phoenix/Shutdown.hpp>
+%#include <RiverExplorer/Phoenix/UserCreate.hpp>
+%#include <RiverExplorer/Phoenix/UserDelete.hpp>
+%#include <RiverExplorer/Phoenix/UserList.hpp>
+%#include <RiverExplorer/Phoenix/UserPermissions.hpp>
+%#include <RiverExplorer/Phoenix/UserRename.hpp>
 %#endif
 #endif
 

@@ -91,10 +91,22 @@ namespace RiverExplorer::Phoenix
 		if (!KnownInitialized) {
 			InitializeKnown();
 		}
-		// A PacketBody can have 1 or more commands.
-		// ...
 
-		/**@todo Register::Dispatch() */
+		std::multimap<CMD_e,CommandCallback>::iterator CbIt;
+		
+		// A PacketBody can have 1 or more commands.
+		//
+		for (uint32_t Which = 0; Which < Pkt->Commands.Len; Which++) {
+			Command & Cmd = Pkt->Commands.Data[Which];
+
+			auto Range = _Callbacks.equal_range(Cmd.Payload.Cmd);
+
+			for (auto RangeIt = Range.first; RangeIt != Range.second; RangeIt++) {
+				if (RangeIt->second != nullptr) {
+					RangeIt->second(Fd, &Cmd, nullptr);
+				}
+			}
+		}
 		
 		return;
 	}

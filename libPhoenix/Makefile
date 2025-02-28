@@ -1,4 +1,15 @@
 #
+# Project: Phoenix
+# Time-stamp: <2025-02-27 21:10:40 doug>
+#
+# Copyright (C) 2025 by Douglas Mark Royer (A.K.A. RiverExplorer)
+# Author Douglas Mark Royer
+# @date 3-JAN-20205
+#
+# licensed under CC BY 4.0.
+#
+# RiverExplorer is a trademark of Douglas Mark Royer
+#
 # Version of this program/library
 #
 # These two must be set.
@@ -53,6 +64,7 @@ SOURCES.c =
 #
 SOURCES.cpp = \
 	Certs.cpp \
+	Client.cpp \
 	CppAcl.cpp \
 	CppAuthMD5.cpp \
 	CppAddMessage.cpp \
@@ -70,16 +82,20 @@ SOURCES.cpp = \
 	CppSubscribe.cpp \
 	CppTimeout.cpp \
 	CppUpdateMessage.cpp \
+	Configuration.cpp \
+	ConfigureXslt.cpp \
+	HostName.cpp \
 	IO.cpp \
 	Iov.cpp \
 	IPPeer.cpp \
+	Log.cpp \
 	Misc.cpp \
 	PhoenixEvent.cpp \
 	Register.cpp \
-	Server.cpp
+	Server.cpp \
+	xdr_SSL.cpp
 
 SOURCES.x = \
-	Admin.x \
 	AuthAnonymous.x \
 	AuthCert.x \
 	AuthCertTls.x \
@@ -151,20 +167,27 @@ SOURCES.x = \
 
 SOURCES.hpp += \
 	Certs.hpp \
+	Client.hpp \
 	CppAuthMD5.hpp \
 	CppCapability.hpp \
 	CppCommands.hpp \
 	CppMime.hpp \
 	CppTypes.hpp \
 	CppBye.hpp \
+	Configuration.hpp \
+	HostName.hpp \
 	IO.hpp \
 	Iov.hpp \
+	Log.hpp \
 	IPPeer.hpp \
 	PhoenixClient.hpp \
 	PhoenixEvent.hpp \
 	PhoenixServer.hpp \
 	Register.hpp \
-	Server.hpp
+	Server.hpp \
+	xdr_SSL.hpp \
+	XSLT/Configure.xslt \
+	XSLT/Configure.css
 
 SOURCES.h		+=
 
@@ -185,7 +208,11 @@ GENERATED_OBJECTS = \
 C_OBJECTS         = $(SOURCES.c:.c=.o)
 CPP_OBJECTS       = $(SOURCES.cpp:.cpp=.o)
 
-CPPFLAGS					+=	-I../libPhoenixServer -I../libPhoenixClient -I/usr/include/tirpc
+CPPFLAGS					+=	\
+											-I../libPhoenixServer \
+											-I../libPhoenixClient \
+											-I/usr/include/tirpc \
+											-I/usr/include/libxml2
 
 CPPFLAGS.debug		=
 
@@ -206,7 +233,7 @@ W64_LIBS					+= -lws2_32
 
 ANDROID_LIBS			+=-z defs
 
-LIBS							+= -ltirpc -lssl -lcrypto -lz
+LIBS							+= -lmd -ltirpc -lxslt -lxml2 -lssl -lcrypto -lz
 
 include $(TOP)/BuildTools/Makefile.bottom.lib
 

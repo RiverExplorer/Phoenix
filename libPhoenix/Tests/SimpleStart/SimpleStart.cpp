@@ -46,7 +46,7 @@ std::map<int,Phoenix::IPPeer*> Connections;
  * and this method always returns true.
  */
 bool
-MyReadyCallback(int /*Fd*/, Phoenix::PhoenixEvent::EventID /*ID*/, void * /*Data*/)
+MyReadyCallback(int /*Fd*/, Phoenix::Event::Event_e /*ID*/, void * /*Data*/)
 {
 	fprintf(stdout, "Got ServerReady event.\n");
 
@@ -78,7 +78,7 @@ MyReadyCallback(int /*Fd*/, Phoenix::PhoenixEvent::EventID /*ID*/, void * /*Data
  */
 bool
 MyNewClientCallback(int Fd,
-										Phoenix::PhoenixEvent::EventID,
+										Phoenix::Event::Event_e,
 										void * Data)
 {
 	Phoenix::IPPeer * Peer = static_cast<Phoenix::IPPeer*>(Data);
@@ -114,7 +114,7 @@ MyNewClientCallback(int Fd,
  * does not use the return value from the callbacks.
  */
 bool
-MyClientDisconnected(int Fd, Phoenix::PhoenixEvent::EventID, void * /*NotUsed*/)
+MyClientDisconnected(int Fd, Phoenix::Event::Event_e, void * /*NotUsed*/)
 {
 	std::map<int,Phoenix::IPPeer*>::iterator PeerIt;
 
@@ -151,14 +151,14 @@ main(int /*argc*/, char ** /*argv*/)
 	
 	Phoenix::Server	TheServer;
 
-	Phoenix::PhoenixEvent::Register(Phoenix::Server::Ready_s,
-																	MyReadyCallback);
+	Phoenix::Event::Register(Phoenix::Event::ServerReady_Event,
+													 MyReadyCallback);
 
-	Phoenix::PhoenixEvent::Register(Phoenix::Server::NewClientConnection_s,
-																	MyNewClientCallback);
+	Phoenix::Event::Register(Phoenix::Event::NewClientConnection_Event,
+													 MyNewClientCallback);
 	
-	Phoenix::PhoenixEvent::Register(Phoenix::Server::ClientDisconnected_s,
-																	MyClientDisconnected);
+	Phoenix::Event::Register(Phoenix::Event::ClientDisconnected_Event,
+													 MyClientDisconnected);
 	
 	std::thread * ServerThread = TheServer.Start(TestPort, TestDevice);
 

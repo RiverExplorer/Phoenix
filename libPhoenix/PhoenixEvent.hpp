@@ -10,6 +10,12 @@
 #include <stdint.h>
 #include <map>
 
+#ifdef BUILDING_LIBPHOENIX
+#include "Commands.hpp"
+#else
+#include <RiverExplorer/Phoenix/Commands.hpp>
+#endif
+
 namespace RiverExplorer::Phoenix
 {
 	
@@ -248,7 +254,7 @@ namespace RiverExplorer::Phoenix
 			 *
 			 * No optional data is passed with this Event.
 			 */
-			ServerReady_Event,
+			ServerReady_Event
 		};
 
 		/**
@@ -393,6 +399,16 @@ namespace RiverExplorer::Phoenix
 		static void Register(Event_e EventName, EventCallback Cb);
 
 		/**
+		 * Register to be called when a Command comes in.
+		 *
+		 * @param Cmd The command you wish to be notified of.
+		 *
+		 * @param Cb The method to be called when Cmd arrives.
+		 */
+		static void Register(Phoenix::CMD_e Cmd,
+												 Phoenix::CommandCallback Cb);
+		
+		/**
 		 * @addtogroup Event
 		 *
 		 * Call Unregister() to stop receiving calls for an event.
@@ -416,6 +432,8 @@ namespace RiverExplorer::Phoenix
 		 * the event as a valid event.
 		 */
 		static void Unregister(Event_e ID, EventCallback Cb);
+
+		static void Unregister(CMD_e ID, CommandCallback Cb);
 
 		/**
 		 * @addtogroup Event

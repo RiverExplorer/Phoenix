@@ -36,14 +36,14 @@ std::map<int,Phoenix::IPPeer*> Connections;
  * it operations. And before any incomming connections have
  * happened.
  *
- * @param Fd The Server::Ready() event always passes us
+ * @param Fd The Event::ServerReady_e event always passes us
  * a (-1) as no file descriptor is valid for this event and
  * it is ignored here.
  *
- * @param ID The ID of the event, in this case a Server::ReadyID()
+ * @param ID The ID of the event, in this case a Event::ServerReady_Event
  * It is ignored in this test code.
  *
- * @param Data The Server::Ready() event always passes us
+ * @param Data The Event::ServerReady_Event event always passes us
  * a nullptr as no data is associated with this event.
  * And it is ignored in this test code.
  *
@@ -51,7 +51,7 @@ std::map<int,Phoenix::IPPeer*> Connections;
  * and this method always returns true.
  */
 bool
-MyReadyCallback(int /*Fd*/, Event::Event_e /*ID*/, void * /*Data*/)
+ServerIsReadyCallback(int /*Fd*/, Event::Event_e /*ID*/, void * /*Data*/)
 {
 	fprintf(stdout, "Got ServerReady event.\n");
 
@@ -63,7 +63,7 @@ MyReadyCallback(int /*Fd*/, Event::Event_e /*ID*/, void * /*Data*/)
  * when the Phoenix Server library accepts an incomming connceton.
  * And before placing it in service.
  *
- * The Phoenix::Server::NewClientConnection_s PhoenixEvent expects a return
+ * The Phoenix::Event::NewClientConnection_Event Event expects a return
  * of true or false. Where a false return phrohibits the server from
  * allowing a client on this * connection.
  *
@@ -72,7 +72,7 @@ MyReadyCallback(int /*Fd*/, Event::Event_e /*ID*/, void * /*Data*/)
  *
  * @param Fd It get the new socket file descriptor.
  *
- * @param ID The event ID, in this case Server::NewClientConnection().
+ * @param ID The event ID, in this case Event::NewClientConnection_Event.
  *
  * @param Peer A (Server::PeerInfo*) sent as a generic (void*).
  *
@@ -82,7 +82,7 @@ MyReadyCallback(int /*Fd*/, Event::Event_e /*ID*/, void * /*Data*/)
  * In this TEST CODE, this method always returns true.
  */
 bool
-MyNewClientCallback(int Fd,
+NewClientConnected(int Fd,
 										Event::Event_e,
 										void * Data)
 {
@@ -115,7 +115,7 @@ MyNewClientCallback(int Fd,
  *
  * @param Fd The associated file descriptor.
  *
- * @param ID The PhoenixEvent::ID.
+ * @param ID The Event::Event_e
  *
  * @param Data Will be nullptr.
  *
@@ -123,7 +123,7 @@ MyNewClientCallback(int Fd,
  * does not use the return value from the callbacks.
  */
 bool
-MyClientDisconnected(int Fd, Event::Event_e, void * /*NotUsed*/)
+AClientDisconnected(int Fd, Event::Event_e, void * /*NotUsed*/)
 {
 	std::map<int,Phoenix::IPPeer*>::iterator PeerIt;
 
@@ -156,14 +156,14 @@ MyClientDisconnected(int Fd, Event::Event_e, void * /*NotUsed*/)
  *
  * @param Fd The associated file descriptor.
  *
- * @param ID The PhoenixEvent::ID.
+ * @param ID The Event::Event_e
  *
  * @param Data Will be nullptr.
  *
  * @return Always returns true as it can not be aborted.
  */
 bool
-MyClientBye(int Fd, Event::Event_e, void * /*NotUsed*/)
+ClientSaysBye(int Fd, Event::Event_e, void * /*NotUsed*/)
 {
 	std::map<int,Phoenix::IPPeer*>::iterator PeerIt;
 
@@ -202,27 +202,27 @@ main(int /*argc*/, char ** /*argv*/)
 	// Register the server to send out CAPABILITY_PRE on new connections.
 	//
 	Event::Register(Event::NewClientConnection_Event,
-									MyNewClientCallback);
+									NewClientConnected);
 
 	//
 	//
 	Event::Register(Event::ServerReady_Event,
-									MyReadyCallback);
+									ServerIsReadyCallback);
 
 	// Called when the server geta a new connection.
 	//
 	Event::Register(Event::NewClientConnection_Event,
-									MyNewClientCallback);
+									NewClientConnected);
 
 	// Called when the client disconnects.
 	//
 	Event::Register(Event::ClientDisconnected_Event,
-									MyClientDisconnected);
+									AClientDisconnected);
 
 	// Called with the client sends a BYE command.
 	//
 	Event::Register(Event::Bye_Event,
-									MyClientBye);
+									ClientSaysBye);
 	
 	std::thread * ServerThread = TheServer.Start(TestPort, TestDevice);
 
