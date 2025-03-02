@@ -1,6 +1,6 @@
 #
 # Project: Phoenix
-# Time-stamp: <2025-03-01 20:18:50 doug>
+# Time-stamp: <2025-03-02 02:00:52 doug>
 #
 # Copyright (C) 2025 by Douglas Mark Royer (A.K.A. RiverExplorer)
 # Author Douglas Mark Royer
@@ -722,3 +722,4 @@ $(ANDROID_OBJECTS.Tcov) : $(SOURCES.h) $(SOURCES.hpp)
 # Local makefiles can add dependices to 'all'
 LocalNeeds::
 
+RunTests::

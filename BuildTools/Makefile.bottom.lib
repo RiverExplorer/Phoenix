@@ -1,6 +1,6 @@
 #
 # Project: Phoenix
-# Time-stamp: <2025-03-01 19:22:31 doug>
+# Time-stamp: <2025-03-02 02:00:39 doug>
 #
 # Copyright (C) 2025 by Douglas Mark Royer (A.K.A. RiverExplorer)
 # Author Douglas Mark Royer
@@ -881,3 +881,5 @@ PostBuild_AndroidRelease::
 PostBuild_AndroidDebug::
 
 PostBuild_AndroidTcov::
+
+RunTests::
