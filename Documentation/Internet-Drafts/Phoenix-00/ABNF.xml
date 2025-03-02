@@ -180,8 +180,8 @@ Header = (Offset &lt;&lt; 24) | (Flags &lt;&lt; 22) | Length;
 		<figure anchor="ABNF-00" align="center">
 			<name>Packed Bit Example</name>
 			<artset>
-				<artwork align="center" type="ascii-art" src="ABNF-00.txt"/>
-				<artwork align="center" type="svg" src="ABNF-00.svg"/>
+				<artwork align="center" type="ascii-art" src="Drawings/ABNF-00.txt"/>
+				<artwork align="center" type="svg" src="Generated/ABNF-00.svg"/>
 			</artset>
 		</figure>
 	</section>
@@ -524,8 +524,8 @@ Header = (Offset &lt;&lt; 24) | (Flags &lt;&lt; 22) | Length;
 		<figure anchor="StringRefFigure" align="center">
 			<name>StringRef Format</name>
 			<artset>
-				<artwork align="center" type="ascii-art" src="StringRef-00.txt"/>
-				<artwork align="center" type="svg" src="StringRef-00.svg"/>
+				<artwork align="center" type="ascii-art" src="Drawings/StringRef-00.txt"/>
+				<artwork align="center" type="svg" src="Generated/StringRef-00.svg"/>
 			</artset>
 		</figure>
 

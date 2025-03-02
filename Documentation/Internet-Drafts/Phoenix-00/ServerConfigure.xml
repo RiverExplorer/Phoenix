@@ -140,8 +140,8 @@
 		<figure align="center">
 			<name>SERVER_CONFIGURE Command</name>
 			<artset>
-				<artwork align="center" type="ascii-art" src="ServerConfigure-00.txt"/>
-				<artwork align="center" type="svg" src="ServerConfigure-00.svg"/>
+				<artwork align="center" type="ascii-art" src="Drawings/ServerConfigure-00.txt"/>
+				<artwork align="center" type="svg" src="Generated/ServerConfigure-00.svg"/>
 			</artset>
 		</figure>
 		
@@ -205,8 +205,8 @@
 		<figure align="center">
 			<name>SERVER_CONFIGURE Reply</name>
 			<artset>
-				<artwork align="center" type="ascii-art" src="ServerConfigure-01.txt"/>
-				<artwork align="center" type="svg" src="ServerConfigure-01.svg"/>
+				<artwork align="center" type="ascii-art" src="Drawings/ServerConfigure-01.txt"/>
+				<artwork align="center" type="svg" src="Generated/ServerConfigure-01.svg"/>
 			</artset>
 		</figure>
 

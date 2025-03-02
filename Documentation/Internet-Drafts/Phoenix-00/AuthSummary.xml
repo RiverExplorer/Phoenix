@@ -60,8 +60,8 @@
 		<figure>
 			<name>AUTHCERT_USER</name>
 			<artset>
-				<artwork align="center" type="ascii-art" src="AuthSummary-00.txt"/>
-				<artwork align="center" type="svg" src="AuthSummary-00.svg"/>
+				<artwork align="center" type="ascii-art" src="Drawings/AuthSummary-00.txt"/>
+				<artwork align="center" type="svg" src="Generated/AuthSummary-00.svg"/>
 			</artset>
 		</figure>
 	</section>

@@ -51,7 +51,7 @@ SOURCES.xml = \
 	UserList.xml \
 	UserRename.xml
 
-ARTWORK.txt = \
+ARTWORK.src = \
 	ABNF-00.txt \
 	AnonFlow-00.txt \
 	ANONYMOUS-00.txt \
@@ -83,6 +83,10 @@ ARTWORK.txt = \
 	ServerConfigure-01.txt \
 	ServerKickUser-00.txt \
 	StringRef-00.txt
+
+ARTWORK.txt = $(addprefix Drawings/,$(ARTWORK.src))
+SVG					= $(ARTWORK.src:.txt=.svg)
+ARTWORK.svg = $(addprefix Generated/,$(SVG))
 
 REFERENCES.xml = \
 	References/reference.RFC.0822.xml \
@@ -142,8 +146,6 @@ ABNF			:= $(shell /bin/ls include/*-ABNF.xml)
 XDR.cpp 			:= $(shell /bin/ls include/*-XDR.cpp)
 GENERATED.XDR = $(XDR.cpp:.cpp=.xml)
 
-GENERATED_ARTWORK.svg = $(ARTWORK.txt:.txt=.svg)
-
 DOCDIR			= ../..
 
 TOPDOC.xml	= $(TITLE)-$(VERSION).xml
@@ -164,19 +166,19 @@ CPP = $(TOP)/MyTools/SimpleCpp
 
 all : $(TARGET.html) $(TARGET.pdf) $(TARGET.txt)
 
-txt : $(TARGET.txt) $(ARTWORK.txt)
+txt : $(TARGET.txt)
 
-pdf : $(TARGET.pdf) $(GENERATED_ARTWORK.svg)
+pdf : $(TARGET.pdf)
 
-html : $(TARGET.html) $(ARTWORK.svg)
+html : $(TARGET.html)
 
-$(TARGET.txt) : ALL-ABNF.xml ALL-XDR.xml $(GENERATED_ARTWORK.svg) $(ARTWORK.txt) $(TOPDOC.xml)  $(REFERENCES.xml) $(INCLUDES)
+$(TARGET.txt) : ALL-ABNF.xml ALL-XDR.xml $(ARTWORK.svg) $(ARTWORK.txt) $(TOPDOC.xml)  $(REFERENCES.xml) $(INCLUDES)
 	xml2rfc -o $@ $(TOPDOC.xml) $(REMOVE_SVG_WARNING)
 
-$(TARGET.pdf) : ALL-ABNF.xml ALL-XDR.xml $(GENERATED_ARTWORK.svg) $(TOPDOC.xml) $(REFERENCES.xml) $(INCLUDES)
+$(TARGET.pdf) : ALL-ABNF.xml ALL-XDR.xml $(ARTWORK.svg) $(TOPDOC.xml) $(REFERENCES.xml) $(INCLUDES)
 	xml2rfc --pdf -o $@ $(TOPDOC.xml) $(REMOVE_SVG_WARNING)
 
-$(TARGET.html): ALL-ABNF.xml ALL-XDR.xml $(GENERATED_ARTWORK.svg) $(TOPDOC.xml) $(REFERENCES.xml) $(INCLUDES)
+$(TARGET.html): ALL-ABNF.xml ALL-XDR.xml $(ARTWORK.svg) $(TOPDOC.xml) $(REFERENCES.xml) $(INCLUDES)
 	xml2rfc --html -o $@ $(TOPDOC.xml) $(REMOVE_SVG_WARNING)
 
 $(TOPDOC.xml) : draft-00.xml ALL-ABNF.xml ALL-XDR.xml $(SOURCES.xml) $(REFERENCES.xml) $(INCLUDES)
@@ -203,12 +205,12 @@ scp : $(TARGET.html) $(TARGET.pdf) $(TARGET.txt)
 
 clean :
 	$(RM) tmp.*
-	$(RM) $(GENERATED_ARTWORK.svg)
+	$(RM) $(ARTWORK.svg)
 	$(RM) $(TOPDOC.xml)
 	$(RM) ALL-ABNF.xml ALL-XDR.xml
 	$(RM) $(GENERATED.XDR)
 
-%.svg : %.txt
+Generated/%.svg : Drawings/%.txt
 	aasvg < $< > $@ 
 
 include/%.xml : include/%.cpp

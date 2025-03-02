@@ -21,8 +21,8 @@
 		<figure>
 			<name>Capability - AUTHANONYMOUS</name>
 			<artset>
-				<artwork align="center" type="ascii-art" src="ANONYMOUS-00.txt"/>
-				<artwork align="center" type="svg" src="ANONYMOUS-00.svg"/>
+				<artwork align="center" type="ascii-art" src="Drawings/ANONYMOUS-00.txt"/>
+				<artwork align="center" type="svg" src="Generated/ANONYMOUS-00.svg"/>
 			</artset>
 		</figure>
 	</section>
@@ -63,16 +63,16 @@
 		<figure>
 			<name>AUTHANONYMOUS - Login Flow</name>
 			<artset>
-				<artwork align="center" type="ascii-art" src="AnonFlow-00.txt"/>
-				<artwork align="center" type="svg" src="AnonFlow-00.svg"/>
+				<artwork align="center" type="ascii-art" src="Drawings/AnonFlow-00.txt"/>
+				<artwork align="center" type="svg" src="Generated/AnonFlow-00.svg"/>
 			</artset>
 		</figure>
 
 		<figure>
 			<name>Capability - AUTHANONYMOUS</name>
 			<artset>
-				<artwork align="center" type="ascii-art" src="ANONYMOUS-01.txt"/>
-				<artwork align="center" type="svg" src="ANONYMOUS-01.svg"/>
+				<artwork align="center" type="ascii-art" src="Drawings/ANONYMOUS-01.txt"/>
+				<artwork align="center" type="svg" src="Generated/ANONYMOUS-01.svg"/>
 			</artset>
 		</figure>
 

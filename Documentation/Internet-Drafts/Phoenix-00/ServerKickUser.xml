@@ -41,8 +41,8 @@
 	<figure align="center">
 		<name>SERVER_KICK_USER</name>
 		<artset>
-			<artwork align="center" type="ascii-art" src="ServerKickUser-00.txt"/>
-			<artwork align="center" type="svg" src="ServerKickUser-00.svg"/>
+			<artwork align="center" type="ascii-art" src="Drawings/ServerKickUser-00.txt"/>
+			<artwork align="center" type="svg" src="Generated/ServerKickUser-00.svg"/>
 		</artset>
 	</figure>
 

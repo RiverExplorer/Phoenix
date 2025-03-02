@@ -4,8 +4,8 @@
 
 Internet Engineering Task Force                                DM. Royer
 Internet-Draft                                         RiverExplorer LLC
-Intended status: Informational                          22 February 2025
-Expires: 26 August 2025
+Intended status: Informational                              2 March 2025
+Expires: 3 September 2025
 
 
                      Phoenix: Lemonade Risen Again
@@ -53,9 +53,9 @@ Status of This Memo
 
 
 
-Royer                    Expires 26 August 2025                 [Page 1]
+Royer                   Expires 3 September 2025                [Page 1]
 
-Internet-Draft        Phoenix: Lemonade Risen Again        February 2025
+Internet-Draft        Phoenix: Lemonade Risen Again           March 2025
 
 
    Internet-Drafts are working documents of the Internet Engineering
@@ -68,7 +68,7 @@ Internet-Draft        Phoenix: Lemonade Risen Again        February 2025
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 26 August 2025.
+   This Internet-Draft will expire on 3 September 2025.
 
 Copyright Notice
 
@@ -109,9 +109,9 @@ Table of Contents
 
 
 
-Royer                    Expires 26 August 2025                 [Page 2]
+Royer                   Expires 3 September 2025                [Page 2]
 
-Internet-Draft        Phoenix: Lemonade Risen Again        February 2025
+Internet-Draft        Phoenix: Lemonade Risen Again           March 2025
 
 
        5.2.4.  Administration - USER_KICK_USER . . . . . . . . . . .  43
@@ -165,9 +165,9 @@ Internet-Draft        Phoenix: Lemonade Risen Again        February 2025
 
 
 
-Royer                    Expires 26 August 2025                 [Page 3]
+Royer                   Expires 3 September 2025                [Page 3]
 
-Internet-Draft        Phoenix: Lemonade Risen Again        February 2025
+Internet-Draft        Phoenix: Lemonade Risen Again           March 2025
 
 
        5.10.19. File and Folder - FILE_MODIFY  . . . . . . . . . . .  62
@@ -221,15 +221,15 @@ Internet-Draft        Phoenix: Lemonade Risen Again        February 2025
 
 
 
-Royer                    Expires 26 August 2025                 [Page 4]
+Royer                   Expires 3 September 2025                [Page 4]
 
-Internet-Draft        Phoenix: Lemonade Risen Again        February 2025
+Internet-Draft        Phoenix: Lemonade Risen Again           March 2025
 
 
-   Appendix G.  Complete XDR . . . . . . . . . . . . . . . . . . . .  99
-   Acknowledgments . . . . . . . . . . . . . . . . . . . . . . . . . 108
-   Contributors  . . . . . . . . . . . . . . . . . . . . . . . . . . 108
-   Author's Address  . . . . . . . . . . . . . . . . . . . . . . . . 108
+   Appendix G.  Complete XDR . . . . . . . . . . . . . . . . . . . .  97
+   Acknowledgments . . . . . . . . . . . . . . . . . . . . . . . . . 107
+   Contributors  . . . . . . . . . . . . . . . . . . . . . . . . . . 107
+   Author's Address  . . . . . . . . . . . . . . . . . . . . . . . . 107
 
 1.  Requirements Language
 
@@ -277,9 +277,9 @@ Internet-Draft        Phoenix: Lemonade Risen Again        February 2025
 
 
 
-Royer                    Expires 26 August 2025                 [Page 5]
+Royer                   Expires 3 September 2025                [Page 5]
 
-Internet-Draft        Phoenix: Lemonade Risen Again        February 2025
+Internet-Draft        Phoenix: Lemonade Risen Again           March 2025
 
 
    A MIME object can be a simple object, or it may contain many
@@ -333,9 +333,9 @@ Internet-Draft        Phoenix: Lemonade Risen Again        February 2025
 
 
 
-Royer                    Expires 26 August 2025                 [Page 6]
+Royer                   Expires 3 September 2025                [Page 6]
 
-Internet-Draft        Phoenix: Lemonade Risen Again        February 2025
+Internet-Draft        Phoenix: Lemonade Risen Again           March 2025
 
 
    *  This specification describes a standard way to perform file and
@@ -389,9 +389,9 @@ Internet-Draft        Phoenix: Lemonade Risen Again        February 2025
 
 
 
-Royer                    Expires 26 August 2025                 [Page 7]
+Royer                   Expires 3 September 2025                [Page 7]
 
-Internet-Draft        Phoenix: Lemonade Risen Again        February 2025
+Internet-Draft        Phoenix: Lemonade Risen Again           March 2025
 
 
       +========+=====================================+==============+
@@ -445,9 +445,9 @@ Internet-Draft        Phoenix: Lemonade Risen Again        February 2025
 
 
 
-Royer                    Expires 26 August 2025                 [Page 8]
+Royer                   Expires 3 September 2025                [Page 8]
 
-Internet-Draft        Phoenix: Lemonade Risen Again        February 2025
+Internet-Draft        Phoenix: Lemonade Risen Again           March 2025
 
 
    The most significant values are placed to the left of lesser
@@ -501,9 +501,9 @@ Internet-Draft        Phoenix: Lemonade Risen Again        February 2025
 
 
 
-Royer                    Expires 26 August 2025                 [Page 9]
+Royer                   Expires 3 September 2025                [Page 9]
 
-Internet-Draft        Phoenix: Lemonade Risen Again        February 2025
+Internet-Draft        Phoenix: Lemonade Risen Again           March 2025
 
 
     | string      | A string of UTF-8 characters.   | xdr_string()   |
@@ -557,9 +557,9 @@ Internet-Draft        Phoenix: Lemonade Risen Again        February 2025
 
 
 
-Royer                    Expires 26 August 2025                [Page 10]
+Royer                   Expires 3 September 2025               [Page 10]
 
-Internet-Draft        Phoenix: Lemonade Risen Again        February 2025
+Internet-Draft        Phoenix: Lemonade Risen Again           March 2025
 
 
     |             | position in the value.          |                |
@@ -613,9 +613,9 @@ Internet-Draft        Phoenix: Lemonade Risen Again        February 2025
 
 
 
-Royer                    Expires 26 August 2025                [Page 11]
+Royer                   Expires 3 September 2025               [Page 11]
 
-Internet-Draft        Phoenix: Lemonade Risen Again        February 2025
+Internet-Draft        Phoenix: Lemonade Risen Again           March 2025
 
 
                   ; been deleted.
@@ -669,9 +669,9 @@ Internet-Draft        Phoenix: Lemonade Risen Again        February 2025
 
 
 
-Royer                    Expires 26 August 2025                [Page 12]
+Royer                   Expires 3 September 2025               [Page 12]
 
-Internet-Draft        Phoenix: Lemonade Risen Again        February 2025
+Internet-Draft        Phoenix: Lemonade Risen Again           March 2025
 
 
    Op           = OpSet / OpGet / OpUpdate / OpDelete
@@ -725,9 +725,9 @@ Internet-Draft        Phoenix: Lemonade Risen Again        February 2025
 
 
 
-Royer                    Expires 26 August 2025                [Page 13]
+Royer                   Expires 3 September 2025               [Page 13]
 
-Internet-Draft        Phoenix: Lemonade Risen Again        February 2025
+Internet-Draft        Phoenix: Lemonade Risen Again           March 2025
 
 
    union stringD switch (uint32_t LengthOrDeleted) {
@@ -781,9 +781,9 @@ Internet-Draft        Phoenix: Lemonade Risen Again        February 2025
 
 
 
-Royer                    Expires 26 August 2025                [Page 14]
+Royer                   Expires 3 September 2025               [Page 14]
 
-Internet-Draft        Phoenix: Lemonade Risen Again        February 2025
+Internet-Draft        Phoenix: Lemonade Risen Again           March 2025
 
 
 3.4.  StringRef
@@ -837,9 +837,9 @@ Internet-Draft        Phoenix: Lemonade Risen Again        February 2025
 
 
 
-Royer                    Expires 26 August 2025                [Page 15]
+Royer                   Expires 3 September 2025               [Page 15]
 
-Internet-Draft        Phoenix: Lemonade Risen Again        February 2025
+Internet-Draft        Phoenix: Lemonade Risen Again           March 2025
 
 
    /**
@@ -893,9 +893,9 @@ Internet-Draft        Phoenix: Lemonade Risen Again        February 2025
 
 
 
-Royer                    Expires 26 August 2025                [Page 16]
+Royer                   Expires 3 September 2025               [Page 16]
 
-Internet-Draft        Phoenix: Lemonade Risen Again        February 2025
+Internet-Draft        Phoenix: Lemonade Risen Again           March 2025
 
 
       A unique ID for a MIME folder.  This is an unsigned 32-bit integer
@@ -949,9 +949,9 @@ Internet-Draft        Phoenix: Lemonade Risen Again        February 2025
 
 
 
-Royer                    Expires 26 August 2025                [Page 17]
+Royer                   Expires 3 September 2025               [Page 17]
 
-Internet-Draft        Phoenix: Lemonade Risen Again        February 2025
+Internet-Draft        Phoenix: Lemonade Risen Again           March 2025
 
 
       This wire protocol transmits all or part of MIME objects.  Various
@@ -1005,9 +1005,9 @@ Internet-Draft        Phoenix: Lemonade Risen Again        February 2025
 
 
 
-Royer                    Expires 26 August 2025                [Page 18]
+Royer                   Expires 3 September 2025               [Page 18]
 
-Internet-Draft        Phoenix: Lemonade Risen Again        February 2025
+Internet-Draft        Phoenix: Lemonade Risen Again           March 2025
 
 
    SEQ, Command Sequence, (CMDSEQ) or (SEQ)
@@ -1061,9 +1061,9 @@ Internet-Draft        Phoenix: Lemonade Risen Again        February 2025
 
 
 
-Royer                    Expires 26 August 2025                [Page 19]
+Royer                   Expires 3 September 2025               [Page 19]
 
-Internet-Draft        Phoenix: Lemonade Risen Again        February 2025
+Internet-Draft        Phoenix: Lemonade Risen Again           March 2025
 
 
    authorized, a NotSupported command is send as a reply.  The
@@ -1117,9 +1117,9 @@ Internet-Draft        Phoenix: Lemonade Risen Again        February 2025
 
 
 
-Royer                    Expires 26 August 2025                [Page 20]
+Royer                   Expires 3 September 2025               [Page 20]
 
-Internet-Draft        Phoenix: Lemonade Risen Again        February 2025
+Internet-Draft        Phoenix: Lemonade Risen Again           March 2025
 
 
    This protocol connects two endpoints over a network and facilitates
@@ -1173,9 +1173,9 @@ Internet-Draft        Phoenix: Lemonade Risen Again        February 2025
 
 
 
-Royer                    Expires 26 August 2025                [Page 21]
+Royer                   Expires 3 September 2025               [Page 21]
 
-Internet-Draft        Phoenix: Lemonade Risen Again        February 2025
+Internet-Draft        Phoenix: Lemonade Risen Again           March 2025
 
 
    All commands initiated from the client have even numbered command
@@ -1229,9 +1229,9 @@ Internet-Draft        Phoenix: Lemonade Risen Again        February 2025
 
 
 
-Royer                    Expires 26 August 2025                [Page 22]
+Royer                   Expires 3 September 2025               [Page 22]
 
-Internet-Draft        Phoenix: Lemonade Risen Again        February 2025
+Internet-Draft        Phoenix: Lemonade Risen Again           March 2025
 
 
      +==============+===========================+====================+
@@ -1285,9 +1285,9 @@ Internet-Draft        Phoenix: Lemonade Risen Again        February 2025
 
 
 
-Royer                    Expires 26 August 2025                [Page 23]
+Royer                   Expires 3 September 2025               [Page 23]
 
-Internet-Draft        Phoenix: Lemonade Risen Again        February 2025
+Internet-Draft        Phoenix: Lemonade Risen Again           March 2025
 
 
    +=============+========+========================+===================+
@@ -1341,9 +1341,9 @@ Internet-Draft        Phoenix: Lemonade Risen Again        February 2025
 
 
 
-Royer                    Expires 26 August 2025                [Page 24]
+Royer                   Expires 3 September 2025               [Page 24]
 
-Internet-Draft        Phoenix: Lemonade Risen Again        February 2025
+Internet-Draft        Phoenix: Lemonade Risen Again           March 2025
 
 
    +-------------+--------+------------------------+-------------------+
@@ -1397,9 +1397,9 @@ Internet-Draft        Phoenix: Lemonade Risen Again        February 2025
 
 
 
-Royer                    Expires 26 August 2025                [Page 25]
+Royer                   Expires 3 September 2025               [Page 25]
 
-Internet-Draft        Phoenix: Lemonade Risen Again        February 2025
+Internet-Draft        Phoenix: Lemonade Risen Again           March 2025
 
 
    |             |        | In the event an        |                   |
@@ -1453,9 +1453,9 @@ Internet-Draft        Phoenix: Lemonade Risen Again        February 2025
 
 
 
-Royer                    Expires 26 August 2025                [Page 26]
+Royer                   Expires 3 September 2025               [Page 26]
 
-Internet-Draft        Phoenix: Lemonade Risen Again        February 2025
+Internet-Draft        Phoenix: Lemonade Risen Again           March 2025
 
 
    *  Or set the string, and just do not send any command or command
@@ -1509,9 +1509,9 @@ Internet-Draft        Phoenix: Lemonade Risen Again        February 2025
 
 
 
-Royer                    Expires 26 August 2025                [Page 27]
+Royer                   Expires 3 September 2025               [Page 27]
 
-Internet-Draft        Phoenix: Lemonade Risen Again        February 2025
+Internet-Draft        Phoenix: Lemonade Risen Again           March 2025
 
 
                 +----------------------------------+
@@ -1565,9 +1565,9 @@ Internet-Draft        Phoenix: Lemonade Risen Again        February 2025
 
 
 
-Royer                    Expires 26 August 2025                [Page 28]
+Royer                   Expires 3 September 2025               [Page 28]
 
-Internet-Draft        Phoenix: Lemonade Risen Again        February 2025
+Internet-Draft        Phoenix: Lemonade Risen Again           March 2025
 
 
                 Figure 13: Packet Body Vendor - Diagram Data
@@ -1621,9 +1621,9 @@ Internet-Draft        Phoenix: Lemonade Risen Again        February 2025
 
 
 
-Royer                    Expires 26 August 2025                [Page 29]
+Royer                   Expires 3 September 2025               [Page 29]
 
-Internet-Draft        Phoenix: Lemonade Risen Again        February 2025
+Internet-Draft        Phoenix: Lemonade Risen Again           March 2025
 
 
                 / AUTHMD5 AuthMD5ReplyPayload
@@ -1677,9 +1677,9 @@ Internet-Draft        Phoenix: Lemonade Risen Again        February 2025
 
 
 
-Royer                    Expires 26 August 2025                [Page 30]
+Royer                   Expires 3 September 2025               [Page 30]
 
-Internet-Draft        Phoenix: Lemonade Risen Again        February 2025
+Internet-Draft        Phoenix: Lemonade Risen Again           March 2025
 
 
                 / FOLDER_CREATE FolderCreateReplyPayload
@@ -1733,9 +1733,9 @@ Internet-Draft        Phoenix: Lemonade Risen Again        February 2025
 
 
 
-Royer                    Expires 26 August 2025                [Page 31]
+Royer                   Expires 3 September 2025               [Page 31]
 
-Internet-Draft        Phoenix: Lemonade Risen Again        February 2025
+Internet-Draft        Phoenix: Lemonade Risen Again           March 2025
 
 
    /**
@@ -1789,9 +1789,9 @@ Internet-Draft        Phoenix: Lemonade Risen Again        February 2025
 
 
 
-Royer                    Expires 26 August 2025                [Page 32]
+Royer                   Expires 3 September 2025               [Page 32]
 
-Internet-Draft        Phoenix: Lemonade Risen Again        February 2025
+Internet-Draft        Phoenix: Lemonade Risen Again           March 2025
 
 
     case FOLDER_COPY:
@@ -1845,9 +1845,9 @@ Internet-Draft        Phoenix: Lemonade Risen Again        February 2025
 
 
 
-Royer                    Expires 26 August 2025                [Page 33]
+Royer                   Expires 3 September 2025               [Page 33]
 
-Internet-Draft        Phoenix: Lemonade Risen Again        February 2025
+Internet-Draft        Phoenix: Lemonade Risen Again           March 2025
 
 
     * A CMDReply payload is one of these types.
@@ -1901,9 +1901,9 @@ Internet-Draft        Phoenix: Lemonade Risen Again        February 2025
 
 
 
-Royer                    Expires 26 August 2025                [Page 34]
+Royer                   Expires 3 September 2025               [Page 34]
 
-Internet-Draft        Phoenix: Lemonade Risen Again        February 2025
+Internet-Draft        Phoenix: Lemonade Risen Again           March 2025
 
 
     case FOLDER_LIST:
@@ -1957,9 +1957,9 @@ Internet-Draft        Phoenix: Lemonade Risen Again        February 2025
 
 
 
-Royer                    Expires 26 August 2025                [Page 35]
+Royer                   Expires 3 September 2025               [Page 35]
 
-Internet-Draft        Phoenix: Lemonade Risen Again        February 2025
+Internet-Draft        Phoenix: Lemonade Risen Again           March 2025
 
 
     * A packet reply.
@@ -2013,9 +2013,9 @@ Internet-Draft        Phoenix: Lemonade Risen Again        February 2025
 
 
 
-Royer                    Expires 26 August 2025                [Page 36]
+Royer                   Expires 3 September 2025               [Page 36]
 
-Internet-Draft        Phoenix: Lemonade Risen Again        February 2025
+Internet-Draft        Phoenix: Lemonade Risen Again           March 2025
 
 
    Implementations that support any administration command will include
@@ -2069,9 +2069,9 @@ Internet-Draft        Phoenix: Lemonade Risen Again        February 2025
 
 
 
-Royer                    Expires 26 August 2025                [Page 37]
+Royer                   Expires 3 September 2025               [Page 37]
 
-Internet-Draft        Phoenix: Lemonade Risen Again        February 2025
+Internet-Draft        Phoenix: Lemonade Risen Again           March 2025
 
 
    |                    |      |                | USER_PERMISSIONS,   |
@@ -2125,9 +2125,9 @@ Internet-Draft        Phoenix: Lemonade Risen Again        February 2025
 
 
 
-Royer                    Expires 26 August 2025                [Page 38]
+Royer                   Expires 3 September 2025               [Page 38]
 
-Internet-Draft        Phoenix: Lemonade Risen Again        February 2025
+Internet-Draft        Phoenix: Lemonade Risen Again           March 2025
 
 
    |                    |      | other users    | and set user        |
@@ -2181,9 +2181,9 @@ Internet-Draft        Phoenix: Lemonade Risen Again        February 2025
 
 
 
-Royer                    Expires 26 August 2025                [Page 39]
+Royer                   Expires 3 September 2025               [Page 39]
 
-Internet-Draft        Phoenix: Lemonade Risen Again        February 2025
+Internet-Draft        Phoenix: Lemonade Risen Again           March 2025
 
 
    If a client or user is not authorized, then all SERVER_CONFIGURE
@@ -2237,9 +2237,9 @@ Internet-Draft        Phoenix: Lemonade Risen Again        February 2025
 
 
 
-Royer                    Expires 26 August 2025                [Page 40]
+Royer                   Expires 3 September 2025               [Page 40]
 
-Internet-Draft        Phoenix: Lemonade Risen Again        February 2025
+Internet-Draft        Phoenix: Lemonade Risen Again           March 2025
 
 
                     +---------------------------------+
@@ -2293,9 +2293,9 @@ Internet-Draft        Phoenix: Lemonade Risen Again        February 2025
 
 
 
-Royer                    Expires 26 August 2025                [Page 41]
+Royer                   Expires 3 September 2025               [Page 41]
 
-Internet-Draft        Phoenix: Lemonade Risen Again        February 2025
+Internet-Draft        Phoenix: Lemonade Risen Again           March 2025
 
 
 5.2.3.2.  SERVER_CONFIGURE - Reply
@@ -2349,9 +2349,9 @@ Internet-Draft        Phoenix: Lemonade Risen Again        February 2025
 
 
 
-Royer                    Expires 26 August 2025                [Page 42]
+Royer                   Expires 3 September 2025               [Page 42]
 
-Internet-Draft        Phoenix: Lemonade Risen Again        February 2025
+Internet-Draft        Phoenix: Lemonade Risen Again           March 2025
 
 
 5.2.3.2.2.  SERVER_CONFIGURE Reply - XDR
@@ -2405,9 +2405,9 @@ Internet-Draft        Phoenix: Lemonade Risen Again        February 2025
 
 
 
-Royer                    Expires 26 August 2025                [Page 43]
+Royer                   Expires 3 September 2025               [Page 43]
 
-Internet-Draft        Phoenix: Lemonade Risen Again        February 2025
+Internet-Draft        Phoenix: Lemonade Risen Again           March 2025
 
 
                     +---------------------------------+
@@ -2461,9 +2461,9 @@ Internet-Draft        Phoenix: Lemonade Risen Again        February 2025
 
 
 
-Royer                    Expires 26 August 2025                [Page 44]
+Royer                   Expires 3 September 2025               [Page 44]
 
-Internet-Draft        Phoenix: Lemonade Risen Again        February 2025
+Internet-Draft        Phoenix: Lemonade Risen Again           March 2025
 
 
    When the start time is zero, it means start from the beginning of the
@@ -2517,9 +2517,9 @@ Internet-Draft        Phoenix: Lemonade Risen Again        February 2025
 
 
 
-Royer                    Expires 26 August 2025                [Page 45]
+Royer                   Expires 3 September 2025               [Page 45]
 
-Internet-Draft        Phoenix: Lemonade Risen Again        February 2025
+Internet-Draft        Phoenix: Lemonade Risen Again           March 2025
 
 
                               Figure 27: xxxx
@@ -2573,9 +2573,9 @@ Internet-Draft        Phoenix: Lemonade Risen Again        February 2025
 
 
 
-Royer                    Expires 26 August 2025                [Page 46]
+Royer                   Expires 3 September 2025               [Page 46]
 
-Internet-Draft        Phoenix: Lemonade Risen Again        February 2025
+Internet-Draft        Phoenix: Lemonade Risen Again           March 2025
 
 
    A server may if it wishes include AUTH capabilities in the
@@ -2629,9 +2629,9 @@ Internet-Draft        Phoenix: Lemonade Risen Again        February 2025
 
 
 
-Royer                    Expires 26 August 2025                [Page 47]
+Royer                   Expires 3 September 2025               [Page 47]
 
-Internet-Draft        Phoenix: Lemonade Risen Again        February 2025
+Internet-Draft        Phoenix: Lemonade Risen Again           March 2025
 
 
                Failed authentication:
@@ -2685,9 +2685,9 @@ Internet-Draft        Phoenix: Lemonade Risen Again        February 2025
 
 
 
-Royer                    Expires 26 August 2025                [Page 48]
+Royer                   Expires 3 September 2025               [Page 48]
 
-Internet-Draft        Phoenix: Lemonade Risen Again        February 2025
+Internet-Draft        Phoenix: Lemonade Risen Again           March 2025
 
 
 5.4.2.  Authentication - AUTHANONYMOUS - Command
@@ -2741,9 +2741,9 @@ Internet-Draft        Phoenix: Lemonade Risen Again        February 2025
 
 
 
-Royer                    Expires 26 August 2025                [Page 49]
+Royer                   Expires 3 September 2025               [Page 49]
 
-Internet-Draft        Phoenix: Lemonade Risen Again        February 2025
+Internet-Draft        Phoenix: Lemonade Risen Again           March 2025
 
 
                  CLIENT                        SERVER
@@ -2797,9 +2797,9 @@ Internet-Draft        Phoenix: Lemonade Risen Again        February 2025
 
 
 
-Royer                    Expires 26 August 2025                [Page 50]
+Royer                   Expires 3 September 2025               [Page 50]
 
-Internet-Draft        Phoenix: Lemonade Risen Again        February 2025
+Internet-Draft        Phoenix: Lemonade Risen Again           March 2025
 
 
 5.4.2.1.  Authentication - ANONYMOUS - ABNF
@@ -2853,9 +2853,9 @@ Internet-Draft        Phoenix: Lemonade Risen Again        February 2025
 
 
 
-Royer                    Expires 26 August 2025                [Page 51]
+Royer                   Expires 3 September 2025               [Page 51]
 
-Internet-Draft        Phoenix: Lemonade Risen Again        February 2025
+Internet-Draft        Phoenix: Lemonade Risen Again           March 2025
 
 
    When the client successfully authenticates using AUTHCERT_TLS, then
@@ -2909,9 +2909,9 @@ Internet-Draft        Phoenix: Lemonade Risen Again        February 2025
 
 
 
-Royer                    Expires 26 August 2025                [Page 52]
+Royer                   Expires 3 September 2025               [Page 52]
 
-Internet-Draft        Phoenix: Lemonade Risen Again        February 2025
+Internet-Draft        Phoenix: Lemonade Risen Again           March 2025
 
 
    be installed on a device for the user.  They, perhaps, go to a web
@@ -2965,9 +2965,9 @@ Internet-Draft        Phoenix: Lemonade Risen Again        February 2025
 
 
 
-Royer                    Expires 26 August 2025                [Page 53]
+Royer                   Expires 3 September 2025               [Page 53]
 
-Internet-Draft        Phoenix: Lemonade Risen Again        February 2025
+Internet-Draft        Phoenix: Lemonade Risen Again           March 2025
 
 
 5.6.2.  Authentication - MD5 - Command
@@ -3021,9 +3021,9 @@ Internet-Draft        Phoenix: Lemonade Risen Again        February 2025
 
 
 
-Royer                    Expires 26 August 2025                [Page 54]
+Royer                   Expires 3 September 2025               [Page 54]
 
-Internet-Draft        Phoenix: Lemonade Risen Again        February 2025
+Internet-Draft        Phoenix: Lemonade Risen Again           March 2025
 
 
    Login       = string
@@ -3077,9 +3077,9 @@ Internet-Draft        Phoenix: Lemonade Risen Again        February 2025
 
 
 
-Royer                    Expires 26 August 2025                [Page 55]
+Royer                   Expires 3 September 2025               [Page 55]
 
-Internet-Draft        Phoenix: Lemonade Risen Again        February 2025
+Internet-Draft        Phoenix: Lemonade Risen Again           March 2025
 
 
    This specification describes several capabilities.  Some are
@@ -3133,9 +3133,9 @@ Internet-Draft        Phoenix: Lemonade Risen Again        February 2025
 
 
 
-Royer                    Expires 26 August 2025                [Page 56]
+Royer                   Expires 3 September 2025               [Page 56]
 
-Internet-Draft        Phoenix: Lemonade Risen Again        February 2025
+Internet-Draft        Phoenix: Lemonade Risen Again           March 2025
 
 
    The only CAPABILITY_PRE that the client sends to the server is the
@@ -3189,9 +3189,9 @@ Internet-Draft        Phoenix: Lemonade Risen Again        February 2025
 
 
 
-Royer                    Expires 26 August 2025                [Page 57]
+Royer                   Expires 3 September 2025               [Page 57]
 
-Internet-Draft        Phoenix: Lemonade Risen Again        February 2025
+Internet-Draft        Phoenix: Lemonade Risen Again           March 2025
 
 
    +---------------+---------+--------------+--------------------------+
@@ -3245,9 +3245,9 @@ Internet-Draft        Phoenix: Lemonade Risen Again        February 2025
 
 
 
-Royer                    Expires 26 August 2025                [Page 58]
+Royer                   Expires 3 September 2025               [Page 58]
 
-Internet-Draft        Phoenix: Lemonade Risen Again        February 2025
+Internet-Draft        Phoenix: Lemonade Risen Again           March 2025
 
 
    The purpose of the VENDOR_ID capability and its value is to help
@@ -3301,9 +3301,9 @@ Internet-Draft        Phoenix: Lemonade Risen Again        February 2025
 
 
 
-Royer                    Expires 26 August 2025                [Page 59]
+Royer                   Expires 3 September 2025               [Page 59]
 
-Internet-Draft        Phoenix: Lemonade Risen Again        February 2025
+Internet-Draft        Phoenix: Lemonade Risen Again           March 2025
 
 
    +-------------------+---------+-------------------------------------+
@@ -3357,9 +3357,9 @@ Internet-Draft        Phoenix: Lemonade Risen Again        February 2025
 
 
 
-Royer                    Expires 26 August 2025                [Page 60]
+Royer                   Expires 3 September 2025               [Page 60]
 
-Internet-Draft        Phoenix: Lemonade Risen Again        February 2025
+Internet-Draft        Phoenix: Lemonade Risen Again           March 2025
 
 
    |                   |         | the capability for this             |
@@ -3413,9 +3413,9 @@ Internet-Draft        Phoenix: Lemonade Risen Again        February 2025
 
 
 
-Royer                    Expires 26 August 2025                [Page 61]
+Royer                   Expires 3 September 2025               [Page 61]
 
-Internet-Draft        Phoenix: Lemonade Risen Again        February 2025
+Internet-Draft        Phoenix: Lemonade Risen Again           March 2025
 
 
 5.10.13.  File and Folder - FILE_DELETE
@@ -3469,9 +3469,9 @@ Internet-Draft        Phoenix: Lemonade Risen Again        February 2025
 
 
 
-Royer                    Expires 26 August 2025                [Page 62]
+Royer                   Expires 3 September 2025               [Page 62]
 
-Internet-Draft        Phoenix: Lemonade Risen Again        February 2025
+Internet-Draft        Phoenix: Lemonade Risen Again           March 2025
 
 
    Servers that are not threaded or can not reply to simultaneous or
@@ -3525,9 +3525,9 @@ Internet-Draft        Phoenix: Lemonade Risen Again        February 2025
 
 
 
-Royer                    Expires 26 August 2025                [Page 63]
+Royer                   Expires 3 September 2025               [Page 63]
 
-Internet-Draft        Phoenix: Lemonade Risen Again        February 2025
+Internet-Draft        Phoenix: Lemonade Risen Again           March 2025
 
 
    *  When the server has received an authentication command, and has
@@ -3581,9 +3581,9 @@ Internet-Draft        Phoenix: Lemonade Risen Again        February 2025
 
 
 
-Royer                    Expires 26 August 2025                [Page 64]
+Royer                   Expires 3 September 2025               [Page 64]
 
-Internet-Draft        Phoenix: Lemonade Risen Again        February 2025
+Internet-Draft        Phoenix: Lemonade Risen Again           March 2025
 
 
    When a shared object is deleted, it is marked as deleted for only the
@@ -3637,9 +3637,9 @@ Internet-Draft        Phoenix: Lemonade Risen Again        February 2025
 
 
 
-Royer                    Expires 26 August 2025                [Page 65]
+Royer                   Expires 3 September 2025               [Page 65]
 
-Internet-Draft        Phoenix: Lemonade Risen Again        February 2025
+Internet-Draft        Phoenix: Lemonade Risen Again           March 2025
 
 
       When a client applications starts the client MUST check for
@@ -3693,9 +3693,9 @@ Internet-Draft        Phoenix: Lemonade Risen Again        February 2025
 
 
 
-Royer                    Expires 26 August 2025                [Page 66]
+Royer                   Expires 3 September 2025               [Page 66]
 
-Internet-Draft        Phoenix: Lemonade Risen Again        February 2025
+Internet-Draft        Phoenix: Lemonade Risen Again           March 2025
 
 
    Non user defined attributes are described in other sections or
@@ -3749,9 +3749,9 @@ Internet-Draft        Phoenix: Lemonade Risen Again        February 2025
 
 
 
-Royer                    Expires 26 August 2025                [Page 67]
+Royer                   Expires 3 September 2025               [Page 67]
 
-Internet-Draft        Phoenix: Lemonade Risen Again        February 2025
+Internet-Draft        Phoenix: Lemonade Risen Again           March 2025
 
 
 7.7.  Meta Data - Hide
@@ -3805,9 +3805,9 @@ Internet-Draft        Phoenix: Lemonade Risen Again        February 2025
 
 
 
-Royer                    Expires 26 August 2025                [Page 68]
+Royer                   Expires 3 September 2025               [Page 68]
 
-Internet-Draft        Phoenix: Lemonade Risen Again        February 2025
+Internet-Draft        Phoenix: Lemonade Risen Again           March 2025
 
 
    This value can be set and unset by the owner of the file or folder.
@@ -3861,9 +3861,9 @@ Internet-Draft        Phoenix: Lemonade Risen Again        February 2025
 
 
 
-Royer                    Expires 26 August 2025                [Page 69]
+Royer                   Expires 3 September 2025               [Page 69]
 
-Internet-Draft        Phoenix: Lemonade Risen Again        February 2025
+Internet-Draft        Phoenix: Lemonade Risen Again           March 2025
 
 
    This is a list of recipients email address that that are on the
@@ -3917,9 +3917,9 @@ Internet-Draft        Phoenix: Lemonade Risen Again        February 2025
 
 
 
-Royer                    Expires 26 August 2025                [Page 70]
+Royer                   Expires 3 September 2025               [Page 70]
 
-Internet-Draft        Phoenix: Lemonade Risen Again        February 2025
+Internet-Draft        Phoenix: Lemonade Risen Again           March 2025
 
 
    Followed by MDNListCount MDNEntry's.
@@ -3973,9 +3973,9 @@ Internet-Draft        Phoenix: Lemonade Risen Again        February 2025
 
 
 
-Royer                    Expires 26 August 2025                [Page 71]
+Royer                   Expires 3 September 2025               [Page 71]
 
-Internet-Draft        Phoenix: Lemonade Risen Again        February 2025
+Internet-Draft        Phoenix: Lemonade Risen Again           March 2025
 
 
    /**
@@ -4029,9 +4029,9 @@ Internet-Draft        Phoenix: Lemonade Risen Again        February 2025
 
 
 
-Royer                    Expires 26 August 2025                [Page 72]
+Royer                   Expires 3 September 2025               [Page 72]
 
-Internet-Draft        Phoenix: Lemonade Risen Again        February 2025
+Internet-Draft        Phoenix: Lemonade Risen Again           March 2025
 
 
 8.1.2.  Index Operation (IndexOP)
@@ -4085,9 +4085,9 @@ Internet-Draft        Phoenix: Lemonade Risen Again        February 2025
 
 
 
-Royer                    Expires 26 August 2025                [Page 73]
+Royer                   Expires 3 September 2025               [Page 73]
 
-Internet-Draft        Phoenix: Lemonade Risen Again        February 2025
+Internet-Draft        Phoenix: Lemonade Risen Again           March 2025
 
 
    Figure 42, shows the interisted header list prefix.  This interisted
@@ -4141,9 +4141,9 @@ Internet-Draft        Phoenix: Lemonade Risen Again        February 2025
 
 
 
-Royer                    Expires 26 August 2025                [Page 74]
+Royer                   Expires 3 September 2025               [Page 74]
 
-Internet-Draft        Phoenix: Lemonade Risen Again        February 2025
+Internet-Draft        Phoenix: Lemonade Risen Again           March 2025
 
 
    +--------+-----------+---------------------------------------------+
@@ -4197,9 +4197,9 @@ Internet-Draft        Phoenix: Lemonade Risen Again        February 2025
 
 
 
-Royer                    Expires 26 August 2025                [Page 75]
+Royer                   Expires 3 September 2025               [Page 75]
 
-Internet-Draft        Phoenix: Lemonade Risen Again        February 2025
+Internet-Draft        Phoenix: Lemonade Risen Again           March 2025
 
 
    ABNF:
@@ -4253,9 +4253,9 @@ Internet-Draft        Phoenix: Lemonade Risen Again        February 2025
 
 
 
-Royer                    Expires 26 August 2025                [Page 76]
+Royer                   Expires 3 September 2025               [Page 76]
 
-Internet-Draft        Phoenix: Lemonade Risen Again        February 2025
+Internet-Draft        Phoenix: Lemonade Risen Again           March 2025
 
 
    *  (a): A 32-bit unsigned integer in network byte order as described
@@ -4309,9 +4309,9 @@ Internet-Draft        Phoenix: Lemonade Risen Again        February 2025
 
 
 
-Royer                    Expires 26 August 2025                [Page 77]
+Royer                   Expires 3 September 2025               [Page 77]
 
-Internet-Draft        Phoenix: Lemonade Risen Again        February 2025
+Internet-Draft        Phoenix: Lemonade Risen Again           March 2025
 
 
    *  (h) The value of the characters for 'Content-Type'.
@@ -4365,9 +4365,9 @@ Internet-Draft        Phoenix: Lemonade Risen Again        February 2025
 
 
 
-Royer                    Expires 26 August 2025                [Page 78]
+Royer                   Expires 3 September 2025               [Page 78]
 
-Internet-Draft        Phoenix: Lemonade Risen Again        February 2025
+Internet-Draft        Phoenix: Lemonade Risen Again           March 2025
 
 
    ABNF:
@@ -4421,9 +4421,9 @@ Internet-Draft        Phoenix: Lemonade Risen Again        February 2025
 
 
 
-Royer                    Expires 26 August 2025                [Page 79]
+Royer                   Expires 3 September 2025               [Page 79]
 
-Internet-Draft        Phoenix: Lemonade Risen Again        February 2025
+Internet-Draft        Phoenix: Lemonade Risen Again           March 2025
 
 
    *  ID-CNT: A count of matched headers.  Only matched headers will be
@@ -4477,9 +4477,9 @@ Internet-Draft        Phoenix: Lemonade Risen Again        February 2025
 
 
 
-Royer                    Expires 26 August 2025                [Page 80]
+Royer                   Expires 3 September 2025               [Page 80]
 
-Internet-Draft        Phoenix: Lemonade Risen Again        February 2025
+Internet-Draft        Phoenix: Lemonade Risen Again           March 2025
 
 
                 The Message Index:
@@ -4533,9 +4533,9 @@ Internet-Draft        Phoenix: Lemonade Risen Again        February 2025
 
 
 
-Royer                    Expires 26 August 2025                [Page 81]
+Royer                   Expires 3 September 2025               [Page 81]
 
-Internet-Draft        Phoenix: Lemonade Risen Again        February 2025
+Internet-Draft        Phoenix: Lemonade Risen Again           March 2025
 
 
    HeaderIndex          = HeaderIndexHeader:32
@@ -4589,9 +4589,9 @@ Internet-Draft        Phoenix: Lemonade Risen Again        February 2025
 
 
 
-Royer                    Expires 26 August 2025                [Page 82]
+Royer                   Expires 3 September 2025               [Page 82]
 
-Internet-Draft        Phoenix: Lemonade Risen Again        February 2025
+Internet-Draft        Phoenix: Lemonade Risen Again           March 2025
 
 
 8.2.4.  Header Index Example 1
@@ -4645,9 +4645,9 @@ Internet-Draft        Phoenix: Lemonade Risen Again        February 2025
 
 
 
-Royer                    Expires 26 August 2025                [Page 83]
+Royer                   Expires 3 September 2025               [Page 83]
 
-Internet-Draft        Phoenix: Lemonade Risen Again        February 2025
+Internet-Draft        Phoenix: Lemonade Risen Again           March 2025
 
 
    +--------+--------+--------+--------+
@@ -4701,9 +4701,9 @@ Internet-Draft        Phoenix: Lemonade Risen Again        February 2025
 
 
 
-Royer                    Expires 26 August 2025                [Page 84]
+Royer                   Expires 3 September 2025               [Page 84]
 
-Internet-Draft        Phoenix: Lemonade Risen Again        February 2025
+Internet-Draft        Phoenix: Lemonade Risen Again           March 2025
 
 
    And when the folder was opened, the client asked for the "Content-
@@ -4757,9 +4757,9 @@ Internet-Draft        Phoenix: Lemonade Risen Again        February 2025
 
 
 
-Royer                    Expires 26 August 2025                [Page 85]
+Royer                   Expires 3 September 2025               [Page 85]
 
-Internet-Draft        Phoenix: Lemonade Risen Again        February 2025
+Internet-Draft        Phoenix: Lemonade Risen Again           March 2025
 
 
     |                28                 |OFFSET: User2@example.com
@@ -4813,9 +4813,9 @@ Internet-Draft        Phoenix: Lemonade Risen Again        February 2025
 
 
 
-Royer                    Expires 26 August 2025                [Page 86]
+Royer                   Expires 3 September 2025               [Page 86]
 
-Internet-Draft        Phoenix: Lemonade Risen Again        February 2025
+Internet-Draft        Phoenix: Lemonade Risen Again           March 2025
 
 
 10.  Security Considerations
@@ -4869,9 +4869,9 @@ Internet-Draft        Phoenix: Lemonade Risen Again        February 2025
 
 
 
-Royer                    Expires 26 August 2025                [Page 87]
+Royer                   Expires 3 September 2025               [Page 87]
 
-Internet-Draft        Phoenix: Lemonade Risen Again        February 2025
+Internet-Draft        Phoenix: Lemonade Risen Again           March 2025
 
 
    [PhoenixImplementation]
@@ -4925,9 +4925,9 @@ Appendix A.  Administrative Enumerated Binary Values
 
 
 
-Royer                    Expires 26 August 2025                [Page 88]
+Royer                   Expires 3 September 2025               [Page 88]
 
-Internet-Draft        Phoenix: Lemonade Risen Again        February 2025
+Internet-Draft        Phoenix: Lemonade Risen Again           March 2025
 
 
    +============+==================+==================================+
@@ -4981,9 +4981,9 @@ Appendix B.  Authentication Enumerated Binary Values
 
 
 
-Royer                    Expires 26 August 2025                [Page 89]
+Royer                   Expires 3 September 2025               [Page 89]
 
-Internet-Draft        Phoenix: Lemonade Risen Again        February 2025
+Internet-Draft        Phoenix: Lemonade Risen Again           March 2025
 
 
    Some of these values are reused for other commands.  For example
@@ -5037,9 +5037,9 @@ Appendix D.  File and Folder Enumerated Binary Values
 
 
 
-Royer                    Expires 26 August 2025                [Page 90]
+Royer                   Expires 3 September 2025               [Page 90]
 
-Internet-Draft        Phoenix: Lemonade Risen Again        February 2025
+Internet-Draft        Phoenix: Lemonade Risen Again           March 2025
 
 
    The values for the commands are arbitrary and were assigned as
@@ -5093,9 +5093,9 @@ Appendix E.  Protocol Enumerated Binary Values
 
 
 
-Royer                    Expires 26 August 2025                [Page 91]
+Royer                   Expires 3 September 2025               [Page 91]
 
-Internet-Draft        Phoenix: Lemonade Risen Again        February 2025
+Internet-Draft        Phoenix: Lemonade Risen Again           March 2025
 
 
    Some values may be reused if they are parameter arguments to other
@@ -5149,9 +5149,9 @@ Appendix F.  Complete ABNF
 
 
 
-Royer                    Expires 26 August 2025                [Page 92]
+Royer                   Expires 3 September 2025               [Page 92]
 
-Internet-Draft        Phoenix: Lemonade Risen Again        February 2025
+Internet-Draft        Phoenix: Lemonade Risen Again           March 2025
 
 
                   ; The UTF8-Char is any valid and complete
@@ -5205,9 +5205,9 @@ Internet-Draft        Phoenix: Lemonade Risen Again        February 2025
 
 
 
-Royer                    Expires 26 August 2025                [Page 93]
+Royer                   Expires 3 September 2025               [Page 93]
 
-Internet-Draft        Phoenix: Lemonade Risen Again        February 2025
+Internet-Draft        Phoenix: Lemonade Risen Again           March 2025
 
 
                   ; Updating an existing value.
@@ -5261,9 +5261,9 @@ Internet-Draft        Phoenix: Lemonade Risen Again        February 2025
 
 
 
-Royer                    Expires 26 August 2025                [Page 94]
+Royer                   Expires 3 September 2025               [Page 94]
 
-Internet-Draft        Phoenix: Lemonade Risen Again        February 2025
+Internet-Draft        Phoenix: Lemonade Risen Again           March 2025
 
 
                 / FILE_METADATA FileMetaDataPayload
@@ -5317,9 +5317,9 @@ Internet-Draft        Phoenix: Lemonade Risen Again        February 2025
 
 
 
-Royer                    Expires 26 August 2025                [Page 95]
+Royer                   Expires 3 September 2025               [Page 95]
 
-Internet-Draft        Phoenix: Lemonade Risen Again        February 2025
+Internet-Draft        Phoenix: Lemonade Risen Again           March 2025
 
 
                 / FOLDER_OPEN FolderOpenReplyPayload
@@ -5358,99 +5358,6 @@ Internet-Draft        Phoenix: Lemonade Risen Again        February 2025
    PacketReply = Length 1*CommandReply
 
 
-                        ; What follows is CONFIGURE operation.
-   SERVER_CONFIGURE   = %x00:8
-
-                        ; What follows is a KICK USER operation.
-   SERVER_KICK_USER   = %x01:8
-
-                        ; What follows is a LOGS operation.
-   SERVER_LOGS        = %x02:8
-
-                        ; What follows is a BAN USER operation.
-   SERVER_MANAGE_BANS = %x03:8
-
-
-
-
-Royer                    Expires 26 August 2025                [Page 96]
-
-Internet-Draft        Phoenix: Lemonade Risen Again        February 2025
-
-
-                        ; What follows is a SERVER SHUTDOWN operation.
-   SERVER_SHUTDOWN    = %x04:8
-
-                        ; What follows is a VIEW STATS operation.
-   SERVER_VIEW_STATS  = %x05:8
-
-                        ; A USER CREATE (or enable) operation follows.
-   USER_CREATE        = %x06:8
-
-                        ; A USER DELETE (or disable) operation follows.
-   USER_DELETE        = %x07:8
-
-                        ; Get one or more USER info.
-   USER_LIST          = %x08:8
-
-                        ; Give or take away USER permissions.
-   USER_PERMISSIONS   = %x09:8
-
-                        ; Alter a users login name.
-   USER_RENAME        = %x0A:8
-
-                        ; All ADMIN commands are 32-bit values.
-   AOID               = (VENDOR_BIT / PHOENIX_BIT) Unused23
-                        (SERVER_CONFIGURE
-                         / SERVER_KICK_USER
-                         / SERVER_LOGS
-                         / SERVER_MANAGE_BANS
-                         / SERVER_SHUTDOWN
-                         / SERVER_VIEW_STATS
-                         / USER_CREATE
-                         / USER_DELETE
-                         / USER_LIST
-                         / USER_PERMISSIONS
-                         / USER_RENAME)
-
-                        ; Where CmdPayload contents depend on the
-                        ; the value of AOID.
-   AdminPayload       = AOID
-                        (ServerConfigPayload
-                        / ServerKickPayload
-                        / ServerLogsPayload
-                        / ServerBansPayload
-                        / ServerShutdownPayload
-                        / ServerStatsPayload
-                        / UserCreatePayload
-                        / UserDeletePayload
-                        / UserListPayload
-                        / UserPermissionsPayload
-
-
-
-Royer                    Expires 26 August 2025                [Page 97]
-
-Internet-Draft        Phoenix: Lemonade Risen Again        February 2025
-
-
-                        / UserRenamePayload)
-
-                        ; Where CmdPayload contents depend on the
-                        ; the value of AOID.
-   AdminReplyPayload  = AOID
-                        (ServerConfigReplyPayload
-                        / ServerKickReplyPayload
-                        / ServerLogsReplyPayload
-                        / ServerBansReplyPayload
-                        / ServerShutdownReplyPayload
-                        / ServerStatsReplyPayload
-                        / UserCreateReplyPayload
-                        / UserDeleteReplyPayload
-                        / UserListReplyPayload
-                        / UserPermissionsReplyPayload
-                        / UserRenameReplyPayload)
-
                           ; Setting or updating a configuration value.
    ConfigSet            = (Unused24:24 Op:8):32 Length 1*KeyPair
 
@@ -5461,6 +5368,15 @@ Internet-Draft        Phoenix: Lemonade Risen Again        February 2025
    ServerConfigReplyPayload  = SERVER_CONFIGURE Length 1*KeyPair
 
    ServerKickPayload  = (VENDOR_BIT / PHOENIX_BIT) SERVER_KICK_PAYLOAD
+
+
+
+
+
+Royer                   Expires 3 September 2025               [Page 96]
+
+Internet-Draft        Phoenix: Lemonade Risen Again           March 2025
+
 
                   ; The number of MDN emails in the list.
    MDNListCount = Length
@@ -5476,19 +5392,6 @@ Internet-Draft        Phoenix: Lemonade Risen Again        February 2025
    Md5Password = string
 
    AuthMD5     = (VENDOR_BIT / PHOENIX_BIT) AUTHMD5 Login Md5Password
-
-
-
-
-
-
-
-
-
-Royer                    Expires 26 August 2025                [Page 98]
-
-Internet-Draft        Phoenix: Lemonade Risen Again        February 2025
-
 
    AUTHANONYMOUS    = %x26
    AUTHMD5          = %x10
@@ -5523,6 +5426,14 @@ Appendix G.  Complete XDR
     * the number of octets from the beginning of
     * the associated object.
     */
+
+
+
+Royer                   Expires 3 September 2025               [Page 97]
+
+Internet-Draft        Phoenix: Lemonade Risen Again           March 2025
+
+
    typedef uint32_t Offset;
    /**
     * The number of octets in the associated object.
@@ -5538,14 +5449,6 @@ Appendix G.  Complete XDR
     * data has been deleted).
     */
    union stringD switch (uint32_t LengthOrDeleted) {
-
-
-
-Royer                    Expires 26 August 2025                [Page 99]
-
-Internet-Draft        Phoenix: Lemonade Risen Again        February 2025
-
-
      case Deleted:
        void;
      default:
@@ -5579,6 +5482,14 @@ Internet-Draft        Phoenix: Lemonade Risen Again        February 2025
    /**
     * Operations
     */
+
+
+
+Royer                   Expires 3 September 2025               [Page 98]
+
+Internet-Draft        Phoenix: Lemonade Risen Again           March 2025
+
+
    enum Op_e {
        OpSet = 0x00,
        OpGet = 0x01,
@@ -5590,17 +5501,6 @@ Internet-Draft        Phoenix: Lemonade Risen Again        February 2025
     * cast to a (Op).
     */
    typedef uint8_t Op;
-
-
-
-
-
-
-
-Royer                    Expires 26 August 2025               [Page 100]
-
-Internet-Draft        Phoenix: Lemonade Risen Again        February 2025
-
 
    /**
     * A reference to the start and length of a string.
@@ -5638,6 +5538,14 @@ Internet-Draft        Phoenix: Lemonade Risen Again        February 2025
     case AUTHMD5:
      AuthMD5Payload AuthMD5Cmd;
     case BYE:
+
+
+
+Royer                   Expires 3 September 2025               [Page 99]
+
+Internet-Draft        Phoenix: Lemonade Risen Again           March 2025
+
+
      ByePayload ByeCmd;
     case CAPABILITY_PRE:
      CapabilityPrePayload CapabilityPreCmd;
@@ -5650,14 +5558,6 @@ Internet-Draft        Phoenix: Lemonade Risen Again        February 2025
     case FILE_DELETE:
      FileDeletePayload FileDeleteCmd;
     case FILE_RENAME:
-
-
-
-Royer                    Expires 26 August 2025               [Page 101]
-
-Internet-Draft        Phoenix: Lemonade Risen Again        February 2025
-
-
      FileRenamePayload FileRenameCmd;
     case FILE_METADATA:
      FileMetaDataPayload FileMetaDataCmd;
@@ -5694,6 +5594,14 @@ Internet-Draft        Phoenix: Lemonade Risen Again        February 2025
     case SERVER_CONFIGURE:
      ServerConfigurePayload ServerConfigCmd;
     case SERVER_KICK_USER:
+
+
+
+Royer                   Expires 3 September 2025              [Page 100]
+
+Internet-Draft        Phoenix: Lemonade Risen Again           March 2025
+
+
      void;
     case SERVER_LOGS:
      ServerLogsPayload ServerLogsCmd;
@@ -5706,14 +5614,6 @@ Internet-Draft        Phoenix: Lemonade Risen Again        February 2025
     case USER_CREATE:
      UserCreatePayload UserCreateCmd;
     case USER_DELETE:
-
-
-
-Royer                    Expires 26 August 2025               [Page 102]
-
-Internet-Draft        Phoenix: Lemonade Risen Again        February 2025
-
-
      UserDeletePayload UserDeleteCmd;
     case USER_LIST:
      UserListPayload UserListCmd;
@@ -5750,6 +5650,14 @@ Internet-Draft        Phoenix: Lemonade Risen Again        February 2025
     case FILE_RENAME:
      FileRenameReplyPayload FileRenameCmd;
     case FILE_METADATA:
+
+
+
+Royer                   Expires 3 September 2025              [Page 101]
+
+Internet-Draft        Phoenix: Lemonade Risen Again           March 2025
+
+
      FileMetaDataReplyPayload FileMetaDataCmd;
     case FILE_MOVE:
      FileMoveReplyPayload FileMoveCmd;
@@ -5762,14 +5670,6 @@ Internet-Draft        Phoenix: Lemonade Risen Again        February 2025
     case FOLDER_CREATE:
      FolderCreateReplyPayload FolderCreateCmd;
     case FOLDER_COPY:
-
-
-
-Royer                    Expires 26 August 2025               [Page 103]
-
-Internet-Draft        Phoenix: Lemonade Risen Again        February 2025
-
-
      FolderCopyReplyPayload FolderCopyCmd;
     case FOLDER_DELETE:
      FolderDeleteReplyPayload FolderDeleteCmd;
@@ -5806,6 +5706,14 @@ Internet-Draft        Phoenix: Lemonade Risen Again        February 2025
     case USER_PERMISSIONS:
      UserPermissionsReplyPayload UserPermissionsCmd;
     case USER_RENAME:
+
+
+
+Royer                   Expires 3 September 2025              [Page 102]
+
+Internet-Draft        Phoenix: Lemonade Risen Again           March 2025
+
+
      UserRenameReplyPayload UserRenameCmd;
     default:
      VendorDefined Vendor;
@@ -5818,14 +5726,6 @@ Internet-Draft        Phoenix: Lemonade Risen Again        February 2025
     OneCommand Payload;
    };
    /*
-
-
-
-Royer                    Expires 26 August 2025               [Page 104]
-
-Internet-Draft        Phoenix: Lemonade Risen Again        February 2025
-
-
     * One Reply
     */
    struct CommandReply {
@@ -5861,6 +5761,15 @@ Internet-Draft        Phoenix: Lemonade Risen Again        February 2025
     KeyPair ResultValues<>; /* XDR arrays start with a length */
    };
 
+
+
+
+
+Royer                   Expires 3 September 2025              [Page 103]
+
+Internet-Draft        Phoenix: Lemonade Risen Again           March 2025
+
+
    struct ServerKickPayload
    {
     CMD_e Kick; /* With Kick set to SERVER_KICK_USER */
@@ -5874,13 +5783,6 @@ Internet-Draft        Phoenix: Lemonade Risen Again        February 2025
    {
     int foo;
    };
-
-
-
-Royer                    Expires 26 August 2025               [Page 105]
-
-Internet-Draft        Phoenix: Lemonade Risen Again        February 2025
-
 
    struct ServerManageBansPayload
    {
@@ -5909,6 +5811,21 @@ Internet-Draft        Phoenix: Lemonade Risen Again        February 2025
     int foo;
    };
 
+
+
+
+
+
+
+
+
+
+
+Royer                   Expires 3 September 2025              [Page 104]
+
+Internet-Draft        Phoenix: Lemonade Risen Again           March 2025
+
+
    struct UserDeletePayload
    {
     int foo;
@@ -5926,17 +5843,6 @@ Internet-Draft        Phoenix: Lemonade Risen Again        February 2025
    {
     int foo;
    };
-
-
-
-
-
-
-
-Royer                    Expires 26 August 2025               [Page 106]
-
-Internet-Draft        Phoenix: Lemonade Risen Again        February 2025
-
 
    struct UserPermissionsPayload
    {
@@ -5965,6 +5871,17 @@ Internet-Draft        Phoenix: Lemonade Risen Again        February 2025
     int foo;
    };
 
+
+
+
+
+
+
+Royer                   Expires 3 September 2025              [Page 105]
+
+Internet-Draft        Phoenix: Lemonade Risen Again           March 2025
+
+
    /**
     * The number of emails in the MDN record set.
     */
@@ -5981,18 +5898,6 @@ Internet-Draft        Phoenix: Lemonade Risen Again        February 2025
        /* The first item in an XDR array, is its size (MDNListCount) */
        MDNRecord Entries<>;
    };
-
-
-
-
-
-
-
-
-Royer                    Expires 26 August 2025               [Page 107]
-
-Internet-Draft        Phoenix: Lemonade Risen Again        February 2025
-
 
    /**
     * A single MDN entry, when (or zero) and the email.
@@ -6025,6 +5930,14 @@ Internet-Draft        Phoenix: Lemonade Risen Again        February 2025
     CMD_e Anonymous; /* Set to AUTHANONYMOUS (%x26) */
    };
 
+
+
+
+Royer                   Expires 3 September 2025              [Page 106]
+
+Internet-Draft        Phoenix: Lemonade Risen Again           March 2025
+
+
    enum Auth_e {
        AUTHANONYMOUS = 0x26,
        AUTHMD5 = 0x10,
@@ -6041,14 +5954,6 @@ Contributors
    Thanks to all of the contributors.  [REPLACE]
 
 Author's Address
-
-
-
-
-Royer                    Expires 26 August 2025               [Page 108]
-
-Internet-Draft        Phoenix: Lemonade Risen Again        February 2025
-
 
    Doug Royer
    RiverExplorer LLC
@@ -6084,21 +5989,4 @@ Internet-Draft        Phoenix: Lemonade Risen Again        February 2025
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-Royer                    Expires 26 August 2025               [Page 109]
+Royer                   Expires 3 September 2025              [Page 107]

@@ -468,8 +468,8 @@
 			<figure>
 				<name>Packet Body Non-Vendor- Diagram</name>
 				<artset>
-					<artwork align="center" type="ascii-art" src="Packet-01.txt"/>
-          <artwork align="center" type="svg" src="Packet-01.svg"/>
+					<artwork align="center" type="ascii-art" src="Drawings/Packet-01.txt"/>
+          <artwork align="center" type="svg" src="Generated/Packet-01.svg"/>
 				</artset>
 			</figure>
 			
@@ -496,8 +496,8 @@
 			<figure anchor="P01-01">
 				<name>Packet Body Vendor - Diagram</name>
 				<artset>
-					<artwork align="center" type="ascii-art" src="Packet-01-01.txt"/>
-          <artwork align="center" type="svg" src="Packet-01-01.svg"/>
+					<artwork align="center" type="ascii-art" src="Drawings/Packet-01-01.txt"/>
+          <artwork align="center" type="svg" src="Generated/Packet-01-01.svg"/>
 				</artset>
 			</figure>
 
@@ -509,8 +509,8 @@
 			<figure>
 				<name>Packet Body Vendor - Diagram Data</name>
 				<artset>
-					<artwork align="center" type="ascii-art" src="Packet-01-02.txt"/>
-          <artwork align="center" type="svg" src="Packet-01-02.svg"/>
+					<artwork align="center" type="ascii-art" src="Drawings/Packet-01-02.txt"/>
+          <artwork align="center" type="svg" src="Generated/Packet-01-02.svg"/>
 				</artset>
 			</figure>
 
@@ -525,8 +525,8 @@
 			<figure>
 				<name>Packet Body Multiple Commands - Diagram</name>
 				<artset>
-					<artwork align="center" type="ascii-art" src="Packet-03.txt"/>
-          <artwork align="center" type="svg" src="Packet-03.svg"/>
+					<artwork align="center" type="ascii-art" src="Drawings/Packet-03.txt"/>
+          <artwork align="center" type="svg" src="Generated/Packet-03.svg"/>
 				</artset>
 			</figure>
 			

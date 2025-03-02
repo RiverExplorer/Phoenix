@@ -1253,11 +1253,11 @@ li > p:last-of-type:only-child {
 <thead><tr>
 <td class="left">Internet-Draft</td>
 <td class="center">Phoenix: Lemonade Risen Again</td>
-<td class="right">February 2025</td>
+<td class="right">March 2025</td>
 </tr></thead>
 <tfoot><tr>
 <td class="left">Royer</td>
-<td class="center">Expires 26 August 2025</td>
+<td class="center">Expires 3 September 2025</td>
 <td class="right">[Page]</td>
 </tr></tfoot>
 </table>
@@ -1270,12 +1270,12 @@ li > p:last-of-type:only-child {
 <dd class="internet-draft">draft-royer-phoenix-00</dd>
 <dt class="label-published">Published:</dt>
 <dd class="published">
-<time datetime="2025-02-22" class="published">22 February 2025</time>
+<time datetime="2025-03-02" class="published">2 March 2025</time>
     </dd>
 <dt class="label-intended-status">Intended Status:</dt>
 <dd class="intended-status">Informational</dd>
 <dt class="label-expires">Expires:</dt>
-<dd class="expires"><time datetime="2025-08-26">26 August 2025</time></dd>
+<dd class="expires"><time datetime="2025-09-03">3 September 2025</time></dd>
 <dt class="label-authors">Author:</dt>
 <dd class="authors">
 <div class="author">
@@ -1339,7 +1339,7 @@ li > p:last-of-type:only-child {
         time. It is inappropriate to use Internet-Drafts as reference
         material or to cite them other than as "work in progress."<a href="#section-boilerplate.1-3" class="pilcrow">¶</a></p>
 <p id="section-boilerplate.1-4">
-        This Internet-Draft will expire on 26 August 2025.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
+        This Internet-Draft will expire on 3 September 2025.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="copyright">
@@ -8478,129 +8478,49 @@ PacketReply = Length 1*CommandReply
 </div>
 <div class="alignLeft art-abnf art-text artwork" id="appendix-F-5">
 <pre>
-                     ; What follows is CONFIGURE operation.
-SERVER_CONFIGURE   = %x00:8
-
-                     ; What follows is a KICK USER operation.
-SERVER_KICK_USER   = %x01:8
-
-                     ; What follows is a LOGS operation.
-SERVER_LOGS        = %x02:8
-
-                     ; What follows is a BAN USER operation.
-SERVER_MANAGE_BANS = %x03:8
-
-                     ; What follows is a SERVER SHUTDOWN operation.
-SERVER_SHUTDOWN    = %x04:8
-
-                     ; What follows is a VIEW STATS operation.
-SERVER_VIEW_STATS  = %x05:8
-
-                     ; A USER CREATE (or enable) operation follows.
-USER_CREATE        = %x06:8
-
-                     ; A USER DELETE (or disable) operation follows.
-USER_DELETE        = %x07:8
-
-                     ; Get one or more USER info.
-USER_LIST          = %x08:8
-
-                     ; Give or take away USER permissions.
-USER_PERMISSIONS   = %x09:8
-
-                     ; Alter a users login name.
-USER_RENAME        = %x0A:8
-
-                     ; All ADMIN commands are 32-bit values.
-AOID               = (VENDOR_BIT / PHOENIX_BIT) Unused23
-                     (SERVER_CONFIGURE
-                      / SERVER_KICK_USER
-                      / SERVER_LOGS
-                      / SERVER_MANAGE_BANS
-                      / SERVER_SHUTDOWN
-                      / SERVER_VIEW_STATS
-                      / USER_CREATE
-                      / USER_DELETE
-                      / USER_LIST
-                      / USER_PERMISSIONS
-                      / USER_RENAME)
-
-                     ; Where CmdPayload contents depend on the
-                     ; the value of AOID.
-AdminPayload       = AOID
-                     (ServerConfigPayload
-                     / ServerKickPayload
-                     / ServerLogsPayload
-                     / ServerBansPayload
-                     / ServerShutdownPayload
-                     / ServerStatsPayload
-                     / UserCreatePayload
-                     / UserDeletePayload
-                     / UserListPayload
-                     / UserPermissionsPayload
-                     / UserRenamePayload)
-
-                     ; Where CmdPayload contents depend on the
-                     ; the value of AOID.
-AdminReplyPayload  = AOID
-                     (ServerConfigReplyPayload
-                     / ServerKickReplyPayload
-                     / ServerLogsReplyPayload
-                     / ServerBansReplyPayload
-                     / ServerShutdownReplyPayload
-                     / ServerStatsReplyPayload
-                     / UserCreateReplyPayload
-                     / UserDeleteReplyPayload
-                     / UserListReplyPayload
-                     / UserPermissionsReplyPayload
-                     / UserRenameReplyPayload)
-</pre><a href="#appendix-F-5" class="pilcrow">¶</a>
-</div>
-<div class="alignLeft art-abnf art-text artwork" id="appendix-F-6">
-<pre>
                        ; Setting or updating a configuration value.
 ConfigSet            = (Unused24:24 Op:8):32 Length 1*KeyPair
 
                        ; The SERVER_CONFIGURE command.
 ServerConfigPayload  = SERVER_CONFIGURE Length 1*ConfigSet
+</pre><a href="#appendix-F-5" class="pilcrow">¶</a>
+</div>
+<div class="alignLeft art-abnf art-text artwork" id="appendix-F-6">
+<pre>
+                   ; The SERVER_CONFIGURE Reply
+ServerConfigReplyPayload  = SERVER_CONFIGURE Length 1*KeyPair
 </pre><a href="#appendix-F-6" class="pilcrow">¶</a>
 </div>
 <div class="alignLeft art-abnf art-text artwork" id="appendix-F-7">
 <pre>
-                   ; The SERVER_CONFIGURE Reply
-ServerConfigReplyPayload  = SERVER_CONFIGURE Length 1*KeyPair
+ServerKickPayload  = (VENDOR_BIT / PHOENIX_BIT) SERVER_KICK_PAYLOAD
 </pre><a href="#appendix-F-7" class="pilcrow">¶</a>
 </div>
 <div class="alignLeft art-abnf art-text artwork" id="appendix-F-8">
-<pre>
-ServerKickPayload  = (VENDOR_BIT / PHOENIX_BIT) SERVER_KICK_PAYLOAD
-</pre><a href="#appendix-F-8" class="pilcrow">¶</a>
-</div>
-<div class="alignLeft art-abnf art-text artwork" id="appendix-F-9">
 <pre>
                ; The number of MDN emails in the list.
 MDNListCount = Length
 
                ; A list of all MDN records for the associated object.
 MDNRecord    = MDNSent MDNListCount 1*MDNRecord
-</pre><a href="#appendix-F-9" class="pilcrow">¶</a>
+</pre><a href="#appendix-F-8" class="pilcrow">¶</a>
 </div>
-<div class="alignLeft art-abnf art-text artwork" id="appendix-F-10">
+<div class="alignLeft art-abnf art-text artwork" id="appendix-F-9">
 <pre>
             ; A single MDN Entry. When (or zero) and the email
 MDNEntry  = UTC string
-</pre><a href="#appendix-F-10" class="pilcrow">¶</a>
+</pre><a href="#appendix-F-9" class="pilcrow">¶</a>
 </div>
-<div class="alignLeft art-abnf art-text artwork" id="appendix-F-11">
+<div class="alignLeft art-abnf art-text artwork" id="appendix-F-10">
 <pre>
 Login       = string
 
 Md5Password = string
 
 AuthMD5     = (VENDOR_BIT / PHOENIX_BIT) AUTHMD5 Login Md5Password
-</pre><a href="#appendix-F-11" class="pilcrow">¶</a>
+</pre><a href="#appendix-F-10" class="pilcrow">¶</a>
 </div>
-<div class="alignLeft art-abnf art-text artwork" id="appendix-F-12">
+<div class="alignLeft art-abnf art-text artwork" id="appendix-F-11">
 <pre>
 AUTHANONYMOUS    = %x26
 AUTHMD5          = %x10
@@ -8622,12 +8542,12 @@ AuthPayload      = (AuthAnonymousPayload
 ;   CAPABILITY_PRE:  Authentication failed.
 ;
 ;   NotSupported:    Authentication method not supported.
-</pre><a href="#appendix-F-12" class="pilcrow">¶</a>
+</pre><a href="#appendix-F-11" class="pilcrow">¶</a>
 </div>
-<div class="alignLeft art-abnf art-text artwork" id="appendix-F-13">
+<div class="alignLeft art-abnf art-text artwork" id="appendix-F-12">
 <pre>
 AuthAnonymous  = (VENDOR_BIT / PHOENIX_BIT) AUTHANONYMOUS
-</pre><a href="#appendix-F-13" class="pilcrow">¶</a>
+</pre><a href="#appendix-F-12" class="pilcrow">¶</a>
 </div>
 </section>
 <section id="appendix-G">
