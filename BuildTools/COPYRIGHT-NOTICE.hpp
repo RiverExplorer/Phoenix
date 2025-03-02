@@ -1,6 +1,13 @@
 /**
- * Phoenix (C) 2025 by Douglas Mark Royer (A.K.A. RiverExplorer) is licensed under CC BY 4.0.
- * RiverExplorer is a trademark of RiverExplorer Games LLC.
+ * Project: Phoenix
+ * Time-stamp: <2025-02-25 09:24:02 doug>
  *
- * This Phoenix code is copyright and free to use.
+ * @file FILL-IN
+ * @copyright (C) 2025 by Douglas Mark Royer (A.K.A. RiverExplorer)
+ * @author Douglas Mark Royer
+ * @date 24-FEB-20205
+ *
+ * licensed under CC BY 4.0.
+ *
+ * RiverExplorer is a trademark of Douglas Mark Royer
  */

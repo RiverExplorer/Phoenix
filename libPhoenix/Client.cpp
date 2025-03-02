@@ -43,7 +43,7 @@ namespace RiverExplorer::Phoenix
 	const char		*	Client::_ClientProgramName;
 
 	void
-	MakeClientPath()
+	MakeClientPath(const char * ClientProgramName)
 	{
 #ifndef W64
 		struct passwd	*	Pwd;
@@ -57,16 +57,16 @@ namespace RiverExplorer::Phoenix
 		ERROR IMPLEMENT W64;
 #endif
 		
-		// Path to the directory where the configuration file exists,
+		// Path to the directory where the log file exists,
 		// under the users home.
 		//
 		// Linux Path:
 		//
-		//		~/.Phoenix/RiverExplorer/Client
+		//		~/.Phoenix/RiverExplorer/Client/<ClientName>
 		//
 		// Windows Path:
 		//
-		//		(APP_DATA)/RiverExplorer/Phoenix/Client
+		//		(APP_DATA)/RiverExplorer/Phoenix/Client/<ClientName>
 		//
 		const char * Parts[] = {
 #ifndef W64			
@@ -92,6 +92,9 @@ namespace RiverExplorer::Phoenix
 			}
 			Part = Parts[++POffset];
 		}
+		ClientPath += "/";
+		ClientPath += ClientProgramName;
+		mkdir(ClientPath.c_str(), 0700);
 
 		return;
 	}
@@ -103,7 +106,7 @@ namespace RiverExplorer::Phoenix
 		_ClientProgramName = ClientName.c_str();
 		
 		Configuration::ClientInitializeConfiguration(ClientName);
-		MakeClientPath();
+		MakeClientPath(_ClientProgramName);
 
 		std::string LogDevice;
 		
@@ -126,12 +129,12 @@ namespace RiverExplorer::Phoenix
 		_LogFp = fopen(LogDevice.c_str(), "a");
 
 		if (_LogFp == nullptr) {
-			fprintf(stderr, "ERROR: Can not open LOG device: %s\n", LogDevice.c_str());
+			fprintf(stderr, "ERROR: Can not open LOG device: %s\n",
+							LogDevice.c_str());
 		} else {
 			Log * TheLog = Log::NewLog(_LogFp, ClientName.c_str());
 
 			_IO = new IO(false);
-		
 			atexit(_Cleanup);
 		}
 
@@ -211,5 +214,12 @@ namespace RiverExplorer::Phoenix
 		
 		return(Results);
 	}
+
+	const std::string
+	Client::ProgramName()
+	{
+		return(_ClientProgramName);
+	}
+	
 }
 

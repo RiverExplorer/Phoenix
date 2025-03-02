@@ -22,6 +22,51 @@
 		defined in this specification.
 	</t>
 	<t>
+		The basic connection starts in one of two modes.
+	</t>
+	<ul>
+		<li>
+			An account is connecting to a server for the first time
+			and does not know which authentication methods the
+			server supports.
+		</li>
+		<li>
+			An account has authenticated to a server in the past or the
+			client is already aware of a valid authentication protocol
+			to use.
+		</li>
+	</ul>
+	<t>
+		When connection is made, the server waits for a packet from
+		the client.
+		It will be one of two kinds.
+	</t>
+	<ul>
+		<li>A pre authentication capability packet (CAPABILITY_PRE).</li>
+		<li>An authentication packet. (AUTH...).</li>
+	</ul>
+	<t>
+		If the first packet the server receives
+		is a pre authentication capability packet,
+		The server examines the clients packet and determines what
+		authentication options to present to the client.
+		The server then sends back its pre authentication capability packet
+		which includes the supported authentication methods.
+		Then the client, using the information from the server starts
+		the authentication process.
+	</t>
+	<t>
+		If the first packet the server receives is any of the supported
+		authentication packets, then the server processes the authentication
+		packet.
+		On failure to authenticate, the server sends the client a pre
+		authenticatin capability packet with the same sequence number
+		that was in the authentication attempt and includes the
+		servers supported authentication methods.
+		On a successful authentication, the server sends the client
+		a post authentication capability packet with a new sequence number.
+	</t>
+	<t>
 		After the connection is successful and authenticated, ether endpoint
 		may send commands to the other endpoint.
 		When the server initiates an unsolicited command, it could be a
@@ -32,7 +77,8 @@
 	<t>
 		All commands initiated from the client have even
 		numbered command sequence numbers.
-		
+	</t>
+	<t>
 		All commands initiated from the server have odd
 		numbered command sequence numbers.
 	</t>
@@ -456,7 +502,7 @@
 			</figure>
 
 			<t>
-				And the matching data for <xref target="P01-01"/> could be (assumeing
+				And the matching data for <xref target="P01-01"/> could be (assuming
 				all vendor extensions have 0 octets
 				of additional data):
 			</t>				

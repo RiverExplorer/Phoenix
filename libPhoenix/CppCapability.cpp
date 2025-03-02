@@ -1,9 +1,16 @@
-/**                                                                             
- * Phoenix (C) 2025 by Douglas Mark Royer (A.K.A. RiverExplorer) is licensed un\
-der CC BY 4.0                                                                   
- * RiverExplorer is a trademark of RiverExplorer LLC
+/**
+ * Project: Phoenix
+ * Time-stamp: <2025-03-01 15:22:41 doug>
+ *
+ * @file Capability.cpp
+ * @copyright (C) 2025 by Douglas Mark Royer (A.K.A. RiverExplorer)
+ * @author Douglas Mark Royer
+ * @date 24-FEB-20205
+ *
+ * licensed under CC BY 4.0.
+ *
+ * RiverExplorer is a trademark of Douglas Mark Royer
  */
-
 #include "CppCapability.hpp"
 
 namespace RiverExplorer::Phoenix

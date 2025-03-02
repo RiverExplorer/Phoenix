@@ -106,7 +106,6 @@ INCLUDE.cpp = \
 	include/02-StringRef-XDR.cpp \
 	include/03-PacketHeader-XDR.cpp \
 	include/04-PacketBody-XDR.cpp \
-	include/05-2-AdministrationOperations-XDR.cpp \
 	include/06-01-ServerConfigure-XDR.cpp \
 	include/06-02-ServerConfigure-XDR.cpp \
 	include/06-03-AdminKick-XDR.cpp \

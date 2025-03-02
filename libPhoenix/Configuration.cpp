@@ -1,6 +1,6 @@
 /**
  * Project: Phoenix
- * Time-stamp: <2025-02-28 01:38:18 doug>
+ * Time-stamp: <2025-02-28 10:21:32 doug>
  *
  * @file Configuration.cpp
  * @copyright (C) 2025 by Douglas Mark Royer (A.K.A. RiverExplorer)
@@ -33,10 +33,10 @@
  *
  * <ul>
  *   <li>
- *     Linux: ~/.config/RiverExplorer/Phoenix/{Client,Server}/<ProgramName>.xml
+ *     Linux: ~/.config/RiverExplorer/Phoenix/{Client,Server}/<ProgramName>/<ProgramName>.xml
  *   </li>
  *   <li>
- *     Windows: APPDATA/RiverExplorer/Phoenix/{Client,Server}/<ProgramName>.xml
+ *     Windows: APPDATA/RiverExplorer/Phoenix/{Client,Server}/<ProgramName>/<ProgramName>.xml
  *   </li>
  * </ul>
  */
@@ -45,6 +45,7 @@
 #include "Log.hpp"
 #include <cstdint>
 #include <string.h>
+#include <mutex>
 
 #include <libxml/parser.h>
 #include <libxml/tree.h>
@@ -69,6 +70,21 @@
 namespace RiverExplorer::Phoenix
 {
 	extern const char * const ConfigToHtml;
+
+	std::map<std::string, Configuration::Server*>
+	Configuration::_Servers;
+	
+	std::map<uint16_t, Configuration::Server*>
+	Configuration::_ByPosition;
+
+	// A cache of _ByPosition, as a vector.
+	//
+	std::vector<Configuration::Server*> _UserView;
+	
+	std::mutex ServerMutex;
+	
+	std::string Configuration::Server::_DefaultPublicCert;
+	std::string Configuration::Server::_DefaultPrivateCert;
 	
 	/**
 	 * Set to true when the client configuration information has been initialized.
@@ -95,7 +111,7 @@ namespace RiverExplorer::Phoenix
 	 */
 	
 	static std::string ClientHtmlPath;
-	
+
 	/**
 	 * The full path to the server configuration file.
 	 */
@@ -112,9 +128,34 @@ namespace RiverExplorer::Phoenix
 	static std::string ServerHtmlPath;
 
 	/**
+	 * Allow IPv4 addresses
+	 */
+	static const char * const AllowIpV4_s = "AllowIpV4";
+
+	/**
+	 * Allow IPv6 addresses
+	 */
+	static const char * const AllowIpV6_s = "AllowIpV6";
+
+	/**
+	 * The cert to use for a specific Server.
+	 * An empty value means to use the default OpenSSL certificats.
+	 */
+	static const char * const Default_s = "Default";
+	static const char * const DefaultPublic_s = "DefaultPublic";
+	static const char * const DefaultPrivate_s = "DefaultPrivate";
+	
+	/**
 	 * All configuration information is in an XML "Configure" node.
 	 */
 	static const char * const ConfigNode_s = "Configure";
+
+	/**
+	 * An empty value means use the default OpenSSL cert.
+	 * The format is
+	 * Certs: The DefaultCert is the default certificate set to use.
+	 */
+	static const char * const DefaultCertToUse_s = "DefaultCert";
 
 	/**
 	 * Detailed information about the Key/Value pair
@@ -123,10 +164,32 @@ namespace RiverExplorer::Phoenix
 	static const char * const Detail_s = "Detail";
 
 	/**
+	 * The IP addresses for the server to listen on.
+	 */
+	static const char * const IpToListenOn_s = "IpToListenOn";
+
+	/**
+	 * The interface for the server to listen on.
+	 */
+	static const char * const InterfacesToListenOn_s = "InterfacesToListenOn";
+
+	/**
+	 * Auth: The authentication to use for a specific server
+	 */
+	static const char * const Auth_s = "Auth";
+	static const char * const Account_s = "Account";
+	static const char * const Anonymous_s = "Anonymous";
+	static const char * const MD5_s = "MD5";
+	static const char * const AuthCertUser_s = "CertUser";
+	static const char * const AuthCertTls_s = "CertTls";
+	static const char * const Password_s = "Password";
+	static const char * const Type_s = "Type";
+	
+	/**
 	 * The Key value is stored in an XML Key node.
 	 */
 	static const char * const Key_s = "Key";
-
+	
 	/**
 	 * The 'LogDevice' XML node holds the value of where
 	 * to store log information.
@@ -159,8 +222,8 @@ namespace RiverExplorer::Phoenix
 	/**
 	 * Generate HTML file when configuration file updates.
 	 */
-	static const char * const GenerateHtml_s = "GenerateHTML";
-	
+	static const char * const GenerateHTML_s = "GenerateHTML";
+	static const char * const HTMLDirectory_s = "HTMLDirectory";
 	/**
 	 * The Key/Value, Summary, and detail are stored in an XML 'Name' node.
 	 */
@@ -172,6 +235,21 @@ namespace RiverExplorer::Phoenix
 	static const char * const Phoenix_s = "Phoenix";
 
 	/**
+	 * The port the server to listen on.
+	 */
+	static const char * const PortToListenOn_s = "PortToListenOn";
+
+	/**
+	 * The string 'Private'.
+	 */
+	static const char * const Private_s = "Private";
+	
+	/**
+	 * The string 'Public'.
+	 */
+	static const char * const Public_s = "Public";
+
+	/**
 	 * The string 'ReadOnly' needed in the code.
 	 */
 	static const char * const ReadOnly_s = "ReadOnly";
@@ -180,6 +258,31 @@ namespace RiverExplorer::Phoenix
 	 * The string 'RiverExplorer' needed in the code.
 	 */
 	static const char * const RiverExplorer_s = "RiverExplorer";
+
+	/**
+	 * The configuration key for a specific server.
+	 *
+	 * The configuration each known server contains
+	 * one or more of the following elements in any order:
+	 *
+	 * @verbatim
+	 *	<Server>
+	 *   <HostOrIp>host or ip</HostOrIp>
+	 *   <Port>Port number</Port>
+	 *   <Position>User view order</Position>
+ 	 *	 <Auth Method="xxx"/>
+	 *   <Account>Login account</Account>
+	 *   <Password>encrypted password</Account>
+	 *   <PublicCert>Path to public cert</PublicCert>
+	 *   <PrivateCert>Path to private Key</PrivateCert>
+	 *  </Server>
+	 * @endverbatim
+	 */
+	static const char * const Server_s = "Server";
+	static const char * const ServerName_s = "ServerName";
+	static const char * const HostOrIp_s = "HostOrIp";
+	static const char * const Port_s = "Port";
+	static const char * const Position_s = "Position";
 	
 	/**
 	 * The short description of the Key/Value pair is stored
@@ -342,35 +445,150 @@ namespace RiverExplorer::Phoenix
 		const char * Detail;
 	};
 
+	Configuration::Server *
+	Configuration::NewServer(const std::string & HostOrIp,
+													 const std::string & Name,
+													 uint16_t Port,
+													 CMD_e AuthMethod,
+													 const char * Account,
+													 const char * Pw)
+	{
+		Server * Results = nullptr;
+
+		bool Found = true;
+
+		// Check to make sure no such server already exists.
+		//
+		ServerMutex.lock();
+		std::map<std::string,Configuration::Server*>::const_iterator It;
+		It = _Servers.find(HostOrIp);
+		if (It == _Servers.cend()) {
+			Found = false;
+		}
+		ServerMutex.unlock();
+
+		if (!Found) {
+			switch (AuthMethod) {
+
+			case AUTHANONYMOUS:
+				Results = new Configuration::Server();
+				Results->Auth(AUTHANONYMOUS, nullptr, nullptr);
+				break;
+			
+			case AUTHMD5:
+				Results = new Configuration::Server();
+				Results->Auth(AUTHMD5, Account, Pw);
+				break;
+				
+			case AUTHCERT_USER:
+				Results = new Configuration::Server();
+				Results->Auth(AUTHCERT_USER,
+											Account,  // Public Cert path.
+											Pw);// Private Cert (key) path.
+			break;
+			
+			case AUTHCERT_TLS:
+				Results = new Configuration::Server();
+				Results->Auth(AUTHCERT_TLS, nullptr, nullptr);
+				break;
+				
+			default:
+				/*NOTUSED*/
+				break;
+			}
+
+			if (Results != nullptr) {
+				Results->HostOrIp(HostOrIp.c_str());
+				Results->ServerName(Name.c_str());
+				Results->Port(Port);
+				ServerMutex.lock();
+				Results->Position((uint16_t)_Servers.size());
+				_Servers.insert(std::make_pair(HostOrIp, Results));
+				_ByPosition.insert(std::make_pair(Results->Position(), Results));
+				ServerMutex.unlock();
+			}
+		}
+		
+		return(Results);
+	}
+
+	const std::vector<Configuration::Server*> &
+	Configuration::GetServers()
+	{
+		std::map<uint16_t,Configuration::Server*>::const_iterator SIt;
+
+		_UserView.clear();
+
+		ServerMutex.lock();
+		for (SIt = _ByPosition.cbegin(); SIt != _ByPosition.cend(); SIt++) {
+			_UserView.push_back(SIt->second);
+		}
+		ServerMutex.unlock();
+
+		return(_UserView);
+	}
+
+	void
+	Configuration::DeleteServer(Server * ToDelete)
+	{
+		ServerMutex.lock();
+		
+		std::map<std::string, Configuration::Server*>::iterator SIt;
+		Server * Ptr;
+		
+		for (SIt = _Servers.begin(); SIt != _Servers.end(); SIt++) {
+			Ptr = SIt->second;
+			if (Ptr != nullptr) {
+				if (Ptr == ToDelete) {
+					delete Ptr;
+					SIt->second = nullptr;
+					_Servers.erase(SIt);
+					break;
+				}
+			}
+		}
+
+		std::map<uint16_t,Configuration::Server*>::iterator PIt;
+
+		for (PIt = _ByPosition.begin(); PIt != _ByPosition.end(); PIt++) {
+			Ptr = PIt->second;
+			if (Ptr == ToDelete) {
+				PIt->second = nullptr;
+				_ByPosition.erase(PIt);
+				// We had a copy of the Server pointer, so we do not delete it.
+				break;
+			}
+		}
+		
+		ServerMutex.unlock();
+
+		return;
+	}
+		
 	static Entry	*	LastEntry = nullptr;
+	static Configuration::Server * LastConfiguration = nullptr;
 
 	/**
 	 * These are the values an EMPTY configuration are set to.
+	 * This set is common to both the server and the client.
 	 */
-	static Entry  Entries[] = {
+	static Entry  CommonEntries[] = {
 		{
-			ClientMinCheckServerKey_s, /** MinServerCheck */
-			strdup("5"),
-			"Minimum Check Server Time",
-			"On a client, it checks for new data at intervals."
-			" This is the minimum time time that can be set."
-			" When 'ServerCheck' (ClientCheckServerKey_s) value is set to a"
-			" value less than this, it will be set to this value."
-		},
-		{
-			ClientCheckServerKey_s,						/** ServerCheck */
-			strdup("5"),
-			"Current Check Server Time",
-			"How often to check a server for incoming data."
-			" May not be less than 'MinServerCheck' value."
-		},
-		{
-			GenerateHtml_s,
+			GenerateHTML_s,
 			strdup("true"),
 			"Create HTML file mirroring the configuration file.",
 			"Each time the configuration file is updated,"
-			" create an HTML file in the same directory that"
-			" can be viewed in a browser, showing the key/values."
+			" create an HTML file in the same directory as the configuration"
+			" file, or where HTMLDirectory points. "
+			" The results can be viewed in a browser, showing the key/values."
+		},
+		{
+			HTMLDirectory_s,
+			strdup(""),
+			"Where to put the generated HTML.",
+			"The full path to where to place the HTML."
+			" Defaults to where the user configuration is"
+			" The tilde (~) character expands to the users home directory."
 		},
 		{
 			VendorIDKey_s,
@@ -387,8 +605,95 @@ namespace RiverExplorer::Phoenix
 			strdup(""), /** Filled in at run time to file, when empty.*/
 			"Where this programs logs go.",
 			"The full path where the associated programs log file is placed."
+			" Or 'syslog' to be logged to syslog. Or 'SQL:...' to be"
+			" logged to a database."
+			" SQL:Postgres:host:port:acct:pw,"
+			" SQL:MySql:host:port:acct:pw,"
+			" SQL:MsSQL:host:port:acct:pw"
 		},
-		
+		{
+			DefaultPublic_s,
+			strdup(""),
+			"The default Public certificate to use.",
+			"The default certificate to use, or empty for the default"
+			" used by openssl."
+			" It is the full path to the default public PEM certificate."
+			" Ignored if DefaultPrivateCert is not set, and a matching cert."
+		},
+		{
+			DefaultPrivate_s,
+			strdup(""),
+			"The default private certificate to use.",
+			"The default certificate to use, or empty for the default"
+			" used by openssl."
+			" It is the full path to the default private PEM certificate."
+			" Ignored if DefaultPrivateCert is not set, and a matching cert."
+		},
+		{nullptr, nullptr, nullptr, nullptr} /** End of list. */
+	};
+
+	/**
+	 * These are the values an EMPTY configuration are set to.
+	 * This set is unique to a client.
+	 */
+	static Entry  ClientEntries[] = {
+		{
+			ClientMinCheckServerKey_s, /** MinServerCheck */
+			strdup("5"),
+			"Minimum Check Server Time",
+			"On a client, it checks for new data at intervals."
+			" This is the minimum time time that can be set."
+			" When 'ServerCheck' (ClientCheckServerKey_s) value is set to a"
+			" value less than this, it will be set to this value."
+		},
+		{
+			ClientCheckServerKey_s,						/** ServerCheck */
+			strdup("5"),
+			"Current Check Server Time",
+			"How often to check a server for incoming data."
+			" May not be less than 'MinServerCheck' value."
+		},
+		{nullptr, nullptr, nullptr, nullptr} /** End of list. */
+	};
+
+	/**
+	 * These are the values an EMPTY configuration are set to.
+	 * This set is unique to a server.
+	 */
+	static Entry  ServerEntries[] = {
+		{
+			IpToListenOn_s,
+			strdup("*"),
+			"Which IP address(s) to listen to.",
+			"Listen on these IP addresses. Can be a '*' for all."
+			"Or a comma separated list of IP addresses."
+		},
+		{
+			InterfacesToListenOn_s,
+			strdup("*"),
+			"Which hardware interfaces to listen on.",
+			"Which hardware interfaces to listen on."
+			"'*' for all. Or a comma separated list of interface names."
+		},
+		{
+			PortToListenOn_s,
+			strdup("6112"),
+			"Which Port Number to listen to.",
+			"Listen on these port numbers."
+			"One or a comma separated list of ports."
+		},
+		{
+			AllowIpV4_s,
+			strdup("true"),
+			"When true, allow IPv4 connections.",
+			"When set to true allow IPv4 connections."
+		},
+		{
+			AllowIpV6_s,
+			strdup("true"),
+			"When true, allow IPv6 connections.",
+			"When set to true allow IPv6 connections."
+		},
 		{nullptr, nullptr, nullptr, nullptr} /** End of list. */
 	};
 
@@ -617,7 +922,7 @@ namespace RiverExplorer::Phoenix
 	}
 
 	static std::string
-	MakePath(bool IsServer, const char * HomePath)
+	MakePath(bool IsServer, const char * HomePath, const char * ProgramName)
 	{
 		std::string BuildPath;
 		
@@ -680,6 +985,10 @@ namespace RiverExplorer::Phoenix
 					Part = ClientParts[++POffset];
 				}
 			}
+			BuildPath += "/";
+			BuildPath += ProgramName;
+			mkdir(BuildPath.c_str(), 0700);
+			
 		}
 
 		return(BuildPath);
@@ -735,9 +1044,9 @@ namespace RiverExplorer::Phoenix
 
 		if (Pwd != nullptr) {
 			if (IsServer) {
-				ServerPath = MakePath(true, Pwd->pw_dir);
+				ServerPath = MakePath(true, Pwd->pw_dir, _ServerProgramName);
 			} else {
-				ClientPath = MakePath(false, Pwd->pw_dir);
+				ClientPath = MakePath(false, Pwd->pw_dir, _ClientProgramName);
 			}
 		}
 		
@@ -825,9 +1134,9 @@ namespace RiverExplorer::Phoenix
 			int EOffset = 0;
 			Entry * Ptr;
 
-			for (Ptr = &Entries[EOffset]
+			for (Ptr = &CommonEntries[EOffset]
 						 ; Ptr->Key != nullptr
-						 ; Ptr = &Entries[++EOffset]) {
+						 ; Ptr = &CommonEntries[++EOffset]) {
 
 				if (IsServer) {
 					ServerConfig.insert(std::make_pair(Ptr->Key, Ptr));
@@ -835,12 +1144,28 @@ namespace RiverExplorer::Phoenix
 					ClientConfig.insert(std::make_pair(Ptr->Key, Ptr));
 				}
 			}
-			_SaveConfig(IsServer);
+
 			if (IsServer) {
-				MakeHtml(ServerPath);
+				EOffset = 0;
+				for (Ptr = &ServerEntries[EOffset]
+							 ; Ptr->Key != nullptr
+							 ; Ptr = &ServerEntries[++EOffset]) {
+
+					ServerConfig.insert(std::make_pair(Ptr->Key, Ptr));
+				}
+
 			} else {
-				MakeHtml(ClientPath);
+				EOffset = 0;
+				for (Ptr = &ClientEntries[EOffset]
+							 ; Ptr->Key != nullptr
+							 ; Ptr = &ClientEntries[++EOffset]) {
+
+					ClientConfig.insert(std::make_pair(Ptr->Key, Ptr));
+				}
 			}
+			
+			//
+			_SaveConfig(IsServer);
 
 			if (IsServer) {
 				ServerInitialized = true;
@@ -937,6 +1262,131 @@ namespace RiverExplorer::Phoenix
 				xmlTextWriterEndElement(Writer);
 			}
 		}
+
+		// If the client, save the known servers.
+		//
+		if (!IsServer) {
+			const std::vector<Server*> & KnownServers = GetServers();
+			std::vector<Server*>::const_iterator SIt;
+			char Buf[128];
+			Server * SPtr;
+			
+			for (SIt = KnownServers.cbegin(); SIt != KnownServers.cend(); SIt++) {
+				SPtr = *SIt;
+				xmlTextWriterStartElement(Writer, (xmlChar*)Server_s);
+
+				// Position.
+				//
+				snprintf(Buf, sizeof(Buf), "%u", SPtr->Position());
+				xmlTextWriterWriteElement(Writer,
+																	(xmlChar*)Position_s,
+																	(xmlChar*)Buf);
+
+				// Host or IP
+				//
+				xmlTextWriterWriteElement(Writer,
+																	(xmlChar*)
+																	HostOrIp_s,
+																	(xmlChar*)SPtr->HostOrIp().c_str());
+
+				// Port
+				//
+				snprintf(Buf, sizeof(Buf), "%u", SPtr->Port());
+				xmlTextWriterWriteElement(Writer,
+																	(xmlChar*)Port_s,
+																	(xmlChar*)Buf);
+
+				CMD_e AuthMethod = (CMD_e)0xff;
+				const char * Account = nullptr;
+				const char * Pw = nullptr;
+
+				SPtr->GetAuth(AuthMethod, Account, Pw);
+
+				switch (AuthMethod)	{
+
+				case AUTHANONYMOUS:
+					xmlTextWriterWriteElement(Writer,
+																		(xmlChar*)Auth_s,
+																		(xmlChar*)Anonymous_s);
+					break;
+					
+				case AUTHMD5:
+					xmlTextWriterWriteElement(Writer,
+																		(xmlChar*)Auth_s,
+																		(xmlChar*)MD5_s);
+
+					if (Account != nullptr) {
+						xmlTextWriterWriteElement(Writer,
+																			(xmlChar*)Account_s,
+																			(xmlChar*)Account);
+					} else {
+						xmlTextWriterWriteElement(Writer,
+																			(xmlChar*)Account_s,
+																			(xmlChar*)"");
+					}
+					if (Pw != nullptr) {
+						xmlTextWriterWriteElement(Writer,
+																			(xmlChar*)Account_s,
+																			(xmlChar*)Pw);
+					} else {
+						xmlTextWriterWriteElement(Writer,
+																			(xmlChar*)Account_s,
+																			(xmlChar*)"");
+					}
+					break;
+					
+				case AUTHCERT_USER:
+					if (Account != nullptr) {
+						xmlTextWriterWriteElement(Writer,
+																			(xmlChar*)Public_s,
+																			(xmlChar*)Account);
+					} else {
+						xmlTextWriterWriteElement(Writer,
+																			(xmlChar*)Public_s,
+																			(xmlChar*)"");
+					}
+					if (Pw != nullptr) {
+						xmlTextWriterWriteElement(Writer,
+																			(xmlChar*)Private_s,
+																			(xmlChar*)Pw);
+					} else {
+						xmlTextWriterWriteElement(Writer,
+																			(xmlChar*)Private_s,
+																			(xmlChar*)"");
+					}
+					break;
+					
+				case AUTHCERT_TLS:
+					if (Account != nullptr) {
+						xmlTextWriterWriteElement(Writer,
+																			(xmlChar*)Public_s,
+																			(xmlChar*)Account);
+					} else {
+						xmlTextWriterWriteElement(Writer,
+																			(xmlChar*)Public_s,
+																			(xmlChar*)"");
+					}
+					if (Pw != nullptr) {
+						xmlTextWriterWriteElement(Writer,
+																			(xmlChar*)Private_s,
+																			(xmlChar*)Pw);
+					} else {
+						xmlTextWriterWriteElement(Writer,
+																			(xmlChar*)Private_s,
+																			(xmlChar*)"");
+					}
+					break;
+
+				default:
+					/*EMPTY*/
+					break;
+						
+				}
+
+				xmlTextWriterEndElement(Writer); // Server
+			}
+		}
+		
 		xmlTextWriterEndElement(Writer); // Close Configure node.
 		xmlTextWriterEndElement(Writer); // Close root node.
 		xmlFreeTextWriter(Writer);
@@ -949,6 +1399,12 @@ namespace RiverExplorer::Phoenix
 			if (xmlSaveFormatFileEnc(ClientPath.c_str(), ClientDoc, Utf8_s, 1) > -1) {
 				Results = true;
 			}
+		}
+		
+		if (IsServer) {
+			MakeHtml(ServerPath);
+		} else {
+			MakeHtml(ClientPath);
 		}
 		
 		return(Results);
@@ -976,6 +1432,14 @@ namespace RiverExplorer::Phoenix
 				//
 				if (strcmp((char*)Current->name, ConfigNode_s) == 0) {
 
+					if (IsServer) {
+						ServerLoaded = true;
+						ServerHaveConfig = true;
+					} else {
+						ClientLoaded = true;
+						ClientHaveConfig = true;
+					}
+					
 					// Get the Version attribute.
 					//
 					xmlChar * Version = xmlGetProp(Current, (xmlChar*)VersionKey_s);
@@ -989,35 +1453,17 @@ namespace RiverExplorer::Phoenix
 						//  RiverExplorer.Phoenix.YYYYMMDD.
 						//
 						const size_t PLen = 22;
-						
+
+						// VendorID
+						//
 						if (strncmp((char*)Version, VendorIDValue_s, PLen) == 0) {
 							if (Version_i == atoi((char*)&Version[PLen])) {
 								// Match, looks like we can load the file.
 								// And we have the Configure node.
 								// Start processing the child nodes.
 								//
-								if (IsServer) {
-									ServerLoaded = true;
-									ServerHaveConfig = true;
-								} else {
-									ClientLoaded = true;
-									ClientHaveConfig = true;
-								}
-								
-							} else {
-								//
-								// Error.
-								// We do not know how to process other versions.
-								//
-								if (IsServer) {
-									ServerLoaded = false;
-									ServerHaveConfig = false;
-								} else {
-									ClientLoaded = false;
-									ClientHaveConfig = false;
-								}
-								Current = nullptr;
-								continue;
+
+								/** @todo Do something with matching VendorID. */
 							}
 						}
 					} else {
@@ -1034,13 +1480,17 @@ namespace RiverExplorer::Phoenix
 						Current = nullptr;
 						continue;
 					}
-					
+
+					// Key
+					//
 				} else if (((IsServer && ServerHaveConfig)
 										|| (!IsServer && ClientHaveConfig))
 									 && strcmp((char*)Current->name, Key_s) == 0) {
 					KeyValue = new Entry();
 					LastEntry = KeyValue;
 
+					// Value
+					//
 				} else if (((IsServer && ServerHaveConfig)
 										|| (!IsServer && ClientHaveConfig))
 									 && strcmp((char*)Current->name, Value_s) == 0) {
@@ -1051,20 +1501,24 @@ namespace RiverExplorer::Phoenix
 					if (Value != nullptr) {
 						LastEntry->Value = strdup((char*)Value);
 					}
-					
+
+					// Name
+					//
 				} else if (((IsServer && ServerHaveConfig)
 										|| (!IsServer && ClientHaveConfig))
 									 && strcmp((char*)Current->name, Name_s) == 0) {
 					// Get the Key Value.
 					//
-					xmlChar * Name = xmlNodeGetContent(Current);
+					char * Name = (char*)xmlNodeGetContent(Current);
 
 					if (Name != nullptr) {
 						// Create new storage for what we load.
 						//
-						LastEntry->Key = strdup((char*)Name);
+						LastEntry->Key = strdup(Name);
 					}
-					
+
+					// Summary
+					//
 				} else if (((IsServer && ServerHaveConfig)
 										|| (!IsServer && ClientHaveConfig))
 									 && LastEntry != nullptr
@@ -1075,6 +1529,9 @@ namespace RiverExplorer::Phoenix
 					if (Desc != nullptr && LastEntry != nullptr) {
 						LastEntry->Summary = strdup((char*)Desc);
 					}
+
+					// Detail
+					//
 				} else if (((IsServer && ServerHaveConfig)
 										|| (!IsServer && ClientHaveConfig))
 									 && LastEntry != nullptr
@@ -1085,16 +1542,97 @@ namespace RiverExplorer::Phoenix
 					if (Desc != nullptr && LastEntry != nullptr) {
 						LastEntry->Detail = strdup((char*)Desc);
 					}
-				}
-			}
 
-			// Go get next ...
-			//
-			if (Current->children != nullptr) {
-				_ProcessNode(IsServer, Current->children);
+					// AUTH
+					//
+				} else if (((IsServer && ServerHaveConfig)
+										|| (!IsServer && ClientHaveConfig))
+									 && LastEntry != nullptr
+									 && strcmp((char*)Current->name, Auth_s) == 0) {
+
+					char * Type = (char*)xmlGetProp(Current, (xmlChar*)Type_s);
+
+					LastConfiguration->Auth(Type, nullptr, nullptr);
+					
+					// Account
+					//
+				} else if (((IsServer && ServerHaveConfig)
+										|| (!IsServer && ClientHaveConfig))
+									 && LastEntry != nullptr
+									 && strcmp((char*)Current->name, Account_s) == 0) {
+
+					xmlChar * Value = xmlNodeGetContent(Current);
+					LastConfiguration->Account((char*)Value);
+				
+					// Password
+					//
+				} else if (((IsServer && ServerHaveConfig)
+										|| (!IsServer && ClientHaveConfig))
+									 && LastEntry != nullptr
+									 && strcmp((char*)Current->name, Password_s) == 0) {
+
+					xmlChar * Value = xmlNodeGetContent(Current);
+					LastConfiguration->Password((char*)Value);
+				}
+				
+				// DefaultPublic
+				//
+			} else if (((IsServer && ServerHaveConfig)
+									|| (!IsServer && ClientHaveConfig))
+								 && LastEntry != nullptr
+								 && strcmp((char*)Current->name, DefaultPublic_s) == 0) {
+
+				xmlChar * Value = xmlNodeGetContent(Current);
+				LastConfiguration->DefaultPublicCert((char*)Value);
+				
+				// DefaultPrivate
+				//
+			} else if (((IsServer && ServerHaveConfig)
+									|| (!IsServer && ClientHaveConfig))
+								 && LastEntry != nullptr
+								 && strcmp((char*)Current->name, DefaultPrivate_s) == 0) {
+
+				xmlChar * Value = xmlNodeGetContent(Current);
+				LastConfiguration->DefaultPrivateCert((char*)Value);
+				
+				// Host or IP address
+				//
+			} else if (((IsServer && ServerHaveConfig)
+									|| (!IsServer && ClientHaveConfig))
+								 && LastEntry != nullptr
+								 && strcmp((char*)Current->name, HostOrIp_s) == 0) {
+
+				xmlChar * Value = xmlNodeGetContent(Current);
+				LastConfiguration->HostOrIp((char*)Value);
+					
+				// Port
+				//
+			} else if (((IsServer && ServerHaveConfig)
+									|| (!IsServer && ClientHaveConfig))
+								 && LastEntry != nullptr
+								 && strcmp((char*)Current->name, Port_s) == 0) {
+
+				xmlChar * Value = xmlNodeGetContent(Current);
+				LastConfiguration->Port((char*)Value);
+				
+				// Position
+				//
+			} else if (((IsServer && ServerHaveConfig)
+									|| (!IsServer && ClientHaveConfig))
+								 && LastEntry != nullptr
+								 && strcmp((char*)Current->name, Position_s) == 0) {
+
+				xmlChar * Value = xmlNodeGetContent(Current);
+				LastConfiguration->Position((char*)Value);
 			}
 		}
 
+		// Go get next ...
+		//
+		if (Current->children != nullptr) {
+			_ProcessNode(IsServer, Current->children);
+		}
+		
 		return;
 	}
 
@@ -1162,5 +1700,334 @@ namespace RiverExplorer::Phoenix
 		}
 
 		return(Results);
-	}		
+	}
+
+	const std::string
+	Configuration::Server::Account() const
+	{
+		return(_Account);
+	}
+	
+	void
+	Configuration::Server::Account(const char * CertValue)
+	{
+		if (CertValue != nullptr) {
+			_Account = CertValue;
+		} else {
+			_Account = "";
+		}
+
+		return;
+	}
+	
+	const std::string
+	Configuration::Server::Password() const
+	{
+		return(_Password);
+	}
+	
+	void
+	Configuration::Server::Password(const char * CertValue)
+	{
+		if (CertValue != nullptr) {
+			_Password = CertValue;
+		} else {
+			_Password = "";
+		}
+
+		return;
+	}
+
+	void
+	Configuration::Server::Auth(const char * AuthMethod,
+															const char * Account,
+															const char * Password)
+	{
+		if (AuthMethod != nullptr) {
+			if (strcmp(AuthMethod, Anonymous_s) == 0) {
+				_Method = AUTHANONYMOUS;
+				
+			} else if (strcmp(AuthMethod, MD5_s) == 0) {
+				_Method = AUTHMD5;
+				if (Account != nullptr) {
+					_Account = Account;
+				} else {
+					_Account = "";
+				}
+				if (Password != nullptr) {
+					_Password = Password;
+				} else {
+					_Password = "";
+				}
+				
+			} else if (strcmp(AuthMethod, AuthCertUser_s) == 0) {
+				_Method = AUTHCERT_USER;
+				if (Account != nullptr) {
+					_PublicCert = Account;
+				} else {
+					_PublicCert = "";
+				}
+				if (Password != nullptr) {
+					_PrivateCert = Password;
+				} else {
+					_PrivateCert = "";
+				}
+				
+			} else if (strcmp(AuthMethod, AuthCertTls_s) == 0) {
+				_Method = AUTHCERT_TLS;
+			}
+		}
+
+		return;
+	}
+
+	
+	void
+	Configuration::Server::Auth(CMD_e AuthMethod,
+															const char * Account,
+															const char * Password)
+	{
+		switch (AuthMethod) {
+
+		case AUTHANONYMOUS:
+			_Method = AuthMethod;
+			break;
+			
+		case AUTHMD5:
+			_Method = AuthMethod;
+			if (Account != nullptr) {
+				_Account = Account;
+			} else {
+				_Account = "";
+			}
+			if (Password != nullptr) {
+				_Password = Password;
+			} else {
+				_Password = "";
+			}
+			break;
+				
+		case AUTHCERT_USER:
+			_Method = AuthMethod;
+			if (Account != nullptr) {
+				_PublicCert = Account;
+			} else {
+				_PublicCert = "";
+			}
+			if (Password != nullptr) {
+				_PrivateCert = Password;
+			} else {
+				_PrivateCert = "";
+			}
+			break;
+			
+		case AUTHCERT_TLS:
+			_Method = AuthMethod;
+			break;
+
+		default:
+			_Method = (CMD_e)0xff;
+			break;
+		}
+
+		return;
+	}
+
+	
+	void
+	Configuration::Server::GetAuth(CMD_e & AuthMethod,
+																 const char *& Account,
+																 const char *& Password)
+	{
+		AuthMethod = _Method;
+
+		switch (_Method) {
+
+		case AUTHANONYMOUS:
+			Account = nullptr;
+			Password = nullptr;
+			break;
+
+		case AUTHMD5:
+			Account = _Account.c_str();
+			Password = _Password.c_str();
+			break;
+
+		case AUTHCERT_USER:
+			Account = _PublicCert.c_str();
+			Password = _PrivateCert.c_str();
+			break;
+
+		case AUTHCERT_TLS:
+			Account = nullptr;
+			Password = nullptr;
+			break;
+
+		default:
+			/*EMPTY*/
+			break;
+		}
+
+		return;
+	}
+
+	
+	const std::string
+	Configuration::Server::DefaultPrivateCert() const
+	{
+		return(_DefaultPrivateCert);
+	}
+	
+	void
+	Configuration::Server::DefaultPrivateCert(const char * CertValue)
+	{
+		if (CertValue != nullptr) {
+			_DefaultPrivateCert = CertValue;
+		} else {
+			_DefaultPrivateCert = "";
+		}
+
+		return;
+	}
+	
+	const std::string
+	Configuration::Server::DefaultPublicCert() const
+	{
+		return(_DefaultPublicCert);
+	}
+	
+	void
+	Configuration::Server::DefaultPublicCert(const char * CertValue)
+	{
+		if (CertValue != nullptr) {
+			_DefaultPublicCert = CertValue;
+		} else {
+			_DefaultPublicCert = "";
+		}
+
+		return;
+	}
+	
+	const std::string
+	Configuration::Server::HostOrIp() const
+	{
+		return(_HostOrIp);
+	}
+	
+	void
+	Configuration::Server::HostOrIp(const char * ConfigValue)
+	{
+		if (ConfigValue != nullptr) {
+			_HostOrIp = ConfigValue;
+			
+		} else {
+			_HostOrIp = "";
+		}
+
+		return;
+	}
+
+	const std::string
+	Configuration::Server::ServerName() const
+	{
+		return(_ServerName);
+	}
+	
+	void
+	Configuration::Server::ServerName(const char * ConfigValue)
+	{
+		std::map<std::string, Server*>::iterator ItByName;
+
+		if (_ServerName != "") {
+			// If we had an old server name, update it in the lookup table.
+			//
+			ServerMutex.lock();
+			ItByName = _Servers.find(_ServerName);
+
+			if (ItByName != _Servers.end()) {
+				Server  * Config = ItByName->second;
+
+				_Servers.erase(ItByName);
+				_Servers.insert(std::make_pair(ConfigValue, Config));
+			}
+			ServerMutex.unlock();
+		}
+		// Update the  value.
+		//
+		_ServerName = ConfigValue;
+
+		return;
+	}
+
+	uint16_t
+	Configuration::Server::Port() const
+	{
+		return(_Port);
+	}
+	
+	void
+	Configuration::Server::Port(const char * ConfigValue)
+	{
+		if (ConfigValue != nullptr) {
+			_Port = (uint16_t)atoi(ConfigValue);
+		}
+
+		return;
+	}
+
+	void
+	Configuration::Server::Port(uint16_t Port)
+	{
+		_Port = Port;
+
+		return;
+	}
+
+	uint16_t
+	Configuration::Server::Position() const
+	{
+		return(_Position);
+	}
+	
+	void
+	Configuration::Server::Position(const char * ConfigValue)
+	{
+		if (ConfigValue != nullptr) {
+			_Position = (uint16_t)atoi(ConfigValue);
+		}
+
+		return;
+	}
+
+	void
+	Configuration::Server::Position(uint16_t Pos)
+	{
+		_Position = Pos;
+
+		return;
+	}
+
+	Configuration::Server::Server()
+	{
+		_Position = (uint16_t)-1;
+		_Method = (CMD_e) 0xff;
+		_Port = 0xff;
+
+		return;
+	}
+
+	Configuration::Server::~Server()
+	{
+		_ServerName = "";
+		_Position = (uint16_t)-1;
+		_HostOrIp = "";
+		_Method = (CMD_e) 0xff;
+		_Port = 0xff;
+		_Account = "";
+		_Password = "";
+		_PublicCert = "";
+		_PrivateCert = "";
+
+		return;
+	}
 }

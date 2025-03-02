@@ -1,14 +1,29 @@
 /**
  * @mainpage Phoenix
- * @copyright Phoenix (C) 2025 by Douglas Mark Royer (A.K.A. RiverExplorer&trade;) is licensed under CC BY 4.0.
  *
- * RiverExplorer is a trademark of RiverExplorer Games LLC.
+ * Project: Phoenix
+ * Time-stamp: <2025-02-25 12:34:28 doug>
+ *
+ * @file MainPage.hpp
+ * @copyright (C) 2025 by Douglas Mark Royer (A.K.A. RiverExplorer)
+ * @author Douglas Mark Royer
+ * @date 03-JAN-20205
+ *
+ * licensed under CC BY 4.0.
+ *
+ * RiverExplorer is a trademark of Douglas Mark Royer
+ *
  *
  * <a href="https://RiverExplorer.games">https://RiverExplorer.games</a>
  *
  * <center><h1>Phoenix: Lemonade Risen Again</h1></center>
  *
- * Here you will find the overview of this project (A) Design Overview, (B) Design goals, (C) Sample Implementation design goals. (D) Protocol Overview (E) Protocol Details.
+ * Here you will find the overview of this project
+ * - Design Overview,
+ * - Design goals,
+ * - Sample Implementation design goals.
+ * - Protocol Overview
+ * - Protocol Details.
  * 
  * - Overview:
  * 		IMAP and POP are text based protocols developed back when many parts
@@ -22,7 +37,6 @@
  * 		- The transport of MIME messages to other programs.
  * 			
  * 		- The fetching of MIME messages from some kind of local or remote store.
- * 	</li>
  * 		
  * - Design goals:
  * 		<ul>
@@ -77,7 +91,6 @@
  * 				The client side library needs to be compact and portable.
  * 			</li>
  * 		</ul>
- * 	</li>
  *  - Sample Implementation:
  * 		<ul>
  * 			<li>Server Store Design Goals:
@@ -125,11 +138,5 @@
  * 				Replies may come in multiple packets. Or all at once.
  * 			</li>
  * 		</ul>
- * 	</li>
  * - Protocol Details:
- * 	</li>
- *
- * @author Douglas Mark Royer (RiverExplorer)
- * @date 2025-JAN-11
- * @version 1.0.0
  */

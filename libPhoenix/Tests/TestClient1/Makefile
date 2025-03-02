@@ -65,15 +65,16 @@ ANDROID_CPPFLAGS +=
 
 ANDROID_LIBS	+= -L/usr/local/Phoenix/Linux/Debug/lib
 
-LIBS		+= -lPhoenix -lxslt -lxml2 -ltirpc -lcrypto -lssl -lz -Wl,--as-needed
+LIBS		+= -lPhoenix -lxslt -lxml2 -ltirpc -lcrypto -lssl -lz -lcppunit -Wl,--as-needed
 
 # Build as much as possible, with static libs.
 #
-SLIBS		+= -Wl,-Bstatic -lPhoenix -lcrypto -Wl,-Bdynamic -lxslt -lxml2 -ltirpc -lssl -lmd
+SLIBS		+= -Wl,-Bstatic -lPhoenix -lcrypto -Wl,-Bdynamic -lxslt -lxml2 -ltirpc -lssl -lmd -lcppunit
 
 include $(TOP)/BuildTools/Makefile.bottom
 
 clean ::
+	$(RM) XMLResults.xml
 
 LinuxDebugRun : LinuxDebug
 	BuildTemp/Linux/Debug/bin/SimpleStart

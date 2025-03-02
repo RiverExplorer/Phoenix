@@ -1,7 +1,14 @@
 #
-# Phoenix (C) 2025 by Douglas Mark Royer (A.K.A. RiverExplorer) is licensed under CC BY 4.0
+# Project: Phoenix
+# Time-stamp: <2025-03-01 19:18:39 doug>
 #
-# This Phoenix code is copyright and free to use.
+# Copyright (C) 2025 by Douglas Mark Royer (A.K.A. RiverExplorer)
+# Author Douglas Mark Royer
+# @date 3-JAN-20205
+#
+# licensed under CC BY 4.0.
+#
+# RiverExplorer is a trademark of Douglas Mark Royer
 #
 .SUFFIXES:	.x .h .c .o .cpp .l .ypp
 
@@ -97,17 +104,17 @@ W64_SOURCES.h		+=
 
 LINUX_TARGET.Release				= $(BUILD_DIR)/Linux/Release/lib
 LINUX_TARGET.Release.Pic		= $(BUILD_DIR)/Linux/Release/lib/$(TARGET.Release).so.$(VERSION)
-LINUX_TARGET.Release.PicL		= $(BUILD_DIR)/Linux/Release/lib/$(TARGET.Release).so
+LINUX_TARGET.Release.Pic		= $(BUILD_DIR)/Linux/Release/lib/$(TARGET.Release).so
 LINUX_TARGET.Release.Static	= $(BUILD_DIR)/Linux/Release/lib/$(TARGET.Release).a
 
 LINUX_TARGET.Debug					= $(BUILD_DIR)/Linux/Debug/lib
 LINUX_TARGET.Debug.Pic			= $(BUILD_DIR)/Linux/Debug/lib/$(TARGET.Debug).so.$(VERSION)
-LINUX_TARGET.Debug.PicL			= $(BUILD_DIR)/Linux/Debug/lib/$(TARGET.Debug).so
+LINUX_TARGET.Debug.Pic			= $(BUILD_DIR)/Linux/Debug/lib/$(TARGET.Debug).so
 LINUX_TARGET.Debug.Static		= $(BUILD_DIR)/Linux/Debug/lib/$(TARGET.Debug).a
 
 LINUX_TARGET.Tcov						= $(BUILD_DIR)/Linux/Tcov/lib
 LINUX_TARGET.Tcov.Pic				= $(BUILD_DIR)/Linux/Tcov/lib/$(TARGET.Tcov).so.$(VERSION)
-LINUX_TARGET.Tcov.PicL			= $(BUILD_DIR)/Linux/Tcov/lib/$(TARGET.Tcov).so
+LINUX_TARGET.Tcov.Pic			= $(BUILD_DIR)/Linux/Tcov/lib/$(TARGET.Tcov).so
 LINUX_TARGET.Tcov.Static		= $(BUILD_DIR)/Linux/Tcov/lib/$(TARGET.Tcov).a
 
 W64_TARGET.Release					= $(BUILD_DIR)/W64/Release/lib
@@ -468,14 +475,14 @@ LINUX_CXXFLAGS.Tcov.Pic			= $(COMMON_COMPILE_FLAGS.Pic) $(CXX_VERSION) -ggdb -fp
 LINUX_CXXFLAGS.Tcov.Static	= $(COMMON_COMPILE_FLAGS.Static) $(CXX_VERSION) -ggdb -fprofile-arcs -ftest-coverage
 LINUX_CXXFLAGS.Release.Pic	= $(COMMON_COMPILE_FLAGS.Pic) $(CXX_VERSION) -O2
 LINUX_CXXFLAGS.Release.Static	= $(COMMON_COMPILE_FLAGS.Static) $(CXX_VERSION) -O2
-LINUX_LDFLAGS.Debug.Pic			= $(COMMON_COMPILE_FLAGS.Pic) -ggdb
+LINUX_LDFLAGS.Debug.Pic			= $(COMMON_COMPILE_FLAGS.Pic) -ggdb $(PIC_FLAGS)
 LINUX_LDFLAGS.Debug.Static	= $(COMMON_COMPILE_FLAGS.Static) -ggdb
-LINUX_LDFLAGS.Tcov.Pic			= $(COMMON_COMPILE_FLAGS.Pic) -ggdb -fprofile-arcs -ftest-coverage
+LINUX_LDFLAGS.Tcov.Pic			= $(COMMON_COMPILE_FLAGS.Pic) -ggdb -fprofile-arcs -ftest-coverage $(PIC_FLAGS)
 LINUX_LDFLAGS.Tcov.Static		= $(COMMON_COMPILE_FLAGS.Static) -ggdb -fprofile-arcs -ftest-coverage
-LINUX_LDFLAGS.Release.Pic		= $(COMMON_COMPILE_FLAGS.Pic) -O2
+LINUX_LDFLAGS.Release.Pic		= $(COMMON_COMPILE_FLAGS.Pic) -O2 $(PIC_FLAGS)
 LINUX_LDFLAGS.Release.Static= $(COMMON_COMPILE_FLAGS.Static) -O2
 
-W64_CFLAGS.Debug.Pic				= $(COMMON_COMPILE_FLAGS.Pic) -ggdb
+W64_CFLAGS.Debug.Pic				= $(COMMON_COMPILE_FLAGS.Pic) -ggdb 
 W64_CFLAGS.Debug.Static			= $(COMMON_COMPILE_FLAGS.Static) -ggdb
 W64_CFLAGS.Tcov.Pic					= $(COMMON_COMPILE_FLAGS.Pic) -ggdb -fprofile-arcs -ftest-coverage
 W64_CFLAGS.Tcov.Static			= $(COMMON_COMPILE_FLAGS.Static) -ggdb -fprofile-arcs -ftest-coverage
@@ -487,11 +494,11 @@ W64_CXXFLAGS.Tcov.Pic				= $(COMMON_COMPILE_FLAGS.Pic) $(CXX_VERSION) -ggdb -fpr
 W64_CXXFLAGS.Tcov.Static		= $(COMMON_COMPILE_FLAGS.Static) $(CXX_VERSION) -ggdb -fprofile-arcs -ftest-coverage
 W64_CXXFLAGS.Release.Pic		= $(COMMON_COMPILE_FLAGS.Pic) $(CXX_VERSION) -O2
 W64_CXXFLAGS.Release.Static	= $(COMMON_COMPILE_FLAGS.Static) $(CXX_VERSION) -O2
-W64_LDFLAGS.Debug.Pic				= $(COMMON_COMPILE_FLAGS.Pic) -ggdb
+W64_LDFLAGS.Debug.Pic				= $(COMMON_COMPILE_FLAGS.Pic) -ggdb $(PIC_FLAGS)
 W64_LDFLAGS.Debug.Static		= $(COMMON_COMPILE_FLAGS.Static) -ggdb
-W64_LDFLAGS.Tcov.Pic				= $(COMMON_COMPILE_FLAGS.Pic) -ggdb -fprofile-arcs -ftest-coverage -lgcov
+W64_LDFLAGS.Tcov.Pic				= $(COMMON_COMPILE_FLAGS.Pic) -ggdb -fprofile-arcs -ftest-coverage -lgcov $(PIC_FLAGS)
 W64_LDFLAGS.Tcov.Static			= $(COMMON_COMPILE_FLAGS.Static) -ggdb -fprofile-arcs -ftest-coverage -lgcov
-W64_LDFLAGS.Release.Pic			= $(COMMON_COMPILE_FLAGS.Pic) -O2
+W64_LDFLAGS.Release.Pic			= $(COMMON_COMPILE_FLAGS.Pic) -O2 $(PIC_FLAGS)
 W64_LDFLAGS.Release.Static	= $(COMMON_COMPILE_FLAGS.Static) -O2
 
 ANDROID_CFLAGS.Debug.Pic		= $(COMMON_COMPILE_FLAGS.Pic) -ggdb
@@ -506,75 +513,84 @@ ANDROID_CXXFLAGS.Tcov.Pic		= $(COMMON_COMPILE_FLAGS.Pic) $(CXX_VERSION) -ggdb -f
 ANDROID_CXXFLAGS.Tcov.Static= $(COMMON_COMPILE_FLAGS.Static) $(CXX_VERSION) -ggdb -fprofile-arcs -ftest-coverage
 ANDROID_CXXFLAGS.Release.Pic= $(COMMON_COMPILE_FLAGS.Pic) $(CXX_VERSION) -O2
 ANDROID_CXXFLAGS.Release.Static= $(COMMON_COMPILE_FLAGS.Static) $(CXX_VERSION) -O2
-ANDROID_LDFLAGS.Debug.Pic		= $(COMMON_COMPILE_FLAGS.Pic) -ggdb
+ANDROID_LDFLAGS.Debug.Pic		= $(COMMON_COMPILE_FLAGS.Pic) -ggdb $(PIC_FLAGS)
 ANDROID_LDFLAGS.Debug.Static= $(COMMON_COMPILE_FLAGS.Static) -ggdb
-ANDROID_LDFLAGS.Tcov.Pic		= $(COMMON_COMPILE_FLAGS.Pic) -ggdb -fprofile-arcs -ftest-coverage
+ANDROID_LDFLAGS.Tcov.Pic		= $(COMMON_COMPILE_FLAGS.Pic) -ggdb -fprofile-arcs -ftest-coverage $(PIC_FLAGS)
 ANDROID_LDFLAGS.Tcov.Static	= $(COMMON_COMPILE_FLAGS.Static) -ggdb -fprofile-arcs -ftest-coverage
-ANDROID_LDFLAGS.Release.Pic	= $(COMMON_COMPILE_FLAGS.Pic) -O2
+ANDROID_LDFLAGS.Release.Pic	= $(COMMON_COMPILE_FLAGS.Pic) -O2 $(PIC_FLAGS)
 ANDROID_LDFLAGS.Release.Static	= $(COMMON_COMPILE_FLAGS.Static) -O2
 
 LINUX_LDFLAGS.Release.Pic	+= \
-										-L$(LINUX_INSTALL_DIR.Release.Pic)/lib \
-										-Wl,-rpath=$(LINUX_INSTALL_DIR.Release.Pic)/lib
+										-L$(LINUX_INSTALL_DIR.Release)/lib \
+										-Wl,-rpath=$(LINUX_INSTALL_DIR.Release)/lib \
+										$(PIC_FLAGS)
 
 LINUX_LDFLAGS.Release.Static	+= \
 										-L$(LINUX_INSTALL_DIR.Release.Static)/lib \
 										-Wl,-rpath=$(LINUX_INSTALL_DIR.Release.Pic)/lib
 
 LINUX_LDFLAGS.Debug.Pic		+= \
-										-L$(LINUX_INSTALL_DIR.Debug.Pic)/lib \
-										-Wl,-rpath=$(LINUX_INSTALL_DIR.Debug.Pic)/lib \
-										-Wl,-rpath=$(LINUX_INSTALL_DIR.Release.Pic)/lib
+										-L$(LINUX_INSTALL_DIR.Debug)/lib \
+										-Wl,-rpath=$(LINUX_INSTALL_DIR.Debug)/lib \
+										-Wl,-rpath=$(LINUX_INSTALL_DIR.Release)/lib \
+										$(PIC_FLAGS)
 
 LINUX_LDFLAGS.Debug.Static		+= \
 										-L$(LINUX_INSTALL_DIR.Debug.Static)/lib \
-										-Wl,-rpath=$(LINUX_INSTALL_DIR.Debug.Pic)/lib \
-										-Wl,-rpath=$(LINUX_INSTALL_DIR.Release.Pic)/lib
+										-Wl,-rpath=$(LINUX_INSTALL_DIR.Debug)/lib \
+										-Wl,-rpath=$(LINUX_INSTALL_DIR.Release)/lib
 
 LINUX_LDFLAGS.Tcov.Pic		+= \
 										-L$(LINUX_INSTALL_DIR.Tcov.Pic)/lib \
-										-Wl,-rpath=$(LINUX_INSTALL_DIR.Tcov.Pic)/lib \
-										-Wl,-rpath=$(LINUX_INSTALL_DIR.Debug.Pic)/lib \
-										-Wl,-rpath=$(LINUX_INSTALL_DIR.Release.Pic)/lib
+										-Wl,-rpath=$(LINUX_INSTALL_DIR.Tcov)/lib \
+										-Wl,-rpath=$(LINUX_INSTALL_DIR.Debug)/lib \
+										-Wl,-rpath=$(LINUX_INSTALL_DIR.Release)/lib \
+										$(PIC_FLAGS)
 
 LINUX_LDFLAGS.Tcov.Static		+= \
 										-L$(LINUX_INSTALL_DIR.Tcov.Static)/lib \
-										-Wl,-rpath=$(LINUX_INSTALL_DIR.Tcov.Pic)/lib \
-										-Wl,-rpath=$(LINUX_INSTALL_DIR.Debug.Pic)/lib \
-										-Wl,-rpath=$(LINUX_INSTALL_DIR.Release.Pic)/lib
+										-Wl,-rpath=$(LINUX_INSTALL_DIR.Tcov)/lib \
+										-Wl,-rpath=$(LINUX_INSTALL_DIR.Debug)/lib \
+										-Wl,-rpath=$(LINUX_INSTALL_DIR.Release)/lib
 
 W64_LDFLAGS.Release.Pic	+= \
-										-L$(W64_INSTALL_DIR.Release.Pic)/lib \
+										-L$(W64_INSTALL_DIR.Release)/lib \
+										$(PIC_FLAGS)
 
 W64_LDFLAGS.Release.Static	+= \
-										-L$(W64_INSTALL_DIR.Release.Static)/lib \
+										-L$(W64_INSTALL_DIR.Release)/lib
 
 W64_LDFLAGS.Debug.Pic		+= \
-										-L$(W64_INSTALL_DIR.Debug.Pic)/lib
-
+										-L$(W64_INSTALL_DIR.Debug)/lib \
+										$(PIC_FLAGS)
+										
 W64_LDFLAGS.Debug.Static		+= \
-										-L$(W64_INSTALL_DIR.Debug.Static)/lib
+										-L$(W64_INSTALL_DIR.Debug)/lib
 
 W64_LDFLAGS.Tcov.Pic		+= \
-										-L$(W64_INSTALL_DIR.Tcov.Pic)/lib 
-
+										-L$(W64_INSTALL_DIR.Tcov)/lib \
+										$(PIC_FLAGS)
+										
 W64_LDFLAGS.Tcov.Static		+= \
-										-L$(W64_INSTALL_DIR.Tcov.Static)/lib 
+										-L$(W64_INSTALL_DIR.Tcov)/lib 
 
 ANDROID_LDFLAGS.Release.Pic	+= \
-										-L$(ANDROID_INSTALL_DIR.Release.Pic)/lib
+										-L$(ANDROID_INSTALL_DIR.Release)/lib \
+										$(PIC_FLAGS)
 
 ANDROID_LDFLAGS.Release.Static	+= \
-										-L$(ANDROID_INSTALL_DIR.Release.Static)/lib
+										-L$(ANDROID_INSTALL_DIR.Release)/lib
 
 ANDROID_LDFLAGS.Debug.Pic		+= \
-										-L$(ANDROID_INSTALL_DIR.Tcov.Pic)/lib 
+										-L$(ANDROID_INSTALL_DIR.Tcov)/lib \
+										$(PIC_FLAGS)
 
 ANDROID_LDFLAGS.Debug.Static		+= \
 										-L$(ANDROID_INSTALL_DIR.Tcov.Static)/lib 
 
 ANDROID_LDFLAGS.Tcov.Pic		+= \
-										-L$(ANDROID_INSTLL_DIR.Tcov.Pic)/lib
+										-L$(ANDROID_INSTLL_DIR.Tcov)/lib \
+										$(PIC_FLAGS)
 										
 ANDROID_LDFLAGS.Tcov.Static	+= \
-										-L$(ANDROID_INSTLL_DIR.Tcov.Static)/lib
+										-L$(ANDROID_INSTLL_DIR.Tcov)/lib

@@ -1,6 +1,6 @@
 /**
  * Project: Phoenix
- * Time-stamp: <2025-02-27 11:30:40 doug>
+ * Time-stamp: <2025-03-01 16:58:47 doug>
  *
  * @file Configuration.hpp
  * @copyright (C) 2025 by Douglas Mark Royer (A.K.A. RiverExplorer)
@@ -13,14 +13,321 @@
  */
 
 #include <string>
+#include <map>
+#include <vector>
 
+#ifdef BUILDING_LIBPHOENIX
+#include "Commands.hpp"
+#else
+#include <RiverExplorer/Phoenix/Commands.hpp>
+#endif
 namespace RiverExplorer::Phoenix
 {
 
+	/**
+	 * @class Configuration Configuration.hpp <RiverExplorer/Phoenix/Configuration.hpp>
+	 * An object that manages all configuration for Phoenix clients and servers.
+	 */
 	class Configuration
 	{
 
 	public:
+
+		/**
+		 * @struct Server Configuration.hpp <RiverExplorer/Phoenix/Configuration.hpp>
+		 * Configuration per remote host is stored in this object.
+		 */
+		struct Server
+		{
+		public:
+
+			/**
+			 * Server - Default Constructor.
+			 */
+			Server();
+
+			/**
+			 * Server - Destructor.
+			 */
+			~Server();
+			
+			/**
+			 * Set the Account name.
+			 *
+			 * @param Account The account to add.
+			 */
+			void Account(const char * Account);
+			const std::string Account() const;
+		
+			/**
+			 * Set the Account Password.
+			 *
+			 * @param Account The account to add.
+			 * In the case of MD5, pass in the MD5 of the password.
+			 */
+			void Password(const char * Password);
+			const std::string Password() const;
+			
+			/**
+			 * Add the default public certificate to use.
+			 * When non is configured, then the default OpenSSL
+			 * certificate will be used.
+			 *
+			 * @param CertValue The value in the DefaultCert
+			 * configuration setting.
+			 */
+			void DefaultPublicCert(const char * CertValue);
+			const std::string DefaultPublicCert() const;
+			 
+			/**
+			 * Add the default private certificate to use.
+			 * When non is configured, then the default OpenSSL
+			 * certificate will be used.
+			 *
+			 * @param CertValue The value in the DefaultCert
+			 * configuration setting.
+			 */
+			void DefaultPrivateCert(const char * CertValue);
+			const std::string DefaultPrivateCert() const;
+
+			/**
+			 * Set the host name or IP address.
+			 *
+			 * @param HostOrIp The host name or IP address.
+			 */
+			void HostOrIp(const char * HostOrIp);
+			const std::string HostOrIp() const;
+			
+			/**
+			 * Set the server name shown to the user.
+			 *
+			 * @param Server The server name shown to the user.
+			 */
+			void ServerName(const char * Server);
+
+			/**
+			 * Get the server name.
+			 * This is the user friendly name, not the host name or IP.
+			 *
+			 * @return The server name.
+			 */
+			const std::string ServerName() const;
+			
+			/**
+			 * Set the port number.
+			 *
+			 * @param Port The port number to use for the remote server.
+			 */
+			void Port(const char * Port);
+
+			/**
+			 * Set the port number.
+			 *
+			 * @param Port The port number to use for the remote server.
+			 */
+			void Port(uint16_t Port);
+
+			/**
+			 * Get the port number.
+			 *
+			 * @return The port number that was set.
+			 */
+			uint16_t Port() const;
+		
+			/**
+			 * Set the position as shown to the user.
+			 *
+			 * @param ViewPosition The position in the list, first is zero (0).
+			 */
+			void Position(const char * ViewPosition);
+
+			/**
+			 * Set the position as shown to the user.
+			 *
+			 * @param ViewPosition The position in the list, first is zero (0).
+			 */
+			void Position(uint16_t Pos);
+
+			/**
+			 * Get the position number to show this server in the users list.
+			 * The first one is at position zero (0).
+			 *
+			 * @return The postition number.
+			 */
+			uint16_t Position() const;
+
+			/**
+			 * Set the authentication information for the server.
+			 *
+			 * @param AuthMethod One of the implementations supported
+			 * authentication methods (AUTHANONYMOUS, AUTHMD5, AUTHCERT_USER,
+			 * AUTHCERT_TLS).
+			 *
+			 * @param Account For AuthMethods that require an account,
+			 * the account name.
+			 * Or for AUTHCERT_USER, the public certifcate path.
+			 *
+			 * @param Pw For accounts that have a password, the
+			 * encrypted or MD5 password.
+			 * Or for AUTHCERT_USER, the private (key) certifcate path.
+			 */
+			void Auth(const char * AuthMethod,
+								const char * Account = nullptr,
+								const char * Pw = nullptr);
+
+			/**
+			 * Set the authentication information for the server.
+			 *
+			 * @param AuthMethod One of the implementations supported
+			 * authentication methods (AUTHANONYMOUS, AUTHMD5, AUTHCERT_USER,
+			 * AUTHCERT_TLS).
+			 *
+			 * @param Account For AuthMethods that require an account,
+			 * the account name.
+			 *
+			 * @param Pw For accounts that have a password, the
+			 * encrypted or MD5 password.
+			 */
+			void Auth(CMD_e AuthMethod,
+								const char * Account,
+								const char * Password);
+
+			/**
+			 * Get the authentication information for the server.
+			 *
+			 * @param[out] AuthMethod One of the implementations supported
+			 * authentication methods (AUTHANONYMOUS, AUTHMD5, AUTHCERT_USER,
+			 * AUTHCERT_TLS).
+			 *
+			 * @param[out] Account For AuthMethods that require an account,
+			 * the account name.
+			 *
+			 * @param[out] Pw For accounts that have a password, the
+			 * encrypted or MD5 password.
+			 */
+			void GetAuth(CMD_e & AuthMethod,
+									 const char *& Account,
+									 const char *& Pw);
+		private:
+
+			/**
+			 * The server name as shown to the user.
+			 */
+			std::string	_ServerName;
+
+			/**
+			 * The position in the server list to show to the user.
+			 */
+			uint16_t			_Position;
+
+			/**
+			 * The host name or IP address.
+			 */
+			std::string	_HostOrIp;
+
+			/**
+			 * The port number to use.
+			 */
+			uint16_t			_Port;
+												
+			/**
+			 * The authentication method to use.
+			 */
+			CMD_e	_Method;
+			
+			/**
+			 * The account name for AUTHMD5.
+			 */
+			std::string _Account;
+			 
+			/**
+			 * The account password for AUTHMD5.
+			 *
+			 * @note
+			 * This is the MD5 itself, not the password.
+			 */
+			std::string _Password;
+
+			/**
+			 * The full path to use for the public cert
+			 * in AUTHCERT, AUTHCERT_USER, or AUTHCERT_TLS.
+			 */
+			std::string _PublicCert;
+			 
+			/**
+			 * The full path to use for the private cert
+			 * in AUTHCERT, AUTHCERT_USER, or AUTHCERT_TLS.
+			 */
+			std::string _PrivateCert;
+			 
+			/**
+			 * The default public cert to use.
+			 * When empty, uses the default OpenSSL cert.
+			 * Ignored when _PublicCert is not empty for
+			 * the target server.
+			 */
+			static std::string _DefaultPublicCert;
+			 
+			/**
+			 * The default private cert to use.
+			 * When empty, uses the default OpenSSL cert.
+			 * Ignored when _PrivateCert is not empty for
+			 * the target server.
+			 */
+			static std::string _DefaultPrivateCert;
+			
+		};
+
+		/**
+		 * Create a new server record.
+		 *
+		 * @param HostOrIp The hostname or IP address to connect to.
+		 * HostOrIp and Port must be unique to the client.
+		 *
+		 * @param Name The name of the connection as shown to the user.
+		 * Must be unique to the client.
+		 *
+		 * @param Port The port number to connect to.
+		 * HostOrIp and Port must be unique to the client.
+		 *
+		 * @param AuthMethod One of the implementations supported
+		 * authentication methods (AUTHANONYMOUS, AUTHMD5, AUTHCERT_USER,
+		 * AUTHCERT_TLS).
+		 *
+		 * @param Account For AuthMethods that require an account,
+		 * the account name.
+		 *
+		 * @param Pw For accounts that have a password, the
+		 * encrypted or MD5 password.
+		 *
+		 * @return The new host configuration.
+		 * If (HostOrIP and Port) or Name have already been used,
+		 * then nullptr is returned.
+		 */
+		static Server *
+		NewServer(const std::string & HostOrIp,
+							const std::string & Name,
+							uint16_t Port,
+							CMD_e AuthMethod,
+							const char * Account = nullptr,
+							const char * Pw = nullptr);
+
+
+		/**
+		 * Get a list of server conncetions.
+		 *
+		 * @return An ordered list of server connections.
+		 * The order is the position order supplied by the client.
+		 */
+		static const std::vector<Server*> & GetServers();
+
+		/**
+		 * Delete a server connection.
+		 * There is no backup.
+		 *
+		 * @param ToDelete The server to delete from the client list.
+		 */
+		static void DeleteServer(Server * ToDelete);
 		
 		/**
 		 * Initialize or open the client configuration information.
@@ -181,7 +488,7 @@ namespace RiverExplorer::Phoenix
 		static bool ServerLoadConfig();
 
 	private:
-
+		
 		/**
 		 * Configuration - Default Constructor.
 		 * All member values and functions are static.
@@ -318,6 +625,19 @@ namespace RiverExplorer::Phoenix
 		 * The server name (or nullptr)
 		 */
 		static const char * _ServerProgramName;
-
+		
+		/**
+		 * The list of known servers.
+		 *
+		 * <Name Shown To User>, HostConfiguation.
+		 */
+		static std::map<std::string, Server*> _Servers;
+		
+		/**
+		 * The list of known servers.
+		 *
+		 * <Position in user list, HostConfiguation.
+		 */
+		static std::map<uint16_t, Server*> _ByPosition;
 	};
 }

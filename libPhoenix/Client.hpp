@@ -165,7 +165,7 @@ namespace RiverExplorer::Phoenix
 		 * @return The client program name that was passed
 		 * into the constructor.
 		 */
-		static const char * ProgramName();
+		static const std::string ProgramName();
 		
 	private:
 

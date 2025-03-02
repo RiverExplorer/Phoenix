@@ -1,9 +1,14 @@
 #
-# Phoenix (C) 2025 by Douglas Mark Royer (A.K.A. RiverExplorer) is licensed under CC BY 4.0
+# Project: Phoenix
+# Time-stamp: <2025-03-01 19:22:31 doug>
 #
-# This Phoenix code is copyright and free to use.
+# Copyright (C) 2025 by Douglas Mark Royer (A.K.A. RiverExplorer)
+# Author Douglas Mark Royer
+# @date 3-JAN-20205
 #
-
+# licensed under CC BY 4.0.
+#
+# RiverExplorer is a trademark of Douglas Mark Royer
 
 # ALL TARGETS
 #
@@ -120,8 +125,8 @@ $(LINUX_TARGET.Tcov.Pic) : $(XDR_GENERATED.all) $(LINUX_OBJECTS.Tcov.Pic)
 	(cd $(LINUX_INSTALL_DIR.Tcov)/lib ; $(RM) lib$(TARGET).so ; ln -s lib$(TARGET).so.$(VERSION) lib$(TARGET).so)
 
 $(LINUX_TARGET.Tcov.Static) : $(XDR_GENERATED.all) $(LINUX_OBJECTS.Tcov.Static)
-	$(LINUX_CXX) -shared $(LINUX_LDFLAGS.Tcov.Static) -o $(LINUX_TARGET.Tcov.Static) $(LINUX_OBJECTS.Tcov.Static) $(LIBS) $(LINUX_LIBS)
-	$(INSTALL.RX) $(LINUX_TARGET.Tcov.Static) $(LINUX_INSTALL_DIR.Tcov)/lib
+	$(AR) rv $(LINUX_TARGET.Tcov.Static) $(LINUX_OBJECTS.Tcov.Static)
+	$(INSTALL.RO) $(LINUX_TARGET.Tcov.Static) $(LINUX_INSTALL_DIR.Tcov)/lib
 
 W64Debug : W64Debug.Pic W64Debug.Static
 
