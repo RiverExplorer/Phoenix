@@ -1,6 +1,6 @@
 #
 # Project: Phoenix
-# Time-stamp: <2025-02-27 21:10:40 doug>
+# Time-stamp: <2025-03-02 10:52:04 doug>
 #
 # Copyright (C) 2025 by Douglas Mark Royer (A.K.A. RiverExplorer)
 # Author Douglas Mark Royer
@@ -245,3 +245,18 @@ SubDirs ::
 clean::
 	$(RM) LOG* \#*#
 	$(RM) -r GeneratedFromXDR
+	$(RM) -rf TestCoverage
+
+Test:
+
+RunTests::
+	-@for D in $(TESTSUBDIRS); do \
+		cd $$D ; $(MAKE) $(MAKECMDGOALS); \
+	done
+	-@$(RM) -rf TestCoverage
+	-@mkdir TestCoverage
+	(cd TestCoverage ; gcovr -r .. --html-details TestCoverage.html --decisions --calls)
+	@echo "-----------------------------------------------"
+	@echo "Test Coverage in TestCoverage/TestCoverage.html"
+	@echo "-----------------------------------------------"
+

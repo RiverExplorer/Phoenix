@@ -77,8 +77,8 @@ clean ::
 	$(RM) XMLResults.xml
 
 LinuxDebugRun : LinuxDebug
-	BuildTemp/Linux/Debug/bin/SimpleStart
+	BuildTemp/Linux/Debug/bin/TestClient1
 
-
-
+RunTests::
+	BuildTemp/Linux/Tcov/sbin/TestClient1
 

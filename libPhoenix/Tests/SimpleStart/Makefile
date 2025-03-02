@@ -74,3 +74,6 @@ clean ::
 
 LinuxDebugRun : LinuxDebug
 	BuildTemp/Linux/Debug/bin/SimpleStart
+
+RunTests::
+	BuildTemp/Linux/Tcov/sbin/SimpleStart

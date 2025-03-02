@@ -41,7 +41,7 @@ LIBTOP			= ../..
 # What to call this program.
 # And what the include/RiverExplorer/$(TARGET) header directory will be.
 #
-TARGET			= TestServer
+TARGET			= ParseOnly
 
 CPPFLAGS		+= 
 
@@ -73,4 +73,8 @@ include $(TOP)/BuildTools/Makefile.bottom
 clean ::
 
 LinuxDebugRun : LinuxDebug
-	BuildTemp/Linux/Debug/bin/SimpleStart
+	BuildTemp/Linux/Debug/bin/ParseOnly --dir ../MimeTestFiles/split
+
+RunTests::
+	BuildTemp/Linux/Tcov/sbin/ParseOnly --dir ../MimeTestFiles/split
+

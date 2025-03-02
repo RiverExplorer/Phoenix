@@ -99,3 +99,7 @@ clean ::
 		$(MAKE) -C $$dir clean; \
 	done
 
+RunTests::
+	for D in $(SUBDIRS); do \
+		(cd $$D ; $(MAKE) $(MAKECMDGOALS);) \
+	done

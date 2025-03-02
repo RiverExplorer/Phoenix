@@ -76,8 +76,9 @@ include $(TOP)/BuildTools/Makefile.bottom
 clean ::
 
 LinuxDebugRun : LinuxDebug
-	BuildTemp/Linux/Debug/bin/SimpleStart
+	BuildTemp/Linux/Debug/bin/TestServer1
 
-
+RunTests::
+	BuildTemp/Linux/Tcov/sbin/TestServer1
 
 
