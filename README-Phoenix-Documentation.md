@@ -1,8 +1,17 @@
 
+ Project: Phoenix
+ Time-stamp: <2025-03-03 01:51:48 doug>
 
-Phoenix © 2025 by Douglas Mark Royer (A.K.A. RiverExplorer) is licensed under CC BY 4.0
+ @file RADME-Phoenix-Documentation.md
+ @author Douglas Mark Royer
+ @date 24-FEB-20205
 
-This Phoenix code is copyright and free to use.
+ @Copyright(C) 2025 by Douglas Mark Royer (A.K.A. RiverExplorer)
+
+ Licensed under the MIT License. See LICENSE file
+ or https://opensource.org/licenses/MIT for details.
+
+ RiverExplorer is a trademark of Douglas Mark Royer
 
 See the LICENSE file.
 
@@ -13,7 +22,7 @@ Part of the reason is that it is very important data and altering it
 takes a great deal of care and planning.
 
 Another major concern is security and authentication.
-This proposal allows for existing autnentication to continue to work.
+This proposal allows for existing authentication to continue to work.
 
 This is a MIME message transport that can facilitate
 the transfer of any kind of MIME message. Including email, calendaring,
@@ -26,7 +35,7 @@ text handling of messages.
 
 This proposal includes a sample implementation.
 Which also includes a gateway from this proposal to existing system.
-Thunderbid and Outlook plugins are part of the sample implementation.
+Thunderbird and Outlook plugins are part of the sample implementation.
 
 Many years ago I was asked by the IETF to see if I could revamp IMAP and POP.
 Just now I am getting to it.
@@ -40,11 +49,11 @@ https://github.com/RiverExplorer/Phoenix/Documentation/draft-royer-phoenix-00.pd
 https://github.com/RiverExplorer/Phoenix/Documentation/draft-royer-phoenix-00.html
 https://github.com/RiverExplorer/Phoenix/Documentation/draft-royer-phoenix-00.txt
 
- The sample implemenation public API:
+ The sample implementation public API:
 
  TODO
 
- The sample implemenation internals and public API:
+ The sample implementation internals and public API:
 
  TODO
 
@@ -53,6 +62,9 @@ To build the documentation you will need:
 
  - dot from https://www.graphviz.org
  - xml2rfc from https://authors.ietf.org/en/author-tools-web-service
+ - aasvg from https://github.com/martinthomson/aasvg
+ - cpp A C/C++ preprocessor
+ - doxygen from https://www.doxygen.nl
 
 It uses doxygen to built the public and internal API docs.
 (cd Documentation ; make)
@@ -69,5 +81,6 @@ This project builds on Linux for Linux, Windows (not yet), and Android (not yet)
 Currently, all platform builds must be done on Linux.
 
 -----------------------------------------------------------------
+
  Doug Royer
  RiverExplorer.US@gmail.com
