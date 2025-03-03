@@ -1,21 +1,34 @@
+#if defined RPC_HDR || defined RPC_XDR
+%/**
+% * Project: Phoenix
+% * Time-stamp: <2025-03-03 01:51:48 doug>
+% *
+% * @file Capability.x
+% * @copyright (C) 2025 by Douglas Mark Royer (A.K.A. RiverExplorer)
+% * @author Douglas Mark Royer
+% * @date 24-FEB-20205
+% *
+% * licensed under CC BY 4.0.
+% *
+% * RiverExplorer is a trademark of Douglas Mark Royer
+% */
+#endif
 %
 %#ifdef BUILDING_LIBPHOENIX
 %#include "CommonDefinitions.hpp"
 %#include "Commands.hpp"
 %#include "SEQ_t.hpp"
+%#include "Vendor.hpp"
+%#include "VendorID.hpp"
 %#else
 %#include <RiverExplorer/Phoenix/CommonDefinitions.hpp>
 %#include <RiverExplorer/Phoenix/Commands.hpp>
 %#include <RiverExplorer/Phoenix/SEQ_t.hpp>
+%#include <RiverExplorer/Phoenix/Vendor.hpp>
+%#include <RiverExplorer/Phoenix/VendorID.hpp>
 %#endif
 %
 %#include <vector>
-
-struct VendorCapability
-{
-	Length Count;
-	uint8_t * Data;
-};
 
 #ifdef RPC_HDR
 %/**
@@ -149,7 +162,7 @@ union CapabilityEntry switch (CMD_e Capability) {
 		 string VendorID<>;
 
 	 default:
-		 VendorCapability Vendor;
+		 Vendor VendorCapability;
 };
 
 #ifdef RPC_HDR

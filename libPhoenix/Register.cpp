@@ -120,14 +120,14 @@ namespace RiverExplorer::Phoenix
 										 CppPing::PostAuth);
 		
 		RegisterCallback(CAPABILITY_PRE,
-										 CppCapabilityPre::Callback,
-										 CppCapabilityPre::PreAuth,
-										 CppCapabilityPre::PostAuth);
+										 CapabilityCommandPre::Callback,
+										 CapabilityCommandPre::PreAuth,
+										 CapabilityCommandPre::PostAuth);
 
 		RegisterCallback(CAPABILITY_POST,
-										 CppCapabilityPost::Callback,
-										 CppCapabilityPost::PreAuth,
-										 CppCapabilityPost::PostAuth);
+										 CapabilityCommandPost::Callback,
+										 CapabilityCommandPost::PreAuth,
+										 CapabilityCommandPost::PostAuth);
 
 		RegisterCallback(AUTHMD5,
 										 CppAuthMD5::Callback,
@@ -142,5 +142,4 @@ namespace RiverExplorer::Phoenix
 
 	}
 
-	
 }

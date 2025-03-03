@@ -1,6 +1,6 @@
 #
 # Project: Phoenix
-# Time-stamp: <2025-03-02 10:52:04 doug>
+# Time-stamp: <2025-03-02 23:52:49 doug>
 #
 # Copyright (C) 2025 by Douglas Mark Royer (A.K.A. RiverExplorer)
 # Author Douglas Mark Royer
@@ -89,6 +89,7 @@ SOURCES.cpp = \
 	Iov.cpp \
 	IPPeer.cpp \
 	Log.cpp \
+	MD5.cpp \
 	Misc.cpp \
 	PhoenixEvent.cpp \
 	Register.cpp \
@@ -162,8 +163,9 @@ SOURCES.x = \
 	UserDelete.x \
 	UserList.x \
 	UserPermissions.x \
-	UserRename.x
-
+	UserRename.x \
+	Vendor.x \
+	VendorID.x
 
 SOURCES.hpp += \
 	Certs.hpp \
@@ -180,6 +182,7 @@ SOURCES.hpp += \
 	Iov.hpp \
 	Log.hpp \
 	IPPeer.hpp \
+	MD5.hpp \
 	PhoenixClient.hpp \
 	PhoenixEvent.hpp \
 	PhoenixServer.hpp \
@@ -233,7 +236,7 @@ W64_LIBS					+= -lws2_32
 
 ANDROID_LIBS			+=-z defs
 
-LIBS							+= -lmd -ltirpc -lxslt -lxml2 -lssl -lcrypto -lz
+LIBS							+= -ltirpc -lxslt -lxml2 -lssl -lcrypto -lz
 
 include $(TOP)/BuildTools/Makefile.bottom.lib
 
@@ -248,8 +251,11 @@ clean::
 	$(RM) -rf TestCoverage
 
 Test:
+	@echo "-----------------------------------"
+	@echo "To run the test, type: make RunTests
+	@echo "-----------------------------------"
 
-RunTests::
+RunTests:: LinuxTcov
 	-@for D in $(TESTSUBDIRS); do \
 		cd $$D ; $(MAKE) $(MAKECMDGOALS); \
 	done

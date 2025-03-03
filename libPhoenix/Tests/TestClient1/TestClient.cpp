@@ -1,6 +1,6 @@
 /**
  * Project: Phoenix
- * Time-stamp: <2025-02-25 09:24:02 doug>
+ * Time-stamp: <2025-03-03 00:42:01 doug>
  *
  * @file TestClient.cpp
  * @copyright (C) 2025 by Douglas Mark Royer (A.K.A. RiverExplorer)
@@ -89,7 +89,9 @@ SEQ_t	NextSeqToUse = 0;
 Client * OurClient = nullptr;
 Configuration::Server * OurServer = nullptr;
 Command * CapPre = nullptr;
-Command * CapVendorID = nullptr;
+CapabilityEntry * CapVendorID = nullptr;
+CppCapabilityPre * PreAuthCapability = nullptr;
+CppCapabilityPost * PostAuthCapability = nullptr;
 Command * CapVendorExt1 = nullptr;
 std::vector<Command*>	Capabilities;
 std::vector<Configuration::Server*> ServerList;
@@ -217,18 +219,28 @@ ClientTest::ClientConstructorTest()
 	return;
 }
 
+void
+ClientTest::CreateCapabilityConstructorTest()
+{
+	PreAuthCapability = new CapabilityCommandPre(NextSeqToUse);
+
+	CPPUNIT_ASSERT(PreAuthCapability != nullptr);
+	CPPUNIT_ASSERT(PreAutHCapability->SEQ() == NextSeqToUse);
+
+	NextSeqToUse += 2;
+
+	return;
+};
 
 void
 ClientTest::CreateCapabilityVendorIDTest()
 {
-	CapVendorID = CppCapabilityVendorID::New(NextSeqToUse,
-																					 strdup(RiverExplorerVendor));
+	CapVendorID = CppCapabilityVendorID::New(strdup(RiverExplorerVendor));
 
 	CPPUNIT_ASSERT(CapVendorID != nullptr);
-	CPPUNIT_ASSERT(CapVendorID->Payload.Cmd == VENDOR_ID);
-	CPPUNIT_ASSERT(CapVendorID->Sequence == NextSeqToUse);
+	CPPUNIT_ASSERT(CapVendorID->Capability == VENDOR_ID);
 
-	CPPUNIT_ASSERT(strcmp(CapVendorID->Payload.OneCommand_u.VendorIDCmd,
+	CPPUNIT_ASSERT(strcmp(CapVendorID->CapabilityEntry_u.VendorID,
 												RiverExplorerVendor) == 0);
 	
 	// We push this first to show that if a client sends
@@ -239,6 +251,7 @@ ClientTest::CreateCapabilityVendorIDTest()
 	// for their requirements.
 	//
 	PendingCommandsMutex.lock();
+	
 	PendingCommands.insert(std::make_pair(CapVendorID->Sequence, CapVendorID));
 	Capabilities.push_back(CapVendorID);
 	CPPUNIT_ASSERT(Capabilities.size() == 1);

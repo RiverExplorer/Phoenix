@@ -1,31 +1,14 @@
 #
-# @copyright (C) 2025 RiverExplorer® Games LLC, All Rights Reserved.
+# Project: Phoenix
+# Time-stamp: <2025-03-02 22:57:44 doug>
 #
-# RiverExplorer is a registered trademark of RiverExplorer Games LLC.
+# Copyright (C) 2025 by Douglas Mark Royer (A.K.A. RiverExplorer)
+# Author Douglas Mark Royer
+# @date 3-JAN-20205
 #
-# THIS CODE IS NOT OPEN SOURCE AND IS THE PROPERTY OF THE COPYRIGHT
-# HOLDER.
+# licensed under CC BY 4.0.
 #
-# THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
-# "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
-# LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
-# A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT
-# HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
-# SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED
-# TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA,
-# OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY
-# OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING
-# NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
-# OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
-#
-# PENALTIES FOR COPYRIGHT INFRINGEMENT INCLUDE CIVIL AND CRIMINAL
-# PENALTIES. IN GENERAL, ANYONE FOUND LIABLE FOR CIVIL COPYRIGHT
-# INFRINGEMENT MAY BE ORDERED TO PAY EITHER ACTUAL DAMAGES OR "STATUTORY"
-# DAMAGES AFFIXED AT NOT LESS THAN $750 AND NOT MORE THAN $30,000 PER
-# WORK INFRINGED. FOR "WILLFUL" INFRINGEMENT, A COURT MAY AWARD UP
-# TO $150,000 PER WORK INFRINGED. A COURT CAN, IN ITS DISCRETION, ALSO
-# ASSESS COSTS AND ATTORNEYS' FEES. FOR DETAILS,
-# SEE TITLE 17, UNITED STATES CODE, SECTIONS 504, 505.
+# RiverExplorer is a trademark of Douglas Mark Royer
 #
 
 # Version of this program/library
@@ -35,7 +18,7 @@ VENDER			= RiverExplorer
 
 # TOP of the build tree where BuildTools/Make... files exist
 #
-TOP			= ../../..
+TOP					= ../../..
 LIBTOP			= ../..
 
 # What to call this program.
@@ -69,7 +52,7 @@ LIBS		+= -lPhoenix -lxslt -lxml2 -ltirpc -lcrypto -lssl -lz -lcppunit -Wl,--as-n
 
 # Build as much as possible, with static libs.
 #
-SLIBS		+= -Wl,-Bstatic -lPhoenix -lcrypto -Wl,-Bdynamic -lxslt -lxml2 -ltirpc -lssl -lmd -lcppunit
+SLIBS		+= -Wl,-Bstatic -lPhoenix -lcrypto -Wl,-Bdynamic -lxslt -lxml2 -ltirpc -lssl -lcppunit
 
 include $(TOP)/BuildTools/Makefile.bottom
 

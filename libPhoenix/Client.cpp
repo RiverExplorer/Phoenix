@@ -1,6 +1,6 @@
 /**
  * Project: Phoenix
- * Time-stamp: <2025-02-26 16:54:15 doug>
+ * Time-stamp: <2025-03-02 22:34:35 doug>
  *
  * @file Client.cpp
  * @copyright (C) 2025 by Douglas Mark Royer (A.K.A. RiverExplorer)
@@ -17,6 +17,7 @@
 #include "Iov.hpp"
 #include "Commands.hpp"
 #include "HostName.hpp"
+#include "MD5.hpp"
 
 #ifndef W64
 #include <sys/socket.h>
@@ -29,7 +30,6 @@
 
 #include <semaphore.h>
 #include <sys/types.h>
-#include <md5.h>
 
 namespace RiverExplorer::Phoenix
 {
@@ -208,8 +208,7 @@ namespace RiverExplorer::Phoenix
 		if (Results != nullptr) {
 			// Prepare for and send an AUTHMD5
 			//
-			char Buf[MD5_DIGEST_STRING_LENGTH];
-			char * Md5 = MD5Data((uint8_t*)Pw, strlen(Pw), Buf);
+			std::string MD5Pw = MD5(Pw);
 		}
 		
 		return(Results);

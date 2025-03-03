@@ -1,3 +1,18 @@
+#if defined RPC_HDR || defined RPC_XDR
+%/**
+% * Project: Phoenix
+% * Time-stamp: <2025-03-03 01:51:48 doug>
+% *
+% * @file Email.x
+% * @copyright (C) 2025 by Douglas Mark Royer (A.K.A. RiverExplorer)
+% * @author Douglas Mark Royer
+% * @date 24-FEB-20205
+% *
+% * licensed under CC BY 4.0.
+% *
+% * RiverExplorer is a trademark of Douglas Mark Royer
+% */
+#endif
 
 const FLAG_SEEN				= 0x0001;
 const FLAG_ANSWERED		= 0x0002;

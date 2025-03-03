@@ -1,6 +1,6 @@
 /**
  * Project: Phoenix
- * Time-stamp: <2025-03-01 15:22:41 doug>
+ * Time-stamp: <2025-03-03 01:41:17 doug>
  *
  * @file Capability.cpp
  * @copyright (C) 2025 by Douglas Mark Royer (A.K.A. RiverExplorer)
@@ -15,22 +15,8 @@
 
 namespace RiverExplorer::Phoenix
 {
-	std::vector<Register::PluginCapability*>  CppCapabilityPre::PreAuth;
-	std::vector<Register::PluginCapability*>  CppCapabilityPre::PostAuth;
-
-	std::vector<Register::PluginCapability*>  CppCapabilityPost::PreAuth;
-	std::vector<Register::PluginCapability*>  CppCapabilityPost::PostAuth;
-
 	bool
-	CppCapabilityPre::Callback(int Fd, Command * Pkt, XDR * ReadXdrs)
-	{
-		bool Results = false;
-
-		return(Results);
-	}
-	
-	bool
-	CppCapabilityPost::Callback(int Fd, Command * Pkt, XDR * ReadXdrs)
+	CapabilityCommandPre::Callback(int Fd, Command * Pkt, XDR * ReadXdrs)
 	{
 		bool Results = false;
 
@@ -38,7 +24,7 @@ namespace RiverExplorer::Phoenix
 	}
 	
 	Command *
-	CppCapabilityPre::New(SEQ_t Sequence)
+	CapabilityCommandPre::New(SEQ_t Sequence)
 	{
 		Command * Results = new Command();
 
@@ -48,8 +34,16 @@ namespace RiverExplorer::Phoenix
 		return(Results);
 	}
 
+	bool
+	CapabilityCommandPost::Callback(int Fd, Command * Pkt, XDR * ReadXdrs)
+	{
+		bool Results = false;
+
+		return(Results);
+	}
+
 	Command *
-	CppCapabilityPost::New(SEQ_t Sequence)
+	CapabilityCommandPost::New(SEQ_t Sequence)
 	{
 		Command * Results = new Command();
 
@@ -59,33 +53,30 @@ namespace RiverExplorer::Phoenix
 		return(Results);
 	}
 
-	Command *
-	CppCapabilityVendorID::New(SEQ_t Sequence, char * VendorString)
+	CapabilityEntry *
+	CppCapabilityVendorID::New(char * VendorString)
 	{
-		Command * Results = new Command();
+		CapabilityEntry * Results = new CapabilityEntry();
 
-		Results->Payload.Cmd = Phoenix::VENDOR_ID;
-		Results->Sequence = Sequence;
-		Results->Payload.OneCommand_u.VendorIDCmd = VendorString;
+		Results->Capability = VENDOR_ID;
+		Results->CapabilityEntry_u.VendorID = VendorString;
 
 		return(Results);
 	}
-
-	Command *
-	CppCapabilityVendor::New(SEQ_t Sequence,
-													 uint32_t VendorCommandId,
+	
+	CapabilityEntry *
+	CppCapabilityVendor::New(uint32_t VendorCapabilityID,
 													 uint8_t * Data,
 													 Phoenix::Length Count)
 	{
-		Command * Results = new Command();
+		CapabilityEntry * Results = new CapabilityEntry();
 
 		// Make sure that the VENDOR_BIT is set.
 		//
-		VendorCommandId |= CMD_VENDOR_MASK;
-		Results->Payload.Cmd = (Phoenix::CMD_e)VendorCommandId;
-		Results->Sequence = Sequence;
-		Results->Payload.OneCommand_u.Vendor.Data.Data = (char*)Data;
-		Results->Payload.OneCommand_u.Vendor.Data.Len = Count;
+		VendorCapabilityID |= CMD_VENDOR_MASK;
+		Results->Capability = (CMD_e)VendorCapabilityID;
+		Results->CapabilityEntry_u.VendorCapability.Data.Data =  Data;
+		Results->CapabilityEntry_u.VendorCapability.Data.Len = Count;		
 		
 		return(Results);
 	}
