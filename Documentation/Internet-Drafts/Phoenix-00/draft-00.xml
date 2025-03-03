@@ -62,13 +62,7 @@
     <xi:include href="Shared.xml"/>
     <xi:include href="MetaData.xml"/>
 		<xi:include href="Index.xml"/>
-		
-    <section anchor="IANA">
-    <!-- All drafts are required to have an IANA considerations section. See RFC 8126 for a guide.-->
-      <name>IANA Considerations</name>
-      <t>This memo includes no request to IANA. [CHECK]</t>
-    </section>
-
+		<xi:include href="IANA.xml"/>
     <xi:include href="SecurityConsiderations.xml"/>
     
     <!-- NOTE: The Acknowledgements and Contributors sections are at the end of this template -->

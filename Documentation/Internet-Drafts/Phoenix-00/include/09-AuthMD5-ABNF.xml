@@ -3,7 +3,7 @@ Login       = string
 
 Md5Password = string
 
-AuthMD5     = (VENDOR_BIT / PHOENIX_BIT) AUTHMD5 Login Md5Password
+AuthMD5     = PHOENIX_BIT:1 AUTHMD5:31 Login Md5Password
 ]]></artwork>
 
 

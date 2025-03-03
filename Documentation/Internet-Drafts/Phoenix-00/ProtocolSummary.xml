@@ -18,8 +18,10 @@
 		requests and replies between the client and server.
 		By using XDR as the format for transferring binary control
 		information it is portable to any computer architecture.
-		Appendix XXX has the rpcgen definition for the protocol
+		<xref target="all-xdr">Complete XDR</xref> has the rpcgen definition for the protocol
 		defined in this specification.
+		And <xref target="all-abnf">Complete ABNF</xref> has the complete ABNF
+		for this protocol.
 	</t>
 	<t>
 		The basic connection starts in one of two modes.
@@ -60,7 +62,7 @@
 		authentication packets, then the server processes the authentication
 		packet.
 		On failure to authenticate, the server sends the client a pre
-		authenticatin capability packet with the same sequence number
+		authentication capability packet with the same sequence number
 		that was in the authentication attempt and includes the
 		servers supported authentication methods.
 		On a successful authentication, the server sends the client
@@ -74,14 +76,16 @@
 		or the user. It could be reporting errors or updates to
 		previous client initiated commands.
 	</t>
-	<t>
-		All commands initiated from the client have even
-		numbered command sequence numbers.
-	</t>
-	<t>
-		All commands initiated from the server have odd
-		numbered command sequence numbers.
-	</t>
+	<ul>
+		<li>
+			All commands initiated from the client have even
+			numbered command sequence numbers.
+		</li>
+		<li>
+			All commands initiated from the server have odd
+			numbered command sequence numbers.
+		</li>
+	</ul>
 	<t>
 		Some commands expect a command reply.
 		Other commands do not expect a command reply.
@@ -190,14 +194,13 @@
 		<section>
 			<name>Packet Body (PacketBody)</name>
 			<t>
-				The packet body is divided into three parts:
+				The packet body is divided into four parts:
 			</t>
 			<ol>
+				<li>Number of commands that are in the packet.</li>
 				<li>Sequence (SEQ)</li>
 				<li>
 					Command (CMD):
-					Which can be one of ADMIN_CMD, AUTH_CMD, FILE_CMD,
-					or PROTO_CMD.
 				</li>
 				<li>
 					Payload (CmdPayload):
@@ -228,132 +231,16 @@
 				<tbody>
 					<tr>
 						<td>
-							ADMIN_CMD
+							Length
 						</td>
 						<td>
-							%x00:31
+							A number
 						</td>
 						<td>
-							The payload is an administration command.
+							The number of CMD objects in this packet.
 						</td>
 						<td>
-							xdr_ADMIN_CMD()
-						</td>
-					</tr>
-					<tr>
-						<td>
-							AUTH_CMD
-						</td>
-						<td>
-							%x01:31
-						</td>
-						<td>
-							What follows in the payload, is an authentication command.
-						</td>
-						<td>
-							xdr_AUTH_CMD()
-						</td>
-					</tr>
-					<tr>
-						<td>
-							CMD
-						</td>
-						<td>
-							1 bit + 31 bits.
-						</td>
-						<td>
-							<t>
-								The 1-bit, VENDOR_BIT or PHOENIX_BIT followed by one of
-								the 31-bit: ADMIN_CMD, AUTH_CMD, FILE_CMD, or PROTO_CMD.
-								For a total of 32-bits.
-							</t>
-							<t>
-								<br/>
-								A command (CMD) is a unsigned integer that
-								specifics a unique operation that describes
-								and defines the data that follows.
-							</t>
-							<t>
-								<br/>
-								The highest bit in the 32-bit value is
-								a VENDOR_BIT or PHOENIX_BIT.
-								So CMD covers vendor and phoenix commands.
-							</t>
-							<t>
-								-Phoenix CMD range is: %x00000000-7fffffff.
-							</t>
-							<t>
-								-Vendor CMD range is: 80000000-fffffffe.
-							</t>
-							<t>
-								-With %xffffffff reserved for future expansions.
-							</t>
-						</td>
-						<td>
-							xdr_Cmd()
-						</td>
-					</tr>
-					<tr>
-						<td>
-							CmdPayload
-						</td>
-						<td>
-							Variable
-						</td>
-						<td>
-							<t>
-								The Payload is whatever data follows the command.
-								In some cases it is a blob of opaque data.
-								In other cases it is a structured XDR set of data.
-								See the specific CMD for details.
-							</t>
-						</td>
-						<td>
-							xdr_CmdPayload()
-						</td>
-					</tr>
-					<tr>
-						<td>
-							FILE_CMD
-						</td>
-						<td>
-							%x03:31
-						</td>
-						<td>
-							A FILE or FOLDER payload is included.
-						</td>
-						<td>
-							xdr_FILE_CMD()
-						</td>
-					</tr>
-					<tr>
-						<td>
-							PROTO_CMD
-						</td>
-						<td>
-							%x04:31
-						</td>
-						<td>
-							The payload includes one of many protocol packets.
-						</td>
-						<td>
-							xdr_PROTO_CMD()
-						</td>
-					</tr>
-					<tr>
-						<td>
-							NOT_SUPPORTED
-						</td>
-						<td>
-							%x2b:31
-						</td>
-						<td>
-							The endpoint is replying that the
-							command sent with the SEQ value in this packet,
-							was not a supported command or operation.
-						</td>
-						<td>
-							xdr_NOT_SUPPORTED()
+							xdr_Length()
 						</td>
 					</tr>
 					<tr>
@@ -393,23 +280,73 @@
 					</tr>
 					<tr>
 						<td>
-							PacketBody
+							CMD
+						</td>
+						<td>
+							1 bit + 31 bits.
+						</td>
+						<td>
+							<t>
+								A 31-bit value that is a Phoenix compliant
+								command or a command with the VENDOR_BIT set
+								(a vendor command).
+							</t>
+							<t>
+								<br/>
+								A command (CMD) is a unsigned integer that
+								specifics a unique operation that describes
+								and defines the data that follows.
+							</t>
+							<t>
+								<br/>
+								The highest bit in the 32-bit value is
+								a VENDOR_BIT or PHOENIX_BIT.
+								So CMD covers vendor and phoenix commands.
+							</t>
+							<t>
+								-Phoenix CMD range is: %x00000000-7fffffff.
+							</t>
+							<t>
+								-Vendor CMD range is: 80000000-fffffffe.
+							</t>
+							<t>
+								-With %xffffffff reserved.
+							</t>
+							<t>
+								All vendor commands are followed by another
+								32-bit Length value indicating how
+								may octets follow the Length that are in the payload.
+								This is so that compliant implementation that do
+								not support the vendor extensions know how
+								many octets to skip to find the next command
+								or end of packet.
+							</t>
+						</td>
+						<td>
+							xdr_Cmd()
+						</td>
+					</tr>
+					<tr>
+						<td>
+							CmdPayload
 						</td>
 						<td>
 							Variable
 						</td>
 						<td>
 							<t>
-								The packet body.
+								The Payload is whatever data follows the command.
+								In some cases it is a blob of opaque data.
+								In other cases it is a structured XDR set of data.
+								See the specific CMD for details.
 							</t>
 						</td>
 						<td>
-							xdr_PacketBody()
+							xdr_CmdPayload()
 						</td>
 					</tr>
 				</tbody>
 			</table>
-
 			<t>
 				A command conforming to this specification is not
 				a vendor command.
@@ -462,8 +399,9 @@
 			<t>
 				This is an example of a CAPABILITY_PRE being sent
 				from the server to the client.
-				A conforming client could ignore the AUTH_Vendor_3
-				and authenticate with AUTHMD5.
+				A client that is conforming to this specification and
+				does not support any vendor extensions, would ignore the
+				AUTH_Vendor_3	and authenticate with AUTHMD5.
 			</t>
 			<figure>
 				<name>Packet Body Non-Vendor- Diagram</name>
@@ -502,25 +440,27 @@
 			</figure>
 
 			<t>
-				And the matching data for <xref target="P01-01"/> could be (assuming
-				all vendor extensions have 0 octets
-				of additional data):
+				And the matching data for <xref target="P01-01"/> could be:
 			</t>				
-			<figure>
+			<figure anchor="P01-02">
 				<name>Packet Body Vendor - Diagram Data</name>
 				<artset>
 					<artwork align="center" type="ascii-art" src="Drawings/Packet-01-02.txt"/>
           <artwork align="center" type="svg" src="Generated/Packet-01-02.svg"/>
 				</artset>
 			</figure>
-
+			<t>
+				Note that the CAPABILITY_PRE in <xref target="P01-01"/> and <xref target="P01-02"/>
+				has the VENDOR_BIT set, so it is followed by the number of octets
+				in the vendor extension.
+			</t>
 			<t>
 				Multiple commands may be sent in one packet.
 				And PHOENIX and non-vendor (NON-PHOENIX) commands may be sent
 				in one packet body by setting VENDOR_BIT (1)
 				or PHOENIX_BIT (0) in the packet.
-				This example shows two commands, one that is a PHOENIX command
-				the other is a vendor command.
+				This example shows two commands and the start of a third,
+				one that is a PHOENIX command	the other is a vendor command.
 			</t>
 			<figure>
 				<name>Packet Body Multiple Commands - Diagram</name>

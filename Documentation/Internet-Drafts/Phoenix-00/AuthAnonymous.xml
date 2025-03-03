@@ -30,21 +30,19 @@
 	<section anchor="AUTHANONYMOUS-COMMAND">
 		<name>Authentication - AUTHANONYMOUS - Command</name>
 		<t>
-			Once the connection is made the server sends its CAPABILITY_PRE
-			list to the client.
-			If AUTHANONYMOUS is included in that list, then the client
-			may initiate an AUTHANONYMOUS login.
+			Once the connection is made the client sends its CAPABILITY_PRE
+			list, or an authentication to the server..
 		</t>
 		<t>
 			If the client has already had a relationship with the server,
-			then the client may send the AUTHANONYMOUS command to the server
-			before receiving the servers capability list, and only if AUTHANONYMOUS
-			had been successful in the past, to that same server.
+			then the client may send the AUTHANONYMOUS command to the server.
+			And only if AUTHANONYMOUS	had been successful in the past, to that same server.
 		</t>
 		<t>
 			If the server does not support (or no longer supports) an AUTHANONYMOUS
-			command, it will reply with a NotSupported packet with the
-			sequence number	the same as in the AUTHANONYMOUS login request.
+			command, it will reply with a CAPABILITY_PRE packet with
+			the same sequence number the same as in the AUTHANONYMOUS login request.
+			And include the authorized authentication methods.
 		</t>
 		<t>
 			After the server receives an AUTHANONYMOUS, and if it supports it,
@@ -53,11 +51,7 @@
 			Then the server replies with a CAPABILITY_POST command.
 			When the client gets the CAPABILITY_POST command, it knows
 			the AUTHANONYMOUS was successful.
-		</t>
-		<t>
-			On failure the server replies with a AUTHANONYMOUS packet,
-			with the sequence number the same that was in the
-			ANONYMOUS command it received.
+			The client may then send any CAPABILITY_POST items to the server.
 		</t>
 			
 		<figure>

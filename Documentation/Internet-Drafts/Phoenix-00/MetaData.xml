@@ -189,6 +189,12 @@
 			This value can not be unset by non owners.
 			This is global meta data.
 		</t>
+		<t>
+			User interfaces MUST NOT allow the MIME object to be copied.
+			They MUST disable any copy/paste for the object in the user interface.
+			The user interface may elect to display an indicator to the user that
+			what they are viewing is read only.
+		</t>
 	</section>
 	
 	<section>

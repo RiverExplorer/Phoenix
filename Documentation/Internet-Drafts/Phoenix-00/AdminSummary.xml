@@ -79,19 +79,17 @@
 					</td>
 					<td>
 						Holds the (VENDOR_BIT or PHOENIX_BIT) value
-						and one of SERVER_CONFIGURE, SERVER_KICK_USER,
-						SERVER_LOGS, SERVER_MANAGE_BANS, SERVER_SHUTDOWN,
-						SERVER_VIEW_STATA, USER_CREATE, USER_CREATE, USER_DELETE,
-						USER_LIST, USER_PERMISSIONS, USER_RENAME
+						and one of ADMIN commands described in this section.
 					</td>
 				</tr>
 				<tr>
 					<td>SERVER_CONFIGURE</td>
 					<td>%x05:8</td>
 					<td>
-						May configure the server. If sent with a VIEW_ONLY
-						parameter, then the user may only view the configuration
-						information.
+						May configure the server.
+						A reply may have zero to many of the reply values
+						set to READ_ONLY indicating the client may not
+						alter them
 					</td>
 					<td>
 						The command to view and alter the server configuration
@@ -102,7 +100,7 @@
 					<td>SERVER_KICK_USER</td>
 					<td>%x06:8</td>
 					<td>
-						May logout a user. And limit when they can use the server again.
+						logs out a user. And may limit when they can use the server again.
 					</td>
 					<td>
 						The command to kick and limit a user.

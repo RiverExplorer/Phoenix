@@ -1,5 +1,5 @@
 <artwork type="abnf" name="" align="left" alt=""><![CDATA[
-AuthAnonymous  = (VENDOR_BIT / PHOENIX_BIT) AUTHANONYMOUS
+AuthAnonymous  = PHOENIX_BIT:1 AUTHANONYMOUS:31
 ]]></artwork>
 
 

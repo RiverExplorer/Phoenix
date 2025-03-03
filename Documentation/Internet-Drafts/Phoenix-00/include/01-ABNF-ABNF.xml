@@ -15,8 +15,8 @@ uint64_t     = %x0000000000000000-ffffffffffffffff:64
                ;  associated object.
 Length       = uint32_t
 
-               ; This is a generic array of UTF-8 characters
-               ; without any terminating character.
+               ; This is a generic array of UTF-8
+               ; characters without any terminating character.
                ; They could be 1, 2, 3, or 4 octet UTF-8
                ; characters. The implemention must ensure
                ; that complete characters are containd in
@@ -98,12 +98,27 @@ unused16     = %x00:16
 
 unused24     = %x00:24
 
-               ; The highest bit when, 1 means it is
-               ; a vendor extension.
-VENDOR_BIT   = %x01:1
-										
-               ; The highest bit when, 0 means it is
-               ; a Phoenix command or future Phoenix command.
-PHOENIX_BIT  = %x00:1
+               ; When VENDOR_BIT is applicable, it is the highest
+               ; bit in the value, when 1 means it is a vendor
+               ; extension command and not a Phoenix compliant
+               ; command.
+               ; Or it means that a non Phoenix compliant
+               ; object follows.
+               ;
+               ; The VENDOR_BIT is a %0x1 shifted to the left most
+               ; position in the value.
+               ; A mask for the VENDOR_BIT with a 32-bit value
+               ; would be %x80000000:32.
+               ; When the VENDOR_BIT is set, the lower value bits
+               ; are vendor specific and out of scope for
+               ; the specification.
+VENDOR_BIT   = %0x01:1
+
+               ; When the 'VENDOR_BIT' is zero, it is a Phoenix
+               ; compliant command, or is a Phoenix compliant
+               ; object that follows.
+               ; When the VENDOR_BIT is not set, the lower bits
+               ; are defined in this specification.
+PHOENIX_BIT  = %0x00:1
 
 ]]></artwork>

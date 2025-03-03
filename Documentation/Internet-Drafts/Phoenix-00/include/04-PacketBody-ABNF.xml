@@ -38,7 +38,6 @@ OneCommand   = AUTHANONYMOUS AuthAnonymousPayload
              / USER_LIST UserListPayload
              / USER_PERMISSIONS UserPermissionsPayload
              / USER_RENAME UserRenamePayload
-             / VENDOR_ID VendorIDPayload
              / RESERVED_CMD
 
 OneReply     = AUTHANONYMOUS AuthAnonymousReplyPayload

@@ -62,9 +62,6 @@
 							See <xref target="rpcgendocs"/>.
 						</t>
 						<t>
-							The ABNF definition for opaque is in <xref target="GenericAbnf"/>
-						</t>
-						<t>
 							<br/>
 							"string MyVariableName&lt;&gt;;"
 							<br/>
@@ -84,9 +81,6 @@
 							See <xref target="rpcgendocs"/>.
 						</t>
 						<t>
-							The ABNF definition for opaque is in <xref target="GenericAbnf"/>
-						</t>
-						<t>
 							<br/>
 							"opaque MyOpaqueData&lt;&gt;;"
 							<br/>
@@ -98,6 +92,41 @@
 				</tr>
 			</tbody>
 		</table>
+		<t>
+			Arrays in XDR have a "&lt;&gt;" in them to indicate they are arrays.
+			The following two are equivalent, and represent a length
+			followed by length number of items:
+		</t>
+		<figure>
+			<artwork type="abnf" name="" alt=""><![CDATA[
+			ABNF:
+			StringOfCharacters = uint32_t *uint8_t
+			ArrayOfWidget      = uint32_t *Widget
+			PNGFileData        = uint32_t *uint8_t
+]]></artwork>
+		</figure>
+			<t>
+				and
+			</t>
+		<figure>
+			<artwork type="abnf" name="" alt=""><![CDATA[
+			XDR:
+			string StringOfCharacters<>;
+			Widget ArrayOfWidget<>;
+			opaque PNGFileData<>;
+]]></artwork>
+		</figure>
+		<t>
+			XDR has an 'opaque' data type.
+			An opaque object (or array of objects) represents data that is not
+			encoded in any way. A PNG file for example does not get network byte
+			translated, it is sent as an opaque blob of unaltered data.
+		</t>
+		<t>
+			A 'string' in XDR represents a string of characters
+			that is terminated with a single %x00 value and is often
+			meant to be human readable.
+		</t>
 	</section>
 	<section>
 		<name>ABNF Number of bits in value</name>
@@ -106,7 +135,7 @@
 			to deal with bit width in a binary number.
 		</t>
 		<t>
-			Terminals may specify a bit width.
+			In this specification ABNF 'Terminals' may specify a bit width.
 			That is the number of bits in the value.
 		</t>
 		<t>
@@ -276,8 +305,8 @@ Header = (Offset &lt;&lt; 24) | (Flags &lt;&lt; 22) | Length;
 					<td>
 						<t>
 							An array of 8-bit values that will not be
-							XDR encoded or XDR decoded when tranfering the data
-							over this protcol.
+							XDR encoded or XDR decoded when transferring the data
+							over this protocol.
 						</t>
 					</td>
 					<td>
@@ -305,7 +334,7 @@ Header = (Offset &lt;&lt; 24) | (Flags &lt;&lt; 22) | Length;
 					<td>
 						An 8-bit value.
 						Signifies the operation will set a value.
-						This is used in a few places to signifiy
+						This is used in a few places to signify
 						the operation to apply to any included data.
 					</td>
 					<td>

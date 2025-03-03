@@ -50,4 +50,6 @@ NOT_SUPPORTED			%x2b:31
 PING				%x2c:31
 BYE				%x2d:31
 
+SERVER_TIMEOUT - a capability with a integer ... TBD
+
 

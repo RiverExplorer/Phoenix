@@ -39,17 +39,20 @@
 		client may send an Auth Command to initiate the authorization
 		and does not send its pre authentication capability list
 		to the server.
-		It then waits for the Auth reply from the server.
+		The client then waits for the Auth reply from the server.
 	</t>
 	<ul>
 		<li>
-			If the client gets an Auth reply that is positive,
-			it sends its post authentication capability list to the server.
+			If the client gets a successful Auth reply,
+			then the client sends its post authentication capability list to the server.
 		</li>
 		<li>
-			If the client gets an Auth reply that is negative,
-			it sends its pre authentication
-			capability list to the server.
+			If the client get an unsuccessful Auth reply,
+			then the client sends its pre authentication
+			capability list to the server followed by another
+			Auth command.
+			Upon too many retries, the server or client may terminate
+			the connection.
 		</li>
 	</ul>
 	<t>
@@ -58,26 +61,33 @@
 	</t>
 	<ul>
 		<li>
-			If the Auth reply is positive, then it also sends it
-			post authentication capability list.
+			If the Auth was successful, then the server sends
+			a post authentication capability list.
 		</li>
 		<li>
-			If the Auth reply is negative, then it sends its
+			If the Auth was unsuccessful, then the server sends its
 			pre authentication capability list to the client.
 		</li>
 	</ul>
 	<t>
-		A server may automatically send its pre authentication
-		capability list to the client upon initial connection.
-		Or it may wait to see if it gets a pre authentication
-		capability list, or an Auth command.
+		When the server gets a new connection, it waits for
+		a packet from the client. It will be a pre authentication
+		capability packet, or a authentication packet.
+		When the server has an unauthenticated connection, it
+		only accepts two kinds of packets:
 	</t>
+	<ul>
+		<li>
+			A pre authentication capability packet.
+			Which is replied to by the server with its pre authentication
+			packet.
+		</li>
+		<li>An authentication packet.</li>
+	</ul>
 	<t>
-		If the client sends an Auth command as its first packet,
-		it may get the pre authentication capability from the server
-		before the Auth reply. Simply process both.
+			Upon too many retries, the server or client may terminate
+			the connection.
 	</t>
-	
 	<xi:include href="ProtocolSummary.xml"/>
 	<xi:include href="AdminSummary.xml"/>
 	<xi:include href="AuthSummary.xml"/>
@@ -91,5 +101,6 @@
 	<xi:include href="KeepAliveSummary.xml"/>
 	<xi:include href="PingSummary.xml"/>
 	<xi:include href="SMimeSummary.xml"/>
+	<xi:include href="VendorID.xml"/>
 
 </section>

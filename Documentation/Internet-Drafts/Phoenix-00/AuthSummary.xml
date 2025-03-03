@@ -51,11 +51,10 @@
 			If the authentication fails, then the server replies
 			back with a CAPABILITY_PRE with the sequence
 			number the same as in the authentication request.
+			And includes the supported authentication methods.
 		</t>
 		<t>
-			Or The server replies with a NOT_SUPPORTED when the authentication
-			method is not supported, and with the sequence
-			number the same as in the authentication request.
+			After too many retries, the client or server may terminate the connection.
 		</t>
 		<figure>
 			<name>AUTHCERT_USER</name>

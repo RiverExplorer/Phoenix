@@ -29,6 +29,7 @@ SOURCES.xml = \
 	draft-00.xml \
 	FileBinaryValues.xml \
 	Folder.xml \
+	IANA.xml \
 	Index.xml \
 	Introduction.xml \
 	KeepAliveSummary.xml \
@@ -185,13 +186,13 @@ $(TOPDOC.xml) : draft-00.xml ALL-ABNF.xml ALL-XDR.xml $(SOURCES.xml) $(REFERENCE
 	xmllint --xinclude --format $< > $@
 
 ALL-ABNF.xml : $(ABNF)
-	echo "<section>" > $@
+	echo "<section anchor='all-abnf'>" > $@
 	echo "<name>Complete ABNF</name>" >> $@
 	cat $(ABNF) >> $@
 	echo "</section>" >> $@
 
 ALL-XDR.xml : $(INCLUDE.xml) $(GENERATED.XDR)
-	echo "<section>" > $@
+	echo "<section anchor='all-xdr'>" > $@
 	echo "<name>Complete XDR</name>" >> $@
 	cat $(GENERATED.XDR) >> $@
 	echo "</section>" >> $@

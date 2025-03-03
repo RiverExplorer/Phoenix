@@ -10,13 +10,16 @@
 		It is not valid for the server to send a ping command to a client.
 	</t>
 	<t>
+		A ping command must not be sent before a successful authentication.
+	</t>
+	<t>
 		The ping command MUST NOT be the first command sent to the server.
 		It should only be sent when the client implementation determines
 		it has waited too long for a reply.
 	</t>
 	<t>
 		If the server supports the ping command, then a PING capability
-		is sent in the pre authentication capability command.
+		is sent in the CAPABILITY_POST command.
 	</t>
 	<t>
 		Sometimes servers are unavailable and can go down.
@@ -33,21 +36,11 @@
 		<li>
 			When the server did not send PING capability in the
 			post authentication capability list to the client.
-			Then the server replies with a NotSupported packet
-			with the sequence number the same as in the ping command.
+			The server ignores the PING command.
 		</li>
 		<li>
-			When the server has not yet received an authentication
-			command, the server replies with a NotSupported packet
-			with the sequence number the same as in the ping command.
-		</li>
-		<li>
-			When the server has received an authentication command,
-			and has not yet replied to an authentication command.
-			Then the server sends a ping reply, with the same sequence
-			number that was in the ping command.
-			This could happen when the client implementation had determined it
-			has waited too long	for an authentication reply.
+			When the connection is not authenticated,
+			The server ignores the PING command.
 		</li>
 		<li>
 			When the client is authenticated,
@@ -73,14 +66,21 @@
 	<t>
 		A client MUST NOT send a ping command if it is waiting
 		the results of a previously sent ping command.
+		If the server is ignoring PING commands, a reply will
+		never happen.
 	</t>
 	<t>
 		A client MUST NOT send a ping command more frequently
-		than 90% of the server timeout.
+		than 90% of the SERVER_TIMEOUT value that the server sent
+		in the CAPABILITY_POST command.
 	</t>
 	<t>
-		Clients and servers must give priority to ping commands.
+		Servers must give priority to ping commands.
 		If possible, reply as soon as it receives the command.
+	</t>
+	<t>
+		With servers that support PING, clients MUST NOT send any other
+		command while wating for the PING reply.
 	</t>
 	<t>
 		The server MAY consider too many ping commands as a malfunctioning

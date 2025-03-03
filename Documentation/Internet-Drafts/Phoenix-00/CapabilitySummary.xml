@@ -32,12 +32,11 @@
 	<t>
 		These are not a negotiation.
 		Each sends their abilities to the other.
-		Once before authentication, and once after.
 	</t>
 
 	<t>
-		Capabilities from the server are sent twice.
-		Once before the user is authenticated (CAPABILITY_PRE),
+		Capabilities from the server are sent once or twice.
+		Optionally one before the user is authenticated (CAPABILITY_PRE),
 		and once after (CAPABILITY_POST).
 		If a user logs out and stays connected, then the process starts
 		over with the server assuming a new client just connected.
@@ -63,17 +62,11 @@
 		value.
 	</t>
 	<t>
-		<em>NOTE: Vendor specific capabilities MUST have no data.
+		<em>NOTE: Vendor specific capabilities MUST include a Length
+		value after the capability value.
 		This is because there is no way a non compatible implementation
 		could calculate the length of the data that would follow it
 		in order to find the next capability or command in the packet.
-		When any additional data is needed, it must be done with
-		a vendor specific command, that could also be included
-		in the same packet, and separate from the CAPABILITY_PRE
-		and CAPABILITY_POST list.
-		In such cases, the vendor specific capability would inform
-		the other endpoint to look for the additional vendor
-		specific command data in the packet.
 		</em>
 	</t>
 
@@ -88,13 +81,11 @@
 	<section>
 		<name>Capability - CAPABILITY_PRE</name>
 		<t>
-			Capabilities sent before authentication are called
-			CAPABILITY_PRE and are sent from the server to the client
-			and optionally from the client to the server.
+			Pre authentication capabilities are sent before authentication.
 		</t>
 		<t>
 			The only CAPABILITY_PRE that the client sends to the server
-			is the VENDOR_ID.
+			in this specification is optionally the VENDOR_ID.
 			Vendors may add new client to server capabilities as long
 			as they set the VENDOR_BIT in the command and are implemented
 			to understand that not all server will understand their
@@ -141,29 +132,28 @@
 					</td>
 				</tr>
 				<tr>
-					<td>AUTHCERT</td>
-					<td>%x11:31</td>
+					<td>AUTHCERT_TLS</td>
+					<td>%x27:31</td>
 					<td>
-						AuthcertType
+						CMD_e
 					</td>
 					<td>
 						<t>
-							Authenticate by providing a certificate.
+							Authenticate using the connection TLS certificate.
 						</t>
-						<t>
-							There are two AuthcertType values:
-						</t>
-						<ul>
-							<li>
-								AUTHCERT_TLS: Authenticate using the
-								connected TLS certificate.
-							</li>
-							<li>
-								AUTHCERT_USER: A second certificate
-								is available to use that must match
-								what the client is using.
-							</li>
-						</ul>
+					</td>
+				</tr>
+				<tr>
+					<td>AUTHCERT_USER</td>
+					<td>%x28:31</td>
+					<td>
+						CMD_e
+					</td>
+					<td>
+						Like AUTHMD5, an account and password are provided
+						in the payload and they are encrypted with a
+						prearranged certificate.
+						The server must already have the accounts public certificate.
 					</td>
 				</tr>
 				<tr>
@@ -174,7 +164,8 @@
 						<t>
 							VENDOR_ID includes a vendor ID
 							string that can be used to help the server determine
-							if it will send a post-authentication ADMIN capability.
+							if it will send a post-authentication ADMIN capability
+							or other vendor specific abilities.
 						</t>
 						<t>
 							The specific string value is determined by the server
@@ -191,8 +182,20 @@
 		<t>
 			Table <xref target="PostAuthCap"/> lists the CAPABILITY_POST
 			capabilities.
-			Post-Authentication capabilities are sent to the client after
+			Post-Authentication capabilities are sent to the client aftera
 			a user authenticates.
+		</t>
+		<t>
+			A client or server may or might not also send an additional CAPABILITY_POST command
+			as account permissions change.
+		</t>
+		<t>
+			For example after authentication an administrator could give the
+			current user more permissions.
+			At that time the server would send a new CAPABILITY_POST to the client.
+			Or perhaps the client needs to update the server with a new VENDOR_ID
+			and CAPABILITY_POST after a license key is installed.
+			Or perhaps remove capabilities after business hours.
 		</t>
 
 		<table anchor="PostAuthCap">
@@ -209,7 +212,5 @@
 			</tbody>
 		</table>
 	</section>
-
-	<xi:include href="VendorID.xml"/>
 </section>
 

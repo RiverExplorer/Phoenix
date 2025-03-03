@@ -4,4 +4,5 @@ ConfigSet            = (Unused24:24 Op:8):32 Length 1*KeyPair
 
                        ; The SERVER_CONFIGURE command.
 ServerConfigPayload  = SERVER_CONFIGURE Length 1*ConfigSet
+
 ]]></artwork>
