@@ -1,6 +1,17 @@
 /**
- * Phoenix (C) 2025 by Douglas Mark Royer (A.K.A. RiverExplorer) is licensed under CC BY 4.0.
- * RiverExplorer is a trademark of RiverExplorer Games LLC.
+ * Project: Phoenix
+ * Time-stamp: <2025-03-03 12:17:36 doug>
+ * 
+ * @file CppCapability.hpp
+ * @author Douglas Mark Royer
+ * @date 24-FEB-20205
+ * 
+ * @Copyright(C) 2025 by Douglas Mark Royer (A.K.A. RiverExplorer)
+ * 
+ * Licensed under the MIT License. See LICENSE file
+ * or https://opensource.org/licenses/MIT for details.
+ * 
+ * RiverExplorer is a trademark of Douglas Mark Royer
  */
 
 #ifndef _RIVEREXPLORER_PHOENIX_CPPCAPABILITY_HPP_
@@ -20,17 +31,35 @@
 #include <RiverExplorer/Phoenix/VendorID.hpp>
 #endif
 
-
-
 namespace RiverExplorer::Phoenix
 {
 
+	
+	/**
+	 * Base class for all capability entries.
+	 */
+	class CapabilityEntryBase
+		: public CapabilityEntry
+	{
+	public:
+		
+		/**
+		 * Initialize the PreAuth and PostAuth vectors for Capability.
+		 */
+		virtual void InitializeKnown() = 0;
+
+		/**
+		 * @return The CAPABILITY CMD_e.
+		 */
+		CMD_e Cmd() const;
+	};
+	
 	/**
 	 * @class CapabilityCommand CppCapability.hpp <RiverExplorer/Phoenix/CppCapability.hpp>
 	 * A CAPABILITY command that holds zero or more capabilities.
 	 */
 	class CapabilityCommand
-		: public OneCommand
+		: public Command
 	{
 	public:
 
@@ -39,7 +68,7 @@ namespace RiverExplorer::Phoenix
 		 *
 		 * @param NewOne The new Capability to add.
 		 */
-		virtual void Add(CapabilityEntry * NewOne) = 0;
+		void Add(CapabilityEntryBase * NewOne);
 
 		/**
 		 * Get the SEQ_e in this command.
@@ -47,29 +76,39 @@ namespace RiverExplorer::Phoenix
 		SEQ_t	SEQ() const;
 
 		/**
+		 * This the capabilty type CAPABILITY_PRE
+		 * or CAPABILITY_POST.
+		 */
+		CMD_e Cmd() const;
+		
+		/**
 		 * Get the CMD_e.
 		 *
 		 * Get the command for which entry.
 		 */
-		CMD_e operator[](size_t Offset) const;
+		CapabilityEntryBase * operator[](size_t Offset) const;
 
 		/**
 		 * The number of entries in _Entries.
 		 */
 		size_t size() const;
 		
-	private:
+	protected:
 		/**
 		 * CapabilityCommand - Constructor.
 		 *
 		 * @param SEQ The sequence number.
+		 *
+		 * @param Cmd The command.
 		 */
-		CapabilityCommand();
+		CapabilityCommand(SEQ_t SEQ, CMD_e Cmd);
 
+	private:
+		
 		/**
 		 * All capability entries in this command.
 		 */
-		std::vector<CapabilityEntry*> _Entries;
+		std::vector<CapabilityEntryBase*> _Entries;
 	};
 
 	/**
@@ -82,24 +121,28 @@ namespace RiverExplorer::Phoenix
 	public:
 		
 		/**
-		 * Create a new CapabilityCommandPre object.
+		 * CapabilityCommandPre - Constructor.
 		 *
 		 * @param SEQ The command sequence number.
 		 */
-		Command * New(SEQ_t SEQ);
+		CapabilityCommandPre(SEQ_t SEQ);
 
+		/**
+		 * CapabilityCommandPre - Destructor.
+		 */
+		virtual ~CapabilityCommandPre();
+		
 		/**
 		 * When a the Capability command comes in, call this method.
 		 *
 		 * @param Fd the associated socket file descriptor.
 		 *
-		 * @param Pkt The incomming packet.
+		 * @param Pkt The incoming packet.
 		 *
 		 * @param ReadXdrs The XDR input stream for the still encoded
 		 * XDR data.
 		 */
 		static bool Callback(int Fd, Command * Pkt, XDR * ReadXdrs);
-
 
 		/**
 		 * List of pre authentication capabilities supported by
@@ -114,7 +157,6 @@ namespace RiverExplorer::Phoenix
 		static std::vector<Register::PluginCapability*>  PostAuth;
 
 	private:
-		CapabilityCommandPre();
 	};
 
 	class CapabilityCommandPost
@@ -123,18 +165,23 @@ namespace RiverExplorer::Phoenix
 	public:
 		
 		/**
-		 * Create a new CapabilityCommandPost object.
+		 * CapabilityCommandPost - Constructor.
 		 *
 		 * @param SEQ The command sequence number.
 		 */
-		Command * New(SEQ_t SEQ);
-		
+		CapabilityCommandPost(SEQ_t SEQ);
+
+		/**
+		 * CapabilityCommandPost - Destructor.
+		 */
+		virtual ~CapabilityCommandPost();
+
 		/**
 		 * When a the Capability command comes in, call this method.
 		 *
 		 * @param Fd the associated socket file descriptor.
 		 *
-		 * @param Pkt The incomming packet.
+		 * @param Pkt The incoming packet.
 		 *
 		 * @param ReadXdrs The XDR input stream for the still encoded
 		 * XDR data.
@@ -156,15 +203,16 @@ namespace RiverExplorer::Phoenix
 	private:
 		CapabilityCommandPost();
 	};
-	
-	class CppCapabilityVendor
-		: public Vendor
+
+	class VendorCapability
+		: public CapabilityEntryBase
 	{
 	public:
 		/**
-		 * Make a Vendor CAPABILITY.
+		 * VendorCapability - Constructor.
+		 * Construct a capability entry.
 		 *
-		 * @param VendorCapabilityID The value to use for the
+		 * @param ID The value to use for the
 		 * vendor capability.
 		 *
 		 * @param Data The value to use in the vendor capability.
@@ -175,14 +223,29 @@ namespace RiverExplorer::Phoenix
 		 * VendorString will be free()'d when the Command is
 		 * deleted. So, duplicate it, if you need to keep the data.
 		 */
-		static CapabilityEntry * New(uint32_t VendorCapabilityID,
-																 uint8_t * Data,
-																 Phoenix::Length Count);
+		VendorCapability(uint32_t ID,
+										 uint8_t * Data,
+										 Phoenix::Length Count);
+
+		/**
+		 * Get the data and length.
+		 *
+		 * @param[out] Data A reference to a (uint8_t*) that
+		 * will be set to point to where the data is.
+		 *
+		 * @param[out] Count How many octets are in Data.
+		 */
+		void		GetData(uint8_t *& Data, Phoenix::Length & Count) const;
+		
+		/**
+		 * VendorCapability - Destructor.
+		 */
+		virtual ~VendorCapability();
 
 		/**
 		 * Initialize the PreAuth and PostAuth vectors for Capability.
 		 */
-		virtual void InitalizeKnown() = 0;
+		virtual void InitializeKnown();
 
 		/**
 		 * We register for the ClientAuthenticated_s event.
@@ -202,26 +265,38 @@ namespace RiverExplorer::Phoenix
 																		void * VPeerInfo);
 	};
 	
-	class CppCapabilityVendorID
-		: public VendorID
+	class VendorIDCapability
+		: public CapabilityEntryBase
 	{
 	public:
 		/**
-		 * Make a Vendor CAPABILITY.
+		 * VendorIDCapability - Constructor.
+		 * Construct a capability entry.
 		 *
-		 * @param VendorCapabilityID The value to use for the
-		 * vendor capability.
+		 * @param VendorString The vendor ID string.
 		 *
 		 * @note
 		 * VendorString will be free()'d when the Command is
 		 * deleted. So, duplicate it, if you need to keep the data.
 		 */
-		static CapabilityEntry * New(char * ID);
+		VendorIDCapability(char * VendorString);
 
+		/**
+		 * Get the VendorString.
+		 *
+		 * @return The vendor string.
+		 */
+		const char * VendorString() const;
+		 
+		/**
+		 * CppCapabilityVendorID - Destructor.
+		 */
+		virtual ~VendorIDCapability();
+		
 		/**
 		 * Initialize the PreAuth and PostAuth vectors for Capability.
 		 */
-		virtual void InitalizeKnown();
+		virtual void InitializeKnown();
 
 		/**
 		 * We register for the ClientAuthenticated_s event.

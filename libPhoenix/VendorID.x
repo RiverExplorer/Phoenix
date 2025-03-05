@@ -1,7 +1,7 @@
 #ifdef RPC_HDR
 %/**
 % * Project: Phoenix
-% * Time-stamp: <2025-03-03 01:38:00 doug>
+% * Time-stamp: <2025-03-03 09:18:33 doug>
 % *
 % * @file VendorID.x
 % * @copyright (C) 2025 by Douglas Mark Royer (A.K.A. RiverExplorer)
@@ -15,6 +15,12 @@
 #endif
 
 #ifdef RPC_HDR
+%#ifdef BUILDING_LIBPHOENIX
+%#include "Commands.hpp"
+%#else
+%#include <RiverExplorer/Phoenix/Commands.hpp>
+%#endif
+%
 %/**
 % * @typedef VendorID
 % * A string that when supplied, identifies the vendor specific
@@ -23,5 +29,6 @@
 #endif
 class VendorID
 {
+	CMD_e Cmd;
 	string ID<>;
 };

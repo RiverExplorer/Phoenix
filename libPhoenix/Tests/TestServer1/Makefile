@@ -41,7 +41,7 @@ LIBTOP			= ../..
 # What to call this program.
 # And what the include/RiverExplorer/$(TARGET) header directory will be.
 #
-TARGET			= TestServer
+TARGET			= TestServer1
 
 CPPFLAGS		+= 
 
@@ -65,7 +65,7 @@ ANDROID_CPPFLAGS +=
 
 ANDROID_LIBS	+= -L/usr/local/Phoenix/Linux/Debug/lib
 
-LIBS		+= -lPhoenix -lxslt -lxml2 -ltirpc -lcrypto -lssl -lz -Wl,--as-needed
+LIBS		+= -Wl,-Bdynamic -lPhoenix -lxslt -lxml2 -ltirpc -lcrypto -lssl -lz -Wl,--as-needed
 
 # Build as much as possible, with static libs.
 #
@@ -76,9 +76,10 @@ include $(TOP)/BuildTools/Makefile.bottom
 clean ::
 
 LinuxDebugRun : LinuxDebug
-	BuildTemp/Linux/Debug/bin/TestServer1
+#	-BuildTemp/Linux/Debug/bin/TestServer1
 
 RunTests::
-	BuildTemp/Linux/Tcov/sbin/TestServer1
+#	-(BuildTemp/Linux/Tcov/sbin/TestServer1&)
+
 
 

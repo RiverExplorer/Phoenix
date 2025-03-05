@@ -62,8 +62,12 @@ namespace RiverExplorer::Phoenix
 		 * Server - Default Constructor.
 		 *
 		 * This is a singleton object.
+		 *
+		 * @param ServerName The name of the program
+		 * that will be used in the logs and for finding
+		 * configuration information.
 		 */
-		Server();
+		Server(const std::string & ServerName);
 
 		/**
 		 * Server - Destructor.
@@ -135,7 +139,7 @@ namespace RiverExplorer::Phoenix
 		/**
 		 * Client Map.
 		 *
-		 * Map a file desciptor to the connection information.
+		 * Map a file descriptor to the connection information.
 		 * This is the data associated with a file descriptor.		 
 		 */
 		struct ClientInfo
@@ -225,6 +229,42 @@ namespace RiverExplorer::Phoenix
 		static bool _ValidateIP(int Fd, Event::Event_e ID, void * Peer);
 		 
 		/**
+		 * Check for blocked or other IP's
+		 *
+		 * This is called from the PhoenixEvent ClientDisconnected_Event.
+		 *
+		 * @param Fd The file descriptor of the new connection.
+		 *
+		 * @param ID The ID that was returned from the PhoenixEvent::Register()
+		 * call.
+		 *
+		 * @param Peer The PeerInfo of the disconnected connection.
+		 * Cast to a (PeerInfo*).
+		 *
+		 * @return true if the IP is allowed.
+		 * Returns false if the IP is not allowed.
+		 */
+		static bool _Disconnected(int Fd, Event::Event_e ID, void * Peer);
+		 
+		/**
+		 * Check for blocked or other IP's
+		 *
+		 * This is called from the PhoenixEvent ErrorOnFd_Event
+		 *
+		 * @param Fd The file descriptor that had the error.
+		 *
+		 * @param ID The ID that was returned from the PhoenixEvent::Register()
+		 * call.
+		 *
+		 * @param Peer The PeerInfo of the associated connection.
+		 * Cast to a (PeerInfo*).
+		 *
+		 * @return true if the IP is allowed.
+		 * Returns false if the IP is not allowed.
+		 */
+		static bool _ErrorOnFd(int Fd, Event::Event_e ID, void * Peer);
+		 
+		/**
 		 * @addtogroup PhoenixEvent
 		 * Server invokes the following PhoenixEvents:
 		 * This object is private because only the Server can invoke
@@ -259,7 +299,7 @@ namespace RiverExplorer::Phoenix
 
 			/**
 			 * @addtogroup PhoenixEvent
-			 * This method calls DispatchCallbaks in the base class.
+			 * This method calls DispatchCallbacks in the base class.
 			 * Just a convenience wrapper that takes (char*) and not (void*).
 			 *
 			 * @param Fd The associated file descriptor, or (-1)
@@ -275,11 +315,11 @@ namespace RiverExplorer::Phoenix
 			 * May return false for NewClientConnection, if the
 			 * callback is telling the server to block this connection.
 			 */
-			static bool Invoke(int Fd, Event::Event_e ID, const char * Msg = nullptr);
+			static bool InvokeMessage(int Fd, Event::Event_e ID, const char * Msg = nullptr);
 
 			/**
 			 * @addtogroup PhoenixEvent
-			 * This method calls DispatchCallbaks in the base class.
+			 * This method calls DispatchCallbacks in the base class.
 			 * Just a convenience wrapper that takes (char*) and not (void*).
 			 *
 			 * @param Fd The associated file descriptor, or (-1)
@@ -293,7 +333,7 @@ namespace RiverExplorer::Phoenix
 			 * May return false for NewClientConnection, if the
 			 * callback is telling the server to block this connection.
 			 */
-			static bool Invoke(int Fd, Event::Event_e ID, const IPPeer * Peer);
+			static bool InvokePeer(int Fd, Event::Event_e ID, const IPPeer * Peer);
 
 		private:
 		
@@ -311,7 +351,7 @@ namespace RiverExplorer::Phoenix
 
 			/**
 			 * @addtogroup PhoenixEvent
-			 * This method calls DispatchCallbaks in the base class.
+			 * This method calls DispatchCallbacks in the base class.
 			 *
 			 * @param Fd The associated file descriptor, or (-1)
 			 * if not associated with a file descriptor.
@@ -326,7 +366,7 @@ namespace RiverExplorer::Phoenix
 			 * May return false for NewClientConnection, if the
 			 * callback is telling the server to block this connection.
 			 */
-			virtual bool Invoke(int Fd, Event_e ID, void * Data = nullptr);
+			virtual bool InvokeData(int Fd, Event_e ID, void * Data = nullptr);
 
 		};
 
@@ -385,7 +425,7 @@ namespace RiverExplorer::Phoenix
 		static std::mutex			_FdMutex;
 
 		/**
-		 * Close down and free stuf for client on FD
+		 * Close down and free stuff for client on FD
 		 *
 		 * @param Fd The associated file descriptor.
 		 */
@@ -444,7 +484,12 @@ namespace RiverExplorer::Phoenix
 		 * This is used in log and configuration file names.
 		 */
 		static const char * _ServerProgramName;
-		
+
+		/**
+		 * When true, do not use SSL/TLS.
+		 * Not secure, used for debugging and intra company communications.
+		 */
+		static bool _NoTls;
 	};
 }
 #endif // _RIVEREXPLORER_PHOENIX_SERVER_HPP_

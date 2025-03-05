@@ -4,7 +4,7 @@
  * @file Server.cpp
  * @copyright (C) 2025 by Douglas Mark Royer (A.K.A. RiverExplorer)
  * @author Douglas Mark Royer
- * Time-stamp: "2025-02-26 17:34:16 doug"
+ * Time-stamp: "2025-03-04 16:36:51 doug"
  * @date 24-FEB-20205
  *
  * licensed under CC BY 4.0.
@@ -20,6 +20,7 @@
 #include "Log.hpp"
 #include "Server.hpp"
 #include "Register.hpp"
+#include "ThreadName.hpp"
 
 #include <stdio.h>
 #ifndef W64
@@ -39,6 +40,7 @@
 #include <iostream>
 #include <dirent.h>
 #include <endian.h>
+#include <csignal>
 
 #ifndef W64
 #include <byteswap.h>
@@ -53,11 +55,21 @@
 
 namespace RiverExplorer::Phoenix
 {
+	// SIGHUP
+	//
+	static volatile sig_atomic_t SigHup = 0;
+	
 	// List of peer IP, by socket file descriptor.
 	// An array of _FdMax ClientInfo objects.
 	//
 	static Server::ClientInfo	**		Clients;
 
+#ifdef DEBUG	
+	bool														Server::_NoTls = true;
+#else
+	bool														Server::_NoTls = false;
+#endif
+	
 	// List of file descriptors to remove from poll() next time it wakes up.
 	//
 	std::set<int>						Server::_RemoveFds;
@@ -105,6 +117,7 @@ namespace RiverExplorer::Phoenix
 	// The name of the server program.
 	//
 	const char						*	Server::_ServerProgramName = nullptr;
+	static std::string			ServerPath;
 	
 	// The thread that runs the server.
 	//
@@ -175,10 +188,14 @@ namespace RiverExplorer::Phoenix
 				} else if (errno == EBADF) {
 					// Bad file descriptor.
 					//
-					_Event::Invoke(Fd, Event::ErrorOnFd_Event,
-												 "Server.cpp:_NetWrite:ERROR:EBANF:Closed socket.\n");
-					_Event::Invoke(Fd, Event::ClientDisconnected_Event,
-												 "Server.cpp:_NetWrite:ERROR:EBANF:Closed socket.\n");
+					//Server.cpp:_NetWrite:ERROR:EBANF:Closed socket.
+					//
+					_Event::InvokePeer(Fd,
+														 Event::ErrorOnFd_Event,
+														 &Clients[Fd]->Peer);
+					_Event::InvokePeer(Fd,
+														 Event::ClientDisconnected_Event,
+														 &Clients[Fd]->Peer);
 					RemoveFd(Fd);
 					Results = -1;
 
@@ -187,10 +204,15 @@ namespace RiverExplorer::Phoenix
 					//
 					RemoveFd(Fd);
 					Results = -1;
-					_Event::Invoke(Fd, Event::ErrorOnFd_Event,
-												 "Server.cpp:_NetWrite:ERROR:EPIPE:Closed socket.\n");
-					_Event::Invoke(Fd, Event::ClientDisconnected_Event,
-												 "Server.cpp:_NetWrite:ERROR:EPIPE:Closed socket.\n");
+
+					// Server.cpp:_NetWrite:ERROR:EPIPE:Closed socket.
+					//
+					_Event::InvokePeer(Fd,
+														 Event::ErrorOnFd_Event,
+														 &Clients[Fd]->Peer);
+					_Event::InvokePeer(Fd,
+														 Event::ClientDisconnected_Event,
+														 &Clients[Fd]->Peer);
 				}
 			}
 		}
@@ -211,12 +233,146 @@ namespace RiverExplorer::Phoenix
 		return;
 	}
 	
-	Server::Server()
+
+	void
+	MakeServerPath(const char * ServerProgramName)
 	{
+#ifndef W64
+		struct passwd	*	Pwd;
+		
+		Pwd = getpwuid(getuid());
+
+		if (Pwd != nullptr) {
+			ServerPath = Pwd->pw_dir;
+		}
+#else
+		ERROR IMPLEMENT W64;
+#endif
+		
+		// Path to the directory where the log file exists,
+		// under the users home.
+		//
+		// Linux Path:
+		//
+		//		~/.Phoenix/RiverExplorer/Server/<ServerName>
+		//
+		// Windows Path:
+		//
+		//		(APP_DATA)/RiverExplorer/Phoenix/Server/<ServerName>
+		//
+		const char * Parts[] = {
+#ifndef W64			
+			".Phoenix",
+#endif
+			"RiverExplorer",
+			"Server",
+			nullptr
+		};
+
+		int						POffset = 0;
+		const char	*	Part = Parts[POffset];
+
+		while (Part != nullptr) {
+			ServerPath += "/";
+			ServerPath += Part;
+				
+			if (access(ServerPath.c_str(), R_OK|W_OK|X_OK) != F_OK) {
+				if (mkdir(ServerPath.c_str(), 0700) != 0) {
+					// ERROR
+					break;
+				}
+			}
+			Part = Parts[++POffset];
+		}
+		ServerPath += "/";
+		ServerPath += ServerProgramName;
+		mkdir(ServerPath.c_str(), 0700);
+
+		return;
+	}
+
+	static void
+	SigHupHandler(int Signal)
+	{
+		SigHup = Signal;
+		Log::PrintInformation("Got SIGHUP, exiting.");
+		exit(0);
+	}
+	
+	Server::Server(const std::string & ServerName)
+	{
+		static const char * LogDevice_s = "LogDevice";
+
+		// Use TLS
+		_NoTls = false;
+		
+		signal(SIGHUP, SigHupHandler);
+		
+		_ServerProgramName = strdup(ServerName.c_str());
+		
+		Configuration::ServerInitializeConfiguration(ServerName);
+		MakeServerPath(_ServerProgramName);
+
+		std::string LogDevice;
+		
+		if (_LogFp == nullptr) {
+			if (Configuration::ServerHasConfig(LogDevice_s)) {
+				LogDevice = Configuration::ServerGetConfig(LogDevice_s);
+			}
+		}
+		if (LogDevice.length() < 2) {
+			// It was not set, add the default configuration
+			// path.
+			//
+			LogDevice = ServerPath;
+			LogDevice += "/";
+			LogDevice += ServerName;
+			LogDevice += ".log";
+			Configuration::ServerSetConfig(LogDevice_s, LogDevice);
+		}
+		
+		_LogFp = fopen(LogDevice.c_str(), "a");
+
+		if (_LogFp == nullptr) {
+			//  Log::PrintError() will not work here.
+			//
+			fprintf(stderr, "ERROR: Can not open LOG device: %s\n",
+							LogDevice.c_str());
+			exit(1);
+		}
+		Log * TheLog = Log::NewLog(_LogFp, ServerName.c_str());
+
+		atexit(_Cleanup);
+		
+		std::string PidFile = ServerPath;
+
+		PidFile += "/";
+		PidFile += ServerName;
+		PidFile += ".pid";
+
+		FILE * PidFp = fopen(PidFile.c_str(), "w");
+
+		fprintf(PidFp, "%u\n", getpid());
+		fclose(PidFp);
+		chmod(PidFile.c_str(), 0600);
+
+		ThreadName::NameOurThread("Server");
+		Log::PrintInformation("Server thread starting. PID=%u",
+													getpid());
+
+		const std::string NoTls = Configuration::ServerGetConfig("NoTls");
+
+		if (NoTls == "true") {
+			_NoTls = true;
+		} else {
+			_NoTls = false;
+		}
+		
 		if (Instance == nullptr) {
 			_FdMax = sysconf(_SC_OPEN_MAX);
 				
 			Clients = new ClientInfo*[_FdMax];
+			memset(Clients, 0, sizeof(ClientInfo*) * _FdMax);
 			_Entries = new struct pollfd[_FdMax];
 
 			for (nfds_t i = 0; i < _FdMax; i++) {
@@ -324,6 +480,14 @@ namespace RiverExplorer::Phoenix
 			// Register for new client connections and validate their IP.
 			//
 			Event::Register(Event::NewClientConnection_Event, _ValidateIP);
+
+			// Register for ClientDisconnected
+			//
+			Event::Register(Event::ClientDisconnected_Event, _Disconnected);
+			
+			// Register for POLLERR
+			//
+			Event::Register(Event::ErrorOnFd_Event, _ErrorOnFd);
 		}
 		// else - ignore us!
 		//
@@ -349,6 +513,8 @@ namespace RiverExplorer::Phoenix
 	{
 		std::thread * Results = nullptr;
 
+		ThreadName::NameOurThread("Server::Start");
+
 		char On = 1;
 
 		IOInstance = new IO(true);
@@ -357,7 +523,7 @@ namespace RiverExplorer::Phoenix
 
 		_ListenFd = socket(AF_INET6, SOCK_STREAM, 0);
 		if (_ListenFd < 0) {
-			fprintf(stderr, "ERROR::Server.cpp:Start():socket() return (-1)\n");
+			Log::PrintError("Server.cpp:Start():socket() return (-1).");
 			exit(1);
 		}
 		setsockopt(_ListenFd, SOL_SOCKET, SO_REUSEADDR, &On, sizeof(On));
@@ -384,9 +550,6 @@ namespace RiverExplorer::Phoenix
 		_WorkThread = std::thread(_Work);
 		_WorkThread.detach();
 		Results = &_WorkThread;
-#ifdef DEBUG
-		_Event::Invoke(-1, Event::LoggingMessage_Event, "DEBUG:_Work thread started\n");
-#endif
 		sem_wait(&_WorkThreadReady);
 
 		return(Results);
@@ -441,22 +604,165 @@ namespace RiverExplorer::Phoenix
 
 		return;
 	}
-	
+
+#ifdef DEBUG
+	static void
+	PrintFds(struct pollfd * Entry)
+	{
+		std::string Str = "FD=";
+
+		Str += std::to_string(Entry->fd);
+
+		Str += " EVENTS  ";
+
+		if (Entry->events & POLLIN) {
+			Str += "  POLLIN ";
+		}	else {
+			Str += " !POLLIN ";
+		}
+		
+		if (Entry->events & POLLPRI) {
+			Str += "  POLLPRI ";
+		}	else {
+			Str += " !POLLPRI ";
+		}
+		
+		if (Entry->events & POLLOUT) {
+			Str += "  POLLOUT ";
+		}	else {
+			Str += " !POLLOUT ";
+		}
+		
+		if (Entry->events & POLLRDHUP) {
+			Str += "  POLLRDHUP ";
+		}	else {
+			Str += " !POLLRDHUP ";
+		}
+		
+		if (Entry->events & POLLERR) {
+			Str += "  POLLERR ";
+		}	else {
+			Str += " !POLLERR ";
+		}
+		
+		if (Entry->events & POLLHUP) {
+			Str += "  POLLHUP ";
+		}	else {
+			Str += " !POLLHUP ";
+		}
+		
+		if (Entry->events & POLLNVAL) {
+			Str += "  POLLNVAL ";
+		}	else {
+			Str += " !POLLNVAL ";
+		}
+		
+		if (Entry->events & POLLRDBAND) {
+			Str += "  POLLRDBAND ";
+		}	else {
+			Str += " !POLLRDBAND ";
+		}
+		
+		if (Entry->events & POLLMSG) {
+			Str += "  POLLMSG ";
+		}	else {
+			Str += " !POLLMSG ";
+		}
+		
+		Str += "\n     REVENTS ";
+
+		if (Entry->revents & POLLIN) {
+			Str += " *POLLIN ";
+		}	else {
+			Str += " !POLLIN ";
+		}
+		
+		if (Entry->revents & POLLPRI) {
+			Str += " *POLLPRI ";
+		}	else {
+			Str += " !POLLPRI ";
+		}
+		
+		if (Entry->revents & POLLOUT) {
+			Str += " *POLLOUT ";
+		}	else {
+			Str += " !POLLOUT ";
+		}
+		
+		if (Entry->revents & POLLRDHUP) {
+			Str += " *POLLRDHUP ";
+		}	else {
+			Str += " !POLLRDHUP ";
+		}
+		
+		if (Entry->revents & POLLERR) {
+			Str += " *POLLERR ";
+		}	else {
+			Str += " !POLLERR ";
+		}
+		
+		if (Entry->revents & POLLHUP) {
+			Str += " *POLLHUP ";
+		}	else {
+			Str += " !POLLHUP ";
+		}
+		
+		if (Entry->revents & POLLNVAL) {
+			Str += " *POLLNVAL ";
+		}	else {
+			Str += " !POLLNVAL ";
+		}
+		
+		if (Entry->revents & POLLRDBAND) {
+			Str += " *POLLRDBAND ";
+		}	else {
+			Str += " !POLLRDBAND ";
+		}
+		
+		if (Entry->revents & POLLMSG) {
+			Str += " *POLLMSG ";
+		}	else {
+			Str += " !POLLMSG ";
+		}
+		
+		Str += "\n";
+		printf("%s", Str.c_str());
+		return;
+	}
+#endif	
 	// This runs as a thread.
 	//
 	void
 	Server::_Work()
 	{
+		ThreadName::NameOurThread("Server._Work");
+
 		char On = 1;
 
-		// Start listening for incomming connections.
+		short int PollFlags;
+		
+		PollFlags = POLLIN
+			| POLLPRI
+			| POLLERR
+			| POLLHUP
+			| POLLNVAL
+			| POLLRDBAND
+			| POLLMSG;
+		
+#ifdef _GNU_SOURCE
+			PollFlags |= POLLRDHUP;
+#endif
+
+			// Start listening for incomming connections.
 		//
 		listen(_ListenFd, _Backlog);
 
-		SSL_load_error_strings();
-		ERR_load_crypto_strings();
-		OpenSSL_add_all_algorithms();
-		SSL_library_init();
+		if (!_NoTls) {
+			SSL_load_error_strings();
+			ERR_load_crypto_strings();
+			OpenSSL_add_all_algorithms();
+			SSL_library_init();
+		}
 
 		// Add _ListenFd to the entries.
 		//
@@ -501,7 +807,7 @@ namespace RiverExplorer::Phoenix
 					continue;
 				}
 
-				// Create or get the SSL info for this fd.
+				// Create client data set, per connection.
 				//
 				if (Clients[Fd] == nullptr) {
 					// It is a new client connection.
@@ -558,7 +864,7 @@ namespace RiverExplorer::Phoenix
 					if (Err == SSL_ERROR_WANT_READ) {
 						// This means check for a POLLIN on this FD.
 						//
-						_Entries[Fd].events |= POLLIN;
+						_Entries[Fd].events = PollFlags;
 						
 					} else {
 						// SSL does not want data, so don't
@@ -571,7 +877,7 @@ namespace RiverExplorer::Phoenix
 
 					// We got data in the SSL pipe, store in
 					// the FD's input buffer. It may be less
-					//  than what we expected.
+					// than what we expected.
 					//
 					if (Clients[Fd]->InboundData.TotalLength == 0) {
 						// Is a new packet, so transfer over sizeof(uint32_t)
@@ -582,7 +888,7 @@ namespace RiverExplorer::Phoenix
 						if (DidRead == sizeof(uint32_t)) {
 							uint32_t	NTotal;
 
-							memcpy(&NTotal, Buffer, sizeof(uint64_t));
+							memcpy(&NTotal, Buffer, sizeof(uint32_t));
 							Clients[Fd]->InboundData.TotalLength = ntohl(NTotal);
 							DidRead -= (int)sizeof(uint32_t);
 
@@ -608,8 +914,7 @@ namespace RiverExplorer::Phoenix
 						// The rest goes into the input buffer.
 						//
 						// We capped the read to be equal to or
-						// less than what we need, so
-						// transfer over all of it.
+						// less than what we need, so transfer over all of it.
 						//
 						/**
 						 * @todo Fix for LARGE data sizes.
@@ -708,9 +1013,14 @@ namespace RiverExplorer::Phoenix
 				//
 				for (nfds_t Fd = 3; Fd < _FdMax; Fd++) {
 
+#ifdef DEBUG
+					if (_Entries[Fd].revents != 0) {
+						PrintFds(&_Entries[Fd]);
+					}
+#endif				
 					if (_Entries[Fd].fd != -1 ) {
 						int REvents = _Entries[Fd].revents;
-						
+
 						if (REvents > 0) {
 
 							// WAKE UP POLL ...
@@ -730,84 +1040,58 @@ namespace RiverExplorer::Phoenix
 
 								// Check and update: add POLLIN, and remove POLLIN
 								//
-								if (TossMe == 'E'|| TossMe == 'B') {
+								if (TossMe == 'P') {
 									std::set<int>::iterator	EIt;
 									
-									// Go throug the existing list and update events
-									// to remove POLLIN.
+									// Go through the remove list and update events
+									// to remove POLL...
 									//
 									PollInMutex.lock();
 									
 									for (EIt = RemovePollIn.begin()
 												 ; EIt != RemovePollIn.end()
 												 ; EIt++) {
-
-										_Entries[*EIt].events ^= POLLIN;
+										_Entries[*EIt].fd = -1;
+										_Entries[*EIt].events = 0;
 										_Entries[*EIt].revents = 0;
 									}
 									RemovePollIn.clear();
 									
-									// Go throug the existing list and update events
+									// Go through the add list and update events
 									// to add POLLIN.
 									//
 									for (EIt = AddPollIn.begin()
 												 ; EIt != AddPollIn.end()
 												 ; EIt++) {
-#ifdef _GNU_SOURCE
-										_Entries[*EIt].events = POLLIN | POLLRDHUP | POLLHUP | POLLERR;
-#else
-										_Entries[*EIt].events = POLLIN | POLLHUP | POLLERR;
-#endif
+										_Entries[*EIt].fd = *EIt;
+										_Entries[*EIt].events = PollFlags;
 										_Entries[*EIt].revents = 0;
-
-										// We have something to poll.
-										//
 									}
 									AddPollIn.clear();
 									
 									PollInMutex.unlock();
 								}
 
-								// If only update File descriptors
-								// Or update Both.
+								// Done with this _WakeUpPoll
 								//
-								if (TossMe == 'F' || TossMe == 'B') {
-									_FdMutex.lock();
-
-									// Remove any that are to be removed.
-									//
-									for (SetIt = _RemoveFds.begin()
-												 ; SetIt != _RemoveFds.end()
-												 ; SetIt++) {
-										
-										_Entries[*SetIt].fd = -1;
-									}
-									_RemoveFds.clear(); // Empty the set of new file descriptors.
-
-									// Add any that are to be added.
-									//
-									for (SetIt = _NewFds.begin()
-												 ; SetIt != _NewFds.end()
-												 ; SetIt++) {
-										
-										_Entries[*SetIt].fd = *SetIt;
-									}
-									_NewFds.clear(); // Empty the set of new file descriptors.
-									_FdMutex.unlock();
-								}
-
+								continue;
+								
 							} else if ((int)Fd == _ListenFd) {
+
+								// Clear the POLLIN for this FD.
+								//
+								_Entries[Fd].revents = 0;
 								Count--;
 
 								// New activity on the listen() file descriptor.
 								//
-
 								// Get the file descriptor for the new connection.
 								//
 								int NewFd = -1;
 
 								// The Addr is a union of ipv4 and ipv6, so show
-								// we can handle the larger ipv6 address and both will work.
+								// we can handle the larger ipv6 address and both
+								// will work.
 								//
 								IPPeer Tmp;
 
@@ -816,25 +1100,26 @@ namespace RiverExplorer::Phoenix
 															 (sockaddr*)&Tmp.Addr.IpV6,
 															 &Tmp.AddrLen);
 								
-
 								if (NewFd < 0) {
-									fprintf(stderr, "ERROR::Server.cpp:Start():accept() return (-1)\n");
+									Log::PrintError("Server.cpp:Start():accept() return (-1).");
 									continue; // Something went wrong!
 								}
 								setsockopt(NewFd, SOL_SOCKET, SO_REUSEADDR, &On, sizeof(On));
+								setsockopt(NewFd, SOL_SOCKET, SO_KEEPALIVE, &On, sizeof(On));
 
 								if (Clients[NewFd] != nullptr) {
 									delete Clients[NewFd];
 								}
-								if (_Event::Invoke(NewFd, Event::NewClientConnection_Event,
-																	 &Tmp)) {
+								if (_Event::InvokePeer(NewFd,
+																			 Event::NewClientConnection_Event,
+																			 &Tmp)) {
 
 									// Set to non-blocking.
 									// Get old flags, add O_NONBLOCK and set.
 									//
-									int OldFlags = fcntl(NewFd, F_GETFL, 0);
+									int Flags = fcntl(NewFd, F_GETFL, 0);
 								
-									fcntl(NewFd, F_SETFL, OldFlags | O_NONBLOCK);
+									fcntl(NewFd, F_SETFL, Flags | O_NONBLOCK);
 
 									// Make room for the new client data.
 									//
@@ -845,17 +1130,29 @@ namespace RiverExplorer::Phoenix
 									//
 									Clients[NewFd]->Peer =  Tmp;
 
-									// Tell poll() to add a new FD.
-									// 
-									AddFd(NewFd);
+									// We add the new FD to the poll list.
+									//
+									_Entries[NewFd].fd = NewFd;
+									_Entries[NewFd].events = PollFlags;
+									_Entries[NewFd].revents = 0;
 
 								} else {
+									// The application said to block this IP.
+									// 
 									// When any NewClientConnection Event callback
 									// returns false, then this clinet was blocked for some
 									// reason.
 									//
-									Clients[NewFd] = nullptr;
-									_Event::Invoke(NewFd, Event::ClientBlocked_Event, &Tmp);
+									if (Clients[NewFd] != nullptr) {
+										delete Clients[NewFd];
+										Clients[NewFd] = nullptr;
+									}
+									_Entries[NewFd].fd = -1;
+									_Entries[NewFd].events = 0;
+									_Entries[NewFd].revents = 0;
+									_Event::InvokePeer(NewFd,
+																		 Event::ClientBlocked_Event,
+																		 &Tmp);
 									shutdown(NewFd, SHUT_RDWR);
 									close(NewFd);
 								}
@@ -865,65 +1162,76 @@ namespace RiverExplorer::Phoenix
 								/**@todo GET correct cert or generate a new one */
 								Clients[NewFd]->OurConnection.Generate();
 								Clients[NewFd]->OurConnection.Accept(NewFd, _LogFp);
-								
-								// Go back to work.
-								//
 							}
 						}
-					}
 
-					// If there is still more to do.
-					// Listen and WakeUp may have taken one.
-					//
-					if (Count > 0) {
-						bool DidSomething = false;
-						
-						// Something to do...
+						// If still more to do
 						//
-						// If we got here if there is a POLLIN or POLLOUT data.
-						//
-						// We skip stdin, stdout, and stderr.
-						//
-
-						// Is there data for us to read?
-						//
-						if ((_Entries[Fd].revents & POLLIN) > 0) {
-							DidSomething = true;
-#ifdef DEBUG
-							_Event::Invoke((int)Fd,
-														 Event::LoggingMessage_Event,
-														 "DEBUG:Poll() got POLLIN.");
-#endif
-							// Let SSL_READ read some.
+						if (_Entries[Fd].revents > 0) {
+							
+							// Was not a new conncetion, or a wake up.
 							//
-						}
-								
-						if ((_Entries[Fd].revents & POLLHUP) > 0) {
-							DidSomething = true;
-							_Event::Invoke((int)Fd,
-														 Event::ErrorOnFd_Event,
-														 "Server.cpp:poll():Closed socket:POLLHUP.\n");
-							RemoveFd(_Entries[Fd].fd);
-						}
-						if ((_Entries[Fd].revents & POLLRDHUP) > 0) {
-							DidSomething = true;
-							_Event::Invoke((int)Fd,
-														 Event::ErrorOnFd_Event,
-														 "Server.cpp:poll():Closed socket:POLLRDHUP.\n");
-							RemoveFd(_Entries[Fd].fd);
-						}
-						if ((_Entries[Fd].revents & POLLERR) > 0) {
-							DidSomething = true;
-							_Event::Invoke((int)Fd,
-														 Event::ErrorOnFd_Event,
-														 "Server.cpp:poll():Closed socket:POLLERR.\n");
-							RemoveFd(_Entries[Fd].fd);
-						}
+							bool DidSomething = false;
+							bool Clear = false;
 
-						if (DidSomething) {
-							Count--;
+							// POLLHUP and POLLRDHUP are odd.
+							// One can happen, or both can happen.
+							// We do not want 2 notices for the same thing.
+							//
+							bool NotifiedPollHup = false;
+							
+							// Something to do...
+							//
+							// If we got here if there is a POLLIN or POLLOUT data.
+							//
+							// We skip stdin, stdout, and stderr.
+							//
+						
+							// Is there data for us to read?
+							//
+							if ((_Entries[Fd].revents & POLLIN) > 0) {
+								DidSomething = true;
+								// Let SSL_READ read some.
+								//
+							}
+
+							if ((_Entries[Fd].revents & POLLHUP) > 0) {
+								DidSomething = true;
+								Clear = true;
+								NotifiedPollHup = true;
+								_Event::InvokePeer((int)Fd,
+																	 Event::ClientDisconnected_Event,
+																	 &Clients[Fd]->Peer);
+							}
+							if ((_Entries[Fd].revents & POLLRDHUP) > 0) {
+								DidSomething = true;
+								Clear = true;
+								if (!NotifiedPollHup) {
+									_Event::InvokePeer((int)Fd,
+																		 Event::ClientDisconnected_Event,
+																		 &Clients[Fd]->Peer);
+								}
+							}
+							if ((_Entries[Fd].revents & POLLERR) > 0) {
+								DidSomething = true;
+								Clear = true;
+								_Event::InvokePeer((int)Fd,
+																	 Event::ErrorOnFd_Event,
+																	 &Clients[Fd]->Peer);
+							}
+
+							if (Clear) {
+								_Entries[Fd].fd = -1;
+								_Entries[Fd].events = 0;
+								_Shutdown((int)Fd);
+							}
+							if (DidSomething) {
+								Count--;
+							}
+							// Clear the revents for this FD.
+							//
+							_Entries[Fd].revents = 0;
 						}
-						_Entries[Fd].revents = 0;
 					}
 				}
 			}
@@ -938,15 +1246,7 @@ namespace RiverExplorer::Phoenix
 	{
 		// Cause poll() to wake up and notice it should update..
 		//
-		char ToWrite = 'F';
-
-		if (_NewFds.size() > 0) {
-			ToWrite = 'B'; // So it does both.
-		}
-		
-		if (_RemoveFds.size() > 0) {
-			ToWrite = 'B'; // So it does both.
-		}
+		char ToWrite = 'P';
 		
 		write(_WakeUpPoll, &ToWrite, 1);
 
@@ -958,15 +1258,7 @@ namespace RiverExplorer::Phoenix
 	{
 		// Cause poll() to wake up and notice it should update..
 		//
-		char ToWrite = 'E';
-
-		if (_NewFds.size() > 0) {
-			ToWrite = 'B'; // So it does both.
-		}
-		
-		if (_RemoveFds.size() > 0) {
-			ToWrite = 'B'; // So it does both.
-		}
+		char ToWrite = 'P';
 		
 		write(_WakeUpPoll, &ToWrite, 1);
 
@@ -996,19 +1288,19 @@ namespace RiverExplorer::Phoenix
 	}
 
 	bool
-	Server::_Event::Invoke(int Fd, Event::Event_e ID, void * Data)
+	Server::_Event::InvokeData(int Fd, Event::Event_e ID, void * Data)
 	{
 		return(DispatchCallbacks(Fd, ID, Data));
 	}
 
 	bool
-	Server::_Event::Invoke(int Fd, Event::Event_e ID, const IPPeer * Peer)
+	Server::_Event::InvokePeer(int Fd, Event::Event_e ID, const IPPeer * Peer)
 	{
-		return(DispatchCallbacks(Fd, ID, (void*) Peer));
+		return(DispatchCallbacks(Fd, ID, (void*)Peer));
 	}
 
 	bool
-	Server::_Event::Invoke(int Fd, Event::Event_e ID, const char * Data)
+	Server::_Event::InvokeMessage(int Fd, Event::Event_e ID, const char * Data)
 	{
 		return(DispatchCallbacks(Fd, ID, (void*)Data));
 	}
@@ -1016,13 +1308,72 @@ namespace RiverExplorer::Phoenix
 	bool
 	Server::_ValidateIP(int Fd, Event::Event_e ID, void * VPeer)
 	{
-		IPPeer * Peer = (IPPeer*)VPeer;
+		bool Results = true;
 		
-		/**@todo add IP checking, and return false if should block the IP.*/
+		IPPeer * Peer = static_cast<Phoenix::IPPeer*>(VPeer);
+		
+		char IP[INET6_ADDRSTRLEN];
+
+		inet_ntop(((sockaddr*)&Peer->Addr.IpV4)->sa_family,
+							&Peer->Addr, IP,
+							sizeof(IP));
+
+		Log::PrintInformation("Validaing connectopm: %s-FD:%d", IP, Fd);
+
+		/**
+		 * @todo add IP checking, and return false if should block the IP.
+		 * Check certs? ...
+		 */
+		
+		if (!Results) {
+			Log::PrintInformation("IP Blocked: %s-FD:%d", IP, Fd);
+		} else {
+			Log::PrintInformation("IP Allowed: %s-FD:%d", IP, Fd);
+		}
 		
 		return(true);
 	}
 
+	bool
+	Server::_Disconnected(int Fd, Event::Event_e ID, void * VPeer)
+	{
+		// This event can not be canceled, it happened.
+		//
+		bool Results = true;
+
+		IPPeer * Peer = static_cast<Phoenix::IPPeer*>(VPeer);
+		
+		char IP[INET6_ADDRSTRLEN];
+
+		inet_ntop(((sockaddr*)&Peer->Addr.IpV4)->sa_family,
+							&Peer->Addr, IP,
+							sizeof(IP));
+		
+		Log::PrintInformation("IP Disconnected: %s-FD:%d", IP, Fd);
+
+		return(Results);
+	}
+
+	bool
+	Server::_ErrorOnFd(int Fd, Event::Event_e ID, void * VPeer)
+	{
+		// This event can not be canceled, it happened.
+		//
+		bool Results = true;
+
+		IPPeer * Peer = static_cast<Phoenix::IPPeer*>(VPeer);
+		
+		char IP[INET6_ADDRSTRLEN];
+
+		inet_ntop(((sockaddr*)&Peer->Addr.IpV4)->sa_family,
+							&Peer->Addr, IP,
+							sizeof(IP));
+		
+		Log::PrintInformation("Got network error: %s-FD:", IP, Fd);
+
+		return(Results);
+	}
+	
 	Server::ClientInfo::ClientInfo()
 	{
 

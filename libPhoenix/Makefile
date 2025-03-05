@@ -1,6 +1,6 @@
 #
 # Project: Phoenix
-# Time-stamp: <2025-03-02 23:52:49 doug>
+# Time-stamp: <2025-03-04 12:27:03 doug>
 #
 # Copyright (C) 2025 by Douglas Mark Royer (A.K.A. RiverExplorer)
 # Author Douglas Mark Royer
@@ -94,6 +94,7 @@ SOURCES.cpp = \
 	PhoenixEvent.cpp \
 	Register.cpp \
 	Server.cpp \
+	ThreadName.cpp \
 	xdr_SSL.cpp
 
 SOURCES.x = \
@@ -188,6 +189,7 @@ SOURCES.hpp += \
 	PhoenixServer.hpp \
 	Register.hpp \
 	Server.hpp \
+	ThreadName.hpp \
 	xdr_SSL.hpp \
 	XSLT/Configure.xslt \
 	XSLT/Configure.css
@@ -265,4 +267,9 @@ RunTests:: LinuxTcov
 	@echo "-----------------------------------------------"
 	@echo "Test Coverage in TestCoverage/TestCoverage.html"
 	@echo "-----------------------------------------------"
+
+gcov : 
+	-@$(RM) -rf TestCoverage
+	-@mkdir TestCoverage
+	(cd TestCoverage ; gcovr -r .. --html-details TestCoverage.html --decisions --calls)
 

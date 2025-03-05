@@ -1,7 +1,7 @@
 #if defined RPC_HDR || defined RPC_XDR
 %/**
 % * Project: Phoenix
-% * Time-stamp: <2025-03-03 01:51:48 doug>
+% * Time-stamp: <2025-03-03 10:21:18 doug>
 % *
 % * @file PacketBody.x
 % * @copyright (C) 2025 by Douglas Mark Royer (A.K.A. RiverExplorer)
@@ -129,10 +129,10 @@ union OneCommand switch (CMD_e Cmd) {
 	 ByePayload ByeCmd;
 	 
  case CAPABILITY_PRE:
-	 CapabilityPrePayload CapabilityPreCmd;
+	 CapabilityPayload CapabilityPreCmd;
 	 
  case CAPABILITY_POST:
-	 CapabilityPostPayload CapabilityPostCmd;
+	 CapabilityPayload CapabilityPostCmd;
 	 
  case FILE_CREATE:
 	 FileCreatePayload FileCreateCmd;

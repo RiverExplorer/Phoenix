@@ -1,7 +1,7 @@
 #
 #
 # Project: Phoenix
-# Time-stamp: <2025-03-03 01:51:48 doug>
+# Time-stamp: <2025-03-03 23:11:46 doug>
 #
 # @file FILL-IN
 # @author Douglas Mark Royer
@@ -93,7 +93,7 @@ LinuxDebug.Static : LocalNeeds Dirs LinuxDebugIncludes PreBuildDirs $(LINUX_TARG
 
 $(LINUX_TARGET.Debug.Pic) : $(XDR_GENERATED.all) $(LINUX_OBJECTS.Debug.Pic)
 	$(LINUX_CXX) -shared $(LINUX_LDFLAGS.Debug.Pic) -o $(LINUX_TARGET.Debug.Pic) $(LINUX_OBJECTS.Debug.Pic) $(LIBS) $(LINUX_LIBS)
-	$(INSTALL.RX) $(LINUX_TARGET.Debug.Pic) $(LINUX_INSTALL_DIR.Debug)/lib
+	$(INSTALL.RX) $(LINUX_TARGET.Debug.Pic) $(LINUX_INSTALL_DIR.Debug)/lib/lib$(TARGET).so.$(VERSION)
 	(cd $(LINUX_TARGET.Debug) ; $(RM) lib$(TARGET).so ; ln -s lib$(TARGET).so.$(VERSION) lib$(TARGET).so)
 	(cd $(LINUX_INSTALL_DIR.Debug)/lib ; $(RM) lib$(TARGET).so ; ln -s lib$(TARGET).so.$(VERSION) lib$(TARGET).so)
 
@@ -109,7 +109,7 @@ LinuxRelease.Static : LocalNeeds Dirs LinuxReleaseIncludes  PreBuildDirs $(LINUX
 
 $(LINUX_TARGET.Release.Pic) : $(XDR_GENERATED.all) $(LINUX_OBJECTS.Release.Pic)
 	$(LINUX_CXX) -shared $(LINUX_LDFLAGS.Release.Pic) -o $(LINUX_TARGET.Release.Pic) $(LINUX_OBJECTS.Release.Pic) $(LIBS) $(LINUX_LIBS)
-	$(INSTALL.RX) $(LINUX_TARGET.Release.Pic) $(LINUX_INSTALL_DIR.Release)/lib
+	$(INSTALL.RX) $(LINUX_TARGET.Release.Pic) $(LINUX_INSTALL_DIR.Release)/lib/lib$(TARGET).so.$(VERSION)
 	(cd $(LINUX_TARGET.Release) ; $(RM) lib$(TARGET).so ; ln -s lib$(TARGET).so.$(VERSION) lib$(TARGET).so)
 	(cd $(LINUX_INSTALL_DIR.Release)/lib ; $(RM) lib$(TARGET).so ; ln -s lib$(TARGET).so.$(VERSION) lib$(TARGET).so)
 
@@ -125,7 +125,7 @@ LinuxTcov.Static : LocalNeeds Dirs LinuxTcovIncludes PreBuildDirs $(LINUX_TARGET
 
 $(LINUX_TARGET.Tcov.Pic) : $(XDR_GENERATED.all) $(LINUX_OBJECTS.Tcov.Pic)
 	$(LINUX_CXX) -shared $(LINUX_LDFLAGS.Tcov.Pic) -o $(LINUX_TARGET.Tcov.Pic) $(LINUX_OBJECTS.Tcov.Pic) $(LIBS) $(LINUX_LIBS)
-	$(INSTALL.RX) $(LINUX_TARGET.Tcov.Pic) $(LINUX_INSTALL_DIR.Tcov)/lib
+	$(INSTALL.RX) $(LINUX_TARGET.Tcov.Pic) $(LINUX_INSTALL_DIR.Tcov)/lib/lib$(TARGET).so.$(VERSION)
 	(cd $(LINUX_TARGET.Tcov) ; $(RM) lib$(TARGET).so ; ln -s lib$(TARGET).so.$(VERSION) lib$(TARGET).so)
 	(cd $(LINUX_INSTALL_DIR.Tcov)/lib ; $(RM) lib$(TARGET).so ; ln -s lib$(TARGET).so.$(VERSION) lib$(TARGET).so)
 
@@ -211,7 +211,7 @@ AndroidDebug.Static : LocalNeeds Dirs AndroidDebugIncludes  PreBuildDirs $(ANDRO
 
 $(ANDROID_TARGET.Debug.Pic) :	$(XDR_GENERATED.all) $(ANDROID_OBJECTS.Debug.Pic)
 	$(ANDROID_CXX) -shared -fPIC $(ANDROID_LDFLAGS.Debug.Pic) $(LIBS) -o $(ANDROID_TARGET.Debug.Pic) $(ANDROID_OBJECTS.Debug.Pic) $(ANDROID_LIBS)
-	$(INSTALL.RX) $(ANDROID_TARGET.Debug.Pic) $(ANDROID_INSTALL_DIR.Debug)/lib
+	$(INSTALL.RX) $(ANDROID_TARGET.Debug.Pic) $(ANDROID_INSTALL_DIR.Debug)/lib/lib$(TARGET).so.$(VERSION)
 	(cd $(ANDROID_TARGET.Debug) ; $(RM) lib$(TARGET).so ; ln -s lib$(TARGET).so.$(VERSION) lib$(TARGET).so)
 	(cd $(ANDROID_INSTALL_DIR.Debug)/lib ; $(RM) lib$(TARGET).so ; ln -s lib$(TARGET).so.$(VERSION) lib$(TARGET).so)
 
@@ -230,7 +230,7 @@ $(ANDROID_TARGET.Release.Pic) : $(XDR_GENERATED.all) $(ANDROID_OBJECTS.Release.P
 	echo "NO	$(ANDROID_STRIP) $(ANDROID_TARGET.Release.Pic)
 	(cd $(ANDROID_INSTALL_DIR.Release)/lib ; $(RM) lib$(TARGET).so ; ln -s lib$(TARGET).so.$(VERSION) lib$(TARGET).so)
 	(cd $(ANDROID_TARGET.Release) ; $(RM) lib$(TARGET).so ; ln -s lib$(TARGET).so.$(VERSION) lib$(TARGET).so)
-	$(INSTALL.RX) $(ANDROID_TARGET.Release.Pic) $(ANDROID_INSTALL_DIR.Release)/lib
+	$(INSTALL.RX) $(ANDROID_TARGET.Release.Pic) $(ANDROID_INSTALL_DIR.Release)/lib/lib$(TARGET).so.$(VERSION)
 
 $(ANDROID_TARGET.Release.Static) : $(XDR_GENERATED.all) $(ANDROID_OBJECTS.Release.Static)
 	$(AR) rv $(ANDROID_TARGET.Release.Static) $(ANDROID_OBJECTS.Release.Static)
@@ -244,7 +244,7 @@ AndroidTcov.Static : LocalNeeds Dirs AndroidTcovIncludes  PreBuildDirs $(ANDROID
 
 $(ANDROID_TARGET.Tcov.Pic) : $(XDR_GENERATED.all) $(ANDROID_OBJECTS.Tcov.Pic)
 	$(ANDROID_CXX) -shared -fPIC $(ANDROID_LDFLAGS.Tcov.Pic) $(LIBS) -o $(ANDROID_TARGET.Tcov.Pic) $(ANDROID_OBJECTS.Tcov.Pic) $(ANDROID_LIBS)
-	$(INSTALL.RX) $(ANDROID_TARGET.Tcov.Pic) $(ANDROID_INSTALL_DIR.Tcov)/lib
+	$(INSTALL.RX) $(ANDROID_TARGET.Tcov.Pic) $(ANDROID_INSTALL_DIR.Tcov)/lib/lib$(TARGET).so.$(VERSION)
 	(cd $(ANDROID_TARGET.Tcov) ; $(RM) lib$(TARGET).so ; ln -s lib$(TARGET).so.$(VERSION) lib$(TARGET).so)
 	(cd $(ANDROID_INSTALL_DIR.Tcov)/lib ; $(RM) lib$(TARGET).so ; ln -s lib$(TARGET).so.$(VERSION) lib$(TARGET).so)
 

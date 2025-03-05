@@ -40,4 +40,5 @@ Old
 .\#*
 \#*
 cscope.out
+*.gcov
 *~

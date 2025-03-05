@@ -30,6 +30,13 @@ namespace RiverExplorer::Phoenix
 		IPPeer();
 
 		/**
+		 * IPPeer - Copy Constructor.
+		 *
+		 * @param CopyFrom The IPPeer to copy from.
+		 */
+		IPPeer(const IPPeer & CopyFrom);
+
+		/**
 		 * IPPeer - Destructor.
 		 */
 		~IPPeer();

@@ -1,6 +1,6 @@
 /**
  * Project: Phoenix
- * Time-stamp: <2025-03-02 22:34:35 doug>
+ * Time-stamp: <2025-03-03 14:06:23 doug>
  *
  * @file Client.cpp
  * @copyright (C) 2025 by Douglas Mark Royer (A.K.A. RiverExplorer)
@@ -104,7 +104,7 @@ namespace RiverExplorer::Phoenix
 		static const char * LogDevice_s = "LogDevice";
 
 		_ClientProgramName = ClientName.c_str();
-		
+
 		Configuration::ClientInitializeConfiguration(ClientName);
 		MakeClientPath(_ClientProgramName);
 

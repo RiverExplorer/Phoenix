@@ -1,7 +1,7 @@
 #if defined RPC_HDR || defined RPC_XDR
 %/**
 % * Project: Phoenix
-% * Time-stamp: <2025-03-03 01:51:48 doug>
+% * Time-stamp: <2025-03-03 10:39:39 doug>
 % *
 % * @file Capability.x
 % * @copyright (C) 2025 by Douglas Mark Royer (A.K.A. RiverExplorer)
@@ -159,7 +159,7 @@ union CapabilityEntry switch (CMD_e Capability) {
 		 void;
 		
 	 case VENDOR_ID:
-		 string VendorID<>;
+		 VendorID VendorIDCapability;
 
 	 default:
 		 Vendor VendorCapability;
@@ -167,30 +167,10 @@ union CapabilityEntry switch (CMD_e Capability) {
 
 #ifdef RPC_HDR
 %/**
-% * @class RiverExplorer::Phoenix::CapabilityPrePayload
-% * The client is authenticating.
-% *
-% * A reply is required.
-% * Good: Reply with CAPABILITY_POST
-% * Bad: An CAPABILITY_PRE with same sequence number from the AUTH.
+% * @class RiverExplorer::Phoenix::CapabilityPayload
 % */
 #endif
-struct CapabilityPrePayload
-{
-	CapabilityEntry Capabilities<>; /** An array of CapabilityEntries */
-};
-
-#ifdef RPC_HDR
-%/**
-% * @class RiverExplorer::Phoenix::CapabilityPostPayload
-% * The client is authenticating.
-% *
-% * A reply is required.
-% * Good: Reply with CAPABILITY_POST
-% * Bad: An CAPABILITY_POST with same sequence number from the AUTH.
-% */
-#endif
-struct CapabilityPostPayload
+struct CapabilityPayload
 {
 	CapabilityEntry Capabilities<>; /** An array of CapabilityEntries */
 };

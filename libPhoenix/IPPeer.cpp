@@ -21,6 +21,14 @@ namespace RiverExplorer::Phoenix
 		return;
 	}
 
+	IPPeer::IPPeer(const IPPeer & CopyFrom)
+	{
+		memcpy(&Addr, &CopyFrom.Addr, sizeof(Addr));
+		AddrLen = CopyFrom.AddrLen;
+
+		return;
+	}
+
 	IPPeer::~IPPeer()
 	{
 		// We clear for secuity.

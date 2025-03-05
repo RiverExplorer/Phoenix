@@ -1,4 +1,4 @@
-/**
+ /**
  * Phoenix (C) 2025 by Douglas Mark Royer (A.K.A. RiverExplorer) is licensed under CC BY 4.0.
  * RiverExplorer is a trademark of RiverExplorer Games LLC.
  */
@@ -143,13 +143,13 @@ MyClientDisconnected(int Fd, Phoenix::Event::Event_e, void * /*NotUsed*/)
 }
 
 int
-main(int /*argc*/, char ** /*argv*/)
+main(int /*argc*/, char ** argv)
 {
-	unlink("Phoenix.log"); // Delete the results of previous runs of thise test.
+	const char * ProgramName = basename(argv[0]);
 	
 	fprintf(stdout, "TestServer Starting\n");
 	
-	Phoenix::Server	TheServer;
+	Phoenix::Server	TheServer(ProgramName);
 
 	Phoenix::Event::Register(Phoenix::Event::ServerReady_Event,
 													 MyReadyCallback);

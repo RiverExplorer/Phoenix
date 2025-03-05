@@ -1,6 +1,6 @@
 /**
  * Project: Phoenix
- * Time-stamp: <2025-02-28 10:21:32 doug>
+ * Time-stamp: <2025-03-04 16:18:29 doug>
  *
  * @file Configuration.cpp
  * @copyright (C) 2025 by Douglas Mark Royer (A.K.A. RiverExplorer)
@@ -139,7 +139,7 @@ namespace RiverExplorer::Phoenix
 
 	/**
 	 * The cert to use for a specific Server.
-	 * An empty value means to use the default OpenSSL certificats.
+	 * An empty value means to use the default OpenSSL certificates.
 	 */
 	static const char * const Default_s = "Default";
 	static const char * const DefaultPublic_s = "DefaultPublic";
@@ -184,6 +184,7 @@ namespace RiverExplorer::Phoenix
 	static const char * const AuthCertTls_s = "CertTls";
 	static const char * const Password_s = "Password";
 	static const char * const Type_s = "Type";
+	static const char * const NoTls_s = "NoTls";
 	
 	/**
 	 * The Key value is stored in an XML Key node.
@@ -503,8 +504,10 @@ namespace RiverExplorer::Phoenix
 				Results->Port(Port);
 				ServerMutex.lock();
 				Results->Position((uint16_t)_Servers.size());
-				_Servers.insert(std::make_pair(HostOrIp, Results));
-				_ByPosition.insert(std::make_pair(Results->Position(), Results));
+				_Servers[HostOrIp] = Results;
+				//_Servers.insert(std::make_pair(HostOrIp, Results));
+				_ByPosition[Results->Position()] = Results;
+				//_ByPosition.insert(std::make_pair(Results->Position(), Results));
 				ServerMutex.unlock();
 			}
 		}
@@ -628,6 +631,14 @@ namespace RiverExplorer::Phoenix
 			" used by openssl."
 			" It is the full path to the default private PEM certificate."
 			" Ignored if DefaultPrivateCert is not set, and a matching cert."
+		},
+		{
+			NoTls_s,
+			strdup("true"),
+			"When enabled, do not use TLS. For internal servers only!",
+			"When this is enabled, the program will not use TLS over"
+			" the wire communications. NOTICE: Only use for debugging"
+			" and for intranet computer communications."
 		},
 		{nullptr, nullptr, nullptr, nullptr} /** End of list. */
 	};
@@ -803,9 +814,11 @@ namespace RiverExplorer::Phoenix
 						NewEntry->Detail = strdup(Detail.c_str());
 
 						if (IsServer) {
-							ServerConfig.insert(std::make_pair(NewEntry->Key, NewEntry));
+							ServerConfig[NewEntry->Key] = NewEntry;
+							//ServerConfig.insert(std::make_pair(NewEntry->Key, NewEntry));
 						} else {
-							ClientConfig.insert(std::make_pair(NewEntry->Key, NewEntry));
+							ClientConfig[NewEntry->Key] = NewEntry;
+							//ClientConfig.insert(std::make_pair(NewEntry->Key, NewEntry));
 						}
 					}
 				}
@@ -1139,9 +1152,11 @@ namespace RiverExplorer::Phoenix
 						 ; Ptr = &CommonEntries[++EOffset]) {
 
 				if (IsServer) {
-					ServerConfig.insert(std::make_pair(Ptr->Key, Ptr));
+					ServerConfig[Ptr->Key] = Ptr;
+					//ServerConfig.insert(std::make_pair(Ptr->Key, Ptr));
 				} else {
-					ClientConfig.insert(std::make_pair(Ptr->Key, Ptr));
+					ClientConfig[Ptr->Key] = Ptr;
+					//ClientConfig.insert(std::make_pair(Ptr->Key, Ptr));
 				}
 			}
 
@@ -1151,7 +1166,8 @@ namespace RiverExplorer::Phoenix
 							 ; Ptr->Key != nullptr
 							 ; Ptr = &ServerEntries[++EOffset]) {
 
-					ServerConfig.insert(std::make_pair(Ptr->Key, Ptr));
+					ServerConfig[Ptr->Key] = Ptr;
+					//ServerConfig.insert(std::make_pair(Ptr->Key, Ptr));
 				}
 
 			} else {
@@ -1160,7 +1176,8 @@ namespace RiverExplorer::Phoenix
 							 ; Ptr->Key != nullptr
 							 ; Ptr = &ClientEntries[++EOffset]) {
 
-					ClientConfig.insert(std::make_pair(Ptr->Key, Ptr));
+					ClientConfig[Ptr->Key] = Ptr;
+					//ClientConfig.insert(std::make_pair(Ptr->Key, Ptr));
 				}
 			}
 			
@@ -1948,7 +1965,8 @@ namespace RiverExplorer::Phoenix
 				Server  * Config = ItByName->second;
 
 				_Servers.erase(ItByName);
-				_Servers.insert(std::make_pair(ConfigValue, Config));
+				_Servers[ConfigValue] = Config;
+				//_Servers.insert(std::make_pair(ConfigValue, Config));
 			}
 			ServerMutex.unlock();
 		}

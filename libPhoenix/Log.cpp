@@ -1,6 +1,6 @@
 /**
  * Project: Phoenix
- * Time-stamp: <2025-02-26 17:28:49 doug>
+ * Time-stamp: <2025-03-04 13:20:09 doug>
  *
  * @file Log.cpp
  * @copyright (C) 2025 by Douglas Mark Royer (A.K.A. RiverExplorer)
@@ -14,6 +14,8 @@
  * Log messages.
  */
 #include "Log.hpp"
+#include "ThreadName.hpp"
+
 #include <time.h>
 #include <unistd.h>
 
@@ -65,7 +67,12 @@ namespace RiverExplorer::Phoenix
 		
 		strftime(Buf, sizeof(Buf), "%Y%m%dT%H%M%S", Tm);
 							 
-		fprintf(_Fp, "INFO:%s:pid-%u:uid-%u:%s:",	_ProgramName,	Pid, Uid, Buf);
+		fprintf(_Fp, "INFO:%s:pid-%u:tid=%s:uid-%u:%s:",
+						_ProgramName,
+						Pid,
+						ThreadName::ToString().c_str(),
+						Uid,
+						Buf);
 
 		size_t Len = strlen(Format);
 
@@ -82,6 +89,7 @@ namespace RiverExplorer::Phoenix
 		}
 		
 		fprintf(_Fp, "\n");
+		fflush(_Fp);
 
 		va_end(Args);
 
@@ -104,7 +112,12 @@ namespace RiverExplorer::Phoenix
 		
 		strftime(Buf, sizeof(Buf), "%Y%m%dT%H%M%S", Tm);
 							 
-		fprintf(_Fp, "WARN:%s:pid-%u:uid-%u:%s:",	_ProgramName,	Pid, Uid, Buf);
+		fprintf(_Fp, "WARN:%s:pid-%u:tid=%s:uid-%u:%s:",
+						_ProgramName,
+						Pid,
+						ThreadName::ToString().c_str(),
+						Uid,
+						Buf);
 
 		size_t Len = strlen(Format);
 
@@ -121,6 +134,7 @@ namespace RiverExplorer::Phoenix
 		}
 		
 		fprintf(_Fp, "\n");
+		fflush(_Fp);
 
 		va_end(Args);
 
@@ -143,7 +157,12 @@ namespace RiverExplorer::Phoenix
 		
 		strftime(Buf, sizeof(Buf), "%Y%m%dT%H%M%S", Tm);
 							 
-		fprintf(_Fp, "ERROR:%s:pid-%u:uid-%u:%s:",	_ProgramName,	Pid, Uid, Buf);
+		fprintf(_Fp, "ERROR:%s:pid-%u:tid=%s:uid-%u:%s:",
+						_ProgramName,
+						Pid,
+						ThreadName::ToString().c_str(),
+						Uid,
+						Buf);
 
 		size_t Len = strlen(Format);
 
@@ -160,7 +179,8 @@ namespace RiverExplorer::Phoenix
 		}
 		
 		fprintf(_Fp, "\n");
-
+		fflush(_Fp);
+		
 		va_end(Args);
 
 		return;

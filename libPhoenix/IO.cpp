@@ -148,7 +148,8 @@ namespace RiverExplorer::Phoenix
 	//
 	// I don't use poll() so that I don't have to use any method to
 	// break out of poll() in order to update the list.
-	// As this is the client side code, Checking at LookInterval will suffice.
+	// As this is the client side code, Checking at LookInterval
+	// will suffice.
 	//
 	void
 	IO::_ClientListener(uint32_t LookInterval)

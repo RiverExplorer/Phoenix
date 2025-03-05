@@ -1,6 +1,17 @@
 /**
- * Phoenix (C) 2025 by Douglas Mark Royer (A.K.A. RiverExplorer) is licensed under CC BY 4.0.
- * RiverExplorer is a trademark of RiverExplorer Games LLC.
+ * Project: Phoenix
+ * Time-stamp: <2025-03-04 12:58:05 doug>
+ * 
+ * @file TestServer.cpp
+ * @author Douglas Mark Royer
+ * @date 24-FEB-20205
+ * 
+ * @Copyright(C) 2025 by Douglas Mark Royer (A.K.A. RiverExplorer)
+ * 
+ * Licensed under the MIT License. See LICENSE file
+ * or https://opensource.org/licenses/MIT for details.
+ * 
+ * RiverExplorer is a trademark of Douglas Mark Royer
  */
 
 /**
@@ -11,6 +22,7 @@
 #include <RiverExplorer/Phoenix/PhoenixEvent.hpp>
 #include <RiverExplorer/Phoenix/IPPeer.hpp>
 #include <RiverExplorer/Phoenix/Register.hpp>
+#include <RiverExplorer/Phoenix/ThreadName.hpp>
 
 #include <exception>
 
@@ -21,8 +33,8 @@
 const char * const VendorID = "RiverExplorer:TestServer1";
 
 uint16_t			TestPort = 6112;
-const char *	TestDevice = "lo";
-
+const char	*	TestDevice = "lo";
+const char	*	ProgramName = nullptr;
 std::mutex		HangMain;
 
 using namespace RiverExplorer;
@@ -53,7 +65,8 @@ std::map<int,Phoenix::IPPeer*> Connections;
 bool
 ServerIsReadyCallback(int /*Fd*/, Event::Event_e /*ID*/, void * /*Data*/)
 {
-	fprintf(stdout, "Got ServerReady event.\n");
+	fprintf(stdout, "Got ServerReady event. TID=%s\n",
+					ThreadName::ToString().c_str());
 
 	return(true);
 }
@@ -98,9 +111,13 @@ NewClientConnected(int Fd,
 						&Peer->Addr, IP,
 						sizeof(IP));
 
-	Connections.insert(std::make_pair(Fd, Peer));
+	IPPeer * OurCopy = new IPPeer(*Peer);
+	Connections.insert(std::make_pair(Fd, OurCopy));
 
-	fprintf(stdout, "Client connecting from: %s\n", IP);
+	fprintf(stdout, "Client connecting from: %s-FD:%d:TID=%s:\n",
+					IP,
+					Fd,
+					ThreadName::ToString().c_str());
 
 	// Now sent it a CAPABILITY_PRE.
 	//
@@ -139,13 +156,25 @@ AClientDisconnected(int Fd, Event::Event_e, void * /*NotUsed*/)
 							&Peer->Addr, IP,
 							sizeof(IP));
 
-		fprintf(stdout, "Client disconnected: %s\n", IP);
+		fprintf(stdout, "Client disconnected: %s-FD:%d:TID=%s\n",
+						IP,
+						Fd,
+						ThreadName::ToString().c_str());
+
+		//
+		// Record any ...
+		//
+		
+		// We no longer can use this data.
+		//
+		delete PeerIt->second;
+		Connections.erase(PeerIt);
 		
 	} else {
 		fprintf(stdout,
-						"ERROR:Got disconnect from an unknown file descriptor: %d\n",
-						Fd);
-						
+						"ERROR:Got disconnect from an unknown file descriptor: %d:TID=%s\n",
+						Fd,
+						ThreadName::ToString().c_str());
 	}
 	
 	return(true);
@@ -179,25 +208,30 @@ ClientSaysBye(int Fd, Event::Event_e, void * /*NotUsed*/)
 							&Peer->Addr, IP,
 							sizeof(IP));
 
-		fprintf(stdout, "BYE from Client: %s\n", IP);
+		fprintf(stdout, "BYE from Client: %s FD=%d:TID=%s\n",
+						IP,
+						Fd,
+						ThreadName::ToString().c_str());
 		
 	} else {
 		fprintf(stdout,
-						"ERROR:Got BYE from an unknown file descriptor: %d\n",
-						Fd);
+						"ERROR:Got BYE from an unknown file descriptor: %d:TID=%s\n",
+						Fd,
+						ThreadName::ToString().c_str());
 	}
 	
 	return(true);
 }
 
 int
-main(int /*argc*/, char ** /*argv*/)
+main(int /*argc*/, char ** argv)
 {
-	unlink("Phoenix.log"); // Delete the results of previous runs of thise test.
+	ProgramName = basename(argv[0]);
+	ThreadName::NameOurThread("main");
 	
 	fprintf(stdout, "TestServer Starting\n");
 	
-	Phoenix::Server	TheServer;
+	Phoenix::Server	TheServer(ProgramName);
 
 	// Register the server to send out CAPABILITY_PRE on new connections.
 	//
@@ -226,7 +260,10 @@ main(int /*argc*/, char ** /*argv*/)
 	
 	std::thread * ServerThread = TheServer.Start(TestPort, TestDevice);
 
-	fprintf(stdout, "ServerThread started.\n");
+	ThreadName::NameTheThread(ServerThread->get_id(), "Server()");
+	
+	fprintf(stdout, "ServerThread started.TID=%s\n",
+					ThreadName::ToString(ServerThread->get_id()).c_str());
 	
 	// There is no way with std::thread to keep other threads
 	// running when main() exists.

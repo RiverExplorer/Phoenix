@@ -68,18 +68,34 @@ namespace RiverExplorer::Phoenix
 	{
 		Event_e Results = Name;
 
+		// Don't add it, if it is already added.
 		//
-		_Register * NewRegister = new _Register;
+		std::multimap<Event::Event_e,Event::_Register*>::const_iterator It;
 
-		// Fill in the details of the registration map.
-		//
-		NewRegister->_Event = Name;
-		NewRegister->Callback = Cb;
+		bool Found = false;
+		
+		for (It = _Registered.cbegin()
+					 ; It != _Registered.cend()
+					 ; It++) {
+			if (It->first == Name && It->second->Callback == Cb) {
+				Found = true;
+			}
+		}
 
-		// Add the new map to the list of all registered maps, by
-		// Event ID.
-		//
-		_Registered.insert(std::make_pair(Results,NewRegister));
+		if (!Found) {
+			//
+			_Register * NewRegister = new _Register;
+
+			// Fill in the details of the registration map.
+			//
+			NewRegister->_Event = Name;
+			NewRegister->Callback = Cb;
+
+			// Add the new map to the list of all registered maps, by
+			// Event ID.
+			//
+			_Registered.insert(std::make_pair(Results,NewRegister));
+		}
 
 		return;
 	}

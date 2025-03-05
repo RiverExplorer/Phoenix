@@ -1,6 +1,6 @@
 /**
  * Project: Phoenix
- * Time-stamp: <2025-03-03 00:42:01 doug>
+ * Time-stamp: <2025-03-03 11:50:11 doug>
  *
  * @file TestClient.cpp
  * @copyright (C) 2025 by Douglas Mark Royer (A.K.A. RiverExplorer)
@@ -82,18 +82,21 @@ const char * const	TestPassword = "ABadPassword123!@#";
  * Commands we issued.
  * They get removed when they are complete.
  */
-const char * ProgramName = nullptr;
-std::map<SEQ_t,Command*> PendingCommands;
-std::mutex PendingCommandsMutex;
-SEQ_t	NextSeqToUse = 0;
-Client * OurClient = nullptr;
-Configuration::Server * OurServer = nullptr;
-Command * CapPre = nullptr;
-CapabilityEntry * CapVendorID = nullptr;
-CppCapabilityPre * PreAuthCapability = nullptr;
-CppCapabilityPost * PostAuthCapability = nullptr;
-Command * CapVendorExt1 = nullptr;
-std::vector<Command*>	Capabilities;
+const char							* ProgramName = nullptr;
+std::map<SEQ_t,Command*>	PendingCommands;
+std::mutex								PendingCommandsMutex;
+SEQ_t											NextSeqToUse = 0;
+Client									*	OurClient = nullptr;
+Configuration::Server		* OurServer = nullptr;
+Command									* CapPre = nullptr;
+
+VendorIDCapability			* VendorIDCap = nullptr;
+VendorCapability				*	VendorExtension1Cap = nullptr;
+
+CapabilityCommandPre		* PreAuthCapability = nullptr;
+CapabilityCommandPost		* PostAuthCapability = nullptr;
+
+std::vector<Command*>			Capabilities;
 std::vector<Configuration::Server*> ServerList;
 
 void
@@ -220,12 +223,26 @@ ClientTest::ClientConstructorTest()
 }
 
 void
-ClientTest::CreateCapabilityConstructorTest()
+ClientTest::CreateCapabilityPreConstructorTest()
 {
 	PreAuthCapability = new CapabilityCommandPre(NextSeqToUse);
 
 	CPPUNIT_ASSERT(PreAuthCapability != nullptr);
-	CPPUNIT_ASSERT(PreAutHCapability->SEQ() == NextSeqToUse);
+	CPPUNIT_ASSERT(PreAuthCapability->SEQ() == NextSeqToUse);
+	CPPUNIT_ASSERT(PreAuthCapability->Cmd() == CAPABILITY_PRE);
+	
+	NextSeqToUse += 2;
+
+	return;
+};
+
+void
+ClientTest::CreateCapabilityPostConstructorTest()
+{
+	PostAuthCapability = new CapabilityCommandPost(NextSeqToUse);
+
+	CPPUNIT_ASSERT(PostAuthCapability != nullptr);
+	CPPUNIT_ASSERT(PostAuthCapability->SEQ() == NextSeqToUse);
 
 	NextSeqToUse += 2;
 
@@ -235,14 +252,13 @@ ClientTest::CreateCapabilityConstructorTest()
 void
 ClientTest::CreateCapabilityVendorIDTest()
 {
-	CapVendorID = CppCapabilityVendorID::New(strdup(RiverExplorerVendor));
+	VendorIDCap = new VendorIDCapability(strdup(RiverExplorerVendor));
 
-	CPPUNIT_ASSERT(CapVendorID != nullptr);
-	CPPUNIT_ASSERT(CapVendorID->Capability == VENDOR_ID);
+	CPPUNIT_ASSERT(VendorIDCap != nullptr);
+	CPPUNIT_ASSERT(VendorIDCap->Cmd() == VENDOR_ID);
 
-	CPPUNIT_ASSERT(strcmp(CapVendorID->CapabilityEntry_u.VendorID,
-												RiverExplorerVendor) == 0);
-	
+	CPPUNIT_ASSERT(strcmp(VendorIDCap->VendorString(), RiverExplorerVendor) == 0);
+
 	// We push this first to show that if a client sends
 	// vendor specific capabilities, that the vendor-id MUST go first.
 	// so that the server can determine if it should process or
@@ -250,14 +266,14 @@ ClientTest::CreateCapabilityVendorIDTest()
 	// Phoenix compliant servers. See any vendor extensions
 	// for their requirements.
 	//
-	PendingCommandsMutex.lock();
-	
-	PendingCommands.insert(std::make_pair(CapVendorID->Sequence, CapVendorID));
-	Capabilities.push_back(CapVendorID);
-	CPPUNIT_ASSERT(Capabilities.size() == 1);
-	PendingCommandsMutex.unlock();
-	
-	NextSeqToUse += 2;
+	CPPUNIT_ASSERT(PreAuthCapability != nullptr);
+	PreAuthCapability->Add(VendorIDCap);
+
+	CPPUNIT_ASSERT(PreAuthCapability->size() == 1);
+
+	VendorIDCapability * Saved = dynamic_cast<VendorIDCapability*>((*PreAuthCapability)[0]);
+
+	CPPUNIT_ASSERT(Saved == VendorIDCap);
 
 	return;
 }
@@ -265,7 +281,7 @@ ClientTest::CreateCapabilityVendorIDTest()
 void
 ClientTest::CreateCapabilityPreTest()
 {
-	CapPre = CppCapabilityPre::New(NextSeqToUse);
+	CapPre = new CapabilityCommandPre(NextSeqToUse);
 
 	CPPUNIT_ASSERT(CapPre != nullptr);
 	CPPUNIT_ASSERT(CapPre->Payload.Cmd == CAPABILITY_PRE);
@@ -300,30 +316,26 @@ ClientTest::CreateCapabilityVendorExtension1Test()
 	//
 	uint32_t Ext1Cmd = (1| 0x80000000);
 
-	
-	CapVendorExt1	= CppCapabilityVendor::New(NextSeqToUse,
-																					 Ext1Cmd,
-																					 Blob,
-																					 BlobLength);
-	CPPUNIT_ASSERT(CapVendorExt1 != nullptr);
-	CPPUNIT_ASSERT(CapVendorExt1->Payload.Cmd == Ext1Cmd);
-	CPPUNIT_ASSERT(CapVendorExt1->Sequence == NextSeqToUse);
-	
-	CPPUNIT_ASSERT(CapVendorExt1->Payload.OneCommand_u.Vendor.Data.Data == (char*)Blob);
-	CPPUNIT_ASSERT(CapVendorExt1->Payload.OneCommand_u.Vendor.Data.Len == BlobLength);
-	
-	// Push the vendor-specific capability.
-	//
-	// Lock the pending reply list.
-	//
-	PendingCommandsMutex.lock();
-	PendingCommands.insert(std::make_pair(CapVendorExt1->Sequence, CapVendorExt1));
-	Capabilities.push_back(CapVendorExt1);
-	CPPUNIT_ASSERT(Capabilities.size() == 3);
-	PendingCommandsMutex.unlock();
+	VendorExtension1Cap	= new VendorCapability(Ext1Cmd,
+																						 Blob,
+																						 BlobLength);
 
-	NextSeqToUse += 2;
+	uint8_t	* Data = nullptr;
+	Length		Count;
 
+	CPPUNIT_ASSERT(VendorExtension1Cap != nullptr);
+	CPPUNIT_ASSERT(VendorExtension1Cap->Cmd() == Ext1Cmd);
+	VendorExtension1Cap->GetData(Data, Count);
+	CPPUNIT_ASSERT(Data == Blob);
+	CPPUNIT_ASSERT(Count == BlobLength);
+	CPPUNIT_ASSERT(PreAuthCapability != nullptr);
+	PreAuthCapability->Add(VendorExtension1Cap);
+	CPPUNIT_ASSERT(PreAuthCapability->size() == 2);
+
+	VendorCapability * Saved = dynamic_cast<VendorCapability*>((*PreAuthCapability)[1]);
+
+	CPPUNIT_ASSERT(Saved == VendorExtension1Cap);
+	
 	return;
 }
 

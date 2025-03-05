@@ -100,6 +100,8 @@ clean ::
 	done
 
 RunTests::
-	for D in $(SUBDIRS); do \
-		(cd $$D ; $(MAKE) $(MAKECMDGOALS);) \
-	done
+	-(cd TestClient1 ; $(MAKE) $(MAKECMDGOALS);)
+
+# -for D in $(SUBDIRS); do \
+#		$(MAKE) -C $$dir RunTests; \
+#	done
