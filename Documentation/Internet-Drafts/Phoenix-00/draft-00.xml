@@ -9,7 +9,7 @@
 <!-- Copyright 2025 RiverExplorer LLC and Douglas Mark Royer -->
 <rfc
   xmlns:xi="http://www.w3.org/2001/XInclude"
-  category="info"
+  category="std"
   docName="draft-royer-phoenix-00"
   ipr="trust200902"
   obsoletes=""
