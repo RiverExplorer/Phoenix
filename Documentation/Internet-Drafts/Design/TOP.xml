@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="utf-8"?>
+<?xml-model href="rfc7991bis.rnc"?>
+<!DOCTYPE rfc [
+  <!ENTITY nbsp    "&#160;">
+  <!ENTITY zwsp   "&#8203;">
+  <!ENTITY nbhy   "&#8209;">
+  <!ENTITY wj     "&#8288;">
+]>
+<!-- Copyright 2025 RiverExplorer LLC and Douglas Mark Royer -->
+<rfc
+  xmlns:xi="http://www.w3.org/2001/XInclude"
+  category="info"
+  docName="Phoenix-Design-00"
+  ipr="trust200902"
+  obsoletes=""
+  updates=""
+  submissionType="IETF"
+  xml:lang="en"
+  version="3"
+	sortRefs="true">
+  <front>
+    <title abbrev="Phoenix: Lemonade Recipe">Phoenix: Lemonade Recipe</title>
+    <seriesInfo name="Design Specification" value="Phoenix-Design-00"/>
+   
+    <author fullname="Doug Royer" initials="DM" surname="Royer">
+      <organization>RiverExplorer LLC</organization>
+      <address>
+        <postal>
+          <!-- Reorder these if your country does things differently -->
+          <street>848 N. Rainbow Blvd #1120</street>
+          <city>Las Vegas</city>
+          <region>Nevada</region>
+          <code>89107</code>
+          <country>US</country>
+          <!-- Uses two letter country code -->
+        </postal>        
+        <phone>1+208-806-1358</phone>
+        <email>DouglasRoyer@gmail.com</email>  
+        <!-- Can have more than one <email> element -->
+        <uri>https://DougRoyer.US</uri>
+      </address>
+    </author>
+   
+    <date year="2025"/>
+    <area>General</area>
+    <workgroup>Internet Engineering Task Force</workgroup>
+    <keyword>lemonade</keyword>
+    <keyword>phoenix</keyword>
+    <xi:include href="Abstract.xml"/>
+  </front>
+
+  <middle> 
+    <xi:include href="Introduction.xml"/>
+    <xi:include href="Definitions.xml"/>
+    <xi:include href="IOModel.xml"/>
+		<xi:include href="MainThread.xml"/>
+		<xi:include href="ToXDRThread.xml"/>
+		<xi:include href="ToNetworkThread.xml"/>
+		<xi:include href="FromNetworkThread.xml"/>
+		<xi:include href="XDRDecodeThread.xml"/>
+		<xi:include href="DispatchThread.xml"/>
+		<xi:include href="InitialConnectionToServer.xml"/>
+    <xi:include href="SecurityConsiderations.xml"/>
+  </middle>
+
+  <back>
+    <references>
+      <name>References</name>
+      <references>
+        <name>Normative References</name>
+        <xi:include href="References/reference.RFC.0822.xml"/>
+        <xi:include href="References/reference.RFC.2119.xml"/>
+        <xi:include href="References/reference.RFC.4506.xml"/>
+        <xi:include href="References/reference.RFC.5234.xml"/>
+        <xi:include href="References/reference.RFC.8174.xml"/>
+        <xi:include href="References/reference.RFC.8446.xml"/>
+        <xi:include href="References/reference.RFC.9051.xml"/>
+        <xi:include href="References/reference.POSIX.xml"/>
+      </references>
+ 
+      <references>
+        <name>Informative References</name>
+				<xi:include href="References/reference.rpcgen++.xml"/>
+				<xi:include href="References/reference.rpcgendocs.xml"/>
+<!--
+				<reference anchor="rpcgensource" target="https://github.com/RiverExplorer/Phoenix">
+					<front>
+						<title>rpcgen++ tool - source code</title>
+						<author initials="" surname="Unknown" fullname="Unknown"/>
+						<date year="2025"/>
+						<abstract>
+							<t>
+								rpcgen++ is an updated rpcgen that can generate C++ code.
+								And is available at
+								<eref target="https://github.com/RiverExplorer/Phoenix"/>
+							</t>
+						</abstract>
+					</front>
+					</reference>
+-->
+					<reference anchor="PhoenixImplementation" target="https://github.com/RiverExplorer/Phoenix">
+					<front>
+						<title>Phoenix Sample Implementation</title>
+						<author initials="D." surname="Royer" fullname="D. Royer"/>
+						<date year="2025"/>
+						<abstract>
+							<t>
+								A sample Phoenix implentation.
+								<xref target="PhoenixImplementation"/>
+							</t>
+						</abstract>
+					</front>
+					</reference>
+      </references>
+    </references>
+		<!--
+    <xi:include href="AdminBinaryValues.xml"/>
+    <xi:include href="AuthBinaryValues.xml"/>
+    <xi:include href="CapabilityIndex.xml"/>
+    <xi:include href="FileBinaryValues.xml"/>
+    <xi:include href="ProtocolBinaryValues.xml"/>
+    <xi:include href="ALL-ABNF.xml"/>
+    <xi:include href="ALL-XDR.xml"/>
+-->
+    <section anchor="Acknowledgements" numbered="false">
+      <!-- [REPLACE/DELETE] an Acknowledgements section is optional -->
+      <name>Acknowledgments</name>
+      <t></t>
+    </section>
+    
+    <section anchor="Contributors" numbered="false">
+      <!-- [REPLACE/DELETE] a Contributors section is optional -->
+      <name>Contributors</name>
+      <t>Thanks to all of the contributors. [REPLACE]</t>
+      <!-- [CHECK] it is optional to add a <contact> record for some or all contributors -->
+    </section>
+    
+ </back>
+</rfc>
