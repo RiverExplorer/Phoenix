@@ -60,6 +60,7 @@
 		<xi:include href="XDRDecodeThread.xml"/>
 		<xi:include href="DispatchThread.xml"/>
 		<xi:include href="InitialConnectionToServer.xml"/>
+    <xi:include href="IANA.xml"/>
     <xi:include href="SecurityConsiderations.xml"/>
   </middle>
 
@@ -76,6 +77,7 @@
         <xi:include href="References/reference.RFC.8446.xml"/>
         <xi:include href="References/reference.RFC.9051.xml"/>
         <xi:include href="References/reference.POSIX.xml"/>
+        <xi:include href="References/draft-royer-phoenix-00.xml"/>
       </references>
  
       <references>

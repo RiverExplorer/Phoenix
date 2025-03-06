@@ -28,26 +28,29 @@
 	<dl newline="true">
 		<dt>(A) Main Thread</dt>
 		<dd>
-			The main thread processes data and formats it into
-			data packets to be sent to the remotes endpoint.
-			Once ready, it is placed into the To XDR queue (B).
+			<t>
+				The main thread processes data and formats it into
+				data commands and their payload to be sent to the remote
+				endpoint.	Once ready, each command is placed into the <em>"To
+				XDR Out Queue"</em> (B).
+			</t>
 		</dd>
-		<dt>(B) To XDR Queue</dt>
+		<dt>(B) To XDR Out Queue</dt>
 		<dd>
 			This is a first in, first out queue (FIFO).
-			Its purpose is to store data until the next thread
-			can process the data.
+			Its purpose is to store data until the the
+			<em>"To XDR Thread"</em> (C) can process the data.
 		</dd>
 		<dt>(C) To XDR Thread</dt>
 		<dd>
-			An XDR thread, takes one packet at at time
-			out of the the XDR OUT queue (B).
+			This thread, takes one packet at at time
+			out of the the <em>"To XDR Out Queue"</em> (B).
 			Converts it from the native computer format to
 			XDR format so it can be process by
 			any computer architecture and stores the result
-			into the To Network FIFO (D).
+			into the <em>"To Network OUT Queue"</em> (D).
 		</dd>
-		<dt>(D) To Network Queue</dt>
+		<dt>(D) To Network Out Queue</dt>
 		<dd>
 			This FIFO queue stores XDR encoded data until thread (E)
 			can send it out to the network.
@@ -56,39 +59,55 @@
 		<dd>
 			This is the network outbound thread.
 			It checks to make sure the network can take data.
-			When it can, it takes one or more packets,
-			TLS encrypts the data and sends it out to the network.
+			When it can, it takes one or more commands from
+			the <em>"To Network Out Queue"</em> (D) and puts them
+			in a PacketBody.
+			A PacketBody may contain 1 or more commands.
+			Then the Pack body and its one or more
+			commands is TLS encrypted and sent
+			out to the network.
 		</dd>
 		<dt>(F) From Network Thread</dt>
 		<dd>
-			This is the inbound network thread.
-			It waits for incoming data, TLS decrypts the data,
-			and when a complete	packet arrives, places the data into the
-			From Network Queue (G).
+			<t>
+				This is the inbound network thread.
+				It waits for incoming data, TLS decrypts the data.
+			</t>
+			<t>
+				The data arrives in PacketBody objects.
+				A PacketBody may contain one or more commands.
+				This thread then separates them into separate
+				commands and stores these separate commands
+				into the <em>"From Network In Queue"</em> (G).
+			</t>
 		</dd>
-		<dt>(G) From Network Queue</dt>
+		<dt>(G) From Network In Queue</dt>
 		<dd>
-			This is a FIFO queue. It stores incoming data packets
-			until the XDR decode thread (H) can take them.
+			<t>
+				This is a FIFO queue. It stores incoming data packets
+				until the XDR decode thread (H) can take them.
+			</t>
 		</dd>
 		<dt>(H) XDR Decode Thread</dt>
 		<dd>
 			This is the incoming XDR decode thread.
-			It takes one packet at a time out of the From Network Queue (G),
+			It takes one packet at a time out of
+			the <em>"From Network In Queue"</em> (G),
 			converts the network binary data back into native computer
 			format.
 			Once the data is decoded, it paces the decoded data into
-			the inbound queue (I).
+			the <em>"Ready In Queue"</em> (I).
 		</dd>
-		<dt>(I) Ready To Dispatch Queue</dt>
+		<dt>(I) Ready In Queue</dt>
 		<dd>
-			This FIFO queue stores inbound and decoded data
+			This FIFO queue stores inbound and decoded commands
 			until the Dispatch Thread (J) can process the data.
 		</dd>
 		<dt>(J) Dispatch Thread</dt>
 		<dd>
 			This is the dispatch thread.
-			It takes one packet at a time out of the inbound queue (I)
+			It takes one command at a time out of
+			the <em>"Ready In Queue"</em> (I)
 			and dispatches it to the code that can handle the data.
 		</dd>
 	</dl>

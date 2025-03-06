@@ -5,38 +5,15 @@
 	NOTE: This is just getting started, not ready for submission yet.
 </t>
 <t>
-	Email and MIME messages account for one the largest volumes of data on the
-	internet.
-	The transfer of these MIME message has not had a major updated in decades.
-	Part of the reason is that it is very important data and altering it
-	takes a great deal of care and planning.
+	This is an implementation guide for
+	<eref target="https://htmlpreview.github.io/?https://github.com/RiverExplorer/Phoenix/blob/main/Documentation/draft-royer-phoenix.html">
+		Phoenix: Lemonaide Risen Again</eref> <xref target="Phoenix"/>.
 </t>
 <t>
-	This application transport can also transfer non-MIME data.
-	It can be used as an XDR transport, or for opaque data (blobs of
-	known or unknown data) transport.
-</t>
-<t>
-	Another major concern is security and authentication.
-	This proposal allows for existing authentication to continue to work.
-</t>
-<t>
-	This is a MIME message transport that can facilitate
-	the transfer of any kind of MIME message. Including email, calendaring,
-	and text, image, or multimedia MIME messages.
-	It can transfer multipart and simple MIME messages.
-</t>
-<t>
-	The POP and IMAP protocols are overly chatty and now that the Internet
-	can handle 8-bit transfers, there is no need for the overly complex
-	text handling of messages.
-</t>
-<t>
-	This proposal includes a sample implementation.
-	(<eref target="https://github.com/RiverExplorer/Phoenix">Github - Phoenix</eref>)
-	Which also includes a gateway from this proposal to existing systems.
-	Thunderbird and Outlook plugins are part of the sample implementation.
-	A Linux, Windows DLL and .NET, and Android client library are part of
-	the sample implementation
+	This implementation guide, or recipe, is an example of
+	the steps and flow of data for an implementation
+	of a Phoenix client and server.
+	This guide is based on a reference implementation at:
+	<eref target="https://github.com/RiverExplorer/Phoenix"/>.
 </t>
 </abstract>

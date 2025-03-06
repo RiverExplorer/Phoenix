@@ -56,8 +56,7 @@
 			<li>
 				<t>
 					When the worker threads are ready the client
-					uses the configuration data, or created for
-					a new server, the client then initiates that connection
+					uses the configuration data and initiates a connection
 					to each configured server according to the Phoenix
 					protocol specification. See
 					<xref target="InitialServerConnection">
@@ -71,7 +70,8 @@
 					Any client may support multiple tasks.
 					These could include email, calendaring, network news,
 					RSS feeds, remote administrative control, or any
-					other tasks designed into the client.
+					other tasks designed into the client and
+					server implementations.
 				</t>
 				<t>
 					In the case of an email client, it would start

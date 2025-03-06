@@ -1,0 +1,13 @@
+<reference anchor="Phoenix" target="https://htmlpreview.github.io/?https://github.com/RiverExplorer/Phoenix/blob/main/Documentation/draft-royer-phoenix.html">
+  <front>
+    <title>Phoenix: Lemonade Risen Again</title>
+    <author fullname="Doug Royer" initials="DM" surname="Royer"/>
+    <date month="February" year="2025"/>
+    <abstract>
+			<t>
+				An application transport protocol that transfers MIME and
+				non-MIME data.
+			</t>
+    </abstract>
+  </front>
+</reference>
