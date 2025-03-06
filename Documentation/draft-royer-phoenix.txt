@@ -4,8 +4,8 @@
 
 Internet Engineering Task Force                                DM. Royer
 Internet-Draft                                         RiverExplorer LLC
-Intended status: Informational                              3 March 2025
-Expires: 4 September 2025
+Intended status: Standards Track                            4 March 2025
+Expires: 5 September 2025
 
 
                      Phoenix: Lemonade Risen Again
@@ -53,7 +53,7 @@ Status of This Memo
 
 
 
-Royer                   Expires 4 September 2025                [Page 1]
+Royer                   Expires 5 September 2025                [Page 1]
 
 Internet-Draft        Phoenix: Lemonade Risen Again           March 2025
 
@@ -68,7 +68,7 @@ Internet-Draft        Phoenix: Lemonade Risen Again           March 2025
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 4 September 2025.
+   This Internet-Draft will expire on 5 September 2025.
 
 Copyright Notice
 
@@ -109,7 +109,7 @@ Table of Contents
 
 
 
-Royer                   Expires 4 September 2025                [Page 2]
+Royer                   Expires 5 September 2025                [Page 2]
 
 Internet-Draft        Phoenix: Lemonade Risen Again           March 2025
 
@@ -165,7 +165,7 @@ Internet-Draft        Phoenix: Lemonade Risen Again           March 2025
 
 
 
-Royer                   Expires 4 September 2025                [Page 3]
+Royer                   Expires 5 September 2025                [Page 3]
 
 Internet-Draft        Phoenix: Lemonade Risen Again           March 2025
 
@@ -221,7 +221,7 @@ Internet-Draft        Phoenix: Lemonade Risen Again           March 2025
 
 
 
-Royer                   Expires 4 September 2025                [Page 4]
+Royer                   Expires 5 September 2025                [Page 4]
 
 Internet-Draft        Phoenix: Lemonade Risen Again           March 2025
 
@@ -277,7 +277,7 @@ Internet-Draft        Phoenix: Lemonade Risen Again           March 2025
 
 
 
-Royer                   Expires 4 September 2025                [Page 5]
+Royer                   Expires 5 September 2025                [Page 5]
 
 Internet-Draft        Phoenix: Lemonade Risen Again           March 2025
 
@@ -333,7 +333,7 @@ Internet-Draft        Phoenix: Lemonade Risen Again           March 2025
 
 
 
-Royer                   Expires 4 September 2025                [Page 6]
+Royer                   Expires 5 September 2025                [Page 6]
 
 Internet-Draft        Phoenix: Lemonade Risen Again           March 2025
 
@@ -389,7 +389,7 @@ Internet-Draft        Phoenix: Lemonade Risen Again           March 2025
 
 
 
-Royer                   Expires 4 September 2025                [Page 7]
+Royer                   Expires 5 September 2025                [Page 7]
 
 Internet-Draft        Phoenix: Lemonade Risen Again           March 2025
 
@@ -445,7 +445,7 @@ Internet-Draft        Phoenix: Lemonade Risen Again           March 2025
 
 
 
-Royer                   Expires 4 September 2025                [Page 8]
+Royer                   Expires 5 September 2025                [Page 8]
 
 Internet-Draft        Phoenix: Lemonade Risen Again           March 2025
 
@@ -501,7 +501,7 @@ Internet-Draft        Phoenix: Lemonade Risen Again           March 2025
 
 
 
-Royer                   Expires 4 September 2025                [Page 9]
+Royer                   Expires 5 September 2025                [Page 9]
 
 Internet-Draft        Phoenix: Lemonade Risen Again           March 2025
 
@@ -557,7 +557,7 @@ Internet-Draft        Phoenix: Lemonade Risen Again           March 2025
 
 
 
-Royer                   Expires 4 September 2025               [Page 10]
+Royer                   Expires 5 September 2025               [Page 10]
 
 Internet-Draft        Phoenix: Lemonade Risen Again           March 2025
 
@@ -613,7 +613,7 @@ Internet-Draft        Phoenix: Lemonade Risen Again           March 2025
 
 
 
-Royer                   Expires 4 September 2025               [Page 11]
+Royer                   Expires 5 September 2025               [Page 11]
 
 Internet-Draft        Phoenix: Lemonade Risen Again           March 2025
 
@@ -669,7 +669,7 @@ Internet-Draft        Phoenix: Lemonade Risen Again           March 2025
 
 
 
-Royer                   Expires 4 September 2025               [Page 12]
+Royer                   Expires 5 September 2025               [Page 12]
 
 Internet-Draft        Phoenix: Lemonade Risen Again           March 2025
 
@@ -725,7 +725,7 @@ Internet-Draft        Phoenix: Lemonade Risen Again           March 2025
 
 
 
-Royer                   Expires 4 September 2025               [Page 13]
+Royer                   Expires 5 September 2025               [Page 13]
 
 Internet-Draft        Phoenix: Lemonade Risen Again           March 2025
 
@@ -781,7 +781,7 @@ Internet-Draft        Phoenix: Lemonade Risen Again           March 2025
 
 
 
-Royer                   Expires 4 September 2025               [Page 14]
+Royer                   Expires 5 September 2025               [Page 14]
 
 Internet-Draft        Phoenix: Lemonade Risen Again           March 2025
 
@@ -837,7 +837,7 @@ Internet-Draft        Phoenix: Lemonade Risen Again           March 2025
 
 
 
-Royer                   Expires 4 September 2025               [Page 15]
+Royer                   Expires 5 September 2025               [Page 15]
 
 Internet-Draft        Phoenix: Lemonade Risen Again           March 2025
 
@@ -893,7 +893,7 @@ Internet-Draft        Phoenix: Lemonade Risen Again           March 2025
 
 
 
-Royer                   Expires 4 September 2025               [Page 16]
+Royer                   Expires 5 September 2025               [Page 16]
 
 Internet-Draft        Phoenix: Lemonade Risen Again           March 2025
 
@@ -949,7 +949,7 @@ Internet-Draft        Phoenix: Lemonade Risen Again           March 2025
 
 
 
-Royer                   Expires 4 September 2025               [Page 17]
+Royer                   Expires 5 September 2025               [Page 17]
 
 Internet-Draft        Phoenix: Lemonade Risen Again           March 2025
 
@@ -1005,7 +1005,7 @@ Internet-Draft        Phoenix: Lemonade Risen Again           March 2025
 
 
 
-Royer                   Expires 4 September 2025               [Page 18]
+Royer                   Expires 5 September 2025               [Page 18]
 
 Internet-Draft        Phoenix: Lemonade Risen Again           March 2025
 
@@ -1061,7 +1061,7 @@ Internet-Draft        Phoenix: Lemonade Risen Again           March 2025
 
 
 
-Royer                   Expires 4 September 2025               [Page 19]
+Royer                   Expires 5 September 2025               [Page 19]
 
 Internet-Draft        Phoenix: Lemonade Risen Again           March 2025
 
@@ -1117,7 +1117,7 @@ Internet-Draft        Phoenix: Lemonade Risen Again           March 2025
 
 
 
-Royer                   Expires 4 September 2025               [Page 20]
+Royer                   Expires 5 September 2025               [Page 20]
 
 Internet-Draft        Phoenix: Lemonade Risen Again           March 2025
 
@@ -1173,7 +1173,7 @@ Internet-Draft        Phoenix: Lemonade Risen Again           March 2025
 
 
 
-Royer                   Expires 4 September 2025               [Page 21]
+Royer                   Expires 5 September 2025               [Page 21]
 
 Internet-Draft        Phoenix: Lemonade Risen Again           March 2025
 
@@ -1229,7 +1229,7 @@ Internet-Draft        Phoenix: Lemonade Risen Again           March 2025
 
 
 
-Royer                   Expires 4 September 2025               [Page 22]
+Royer                   Expires 5 September 2025               [Page 22]
 
 Internet-Draft        Phoenix: Lemonade Risen Again           March 2025
 
@@ -1285,7 +1285,7 @@ Internet-Draft        Phoenix: Lemonade Risen Again           March 2025
 
 
 
-Royer                   Expires 4 September 2025               [Page 23]
+Royer                   Expires 5 September 2025               [Page 23]
 
 Internet-Draft        Phoenix: Lemonade Risen Again           March 2025
 
@@ -1341,7 +1341,7 @@ Internet-Draft        Phoenix: Lemonade Risen Again           March 2025
 
 
 
-Royer                   Expires 4 September 2025               [Page 24]
+Royer                   Expires 5 September 2025               [Page 24]
 
 Internet-Draft        Phoenix: Lemonade Risen Again           March 2025
 
@@ -1397,7 +1397,7 @@ Internet-Draft        Phoenix: Lemonade Risen Again           March 2025
 
 
 
-Royer                   Expires 4 September 2025               [Page 25]
+Royer                   Expires 5 September 2025               [Page 25]
 
 Internet-Draft        Phoenix: Lemonade Risen Again           March 2025
 
@@ -1453,7 +1453,7 @@ Internet-Draft        Phoenix: Lemonade Risen Again           March 2025
 
 
 
-Royer                   Expires 4 September 2025               [Page 26]
+Royer                   Expires 5 September 2025               [Page 26]
 
 Internet-Draft        Phoenix: Lemonade Risen Again           March 2025
 
@@ -1509,7 +1509,7 @@ Internet-Draft        Phoenix: Lemonade Risen Again           March 2025
 
 
 
-Royer                   Expires 4 September 2025               [Page 27]
+Royer                   Expires 5 September 2025               [Page 27]
 
 Internet-Draft        Phoenix: Lemonade Risen Again           March 2025
 
@@ -1565,7 +1565,7 @@ Internet-Draft        Phoenix: Lemonade Risen Again           March 2025
 
 
 
-Royer                   Expires 4 September 2025               [Page 28]
+Royer                   Expires 5 September 2025               [Page 28]
 
 Internet-Draft        Phoenix: Lemonade Risen Again           March 2025
 
@@ -1621,7 +1621,7 @@ Internet-Draft        Phoenix: Lemonade Risen Again           March 2025
 
 
 
-Royer                   Expires 4 September 2025               [Page 29]
+Royer                   Expires 5 September 2025               [Page 29]
 
 Internet-Draft        Phoenix: Lemonade Risen Again           March 2025
 
@@ -1677,7 +1677,7 @@ Internet-Draft        Phoenix: Lemonade Risen Again           March 2025
 
 
 
-Royer                   Expires 4 September 2025               [Page 30]
+Royer                   Expires 5 September 2025               [Page 30]
 
 Internet-Draft        Phoenix: Lemonade Risen Again           March 2025
 
@@ -1733,7 +1733,7 @@ Internet-Draft        Phoenix: Lemonade Risen Again           March 2025
 
 
 
-Royer                   Expires 4 September 2025               [Page 31]
+Royer                   Expires 5 September 2025               [Page 31]
 
 Internet-Draft        Phoenix: Lemonade Risen Again           March 2025
 
@@ -1789,7 +1789,7 @@ Internet-Draft        Phoenix: Lemonade Risen Again           March 2025
 
 
 
-Royer                   Expires 4 September 2025               [Page 32]
+Royer                   Expires 5 September 2025               [Page 32]
 
 Internet-Draft        Phoenix: Lemonade Risen Again           March 2025
 
@@ -1845,7 +1845,7 @@ Internet-Draft        Phoenix: Lemonade Risen Again           March 2025
 
 
 
-Royer                   Expires 4 September 2025               [Page 33]
+Royer                   Expires 5 September 2025               [Page 33]
 
 Internet-Draft        Phoenix: Lemonade Risen Again           March 2025
 
@@ -1901,7 +1901,7 @@ Internet-Draft        Phoenix: Lemonade Risen Again           March 2025
 
 
 
-Royer                   Expires 4 September 2025               [Page 34]
+Royer                   Expires 5 September 2025               [Page 34]
 
 Internet-Draft        Phoenix: Lemonade Risen Again           March 2025
 
@@ -1957,7 +1957,7 @@ Internet-Draft        Phoenix: Lemonade Risen Again           March 2025
 
 
 
-Royer                   Expires 4 September 2025               [Page 35]
+Royer                   Expires 5 September 2025               [Page 35]
 
 Internet-Draft        Phoenix: Lemonade Risen Again           March 2025
 
@@ -2013,7 +2013,7 @@ Internet-Draft        Phoenix: Lemonade Risen Again           March 2025
 
 
 
-Royer                   Expires 4 September 2025               [Page 36]
+Royer                   Expires 5 September 2025               [Page 36]
 
 Internet-Draft        Phoenix: Lemonade Risen Again           March 2025
 
@@ -2069,7 +2069,7 @@ Internet-Draft        Phoenix: Lemonade Risen Again           March 2025
 
 
 
-Royer                   Expires 4 September 2025               [Page 37]
+Royer                   Expires 5 September 2025               [Page 37]
 
 Internet-Draft        Phoenix: Lemonade Risen Again           March 2025
 
@@ -2125,7 +2125,7 @@ Internet-Draft        Phoenix: Lemonade Risen Again           March 2025
 
 
 
-Royer                   Expires 4 September 2025               [Page 38]
+Royer                   Expires 5 September 2025               [Page 38]
 
 Internet-Draft        Phoenix: Lemonade Risen Again           March 2025
 
@@ -2181,7 +2181,7 @@ Internet-Draft        Phoenix: Lemonade Risen Again           March 2025
 
 
 
-Royer                   Expires 4 September 2025               [Page 39]
+Royer                   Expires 5 September 2025               [Page 39]
 
 Internet-Draft        Phoenix: Lemonade Risen Again           March 2025
 
@@ -2237,7 +2237,7 @@ Internet-Draft        Phoenix: Lemonade Risen Again           March 2025
 
 
 
-Royer                   Expires 4 September 2025               [Page 40]
+Royer                   Expires 5 September 2025               [Page 40]
 
 Internet-Draft        Phoenix: Lemonade Risen Again           March 2025
 
@@ -2293,7 +2293,7 @@ Internet-Draft        Phoenix: Lemonade Risen Again           March 2025
 
 
 
-Royer                   Expires 4 September 2025               [Page 41]
+Royer                   Expires 5 September 2025               [Page 41]
 
 Internet-Draft        Phoenix: Lemonade Risen Again           March 2025
 
@@ -2349,7 +2349,7 @@ Internet-Draft        Phoenix: Lemonade Risen Again           March 2025
 
 
 
-Royer                   Expires 4 September 2025               [Page 42]
+Royer                   Expires 5 September 2025               [Page 42]
 
 Internet-Draft        Phoenix: Lemonade Risen Again           March 2025
 
@@ -2405,7 +2405,7 @@ Internet-Draft        Phoenix: Lemonade Risen Again           March 2025
 
 
 
-Royer                   Expires 4 September 2025               [Page 43]
+Royer                   Expires 5 September 2025               [Page 43]
 
 Internet-Draft        Phoenix: Lemonade Risen Again           March 2025
 
@@ -2461,7 +2461,7 @@ Internet-Draft        Phoenix: Lemonade Risen Again           March 2025
 
 
 
-Royer                   Expires 4 September 2025               [Page 44]
+Royer                   Expires 5 September 2025               [Page 44]
 
 Internet-Draft        Phoenix: Lemonade Risen Again           March 2025
 
@@ -2517,7 +2517,7 @@ Internet-Draft        Phoenix: Lemonade Risen Again           March 2025
 
 
 
-Royer                   Expires 4 September 2025               [Page 45]
+Royer                   Expires 5 September 2025               [Page 45]
 
 Internet-Draft        Phoenix: Lemonade Risen Again           March 2025
 
@@ -2573,7 +2573,7 @@ Internet-Draft        Phoenix: Lemonade Risen Again           March 2025
 
 
 
-Royer                   Expires 4 September 2025               [Page 46]
+Royer                   Expires 5 September 2025               [Page 46]
 
 Internet-Draft        Phoenix: Lemonade Risen Again           March 2025
 
@@ -2629,7 +2629,7 @@ Internet-Draft        Phoenix: Lemonade Risen Again           March 2025
 
 
 
-Royer                   Expires 4 September 2025               [Page 47]
+Royer                   Expires 5 September 2025               [Page 47]
 
 Internet-Draft        Phoenix: Lemonade Risen Again           March 2025
 
@@ -2685,7 +2685,7 @@ Internet-Draft        Phoenix: Lemonade Risen Again           March 2025
 
 
 
-Royer                   Expires 4 September 2025               [Page 48]
+Royer                   Expires 5 September 2025               [Page 48]
 
 Internet-Draft        Phoenix: Lemonade Risen Again           March 2025
 
@@ -2741,7 +2741,7 @@ Internet-Draft        Phoenix: Lemonade Risen Again           March 2025
 
 
 
-Royer                   Expires 4 September 2025               [Page 49]
+Royer                   Expires 5 September 2025               [Page 49]
 
 Internet-Draft        Phoenix: Lemonade Risen Again           March 2025
 
@@ -2797,7 +2797,7 @@ Internet-Draft        Phoenix: Lemonade Risen Again           March 2025
 
 
 
-Royer                   Expires 4 September 2025               [Page 50]
+Royer                   Expires 5 September 2025               [Page 50]
 
 Internet-Draft        Phoenix: Lemonade Risen Again           March 2025
 
@@ -2853,7 +2853,7 @@ Internet-Draft        Phoenix: Lemonade Risen Again           March 2025
 
 
 
-Royer                   Expires 4 September 2025               [Page 51]
+Royer                   Expires 5 September 2025               [Page 51]
 
 Internet-Draft        Phoenix: Lemonade Risen Again           March 2025
 
@@ -2909,7 +2909,7 @@ Internet-Draft        Phoenix: Lemonade Risen Again           March 2025
 
 
 
-Royer                   Expires 4 September 2025               [Page 52]
+Royer                   Expires 5 September 2025               [Page 52]
 
 Internet-Draft        Phoenix: Lemonade Risen Again           March 2025
 
@@ -2965,7 +2965,7 @@ Internet-Draft        Phoenix: Lemonade Risen Again           March 2025
 
 
 
-Royer                   Expires 4 September 2025               [Page 53]
+Royer                   Expires 5 September 2025               [Page 53]
 
 Internet-Draft        Phoenix: Lemonade Risen Again           March 2025
 
@@ -3021,7 +3021,7 @@ Internet-Draft        Phoenix: Lemonade Risen Again           March 2025
 
 
 
-Royer                   Expires 4 September 2025               [Page 54]
+Royer                   Expires 5 September 2025               [Page 54]
 
 Internet-Draft        Phoenix: Lemonade Risen Again           March 2025
 
@@ -3077,7 +3077,7 @@ Internet-Draft        Phoenix: Lemonade Risen Again           March 2025
 
 
 
-Royer                   Expires 4 September 2025               [Page 55]
+Royer                   Expires 5 September 2025               [Page 55]
 
 Internet-Draft        Phoenix: Lemonade Risen Again           March 2025
 
@@ -3133,7 +3133,7 @@ Internet-Draft        Phoenix: Lemonade Risen Again           March 2025
 
 
 
-Royer                   Expires 4 September 2025               [Page 56]
+Royer                   Expires 5 September 2025               [Page 56]
 
 Internet-Draft        Phoenix: Lemonade Risen Again           March 2025
 
@@ -3189,7 +3189,7 @@ Internet-Draft        Phoenix: Lemonade Risen Again           March 2025
 
 
 
-Royer                   Expires 4 September 2025               [Page 57]
+Royer                   Expires 5 September 2025               [Page 57]
 
 Internet-Draft        Phoenix: Lemonade Risen Again           March 2025
 
@@ -3245,7 +3245,7 @@ Internet-Draft        Phoenix: Lemonade Risen Again           March 2025
 
 
 
-Royer                   Expires 4 September 2025               [Page 58]
+Royer                   Expires 5 September 2025               [Page 58]
 
 Internet-Draft        Phoenix: Lemonade Risen Again           March 2025
 
@@ -3301,7 +3301,7 @@ Internet-Draft        Phoenix: Lemonade Risen Again           March 2025
 
 
 
-Royer                   Expires 4 September 2025               [Page 59]
+Royer                   Expires 5 September 2025               [Page 59]
 
 Internet-Draft        Phoenix: Lemonade Risen Again           March 2025
 
@@ -3357,7 +3357,7 @@ Internet-Draft        Phoenix: Lemonade Risen Again           March 2025
 
 
 
-Royer                   Expires 4 September 2025               [Page 60]
+Royer                   Expires 5 September 2025               [Page 60]
 
 Internet-Draft        Phoenix: Lemonade Risen Again           March 2025
 
@@ -3413,7 +3413,7 @@ Internet-Draft        Phoenix: Lemonade Risen Again           March 2025
 
 
 
-Royer                   Expires 4 September 2025               [Page 61]
+Royer                   Expires 5 September 2025               [Page 61]
 
 Internet-Draft        Phoenix: Lemonade Risen Again           March 2025
 
@@ -3469,7 +3469,7 @@ Internet-Draft        Phoenix: Lemonade Risen Again           March 2025
 
 
 
-Royer                   Expires 4 September 2025               [Page 62]
+Royer                   Expires 5 September 2025               [Page 62]
 
 Internet-Draft        Phoenix: Lemonade Risen Again           March 2025
 
@@ -3525,7 +3525,7 @@ Internet-Draft        Phoenix: Lemonade Risen Again           March 2025
 
 
 
-Royer                   Expires 4 September 2025               [Page 63]
+Royer                   Expires 5 September 2025               [Page 63]
 
 Internet-Draft        Phoenix: Lemonade Risen Again           March 2025
 
@@ -3581,7 +3581,7 @@ Internet-Draft        Phoenix: Lemonade Risen Again           March 2025
 
 
 
-Royer                   Expires 4 September 2025               [Page 64]
+Royer                   Expires 5 September 2025               [Page 64]
 
 Internet-Draft        Phoenix: Lemonade Risen Again           March 2025
 
@@ -3637,7 +3637,7 @@ Internet-Draft        Phoenix: Lemonade Risen Again           March 2025
 
 
 
-Royer                   Expires 4 September 2025               [Page 65]
+Royer                   Expires 5 September 2025               [Page 65]
 
 Internet-Draft        Phoenix: Lemonade Risen Again           March 2025
 
@@ -3693,7 +3693,7 @@ Internet-Draft        Phoenix: Lemonade Risen Again           March 2025
 
 
 
-Royer                   Expires 4 September 2025               [Page 66]
+Royer                   Expires 5 September 2025               [Page 66]
 
 Internet-Draft        Phoenix: Lemonade Risen Again           March 2025
 
@@ -3749,7 +3749,7 @@ Internet-Draft        Phoenix: Lemonade Risen Again           March 2025
 
 
 
-Royer                   Expires 4 September 2025               [Page 67]
+Royer                   Expires 5 September 2025               [Page 67]
 
 Internet-Draft        Phoenix: Lemonade Risen Again           March 2025
 
@@ -3805,7 +3805,7 @@ Internet-Draft        Phoenix: Lemonade Risen Again           March 2025
 
 
 
-Royer                   Expires 4 September 2025               [Page 68]
+Royer                   Expires 5 September 2025               [Page 68]
 
 Internet-Draft        Phoenix: Lemonade Risen Again           March 2025
 
@@ -3861,7 +3861,7 @@ Internet-Draft        Phoenix: Lemonade Risen Again           March 2025
 
 
 
-Royer                   Expires 4 September 2025               [Page 69]
+Royer                   Expires 5 September 2025               [Page 69]
 
 Internet-Draft        Phoenix: Lemonade Risen Again           March 2025
 
@@ -3917,7 +3917,7 @@ Internet-Draft        Phoenix: Lemonade Risen Again           March 2025
 
 
 
-Royer                   Expires 4 September 2025               [Page 70]
+Royer                   Expires 5 September 2025               [Page 70]
 
 Internet-Draft        Phoenix: Lemonade Risen Again           March 2025
 
@@ -3973,7 +3973,7 @@ Internet-Draft        Phoenix: Lemonade Risen Again           March 2025
 
 
 
-Royer                   Expires 4 September 2025               [Page 71]
+Royer                   Expires 5 September 2025               [Page 71]
 
 Internet-Draft        Phoenix: Lemonade Risen Again           March 2025
 
@@ -4029,7 +4029,7 @@ Internet-Draft        Phoenix: Lemonade Risen Again           March 2025
 
 
 
-Royer                   Expires 4 September 2025               [Page 72]
+Royer                   Expires 5 September 2025               [Page 72]
 
 Internet-Draft        Phoenix: Lemonade Risen Again           March 2025
 
@@ -4085,7 +4085,7 @@ Internet-Draft        Phoenix: Lemonade Risen Again           March 2025
 
 
 
-Royer                   Expires 4 September 2025               [Page 73]
+Royer                   Expires 5 September 2025               [Page 73]
 
 Internet-Draft        Phoenix: Lemonade Risen Again           March 2025
 
@@ -4141,7 +4141,7 @@ Internet-Draft        Phoenix: Lemonade Risen Again           March 2025
 
 
 
-Royer                   Expires 4 September 2025               [Page 74]
+Royer                   Expires 5 September 2025               [Page 74]
 
 Internet-Draft        Phoenix: Lemonade Risen Again           March 2025
 
@@ -4197,7 +4197,7 @@ Internet-Draft        Phoenix: Lemonade Risen Again           March 2025
 
 
 
-Royer                   Expires 4 September 2025               [Page 75]
+Royer                   Expires 5 September 2025               [Page 75]
 
 Internet-Draft        Phoenix: Lemonade Risen Again           March 2025
 
@@ -4253,7 +4253,7 @@ Internet-Draft        Phoenix: Lemonade Risen Again           March 2025
 
 
 
-Royer                   Expires 4 September 2025               [Page 76]
+Royer                   Expires 5 September 2025               [Page 76]
 
 Internet-Draft        Phoenix: Lemonade Risen Again           March 2025
 
@@ -4309,7 +4309,7 @@ Internet-Draft        Phoenix: Lemonade Risen Again           March 2025
 
 
 
-Royer                   Expires 4 September 2025               [Page 77]
+Royer                   Expires 5 September 2025               [Page 77]
 
 Internet-Draft        Phoenix: Lemonade Risen Again           March 2025
 
@@ -4365,7 +4365,7 @@ Internet-Draft        Phoenix: Lemonade Risen Again           March 2025
 
 
 
-Royer                   Expires 4 September 2025               [Page 78]
+Royer                   Expires 5 September 2025               [Page 78]
 
 Internet-Draft        Phoenix: Lemonade Risen Again           March 2025
 
@@ -4421,7 +4421,7 @@ Internet-Draft        Phoenix: Lemonade Risen Again           March 2025
 
 
 
-Royer                   Expires 4 September 2025               [Page 79]
+Royer                   Expires 5 September 2025               [Page 79]
 
 Internet-Draft        Phoenix: Lemonade Risen Again           March 2025
 
@@ -4477,7 +4477,7 @@ Internet-Draft        Phoenix: Lemonade Risen Again           March 2025
 
 
 
-Royer                   Expires 4 September 2025               [Page 80]
+Royer                   Expires 5 September 2025               [Page 80]
 
 Internet-Draft        Phoenix: Lemonade Risen Again           March 2025
 
@@ -4533,7 +4533,7 @@ Internet-Draft        Phoenix: Lemonade Risen Again           March 2025
 
 
 
-Royer                   Expires 4 September 2025               [Page 81]
+Royer                   Expires 5 September 2025               [Page 81]
 
 Internet-Draft        Phoenix: Lemonade Risen Again           March 2025
 
@@ -4589,7 +4589,7 @@ Internet-Draft        Phoenix: Lemonade Risen Again           March 2025
 
 
 
-Royer                   Expires 4 September 2025               [Page 82]
+Royer                   Expires 5 September 2025               [Page 82]
 
 Internet-Draft        Phoenix: Lemonade Risen Again           March 2025
 
@@ -4645,7 +4645,7 @@ Internet-Draft        Phoenix: Lemonade Risen Again           March 2025
 
 
 
-Royer                   Expires 4 September 2025               [Page 83]
+Royer                   Expires 5 September 2025               [Page 83]
 
 Internet-Draft        Phoenix: Lemonade Risen Again           March 2025
 
@@ -4701,7 +4701,7 @@ Internet-Draft        Phoenix: Lemonade Risen Again           March 2025
 
 
 
-Royer                   Expires 4 September 2025               [Page 84]
+Royer                   Expires 5 September 2025               [Page 84]
 
 Internet-Draft        Phoenix: Lemonade Risen Again           March 2025
 
@@ -4757,7 +4757,7 @@ Internet-Draft        Phoenix: Lemonade Risen Again           March 2025
 
 
 
-Royer                   Expires 4 September 2025               [Page 85]
+Royer                   Expires 5 September 2025               [Page 85]
 
 Internet-Draft        Phoenix: Lemonade Risen Again           March 2025
 
@@ -4813,7 +4813,7 @@ Internet-Draft        Phoenix: Lemonade Risen Again           March 2025
 
 
 
-Royer                   Expires 4 September 2025               [Page 86]
+Royer                   Expires 5 September 2025               [Page 86]
 
 Internet-Draft        Phoenix: Lemonade Risen Again           March 2025
 
@@ -4869,7 +4869,7 @@ Internet-Draft        Phoenix: Lemonade Risen Again           March 2025
 
 
 
-Royer                   Expires 4 September 2025               [Page 87]
+Royer                   Expires 5 September 2025               [Page 87]
 
 Internet-Draft        Phoenix: Lemonade Risen Again           March 2025
 
@@ -4925,7 +4925,7 @@ Internet-Draft        Phoenix: Lemonade Risen Again           March 2025
 
 
 
-Royer                   Expires 4 September 2025               [Page 88]
+Royer                   Expires 5 September 2025               [Page 88]
 
 Internet-Draft        Phoenix: Lemonade Risen Again           March 2025
 
@@ -4981,7 +4981,7 @@ Appendix A.  Administrative Enumerated Binary Values
 
 
 
-Royer                   Expires 4 September 2025               [Page 89]
+Royer                   Expires 5 September 2025               [Page 89]
 
 Internet-Draft        Phoenix: Lemonade Risen Again           March 2025
 
@@ -5037,7 +5037,7 @@ Appendix B.  Authentication Enumerated Binary Values
 
 
 
-Royer                   Expires 4 September 2025               [Page 90]
+Royer                   Expires 5 September 2025               [Page 90]
 
 Internet-Draft        Phoenix: Lemonade Risen Again           March 2025
 
@@ -5093,7 +5093,7 @@ Appendix D.  File and Folder Enumerated Binary Values
 
 
 
-Royer                   Expires 4 September 2025               [Page 91]
+Royer                   Expires 5 September 2025               [Page 91]
 
 Internet-Draft        Phoenix: Lemonade Risen Again           March 2025
 
@@ -5149,7 +5149,7 @@ Appendix E.  Protocol Enumerated Binary Values
 
 
 
-Royer                   Expires 4 September 2025               [Page 92]
+Royer                   Expires 5 September 2025               [Page 92]
 
 Internet-Draft        Phoenix: Lemonade Risen Again           March 2025
 
@@ -5205,7 +5205,7 @@ Appendix F.  Complete ABNF
 
 
 
-Royer                   Expires 4 September 2025               [Page 93]
+Royer                   Expires 5 September 2025               [Page 93]
 
 Internet-Draft        Phoenix: Lemonade Risen Again           March 2025
 
@@ -5261,7 +5261,7 @@ Internet-Draft        Phoenix: Lemonade Risen Again           March 2025
 
 
 
-Royer                   Expires 4 September 2025               [Page 94]
+Royer                   Expires 5 September 2025               [Page 94]
 
 Internet-Draft        Phoenix: Lemonade Risen Again           March 2025
 
@@ -5317,7 +5317,7 @@ Internet-Draft        Phoenix: Lemonade Risen Again           March 2025
 
 
 
-Royer                   Expires 4 September 2025               [Page 95]
+Royer                   Expires 5 September 2025               [Page 95]
 
 Internet-Draft        Phoenix: Lemonade Risen Again           March 2025
 
@@ -5373,7 +5373,7 @@ Internet-Draft        Phoenix: Lemonade Risen Again           March 2025
 
 
 
-Royer                   Expires 4 September 2025               [Page 96]
+Royer                   Expires 5 September 2025               [Page 96]
 
 Internet-Draft        Phoenix: Lemonade Risen Again           March 2025
 
@@ -5429,7 +5429,7 @@ Internet-Draft        Phoenix: Lemonade Risen Again           March 2025
 
 
 
-Royer                   Expires 4 September 2025               [Page 97]
+Royer                   Expires 5 September 2025               [Page 97]
 
 Internet-Draft        Phoenix: Lemonade Risen Again           March 2025
 
@@ -5485,7 +5485,7 @@ Internet-Draft        Phoenix: Lemonade Risen Again           March 2025
 
 
 
-Royer                   Expires 4 September 2025               [Page 98]
+Royer                   Expires 5 September 2025               [Page 98]
 
 Internet-Draft        Phoenix: Lemonade Risen Again           March 2025
 
@@ -5541,7 +5541,7 @@ Appendix G.  Complete XDR
 
 
 
-Royer                   Expires 4 September 2025               [Page 99]
+Royer                   Expires 5 September 2025               [Page 99]
 
 Internet-Draft        Phoenix: Lemonade Risen Again           March 2025
 
@@ -5597,7 +5597,7 @@ Internet-Draft        Phoenix: Lemonade Risen Again           March 2025
 
 
 
-Royer                   Expires 4 September 2025              [Page 100]
+Royer                   Expires 5 September 2025              [Page 100]
 
 Internet-Draft        Phoenix: Lemonade Risen Again           March 2025
 
@@ -5653,7 +5653,7 @@ Internet-Draft        Phoenix: Lemonade Risen Again           March 2025
 
 
 
-Royer                   Expires 4 September 2025              [Page 101]
+Royer                   Expires 5 September 2025              [Page 101]
 
 Internet-Draft        Phoenix: Lemonade Risen Again           March 2025
 
@@ -5709,7 +5709,7 @@ Internet-Draft        Phoenix: Lemonade Risen Again           March 2025
 
 
 
-Royer                   Expires 4 September 2025              [Page 102]
+Royer                   Expires 5 September 2025              [Page 102]
 
 Internet-Draft        Phoenix: Lemonade Risen Again           March 2025
 
@@ -5765,7 +5765,7 @@ Internet-Draft        Phoenix: Lemonade Risen Again           March 2025
 
 
 
-Royer                   Expires 4 September 2025              [Page 103]
+Royer                   Expires 5 September 2025              [Page 103]
 
 Internet-Draft        Phoenix: Lemonade Risen Again           March 2025
 
@@ -5821,7 +5821,7 @@ Internet-Draft        Phoenix: Lemonade Risen Again           March 2025
 
 
 
-Royer                   Expires 4 September 2025              [Page 104]
+Royer                   Expires 5 September 2025              [Page 104]
 
 Internet-Draft        Phoenix: Lemonade Risen Again           March 2025
 
@@ -5877,7 +5877,7 @@ Internet-Draft        Phoenix: Lemonade Risen Again           March 2025
 
 
 
-Royer                   Expires 4 September 2025              [Page 105]
+Royer                   Expires 5 September 2025              [Page 105]
 
 Internet-Draft        Phoenix: Lemonade Risen Again           March 2025
 
@@ -5933,7 +5933,7 @@ Internet-Draft        Phoenix: Lemonade Risen Again           March 2025
 
 
 
-Royer                   Expires 4 September 2025              [Page 106]
+Royer                   Expires 5 September 2025              [Page 106]
 
 Internet-Draft        Phoenix: Lemonade Risen Again           March 2025
 
@@ -5989,7 +5989,7 @@ Internet-Draft        Phoenix: Lemonade Risen Again           March 2025
 
 
 
-Royer                   Expires 4 September 2025              [Page 107]
+Royer                   Expires 5 September 2025              [Page 107]
 
 Internet-Draft        Phoenix: Lemonade Risen Again           March 2025
 
@@ -6045,7 +6045,7 @@ Acknowledgments
 
 
 
-Royer                   Expires 4 September 2025              [Page 108]
+Royer                   Expires 5 September 2025              [Page 108]
 
 Internet-Draft        Phoenix: Lemonade Risen Again           March 2025
 
@@ -6101,4 +6101,4 @@ Author's Address
 
 
 
-Royer                   Expires 4 September 2025              [Page 109]
+Royer                   Expires 5 September 2025              [Page 109]
