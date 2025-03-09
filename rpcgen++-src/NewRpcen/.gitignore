@@ -1,0 +1,6 @@
+rpcgen++
+*.o
+cscope.*
+LOG
+Generated
+GeneratedDocs
