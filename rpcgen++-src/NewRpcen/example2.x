@@ -1,3 +1,6 @@
+
+namespace RiverExplorer:rpcgen:test
+
 struct VendorCapability
 {
 	Length Count;

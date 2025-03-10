@@ -2,7 +2,9 @@
 TARGET			= rpcgen++
 
 SOURCES.hpp = \
-	rpcgen.hpp
+	rpcgen.hpp \
+	Generate.hpp \
+	GenerateCpp.hpp
 
 GENERATED.cpp = \
 	xdrBaseListener.cpp \
@@ -25,11 +27,12 @@ GENERATED.other = \
 SOURCES.cpp = \
 	$(GENERATED.cpp) \
 	rpcgen.cpp \
+	Generate.cpp \
+	GenerateCpp.cpp \
 	GenerateConstant.cpp \
 	GenerateEnumValue.cpp \
 	GenerateTypeDef.cpp \
 	GenerateStruct.cpp \
-	GenerateUnionCase.cpp \
 	GenerateUnion.cpp \
 	GenerateProcedure.cpp \
 	GenerateVersion.cpp \
@@ -51,3 +54,5 @@ $(GENERATED.cpp) $(GENERATED.hpp) : xdr.g4
 
 clean:
 	$(RM) *.o $(GENERATED.cpp) $(GENERATED.h) $(GENERATED.other)
+	$(RM) -rf Generated
+

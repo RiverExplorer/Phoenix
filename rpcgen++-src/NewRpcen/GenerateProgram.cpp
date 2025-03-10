@@ -1,10 +1,10 @@
 /**
  * Project: Phoenix
- * Time-stamp: <2025-03-08 13:42:43 doug>
+ * Time-stamp: <2025-03-10 09:22:29 doug>
  * 
  * @file GenerateProgram.cpp
  * @author Douglas Mark Royer
- * @date 08-MAR-20205
+ * @date 08-MAR-2025
  * 
  * @Copyright(C) 2025 by Douglas Mark Royer (A.K.A. RiverExplorer)
  * 
@@ -39,6 +39,11 @@ namespace RiverExplorer::rpcgen
 	
 	void
 	Program::PrintAbnf(ofstream & Stream)
+	{
+	}
+	
+	void
+	Program::DeclareVariable(ofstream & Stream)
 	{
 	}
 	

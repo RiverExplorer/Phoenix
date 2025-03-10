@@ -1,28 +1,56 @@
-// $antlr-format alignTrailingComments true, columnLimit 150, minEmptyLines 1, maxEmptyLinesToKeep 1, reflowComments false, useTab false
-// $antlr-format allowShortRulesOnASingleLine false, allowShortBlocksOnASingleLine true, alignSemicolons hanging, alignColons hanging
-
 grammar xdr;
 
-// parser rules
+xdrSpecification
+    : specs+
+    ; //this is the top level rule for xdr (rfc 4506)
 
-main : (declaration)* ;
-
+specs
+	: structTypeSpec
+	| unionTypeSpec
+	| enumTypeSpec
+	| constantDef
+	| typedefDef
+	| namespaceDef
+	;
+	
 declaration
-    : typeSpecifier IDENTIFIER
-		| namespaceDef
-    | typeSpecifier IDENTIFIER '[' value ']'
-    | typeSpecifier IDENTIFIER '<' value? '>'
-    | 'opaque' IDENTIFIER '[' value ']'
-    | 'opaque' IDENTIFIER '<' value? '>'
-    | 'string' IDENTIFIER '<' value? '>'
-    | typeSpecifier '*' IDENTIFIER
-    | 'void'
-    | structTypeSpec
-    | enumTypeSpec
-    ;
+		: var
+		| varPtr
+		| varFixed
+		| varFixedPtr
+		| varVariable
+		| varVariablePtr
+		| opaqueFixed
+		| opaqueFixedPtr
+		| opaqueVariable
+		| opaqueVariablePtr
+		| string
+		| stringPtr
+		| void
+		;
+
+var								: typeSpecifier IDENTIFIER ;
+varPtr						: typeSpecifier '*' IDENTIFIER ;
+
+varFixed					: typeSpecifier IDENTIFIER '[' value ']' ;
+varFixedPtr				: typeSpecifier '*' IDENTIFIER '[' value ']' ;
+
+varVariable				: typeSpecifier IDENTIFIER '<' value? '>' ;
+varVariablePtr		: typeSpecifier '*' IDENTIFIER '<' value? '>' ;
+
+opaqueFixed				: 'opaque' IDENTIFIER '[' value ']' ;
+opaqueFixedPtr		: 'opaque' '*' IDENTIFIER '[' value ']' ;
+
+opaqueVariable		: 'opaque' IDENTIFIER '<' value? '>' ;
+opaqueVariablePtr	: 'opaque' '*' IDENTIFIER '<' value? '>' ;
+
+string						: 'string' IDENTIFIER '<' value? '>' ;
+stringPtr					: 'string' '*' IDENTIFIER '<' value? '>' ;
+
+void							: 'void' ;
 
 namespaceDef
-		: 'namespace' NAMESPACENAME ';'
+		: 'namespace' IDENTIFIER ( '::' IDENTIFIER )* ';'
 		;
 
 value
@@ -50,7 +78,7 @@ typeSpecifier
     ;
 
 enumTypeSpec
-    : 'enum' IDENTIFIER2 enumBody ';'
+    : 'enum' IDENTIFIER enumBody ';'
     ;
 
 enumBody
@@ -66,7 +94,7 @@ structBody
     ;
 
 unionTypeSpec
-    : 'union' unionBody
+    : 'union' IDENTIFIER unionBody ';'
     ;
 
 unionBody
@@ -74,9 +102,13 @@ unionBody
     ;
 
 caseSpec
-    : ('case' value ':') ('case' value ':')* declaration ';'
+    : ('case' value':' declaration ) ('case' value':' declaration)* ';'
     ;
 
+typedefDef
+		: 'typedef' declaration ';'
+		;
+		
 constantDef
     : 'const' IDENTIFIER '=' constant ';'
     ;
@@ -92,10 +124,6 @@ definition
     : typeDef
     | constantDef
     ;
-
-xdrSpecification
-    : definition+
-    ; //this is the top level rule for xdr (rfc 4506)
 
 // lexer rules
 
@@ -117,10 +145,6 @@ HEXADECIMAL
 
 IDENTIFIER
     : [a-zA-Z] ([a-zA-Z0-9_])*
-    ;
-
-NAMESPACENAME
-    : [a-zA-Z] ([a-zA-Z0-9_:])*
     ;
 
 WS

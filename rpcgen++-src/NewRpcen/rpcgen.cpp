@@ -1,10 +1,10 @@
 /**
  * Project: Phoenix
- * Time-stamp: <2025-03-08 22:09:36 doug>
+ * Time-stamp: <2025-03-10 13:01:30 doug>
  * 
  * @file rpcgen.cpp
  * @author Douglas Mark Royer
- * @date 08-MAR-20205
+ * @date 08-MAR-2025
  * 
  * @Copyright(C) 2025 by Douglas Mark Royer (A.K.A. RiverExplorer)
  * 
@@ -14,6 +14,7 @@
  * RiverExplorer is a trademark of Douglas Mark Royer
  */
 #include "rpcgen.hpp"
+#include "GenerateCpp.hpp"
 #include <iostream>
 #include <fstream>
 #include <string>
@@ -35,78 +36,40 @@ using namespace std;
 
 namespace RiverExplorer::rpcgen
 {
+	extern std::string ToUpper(const std::string & In);
+	extern void GenerateSharedHpp();
+	extern void GenerateThisFileWasGenerated(std::string Prefix,
+																					 ofstream & Stream);
+	extern std::string Indent();
+	extern bool IsBuiltInXdrType(const std::string & Type);
+	extern std::string RemoveFileExtension(std::string FileName);
+	
 	int										IndentLevel = 0;
 	
 	bool									RunQuiet = false;
 	std::string						InputFileName;
 	std::string						InputNoExtension;
 	std::string						OutputDirectory;
+	std::string						CppOutputDirectory;
 	std::string						ThisFileWasGenerated;
 	
 	std::string						Namespace;
 	std::vector<Item*>		OrderedItems;
 	State									CurrentState = Unknown;
+	State									PreviousState = Unknown;
 	bool									InArray = false;
 	Constant						*	CurrentConstant = nullptr;
 	StructMember				*	CurrentStructMember = nullptr;
 	Struct							*	CurrentStruct = nullptr;
 	Union								*	CurrentUnion = nullptr;
+	UnionCase						*	CurrentUnionCase = nullptr;
 
-	static std::vector<std::string> XdrBuiltInTypes = {
-		"bool",
-		"char",
-		"double",
-		"emum",
-		"float",
-		"int",
-		"int16_t",
-		"int64_t",
-		"int8_t",
-		"long",
-		"opaque",
-		"short",
-		"string",
-		"u_char",
-		"u_int",
-		"uint16_t",
-		"uint64_t",
-		"uint8_t",
-		"u_long",
-		"u_short"
-	};
-	
-	bool IsBuiltInXdrType(const std::string & Type)
-	{
-		return(std::binary_search(XdrBuiltInTypes.begin(),
-															XdrBuiltInTypes.end(),
-															Type));
-	}
-	
-	std::string
-	Indent()
-	{
-		static std::string LastResults;
-		static int LastIndent = 10000;
-		
-		std::string Results;
-
-		if (IndentLevel != LastIndent) {
-			int Tmp = IndentLevel;
-
-			while (Tmp-- > 0) {
-				Results += '\t';
-			}
-			LastIndent = IndentLevel;
-			LastResults = Results;
-		} else {
-			Results = LastResults;
-		}
-
-		return(LastResults);
-	}
+	std::string						CurrentTypeSpecifier;
 	
 	void
-	MyXdrListener::ProcessNode(bool Enter, std::string From, xdrParser::DeclarationContext* Ctx)
+	MyXdrListener::ProcessNode(bool Enter,
+														 std::string From,
+														 xdrParser::DeclarationContext* Ctx)
 	{
 		std::string Text = Ctx->getText();
 
@@ -116,7 +79,9 @@ namespace RiverExplorer::rpcgen
 	}
 
 	void
-	MyXdrListener::ProcessNode(bool Enter, std::string From, xdrParser::ConstantContext* Ctx)
+	MyXdrListener::ProcessNode(bool Enter,
+														 std::string From,
+														 xdrParser::ConstantContext* Ctx)
 	{
 		std::string Text = Ctx->getText();
 
@@ -126,39 +91,53 @@ namespace RiverExplorer::rpcgen
 	}
 
 	void
-	MyXdrListener::ProcessNode(bool Enter, std::string From, xdrParser::TypeSpecifierContext* Ctx)
-	{
-		std::string Text = Ctx->getText();
-
-		return;
-	}
-
-	void
-	MyXdrListener::ProcessNode(bool Enter, std::string From, xdrParser::EnumTypeSpecContext* Ctx)
-	{
-		std::string Text = Ctx->getText();
-
-		std::cout << From << Text << std::endl;
-
-		return;
-	}
-
-	void
-	MyXdrListener::ProcessNode(bool Enter, std::string From, xdrParser::EnumBodyContext* Ctx)
-	{
-		std::string Text = Ctx->getText();
-
-		std::cout << From << Text << std::endl;
-
-		return;
-	}
-
-	void
-	MyXdrListener::ProcessNode(bool Enter, std::string From, xdrParser::StructTypeSpecContext* Ctx)
+	MyXdrListener::ProcessNode(bool Enter,
+														 std::string From,
+														 xdrParser::TypeSpecifierContext* Ctx)
 	{
 		std::string Text = Ctx->getText();
 
 		if (Enter) {
+			CurrentTypeSpecifier = Text;
+			std::cout << From << Text << std::endl;
+		}
+		
+		return;
+	}
+
+	void
+	MyXdrListener::ProcessNode(bool Enter,
+														 std::string From,
+														 xdrParser::EnumTypeSpecContext* Ctx)
+	{
+		std::string Text = Ctx->getText();
+
+		std::cout << From << Text << std::endl;
+
+		return;
+	}
+
+	void
+	MyXdrListener::ProcessNode(bool Enter,
+														 std::string From,
+														 xdrParser::EnumBodyContext* Ctx)
+	{
+		std::string Text = Ctx->getText();
+
+		std::cout << From << Text << std::endl;
+
+		return;
+	}
+
+	void
+	MyXdrListener::ProcessNode(bool Enter,
+														 std::string From,
+														 xdrParser::StructTypeSpecContext* Ctx)
+	{
+		std::string Text = Ctx->getText();
+
+		if (Enter) {
+			PreviousState = CurrentState;
 			CurrentState = InStruct;
 			CurrentStruct = new Struct();
 
@@ -180,16 +159,19 @@ namespace RiverExplorer::rpcgen
 	}
 
 	void
-	MyXdrListener::ProcessNode(bool Enter, std::string From, xdrParser::StructBodyContext* Ctx)
+	MyXdrListener::ProcessNode(bool Enter,
+														 std::string From,
+														 xdrParser::StructBodyContext* Ctx)
 	{
 		std::string Text = Ctx->getText();
 
 		if (Enter) {
+			PreviousState = CurrentState;
 			CurrentState = InStructBody;
 
 		} else {
 
-			CurrentState = Unknown;
+			CurrentState = PreviousState;
 		}
 		//std::cout << From << Text << std::endl;
 
@@ -197,7 +179,71 @@ namespace RiverExplorer::rpcgen
 	}
 
 	void
-	MyXdrListener::ProcessNode(bool Enter, std::string From, xdrParser::UnionTypeSpecContext* Ctx)
+	MyXdrListener::ProcessNode(bool Enter,
+														 std::string From,
+														 xdrParser::UnionTypeSpecContext* Ctx)
+	{
+		std::string Text = Ctx->getText();
+
+		if (Enter) {
+			PreviousState = CurrentState;
+			CurrentState = InUnion;
+			CurrentUnion = new Union();
+
+			std::cout << "BEGIN union " << std::endl;
+			
+		} else {
+			OrderedItems.push_back(CurrentUnion);
+			std::cout << "END union " << CurrentUnion->Name << std::endl;
+			CurrentUnion = nullptr;
+			CurrentState = PreviousState;
+		}
+
+		return;
+	}
+
+	void
+	MyXdrListener::ProcessNode(bool Enter,
+														 std::string From,
+														 xdrParser::UnionBodyContext* Ctx)
+	{
+		std::string Text = Ctx->getText();
+
+		if (Enter) {
+			PreviousState = CurrentState;
+			CurrentState = InUnion;
+		} else {
+			CurrentState = Unknown;
+		}
+
+		//std::cout << From << Text << std::endl;
+
+		return;
+	}
+
+	void
+	MyXdrListener::ProcessNode(bool Enter,
+														 std::string From,
+														 xdrParser::CaseSpecContext* Ctx)
+	{
+		std::string Text = Ctx->getText();
+
+		if (Enter) {
+			PreviousState = CurrentState;
+			CurrentState = InUnionCase;
+		} else {
+			CurrentState = InUnion;
+		}
+
+		//std::cout << From << Text << std::endl;
+
+		return;
+	}
+
+	void
+	MyXdrListener::ProcessNode(bool Enter,
+														 std::string From,
+														 xdrParser::TypeDefContext* Ctx)
 	{
 		std::string Text = Ctx->getText();
 
@@ -207,7 +253,9 @@ namespace RiverExplorer::rpcgen
 	}
 
 	void
-	MyXdrListener::ProcessNode(bool Enter, std::string From, xdrParser::UnionBodyContext* Ctx)
+	MyXdrListener::ProcessNode(bool Enter,
+														 std::string From,
+														 xdrParser::ConstantDefContext* Ctx)
 	{
 		std::string Text = Ctx->getText();
 
@@ -217,37 +265,9 @@ namespace RiverExplorer::rpcgen
 	}
 
 	void
-	MyXdrListener::ProcessNode(bool Enter, std::string From, xdrParser::CaseSpecContext* Ctx)
-	{
-		std::string Text = Ctx->getText();
-
-		std::cout << From << Text << std::endl;
-
-		return;
-	}
-
-	void
-	MyXdrListener::ProcessNode(bool Enter, std::string From, xdrParser::TypeDefContext* Ctx)
-	{
-		std::string Text = Ctx->getText();
-
-		std::cout << From << Text << std::endl;
-
-		return;
-	}
-
-	void
-	MyXdrListener::ProcessNode(bool Enter, std::string From, xdrParser::ConstantDefContext* Ctx)
-	{
-		std::string Text = Ctx->getText();
-
-		std::cout << From << Text << std::endl;
-
-		return;
-	}
-
-	void
-	MyXdrListener::ProcessNode(bool Enter, std::string From, xdrParser::ValueContext* Ctx)
+	MyXdrListener::ProcessNode(bool Enter,
+														 std::string From,
+														 xdrParser::ValueContext* Ctx)
 	{
 		std::string Text = Ctx->getText();
 
@@ -257,30 +277,107 @@ namespace RiverExplorer::rpcgen
 	}
 
 	void
-	MyXdrListener::ProcessNode(bool Enter, std::string From, xdrParser::XdrSpecificationContext* Ctx)
+	MyXdrListener::ProcessNode(bool Enter,
+														 std::string From,
+														 xdrParser::XdrSpecificationContext* Ctx)
 	{
 		std::string Text = Ctx->getText();
 
-		std::cout << From << Text << std::endl;
+		//std::cout << From << Text << std::endl;
 
 		return;
 	}
 
 	void
-	MyXdrListener::ProcessNode(bool Enter, std::string From, tree::TerminalNode* Ctx)
+	MyXdrListener::ProcessNode(bool Enter,
+														 std::string From,
+														 tree::TerminalNode* Ctx)
 	{
 
 		std::string Text = Ctx->getText();
 
 		switch (CurrentState) {
 
+		case InVar:
+			std::cout << "Process Node: InVar" << std::endl;
+			std::cout << "Text = " << Text << endl;
+			break;
+			
+		case InVarPtr:
+			std::cout << "Process Node: InVarPtr" << std::endl;
+			std::cout << "Text = " << Text << endl;
+			break;
+			
+		case InVarFixed:
+			std::cout << "Process Node: InVarFixed" << std::endl;
+			std::cout << "Text = " << Text << endl;
+			break;
+			
+		case InVarFixedPtr:
+			std::cout << "Process Node: InVarFixedPtr" << std::endl;
+			std::cout << "Text = " << Text << endl;
+			break;
+			
+		case InVarVariable:
+			std::cout << "Process Node: InVarVariable" << std::endl;
+			std::cout << "Text = " << Text << endl;
+			break;
+			
+		case InVarVariablePtr:
+			std::cout << "Process Node: InVarVariablePtr" << std::endl;
+			std::cout << "Text = " << Text << endl;
+			break;
+			
+		case InOpaqueFixed:
+			std::cout << "Process Node: InOpaqueFixed" << std::endl;
+			std::cout << "Text = " << Text << endl;
+			break;
+			
+		case InOpaqueFixedPtr:
+			std::cout << "Process Node: InOpaqueFixedPtr" << std::endl;
+			std::cout << "Text = " << Text << endl;
+			break;
+			
+		case InOpaqueVariable:
+			std::cout << "Process Node: InOpaqueVariable" << std::endl;
+			std::cout << "Text = " << Text << endl;
+			break;
+			
+		case InOpaqueVariablePtr:
+			std::cout << "Process Node: InOpaqueVariablePtr" << std::endl;
+			std::cout << "Text = " << Text << endl;
+			break;
+			
+		case InString:
+			std::cout << "Process Node: InString" << std::endl;
+			std::cout << "Text = " << Text << endl;
+			break;
+			
+		case InStringPtr:
+			std::cout << "Process Node: InStringPtr" << std::endl;
+			std::cout << "Text = " << Text << endl;
+			break;
+			
 		case InStruct:
 			/*EMPTY*/
 			break;
 
+		case InTypedef:
+			std::cout << "Text = " << Text << endl;
+			break;
+			
+		case InProcedureDef:
+			std::cout << "Text = " << Text << endl;
+			break;
+
 		case InNamespaceDef:
-			if (Text != "namespace" && Text != ";") {
-				Namespace = Text;
+			if (Text != "namespace" && Text != ";" && Text != ":") {
+				if (Namespace == "") {
+					Namespace = Text;
+				} else {
+					Namespace += ":";
+					Namespace += Text;
+				}
 				if (!RunQuiet) {
 					std::cout << "Using namespace: " << Text << std::endl;
 				}
@@ -294,16 +391,16 @@ namespace RiverExplorer::rpcgen
 					std::cout << "------------------------------------------" << std::endl;
 				}
 				if (Text == "{" ) {
-					// Ignore
+					/*Ignore*/
 					
 				} else if (Text == "}" ) {
-					// Ignore
+					/*Ignore*/
 
 				} else if (Text == "struct") {
-					// Ignore
+					/*Ignore*/
 					
 				} else if (Text == CurrentStruct->Name) {
-					// Ignore
+					/*Ignore*/
 					
 				} else if (Text == ";" ) {
 					CurrentStruct->Members.push_back(CurrentStructMember);
@@ -366,6 +463,125 @@ namespace RiverExplorer::rpcgen
 			}
 			break;
 
+		case InUnion:
+			std::cout << "In Union: " << Text << std::endl;
+
+			if (Text == "union") {
+				/*ignore*/
+
+			} else if (Text == "switch") {
+				/*ignore*/
+				
+			} else if (Text == ";") {
+				/*ignore*/
+				
+			} else if (Text == "(") {
+				/*ignore*/
+				
+			} else if (Text == ")") {
+				/*ignore*/
+				
+			} else if (Text == "{") {
+				/*ignore*/
+				
+			} else if (Text == "}") {
+				/*ignore*/
+				
+			} else {
+				if (CurrentUnion->Default == nullptr) {
+					if (CurrentUnion->Name == "") {
+						CurrentUnion->Name = Text;
+
+					} else if (CurrentUnion->SwitchType == "") {
+						CurrentUnion->SwitchType = Text;
+
+					} else if (CurrentUnion->SwitchVariable == "") {
+						CurrentUnion->SwitchVariable = Text;
+
+					} else if (Text == "default") {
+						CurrentUnion->Default = new UnionCase();
+						CurrentUnion->Default->CaseValue = "void";
+					}
+				} else {
+					if (CurrentUnion->Default->Type == "") {
+						CurrentUnion->Default->Type = Text;
+					} else {
+						CurrentUnion->Name = Text;
+					}
+				}
+			}
+			
+			break;
+
+		case InUnionCase:
+			std::cout << "In Union Case: " << Text << std::endl;
+
+			if (Text == "case") {
+				if (CurrentUnionCase != nullptr) {
+					CurrentUnion->Cases.push_back(CurrentUnionCase);
+				}
+				CurrentUnionCase = new UnionCase();
+
+			} else if (Text == ":") {
+				/*EMPTY*/
+
+			} else if (Text == ";") {
+				CurrentUnion->Cases.push_back(CurrentUnionCase);
+				CurrentUnionCase = nullptr;
+				CurrentState = InUnion;
+				
+			} else if (Text == "*") {
+				CurrentUnionCase->IsPointer = true;
+				
+			} else {
+				if (CurrentUnionCase->CaseValue == "") {
+					CurrentUnionCase->CaseValue = Text;
+
+				} else {
+					if (Text == "void" ) {
+						// Void has no data.
+						//
+						CurrentUnionCase->Type = Text;
+						
+					} else {
+						// Not void, so it has a type and data.
+						//
+						if (CurrentUnionCase->Type == "") {
+							// Type not set yet, first value is type.
+							//
+							CurrentUnionCase->Type = Text;
+							
+						} else {
+							if (Text == "*") {
+								CurrentUnionCase->IsPointer = true;
+							} else {
+								if (CurrentUnionCase->Name == "") {
+									CurrentUnionCase->Name = Text;
+
+								} else if (Text == "<") {
+									CurrentUnionCase->IsVariableArray;
+									
+								} else if (Text == ">") {
+									/*ignore*/
+									
+								} else if (Text == "[") {
+									CurrentUnionCase->IsFixedArray;
+
+								} else if (Text == "]") {
+									/*ignore*/
+									
+								} else if (CurrentUnionCase->IsVariableArray
+													 || CurrentUnionCase->IsFixedArray) {
+									CurrentUnionCase->ArraySize = Text;
+								}
+							}
+						}
+					}
+				}
+			}
+			
+			break;
+			
 		default:
 			//std::cout << From << Text << std::endl;
 			break;
@@ -375,7 +591,21 @@ namespace RiverExplorer::rpcgen
 	}
 
 	void
-	MyXdrListener::ProcessNode(bool Enter, std::string From, xdrParser::DefinitionContext* Ctx)
+	MyXdrListener::ProcessNode(bool Enter,
+														 std::string From,
+														 xdrParser::DefinitionContext* Ctx)
+	{
+		std::string Text = Ctx->getText();
+
+		//std::cout << From << Text << std::endl;
+
+		return;
+	}
+
+	void
+	MyXdrListener::ProcessNode(bool Enter,
+														 std::string From,
+														 ParserRuleContext* Ctx)
 	{
 		std::string Text = Ctx->getText();
 
@@ -385,17 +615,9 @@ namespace RiverExplorer::rpcgen
 	}
 
 	void
-	MyXdrListener::ProcessNode(bool Enter, std::string From, ParserRuleContext* Ctx)
-	{
-		std::string Text = Ctx->getText();
-
-		std::cout << From << Text << std::endl;
-
-		return;
-	}
-
-	void
-	MyXdrListener::ProcessNode(bool Enter, std::string From, xdrParser::NamespaceDefContext  * Ctx)
+	MyXdrListener::ProcessNode(bool Enter,
+														 std::string From,
+														 xdrParser::NamespaceDefContext  * Ctx)
 	{
 		if (Enter) {
 			CurrentState = InNamespaceDef;
@@ -406,6 +628,264 @@ namespace RiverExplorer::rpcgen
 		return;
 	}
 	
+	void
+	MyXdrListener::ProcessNode(bool Enter,
+														 std::string From,
+														 xdrParser::TypedefDefContext  * Ctx)
+	{
+		std::string Text = Ctx->getText();
+
+		std::cout << From << Text << std::endl;
+
+		return;
+	}
+	
+	void
+	MyXdrListener::ProcessNode(bool Enter,
+														 std::string From,
+														 xdrParser::SpecsContext  * Ctx)
+	{
+		std::string Text = Ctx->getText();
+
+		//std::cout << From << Text << std::endl;
+
+		return;
+	}
+
+	void
+	MyXdrListener::ProcessNode(bool Enter,
+														 std::string From,
+														 xdrParser::VarContext  * Ctx)
+	{
+		std::string Text = Ctx->getText();
+
+		if (Enter) {
+			PreviousState = CurrentState;
+			CurrentState = InVar;
+			std::cout << From << Text << std::endl;
+		} else {
+			CurrentState = PreviousState;
+		}
+
+		return;
+	}
+
+	void
+	MyXdrListener::ProcessNode(bool Enter,
+														 std::string From,
+														 xdrParser::VarPtrContext  * Ctx)
+	{
+		std::string Text = Ctx->getText();
+
+		if (Enter) {
+			PreviousState = CurrentState;
+			CurrentState = InVarPtr;
+			std::cout << From << Text << std::endl;
+		} else {
+			CurrentState = PreviousState;
+		}
+
+		return;
+	}
+
+	void
+	MyXdrListener::ProcessNode(bool Enter,
+														 std::string From,
+														 xdrParser::VarFixedContext  * Ctx)
+	{
+		std::string Text = Ctx->getText();
+
+		if (Enter) {
+			PreviousState = CurrentState;
+			CurrentState = InVarFixed;
+			std::cout << From << Text << std::endl;
+		} else {
+			CurrentState = PreviousState;
+		}
+
+		return;
+	}
+
+	void
+	MyXdrListener::ProcessNode(bool Enter,
+														 std::string From,
+ 														 xdrParser::VarFixedPtrContext * Ctx)
+	{
+		std::string Text = Ctx->getText();
+
+		if (Enter) {
+			PreviousState = CurrentState;
+			CurrentState = InVarFixedPtr;
+			std::cout << From << Text << std::endl;
+		} else {
+			CurrentState = PreviousState;
+		}
+
+		return;
+	}
+
+	void
+	MyXdrListener::ProcessNode(bool Enter,
+														 std::string From,
+														 xdrParser::VarVariableContext  * Ctx)
+	{
+		std::string Text = Ctx->getText();
+
+		if (Enter) {
+			PreviousState = CurrentState;
+			CurrentState = InVarVariable;
+			std::cout << From << Text << std::endl;
+		} else {
+			CurrentState = PreviousState;
+		}
+
+		return;
+	}
+
+	void
+	MyXdrListener::ProcessNode(bool Enter,
+														 std::string From,
+														 xdrParser::VarVariablePtrContext  * Ctx)
+	{
+		std::string Text = Ctx->getText();
+
+		if (Enter) {
+			PreviousState = CurrentState;
+			CurrentState = InVarVariablePtr;
+			std::cout << From << Text << std::endl;
+		} else {
+			CurrentState = PreviousState;
+		}
+
+		return;
+	}
+
+	void
+	MyXdrListener::ProcessNode(bool Enter,
+														 std::string From,
+														 xdrParser::OpaqueFixedContext  * Ctx)
+	{
+		std::string Text = Ctx->getText();
+
+		if (Enter) {
+			PreviousState = CurrentState;
+			CurrentState = InOpaqueFixed;
+			std::cout << From << Text << std::endl;
+		} else {
+			CurrentState = PreviousState;
+		}
+
+		return;
+	}
+
+	void
+	MyXdrListener::ProcessNode(bool Enter,
+														 std::string From,
+														 xdrParser::OpaqueFixedPtrContext  * Ctx)
+	{
+		std::string Text = Ctx->getText();
+
+		if (Enter) {
+			PreviousState = CurrentState;
+			CurrentState = InOpaqueFixedPtr;
+			std::cout << From << Text << std::endl;
+		} else {
+			CurrentState = PreviousState;
+		}
+
+		return;
+	}
+
+	void
+	MyXdrListener::ProcessNode(bool Enter,
+														 std::string From,
+														 xdrParser::OpaqueVariableContext  * Ctx)
+	{
+		std::string Text = Ctx->getText();
+
+		if (Enter) {
+			PreviousState = CurrentState;
+			CurrentState = InOpaqueVariable;
+			std::cout << From << Text << std::endl;
+		} else {
+			CurrentState = PreviousState;
+		}
+
+		return;
+	}
+	
+	void
+	MyXdrListener::ProcessNode(bool Enter,
+														 std::string From,
+														 xdrParser::OpaqueVariablePtrContext  * Ctx)
+	{
+		std::string Text = Ctx->getText();
+
+		if (Enter) {
+			PreviousState = CurrentState;
+			CurrentState = InOpaqueVariablePtr;
+			std::cout << From << Text << std::endl;
+		} else {
+			CurrentState = PreviousState;
+		}
+
+		return;
+	}
+	
+	void
+	MyXdrListener::ProcessNode(bool Enter,
+														 std::string From,
+														 xdrParser::StringContext  * Ctx)
+	{
+		std::string Text = Ctx->getText();
+
+		if (Enter) {
+			PreviousState = CurrentState;
+			CurrentState = InString;
+			std::cout << From << Text << std::endl;
+		} else {
+			CurrentState = PreviousState;
+		}
+
+		return;
+	}
+
+	void
+	MyXdrListener::ProcessNode(bool Enter,
+														 std::string From,
+														 xdrParser::StringPtrContext  * Ctx)
+	{
+		std::string Text = Ctx->getText();
+
+		if (Enter) {
+			PreviousState = CurrentState;
+			CurrentState = InStringPtr;
+			std::cout << From << Text << std::endl;
+		} else {
+			CurrentState = PreviousState;
+		}
+
+		return;
+	}
+
+	void
+	MyXdrListener::ProcessNode(bool Enter,
+														 std::string From,
+														 xdrParser::VoidContext  * Ctx)
+	{
+		std::string Text = Ctx->getText();
+
+		if (Enter) {
+			PreviousState = CurrentState;
+			CurrentState = InVoid;
+			std::cout << From << Text << std::endl;
+		} else {
+			CurrentState = PreviousState;
+		}
+
+		return;
+	}
+
 	///////////////////////////////////////////////////////////////////////////
 	void
 	MyXdrListener::enterDeclaration(xdrParser::DeclarationContext *Ctx)
@@ -466,7 +946,7 @@ namespace RiverExplorer::rpcgen
 	void
 	MyXdrListener::enterTypeSpecifier(xdrParser::TypeSpecifierContext *Ctx)
 	{
-		//std::cout << "In: enterTypeSpecifier" << std::endl;
+		std::cout << "In: enterTypeSpecifier" << std::endl;
 		ProcessNode(true, "Enter TypeSpecifier: ", Ctx);
 	}
 
@@ -474,7 +954,7 @@ namespace RiverExplorer::rpcgen
 	MyXdrListener::exitTypeSpecifier(xdrParser::TypeSpecifierContext *Ctx)
 	{
 		//std::cout << "In: exitTypeSpecifier" << std::endl;
-		ProcessNode(false, "Exit TypeSpecifier: ", Ctx);
+		//ProcessNode(false, "Exit TypeSpecifier: ", Ctx);
 	}
 
 	void
@@ -632,6 +1112,188 @@ namespace RiverExplorer::rpcgen
 	}
 
 	void
+	MyXdrListener::enterVar(xdrParser::VarContext *Ctx)
+	{
+		//std::cout << "In: enterVar" << std::endl;
+		ProcessNode(false, "Enter Var: ", Ctx);
+	}
+
+	void
+	MyXdrListener::exitVar(xdrParser::VarContext *Ctx)
+	{
+		//std::cout << "In: exitVar" << std::endl;
+		ProcessNode(false, "Exit Var: ", Ctx);
+	}
+
+	void
+	MyXdrListener::enterVarPtr(xdrParser::VarPtrContext *Ctx)
+	{
+		//std::cout << "In: enterVarPtr" << std::endl;
+		ProcessNode(false, "Enter VarPtr: ", Ctx);
+	}
+
+	void
+	MyXdrListener::exitVarPtr(xdrParser::VarPtrContext *Ctx)
+	{
+		//std::cout << "In: exitVarPtr" << std::endl;
+		ProcessNode(false, "Exit VarPtr: ", Ctx);
+	}
+
+	void
+	MyXdrListener::enterVarFixed(xdrParser::VarFixedContext *Ctx)
+	{
+		//std::cout << "In: enterVarFixed" << std::endl;
+		ProcessNode(false, "Enter VarFixed: ", Ctx);
+	}
+
+	void
+	MyXdrListener::exitVarFixed(xdrParser::VarFixedContext *Ctx)
+	{
+		//std::cout << "In: exitVarFixed" << std::endl;
+		ProcessNode(false, "Exit VarFixed: ", Ctx);
+	}
+
+	void
+	MyXdrListener::enterVarFixedPtr(xdrParser::VarFixedPtrContext *Ctx)
+	{
+		//std::cout << "In: enterVarFixedPtr" << std::endl;
+		ProcessNode(false, "Enter VarFixedPtr: ", Ctx);
+	}
+
+	void
+	MyXdrListener::exitVarFixedPtr(xdrParser::VarFixedPtrContext *Ctx)
+	{
+		//std::cout << "In: exitVarFixedPtr" << std::endl;
+		ProcessNode(false, "Exit VarFixedPtr: ", Ctx);
+	}
+
+	void
+	MyXdrListener::enterVarVariable(xdrParser::VarVariableContext *Ctx)
+	{
+		//std::cout << "In: enterVarVariable" << std::endl;
+		ProcessNode(false, "Enter VarVariable: ", Ctx);
+	}
+
+	void
+	MyXdrListener::exitVarVariable(xdrParser::VarVariableContext *Ctx)
+	{
+		//std::cout << "In: exitVarVariable" << std::endl;
+		ProcessNode(false, "Exit VarVariable: ", Ctx);
+	}
+
+	void
+	MyXdrListener::enterVarVariablePtr(xdrParser::VarVariablePtrContext *Ctx)
+	{
+		//std::cout << "In: enterVarVariablePtr" << std::endl;
+		ProcessNode(false, "Enter VarVariablePtr: ", Ctx);
+	}
+
+	void
+	MyXdrListener::exitVarVariablePtr(xdrParser::VarVariablePtrContext *Ctx)
+	{
+		//std::cout << "In: exitVarVariablePtr" << std::endl;
+		ProcessNode(false, "Exit VarVariablePtr: ", Ctx);
+	}
+
+	void
+	MyXdrListener::enterOpaqueFixed(xdrParser::OpaqueFixedContext *Ctx)
+	{
+		//std::cout << "In: enterOpaqueFixed" << std::endl;
+		ProcessNode(false, "Enter OpaqueFixed: ", Ctx);
+	}
+
+	void
+	MyXdrListener::exitOpaqueFixed(xdrParser::OpaqueFixedContext *Ctx)
+	{
+		//std::cout << "In: exitOpaqueFixed" << std::endl;
+		ProcessNode(false, "Exit OpaqueFixed: ", Ctx);
+	}
+
+	void
+	MyXdrListener::enterOpaqueFixedPtr(xdrParser::OpaqueFixedPtrContext *Ctx)
+	{
+		//std::cout << "In: enterOpaqueFixedPtr" << std::endl;
+		ProcessNode(false, "Enter OpaqueFixedPtr: ", Ctx);
+	}
+
+	void
+	MyXdrListener::exitOpaqueFixedPtr(xdrParser::OpaqueFixedPtrContext *Ctx)
+	{
+		//std::cout << "In: exitOpaqueFixedPtr" << std::endl;
+		ProcessNode(false, "Exit OpaqueFixedPtr: ", Ctx);
+	}
+
+	void
+	MyXdrListener::enterOpaqueVariable(xdrParser::OpaqueVariableContext *Ctx)
+	{
+		//std::cout << "In: enterOpaqueVariable" << std::endl;
+		ProcessNode(false, "Enter OpaqueVariable: ", Ctx);
+	}
+
+	void
+	MyXdrListener::exitOpaqueVariable(xdrParser::OpaqueVariableContext *Ctx)
+	{
+		//std::cout << "In: exitOpaqueVariable" << std::endl;
+		ProcessNode(false, "Exit OpaqueVariable: ", Ctx);
+	}
+
+	void
+	MyXdrListener::enterOpaqueVariablePtr(xdrParser::OpaqueVariablePtrContext *Ctx)
+	{
+		//std::cout << "In: enterOpaquePtrVariable" << std::endl;
+		ProcessNode(false, "Enter OpaquePtrVariable: ", Ctx);
+	}
+
+	void
+	MyXdrListener::exitOpaqueVariablePtr(xdrParser::OpaqueVariablePtrContext *Ctx)
+	{
+		//std::cout << "In: exitOpaquePtrVariable" << std::endl;
+		ProcessNode(false, "Exit OpaquePtrVariable: ", Ctx);
+	}
+
+	void
+	MyXdrListener::exitString(xdrParser::StringContext *Ctx)
+	{
+		//std::cout << "In: exitString" << std::endl;
+		ProcessNode(false, "Exit String: ", Ctx);
+	}
+
+	void
+	MyXdrListener::enterString(xdrParser::StringContext *Ctx)
+	{
+		//std::cout << "In: enterString" << std::endl;
+		ProcessNode(false, "Enter String: ", Ctx);
+	}
+
+	void
+	MyXdrListener::enterStringPtr(xdrParser::StringPtrContext *Ctx)
+	{
+		//std::cout << "In: enterStringPtr" << std::endl;
+		ProcessNode(false, "Enter StringPtr: ", Ctx);
+	}
+
+	void
+	MyXdrListener::exitStringPtr(xdrParser::StringPtrContext *Ctx)
+	{
+		//std::cout << "In: exitStringPtr" << std::endl;
+		ProcessNode(false, "Exit StringPtr: ", Ctx);
+	}
+
+	void
+	MyXdrListener::enterVoid(xdrParser::VoidContext *Ctx)
+	{
+		//std::cout << "In: Void" << std::endl;
+		ProcessNode(false, "Enter Void: ", Ctx);
+	}
+
+	void
+	MyXdrListener::exitVoid(xdrParser::VoidContext *Ctx)
+	{
+		//std::cout << "In: exitVoid" << std::endl;
+		ProcessNode(false, "Exit Void: ", Ctx);
+	}
+
+	void
 	MyXdrListener::visitTerminal(tree::TerminalNode * Node)
 	{
 		//std::cout << "In: visitTerminal" << std::endl;
@@ -655,24 +1317,10 @@ namespace RiverExplorer::rpcgen
 	void
 	MyXdrListener::exitEveryRule(ParserRuleContext * Ctx)
 	{
-		//std::cout << "In: exitEveryRule" << std::endl;
+		//std::cout << "In: exitEveryRule" << std::endl
 		//ProcessNode(false, "Exit Every Rule: ", Ctx);
 	}
 	
-	void
-	MyXdrListener::enterMain(xdrParser::MainContext * Ctx)
-	{
-		//std::cout << "In: enterMain" << std::endl;
-		//ProcessNode(true,"Enter Main: ", Ctx);
-	}
-	
-	void
-	MyXdrListener::exitMain(xdrParser::MainContext * Ctx)
-	{
-		//std::cout << "In: exitMain" << std::endl;
-		//ProcessNode(false, "Exit Main: ", Ctx);
-	}
-
 	void
 	MyXdrListener::enterNamespaceDef(xdrParser::NamespaceDefContext * Ctx)
 	{
@@ -685,6 +1333,34 @@ namespace RiverExplorer::rpcgen
 	{
 		//std::cout << "In: visitErrorNode" << std::endl;
 		ProcessNode(false, "Namespce Exit : ", Ctx);
+	}
+	
+	void
+	MyXdrListener::enterTypedefDef(xdrParser::TypedefDefContext * Ctx)
+	{
+		//std::cout << "In: visitErrorNode" << std::endl;
+		ProcessNode(true, "Typedef Enter : ", Ctx);
+	}
+	
+	void
+	MyXdrListener::exitTypedefDef(xdrParser::TypedefDefContext * Ctx)
+	{
+		//std::cout << "In: visitErrorNode" << std::endl;
+		ProcessNode(false, "TypedefExit : ", Ctx);
+	}
+	
+	void
+	MyXdrListener::enterSpecs(xdrParser::SpecsContext * Ctx)
+	{
+		//std::cout << "In: visitErrorNode" << std::endl;
+		ProcessNode(true, "SpecsExit : ", Ctx);
+	}
+	
+	void
+	MyXdrListener::exitSpecs(xdrParser::SpecsContext * Ctx)
+	{
+		//std::cout << "In: visitErrorNode" << std::endl;
+		ProcessNode(false, "SpecsExit : ", Ctx);
 	}
 	
 	Constant::~Constant()
@@ -710,9 +1386,22 @@ namespace RiverExplorer::rpcgen
 	UnionCase::~UnionCase()
 	{
 	}
+
+	Union::Union()
+	{
+		Default = nullptr;
+
+		return;
+	}
 	
 	Union::~Union()
 	{
+		if (Default != nullptr) {
+			delete Default;
+			Default = nullptr;
+		}
+
+		return;
 	}
 	
 	Procedure::~Procedure()
@@ -747,49 +1436,6 @@ Usage(const char * Pgm)
 }
 
 using namespace RiverExplorer::rpcgen;
-
-static std::string
-ToUpper(const std::string & In)
-{
-	string Results = In;
-	
-	std::transform(Results.begin(),
-								 Results.end(),
-								 Results.begin(),
-								 [](unsigned char c) {return std::toupper(c);}
-								 );
-
-	return(Results);
-}
-
-static void
-GenerateThisFileWasGenerated(std::string Prefix,
-														 ofstream & Stream)
-{
-	Stream << Prefix << "DO NOT EDIT THIS FILE" << std::endl;
-	Stream << Prefix << std::endl;
-	Stream << Prefix << "It was generated from: " << InputFileName << std::endl;
-	Stream << Prefix << "Using RiverExplorer rpcgen++ program." << std::endl;
-	Stream << Prefix << "Available at: https://github.com/Phoenix." << std::endl;
-
-	return;
-}
-
-static std::string
-RemoveFileExtension(std::string FileName)
-{
-	std::string Results;
-	
-	size_t	LastDot = FileName.find_last_of('.');
-
-	if (LastDot == std::string::npos) {
-		Results = FileName;
-	} else {
-		Results = FileName.substr(0, LastDot);
-	}
-
-	return(Results);
-}
 
 int
 main(int argc, char *argv[])
@@ -992,7 +1638,7 @@ main(int argc, char *argv[])
 		//}
 
 		xdrParser parser(&tokens);
-		tree::ParseTree * Tree = parser.main();
+		tree::ParseTree * Tree = parser.xdrSpecification();
 
 		MyXdrListener	Listener;
 
@@ -1010,138 +1656,30 @@ main(int argc, char *argv[])
 			std::vector<Item*>::const_iterator ItemIt;
 			Item * OneItem = nullptr;
 			std::string Define;
+
+			if (Language == "CPP" ) {
+				CppOutputDirectory += OutputDirectory;
+				if (Namespace != "") {
+					CppOutputDirectory += "/";
+					CppOutputDirectory += NamespaceToIncludePath();
+				}
+				CppOutputDirectory += "/c++";
+				MakePath(CppOutputDirectory);
 			
-			if (GenerateHeaders || GenerateAll) {
-				// Generate the header files.
-				//
+				if (GenerateHeaders || GenerateAll) {
+					// Generate the header files.
+					//
 				
-				if (Language == "CPP" ) {
 					if (GenerateHeaders || GenerateAll) {
 
-						// SHARED header data.
+						std::string HeaderFile;
+
+						// Generate the shared header file
+						// In the same directory.
 						//
-						std::string SharedFileName = OutputDirectory;
-						SharedFileName += "/";
-						SharedFileName += "RpcgenShared.hpp";
+						GenerateSharedHpp(CppOutputDirectory);
 
-						if (access(SharedFileName.c_str(), R_OK) != F_OK) {
-							ofstream Shared(SharedFileName);
-
-							Shared << "/**" << std::endl;
-							GenerateThisFileWasGenerated(" * ", Shared);
-							Shared << " */" << std::endl << std::endl;
-							
-							Define = "_RIVEREXPLORER_RPCGEN_SHARED_";
-
-							Define += ToUpper(InputNoExtension);
-							Define += "_X_HPP_";
-							Shared << "#ifndef " << Define << std::endl;
-							Shared << "#define " << Define << std::endl;
-							Shared << std::endl;
-
-							Shared << "#include <string>" << std::endl;
-							Shared << "#include <vector>" << std::endl;
-							Shared << "#include <map>" << std::endl;
-							Shared << "#include <rpc/rpc.h>" << std::endl;
-							Shared << "#ifndef W64" << std::endl;
-							Shared << "#include <unistd.h>" << std::endl;
-							Shared << "#endif // W64" << std::endl;
-								Shared << "#include <memory.h>" << std::endl;
-						
-								if (Namespace != "") {
-									Shared << std::endl;
-									Shared << "namespace " << Namespace
-												 << std::endl << "{" << std::endl;
-									IndentLevel++;
-								}
-								std::string I1 = Indent();
-						
-								Shared << I1 << "/**" << std::endl;
-								Shared << I1 << "* An implementation of an XDR routine" << std::endl;
-								Shared << I1 << "* for std::vector<uint8_t>." << std::endl;
-								Shared << I1 << "*" << std::endl;
-								Shared << I1 << "* @param Xdr The initalized XDR object." << std::endl;
-								Shared << I1 << "*" << std::endl;
-								Shared << I1 << "* @param opaque The address of the std::vector<uint8_t> object." << std::endl;
-								Shared << I1 << "*" << std::endl;
-								Shared << I1 << "* @param[optional] MaxLength The maximum size of the vector." << std::endl;
-								Shared << I1 << "* @return true on no errors." << std::endl;
-								Shared << I1 << "*/" << std::endl;
-								Shared << I1 << "bool xdr_VectorOfOpaque(XDR * Xdr," << std::endl;
-								Shared << I1 << "\tstd::vector<uint8_t> * Opaque," << std::endl;
-								Shared << I1 << "\tuint32_t MaxLength = ~0);" << std::endl;
-								Shared << I1 << "" << std::endl;
-								Shared << I1 << "" << std::endl;
-								Shared << I1 << "/**" << std::endl;
-								Shared << I1 << " * An implementation of an XDR routine" << std::endl;
-								Shared << I1 << " * for std::vector<uint8_t>." << std::endl;
-								Shared << I1 << " *" << std::endl;
-								Shared << I1 << " * @param Xdr The initalized XDR object." << std::endl;
-								Shared << I1 << " *" << std::endl;
-								Shared << I1 << " * @param Str The address of the std::string." << std::endl;
-								Shared << I1 << " *" << std::endl;
-								Shared << I1 << " * @param[optional] MaxLength The maximum size of the string." << std::endl;
-								Shared << I1 << " * @return true on no errors." << std::endl;
-								Shared << I1 << " */" << std::endl;
-								Shared << I1 << "bool xdr_StdString(XDR * Xdr," << std::endl;
-								Shared << I1 << "\tstd::string * Str," << std::endl;
-								Shared << I1 << "\tuint32_t MaxLength = ~0);" << std::endl;
-								Shared << I1 << "" << std::endl;
-								Shared << I1 << "/**" << std::endl;
-								Shared << I1 << " * An implementation of an XDR routine" << std::endl;
-								Shared << I1 << " * for std::vector<uint8_t>." << std::endl;
-								Shared << I1 << " *" << std::endl;
-								Shared << I1 << " * @param Xdr The initalized XDR object." << std::endl;
-								Shared << I1 << " *" << std::endl;
-								Shared << I1 << " * @param Obj A pointer to the object." << std::endl;
-								Shared << I1 << " *" << std::endl;
-								Shared << I1 << " * @param Proc the xdrproc_t routine that can" << std::endl;
-								Shared << I1 << " * handle type 'T'." << std::endl;
-								Shared << I1 << " *" << std::endl;
-								Shared << I1 << " * @param[optional] MaxLength The maximum size of the string." << std::endl;
-								Shared << I1 << " * @return true on no errors." << std::endl;
-								Shared << I1 << " */" << std::endl;
-								Shared << I1 << "template <class T>" << std::endl;
-								Shared << I1 << "bool xdr_VectorOf(XDR * Xdr," << std::endl;
-								Shared << I1 << "\tstd::vector<T> * Obj," << std::endl;
-								Shared << I1 << "\txdrproc_t Proc," << std::endl;
-								Shared << I1 << "\tuint32_t MaxLength = ~0)" << std::endl;
-								Shared << I1 << "{" << std::endl;
-								Shared << I1 << "\tbool Results = false;" << std::endl;
-								Shared << I1 << "" << std::endl;
-								Shared << I1 << "\tif (Obj != nullptr && Proc != nullptr) {" << std::endl;
-								Shared << I1 << "\t\t\tuint32_t Size = Obj->size();" << std::endl;
-								Shared << I1 << "" << std::endl;
-								Shared << I1 << "\t\tif (xdr_uint32_t(Xdr, &Size)) {" << std::endl;
-								Shared << I1 << "" << std::endl;
-								Shared << I1 << "\t\t\ttypename std::vector<T>::iterator it;" << std::endl;
-								Shared << I1 << "\t\t\tT Item;" << std::endl;
-								Shared << I1 << "\t\t\tuint32_t Offset = 0;" << std::endl;
-								Shared << I1 << "\t\t\tfor (it = Obj->begin(); it != Obj->end(); it++) {" << std::endl;
-								Shared << I1 << "\t\t\t\tItem = *it;" << std::endl;
-								Shared << I1 << "\t\t\t\tResults = (*Proc)(Xdr, &Item);" << std::endl;
-								Shared << I1 << "\t\t\t\tif (!Results) {" << std::endl;
-								Shared << I1 << "\t\t\t\t\tbreak;" << std::endl;
-								Shared << I1 << "\t\t\t\t}" << std::endl;
-								Shared << I1 << "\t\t\t\tif (++Offset > MaxLength) {" << std::endl;
-								Shared << I1 << "\t\t\t\t\tbreak;" << std::endl;
-								Shared << I1 << "\t\t\t\t}" << std::endl;
-								Shared << I1 << "\t\t\t}" << std::endl;
-								Shared << I1 << "\t\t}" << std::endl;
-								Shared << I1 << "\t}" << std::endl;
-								Shared << I1 << "" << std::endl;
-								Shared << I1 << "\treturn(Results);" << std::endl;
-								Shared << I1 << "}" << std::endl;
-								if (Namespace != "") {
-									IndentLevel--;
-									Shared << "} // End namespace " << Namespace << std::endl;
-								}
-								Shared << std::endl << "#endif // " << Define << std::endl;
-								Shared.close();
-						}
-						
-						std::string HeaderFile = OutputDirectory;
-
+						HeaderFile = CppOutputDirectory;
 						HeaderFile += "/";
 						HeaderFile += InputNoExtension;
 						HeaderFile += ".hpp";
@@ -1172,7 +1710,7 @@ main(int argc, char *argv[])
 						
 						if (Namespace != "") {
 							Header << std::endl;
-							Header << "namespace " << Namespace
+							Header << "namespace " << NamespaceToCppNamespace()
 										 << std::endl << "{" << std::endl;
 							IndentLevel++;
 						}
@@ -1185,7 +1723,8 @@ main(int argc, char *argv[])
 						}
 						if (Namespace != "") {
 							IndentLevel--;
-							Header << "} // End namespace " << Namespace << std::endl;
+							Header << "} // End namespace "
+										 << NamespaceToCppNamespace()<< std::endl;
 						}
 						Header << std::endl << "#endif // " << Define << std::endl;
 						Header.close();
@@ -1194,7 +1733,7 @@ main(int argc, char *argv[])
 			}
 			if (GenerateXdr || GenerateAll) {
 
-				std::string XdrFileFile = OutputDirectory;
+				std::string XdrFileFile = CppOutputDirectory;
 
 				XdrFileFile += "/";
 				XdrFileFile += InputNoExtension;

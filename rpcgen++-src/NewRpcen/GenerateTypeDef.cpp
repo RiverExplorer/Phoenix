@@ -1,10 +1,10 @@
 /**
  * Project: Phoenix
- * Time-stamp: <2025-03-08 13:41:14 doug>
+ * Time-stamp: <2025-03-10 09:29:30 doug>
  * 
  * @file GenerateTypeDef.cpp
  * @author Douglas Mark Royer
- * @date 08-MAR-20205
+ * @date 08-MAR-2025
  * 
  * @Copyright(C) 2025 by Douglas Mark Royer (A.K.A. RiverExplorer)
  * 
@@ -39,6 +39,11 @@ namespace RiverExplorer::rpcgen
 	
 	void
 	TypeDef::PrintAbnf(ofstream & Stream)
+	{
+	}
+	
+	void
+	TypeDef::DeclareVariable(ofstream & Stream)
 	{
 	}
 	

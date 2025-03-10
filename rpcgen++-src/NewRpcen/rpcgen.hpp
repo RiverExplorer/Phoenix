@@ -1,10 +1,10 @@
 /**
  * Project: Phoenix
- * Time-stamp: <2025-03-08 21:46:36 doug>
+ * Time-stamp: <2025-03-10 13:49:21 doug>
  * 
  * @file rpcgen.hpp
  * @author Douglas Mark Royer
- * @date 08-MAR-20205
+ * @date 08-MAR-2025
  * 
  * @Copyright(C) 2025 by Douglas Mark Royer (A.K.A. RiverExplorer)
  * 
@@ -179,6 +179,7 @@ namespace RiverExplorer::rpcgen
 		virtual void PrintCppStubs(ofstream & Stream) = 0;
 		virtual void PrintXSD(ofstream & Stream) = 0;
 		virtual void PrintAbnf(ofstream & Stream) = 0;
+		virtual void DeclareVariable(ofstream & Stream) = 0;
 		
 	};
 
@@ -186,12 +187,26 @@ namespace RiverExplorer::rpcgen
 
 	enum State	{
 		Unknown,
+		InVar,
+		InVarPtr,
+		InVarFixed,
+		InVarFixedPtr,
+		InVarVariable,
+		InVarVariablePtr,
+		InOpaqueFixed,
+		InOpaqueFixedPtr,
+		InOpaqueVariable,
+		InOpaqueVariablePtr,
+		InString,
+		InStringPtr,
 		InNamespaceDef,
 		InStruct,
 		InStructBody,
 		InTypedef,
 		InUnion,
-		InProcedureDef
+		InUnionCase,
+		InProcedureDef,
+		InVoid
 	};
 
 	extern State CurrentState;
@@ -212,6 +227,7 @@ namespace RiverExplorer::rpcgen
 		virtual void PrintCppStubs(ofstream & Stream);
 		virtual void PrintXSD(ofstream & Stream);
 		virtual void PrintAbnf(ofstream & Stream);
+		virtual void DeclareVariable(ofstream & Stream);
 	};
 	extern Constant * CurrentConstant;
 
@@ -230,6 +246,7 @@ namespace RiverExplorer::rpcgen
 		virtual void PrintCppStubs(ofstream & Stream);
 		virtual void PrintXSD(ofstream & Stream);
 		virtual void PrintAbnf(ofstream & Stream);
+		virtual void DeclareVariable(ofstream & Stream);
 	};
 
 	struct TypeDef
@@ -252,6 +269,7 @@ namespace RiverExplorer::rpcgen
 		virtual void PrintCppStubs(ofstream & Stream);
 		virtual void PrintXSD(ofstream & Stream);
 		virtual void PrintAbnf(ofstream & Stream);
+		virtual void DeclareVariable(ofstream & Stream);
 	};
 
 	struct StructMember
@@ -266,6 +284,8 @@ namespace RiverExplorer::rpcgen
 		bool IsFixedArray = false;
 		bool IsVariableArray = false;
 		std::string ArraySize;
+
+		virtual void DeclareVariable(ofstream & Stream);
 	};
 	extern StructMember * CurrentStructMember;
 
@@ -284,11 +304,11 @@ namespace RiverExplorer::rpcgen
 		virtual void PrintCppStubs(ofstream & Stream);
 		virtual void PrintXSD(ofstream & Stream);
 		virtual void PrintAbnf(ofstream & Stream);
+		virtual void DeclareVariable(ofstream & Stream);
 	};
 	extern Struct * CurrentStruct;
 
 	struct UnionCase
-		: public Item
 	{
 	public:
 
@@ -302,12 +322,7 @@ namespace RiverExplorer::rpcgen
 		bool IsFixedArray = false;
 		bool IsVariableArray = false;
 		std::string ArraySize;
-
-		virtual void PrintCppHeader(ofstream & Stream);
-		virtual void PrintCppXDR(ofstream & Stream);
-		virtual void PrintCppStubs(ofstream & Stream);
-		virtual void PrintXSD(ofstream & Stream);
-		virtual void PrintAbnf(ofstream & Stream);
+		virtual void DeclareVariable(ofstream & Stream);
 	};
 
 	struct Union
@@ -315,18 +330,21 @@ namespace RiverExplorer::rpcgen
 	{
 	public:
 
+		Union();
 		virtual ~Union();
 		
 		std::string Name;
 		std::string SwitchType;
 		std::string SwitchVariable;
 		std::vector<UnionCase*> Cases;
-
+		UnionCase * Default;
+		
 		virtual void PrintCppHeader(ofstream & Stream);
 		virtual void PrintCppXDR(ofstream & Stream);
 		virtual void PrintCppStubs(ofstream & Stream);
 		virtual void PrintXSD(ofstream & Stream);
 		virtual void PrintAbnf(ofstream & Stream);
+		virtual void DeclareVariable(ofstream & Stream);
 	};
 	extern Union * CurrentUnion;
 
@@ -347,6 +365,7 @@ namespace RiverExplorer::rpcgen
 		virtual void PrintCppStubs(ofstream & Stream);
 		virtual void PrintXSD(ofstream & Stream);
 		virtual void PrintAbnf(ofstream & Stream);
+		virtual void DeclareVariable(ofstream & Stream);
 	};
 
 	struct Version
@@ -365,6 +384,7 @@ namespace RiverExplorer::rpcgen
 		virtual void PrintCppStubs(ofstream & Stream);
 		virtual void PrintXSD(ofstream & Stream);
 		virtual void PrintAbnf(ofstream & Stream);
+		virtual void DeclareVariable(ofstream & Stream);
 	};
 
 	struct Program
@@ -388,74 +408,261 @@ namespace RiverExplorer::rpcgen
 		virtual void PrintCppStubs(ofstream & Stream);
 		virtual void PrintXSD(ofstream & Stream);
 		virtual void PrintAbnf(ofstream & Stream);
+		virtual void DeclareVariable(ofstream & Stream);
 	};
 		
 	class MyXdrListener
 		: public xdrListener
 	{
 
-		void ProcessNode(bool Enter, std::string From, xdrParser::DeclarationContext* Ctx);
-		void ProcessNode(bool Enter, std::string From, xdrParser::ConstantContext* Ctx);
-		void ProcessNode(bool Enter, std::string From, xdrParser::TypeSpecifierContext* Ctx);
-		void ProcessNode(bool Enter, std::string From, xdrParser::EnumTypeSpecContext* Ctx);
-		void ProcessNode(bool Enter, std::string From, xdrParser::EnumBodyContext* Ctx);
-		void ProcessNode(bool Enter, std::string From, xdrParser::StructTypeSpecContext* Ctx);
-		void ProcessNode(bool Enter, std::string From, xdrParser::StructBodyContext* Ctx);
-		void ProcessNode(bool Enter, std::string From, xdrParser::UnionTypeSpecContext* Ctx);
-		void ProcessNode(bool Enter, std::string From, xdrParser::UnionBodyContext* Ctx);
-		void ProcessNode(bool Enter, std::string From, xdrParser::CaseSpecContext* Ctx);
-		void ProcessNode(bool Enter, std::string From, xdrParser::TypeDefContext* Ctx);
-		void ProcessNode(bool Enter, std::string From, xdrParser::ConstantDefContext* Ctx);
-		void ProcessNode(bool Enter, std::string From, xdrParser::ValueContext* Ctx);
-		void ProcessNode(bool Enter, std::string From, xdrParser::XdrSpecificationContext* Ctx);
-		void ProcessNode(bool Enter, std::string From, xdrParser::NamespaceDefContext  * Ctx);
-		void ProcessNode(bool Enter, std::string From, tree::TerminalNode* Ctx);
-		void ProcessNode(bool Enter, std::string From, xdrParser::DefinitionContext* Ctx);
-		void ProcessNode(bool Enter, std::string From, ParserRuleContext* Ctx);
+		void ProcessNode(bool Enter,
+										 std::string From,
+										 xdrParser::DeclarationContext* Ctx);
+		
+		void ProcessNode(bool Enter,
+										 std::string From,
+										 xdrParser::ConstantContext* Ctx);
+		
+		void ProcessNode(bool Enter,
+										 std::string From,
+										 xdrParser::TypeSpecifierContext* Ctx);
+		
+		void ProcessNode(bool Enter,
+										 std::string From,
+										 xdrParser::EnumTypeSpecContext* Ctx);
+		
+		void ProcessNode(bool Enter,
+										 std::string From,
+										 xdrParser::EnumBodyContext* Ctx);
+		
+		void ProcessNode(bool Enter,
+										 std::string From,
+										 xdrParser::StructTypeSpecContext* Ctx);
+		
+		void ProcessNode(bool Enter,
+										 std::string From,
+										 xdrParser::StructBodyContext* Ctx);
+		
+		void ProcessNode(bool Enter,
+										 std::string From,
+										 xdrParser::UnionTypeSpecContext* Ctx);
+		
+		void ProcessNode(bool Enter,
+										 std::string From,
+										 xdrParser::UnionBodyContext* Ctx);
+		
+		void ProcessNode(bool Enter,
+										 std::string From,
+										 xdrParser::CaseSpecContext* Ctx);
+		
+		void ProcessNode(bool Enter,
+										 std::string From,
+										 xdrParser::TypeDefContext* Ctx);
+		
+		void ProcessNode(bool Enter,
+										 std::string From,
+										 xdrParser::ConstantDefContext* Ctx);
+		
+		void ProcessNode(bool Enter,
+										 std::string From,
+										 xdrParser::ValueContext* Ctx);
+		
+		void ProcessNode(bool Enter,
+										 std::string From,
+										 xdrParser::XdrSpecificationContext* Ctx);
+		
+		void ProcessNode(bool Enter,
+										 std::string From,
+										 xdrParser::NamespaceDefContext  * Ctx);
+		
+		void ProcessNode(bool Enter,
+										 std::string From,
+										 xdrParser::DefinitionContext* Ctx);
+		
+		void ProcessNode(bool Enter,
+										 std::string From,
+										 xdrParser::TypedefDefContext* Ctx);
+
+		void ProcessNode(bool Enter,
+										 std::string From,
+										 xdrParser::VarContext* Ctx);
+
+		
+		void ProcessNode(bool Enter,
+										 std::string From,
+										 xdrParser::VarPtrContext* Ctx);
+
+		
+		void ProcessNode(bool Enter,
+										 std::string From,
+										 xdrParser::VarFixedContext* Ctx);
+
+		
+		void ProcessNode(bool Enter,
+										 std::string From,
+										 xdrParser::VarFixedPtrContext* Ctx);
+
+		
+		void ProcessNode(bool Enter,
+										 std::string From,
+										 xdrParser::VarVariableContext* Ctx);
+
+		
+		void ProcessNode(bool Enter,
+										 std::string From,
+										 xdrParser::VarVariablePtrContext* Ctx);
+
+		
+		void ProcessNode(bool Enter,
+										 std::string From,
+										 xdrParser::OpaqueFixedContext* Ctx);
+
+		
+		void ProcessNode(bool Enter,
+										 std::string From,
+										 xdrParser::OpaqueFixedPtrContext* Ctx);
+
+		
+		void ProcessNode(bool Enter,
+										 std::string From,
+										 xdrParser::OpaqueVariableContext* Ctx);
+
+		
+		void ProcessNode(bool Enter,
+										 std::string From,
+										 xdrParser::OpaqueVariablePtrContext* Ctx);
+
+		
+		void ProcessNode(bool Enter,
+										 std::string From,
+										 xdrParser::VoidContext* Ctx);
+
+		
+		void ProcessNode(bool Enter,
+										 std::string From,
+										 xdrParser::StringContext* Ctx);
+
+		
+		void ProcessNode(bool Enter,
+										 std::string From,
+										 xdrParser::StringPtrContext* Ctx);
+		
+		void ProcessNode(bool Enter,
+										 std::string From,
+										 xdrParser::SpecsContext* Ctx);
+		
+		void ProcessNode(bool Enter,
+										 std::string From,
+										 tree::TerminalNode* Ctx);
+		
+		void ProcessNode(bool Enter,
+										 std::string From,
+										 ParserRuleContext* Ctx);
 		
 
 		//////////////////////////////////////////////////////////////////////
 		virtual void enterDeclaration(xdrParser::DeclarationContext *Ctx);
 		virtual void exitDeclaration(xdrParser::DeclarationContext *Ctx);
+		
 		virtual void enterDeclaration(xdrParser::ConstantDefContext *Ctx);
 		virtual void exitDeclaration(xdrParser::ConstantDefContext *Ctx);
+		
 		virtual void enterValue(xdrParser::ValueContext *Ctx);
 		virtual void exitValue(xdrParser::ValueContext *Ctx);
+		
 		virtual void enterConstant(xdrParser::ConstantContext *Ctx);
 		virtual void exitConstant(xdrParser::ConstantContext *Ctx);
+		
 		virtual void enterTypeSpecifier(xdrParser::TypeSpecifierContext *Ctx);
 		virtual void exitTypeSpecifier(xdrParser::TypeSpecifierContext *Ctx);
+		
 		virtual void enterEnumTypeSpec(xdrParser::EnumTypeSpecContext *Ctx);
 		virtual void exitEnumTypeSpec(xdrParser::EnumTypeSpecContext *Ctx);
+		
 		virtual void enterEnumBody(xdrParser::EnumBodyContext *Ctx);
 		virtual void exitEnumBody(xdrParser::EnumBodyContext *Ctx);
+		
 		virtual void enterStructTypeSpec(xdrParser::StructTypeSpecContext *Ctx);
 		virtual void exitStructTypeSpec(xdrParser::StructTypeSpecContext *Ctx);
+		
 		virtual void enterStructBody(xdrParser::StructBodyContext *Ctx);
 		virtual void exitStructBody(xdrParser::StructBodyContext *Ctx);
+		
 		virtual void enterUnionTypeSpec(xdrParser::UnionTypeSpecContext *Ctx);
 		virtual void exitUnionTypeSpec(xdrParser::UnionTypeSpecContext *Ctx);
+		
 		virtual void enterUnionBody(xdrParser::UnionBodyContext *Ctx);
 		virtual void exitUnionBody(xdrParser::UnionBodyContext *Ctx);
+		
 		virtual void enterCaseSpec(xdrParser::CaseSpecContext *Ctx);
 		virtual void exitCaseSpec(xdrParser::CaseSpecContext *Ctx);
+		
 		virtual void enterConstantDef(xdrParser::ConstantDefContext *Ctx);
 		virtual void exitConstantDef(xdrParser::ConstantDefContext *Ctx);
+		
 		virtual void enterTypeDef(xdrParser::TypeDefContext *Ctx);
 		virtual void exitTypeDef(xdrParser::TypeDefContext *Ctx);
+		
 		virtual void enterDefinition(xdrParser::DefinitionContext *Ctx);
 		virtual void exitDefinition(xdrParser::DefinitionContext *Ctx);
+		
 		virtual void enterXdrSpecification(xdrParser::XdrSpecificationContext *Ctx);
 		virtual void exitXdrSpecification(xdrParser::XdrSpecificationContext *Ctx);
+		
 		virtual void enterNamespaceDef(xdrParser::NamespaceDefContext * Ctx);
 		virtual void exitNamespaceDef(xdrParser::NamespaceDefContext * Ctx);
-		virtual void enterMain(xdrParser::MainContext * Ctx);
-		virtual void exitMain(xdrParser::MainContext * Ctx);
+		
+		virtual void enterTypedefDef(xdrParser::TypedefDefContext * Ctx);
+		virtual void exitTypedefDef(xdrParser::TypedefDefContext * Ctx);
+		
+		virtual void enterSpecs(xdrParser::SpecsContext * Ctx);
+		virtual void exitSpecs(xdrParser::SpecsContext * Ctx);
+		
+		virtual void enterEveryRule(ParserRuleContext * Ctx);
+		virtual void exitEveryRule(ParserRuleContext * Ctx);
+
+		virtual void enterVar(xdrParser::VarContext * Ctx);
+		virtual void exitVar(xdrParser::VarContext * Ctx);
+
+		virtual void enterVarPtr(xdrParser::VarPtrContext * Ctx);
+		virtual void exitVarPtr(xdrParser::VarPtrContext * Ctx);
+
+		virtual void enterVarFixed(xdrParser::VarFixedContext * Ctx);
+		virtual void exitVarFixed(xdrParser::VarFixedContext * Ctx);
+
+		virtual void enterVarFixedPtr(xdrParser::VarFixedPtrContext * Ctx);
+		virtual void exitVarFixedPtr(xdrParser::VarFixedPtrContext * Ctx);
+
+		virtual void enterVarVariable(xdrParser::VarVariableContext * Ctx);
+		virtual void exitVarVariable(xdrParser::VarVariableContext * Ctx);
+
+		virtual void enterVarVariablePtr(xdrParser::VarVariablePtrContext * Ctx);
+		virtual void exitVarVariablePtr(xdrParser::VarVariablePtrContext * Ctx);
+
+		virtual void enterOpaqueFixed(xdrParser::OpaqueFixedContext * Ctx);
+		virtual void exitOpaqueFixed(xdrParser::OpaqueFixedContext * Ctx);
+
+		virtual void enterOpaqueFixedPtr(xdrParser::OpaqueFixedPtrContext * Ctx);
+		virtual void exitOpaqueFixedPtr(xdrParser::OpaqueFixedPtrContext * Ctx);
+
+		virtual void enterOpaqueVariable(xdrParser::OpaqueVariableContext * Ctx);
+		virtual void exitOpaqueVariable(xdrParser::OpaqueVariableContext * Ctx);
+
+		virtual void enterOpaqueVariablePtr(xdrParser::OpaqueVariablePtrContext * Ctx);
+		virtual void exitOpaqueVariablePtr(xdrParser::OpaqueVariablePtrContext * Ctx);
+
+		virtual void enterVoid(xdrParser::VoidContext * Ctx);
+		virtual void exitVoid(xdrParser::VoidContext * Ctx);
+
+		virtual void enterString(xdrParser::StringContext * Ctx);
+		virtual void exitString(xdrParser::StringContext * Ctx);
+
+		virtual void enterStringPtr(xdrParser::StringPtrContext * Ctx);
+		virtual void exitStringPtr(xdrParser::StringPtrContext * Ctx);
 
 		virtual void visitTerminal(tree::TerminalNode * Node);
 		virtual void visitErrorNode(tree::ErrorNode * Node);
-		virtual void enterEveryRule(ParserRuleContext * Ctx);
-		virtual void exitEveryRule(ParserRuleContext * Ctx);
+		
 	};
 }
 #endif // _RIVEREXPLORER_RPCGEN_RPCGEN_HPP_
