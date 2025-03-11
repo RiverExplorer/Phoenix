@@ -1,6 +1,6 @@
 /**
  * Project: Phoenix
- * Time-stamp: <2025-03-10 09:29:10 doug>
+ * Time-stamp: <2025-03-10 15:31:42 doug>
  * 
  * @file GenerateStuct.cpp
  * @author Douglas Mark Royer
@@ -346,15 +346,33 @@ namespace RiverExplorer::rpcgen
 	Struct::PrintAbnf(ofstream & Stream)
 	{
 	}
-	
+
 	void
-	Struct::DeclareVariable(ofstream & Stream)
+	StructMember::PrintCppHeader(ofstream & Stream)
+	{
+	}
+
+	void
+	StructMember::PrintCppXDR(ofstream & Stream)
+	{
+	}
+
+	void
+	StructMember::PrintCppStubs(ofstream & Stream)
+	{
+	}
+
+	void
+	StructMember::PrintXSD(ofstream & Stream)
 	{
 	}
 	
 	void
-	StructMember::DeclareVariable(ofstream & Stream)
+	StructMember::PrintAbnf(ofstream & Stream)
 	{
 	}
 	
 }
+
+
+

@@ -1,6 +1,6 @@
 /**
  * Project: Phoenix
- * Time-stamp: <2025-03-10 12:41:29 doug>
+ * Time-stamp: <2025-03-10 23:19:26 doug>
  * 
  * @file Generate.hpp
  * @author Douglas Mark Royer
@@ -38,6 +38,7 @@ namespace RiverExplorer::rpcgen
 	extern bool IsBuiltInXdrType(const std::string & Type);
 	
 	extern std::string	Indent();
+	extern std::string	Indent(int Level);
 	extern std::string	ToUpper(const std::string & In);
 	
 	extern void	GenerateThisFileWasGenerated(std::string Prefix,

@@ -1,8 +1,50 @@
 
-namespace RiverExplorer:rpcgen:test
+namespace RiverExplorer:rpcgen:test ;
 
 union CapabilityEntry switch (CMD_e CapabilityCmd) {
-		
+
+	case 0:
+	int Int<10>;
+
+	case 1:
+	float Float[20];
+
+ case 2:
+	 opaque O2<>;
+
+ case 3:
+	 opaque O3<15>;
+
+ case 4:
+	 opaque O4[22];
+
+ case 5:
+	 opaque * O5<>;
+
+ case 6:
+	 opaque * O6<15>;
+
+ case 7:
+	 opaque * O7[22];
+
+ case 11:
+	 Unknown  U11<>;
+
+ case 12:
+	 Unknown U12<11>;
+
+ case 13:
+	 Unknown U13[33];
+
+ case 14:
+	 Unknown  * U14<>;
+
+ case 15:
+	 Unknown * U15<11>;
+
+ case 16:
+	 Unknown * U16[33];
+	 
 	 case AUTHANONYMOUS :
 		 void;
 		

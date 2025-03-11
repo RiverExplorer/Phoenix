@@ -1,6 +1,6 @@
 /**
  * Project: Phoenix
- * Time-stamp: <2025-03-10 09:28:34 doug>
+ * Time-stamp: <2025-03-10 15:37:18 doug>
  * 
  * @file GenerateVersion.cpp
  * @author Douglas Mark Royer
@@ -41,10 +41,5 @@ namespace RiverExplorer::rpcgen
 	Version::PrintAbnf(ofstream & Stream)
 	{
 	}
-	
-	void
-	Version::DeclareVariable(ofstream & Stream)
-	{
-	}
-	
+		
 }

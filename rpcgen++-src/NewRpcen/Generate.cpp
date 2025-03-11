@@ -1,6 +1,6 @@
 /**
  * Project: Phoenix
- * Time-stamp: <2025-03-10 12:53:50 doug>
+ * Time-stamp: <2025-03-10 23:19:38 doug>
  * 
  * @file Generate.cpp
  * @author Douglas Mark Royer
@@ -46,6 +46,8 @@ using namespace std;
 
 namespace RiverExplorer::rpcgen
 {
+	extern std::string	Indent(int Level);
+
 	bool
 	MakePath(const string PathToMake)
 	{
@@ -152,6 +154,20 @@ namespace RiverExplorer::rpcgen
 		}
 
 		return(LastResults);
+	}
+		 
+	string
+	Indent(int Level)
+	{
+		string Results;
+
+		int Tmp = Level;
+
+		while (Tmp-- > 0) {
+			Results += '\t';
+		}
+
+		return(Results);
 	}
 	
 	string

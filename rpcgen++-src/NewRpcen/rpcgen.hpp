@@ -1,6 +1,6 @@
 /**
  * Project: Phoenix
- * Time-stamp: <2025-03-10 13:49:21 doug>
+ * Time-stamp: <2025-03-10 22:48:58 doug>
  * 
  * @file rpcgen.hpp
  * @author Douglas Mark Royer
@@ -179,8 +179,19 @@ namespace RiverExplorer::rpcgen
 		virtual void PrintCppStubs(ofstream & Stream) = 0;
 		virtual void PrintXSD(ofstream & Stream) = 0;
 		virtual void PrintAbnf(ofstream & Stream) = 0;
-		virtual void DeclareVariable(ofstream & Stream) = 0;
 		
+		bool IsPointer = false;
+		bool IsFixedArray = false;
+		bool IsVariableArray = false;
+		std::string ArraySize;
+
+		std::string Type;
+		std::string Name;
+
+		/**
+		 * Print the variable for a CPP Header.
+		 */
+		void PrintCppDeclareVariable(ofstream & Stream);
 	};
 
 	extern std::vector<Item*> OrderedItems;
@@ -206,7 +217,8 @@ namespace RiverExplorer::rpcgen
 		InUnion,
 		InUnionCase,
 		InProcedureDef,
-		InVoid
+		InVoid,
+		InComment
 	};
 
 	extern State CurrentState;
@@ -218,16 +230,12 @@ namespace RiverExplorer::rpcgen
 	public:
 
 		virtual ~Constant();
-		
-		std::string Name;
-		int64_t Value;
 
 		virtual void PrintCppHeader(ofstream & Stream);
 		virtual void PrintCppXDR(ofstream & Stream);
 		virtual void PrintCppStubs(ofstream & Stream);
 		virtual void PrintXSD(ofstream & Stream);
 		virtual void PrintAbnf(ofstream & Stream);
-		virtual void DeclareVariable(ofstream & Stream);
 	};
 	extern Constant * CurrentConstant;
 
@@ -237,16 +245,12 @@ namespace RiverExplorer::rpcgen
 	public:
 
 		virtual ~EnumValue();
-		
-		std::string Name;
-		int64_t Value;
 
 		virtual void PrintCppHeader(ofstream & Stream);
 		virtual void PrintCppXDR(ofstream & Stream);
 		virtual void PrintCppStubs(ofstream & Stream);
 		virtual void PrintXSD(ofstream & Stream);
 		virtual void PrintAbnf(ofstream & Stream);
-		virtual void DeclareVariable(ofstream & Stream);
 	};
 
 	struct TypeDef
@@ -259,33 +263,26 @@ namespace RiverExplorer::rpcgen
 		std::string Name;
 		std::string BaseType;
 		std::string Constraint;
-		bool IsPointer = false;
-		bool IsFixedArray = false;
-		bool IsVariableArray = false;
-		std::string ArraySize;
 
 		virtual void PrintCppHeader(ofstream & Stream);
 		virtual void PrintCppXDR(ofstream & Stream);
 		virtual void PrintCppStubs(ofstream & Stream);
 		virtual void PrintXSD(ofstream & Stream);
 		virtual void PrintAbnf(ofstream & Stream);
-		virtual void DeclareVariable(ofstream & Stream);
 	};
 
 	struct StructMember
+		: public Item
 	{
 	public:
 
 		virtual ~StructMember();
-		
-		std::string Type;
-		std::string Name;
-		bool IsPointer = false;
-		bool IsFixedArray = false;
-		bool IsVariableArray = false;
-		std::string ArraySize;
 
-		virtual void DeclareVariable(ofstream & Stream);
+		virtual void PrintCppHeader(ofstream & Stream);
+		virtual void PrintCppXDR(ofstream & Stream);
+		virtual void PrintCppStubs(ofstream & Stream);
+		virtual void PrintXSD(ofstream & Stream);
+		virtual void PrintAbnf(ofstream & Stream);
 	};
 	extern StructMember * CurrentStructMember;
 
@@ -296,7 +293,6 @@ namespace RiverExplorer::rpcgen
 
 		virtual ~Struct();
 		
-		std::string Name;
 		std::vector<StructMember*> Members;
 
 		virtual void PrintCppHeader(ofstream & Stream);
@@ -304,25 +300,25 @@ namespace RiverExplorer::rpcgen
 		virtual void PrintCppStubs(ofstream & Stream);
 		virtual void PrintXSD(ofstream & Stream);
 		virtual void PrintAbnf(ofstream & Stream);
-		virtual void DeclareVariable(ofstream & Stream);
 	};
 	extern Struct * CurrentStruct;
 
 	struct UnionCase
+		: public Item
 	{
 	public:
 
 		virtual ~UnionCase();
 		
 		std::string CaseValue;
-		std::string Type;
-		std::string Name;
 		bool IsDefault;
-		bool IsPointer = false;
-		bool IsFixedArray = false;
-		bool IsVariableArray = false;
-		std::string ArraySize;
-		virtual void DeclareVariable(ofstream & Stream);
+
+		virtual void PrintCppHeader(ofstream & Stream);
+		virtual void PrintCppXDR(ofstream & Stream);
+		virtual void PrintCppStubs(ofstream & Stream);
+		virtual void PrintXSD(ofstream & Stream);
+		virtual void PrintAbnf(ofstream & Stream);
+
 	};
 
 	struct Union
@@ -336,7 +332,7 @@ namespace RiverExplorer::rpcgen
 		std::string Name;
 		std::string SwitchType;
 		std::string SwitchVariable;
-		std::vector<UnionCase*> Cases;
+		std::vector<Item*> Cases;
 		UnionCase * Default;
 		
 		virtual void PrintCppHeader(ofstream & Stream);
@@ -344,7 +340,6 @@ namespace RiverExplorer::rpcgen
 		virtual void PrintCppStubs(ofstream & Stream);
 		virtual void PrintXSD(ofstream & Stream);
 		virtual void PrintAbnf(ofstream & Stream);
-		virtual void DeclareVariable(ofstream & Stream);
 	};
 	extern Union * CurrentUnion;
 
@@ -356,7 +351,6 @@ namespace RiverExplorer::rpcgen
 		virtual ~Procedure();
 		
 		std::string ReturnType;
-		std::string Name;
 		std::vector<StructMember*> Params;
 		int64_t ProcNumber;
 
@@ -365,7 +359,6 @@ namespace RiverExplorer::rpcgen
 		virtual void PrintCppStubs(ofstream & Stream);
 		virtual void PrintXSD(ofstream & Stream);
 		virtual void PrintAbnf(ofstream & Stream);
-		virtual void DeclareVariable(ofstream & Stream);
 	};
 
 	struct Version
@@ -375,7 +368,6 @@ namespace RiverExplorer::rpcgen
 
 		virtual ~Version();
 		
-		std::string Name;
 		int64_t VersionNumber;
 		std::vector<Procedure*> Procedures;
 
@@ -384,7 +376,6 @@ namespace RiverExplorer::rpcgen
 		virtual void PrintCppStubs(ofstream & Stream);
 		virtual void PrintXSD(ofstream & Stream);
 		virtual void PrintAbnf(ofstream & Stream);
-		virtual void DeclareVariable(ofstream & Stream);
 	};
 
 	struct Program
@@ -394,7 +385,6 @@ namespace RiverExplorer::rpcgen
 
 		virtual ~Program();
 		
-		std::string Name;
 		uint64_t ProgramNumber;
 		std::vector<Version*> Versions;
 		std::map<std::string, Constant*> Constants;
@@ -408,9 +398,20 @@ namespace RiverExplorer::rpcgen
 		virtual void PrintCppStubs(ofstream & Stream);
 		virtual void PrintXSD(ofstream & Stream);
 		virtual void PrintAbnf(ofstream & Stream);
-		virtual void DeclareVariable(ofstream & Stream);
 	};
+
+	struct Comment
+		: public Item
+	{
+		virtual ~Comment();
 		
+		virtual void PrintCppHeader(ofstream & Stream);
+		virtual void PrintCppXDR(ofstream & Stream);
+		virtual void PrintCppStubs(ofstream & Stream);
+		virtual void PrintXSD(ofstream & Stream);
+		virtual void PrintAbnf(ofstream & Stream);
+	};
+	
 	class MyXdrListener
 		: public xdrListener
 	{
@@ -553,6 +554,10 @@ namespace RiverExplorer::rpcgen
 		
 		void ProcessNode(bool Enter,
 										 std::string From,
+										 xdrParser::CommentContext* Ctx);
+		
+		void ProcessNode(bool Enter,
+										 std::string From,
 										 tree::TerminalNode* Ctx);
 		
 		void ProcessNode(bool Enter,
@@ -653,6 +658,9 @@ namespace RiverExplorer::rpcgen
 
 		virtual void enterVoid(xdrParser::VoidContext * Ctx);
 		virtual void exitVoid(xdrParser::VoidContext * Ctx);
+
+		virtual void enterComment(xdrParser::CommentContext * Ctx);
+		virtual void exitComment(xdrParser::CommentContext * Ctx);
 
 		virtual void enterString(xdrParser::StringContext * Ctx);
 		virtual void exitString(xdrParser::StringContext * Ctx);

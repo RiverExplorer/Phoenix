@@ -1,6 +1,6 @@
 /**
  * Project: Phoenix
- * Time-stamp: <2025-03-10 09:30:07 doug>
+ * Time-stamp: <2025-03-10 15:10:29 doug>
  * 
  * @file GenerateConstant.cpp
  * @author Douglas Mark Royer
@@ -39,11 +39,6 @@ namespace RiverExplorer::rpcgen
 	
 	void
 	Constant::PrintAbnf(ofstream & Stream)
-	{
-	}
-	
-	void
-	Constant::DeclareVariable(ofstream & Stream)
 	{
 	}
 	

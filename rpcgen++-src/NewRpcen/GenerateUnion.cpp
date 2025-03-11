@@ -1,6 +1,6 @@
 /**
  * Project: Phoenix
- * Time-stamp: <2025-03-10 13:50:16 doug>
+ * Time-stamp: <2025-03-11 00:06:09 doug>
  * 
  * @file GenerateUnion.cpp
  * @author Douglas Mark Royer
@@ -25,7 +25,6 @@ namespace RiverExplorer::rpcgen
 	Union::PrintCppHeader(ofstream & Stream)
 	{
 		Stream << endl;
-
 		
 		string I = Indent();
 
@@ -68,7 +67,7 @@ namespace RiverExplorer::rpcgen
 		Stream << I2 << " */" << endl;
 		Stream << I2 << SwitchType << " " << SwitchVariable << ";" << endl;
 		
-		vector<UnionCase*>::const_iterator CIt;
+		vector<Item*>::const_iterator CIt;
 		UnionCase * Case;
 
 		IndentLevel++;
@@ -80,24 +79,46 @@ namespace RiverExplorer::rpcgen
 		string I4 = Indent();
 		
 		for (CIt = Cases.begin(); CIt != Cases.end(); CIt++) {
-			Case = *CIt;
 
-			Stream << endl;
-			if (Case->Type == "void") {
-				Stream << I3 << "// " << Case->CaseValue << " has void data." << endl;
-			} else {
-				Stream << I3 << "/**" << endl;
-				Stream << I3 << " * Use with " << SwitchVariable
-							 << " == "
-							 << Case->CaseValue
-							 << "."
-							 << endl;
-				Stream << I3 << " */" << endl;
-				Stream << I3 << ToCppType(Case->Type) << " " << Case->Name << ";" << endl;
+			if (*CIt != nullptr) {
+				Case = dynamic_cast<UnionCase*>(*CIt);
+
+				if (Case != nullptr) {
+					if (Case->Type == "void") {
+						Stream << endl << I3
+								 << "// " << Case->CaseValue << " has void data." << endl;
+					} else {
+						Stream << endl;
+						Case->PrintCppDeclareVariable(Stream);
+						if (Case->CaseValue == "default") {
+							Stream << endl << I3
+										 << "// This is the DEFAULT variable, use this when"
+										 << endl << I3
+										 << "// " << SwitchVariable
+										 << " (" << SwitchType << ")"
+										 << " does not equal any other value."
+										 << endl << I3
+										 << "// listed here."
+										 << endl;
+							Stream << endl;
+						} else {
+							Stream << endl << I3 << "// Use when " << SwitchVariable
+										 << " (" << SwitchType << ")"
+										 << " == "
+										 << Case->CaseValue
+										 << "."
+										 << endl;
+						}
+						Stream << endl;
+					}
+				} else {
+					(*CIt)->PrintCppHeader(Stream);
+				}
 			}
 		}
 		if (Default != nullptr) {
-			Stream << I3 << ToCppType(Default->Type) << " " << Default->Name << ";" << endl;
+			Default->PrintCppDeclareVariable(Stream);
+			Stream << endl;
 		}
 		IndentLevel--;
 		Stream << I2 << "};" << endl;
@@ -107,7 +128,7 @@ namespace RiverExplorer::rpcgen
 
 		return;
 	}
-
+	
 	void
 	Union::PrintCppXDR(ofstream & Stream)
 	{
@@ -129,12 +150,27 @@ namespace RiverExplorer::rpcgen
 	}
 	
 	void
-	Union::DeclareVariable(ofstream & Stream)
+	UnionCase::PrintCppHeader(ofstream & Stream)
 	{
 	}
 	
 	void
-	UnionCase::DeclareVariable(ofstream & Stream)
+	UnionCase::PrintCppXDR(ofstream & Stream)
+	{
+	}
+
+	void
+	UnionCase::PrintCppStubs(ofstream & Stream)
+	{
+	}
+
+	void
+	UnionCase::PrintXSD(ofstream & Stream)
+	{
+	}
+	
+	void
+	UnionCase::PrintAbnf(ofstream & Stream)
 	{
 	}
 	

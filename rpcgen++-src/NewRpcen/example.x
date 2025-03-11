@@ -1,5 +1,5 @@
 
-namespace RiverExplorer:rpcgen:test
+namespace RiverExplorer:rpcgen:test;
 
 struct VendorCapability
 {

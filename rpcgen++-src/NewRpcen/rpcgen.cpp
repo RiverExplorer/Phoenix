@@ -1,6 +1,6 @@
 /**
  * Project: Phoenix
- * Time-stamp: <2025-03-10 13:01:30 doug>
+ * Time-stamp: <2025-03-10 23:08:21 doug>
  * 
  * @file rpcgen.cpp
  * @author Douglas Mark Royer
@@ -56,7 +56,6 @@ namespace RiverExplorer::rpcgen
 	std::string						Namespace;
 	std::vector<Item*>		OrderedItems;
 	State									CurrentState = Unknown;
-	State									PreviousState = Unknown;
 	bool									InArray = false;
 	Constant						*	CurrentConstant = nullptr;
 	StructMember				*	CurrentStructMember = nullptr;
@@ -65,6 +64,8 @@ namespace RiverExplorer::rpcgen
 	UnionCase						*	CurrentUnionCase = nullptr;
 
 	std::string						CurrentTypeSpecifier;
+
+	bool									WaitingValue = false;
 	
 	void
 	MyXdrListener::ProcessNode(bool Enter,
@@ -137,7 +138,6 @@ namespace RiverExplorer::rpcgen
 		std::string Text = Ctx->getText();
 
 		if (Enter) {
-			PreviousState = CurrentState;
 			CurrentState = InStruct;
 			CurrentStruct = new Struct();
 
@@ -166,12 +166,10 @@ namespace RiverExplorer::rpcgen
 		std::string Text = Ctx->getText();
 
 		if (Enter) {
-			PreviousState = CurrentState;
 			CurrentState = InStructBody;
 
 		} else {
 
-			CurrentState = PreviousState;
 		}
 		//std::cout << From << Text << std::endl;
 
@@ -186,7 +184,6 @@ namespace RiverExplorer::rpcgen
 		std::string Text = Ctx->getText();
 
 		if (Enter) {
-			PreviousState = CurrentState;
 			CurrentState = InUnion;
 			CurrentUnion = new Union();
 
@@ -196,7 +193,6 @@ namespace RiverExplorer::rpcgen
 			OrderedItems.push_back(CurrentUnion);
 			std::cout << "END union " << CurrentUnion->Name << std::endl;
 			CurrentUnion = nullptr;
-			CurrentState = PreviousState;
 		}
 
 		return;
@@ -210,7 +206,6 @@ namespace RiverExplorer::rpcgen
 		std::string Text = Ctx->getText();
 
 		if (Enter) {
-			PreviousState = CurrentState;
 			CurrentState = InUnion;
 		} else {
 			CurrentState = Unknown;
@@ -229,10 +224,7 @@ namespace RiverExplorer::rpcgen
 		std::string Text = Ctx->getText();
 
 		if (Enter) {
-			PreviousState = CurrentState;
 			CurrentState = InUnionCase;
-		} else {
-			CurrentState = InUnion;
 		}
 
 		//std::cout << From << Text << std::endl;
@@ -466,7 +458,15 @@ namespace RiverExplorer::rpcgen
 		case InUnion:
 			std::cout << "In Union: " << Text << std::endl;
 
-			if (Text == "union") {
+			if (Text == "default") {
+				if (CurrentUnionCase != nullptr) {
+					CurrentUnion->Cases.push_back(CurrentUnionCase);
+				}
+				CurrentUnionCase = new UnionCase();
+				CurrentUnionCase->CaseValue = Text;
+				CurrentState = InUnionCase;
+
+			} else if (Text == "union") {
 				/*ignore*/
 
 			} else if (Text == "switch") {
@@ -516,63 +516,73 @@ namespace RiverExplorer::rpcgen
 		case InUnionCase:
 			std::cout << "In Union Case: " << Text << std::endl;
 
-			if (Text == "case") {
-				if (CurrentUnionCase != nullptr) {
-					CurrentUnion->Cases.push_back(CurrentUnionCase);
+			if (WaitingValue) {
+				if (Text != ">") { // Was/is variable with no predefined size.
+					CurrentUnionCase->ArraySize = Text;
 				}
-				CurrentUnionCase = new UnionCase();
-
-			} else if (Text == ":") {
-				/*EMPTY*/
-
-			} else if (Text == ";") {
-				CurrentUnion->Cases.push_back(CurrentUnionCase);
-				CurrentUnionCase = nullptr;
-				CurrentState = InUnion;
-				
-			} else if (Text == "*") {
-				CurrentUnionCase->IsPointer = true;
-				
+				WaitingValue = false;
 			} else {
-				if (CurrentUnionCase->CaseValue == "") {
-					CurrentUnionCase->CaseValue = Text;
+					
+				if (Text == "case") {
+					if (CurrentUnionCase != nullptr) {
+						CurrentUnion->Cases.push_back(CurrentUnionCase);
+					}
+					CurrentUnionCase = new UnionCase();
 
+				} else if (Text == ":") {
+					/*EMPTY*/
+
+				} else if (Text == ";") {
+					CurrentUnion->Cases.push_back(CurrentUnionCase);
+					CurrentUnionCase = nullptr;
+					CurrentState = InUnion;
+				
+				} else if (Text == "<") {
+					CurrentUnionCase->IsVariableArray = true;
+					WaitingValue = true;
+					
+				} else if (Text == ">") {
+					// They are optional with <>.
+					//
+					WaitingValue = false;
+				
+				} else if (Text == "[") {
+					CurrentUnionCase->IsFixedArray = true;
+					WaitingValue = true;
+				
+				} else if (Text == "]") {
+					/*EMPTY*/
+				
+				} else if (Text == "*") {
+					CurrentUnionCase->IsPointer = true;
+				
 				} else {
-					if (Text == "void" ) {
-						// Void has no data.
-						//
-						CurrentUnionCase->Type = Text;
-						
-					} else {
-						// Not void, so it has a type and data.
-						//
-						if (CurrentUnionCase->Type == "") {
-							// Type not set yet, first value is type.
-							//
-							CurrentUnionCase->Type = Text;
-							
+					if (CurrentUnionCase != nullptr) {
+						if (CurrentUnionCase->CaseValue == "") {
+							CurrentUnionCase->CaseValue = Text;
+
 						} else {
-							if (Text == "*") {
-								CurrentUnionCase->IsPointer = true;
+							if (Text == "void" ) {
+								// Void has no data.
+								//
+								CurrentUnionCase->Type = Text;
+						
 							} else {
-								if (CurrentUnionCase->Name == "") {
-									CurrentUnionCase->Name = Text;
-
-								} else if (Text == "<") {
-									CurrentUnionCase->IsVariableArray;
-									
-								} else if (Text == ">") {
-									/*ignore*/
-									
-								} else if (Text == "[") {
-									CurrentUnionCase->IsFixedArray;
-
-								} else if (Text == "]") {
-									/*ignore*/
-									
-								} else if (CurrentUnionCase->IsVariableArray
-													 || CurrentUnionCase->IsFixedArray) {
-									CurrentUnionCase->ArraySize = Text;
+								// Not void, so it has a type and data.
+								//
+								if (CurrentUnionCase->Type == "") {
+									// Type not set yet, first value is type.
+									//
+									CurrentUnionCase->Type = Text;
+							
+								} else {
+									if (Text == "*") {
+										CurrentUnionCase->IsPointer = true;
+									} else {
+										if (CurrentUnionCase->Name == "") {
+											CurrentUnionCase->Name = Text;
+										}
+									}
 								}
 							}
 						}
@@ -660,11 +670,9 @@ namespace RiverExplorer::rpcgen
 		std::string Text = Ctx->getText();
 
 		if (Enter) {
-			PreviousState = CurrentState;
 			CurrentState = InVar;
 			std::cout << From << Text << std::endl;
 		} else {
-			CurrentState = PreviousState;
 		}
 
 		return;
@@ -678,11 +686,9 @@ namespace RiverExplorer::rpcgen
 		std::string Text = Ctx->getText();
 
 		if (Enter) {
-			PreviousState = CurrentState;
 			CurrentState = InVarPtr;
 			std::cout << From << Text << std::endl;
 		} else {
-			CurrentState = PreviousState;
 		}
 
 		return;
@@ -696,11 +702,9 @@ namespace RiverExplorer::rpcgen
 		std::string Text = Ctx->getText();
 
 		if (Enter) {
-			PreviousState = CurrentState;
 			CurrentState = InVarFixed;
 			std::cout << From << Text << std::endl;
 		} else {
-			CurrentState = PreviousState;
 		}
 
 		return;
@@ -714,11 +718,9 @@ namespace RiverExplorer::rpcgen
 		std::string Text = Ctx->getText();
 
 		if (Enter) {
-			PreviousState = CurrentState;
 			CurrentState = InVarFixedPtr;
 			std::cout << From << Text << std::endl;
 		} else {
-			CurrentState = PreviousState;
 		}
 
 		return;
@@ -732,11 +734,9 @@ namespace RiverExplorer::rpcgen
 		std::string Text = Ctx->getText();
 
 		if (Enter) {
-			PreviousState = CurrentState;
 			CurrentState = InVarVariable;
 			std::cout << From << Text << std::endl;
 		} else {
-			CurrentState = PreviousState;
 		}
 
 		return;
@@ -750,11 +750,9 @@ namespace RiverExplorer::rpcgen
 		std::string Text = Ctx->getText();
 
 		if (Enter) {
-			PreviousState = CurrentState;
 			CurrentState = InVarVariablePtr;
 			std::cout << From << Text << std::endl;
 		} else {
-			CurrentState = PreviousState;
 		}
 
 		return;
@@ -768,11 +766,9 @@ namespace RiverExplorer::rpcgen
 		std::string Text = Ctx->getText();
 
 		if (Enter) {
-			PreviousState = CurrentState;
 			CurrentState = InOpaqueFixed;
 			std::cout << From << Text << std::endl;
 		} else {
-			CurrentState = PreviousState;
 		}
 
 		return;
@@ -786,11 +782,9 @@ namespace RiverExplorer::rpcgen
 		std::string Text = Ctx->getText();
 
 		if (Enter) {
-			PreviousState = CurrentState;
 			CurrentState = InOpaqueFixedPtr;
 			std::cout << From << Text << std::endl;
 		} else {
-			CurrentState = PreviousState;
 		}
 
 		return;
@@ -804,11 +798,9 @@ namespace RiverExplorer::rpcgen
 		std::string Text = Ctx->getText();
 
 		if (Enter) {
-			PreviousState = CurrentState;
 			CurrentState = InOpaqueVariable;
 			std::cout << From << Text << std::endl;
 		} else {
-			CurrentState = PreviousState;
 		}
 
 		return;
@@ -822,11 +814,9 @@ namespace RiverExplorer::rpcgen
 		std::string Text = Ctx->getText();
 
 		if (Enter) {
-			PreviousState = CurrentState;
 			CurrentState = InOpaqueVariablePtr;
 			std::cout << From << Text << std::endl;
 		} else {
-			CurrentState = PreviousState;
 		}
 
 		return;
@@ -840,11 +830,9 @@ namespace RiverExplorer::rpcgen
 		std::string Text = Ctx->getText();
 
 		if (Enter) {
-			PreviousState = CurrentState;
 			CurrentState = InString;
 			std::cout << From << Text << std::endl;
 		} else {
-			CurrentState = PreviousState;
 		}
 
 		return;
@@ -858,11 +846,9 @@ namespace RiverExplorer::rpcgen
 		std::string Text = Ctx->getText();
 
 		if (Enter) {
-			PreviousState = CurrentState;
 			CurrentState = InStringPtr;
 			std::cout << From << Text << std::endl;
 		} else {
-			CurrentState = PreviousState;
 		}
 
 		return;
@@ -876,17 +862,39 @@ namespace RiverExplorer::rpcgen
 		std::string Text = Ctx->getText();
 
 		if (Enter) {
-			PreviousState = CurrentState;
 			CurrentState = InVoid;
 			std::cout << From << Text << std::endl;
 		} else {
-			CurrentState = PreviousState;
 		}
 
 		return;
 	}
 
-	///////////////////////////////////////////////////////////////////////////
+	void
+	MyXdrListener::ProcessNode(bool Enter,
+														 std::string From,
+														 xdrParser::CommentContext  * Ctx)
+	{
+		std::string Text = Ctx->getText();
+
+		if (Enter) {
+			Comment * NewOne = new Comment();
+			NewOne->Type = "comment";
+			NewOne->Name = Text;
+
+			if (CurrentState == InUnion || CurrentState == InUnionCase) {
+				CurrentUnion->Cases.push_back(NewOne);
+			} else {
+				OrderedItems.push_back(NewOne);
+			}
+			//std::cout << From << Text << std::endl;
+		} else {
+		}
+
+		return;
+	}
+
+	///////////////////////////////////////////////////////////////////////
 	void
 	MyXdrListener::enterDeclaration(xdrParser::DeclarationContext *Ctx)
 	{
@@ -1352,15 +1360,29 @@ namespace RiverExplorer::rpcgen
 	void
 	MyXdrListener::enterSpecs(xdrParser::SpecsContext * Ctx)
 	{
-		//std::cout << "In: visitErrorNode" << std::endl;
+		//std::cout << "In: Node" << std::endl;
 		ProcessNode(true, "SpecsExit : ", Ctx);
 	}
 	
 	void
 	MyXdrListener::exitSpecs(xdrParser::SpecsContext * Ctx)
 	{
-		//std::cout << "In: visitErrorNode" << std::endl;
-		ProcessNode(false, "SpecsExit : ", Ctx);
+		//std::cout << "In: exitSpecs" << std::endl;
+		ProcessNode(false, "Specs Exit : ", Ctx);
+	}
+	
+	void
+	MyXdrListener::enterComment(xdrParser::CommentContext * Ctx)
+	{
+		//std::cout << "In: Enter Comment" << std::endl;
+		ProcessNode(true, "Comment Exit : ", Ctx);
+	}
+	
+	void
+	MyXdrListener::exitComment(xdrParser::CommentContext * Ctx)
+	{
+		//std::cout << "In: exitComment" << std::endl;
+		ProcessNode(false, "Comment Exit : ", Ctx);
 	}
 	
 	Constant::~Constant()

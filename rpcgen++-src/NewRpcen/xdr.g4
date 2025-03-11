@@ -11,6 +11,7 @@ specs
 	| constantDef
 	| typedefDef
 	| namespaceDef
+	| comment
 	;
 	
 declaration
@@ -27,6 +28,7 @@ declaration
 		| string
 		| stringPtr
 		| void
+		| comment
 		;
 
 var								: typeSpecifier IDENTIFIER ;
@@ -50,7 +52,7 @@ stringPtr					: 'string' '*' IDENTIFIER '<' value? '>' ;
 void							: 'void' ;
 
 namespaceDef
-		: 'namespace' IDENTIFIER ( '::' IDENTIFIER )* ';'
+		: 'namespace' IDENTIFIER ( ':' IDENTIFIER )* ';'
 		;
 
 value
@@ -102,7 +104,8 @@ unionBody
     ;
 
 caseSpec
-    : ('case' value':' declaration ) ('case' value':' declaration)* ';'
+    : (('case' value':' declaration ) | comment )
+			(('case' value':' declaration) | comment)* ';'
     ;
 
 typedefDef
@@ -125,11 +128,19 @@ definition
     | constantDef
     ;
 
+
+comment : CommentOneLine
+				| CommentMultiLine ;
+
+CommentOneLine : '//' ~[\r\n]+ ;
+
+CommentMultiLine : '/*' .*? '*/' ;
+
 // lexer rules
 
-COMMENT
-    : '/*' .*? '*/' -> skip
-    ;
+//COMMENT
+//    : '/*' .*? '*/' -> skip
+//    ;
 
 OCTAL
     : '0' [1-7] ([0-7])*

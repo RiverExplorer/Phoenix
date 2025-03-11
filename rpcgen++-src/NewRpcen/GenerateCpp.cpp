@@ -1,6 +1,6 @@
 /**
  * Project: Phoenix
- * Time-stamp: <2025-03-10 12:42:50 doug>
+ * Time-stamp: <2025-03-10 15:34:39 doug>
  * 
  * @file GenerateCpp.cpp
  * @author Douglas Mark Royer
@@ -149,22 +149,6 @@ namespace RiverExplorer::rpcgen
 			string I1 = Indent();
 						
 			Shared << I1 << "/**" << endl;
-			Shared << I1 << "* An implementation of an XDR routine" << endl;
-			Shared << I1 << "* for std::vector<uint8_t>." << endl;
-			Shared << I1 << "*" << endl;
-			Shared << I1 << "* @param Xdr The initalized XDR object." << endl;
-			Shared << I1 << "*" << endl;
-			Shared << I1 << "* @param opaque The address of the std::vector<uint8_t> object." << endl;
-			Shared << I1 << "*" << endl;
-			Shared << I1 << "* @param[optional] MaxLength The maximum size of the vector." << endl;
-			Shared << I1 << "* @return true on no errors." << endl;
-			Shared << I1 << "*/" << endl;
-			Shared << I1 << "bool xdr_VectorOfOpaque(XDR * Xdr," << endl;
-			Shared << I1 << "\tstd::vector<uint8_t> * Opaque," << endl;
-			Shared << I1 << "\tuint32_t MaxLength = ~0);" << endl;
-			Shared << I1 << "" << endl;
-			Shared << I1 << "" << endl;
-			Shared << I1 << "/**" << endl;
 			Shared << I1 << " * An implementation of an XDR routine" << endl;
 			Shared << I1 << " * for std::vector<uint8_t>." << endl;
 			Shared << I1 << " *" << endl;
@@ -178,7 +162,7 @@ namespace RiverExplorer::rpcgen
 			Shared << I1 << "bool xdr_StdString(XDR * Xdr," << endl;
 			Shared << I1 << "\tstd::string * Str," << endl;
 			Shared << I1 << "\tuint32_t MaxLength = ~0);" << endl;
-			Shared << I1 << "" << endl;
+			Shared << I1 << endl;
 			Shared << I1 << "/**" << endl;
 			Shared << I1 << " * An implementation of an XDR routine" << endl;
 			Shared << I1 << " * for std::vector<uint8_t>." << endl;
@@ -224,6 +208,7 @@ namespace RiverExplorer::rpcgen
 			Shared << I1 << "" << endl;
 			Shared << I1 << "\treturn(Results);" << endl;
 			Shared << I1 << "}" << endl;
+
 			if (Namespace != "") {
 				IndentLevel--;
 				Shared << "} // End namespace " << Namespace << endl;
@@ -233,5 +218,6 @@ namespace RiverExplorer::rpcgen
 		}
 
 		return;
-	}	
+	}
+	
 }

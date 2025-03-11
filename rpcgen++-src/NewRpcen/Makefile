@@ -26,9 +26,11 @@ GENERATED.other = \
 
 SOURCES.cpp = \
 	$(GENERATED.cpp) \
+	Item.cpp \
 	rpcgen.cpp \
 	Generate.cpp \
 	GenerateCpp.cpp \
+	GenerateComment.cpp \
 	GenerateConstant.cpp \
 	GenerateEnumValue.cpp \
 	GenerateTypeDef.cpp \
