@@ -1,0 +1,17 @@
+rpcgen++
+*.o
+cscope.*
+LOG
+Generated
+GeneratedDocs
+*.interp
+*.tokens
+xdrBaseListener.cpp
+xdrBaseListener.h
+xdrLexer.cpp
+xdrLexer.h
+xdrListener.cpp
+xdrListener.h
+xdrParser.cpp
+xdrParser.h
+xdr.g4-previous
