@@ -9,7 +9,7 @@ specs
 	| unionTypeSpec
 	| enumTypeSpec
 	| constantDef
-	| typedefDef
+	| typeDefDef
 	| namespaceDef
 	| comment
 	| passThrough
@@ -118,8 +118,24 @@ caseSpec
 			(('case' value':' declaration) | comment+)* ';'
     ;
 
-typedefDef
+typeDefDef
 		: 'typedef' declaration ';'
+		| 'typedef' IDENTIFIER IDENTIFIER ';'
+		| 'typedef' IDENTIFIER '*' IDENTIFIER ';'
+		| 'typedef' IDENTIFIER IDENTIFIER '[' value ']' ';'
+		| 'typedef' IDENTIFIER '*' IDENTIFIER '[' value ']' ';'
+		| 'typedef' IDENTIFIER IDENTIFIER '<>' ';'
+		| 'typedef' IDENTIFIER '*' IDENTIFIER '<>' ';'
+		| 'typedef' IDENTIFIER IDENTIFIER '<' value '>' ';'
+		| 'typedef' IDENTIFIER '*' IDENTIFIER '<' value '>' ';'
+		| 'typedef' 'struct' IDENTIFIER IDENTIFIER ';'
+		| 'typedef' 'struct' IDENTIFIER '*' IDENTIFIER ';'
+		| 'typedef' 'struct' IDENTIFIER IDENTIFIER '[' value ']' ';'
+		| 'typedef' 'struct' IDENTIFIER '*' IDENTIFIER '[' value ']' ';'
+		| 'typedef' 'struct' IDENTIFIER IDENTIFIER '<>' ';'
+		| 'typedef' 'struct' IDENTIFIER '*' IDENTIFIER '<>' ';'
+		| 'typedef' 'struct' IDENTIFIER IDENTIFIER '<' value '>' ';'
+		| 'typedef' 'struct' IDENTIFIER '*' IDENTIFIER '<' value '>' ';'
 		;
 		
 constantDef

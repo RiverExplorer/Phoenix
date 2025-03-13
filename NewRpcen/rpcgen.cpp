@@ -1,6 +1,6 @@
 /**
  * Project: Phoenix
- * Time-stamp: <2025-03-12 14:16:32 doug>
+ * Time-stamp: <2025-03-12 18:45:07 doug>
  * 
  * @file rpcgen.cpp
  * @author Douglas Mark Royer
@@ -67,6 +67,7 @@ namespace RiverExplorer::rpcgen
 	EnumValue						*	CurrentEnumValue = nullptr;
 	Union								*	CurrentUnion = nullptr;
 	UnionCase						*	CurrentUnionCase = nullptr;
+	TypeDef							*	CurrentTypeDef = nullptr;
 
 	std::string						CurrentTypeSpecifier;
 
@@ -218,7 +219,6 @@ namespace RiverExplorer::rpcgen
 		} else {
 			OrderedItems.push_back(CurrentUnion);
 			std::cout << "END union " << CurrentUnion->Name << std::endl;
-			CurrentUnion = nullptr;
 		}
 
 		return;
@@ -265,6 +265,9 @@ namespace RiverExplorer::rpcgen
 	{
 		std::string Text = Ctx->getText();
 
+		if (Enter) {
+			CurrentState = InTypeDef;
+		}
 		std::cout << From << Text << std::endl;
 
 		return;
@@ -286,7 +289,6 @@ namespace RiverExplorer::rpcgen
 			}
 		} else {
 			OrderedItems.push_back(CurrentConstant);
-			CurrentConstant = nullptr;
 		}
 		std::cout << From << Text << std::endl;
 
@@ -391,10 +393,6 @@ namespace RiverExplorer::rpcgen
 			/*EMPTY*/
 			break;
 
-		case InTypedef:
-			std::cout << "Text = " << Text << endl;
-			break;
-			
 		case InProcedureDef:
 			std::cout << "Text = " << Text << endl;
 			break;
@@ -423,12 +421,70 @@ namespace RiverExplorer::rpcgen
 				}
 				if (Text == "=") {
 					/*Ignore*/
+
 				} else if (Text == "const") {
 					/*Ignore*/
+
 				} else if (Text == ";") {
-					/*Ignore*/
+					CurrentState = Unknown;
+					
 				} else {
 					CurrentConstant->Type = Text;
+				}
+			}
+			break;
+
+		case InTypeDef:
+			if (Enter) {
+				if (CurrentTypeDef == nullptr) {
+					CurrentTypeDef = new TypeDef();
+				}
+				std::cout << "--IN TYPEDEF: " << Text << std::endl;
+
+				if (Text == "typedef") {
+					/*Ignore*/
+					
+				} else if (Text == ";") {
+					OrderedItems.push_back(CurrentTypeDef);
+					CurrentTypeDef = nullptr;
+					CurrentState = Unknown;
+					
+				} else if (CurrentTypeDef->Name == "") {
+					if (Text == "*") {
+						CurrentTypeDef->IsPointer = true;
+						break;
+					}
+					if (CurrentTypeDef->Type == "") {
+						CurrentTypeDef->Type = Text;
+
+					} else if (CurrentTypeDef->Type == "struct") {
+						CurrentTypeDef->Type += " ";
+						CurrentTypeDef->Type += Text;
+					} else {
+						CurrentTypeDef->Name = Text;
+					}
+				} else {
+					// Type and Name are set, if there is more
+					// it is array information.
+					//
+					if (Text == "[") {
+						CurrentTypeDef->IsFixedArray = true;
+					} else if (Text == "<") {
+						CurrentTypeDef->IsVariableArray = true;
+
+					} else if (Text == "]") {
+						/*Ignore*/
+
+					} else if (Text == ">") {
+						/*Ignore*/
+
+					} else if (Text == "<>") {
+						CurrentTypeDef->IsVariableArray = true;
+						
+					} else if (CurrentTypeDef->IsFixedArray
+									|| CurrentTypeDef->IsVariableArray) {
+							CurrentTypeDef->ArraySize = Text;
+					}
 				}
 			}
 			break;
@@ -561,6 +617,7 @@ namespace RiverExplorer::rpcgen
 			if (Text == "default") {
 				if (CurrentUnionCase != nullptr) {
 					CurrentUnion->Cases.push_back(CurrentUnionCase);
+					CurrentUnionCase = nullptr;
 				}
 				CurrentUnionCase = new UnionCase();
 				CurrentUnionCase->CaseValue = Text;
@@ -626,6 +683,7 @@ namespace RiverExplorer::rpcgen
 				if (Text == "case") {
 					if (CurrentUnionCase != nullptr) {
 						CurrentUnion->Cases.push_back(CurrentUnionCase);
+						CurrentUnion = nullptr;
 					}
 					CurrentUnionCase = new UnionCase();
 
@@ -741,10 +799,14 @@ namespace RiverExplorer::rpcgen
 	void
 	MyXdrListener::ProcessNode(bool Enter,
 														 std::string From,
-														 xdrParser::TypedefDefContext  * Ctx)
+														 xdrParser::TypeDefDefContext  * Ctx)
 	{
 		std::string Text = Ctx->getText();
 
+		if (Enter) {
+			CurrentState = InTypeDef;
+		}
+		
 		std::cout << From << Text << std::endl;
 
 		return;
@@ -1114,7 +1176,7 @@ namespace RiverExplorer::rpcgen
 	MyXdrListener::exitEnumTypeSpec(xdrParser::EnumTypeSpecContext *Ctx)
 	{
 		//std::cout << "In: exitEnumTypeSpec" << std::endl;
-		ProcessNode(false, "Exit Typedef: ", Ctx);
+		ProcessNode(false, "Exit TypeDef: ", Ctx);
 	}
 
 	void
@@ -1496,17 +1558,17 @@ namespace RiverExplorer::rpcgen
 	}
 	
 	void
-	MyXdrListener::enterTypedefDef(xdrParser::TypedefDefContext * Ctx)
+	MyXdrListener::enterTypeDefDef(xdrParser::TypeDefDefContext * Ctx)
 	{
 		//std::cout << "In: visitErrorNode" << std::endl;
-		ProcessNode(true, "Typedef Enter : ", Ctx);
+		ProcessNode(true, "TypeDef Enter : ", Ctx);
 	}
 	
 	void
-	MyXdrListener::exitTypedefDef(xdrParser::TypedefDefContext * Ctx)
+	MyXdrListener::exitTypeDefDef(xdrParser::TypeDefDefContext * Ctx)
 	{
 		//std::cout << "In: visitErrorNode" << std::endl;
-		ProcessNode(false, "TypedefExit : ", Ctx);
+		ProcessNode(false, "TypeDefExit : ", Ctx);
 	}
 	
 	void
@@ -1618,6 +1680,7 @@ main(int argc, char *argv[])
 	bool GenerateXsd = false;
 	bool GenerateAbnf = false;
 	bool GenerateServer = false;
+	bool NoBanner = false;
 	
 	bool Error = false;
 
@@ -1643,7 +1706,9 @@ main(int argc, char *argv[])
 			{"stubs",		NoArgument,				0, 8},
 			{"quiet",		NoArgument,				0, 9},
 			{"D",				OptionalArgument,	0, 10},
-			{"server",	NoArgument,				0, 11}
+			{"server",	NoArgument,				0, 11},
+			{"nobanner",NoArgument,				0, 12},
+			{nullptr,		NoArgument,				0, 0}
 		};
 		
 		Opt = getopt_long(argc, argv, "D::achlo:m",
@@ -1752,6 +1817,10 @@ main(int argc, char *argv[])
 			/*FALLTHRU*/
 		case 11: // Server Side - no main.
 			GenerateServer = true;
+			break;
+
+		case 12:
+			NoBanner = true;
 			break;
 			
 		case '?':
@@ -1886,7 +1955,9 @@ main(int argc, char *argv[])
 					ofstream Header(HeaderFile);
 
 					Header << "/**" << std::endl;
-					GenerateThisFileWasGenerated(" * ", Header);
+					if (!NoBanner) {
+						GenerateThisFileWasGenerated(" * ", Header);
+					}
 					Header << " */" << std::endl << std::endl;
 							
 					Define = "_RIVEREXPLORER_RPCGEN_";
@@ -1943,7 +2014,9 @@ main(int argc, char *argv[])
 				ofstream XdrFile(XdrFileFile);
 
 				XdrFile << "/**" << std::endl;
-				GenerateThisFileWasGenerated(" * ", XdrFile);
+				if (!NoBanner) {
+					GenerateThisFileWasGenerated(" * ", XdrFile);
+				}
 				XdrFile << " */" << std::endl << std::endl;
 
 				XdrFile << "#include \"" << InputNoExtension
@@ -1991,7 +2064,9 @@ main(int argc, char *argv[])
 
 				ofstream Abnf(AbnfFile);
 				
-				GenerateThisFileWasGenerated(" ; ", Abnf);
+				if (!NoBanner) {
+					GenerateThisFileWasGenerated(" ; ", Abnf);
+				}
 				
 				for (ItemIt = OrderedItems.cbegin()
 							 ; ItemIt != OrderedItems.cend()

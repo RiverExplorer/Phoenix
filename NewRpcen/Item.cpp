@@ -1,6 +1,6 @@
 /**
  * Project: Phoenix
- * Time-stamp: <2025-03-10 23:46:45 doug>
+ * Time-stamp: <2025-03-12 16:22:26 doug>
  * 
  * @file Item.cpp
  * @author Douglas Mark Royer
@@ -26,7 +26,6 @@ namespace RiverExplorer::rpcgen
 	void
 	Item::PrintCppDeclareVariable(ofstream & Stream)
 	{
-		IndentLevel--;
 		string I = Indent();
 
 		if (IsFixedArray || IsVariableArray) {
@@ -59,6 +58,10 @@ namespace RiverExplorer::rpcgen
 				} else if (IsVariableArray) {
 					Stream << endl << I << "// With a max size of: " << ArraySize;
 				}
+			} else {
+				if (IsVariableArray) {
+					Stream << endl << I << "// With no size limit.";
+				}
 			}
 		} else {
 			std::string CppType = ToCppType(Type);
@@ -79,7 +82,6 @@ namespace RiverExplorer::rpcgen
 			}
 			Stream << Name << ";";
 		}
-		IndentLevel++;
 
 		return;
 	}

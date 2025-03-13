@@ -1,6 +1,6 @@
 #
 # Project: Phoenix
-# Time-stamp: <2025-03-03 01:51:48 doug>
+# Time-stamp: <2025-03-12 23:38:39 doug>
 #
 # @file FILL-IN
 # @author Douglas Mark Royer
@@ -168,7 +168,7 @@ W64_SOURCES.h		+=
 # RPCGEN input files.
 #
 RPCTEN					= rpcgen
-SOURCES.x				+=	
+SOURCES.x				+=
 
 XDR_GENERATED.h		+=	$(SOURCES.x:.x=.h)
 XDR_GENERATED.cpp	+=	$(SOURCES.x:.x=.cpp)
@@ -184,6 +184,7 @@ XDR_GENERATED_ALL.cpp			=	\
 													$(addprefix $(BUILD_DIR)/Generated/,$(XDR_DISPATCH.cpp))
 
 SOURCES.c += $(XDR_GENERATED_ALL.c)
+
 SOURCES.cpp += $(XDR_GENERATED_ALL.cpp)
 
 # All of the RPCGEN generated header files.

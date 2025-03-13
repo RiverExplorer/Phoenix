@@ -1,63 +1,134 @@
+#
+# Project: Phoenix
+# Time-stamp: <2025-03-12 23:41:07 doug>
+#
+# Copyright (C) 2025 by Douglas Mark Royer (A.K.A. RiverExplorer)
+# Author Douglas Mark Royer
+# @date 3-JAN-20205
+#
+# licensed under CC BY 4.0.
+#
+# RiverExplorer is a trademark of Douglas Mark Royer
+#
 
+# Version of this program/library
+#
+.SUFFIXES: .g4 .cpp
+
+VERSION			= 0.0.1
+VENDER			= RiverExplorer
+
+# TOP of the build tree where BuildTools/Make... files exist
+#
+TOP					= ..
+LIBTOP			= ..
+
+# What to call this program.
+# And what the include/RiverExplorer/$(TARGET) header directory will be.
+#
 TARGET			= rpcgen++
 
-CPP_LOCATION	= /bin/cpp
+NOW = $(shell date +%Y%m%dT%H%M%S)
 
-SOURCES.hpp = \
-	rpcgen.hpp \
-	Generate.hpp \
-	GenerateCpp.hpp
+LINUX_CPPFLAGS	+= \
+	-I/usr/include/tirpc \
+	-DTARG_BINARY_s='"$(TARGET)"' \
+	-DFULLVERSION_s='"$(NOW)"' \
+	-DOS_s='"Linux"' \
+	-DOSVER_s='"$(shell uname -r)"'
 
-GENERATED.cpp = \
+include $(TOP)/BuildTools/Makefile.top
+
+CXX_VERSION = -std=c++20
+
+ANTLR4.g4				= xdr.g4
+
+ANTLR4_DIRECTORY	= .
+
+ANTLR4_GENERATED.cpp = \
 	xdrBaseListener.cpp \
 	xdrLexer.cpp \
 	xdrListener.cpp \
 	xdrParser.cpp
 
-GENERATED.h = \
+ANTLR4_GENERATED.h = \
 	xdrBaseListener.h \
 	xdrLexer.h \
 	xdrListener.h \
 	xdrParser.h
 
-GENERATED.other = \
+ANTLR4.other = \
 	xdr.interp \
 	xdrLexer.interp \
 	xdrLexer.tokens \
 	xdr.tokens
 
 SOURCES.cpp = \
-	$(GENERATED.cpp) \
-	Item.cpp \
-	rpcgen.cpp \
-	Generate.cpp \
-	GenerateCpp.cpp \
 	GenerateComment.cpp \
 	GenerateConstant.cpp \
+	Generate.cpp \
+	GenerateCpp.cpp \
 	GenerateEnum.cpp \
-	GenerateTypeDef.cpp \
-	GenerateStruct.cpp \
-	GenerateUnion.cpp \
 	GeneratePassThrough.cpp \
 	GenerateProcedure.cpp \
+	GenerateProgram.cpp \
+	GenerateStruct.cpp \
+	GenerateTypeDef.cpp \
+	GenerateUnion.cpp \
 	GenerateVersion.cpp \
-	GenerateProgram.cpp
+	Item.cpp \
+	rpcgen.cpp \
+	$(ANTLR4_GENERATED.cpp)
 
-OBJECTS		= $(SOURCES.cpp:.cpp=.o)
+SOURCES.hpp = \
+	GenerateCpp.hpp \
+	Generate.hpp \
+	rpcgen.hpp \
+	$(ANTLR4_GENERATED.h)
 
-CXXFLAGS	= -ggdb -std=c++20 -I/usr/include/antlr4-runtime -I/usr/include/tirpc
-LDFLAGS		= -ggdb -std=c++20
-LIBS			=	-lantlr4-runtime
+W64_CPPFLAGS	+=
 
-$(TARGET) : $(OBJECTS)
-	g++ -o $@ $(LDFLAGS) $(OBJECTS) $(LIBS)
+ANDROID_CPPFLAGS += 
 
-$(OBJECTS) : $(SOURCES.hpp) $(GENERATED.h)
+ANDROID_LIBS	+= -L/usr/local/Phoenix/Linux/Debug/lib
 
-$(GENERATED.cpp) $(GENERATED.hpp) : xdr.g4
-	antlr4 -Dlanguage=Cpp -o . xdr.g4
+CPPFLAGS	+= \
+	-I/usr/include/antlr4-runtime \
+	-I/usr/include/tirpc \
+	-I$(ANTLR4_DIRECTORY)
 
-clean:
-	$(RM) *.o $(GENERATED.cpp) $(GENERATED.h) $(GENERATED.other)
-	$(RM) -rf Generated
+CXXFLAGS	+= -ggdb -std=c++20
+LDFLAGS		+= -ggdb -std=c++20
 
+LIBS		+= -lantlr4-runtime
+
+# Build as much as possible, with static libs.
+#
+SLIBS		+= $(LIBS)
+
+include $(TOP)/BuildTools/Makefile.bottom
+
+clean ::
+	$(RM) XMLResults.xml
+	$(RM) $(GENERATED.cpp) $(GENERATED.h) $(GENERATED.other)
+	$(RM) -rf Generated/* $(ANTLR4_GENERATED.cpp) $(ANTLR4_GENERATED.h)
+
+$(ANTLR4_GENERATED.cpp) $(ANTLR4_GENERATED.h) : xdr.g4
+	antlr4 -Dlanguage=Cpp -o $(ANTLR4_DIRECTORY) xdr.g4
+
+$(ANTLR4_DIRECTORY)/%.cpp : %.g4
+	antlr4 -Dlanguage=Cpp -o $(ANTLR4_DIRECTORY) xdr.g4
+
+$(ANTLR4_DIRECTORY)/%.h : %.g4
+	antlr4 -Dlanguage=Cpp -o $(ANTLR4_DIRECTORY) xdr.g4
+
+$(ANTLR4_DIRECTORY)/%.cpp : %.cpp
+
+$(ANTLR_DIRECTORY) :
+	-@mkdir $@
+
+LinuxDebugRun : LinuxDebug
+	BuildTemp/Linux/Debug/bin/TestClient1
+
+RunTests::
+	BuildTemp/Linux/Tcov/sbin/TestClient1

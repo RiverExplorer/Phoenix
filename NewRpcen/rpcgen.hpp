@@ -1,6 +1,6 @@
 /**
  * Project: Phoenix
- * Time-stamp: <2025-03-12 13:23:04 doug>
+ * Time-stamp: <2025-03-12 16:12:08 doug>
  * 
  * @file rpcgen.hpp
  * @author Douglas Mark Royer
@@ -223,7 +223,7 @@ namespace RiverExplorer::rpcgen
 		InNamespaceDef,
 		InStruct,
 		InStructBody,
-		InTypedef,
+		InTypeDef,
 		InUnion,
 		InUnionCase,
 		InProcedureDef,
@@ -292,10 +292,6 @@ namespace RiverExplorer::rpcgen
 	public:
 
 		virtual ~TypeDef();
-		
-		std::string Name;
-		std::string BaseType;
-		std::string Constraint;
 
 		virtual void PrintCppHeader(ofstream & Stream);
 		virtual void PrintCppXDR(ofstream & Stream);
@@ -536,7 +532,7 @@ namespace RiverExplorer::rpcgen
 		
 		void ProcessNode(bool Enter,
 										 std::string From,
-										 xdrParser::TypedefDefContext* Ctx);
+										 xdrParser::TypeDefDefContext* Ctx);
 
 		void ProcessNode(bool Enter,
 										 std::string From,
@@ -674,8 +670,8 @@ namespace RiverExplorer::rpcgen
 		virtual void enterNamespaceDef(xdrParser::NamespaceDefContext * Ctx);
 		virtual void exitNamespaceDef(xdrParser::NamespaceDefContext * Ctx);
 		
-		virtual void enterTypedefDef(xdrParser::TypedefDefContext * Ctx);
-		virtual void exitTypedefDef(xdrParser::TypedefDefContext * Ctx);
+		virtual void enterTypeDefDef(xdrParser::TypeDefDefContext * Ctx);
+		virtual void exitTypeDefDef(xdrParser::TypeDefDefContext * Ctx);
 		
 		virtual void enterSpecs(xdrParser::SpecsContext * Ctx);
 		virtual void exitSpecs(xdrParser::SpecsContext * Ctx);
