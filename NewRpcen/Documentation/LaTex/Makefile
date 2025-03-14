@@ -1,6 +1,6 @@
 #
 # Project: Phoenix
-# Time-stamp: <2025-03-14 10:13:17 doug>
+# Time-stamp: <2025-03-14 13:37:10 doug>
 #
 # @file Makefile for RPCGEN++
 # @author Douglas Mark Royer
@@ -32,12 +32,23 @@ SOURCES.tex = \
 	PassThrough.tex \
 	rpcgen.tex \
 	Strings.tex \
+	StructInUnion.tex \
+	StructOutsideUnion.tex \
 	TestCoverage.tex \
 	VariableSizedArrays.tex \
 	WhereToGet.tex
 
-$(TARGET) : $(SOURCES.tex)
+DRAWINGS.txt = \
+	64bitBitField.txt
+
+GENERATED_DRAWINGS.svg = \
+	64bitBitField.svg
+
+$(TARGET) : $(SOURCES.tex) $(GENERATED_DRAWINGS.svg)
 	make4ht -d Generated rpcgen.tex
+
+64bitBitField.svg : 64bitBitField.txt
+	aasvg < 64bitBitField.txt > 64bitBitField.svg
 
 clean :
 	$(RM) -rf Generated

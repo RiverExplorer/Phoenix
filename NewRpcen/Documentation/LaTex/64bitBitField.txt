@@ -1,0 +1,9 @@
+ Most significant bits                            Least significant bits
++-----------------------------------------------------------------------+
+|00000000 00000000 00000EEE EEEEEEEE EEEEEEEE EEEEEEEE EEEEEDDD DCCCCBBA|
++-----------------------------------------------------------------------+
+
+| 8-bits | 8-bits | 8-bits | 8-bits | 8-bits | 8-bits | 8-bits | 8-bits |
++--------+--------+--------+----+ +-+--------+--------+--------+--------+
+                                 |
+                    64-bit value (8 8-bit values)

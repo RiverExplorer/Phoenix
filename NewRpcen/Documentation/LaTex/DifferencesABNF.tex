@@ -1,1 +1,103 @@
 \section{ABNF Differences from RFC-5234}
+\section{XDR Differences from RFC-4506}
+
+\subsection{RPCGEN++ has support for ABNF bit fields}
+The ability to assign the individual bits in objects are useful
+when you have boolean or other values that do not need to have
+their own 32-bit storage.
+Or they could represent the bit values needed to interface
+with hardware.
+
+They are declared by appending a colon (:) and a decimal number
+after the or rule name or terminal value. Example:
+
+\begin{figure}
+\begin{verbatim}
+
+RuleWith32Bits:32 =  %x0:8 Value1:4 Value2:4 uint16_t:16
+
+\end{verbatim}
+\caption{A 32-bit ABNF example}
+\label{fig:A32BitExampleABNF}
+\end{figure}
+
+The number of bits on the left side of the equal sign (=)
+must equal to the total number of bits on the right side.
+Pad with values such as \%0:8, \%0:2, \%0:12, or whatever number
+of bits you need to pad in order to make the number of bits
+on each side of the equal sign the same.
+
+You must declare them with the least significant bits on
+the right most of the equal sign.
+In figure \ref{fig:A32BitExampleABNF}, the 16 bit
+value would be in bit positions 0-15, Value2 would
+be in bit positions 16-19, and Value2 would be in bit
+positions 20-23, the upper 8 bits (24-32) are 8-bits
+of padding to make the total 32-bits.
+
+\textit{For signed values}, make sure that the value you pass
+into the encoding call is correctly signed for the bit
+width you assigned in the ABNF file.
+If you specify a 4-bit value as signed
+and pass it in as an 8-bit signed value, the sign bit will not
+be encoded.
+
+The \textit{bitfield} values can be signed or unsigned and
+are XDR encoded and XDR decoded on their own.
+Once encoded the \textit{bitfield} itself is sent as
+opaque data.
+
+In this example, the \textit{bitfield} is 64-bits and
+contains multiple values that are not byte aligned:
+\begin{figure}
+\begin{verbatim}
+
+             ; With:
+             ; DeviceEnable as 'A' in the bit diagram.
+             ; DeviceMode as 'B' in the bit diagram.
+             ; DeviceRotation as 'C' in the bit diagram.
+             ; DeviceStatus as 'D' in the bit diagram.
+             ; DevicePosition as 'E' in the bit diagram.
+             ; And %0:24 is zero padding to fill the
+             ; 64-bit value.
+             ;
+             ; With ABNF, the most significat bits are
+             ; on the left and the least significat
+             ; values are to the right.
+             ;
+ALargeOne:64 = %0:21 DevicePosition:32 DeviceStatus:4 DeviceRotation:4
+               DeviveMode:2 DeviceEnabled:1
+\end{verbatim}
+\caption{Packed 64-bit device ABNF example}
+\label{fig:ALargeOneABNF}
+\end{figure}
+Unlike the XDR bitfields, no automatic padding is done.
+You will need to specify any padding in the ABNF file.
+XDR and this implementation sends data in chunks of 32-bits.
+The 'A', 'B', 'C', 'D', and 'E' comments in figure
+\ref{fig:ALargeOneABNF} are represented as the bits in
+the 64-bit figure \ref{fig:ALargeOneBitsABNF}.
+\begin{itemize}
+\item 'A' is one bit wide.
+\item 'B' is two bits wide.
+\item 'C' is four bits wide.
+\item 'D' is four bits wide.
+\item 'E' is 32 bits wide.
+\item '0' is 21 padding bits.
+\end{itemize}
+\begin{figure}
+  \includesvg{64bitBitField.svg}
+  \caption{64-bit 'ALargeOne' bitfield}
+  \label{fig:ALargeOneBitsABNF}
+\end{figure}
+
+RPCGEN++ does not impose a size limit on the bit width.
+
+\begin{figure}
+\begin{verbatim}
+A192BitOne:192 =   ... define up to 192 bits ...
+\end{verbatim}
+\caption{Packed 192-bit device example}
+\label{fig:A192BitABNF}
+\end{figure}
+

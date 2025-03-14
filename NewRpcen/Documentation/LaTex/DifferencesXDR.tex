@@ -1,1 +1,102 @@
 \section{XDR Differences from RFC-4506}
+\subsection{Place 'struct' Outside of 'union'}
+Currently RPCGEN++ does not allow structs to be defined in unions.
+Define them out side of the union, and then use them.
+
+For example, this is valid as defined in RFC-4506:
+\input{StructInUnion}
+
+Currently, with RPCGEN++, you will need to define your
+structure outside of the union as shown in this example:
+\input{StructOutsideUnion}
+
+\subsection{RPCGEN++ has support for bit XDR fields}
+The \textit{bitfield} objects are useful when you have boolean or other
+values that do not need to have their own 32-bit storage.
+Or they could represent the bit values needed to interface
+with hardware.
+
+They are declared by appending a colon (:) and a decimal number
+after the data type or variable name.
+They are defined using the \textit{bitfield} data type.
+In this example, \textit{TwoFourBitValues} is declared
+as 8-bits in size, and it contains two 4-bit values.
+\begin{figure}
+\begin{verbatim}
+bitfield TwoFourBitValues:8 {
+   int8_t:4 MyVariableName:4;
+   int8_t:4 TheOtherFourBits:4;
+};
+\end{verbatim}
+\caption{Two Four Bit values in one 8-bit value}
+\label{fig:A32BitExampleXDR}
+\end{figure}
+
+The number of bits inside of the \textit{bitfiled} must be equal to or
+less than the number of bits declared in the bitfield name.
+
+You must declare them with the least significant bits first.
+\textit{MyVariableName} in the example would be placed in
+bit positions 0-3 and \textit{TheOtherFourBits} would occupy
+bit position 4-7.
+
+\textit{For signed values}, make sure that the value you pass
+into the encoding call is correctly signed for the bit
+width you specified in the XDR file.
+If you specify a 4-bit value as signed
+and pass it in as an 8-bit signed value, the sign bit will not
+be encoded.
+
+The \textit{bitfield} values can be signed or unsigned and
+are XDR encoded and XDR decoded on their own.
+Once encoded the \textit{bitfield} itself is sent as
+opaque data.
+
+In this example, the \textit{bitfield} is 64-bits and
+contains multiple values that are not byte aligned:
+\begin{figure}
+\begin{verbatim}
+bitfield ALargeOne:64 {
+   int8_t:1 DeviceEnabled:1;     /* 'A' */
+   int8_t:2 DeviceMode:2;        /* 'B' */
+   int8_t:4 DeviceRotation:4;    /* 'C' */
+   int8_t:4 DeviceStatus:4;      /* 'D' */
+   int32_t:32 DevicePosition:32; /* 'E' */
+};
+\end{verbatim}
+\caption{Packed 64-bit device example}
+\label{fig:ALargeOneXDR}
+\end{figure}
+The upper 21 bits are undefined in this example,
+and are set to zero (0) in this
+implementation.
+XDR and this implementation sends data in chunks of 32-bits.
+The 'A', 'B', 'C', 'D', and 'E' comments in figure
+\ref{fig:ALargeOneXDR} are represented as the bits in
+the 64-bit figure \ref{fig:ALargeOneBitsXDR}.
+\begin{itemize}
+\item 'A' is one bit wide.
+\item 'B' is two bits wide.
+\item 'C' is four bits wide.
+\item 'D' is four bits wide.
+\item 'E' is 32 bits wide.
+\end{itemize}
+\begin{figure}
+  \includesvg{64bitBitField.svg}
+  \caption{64-bit 'ALargeOne' bitfield}
+  \label{fig:ALargeOneBitsXDR}
+\end{figure}
+
+RPCGEN++ does not impose a size limit on the bit width.
+This is an example of a 192-bits object.
+
+\begin{figure}
+\begin{verbatim}
+bitfield A192BitOne:192 {
+  ... define up to 192 bits ...
+};
+\end{verbatim}
+\caption{Packed 192-bit device example}
+\label{fig:A192BitXDR}
+\end{figure}
+
