@@ -1,6 +1,6 @@
 #
 # Project: Phoenix
-# Time-stamp: <2025-03-13 10:32:19 doug>
+# Time-stamp: <2025-03-14 11:19:36 doug>
 #
 # Copyright (C) 2025 by Douglas Mark Royer (A.K.A. RiverExplorer)
 # Author Douglas Mark Royer
@@ -64,20 +64,20 @@ ANTLR4.other = \
 	xdr.tokens
 
 SOURCES.cpp = \
-	GenerateComment.cpp \
-	GenerateConstant.cpp \
 	Generate.cpp \
+	GenerateCppComment.cpp \
+	GenerateCppConstant.cpp \
 	GenerateCpp.cpp \
-	GenerateEnum.cpp \
-	GenerateMethod.cpp \
-	GeneratePassThrough.cpp \
-	GenerateProcedure.cpp \
-	GenerateProgram.cpp \
-	GenerateStruct.cpp \
-	GenerateTypeDef.cpp \
-	GenerateUnion.cpp \
-	GenerateVersion.cpp \
-	Item.cpp \
+	GenerateCppEnum.cpp \
+	GenerateCppItem.cpp \
+	GenerateCppMethod.cpp \
+	GenerateCppPassThrough.cpp \
+	GenerateCppProcedure.cpp \
+	GenerateCppProgram.cpp \
+	GenerateCppStruct.cpp \
+	GenerateCppTypeDef.cpp \
+	GenerateCppUnion.cpp \
+	GenerateCppVersion.cpp \
 	rpcgen.cpp \
 	$(ANTLR4_GENERATED.cpp)
 
