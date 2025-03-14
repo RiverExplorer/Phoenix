@@ -1,6 +1,6 @@
 #
 # Project: Phoenix
-# Time-stamp: <2025-03-12 23:41:07 doug>
+# Time-stamp: <2025-03-13 10:32:19 doug>
 #
 # Copyright (C) 2025 by Douglas Mark Royer (A.K.A. RiverExplorer)
 # Author Douglas Mark Royer
@@ -69,6 +69,7 @@ SOURCES.cpp = \
 	Generate.cpp \
 	GenerateCpp.cpp \
 	GenerateEnum.cpp \
+	GenerateMethod.cpp \
 	GeneratePassThrough.cpp \
 	GenerateProcedure.cpp \
 	GenerateProgram.cpp \
@@ -105,6 +106,26 @@ LIBS		+= -lantlr4-runtime
 # Build as much as possible, with static libs.
 #
 SLIBS		+= $(LIBS)
+
+Default:
+	@echo "Use one of:"
+	@echo "  make LinuxDebug"
+	@echo "  make LinuxRelease"
+	@echo "  make LinuxTcov"
+	@echo "  make Linux - To make LinuxDebug, LinuxRelease, and LinuxTcov"
+	@echo ""
+	@echo "  make W64Debug"
+	@echo "  make W64Tcov"
+	@echo "  make W64Releaes"
+	@echo "  make W64 - To make W64Debug, W64Release, and W64Tcov"
+	@echo ""
+	@echo "  make AndroidDebug"
+	@echo "  make AndroidTcov"
+	@echo "  make AndroidReleaes"
+	@echo "  make Android - To make AndroidDebug, AndroidRelease, and AndroidTcov"
+	@echo ""
+	@echo "  make all - To make Linux, W64, and Android"
+
 
 include $(TOP)/BuildTools/Makefile.bottom
 

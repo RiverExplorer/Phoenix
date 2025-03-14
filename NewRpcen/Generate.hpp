@@ -1,6 +1,6 @@
 /**
  * Project: Phoenix
- * Time-stamp: <2025-03-10 23:19:26 doug>
+ * Time-stamp: <2025-03-13 12:10:56 doug>
  * 
  * @file Generate.hpp
  * @author Douglas Mark Royer
@@ -44,4 +44,7 @@ namespace RiverExplorer::rpcgen
 	extern void	GenerateThisFileWasGenerated(std::string Prefix,
 																					 std::ofstream & Stream);
 
+	extern void	GenerateEditThisFile(std::string Prefix,
+																	 std::ofstream & Stream);
+	
 }

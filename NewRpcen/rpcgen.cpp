@@ -1,6 +1,6 @@
 /**
  * Project: Phoenix
- * Time-stamp: <2025-03-12 18:45:07 doug>
+ * Time-stamp: <2025-03-13 13:22:23 doug>
  * 
  * @file rpcgen.cpp
  * @author Douglas Mark Royer
@@ -19,6 +19,7 @@
 #include <fstream>
 #include <string>
 #include <algorithm>
+#include <format>
 
 #include "antlr4-runtime.h"
 #include "xdrLexer.h"
@@ -68,6 +69,7 @@ namespace RiverExplorer::rpcgen
 	Union								*	CurrentUnion = nullptr;
 	UnionCase						*	CurrentUnionCase = nullptr;
 	TypeDef							*	CurrentTypeDef = nullptr;
+	Method							* CurrentMethod = nullptr;
 
 	std::string						CurrentTypeSpecifier;
 
@@ -397,6 +399,33 @@ namespace RiverExplorer::rpcgen
 			std::cout << "Text = " << Text << endl;
 			break;
 
+		case InMethod:
+			std::cout << "Method Text = " << Text << endl;
+			if (CurrentMethod == nullptr) {
+				CurrentMethod = new Method(*CurrentStruct);
+			}
+			if (Text == "(" || Text == ")") {
+				/*Ignore*/
+
+			} else if (Text == ";") {
+				if (CurrentStruct != nullptr) {
+					CurrentStruct->Members.push_back(CurrentMethod);
+					CurrentMethod = nullptr;
+					CurrentState = Unknown;
+				}
+
+			} else if (CurrentMethod->Type == "") {
+				CurrentMethod->Type = Text;
+
+			} else if (CurrentMethod->Name == "") {
+				CurrentMethod->Name = Text;
+
+			} else {
+				CurrentMethod->Parameters.push_back(Text);
+			}
+				
+			break;
+			
 		case InNamespaceDef:
 			if (Text != "namespace" && Text != ";" && Text != ":") {
 				if (Namespace == "") {
@@ -1094,60 +1123,100 @@ namespace RiverExplorer::rpcgen
 		return;
 	}
 
+	void
+	MyXdrListener::ProcessNode(bool Enter,
+														 std::string From,
+														 xdrParser::MethodContext  * Ctx)
+	{
+		std::string Text = Ctx->getText();
+
+		if (Enter) {
+			CurrentState = InMethod;
+			std::cout << From << Text << std::endl;
+		} else {
+		}
+
+		return;
+	}
+
+	void
+	MyXdrListener::ProcessNode(bool Enter,
+														 std::string From,
+														 xdrParser::ProcReturnContext  * Ctx)
+	{
+		std::string Text = Ctx->getText();
+
+		if (Enter) {
+			//CurrentState = InVoid;
+			std::cout << From << Text << std::endl;
+		} else {
+		}
+
+		return;
+	}
+
+	void
+	MyXdrListener::ProcessNode(bool Enter,
+														 std::string From,
+														 xdrParser::ProcFirstArgContext  * Ctx)
+	{
+		std::string Text = Ctx->getText();
+
+		if (Enter) {
+			//CurrentState = InVoid;
+			std::cout << From << Text << std::endl;
+		} else {
+		}
+
+		return;
+	}
+
 	///////////////////////////////////////////////////////////////////////
 	void
 	MyXdrListener::enterDeclaration(xdrParser::DeclarationContext *Ctx)
 	{
-		//std::cout << "In: enterDeclaration" << std::endl;
 		//ProcessNode(true, "Enter Dec: ", Ctx);
 	}
 	
 	void
 	MyXdrListener::exitDeclaration(xdrParser::DeclarationContext *Ctx)
 	{
-		//std::cout << "In: exitDeclaration" << std::endl;
 		//ProcessNode(false, "Exit Dec: ", Ctx);
 	}
 
 	void
 	MyXdrListener::enterDeclaration(xdrParser::ConstantDefContext *Ctx)
 	{
-		//std::cout << "In: enterDeclaration" << std::endl;
 		ProcessNode(true, "Exit Constant Dec: ", Ctx);
 	}
 	
 	void
 	MyXdrListener::exitDeclaration(xdrParser::ConstantDefContext *Ctx)
 	{
-		//std::cout << "In: exitDeclaration" << std::endl;
 		ProcessNode(false, "Exit Constant Dec: ", Ctx);
 	}
 	
 	void
 	MyXdrListener::enterValue(xdrParser::ValueContext *Ctx)
 	{
-		//std::cout << "In: enterValue" << std::endl;
 		ProcessNode(true, "Enter Value: ", Ctx);
 	}
 	
 	void
 	MyXdrListener::exitValue(xdrParser::ValueContext *Ctx)
 	{
-		//std::cout << "In: exitValue" << std::endl;
 		ProcessNode(false, "Exit Value: ", Ctx);
 	}
 
 	void
 	MyXdrListener::enterConstant(xdrParser::ConstantContext *Ctx)
 	{
-		//std::cout << "In: enterConstant" << std::endl;
 		ProcessNode(true, "Enter Const: ", Ctx);
 	}
 
 	void
 	MyXdrListener::exitConstant(xdrParser::ConstantContext *Ctx)
 	{
-		//std::cout << "In: exitConstant" << std::endl;
 		ProcessNode(false, "Exit Const: ", Ctx);
 	}
 
@@ -1161,442 +1230,415 @@ namespace RiverExplorer::rpcgen
 	void
 	MyXdrListener::exitTypeSpecifier(xdrParser::TypeSpecifierContext *Ctx)
 	{
-		//std::cout << "In: exitTypeSpecifier" << std::endl;
 		//ProcessNode(false, "Exit TypeSpecifier: ", Ctx);
 	}
 
 	void
 	MyXdrListener::enterEnumTypeSpec(xdrParser::EnumTypeSpecContext *Ctx)
 	{
-		//std::cout << "In: enterEnumTypeSpec" << std::endl;
 		ProcessNode(true,"Enter Enum: ", Ctx);
 	}
 
 	void
 	MyXdrListener::exitEnumTypeSpec(xdrParser::EnumTypeSpecContext *Ctx)
 	{
-		//std::cout << "In: exitEnumTypeSpec" << std::endl;
 		ProcessNode(false, "Exit TypeDef: ", Ctx);
 	}
 
 	void
 	MyXdrListener::enterEnumBody(xdrParser::EnumBodyContext *Ctx)
 	{
-		//std::cout << "In: enterEnumBody" << std::endl;
 		ProcessNode(true,"Enter EnumBody: ", Ctx);
 	}
 
 	void
 	MyXdrListener::exitEnumBody(xdrParser::EnumBodyContext *Ctx)
 	{
-		//std::cout << "In: exitEnumBody" << std::endl;
 		ProcessNode(false, "Exit EnumBody: ", Ctx);
 	}
 
 	void
 	MyXdrListener::enterStructTypeSpec(xdrParser::StructTypeSpecContext *Ctx)
 	{
-		//std::cout << "In: enterStructTypeSpec" << std::endl;
 		ProcessNode(true,"Enter Struct: ", Ctx);
 	}
 
 	void
 	MyXdrListener::exitStructTypeSpec(xdrParser::StructTypeSpecContext *Ctx)
 	{
-		//std::cout << "In: exitStructTypeSpec" << std::endl;
 		ProcessNode(false, "Exit Struct: ", Ctx);
 	}
 
 	void
 	MyXdrListener::enterStructBody(xdrParser::StructBodyContext *Ctx)
 	{
-		//std::cout << "In: enterStructBody" << std::endl;
 		ProcessNode(true,"Enter StructBody: ", Ctx);
 	}
 
 	void
 	MyXdrListener::exitStructBody(xdrParser::StructBodyContext *Ctx)
 	{
-		//std::cout << "In: exitStructBody" << std::endl;
 		//ProcessNode(false, "Exit StructBody: ", Ctx);
 	}
 
 	void
 	MyXdrListener::enterUnionTypeSpec(xdrParser::UnionTypeSpecContext *Ctx)
 	{
-		//std::cout << "In: enterUnionTypeSpec" << std::endl;
 		ProcessNode(true,"Enter Union: ", Ctx);
 	}
 
 	void
 	MyXdrListener::exitUnionTypeSpec(xdrParser::UnionTypeSpecContext *Ctx)
 	{
-		//std::cout << "In: exitUnionTypeSpec" << std::endl;
 		ProcessNode(false, "Exit Union : ", Ctx);
 	}
 
 	void
 	MyXdrListener::enterUnionBody(xdrParser::UnionBodyContext *Ctx)
 	{
-		//std::cout << "In: enterUnionBody" << std::endl;
 		ProcessNode(true,"Enter UnionBody: ", Ctx);
 	}
 
 	void
 	MyXdrListener::exitUnionBody(xdrParser::UnionBodyContext *Ctx)
 	{
-		//std::cout << "In: exitUnionBody" << std::endl;
 		ProcessNode(false, "Exit UnionBody: ", Ctx);
 	}
 
 	void
 	MyXdrListener::enterCaseSpec(xdrParser::CaseSpecContext *Ctx)
 	{
-		//std::cout << "In: enterCaseSpec" << std::endl;
 		ProcessNode(true,"Enter Case: ", Ctx);
 	}
 
 	void
 	MyXdrListener::exitCaseSpec(xdrParser::CaseSpecContext *Ctx)
 	{
-		//std::cout << "In: exitCaseSpec" << std::endl;
 		ProcessNode(false, "Exit Case: ", Ctx);
 	}
 
 	void
 	MyXdrListener::enterConstantDef(xdrParser::ConstantDefContext *Ctx)
 	{
-		//std::cout << "In: enterConstantDef" << std::endl;
 		ProcessNode(true,"Enter ConstDef: ", Ctx);
 	}
 
 	void
 	MyXdrListener::exitConstantDef(xdrParser::ConstantDefContext *Ctx)
 	{
-		//std::cout << "In: exitConstantDef" << std::endl;
 		ProcessNode(false, "Exit ConstDef: ", Ctx);
 	}
 
 	void
 	MyXdrListener::enterTypeDef(xdrParser::TypeDefContext *Ctx)
 	{
-		//std::cout << "In: enterTypeDef" << std::endl;
 		ProcessNode(true,"Enter TypeDef: ", Ctx);
 	}
 
 	void
 	MyXdrListener::exitTypeDef(xdrParser::TypeDefContext *Ctx)
 	{
-		//std::cout << "In: exitTypeDef" << std::endl;
 		ProcessNode(false, "Exit TypeDef: ", Ctx);
 	}
 
 	void
 	MyXdrListener::enterDefinition(xdrParser::DefinitionContext *Ctx)
 	{
-		//std::cout << "In: enterDefinition" << std::endl;
 		ProcessNode(true,"Enter Def: ", Ctx);
 	}
 
 	void
 	MyXdrListener::exitDefinition(xdrParser::DefinitionContext *Ctx)
 	{
-		//std::cout << "In: exitDefinition" << std::endl;
 		ProcessNode(false, "Exit Def: ", Ctx);
 	}
 
 	void
 	MyXdrListener::enterXdrSpecification(xdrParser::XdrSpecificationContext *Ctx)
 	{
-		//std::cout << "In: enterXdrSpecification" << std::endl;
 		ProcessNode(true,"Enter Spec: ", Ctx);
 	}
 	
 	void
 	MyXdrListener::exitXdrSpecification(xdrParser::XdrSpecificationContext *Ctx)
 	{
-		//std::cout << "In: exitXdrSpecification" << std::endl;
 		ProcessNode(false, "Exit Spec: ", Ctx);
 	}
 
 	void
 	MyXdrListener::enterVar(xdrParser::VarContext *Ctx)
 	{
-		//std::cout << "In: enterVar" << std::endl;
 		ProcessNode(false, "Enter Var: ", Ctx);
 	}
 
 	void
 	MyXdrListener::exitVar(xdrParser::VarContext *Ctx)
 	{
-		//std::cout << "In: exitVar" << std::endl;
 		ProcessNode(false, "Exit Var: ", Ctx);
 	}
 
 	void
 	MyXdrListener::enterVarPtr(xdrParser::VarPtrContext *Ctx)
 	{
-		//std::cout << "In: enterVarPtr" << std::endl;
 		ProcessNode(false, "Enter VarPtr: ", Ctx);
 	}
 
 	void
 	MyXdrListener::exitVarPtr(xdrParser::VarPtrContext *Ctx)
 	{
-		//std::cout << "In: exitVarPtr" << std::endl;
 		ProcessNode(false, "Exit VarPtr: ", Ctx);
 	}
 
 	void
 	MyXdrListener::enterVarFixed(xdrParser::VarFixedContext *Ctx)
 	{
-		//std::cout << "In: enterVarFixed" << std::endl;
 		ProcessNode(false, "Enter VarFixed: ", Ctx);
 	}
 
 	void
 	MyXdrListener::exitVarFixed(xdrParser::VarFixedContext *Ctx)
 	{
-		//std::cout << "In: exitVarFixed" << std::endl;
 		ProcessNode(false, "Exit VarFixed: ", Ctx);
 	}
 
 	void
 	MyXdrListener::enterVarFixedPtr(xdrParser::VarFixedPtrContext *Ctx)
 	{
-		//std::cout << "In: enterVarFixedPtr" << std::endl;
 		ProcessNode(false, "Enter VarFixedPtr: ", Ctx);
 	}
 
 	void
 	MyXdrListener::exitVarFixedPtr(xdrParser::VarFixedPtrContext *Ctx)
 	{
-		//std::cout << "In: exitVarFixedPtr" << std::endl;
 		ProcessNode(false, "Exit VarFixedPtr: ", Ctx);
 	}
 
 	void
 	MyXdrListener::enterVarVariable(xdrParser::VarVariableContext *Ctx)
 	{
-		//std::cout << "In: enterVarVariable" << std::endl;
 		ProcessNode(false, "Enter VarVariable: ", Ctx);
 	}
 
 	void
 	MyXdrListener::exitVarVariable(xdrParser::VarVariableContext *Ctx)
 	{
-		//std::cout << "In: exitVarVariable" << std::endl;
 		ProcessNode(false, "Exit VarVariable: ", Ctx);
 	}
 
 	void
 	MyXdrListener::enterVarVariablePtr(xdrParser::VarVariablePtrContext *Ctx)
 	{
-		//std::cout << "In: enterVarVariablePtr" << std::endl;
 		ProcessNode(false, "Enter VarVariablePtr: ", Ctx);
 	}
 
 	void
 	MyXdrListener::exitVarVariablePtr(xdrParser::VarVariablePtrContext *Ctx)
 	{
-		//std::cout << "In: exitVarVariablePtr" << std::endl;
 		ProcessNode(false, "Exit VarVariablePtr: ", Ctx);
 	}
 
 	void
 	MyXdrListener::enterOpaqueFixed(xdrParser::OpaqueFixedContext *Ctx)
 	{
-		//std::cout << "In: enterOpaqueFixed" << std::endl;
 		ProcessNode(false, "Enter OpaqueFixed: ", Ctx);
 	}
 
 	void
 	MyXdrListener::exitOpaqueFixed(xdrParser::OpaqueFixedContext *Ctx)
 	{
-		//std::cout << "In: exitOpaqueFixed" << std::endl;
 		ProcessNode(false, "Exit OpaqueFixed: ", Ctx);
 	}
 
 	void
 	MyXdrListener::enterOpaqueFixedPtr(xdrParser::OpaqueFixedPtrContext *Ctx)
 	{
-		//std::cout << "In: enterOpaqueFixedPtr" << std::endl;
 		ProcessNode(false, "Enter OpaqueFixedPtr: ", Ctx);
 	}
 
 	void
 	MyXdrListener::exitOpaqueFixedPtr(xdrParser::OpaqueFixedPtrContext *Ctx)
 	{
-		//std::cout << "In: exitOpaqueFixedPtr" << std::endl;
 		ProcessNode(false, "Exit OpaqueFixedPtr: ", Ctx);
 	}
 
 	void
 	MyXdrListener::enterOpaqueVariable(xdrParser::OpaqueVariableContext *Ctx)
 	{
-		//std::cout << "In: enterOpaqueVariable" << std::endl;
 		ProcessNode(false, "Enter OpaqueVariable: ", Ctx);
 	}
 
 	void
 	MyXdrListener::exitOpaqueVariable(xdrParser::OpaqueVariableContext *Ctx)
 	{
-		//std::cout << "In: exitOpaqueVariable" << std::endl;
 		ProcessNode(false, "Exit OpaqueVariable: ", Ctx);
 	}
 
 	void
 	MyXdrListener::enterOpaqueVariablePtr(xdrParser::OpaqueVariablePtrContext *Ctx)
 	{
-		//std::cout << "In: enterOpaquePtrVariable" << std::endl;
 		ProcessNode(false, "Enter OpaquePtrVariable: ", Ctx);
 	}
 
 	void
 	MyXdrListener::exitOpaqueVariablePtr(xdrParser::OpaqueVariablePtrContext *Ctx)
 	{
-		//std::cout << "In: exitOpaquePtrVariable" << std::endl;
 		ProcessNode(false, "Exit OpaquePtrVariable: ", Ctx);
 	}
 
 	void
 	MyXdrListener::exitString(xdrParser::StringContext *Ctx)
 	{
-		//std::cout << "In: exitString" << std::endl;
 		ProcessNode(false, "Exit String: ", Ctx);
 	}
 
 	void
 	MyXdrListener::enterString(xdrParser::StringContext *Ctx)
 	{
-		//std::cout << "In: enterString" << std::endl;
 		ProcessNode(false, "Enter String: ", Ctx);
 	}
 
 	void
 	MyXdrListener::enterStringPtr(xdrParser::StringPtrContext *Ctx)
 	{
-		//std::cout << "In: enterStringPtr" << std::endl;
 		ProcessNode(false, "Enter StringPtr: ", Ctx);
 	}
 
 	void
 	MyXdrListener::exitStringPtr(xdrParser::StringPtrContext *Ctx)
 	{
-		//std::cout << "In: exitStringPtr" << std::endl;
 		ProcessNode(false, "Exit StringPtr: ", Ctx);
 	}
 
 	void
 	MyXdrListener::enterVoid(xdrParser::VoidContext *Ctx)
 	{
-		//std::cout << "In: Void" << std::endl;
 		ProcessNode(false, "Enter Void: ", Ctx);
 	}
 
 	void
 	MyXdrListener::exitVoid(xdrParser::VoidContext *Ctx)
 	{
-		//std::cout << "In: exitVoid" << std::endl;
 		ProcessNode(false, "Exit Void: ", Ctx);
 	}
 
 	void
 	MyXdrListener::visitTerminal(tree::TerminalNode * Node)
 	{
-		//std::cout << "In: visitTerminal" << std::endl;
 		ProcessNode(true,"Visit Terminal: ", Node);
 	}
 	
 	void
 	MyXdrListener::visitErrorNode(tree::ErrorNode * Node)
 	{
-		//std::cout << "In: visitErrorNode" << std::endl;
 		ProcessNode(true, "Visit Error : ", Node);
 	}
 
 	void
 	MyXdrListener::enterEveryRule(ParserRuleContext * Ctx)
 	{
-		//std::cout << "In: enterEveryRule" << std::endl;
 		//ProcessNode(true,"Enter Every Rule: ", Ctx);
 	}
 	
 	void
 	MyXdrListener::exitEveryRule(ParserRuleContext * Ctx)
 	{
-		//std::cout << "In: exitEveryRule" << std::endl
 		//ProcessNode(false, "Exit Every Rule: ", Ctx);
 	}
 	
 	void
 	MyXdrListener::enterNamespaceDef(xdrParser::NamespaceDefContext * Ctx)
 	{
-		//std::cout << "In: visitErrorNode" << std::endl;
 		ProcessNode(true, "Namespace Enter : ", Ctx);
 	}
 	
 	void
 	MyXdrListener::exitNamespaceDef(xdrParser::NamespaceDefContext * Ctx)
 	{
-		//std::cout << "In: visitErrorNode" << std::endl;
 		ProcessNode(false, "Namespce Exit : ", Ctx);
 	}
 	
 	void
 	MyXdrListener::enterPassThrough(xdrParser::PassThroughContext * Ctx)
 	{
-		//std::cout << "In: enterPassThrough" << std::endl;
 		ProcessNode(true, "PassThrough Enter : ", Ctx);
 	}
 	
 	void
 	MyXdrListener::exitPassThrough(xdrParser::PassThroughContext * Ctx)
 	{
-		//std::cout << "In: exitPassThrough" << std::endl;
 		ProcessNode(false, "PassThrough Exit : ", Ctx);
 	}
 	
 	void
 	MyXdrListener::enterTypeDefDef(xdrParser::TypeDefDefContext * Ctx)
 	{
-		//std::cout << "In: visitErrorNode" << std::endl;
 		ProcessNode(true, "TypeDef Enter : ", Ctx);
 	}
 	
 	void
 	MyXdrListener::exitTypeDefDef(xdrParser::TypeDefDefContext * Ctx)
 	{
-		//std::cout << "In: visitErrorNode" << std::endl;
 		ProcessNode(false, "TypeDefExit : ", Ctx);
 	}
 	
 	void
 	MyXdrListener::enterSpecs(xdrParser::SpecsContext * Ctx)
 	{
-		//std::cout << "In: Node" << std::endl;
 		ProcessNode(true, "SpecsExit : ", Ctx);
 	}
 	
 	void
 	MyXdrListener::exitSpecs(xdrParser::SpecsContext * Ctx)
 	{
-		//std::cout << "In: exitSpecs" << std::endl;
 		ProcessNode(false, "Specs Exit : ", Ctx);
 	}
 	
 	void
 	MyXdrListener::enterComment(xdrParser::CommentContext * Ctx)
 	{
-		//std::cout << "In: Enter Comment" << std::endl;
 		ProcessNode(true, "Comment Exit : ", Ctx);
 	}
 	
 	void
 	MyXdrListener::exitComment(xdrParser::CommentContext * Ctx)
 	{
-		//std::cout << "In: exitComment" << std::endl;
 		ProcessNode(false, "Comment Exit : ", Ctx);
+	}
+
+	void
+	MyXdrListener::enterMethod(xdrParser::MethodContext * Ctx)
+	{
+		ProcessNode(true, "Method Exit : ", Ctx);
+	}
+	
+	void
+	MyXdrListener::exitMethod(xdrParser::MethodContext * Ctx)
+	{
+		ProcessNode(false, "Method Exit : ", Ctx);
+	}
+
+	void
+	MyXdrListener::enterProcReturn(xdrParser::ProcReturnContext * Ctx)
+	{
+		ProcessNode(true, "ProcReturn Exit : ", Ctx);
+	}
+	
+	void
+	MyXdrListener::exitProcReturn(xdrParser::ProcReturnContext * Ctx)
+	{
+		ProcessNode(false, "ProcReturn Exit : ", Ctx);
+	}
+
+	void
+	MyXdrListener::enterProcFirstArg(xdrParser::ProcFirstArgContext * Ctx)
+	{
+		ProcessNode(true, "ProcFirstArg Exit : ", Ctx);
+	}
+	
+	void
+	MyXdrListener::exitProcFirstArg(xdrParser::ProcFirstArgContext * Ctx)
+	{
+		ProcessNode(false, "ProcFirstArg Exit : ", Ctx);
 	}
 
 } // End namespace RiverExplorer::rpcgen
@@ -1937,7 +1979,9 @@ main(int argc, char *argv[])
 				}
 				CppOutputDirectory += "/c++";
 				MakePath(CppOutputDirectory);
-			
+
+				// C++ Headers.
+				//
 				if (GenerateHeaders) {
 
 					std::string HeaderFile;
@@ -1998,6 +2042,77 @@ main(int argc, char *argv[])
 					}
 					Header << std::endl << "#endif // " << Define << std::endl;
 					Header.close();
+				}
+
+				// C++ Stubs.
+				//
+				if (GenerateStubs) {
+
+					uint32_t	Offset = 0;
+					
+					std::string StubFileName;
+
+					for (ItemIt = OrderedItems.cbegin()
+								 ; ItemIt != OrderedItems.cend()
+								 ; ItemIt++) {
+
+						Struct * AStruct = dynamic_cast<Struct*>(*ItemIt);
+
+						if (AStruct != nullptr) {
+							std::vector<Item*>::const_iterator MIt;
+							Method * AMethod;
+							
+							for (Item * MethodItem : AStruct->Members) {
+								AMethod = dynamic_cast<Method*>(MethodItem);
+
+								if (AMethod != nullptr) {
+						
+									StubFileName = CppOutputDirectory;
+									StubFileName += "/";
+									StubFileName += InputNoExtension;
+									StubFileName += "_";
+									StubFileName += AStruct->Name;
+									StubFileName += "_";
+									StubFileName += AMethod->Name;
+									StubFileName += "_";
+									StubFileName += std::format("{:02}", Offset++);
+									StubFileName += ".cpp";
+
+									ofstream StubFile(StubFileName);
+
+									StubFile << "/**" << std::endl;
+									if (!NoBanner) {
+										GenerateEditThisFile(" * ", StubFile);
+									}
+									StubFile << " */" << std::endl << std::endl;
+							
+									StubFile << "#include \""
+													 << InputNoExtension << ".hpp\"" << std::endl;
+						
+									StubFile << "// Get the XDR definitions" << std::endl;
+									StubFile << "#include <rpc/rpc.h>" << std::endl;
+									StubFile << "#include <string>" << std::endl;
+									StubFile << "#include <vector>" << std::endl;
+									StubFile << std::endl;
+
+									if (Namespace != "") {
+										StubFile << std::endl;
+										StubFile << "namespace " << NamespaceToCppNamespace()
+														 << std::endl << "{" << std::endl;
+										IndentLevel++;
+									}
+									AMethod->PrintCppStubs(StubFile);
+
+									if (Namespace != "") {
+										IndentLevel--;
+										StubFile << "} // End namespace "
+														 << NamespaceToCppNamespace()<< std::endl;
+									}
+									StubFile.close();
+								}
+							}
+						}
+					}
 				}
 			}
 

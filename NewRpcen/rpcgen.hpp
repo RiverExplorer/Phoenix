@@ -1,6 +1,6 @@
 /**
  * Project: Phoenix
- * Time-stamp: <2025-03-12 16:12:08 doug>
+ * Time-stamp: <2025-03-13 12:48:23 doug>
  * 
  * @file rpcgen.hpp
  * @author Douglas Mark Royer
@@ -191,6 +191,7 @@ namespace RiverExplorer::rpcgen
 		virtual void PrintServer(ofstream & Stream) = 0;
 		
 		bool IsPointer = false;
+		bool IsReference = false;
 		bool IsFixedArray = false;
 		bool IsVariableArray = false;
 		std::string ArraySize;
@@ -232,12 +233,16 @@ namespace RiverExplorer::rpcgen
 		InPassThrough,
 		InEnum,
 		InEnumBody,
-		InConstant
+		InConstant,
+		InMethod
 	};
 
 	extern State CurrentState;
 	extern bool InArray;
 
+	/**
+	 * @class Constant rpcgen.hpp <RiverExplorer/rpcgen/rpcgen.hpp>
+	 */
 	class Constant
 		: public Item
 	{
@@ -254,6 +259,9 @@ namespace RiverExplorer::rpcgen
 	};
 	extern Constant * CurrentConstant;
 
+	/**
+	 * @class EnumValue rpcgen.hpp <RiverExplorer/rpcgen/rpcgen.hpp>
+	 */
 	class EnumValue
 		: public Item
 	{
@@ -269,6 +277,9 @@ namespace RiverExplorer::rpcgen
 		virtual void PrintServer(ofstream & Stream);
 	};
 
+	/**
+	 * @class Enum rpcgen.hpp <RiverExplorer/rpcgen/rpcgen.hpp>
+	 */
 	class Enum
 		: public Item
 	{
@@ -286,6 +297,9 @@ namespace RiverExplorer::rpcgen
 		virtual void PrintServer(ofstream & Stream);
 	};
 
+	/**
+	 * @class TypeDef rpcgen.hpp <RiverExplorer/rpcgen/rpcgen.hpp>
+	 */
 	class TypeDef
 		: public Item
 	{
@@ -301,6 +315,9 @@ namespace RiverExplorer::rpcgen
 		virtual void PrintServer(ofstream & Stream);
 	};
 
+	/**
+	 * @class StructMember rpcgen.hpp <RiverExplorer/rpcgen/rpcgen.hpp>
+	 */
 	class StructMember
 		: public Item
 	{
@@ -317,6 +334,9 @@ namespace RiverExplorer::rpcgen
 	};
 	extern StructMember * CurrentStructMember;
 
+	/**
+	 * @class Struct rpcgen.hpp <RiverExplorer/rpcgen/rpcgen.hpp>
+	 */
 	class Struct
 		: public Item
 	{
@@ -335,6 +355,9 @@ namespace RiverExplorer::rpcgen
 	};
 	extern Struct * CurrentStruct;
 
+	/**
+	 * @class UnionCase rpcgen.hpp <RiverExplorer/rpcgen/rpcgen.hpp>
+	 */
 	class UnionCase
 		: public Item
 	{
@@ -353,6 +376,9 @@ namespace RiverExplorer::rpcgen
 		virtual void PrintServer(ofstream & Stream);
 	};
 
+	/**
+	 * @class Union rpcgen.hpp <RiverExplorer/rpcgen/rpcgen.hpp>
+	 */
 	class Union
 		: public Item
 	{
@@ -376,6 +402,9 @@ namespace RiverExplorer::rpcgen
 	};
 	extern Union * CurrentUnion;
 
+	/**
+	 * @class Procedure rpcgen.hpp <RiverExplorer/rpcgen/rpcgen.hpp>
+	 */
 	class Procedure
 		: public Item
 	{
@@ -395,6 +424,9 @@ namespace RiverExplorer::rpcgen
 		virtual void PrintServer(ofstream & Stream);
 	};
 
+	/**
+	 * @class Version rpcgen.hpp <RiverExplorer/rpcgen/rpcgen.hpp>
+	 */
 	class Version
 		: public Item
 	{
@@ -413,6 +445,9 @@ namespace RiverExplorer::rpcgen
 		virtual void PrintServer(ofstream & Stream);
 	};
 
+	/**
+	 * @class Program rpcgen.hpp <RiverExplorer/rpcgen/rpcgen.hpp>
+	 */
 	class Program
 		: public Item
 	{
@@ -436,9 +471,14 @@ namespace RiverExplorer::rpcgen
 		virtual void PrintServer(ofstream & Stream);
 	};
 
+	/**
+	 * @class Comment rpcgen.hpp <RiverExplorer/rpcgen/rpcgen.hpp>
+	 */
 	class Comment
 		: public Item
 	{
+	public:
+		
 		virtual ~Comment();
 		
 		virtual void PrintCppHeader(ofstream & Stream);
@@ -449,9 +489,14 @@ namespace RiverExplorer::rpcgen
 		virtual void PrintServer(ofstream & Stream);
 	};
 
+	/**
+	 * @class PassThrough rpcgen.hpp <RiverExplorer/rpcgen/rpcgen.hpp>
+	 */
 	class PassThrough
 		: public Item
 	{
+	public:
+		
 		virtual ~PassThrough();
 
 		virtual void PrintCppHeader(ofstream & Stream);
@@ -461,11 +506,42 @@ namespace RiverExplorer::rpcgen
 		virtual void PrintAbnf(ofstream & Stream);
 		virtual void PrintServer(ofstream & Stream);
 	};
+
+	/**
+	 * @class Method rpcgen.hpp <RiverExplorer/rpcgen/rpcgen.hpp>
+	 * A 'Method' is of the form:
+	 *
+	 * returnType MethodName(Parameter1, ...);
+	 */
+	class Method
+		: public Item
+	{
+	public:
+
+		Method(Struct & Parent);
+		virtual ~Method();
+
+		std::vector<std::string> Parameters;
+
+		virtual void PrintCppHeader(ofstream & Stream);
+		virtual void PrintCppXDR(ofstream & Stream);
+		virtual void PrintCppStubs(ofstream & Stream);
+		virtual void PrintXSD(ofstream & Stream);
+		virtual void PrintAbnf(ofstream & Stream);
+		virtual void PrintServer(ofstream & Stream);
+
+		Struct & ParentStruct;
+	};
 	
+	/**
+	 * @class MyXdrListener rpcgen.hpp <RiverExplorer/rpcgen/rpcgen.hpp>
+	 * A support class for the antlr4 generated code.
+	 */
 	class MyXdrListener
 		: public xdrListener
 	{
-
+	public:
+		
 		void ProcessNode(bool Enter,
 										 std::string From,
 										 xdrParser::DeclarationContext* Ctx);
@@ -612,6 +688,18 @@ namespace RiverExplorer::rpcgen
 
 		void ProcessNode(bool Enter,
 										 std::string From,
+										 xdrParser::MethodContext* Ctx);
+		
+		void ProcessNode(bool Enter,
+										 std::string From,
+										 xdrParser::ProcReturnContext* Ctx);
+		
+		void ProcessNode(bool Enter,
+										 std::string From,
+										 xdrParser::ProcFirstArgContext* Ctx);
+		
+		void ProcessNode(bool Enter,
+										 std::string From,
 										 tree::TerminalNode* Ctx);
 		
 		void ProcessNode(bool Enter,
@@ -708,6 +796,15 @@ namespace RiverExplorer::rpcgen
 
 		virtual void enterOpaqueVariablePtr(xdrParser::OpaqueVariablePtrContext * Ctx);
 		virtual void exitOpaqueVariablePtr(xdrParser::OpaqueVariablePtrContext * Ctx);
+
+		virtual void enterMethod(xdrParser::MethodContext * Ctx);
+		virtual void exitMethod(xdrParser::MethodContext * Ctx);
+
+		virtual void enterProcReturn(xdrParser::ProcReturnContext * Ctx);
+		virtual void exitProcReturn(xdrParser::ProcReturnContext * Ctx);
+
+		virtual void enterProcFirstArg(xdrParser::ProcFirstArgContext * Ctx);
+		virtual void exitProcFirstArg(xdrParser::ProcFirstArgContext * Ctx);
 
 		virtual void enterVoid(xdrParser::VoidContext * Ctx);
 		virtual void exitVoid(xdrParser::VoidContext * Ctx);

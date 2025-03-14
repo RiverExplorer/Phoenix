@@ -83,6 +83,7 @@ typeSpecifier
     | 'double'
     | 'bool'
     | 'bool_t'
+		| 'void'
     | enumTypeSpec
     | structTypeSpec
     | unionTypeSpec
@@ -102,7 +103,7 @@ structTypeSpec
     ;
 
 structBody
-    : ((declaration ';') | comment+) ((declaration ';') | comment+)*
+    : ((declaration ';') | comment+ | method+) ((declaration ';') | comment+ | method+)*
     ;
 
 unionTypeSpec
@@ -164,7 +165,20 @@ CommentMultiLine : '/*' .*? '*/' ;
 
 passThrough : PASS
 					 ;
-					 
+
+method: procReturn IDENTIFIER '(' procFirstArg (',' typeSpecifier)* ')' ';'
+			;
+
+procReturn
+			: 'void'
+			| typeSpecifier
+			;
+
+procFirstArg
+			: 'void' ('*' | '&')* IDENTIFIER*
+			| typeSpecifier ('*' | '&')* IDENTIFIER*
+			;
+			
 // lexer rules
 
 //COMMENT
