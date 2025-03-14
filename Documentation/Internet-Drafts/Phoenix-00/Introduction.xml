@@ -2,7 +2,10 @@
 
 <section xmlns:xi="http://www.w3.org/2001/XInclude">
   <name>Introduction</name>
-	
+	<t>NOTICE: This is WORK IN PROGRESS</t>
+	<artset>
+		<artwork align="center" type="svg" src="UnderConstruction.svg"/>
+	</artset>
 	<t>
 		On the Internet, just about everything is a MIME object and there are
 		many ways to transport MIME.

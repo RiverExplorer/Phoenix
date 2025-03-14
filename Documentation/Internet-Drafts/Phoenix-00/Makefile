@@ -165,6 +165,11 @@ REMOVE_SVG_WARNING = 2> >(grep -v 'Warning: Found SVG with width')
 
 CPP = $(TOP)/MyTools/SimpleCpp
 
+XML2RFC_FLAGS = --v3 \
+	--id-is-work-in-progress \
+	--allow-local-file-access \
+	--utf8
+
 all : $(TARGET.html) $(TARGET.pdf) $(TARGET.txt)
 
 txt : $(TARGET.txt)
@@ -174,13 +179,13 @@ pdf : $(TARGET.pdf)
 html : $(TARGET.html)
 
 $(TARGET.txt) : ALL-ABNF.xml ALL-XDR.xml $(ARTWORK.svg) $(ARTWORK.txt) $(TOPDOC.xml)  $(REFERENCES.xml) $(INCLUDES)
-	xml2rfc -o $@ $(TOPDOC.xml) $(REMOVE_SVG_WARNING)
+	xml2rfc $(XML2RFC_FLAGS) -o $@ $(TOPDOC.xml) $(REMOVE_SVG_WARNING)
 
 $(TARGET.pdf) : ALL-ABNF.xml ALL-XDR.xml $(ARTWORK.svg) $(TOPDOC.xml) $(REFERENCES.xml) $(INCLUDES)
-	xml2rfc --pdf -o $@ $(TOPDOC.xml) $(REMOVE_SVG_WARNING)
+	xml2rfc $(XML2RFC_FLAGS) --pdf -o $@ $(TOPDOC.xml) $(REMOVE_SVG_WARNING)
 
 $(TARGET.html): ALL-ABNF.xml ALL-XDR.xml $(ARTWORK.svg) $(TOPDOC.xml) $(REFERENCES.xml) $(INCLUDES)
-	xml2rfc --html -o $@ $(TOPDOC.xml) $(REMOVE_SVG_WARNING)
+	xml2rfc $(XML2RFC_FLAGS) --html -o $@ $(TOPDOC.xml) $(REMOVE_SVG_WARNING)
 
 $(TOPDOC.xml) : draft-00.xml ALL-ABNF.xml ALL-XDR.xml $(SOURCES.xml) $(REFERENCES.xml) $(INCLUDES)
 	xmllint --xinclude --format $< > $@
