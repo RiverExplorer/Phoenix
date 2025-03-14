@@ -1,6 +1,6 @@
 #
 # Project: Phoenix
-# Time-stamp: <2025-03-13 10:20:19 doug>
+# Time-stamp: <2025-03-14 11:48:35 doug>
 #
 # @file FILL-IN
 # @author Douglas Mark Royer
@@ -70,27 +70,28 @@ LINUX_INSTALL_DIR.Release	= $(LINUX_INSTALL_DIR)/Release
 LINUX_INSTALL_DIR.Debug		= $(LINUX_INSTALL_DIR)/Debug
 LINUX_INSTALL_DIR.Tcov		= $(LINUX_INSTALL_DIR)/Tcov
 
-LINUX_INCLUDE_DIR.Release	= $(LINUX_INSTALL_DIR.Release)/include
-LINUX_INCLUDE_DIR.Debug		= $(LINUX_INSTALL_DIR.Release)/include
-LINUX_INCLUDE_DIR.Tcov		= $(LINUX_INSTALL_DIR.Release)/include
+LINUX_INCLUDE_DIR.Release	= $(LINUX_INSTALL_DIR.Release)/include/$(VENDER)
+LINUX_INCLUDE_DIR.Debug		= $(LINUX_INSTALL_DIR.Debug)/include/$(VENDER)
+LINUX_INCLUDE_DIR.Tcov		= $(LINUX_INSTALL_DIR.Tcov)/include/$(VENDER)
 
 W64_INSTALL_DIR						= /usr/local/Phoenix/W64
 W64_INSTALL_DIR.Release		= $(W64_INSTALL_DIR)/Release
 W64_INSTALL_DIR.Debug			= $(W64_INSTALL_DIR)/Debug
 W64_INSTALL_DIR.Tcov			= $(W64_INSTALL_DIR)Tcov
 
-W64_INCLUDE_DIR.Release		= $(W64_INSTALL_DIR.Release)/include
-W64_INCLUDE_DIR.Debug			= $(W64_INSTALL_DIR.Release)/include
-W64_INCLUDE_DIR.Tcov			= $(W64_INSTALL_DIR.Release)/include
+W64_INCLUDE_DIR.Release		= $(W64_INSTALL_DIR.Release)/include/$(VENDER)
+W64_INCLUDE_DIR.Debug			= $(W64_INSTALL_DIR.Debug)/include/$(VENDER)
+W64_INCLUDE_DIR.Tcov			= $(W64_INSTALL_DIR.Tcov)/include/$(VENDER)
 
-ANDROID_INSTALL_DIR					= /usr/local/Phoenix/Linux
+ANDROID_INSTALL_DIR					= /usr/local/Phoenix/Android
 ANDROID_INSTALL_DIR.Release	= $(ANDROID_INSTALL_DIR)/Release
 ANDROID_INSTALL_DIR.Debug		= $(ANDROID_INSTALL_DIR)/Debug
 ANDROID_INSTALL_DIR.Tcov		= $(ANDROID_INSTALL_DIR)/Tcov
 
-ANDROID_INCLUDE_DIR.Release	= $(ANDROID_INSTALL_DIR.Release)/include
-ANDROID_INCLUDE_DIR.Debug		= $(ANDROID_INSTALL_DIR.Release)/include
-ANDROID_INCLUDE_DIR.Tcov		= $(ANDROID_INSTALL_DIR.Release)/include
+ANDROID_INCLUDE_DIR.Release	= $(ANDROID_INSTALL_DIR.Release)/include/$(VENDER)
+ANDROID_INCLUDE_DIR.Debug		= $(ANDROID_INSTALL_DIR.Debug)/include/$(VENDER)
+
+ANDROID_INCLUDE_DIR.Tcov		= $(ANDROID_INSTALL_DIR.Tcov)/include/$(VENDER)
 
 # Where temporary files will be placed inside the build directory.
 BUILD_DIR	= BuildTemp
