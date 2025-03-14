@@ -4,7 +4,7 @@
  * @file Server.cpp
  * @copyright (C) 2025 by Douglas Mark Royer (A.K.A. RiverExplorer)
  * @author Douglas Mark Royer
- * Time-stamp: "2025-03-04 16:36:51 doug"
+ * Time-stamp: "2025-03-06 15:42:38 doug"
  * @date 24-FEB-20205
  *
  * licensed under CC BY 4.0.
@@ -737,6 +737,9 @@ namespace RiverExplorer::Phoenix
 	{
 		ThreadName::NameOurThread("Server._Work");
 
+		std::string OurHostName
+			= Configuration::ServerGetConfig(Configuration::OurHostName_s);
+		
 		char On = 1;
 
 		short int PollFlags;
@@ -1160,7 +1163,7 @@ namespace RiverExplorer::Phoenix
 								// Get SSL running on the new port.
 								//
 								/**@todo GET correct cert or generate a new one */
-								Clients[NewFd]->OurConnection.Generate();
+								Clients[NewFd]->OurConnection.Generate(OurHostName.c_str());
 								Clients[NewFd]->OurConnection.Accept(NewFd, _LogFp);
 							}
 						}

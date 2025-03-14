@@ -1,6 +1,6 @@
 /**
  * Project: Phoenix
- * Time-stamp: <2025-03-04 12:58:05 doug>
+ * Time-stamp: <2025-03-07 00:29:53 doug>
  * 
  * @file TestServer.cpp
  * @author Douglas Mark Royer
@@ -231,8 +231,6 @@ main(int /*argc*/, char ** argv)
 	
 	fprintf(stdout, "TestServer Starting\n");
 	
-	Phoenix::Server	TheServer(ProgramName);
-
 	// Register the server to send out CAPABILITY_PRE on new connections.
 	//
 	Event::Register(Event::NewClientConnection_Event,
@@ -258,6 +256,7 @@ main(int /*argc*/, char ** argv)
 	Event::Register(Event::Bye_Event,
 									ClientSaysBye);
 	
+	Phoenix::Server	TheServer(ProgramName);
 	std::thread * ServerThread = TheServer.Start(TestPort, TestDevice);
 
 	ThreadName::NameTheThread(ServerThread->get_id(), "Server()");

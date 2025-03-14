@@ -109,7 +109,7 @@ namespace RiverExplorer::Phoenix
 	void
 	IO::_Cleanup()
 	{
-
+		return;
 	}
 	
 	bool
@@ -290,6 +290,11 @@ namespace RiverExplorer::Phoenix
 			Fd = -1;
 		}
 
+		if (_HostOrIp != nullptr) {
+			delete _HostOrIp;
+			_HostOrIp = nullptr;
+		}
+
 		Authenticated = false;
 
 		return;
@@ -314,6 +319,7 @@ namespace RiverExplorer::Phoenix
 		Fd = HostName::ConnectTcp(HostOrIp, Port, Address);
 
 		if (Fd > -1) {
+			_HostOrIp = strdup(HostOrIp.c_str());
 			fcntl(Fd, F_SETFL, SOCK_NONBLOCK);
 			SSL_set_fd(Ssl, Fd);
 			
@@ -401,6 +407,12 @@ namespace RiverExplorer::Phoenix
 		return(Results);
 	}
 
+	const char *
+	IO::ActiveConnection::HostName() const
+	{
+		return(_HostOrIp);
+	}
+	
 	int
 	IO::_ClientRead(ActiveConnection * Con, uint8_t *& Buffer)
 	{

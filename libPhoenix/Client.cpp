@@ -1,6 +1,6 @@
 /**
  * Project: Phoenix
- * Time-stamp: <2025-03-03 14:06:23 doug>
+ * Time-stamp: <2025-03-06 15:29:08 doug>
  *
  * @file Client.cpp
  * @copyright (C) 2025 by Douglas Mark Royer (A.K.A. RiverExplorer)
@@ -18,6 +18,7 @@
 #include "Commands.hpp"
 #include "HostName.hpp"
 #include "MD5.hpp"
+#include "Log.hpp"
 
 #ifndef W64
 #include <sys/socket.h>
@@ -153,6 +154,7 @@ namespace RiverExplorer::Phoenix
 	{
 		/**@todo ~Cleanup */
 
+		
 		return;
 	}
 
@@ -220,5 +222,168 @@ namespace RiverExplorer::Phoenix
 		return(_ClientProgramName);
 	}
 	
-}
+	static void
+	LogSslError()
+	{
+		char Buf[256];
 
+		ERR_error_string(ERR_get_error(), Buf);
+		Log::PrintError("Cert.cpp:%s, Buf");
+
+		return;
+	}
+
+	bool
+	Client::StartTls(Connection * Server)
+	{
+		static bool Initialized = false;
+
+		bool Results = false;
+		
+		if (Server != nullptr) {
+			if (Server->Io != nullptr) {
+				if (Server->Io->Fd > -1) {
+			
+					if (!Initialized) {
+						SSL_library_init();
+						OpenSSL_add_all_algorithms();
+						SSL_load_error_strings();
+					}
+
+					const SSL_METHOD * Method = TLS_client_method();
+
+					Server->Io->Ctx = SSL_CTX_new(Method);
+
+					if (Server->Io->Ctx == nullptr) {
+						Log::PrintError("Client.cpp:StartTls():"
+														"Count not create new method.");
+						LogSslError();
+
+					} else {
+
+						int Res = SSL_CTX_set_default_verify_paths(Server->Io->Ctx);
+
+						if (Res != 1) {
+							Log::PrintError("Client.cpp:StartTls():"
+															"Could not set default verify paths.");
+							LogSslError();
+							SSL_CTX_free(Server->Io->Ctx);
+							Server->Io->Ctx = nullptr;
+					
+						} else {
+							SSL_CTX_set_verify(Server->Io->Ctx,
+																 SSL_VERIFY_PEER,
+																 _ValidateCert);
+
+							Server->Io->Ssl = SSL_new(Server->Io->Ctx);
+
+							if (Server->Io->Ssl == nullptr) {
+								Log::PrintError("Client.cpp:StartTls():"
+																"Cound not create SSL object.");
+								LogSslError();
+								SSL_free(Server->Io->Ssl);
+								Server->Io->Ssl = nullptr;
+								SSL_CTX_free(Server->Io->Ctx);
+								Server->Io->Ctx = nullptr;
+								
+							} else {
+								const char * Host = Server->Io->HostName();
+
+								if (Host == nullptr) {
+									Log::PrintError("Client.cpp:StartTls(), no hostname set.");
+								} else {
+									Res = SSL_set_tlsext_host_name(Server->Io->Ssl,
+																								 Host);
+
+									if (Res != 1) {
+										Log::PrintError("Client.cpp:StartTls():"
+																		"Could not set target hostname");
+										LogSslError();
+										SSL_free(Server->Io->Ssl);
+										Server->Io->Ssl = nullptr;
+										SSL_CTX_free(Server->Io->Ctx);
+										Server->Io->Ctx = nullptr;
+
+									} else {
+
+										Res = SSL_connect(Server->Io->Ssl);
+										if (Res != 1) {
+											Log::PrintError("Client.cpp:StartTls():"
+																			"Could not connect() to SSL.");
+											LogSslError();
+											SSL_free(Server->Io->Ssl);
+											Server->Io->Ssl = nullptr;
+											SSL_CTX_free(Server->Io->Ctx);
+											Server->Io->Ctx = nullptr;
+
+										} else {
+											long VerifyResult = SSL_get_verify_result(Server->Io->Ssl);
+
+											if (VerifyResult != X509_V_OK) {
+												Log::PrintError("Client.cpp:StartTls():"
+																				"Could not verify SSL result.");
+												LogSslError();
+												SSL_free(Server->Io->Ssl);
+												Server->Io->Ssl = nullptr;
+												SSL_CTX_free(Server->Io->Ctx);
+												Server->Io->Ctx = nullptr;
+												
+											} else {
+												X509 * Cert = SSL_get_peer_certificate(Server->Io->Ssl);
+
+												if (Cert == nullptr) {
+													SSL_free(Server->Io->Ssl);
+													Server->Io->Ssl = nullptr;
+													SSL_CTX_free(Server->Io->Ctx);
+													Server->Io->Ctx = nullptr;
+													Log::PrintError("Client.cpp::StartTls:No peer certificate returned.");
+												} else {
+													Res = X509_check_host(Cert,
+																								Host,
+																								strlen(Host),
+																								0,
+																								nullptr);
+
+													if (Res != 1) {
+														Log::PrintError("Client.cpp::StartTls:"
+																						"Remote cert does not match"
+																						" our target host name: %s",
+																						Host);
+														SSL_free(Server->Io->Ssl);
+														Server->Io->Ssl = nullptr;
+														SSL_CTX_free(Server->Io->Ctx);
+														Server->Io->Ctx = nullptr;
+													} else {
+
+														Results = true;
+													}
+												}
+											}
+										}
+									}
+								}
+							}
+						}
+					}
+				}
+			}
+		}
+		return(Results);
+	}
+
+	int
+	Client::_ValidateCert(int PreVerifyOkay, X509_STORE_CTX * Ctx)
+	{
+		if (!PreVerifyOkay) {
+			char Buf[256];
+			
+			X509 * Cert = X509_STORE_CTX_get_current_cert(Ctx);
+			X509_NAME_oneline(X509_get_subject_name(Cert), Buf, sizeof(Buf));
+
+			/**@todo Compare expected with Buf.  */
+		}
+
+		return(PreVerifyOkay);
+	}
+	
+}

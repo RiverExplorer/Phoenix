@@ -1,6 +1,6 @@
 /**
  * Project: Phoenix
- * Time-stamp: <2025-03-04 16:08:46 doug>
+ * Time-stamp: <2025-03-06 15:44:39 doug>
  * 
  * @file Certs.hpp
  * @author Douglas Mark Royer
@@ -20,6 +20,9 @@
 #include <openssl/ssl.h>
 #include <openssl/bio.h>
 #include <openssl/err.h>
+
+#include <map>
+#include <string>
 
 namespace RiverExplorer::Phoenix
 {
@@ -44,8 +47,33 @@ namespace RiverExplorer::Phoenix
 
 		/**
 		 * Generate a new key pair.
+		 *
+		 * @param TargetHost The target hostname for the TLS connection.
+		 *
+		 * @return true on no error.
 		 */
-		void				Generate();
+		bool				Generate(const char * TargetHost);
+
+		/**
+		 * Don't generate, use provided certs.
+		 *
+		 * @param TargetHost The host to associate with
+		 * the key and certificate.
+		 *
+		 * @param PrivateFile The private PEM file (key).
+		 *
+		 * @param PublicFile The public PEM file (cert).
+		 *
+		 * @param ChainPath The path to the chain.
+		 * When nullptr, use the system default.
+		 *
+		 * @return true on no error.
+		 */
+		bool				UseCerts(const char * TargetHost,
+												 const char * PrivateFile,
+												 const char * PublicFile,
+												 const char * ChainPath = nullptr);
+		
 
 		/**
 		 * Get the public certificate.
@@ -101,6 +129,34 @@ namespace RiverExplorer::Phoenix
 	private:
 
 		/**
+		 * When an incomming TLS connection happens,
+		 * this callback will be called by openssl
+		 * to indicated the target host name the client
+		 * attempted to connect to.
+		 *
+		 * @param Ssl The SSL connection.
+		 *
+		 * @param Ad
+		 *
+		 * @param Arg
+		 */
+		int _ClientWantsHostCallback(SSL * Ssl, int * Ad, void * Arg);
+		
+		/**
+		 * Print an SSL error. openssl seems to
+		 * keep state, odd and I am not sure what
+		 * would happen in multi-threaded server
+		 * with more than one thread getting an TLS error
+		 *
+		 * And as there is no stack trace, methods detecting
+		 * an error should log their specific error first
+		 * then call this to get and log the TLS error.
+		 * Then it will be easier to track errors by looking
+		 * at the logs.
+		 */
+		static void _LogSslError();
+		
+		/**
 		 * Password callback needed by openssl.
 		 *
 		 * @param Buf Where to place the password to use.
@@ -121,28 +177,69 @@ namespace RiverExplorer::Phoenix
 
 		/**
 		 * Generate the private part of the cert.
+		 *
+		 * @param Target The target TLS host name.
+		 *
+		 * @return The iterator of the new private key
+		 * in _PrivateKeys;
 		 */
-		void				_GeneratePrivateKey();
+		std::map<std::string,EVP_PKEY*>::iterator
+		_GeneratePrivateKey(const char * TargetHost);
 
 		/**
 		 * Generate the public part of the cert.
+		 *
+		 * @param PIt the itererator to the private key entry
+		 * in _PrivateKeys;
+		 *
+		 * @return
+		 * The iterator of the new certifiate in _PublicKeys;
 		 */
-		void				_GenerateCertificate();
+		std::map<std::string,X509*>::iterator
+		_GenerateCertificate(std::map<std::string,EVP_PKEY*>::iterator PIt);
+
+		/**
+		 * The path to the cert chain file to use.
+		 * If nullptr, then use the system default.
+		 */
+		const char * _FullRootCertPath;
+
+		/**
+		 *  The private certs.
+		 *
+		 * <Hostname,EVP_PKEY*>
+		 */
+		static std::map<std::string,EVP_PKEY*> _PrivateKeys;
 		
 		/**
-		 *  The private cert.
+		 *  The public certs.
+		 *
+		 * <Hostname,X509*>
 		 */
-		EVP_PKEY	*	_Private;
+		static std::map<std::string,X509*> _PublicKeys;
 
 		/**
-		 *  The public cert.
+		 * The context to use for this connection.
 		 */
-		X509			* _Public;
+		SSL_CTX		*	_CtxToUse;
 
 		/*
-		 * The context used to tie them together.
+		 * The context used to tie them together in the inital
+		 * connection (post SNI).
+		 *
+		 * @note
+		 * During startup, the map may be filled with a list
+		 * of supported host names. And the CTX portion will
+		 * be nullptr. After the first client connects
+		 * requesting the host, will that target host CTX
+		 * be created, and only if an empty entry already
+		 * exsists for that hostname.
+		 *
+		 * Target Host Entries can be added at any time.
+		 *
+		 * <hostname, CTX>
 		 */
-		SSL_CTX		*	_Ctx;
+		static std::map<std::string,SSL_CTX*> _SniCtx;
 
 		/**
 		 *  The SSL/TLS connection.

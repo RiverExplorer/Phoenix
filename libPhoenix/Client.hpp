@@ -166,6 +166,18 @@ namespace RiverExplorer::Phoenix
 		 * into the constructor.
 		 */
 		static const std::string ProgramName();
+
+		/**
+		 * Start the TLS process on the open connection.
+		 *
+		 * @param Server The Connection to the server.
+		 * The TCP connection must have alreay been made.
+ 		 *
+		 * @return true if connected and verified.
+		 * Returns false when there is no TCP connection.
+		 * Returns false when certificate verification failed.
+		 */
+		static bool StartTls(Connection * Server);
 		
 	private:
 
@@ -202,6 +214,16 @@ namespace RiverExplorer::Phoenix
 		 * This is used in log and configuration file names.
 		 */
 		static const char * _ClientProgramName;
+		
+		/**
+		 * Verify the certificate.
+		 *
+		 * @param PreVerifyOkay
+		 *
+		 * @param Ctx
+		 */
+		static int	_ValidateCert(int PreVerifyOkay, X509_STORE_CTX * Ctx);
+		
 	};
 }
 

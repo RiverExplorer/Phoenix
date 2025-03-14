@@ -1,6 +1,6 @@
 /**
  * Project: Phoenix
- * Time-stamp: <2025-03-04 16:18:29 doug>
+ * Time-stamp: <2025-03-07 09:26:36 doug>
  *
  * @file Configuration.cpp
  * @copyright (C) 2025 by Douglas Mark Royer (A.K.A. RiverExplorer)
@@ -127,262 +127,147 @@ namespace RiverExplorer::Phoenix
 	 */
 	static std::string ServerHtmlPath;
 
-	/**
-	 * Allow IPv4 addresses
-	 */
-	static const char * const AllowIpV4_s = "AllowIpV4";
+	// A
+	const char * const Configuration::AllowIpV4_s = "AllowIpV4";
+	const char * const Configuration::AllowIpV6_s = "AllowIpV6";
+	const char * const Configuration::Auth_s = "Auth";
+	const char * const Configuration::Account_s = "Account";
+	const char * const Configuration::Anonymous_s = "Anonymous";
+	const char * const Configuration::AuthCertUser_s = "CertUser";
+	const char * const Configuration::AuthCertTls_s = "CertTls";
 
-	/**
-	 * Allow IPv6 addresses
-	 */
-	static const char * const AllowIpV6_s = "AllowIpV6";
+	// B
+	//
 
-	/**
-	 * The cert to use for a specific Server.
-	 * An empty value means to use the default OpenSSL certificates.
-	 */
-	static const char * const Default_s = "Default";
-	static const char * const DefaultPublic_s = "DefaultPublic";
-	static const char * const DefaultPrivate_s = "DefaultPrivate";
-	
-	/**
-	 * All configuration information is in an XML "Configure" node.
-	 */
-	static const char * const ConfigNode_s = "Configure";
+	// C
+	//
+	const char * const Configuration::ConfigNode_s = "Configure";
+	const char * const Configuration::ClientMinCheckServerKey_s = "MinServerCheck";
+	const char * const Configuration::ClientCheckServerKey_s = "ServerCheck";
+	const char * const Configuration::ClientXmlNsConfig_s = "xmlns:C";
+	const char * const Configuration::ClientXmlNsConfigUrl_s = "http://RiverExplorer.US/Namespaces/XML/Phoenix/ClientConfiguration.xml/20250215";
 
-	/**
-	 * An empty value means use the default OpenSSL cert.
-	 * The format is
-	 * Certs: The DefaultCert is the default certificate set to use.
-	 */
-	static const char * const DefaultCertToUse_s = "DefaultCert";
+	// D
+	//
+	const char * const Configuration::DefaultCertToUse_s = "DefaultCert";
+	const char * const Configuration::Default_s = "Default";
+	const char * const Configuration::DefaultPublic_s = "DefaultPublic";
+	const char * const Configuration::DefaultPrivate_s = "DefaultPrivate";
+	const char * const Configuration::Detail_s = "Detail";
 
-	/**
-	 * Detailed information about the Key/Value pair
-	 * is stored in a XML "Detail" node.
-	 */
-	static const char * const Detail_s = "Detail";
+	// E
+	//
 
-	/**
-	 * The IP addresses for the server to listen on.
-	 */
-	static const char * const IpToListenOn_s = "IpToListenOn";
+	// F
+	//
+	const char * const Configuration::False_s = "false";
 
-	/**
-	 * The interface for the server to listen on.
-	 */
-	static const char * const InterfacesToListenOn_s = "InterfacesToListenOn";
+	// G
+	//
+	const char * const Configuration::GenerateHTML_s = "GenerateHTML";
 
-	/**
-	 * Auth: The authentication to use for a specific server
-	 */
-	static const char * const Auth_s = "Auth";
-	static const char * const Account_s = "Account";
-	static const char * const Anonymous_s = "Anonymous";
-	static const char * const MD5_s = "MD5";
-	static const char * const AuthCertUser_s = "CertUser";
-	static const char * const AuthCertTls_s = "CertTls";
-	static const char * const Password_s = "Password";
-	static const char * const Type_s = "Type";
-	static const char * const NoTls_s = "NoTls";
-	
-	/**
-	 * The Key value is stored in an XML Key node.
-	 */
-	static const char * const Key_s = "Key";
-	
-	/**
-	 * The 'LogDevice' XML node holds the value of where
-	 * to store log information.
-	 * -When it starts with a '/', it is a full path to the file.
-	 * -When it starts with 'syslog:', it goes to syslog.
-	 * -When it starts with 'sql:', it goes to a database.
-	 */
-	static const char * const LogDevice_s = "LogDevice";
+	// H
+	//
+	const char * const Configuration::Host_s = "Host";
+	const char * const Configuration::HostName_s = "HostName";
+	//const char * const Configuration::Hosts_s = "Hosts";
+	const char * const Configuration::HostOrIp_s = "HostOrIp";
+	const char * const Configuration::HTMLDirectory_s = "HTMLDirectory";
 
-	/**
-	 * The minimum time that can be set for the client to
-	 * check the sockets for incoming data from servers
-	 * on the client side is stored in the XML 'MinServerCheck' node.
-	 */
-	static const char * const ClientMinCheckServerKey_s = "MinServerCheck";
+	// I
+	//
+	const char * const Configuration::IpToListenOn_s = "IpToListenOn";
+	const char * const Configuration::InterfacesToListenOn_s = "InterfacesToListenOn";
 
-	/**
-	 * The currently configured time that can be set for the client to
-	 * check the sockets for incoming data from servers
-	 * on the client side
-	 * is stored in the XML 'ServerCheck' node.
-	 */
-	static const char * const ClientCheckServerKey_s = "ServerCheck";
+	// J
+	//
 
-	/**
-	 * The string 'false'.
-	 */
-	static const char * const False_s = "false";
-	
-	/**
-	 * Generate HTML file when configuration file updates.
-	 */
-	static const char * const GenerateHTML_s = "GenerateHTML";
-	static const char * const HTMLDirectory_s = "HTMLDirectory";
-	/**
-	 * The Key/Value, Summary, and detail are stored in an XML 'Name' node.
-	 */
-	static const char * const Name_s = "Name";
+	// K
+	//
+	const char * const Configuration::Key_s = "Key";
 
-	/**
-	 * The string 'Phoenix' needed in the code.
-	 */
-	static const char * const Phoenix_s = "Phoenix";
+	// L
+	//
+	const char * const Configuration::LogDevice_s = "LogDevice";
 
-	/**
-	 * The port the server to listen on.
-	 */
-	static const char * const PortToListenOn_s = "PortToListenOn";
+	// M
+	//
+	const char * const Configuration::MD5_s = "MD5";
 
-	/**
-	 * The string 'Private'.
-	 */
-	static const char * const Private_s = "Private";
-	
-	/**
-	 * The string 'Public'.
-	 */
-	static const char * const Public_s = "Public";
+	// N
+	//
+	const char * const Configuration::NoTls_s = "NoTls";
+	const char * const Configuration::Name_s = "Name";
 
-	/**
-	 * The string 'ReadOnly' needed in the code.
-	 */
-	static const char * const ReadOnly_s = "ReadOnly";
-	
-	/**
-	 * The string 'RiverExplorer' needed in the code.
-	 */
-	static const char * const RiverExplorer_s = "RiverExplorer";
+	// O
+	//
+	const char * const Configuration::OurHostName_s = "OurHostName";
+	const char * const Configuration::OurServerNames_s = "OurServerNames";
 
-	/**
-	 * The configuration key for a specific server.
-	 *
-	 * The configuration each known server contains
-	 * one or more of the following elements in any order:
-	 *
-	 * @verbatim
-	 *	<Server>
-	 *   <HostOrIp>host or ip</HostOrIp>
-	 *   <Port>Port number</Port>
-	 *   <Position>User view order</Position>
- 	 *	 <Auth Method="xxx"/>
-	 *   <Account>Login account</Account>
-	 *   <Password>encrypted password</Account>
-	 *   <PublicCert>Path to public cert</PublicCert>
-	 *   <PrivateCert>Path to private Key</PrivateCert>
-	 *  </Server>
-	 * @endverbatim
-	 */
-	static const char * const Server_s = "Server";
-	static const char * const ServerName_s = "ServerName";
-	static const char * const HostOrIp_s = "HostOrIp";
-	static const char * const Port_s = "Port";
-	static const char * const Position_s = "Position";
-	
-	/**
-	 * The short description of the Key/Value pair is stored
-	 * int the XML 'Summary' node.
-	 */
-	static const char * const Summary_s = "Summary";
+	// P
+	//
+	const char * const Configuration::Password_s = "Password";
+	const char * const Configuration::Phoenix_s = "Phoenix";
+	const char * const Configuration::PortToListenOn_s = "PortToListenOn";
+	const char * const Configuration::Private_s = "Private";
+	const char * const Configuration::Public_s = "Public";
+	const char * const Configuration::Port_s = "Port";
+	const char * const Configuration::Position_s = "Position";
 
-	/**
-	 * The string 'true'.
-	 */
-	static const char * const True_s = "true";
-	
-	/**
-	 * The XML files are stored in the UTF-8 charset.
-	 */
-	static const char * const Utf8_s = "utf-8";
+	// Q
+	//
 
-	/**
-	 * The value part of the Key/Value are stored in the 'Value' XML node.
-	 */
-	static const char * const Value_s = "Value";
+	// R
+	//
+	const char * const Configuration::ReadOnly_s = "ReadOnly";
+	const char * const Configuration::RiverExplorer_s = "RiverExplorer";
 
-	/**
-	 * The vendor unique ID is stored in the 'VendorID' XML node.
-	 * This is used identify compatible and non standard
-	 * usages of the Phoenix protocol.
-	 */
-	static const char * const VendorIDKey_s = "VendorID";
+	// S
+	//
+	const char * const Configuration::Servers_s = "Servers";
+	const char * const Configuration::Server_s = "Server";
+	const char * const Configuration::ServerName_s = "ServerName";
+	const char * const Configuration::Summary_s = "Summary";
+	const char * const Configuration::ServerXmlNsConfig_s = "xmlns:S";
+	const char * const Configuration::ServerXmlNsRE_s = "xmlns:RE";
+	const char * const Configuration::ServerXmlNsConfigUrl_s = "http://RiverExplorer.US/Namespaces/XML/Phoenix/ServerConfiguration.xml/20250215";
 
-	/**
-	 * The VendorID for this Phoenix implementation.
-	 * Vendors should update this.
-	 * It may include comma (,) separated values.
-	 */
-	static const char * const VendorIDValue_s = "RiverExplorer.Phoenix.20250215";
+	// T
+	//
+	const char * const Configuration::Type_s = "Type";
+	const char * const Configuration::True_s = "true";
 
-	/**
-	 * The prefix to the XML namespace tag.
-	 */
-	static const char * const XmlNs_s = "xmlns";
+	// U
+	//
+	const char * const Configuration::Utf8_s = "utf-8";
 
-	/**
-	 * The namespace used for the Client namespace.
-	 */
-	static const char * const ClientXmlNsConfig_s = "xmlns:C";
+	// V
+	//
+	const char * const Configuration::Value_s = "Value";
+	const char * const Configuration::VendorIDKey_s = "VendorID";
+	const char * const Configuration::VendorIDValue_s = "RiverExplorer.Phoenix.20250215";
+	const char * const Configuration::VersionKey_s = "Version";
+	const uint64_t		 Configuration::Version_i = 20250215L;
 
-	/**
-	 * The namespace used for the Server namespace.
-	 */
-	static const char * const ServerXmlNsConfig_s = "xmlns:S";
+	// W
+	//
 
-	/**
-	 * The namespace used for the RiverExplorer namespace.
-	 */
-	static const char * const XmlNsRE_s = "xmlns:RE";
+	// X
+	//
+	const char * const Configuration::XmlNs_s = "xmlns";
+	const char * const Configuration::XmlNsRE_s = "xmlns:RE";
+	const char * const Configuration::XmlNsREUrl_s = "http://RiverExplorer.US/Namespaces/XML";
 
-	/**
-	 * The namespace used for the Server namespace.
-	 */
-	static const char * const ServerXmlNsRE_s = "xmlns:RE";
+	// Y
+	//
 
-	/**
-	 * The namespace URL used for this implementations
-	 * RiverExplorer namespace.
-	 */
-	static const char * const XmlNsREUrl_s
-	= "http://RiverExplorer.US/Namespaces/XML";
-	
-	/**
-	 * The namespace URL used for this implementations
-	 * RiverExplorer client namespace.
-	 */
-	static const char * const ClientXmlNsConfigUrl_s
-	= "http://RiverExplorer.US/Namespaces/XML/Phoenix"
-		"/ClientConfiguration.xml/20250215";
-	
-	/**
-	 * The namespace URL used for this implementations
-	 * RiverExplorer server namespace.
-	 */
-	static const char * const ServerXmlNsConfigUrl_s
-	= "http://RiverExplorer.US/Namespaces/XML/Phoenix"
-		"/ServerConfiguration.xml/20250215";
-
-	/**
-	 * The version of the configuration information
-	 * is stored in the 'Version' XML node.
-	 */
-	static const char * const VersionKey_s = "Version";
-
-	/**
-	 * This implementations version.
-	 */
-	static const uint64_t			Version_i = 20250215L;
+	// Z
+	//
 
 	/**
 	 * The XML Document node for the client.
 	 */
-	static xmlDoc			* ClientDoc = nullptr;
+	xmlDoc			* ClientDoc = nullptr;
 
 	/**
 	 * The XML Document node for the server.
@@ -444,6 +329,11 @@ namespace RiverExplorer::Phoenix
 		 * This information is used to generate an HTML admin page.
 		 */
 		const char * Detail;
+
+		/**
+		 * Any child Entries.
+		 */
+		std::vector<Entry*> Children;
 	};
 
 	Configuration::Server *
@@ -577,34 +467,46 @@ namespace RiverExplorer::Phoenix
 	 */
 	static Entry  CommonEntries[] = {
 		{
-			GenerateHTML_s,
+			Configuration::DefaultPublic_s,
+			strdup(""),
+			"The default Public certificate to use.",
+			"The default certificate to use, or empty for the default"
+			" used by openssl."
+			" It is the full path to the default public PEM certificate."
+			" Ignored if DefaultPrivateCert is not set, and a matching cert.",
+			{}
+		},
+		{
+			Configuration::DefaultPrivate_s,
+			strdup(""),
+			"The default private certificate to use.",
+			"The default certificate to use, or empty for the default"
+			" used by openssl."
+			" It is the full path to the default private PEM certificate."
+			" Ignored if DefaultPrivateCert is not set, and a matching cert.",
+			{}
+		},
+		{
+			Configuration::GenerateHTML_s,
 			strdup("true"),
 			"Create HTML file mirroring the configuration file.",
 			"Each time the configuration file is updated,"
 			" create an HTML file in the same directory as the configuration"
 			" file, or where HTMLDirectory points. "
-			" The results can be viewed in a browser, showing the key/values."
+			" The results can be viewed in a browser, showing the key/values.",
+			{}
 		},
 		{
-			HTMLDirectory_s,
+			Configuration::HTMLDirectory_s,
 			strdup(""),
 			"Where to put the generated HTML.",
 			"The full path to where to place the HTML."
 			" Defaults to where the user configuration is"
-			" The tilde (~) character expands to the users home directory."
+			" The tilde (~) character expands to the users home directory.",
+			{}
 		},
 		{
-			VendorIDKey_s,
-			strdup(VendorIDValue_s),
-			"This is the vendor ID",
-			"The vendor ID allows the Phoenix protocol to be used"
-			" by applications that fall outside of any predefined usage."
-			" By comparing the client and server vendor ID, then applications"
-			" can determine if they have connected with a compatible non-standard"
-			" peer."
-		},
-		{
-			LogDevice_s,
+			Configuration::LogDevice_s,
 			strdup(""), /** Filled in at run time to file, when empty.*/
 			"Where this programs logs go.",
 			"The full path where the associated programs log file is placed."
@@ -612,35 +514,40 @@ namespace RiverExplorer::Phoenix
 			" logged to a database."
 			" SQL:Postgres:host:port:acct:pw,"
 			" SQL:MySql:host:port:acct:pw,"
-			" SQL:MsSQL:host:port:acct:pw"
+			" SQL:MsSQL:host:port:acct:pw",
+			{}
 		},
 		{
-			DefaultPublic_s,
-			strdup(""),
-			"The default Public certificate to use.",
-			"The default certificate to use, or empty for the default"
-			" used by openssl."
-			" It is the full path to the default public PEM certificate."
-			" Ignored if DefaultPrivateCert is not set, and a matching cert."
-		},
-		{
-			DefaultPrivate_s,
-			strdup(""),
-			"The default private certificate to use.",
-			"The default certificate to use, or empty for the default"
-			" used by openssl."
-			" It is the full path to the default private PEM certificate."
-			" Ignored if DefaultPrivateCert is not set, and a matching cert."
-		},
-		{
-			NoTls_s,
+			Configuration::NoTls_s,
 			strdup("true"),
 			"When enabled, do not use TLS. For internal servers only!",
 			"When this is enabled, the program will not use TLS over"
 			" the wire communications. NOTICE: Only use for debugging"
-			" and for intranet computer communications."
+			" and for intranet computer communications.",
+			{}
 		},
-		{nullptr, nullptr, nullptr, nullptr} /** End of list. */
+		{
+			Configuration::OurHostName_s,
+			strdup(""),
+			"The host name of the local computer. When not set, 'localhost'"
+			"will be used.",
+			"The host name of the local computer. When not set, 'localhost' will"
+			" be used. A value of localhost on a server will make it unavailable"
+			" to all clients, execpt the local computer.",
+			{}
+		},
+		{
+			Configuration::VendorIDKey_s,
+			strdup(Configuration::VendorIDValue_s),
+			"This is the vendor ID",
+			"The vendor ID allows the Phoenix protocol to be used"
+			" by applications that fall outside of any predefined usage."
+			" By comparing the client and server vendor ID, then applications"
+			" can determine if they have connected with a compatible non-standard"
+			" peer.",
+			{}
+		},
+		{nullptr, nullptr, nullptr, nullptr, {}} /** End of list. */
 	};
 
 	/**
@@ -649,22 +556,24 @@ namespace RiverExplorer::Phoenix
 	 */
 	static Entry  ClientEntries[] = {
 		{
-			ClientMinCheckServerKey_s, /** MinServerCheck */
+			Configuration::ClientMinCheckServerKey_s, /** MinServerCheck */
 			strdup("5"),
 			"Minimum Check Server Time",
 			"On a client, it checks for new data at intervals."
 			" This is the minimum time time that can be set."
 			" When 'ServerCheck' (ClientCheckServerKey_s) value is set to a"
-			" value less than this, it will be set to this value."
+			" value less than this, it will be set to this value.",
+			{}
 		},
 		{
-			ClientCheckServerKey_s,						/** ServerCheck */
+			Configuration::ClientCheckServerKey_s,						/** ServerCheck */
 			strdup("5"),
 			"Current Check Server Time",
 			"How often to check a server for incoming data."
-			" May not be less than 'MinServerCheck' value."
+			" May not be less than 'MinServerCheck' value.",
+			{}
 		},
-		{nullptr, nullptr, nullptr, nullptr} /** End of list. */
+		{nullptr, nullptr, nullptr, nullptr, {}} /** End of list. */
 	};
 
 	/**
@@ -673,39 +582,36 @@ namespace RiverExplorer::Phoenix
 	 */
 	static Entry  ServerEntries[] = {
 		{
-			IpToListenOn_s,
-			strdup("*"),
-			"Which IP address(s) to listen to.",
-			"Listen on these IP addresses. Can be a '*' for all."
-			"Or a comma separated list of IP addresses."
+			Configuration::AllowIpV4_s,
+			strdup("true"),
+			"When true, allow IPv4 connections.",
+			"When set to true allow IPv4 connections.",
+			{}
 		},
 		{
-			InterfacesToListenOn_s,
+			Configuration::AllowIpV6_s,
+			strdup("true"),
+			"When true, allow IPv6 connections.",
+			"When set to true allow IPv6 connections.",
+			{}
+		},
+		{
+			Configuration::InterfacesToListenOn_s,
 			strdup("*"),
 			"Which hardware interfaces to listen on.",
 			"Which hardware interfaces to listen on."
-			"'*' for all. Or a comma separated list of interface names."
+			"'*' for all. Or a comma separated list of interface names.",
+			{}
 		},
 		{
-			PortToListenOn_s,
-			strdup("6112"),
-			"Which Port Number to listen to.",
-			"Listen on these port numbers."
-			"One or a comma separated list of ports."
+			Configuration::OurServerNames_s,
+			strdup(""),
+			"A list of host names that this server acts on behalf of.",
+			"A list of host names that this server acts on behalf of."
+			"One entery per <host>xxx</host> element.",
+			{}
 		},
-		{
-			AllowIpV4_s,
-			strdup("true"),
-			"When true, allow IPv4 connections.",
-			"When set to true allow IPv4 connections."
-		},
-		{
-			AllowIpV6_s,
-			strdup("true"),
-			"When true, allow IPv6 connections.",
-			"When set to true allow IPv6 connections."
-		},
-		{nullptr, nullptr, nullptr, nullptr} /** End of list. */
+		{nullptr, nullptr, nullptr, nullptr, {}} /** End of list. */
 	};
 
 	/**
@@ -1038,7 +944,7 @@ namespace RiverExplorer::Phoenix
 		xmlDoc					* Xml = xmlParseFile(XmlFile.c_str());
 		xmlDoc					*	Html = xsltApplyStylesheet(Xslt, Xml, nullptr);
 
-		xmlSaveFormatFileEnc(HtmlFile.c_str(), Html, Utf8_s, 1);
+		xmlSaveFormatFileEnc(HtmlFile.c_str(), Html, Configuration::Utf8_s, 1);
 
 		xmlFreeDoc(Doc);
 		xmlCleanupParser();
@@ -1265,9 +1171,155 @@ namespace RiverExplorer::Phoenix
 																				(xmlChar*)ReadOnly_s,
 																				(xmlChar*)True_s);
 					}
-					xmlTextWriterWriteString(Writer, (xmlChar*)Ptr->Value);
-					xmlTextWriterEndElement(Writer);
+
+					// If KEY is OurServerNames...
+					//
+					if (strcmp(OurServerNames_s, Ptr->Key) == 0) {
+						if (Ptr->Children.size() == 0) {
+							
+							// No entries yet, make a default one.
+							//
+							Entry * NewEntry = nullptr;
+							Entry * NewChild = nullptr;
+
+							// LOCALHOST
+							//
+							NewEntry = new Entry();
+							NewEntry->Key = strdup(Host_s);
+							NewEntry->Value = nullptr;
+							
+							NewChild = new Entry();
+							NewChild->Key = strdup(HostName_s);
+							NewChild->Value = strdup("localhost");
+							Ptr->Children.push_back(NewEntry); // Host
+							NewEntry->Children.push_back(NewChild);
+							
+							xmlTextWriterStartElement(Writer,	(xmlChar*)Host_s);
+							
+							xmlTextWriterWriteElement(Writer,
+																			 (xmlChar*)HostName_s,
+																			 (xmlChar*)NewChild->Value);
+							// 127.0.0.1
+							//
+							NewChild = new Entry();
+							NewChild->Key = strdup(IpToListenOn_s);
+							NewChild->Value = strdup("127.0.0.1");
+							NewEntry->Children.push_back(NewChild);
+						
+							xmlTextWriterWriteElement(Writer,
+																				(xmlChar*)NewChild->Key,
+																				(xmlChar*)NewChild->Value);
+						
+							// 6112
+							//
+							NewChild = new Entry();
+							NewChild->Key = strdup(Port_s);
+							NewChild->Value = strdup("6112");
+							NewEntry->Children.push_back(NewChild);
+						
+							xmlTextWriterWriteElement(Writer,
+																				(xmlChar*)NewChild->Key,
+																				(xmlChar*)NewChild->Value);
+						
+							xmlTextWriterEndElement(Writer); // Host.
+
+							// LOCALHOST6
+							//
+							NewEntry = new Entry();
+							NewEntry->Key = strdup(Host_s);
+							NewEntry->Value = nullptr;
+							
+							NewChild = new Entry();
+							NewChild->Key = strdup(HostName_s);
+							NewChild->Value = strdup("localhost6");
+							Ptr->Children.push_back(NewEntry); // Host
+							NewEntry->Children.push_back(NewChild);
+							
+							xmlTextWriterStartElement(Writer,	(xmlChar*)Host_s);
+							
+							xmlTextWriterWriteElement(Writer,
+																			 (xmlChar*)HostName_s,
+																			 (xmlChar*)NewChild->Value);
+							// 127.0.0.1
+							//
+							NewChild = new Entry();
+							NewChild->Key = strdup(IpToListenOn_s);
+							NewChild->Value = strdup("::1");
+							NewEntry->Children.push_back(NewChild);
+						
+							xmlTextWriterWriteElement(Writer,
+																				(xmlChar*)NewChild->Key,
+																				(xmlChar*)NewChild->Value);
+						
+							// 6112
+							//
+							NewChild = new Entry();
+							NewChild->Key = strdup(Port_s);
+							NewChild->Value = strdup("6112");
+							NewEntry->Children.push_back(NewChild);
+						
+							xmlTextWriterWriteElement(Writer,
+																				(xmlChar*)NewChild->Key,
+																				(xmlChar*)NewChild->Value);
+						
+							xmlTextWriterEndElement(Writer); // Host.
+							
+						} else {
+							// Have entries ...
+							//
+							std::vector<Entry*>::iterator CIt;
+							std::vector<Entry*>::iterator DataIt;
+
+							// For each 'Host' in 'OurServerNames'.
+							//
+							for (CIt = Ptr->Children.begin()
+										 ; CIt != Ptr->Children.end()
+										 ; CIt++) {
+
+								Entry * Host = *CIt; // One Host entry.
+							
+								// It should have entries.
+								//
+								if (Host == nullptr) {
+									continue;
+								}
+
+								xmlTextWriterStartElement(Writer, (xmlChar*)Host_s);
+
+								Entry * Child;
+
+								// For each Child Entry in 'Host'
+								//
+								for (DataIt = Host->Children.begin()
+											 ; DataIt != Host->Children.end()
+											 ; DataIt++) {
+								
+									Child = *DataIt;
+
+									if (Child != nullptr) {
+										xmlTextWriterWriteElement(Writer,
+																							(xmlChar*)Child->Key,
+																							(xmlChar*)Child->Value);
+									}
+								}
+								xmlTextWriterEndElement(Writer); // "Host"
+							}
+						}
+					}						
+					if (Ptr->Value != nullptr && strlen(Ptr->Value) > 0) {
+						xmlTextWriterWriteString(Writer, (xmlChar*)Ptr->Value);
+					}
+					xmlTextWriterEndElement(Writer); // </value>
 				}
+				if (strcmp(OurHostName_s, Ptr->Key) == 0) {
+					if (strcmp("", Ptr->Value) == 0) {
+						Ptr->Value = strdup("localhost");
+
+					}
+					xmlTextWriterWriteElement(Writer, (xmlChar*)OurHostName_s,
+																		(xmlChar*)Ptr->Value);
+				}
+
 				if (Ptr->Summary != nullptr) {
 					xmlTextWriterWriteElement(Writer, (xmlChar*)Summary_s,
 																		(xmlChar*)Ptr->Summary);
@@ -1287,8 +1339,16 @@ namespace RiverExplorer::Phoenix
 			std::vector<Server*>::const_iterator SIt;
 			char Buf[128];
 			Server * SPtr;
-			
-			for (SIt = KnownServers.cbegin(); SIt != KnownServers.cend(); SIt++) {
+
+			xmlTextWriterStartElement(Writer, (xmlChar*)Key_s);
+			xmlTextWriterWriteElement(Writer,
+																(xmlChar*)Name_s,
+																(xmlChar*)Servers_s);
+			xmlTextWriterStartElement(Writer, (xmlChar*)Value_s);
+			for (SIt = KnownServers.cbegin()
+						 ; SIt != KnownServers.cend()
+						 ; SIt++) {
+				
 				SPtr = *SIt;
 				xmlTextWriterStartElement(Writer, (xmlChar*)Server_s);
 
@@ -1402,6 +1462,8 @@ namespace RiverExplorer::Phoenix
 
 				xmlTextWriterEndElement(Writer); // Server
 			}
+			xmlTextWriterEndElement(Writer); // Value
+			xmlTextWriterEndElement(Writer); // Key
 		}
 		
 		xmlTextWriterEndElement(Writer); // Close Configure node.
@@ -1641,6 +1703,21 @@ namespace RiverExplorer::Phoenix
 
 				xmlChar * Value = xmlNodeGetContent(Current);
 				LastConfiguration->Position((char*)Value);
+				
+			} else if (((IsServer && ServerHaveConfig)
+									|| (!IsServer && ClientHaveConfig))
+								 && LastEntry != nullptr
+								 && strcmp((char*)Current->name, OurServerNames_s) == 0) {
+
+				xmlNode * HostNode = Current->children;
+				
+				while (HostNode != nullptr) {
+					if (HostNode->type == XML_ELEMENT_NODE) {
+						if (strcmp((char*)Current->children->name, Host_s) == 0) {
+							_ProcessHostNode((void*)Current);
+						}
+					}
+				}
 			}
 		}
 
@@ -1653,6 +1730,45 @@ namespace RiverExplorer::Phoenix
 		return;
 	}
 
+	void
+	Configuration::_ProcessHostNode(void * VNode)
+	{
+		xmlNode * Node = (xmlNode*)VNode;
+
+		Entry		* NewEntry = new Entry();
+		Entry		*	NewChild = nullptr;
+		
+		NewEntry->Key = strdup(Host_s);
+		NewEntry->Value = nullptr;
+		LastEntry->Children.push_back(NewEntry);
+		
+		xmlNode * Child = Node->children;
+		while (Child != nullptr) {
+
+			if (strcmp((char*)Child->name, HostName_s) == 0) {
+				NewChild = new Entry();
+				NewChild->Key = strdup(HostName_s);
+				NewChild->Value = strdup((char*)xmlNodeGetContent(Child));
+				NewEntry->Children.push_back(NewChild);
+
+			} else if (strcmp((char*)Child->name, IpToListenOn_s) == 0) {
+				NewChild = new Entry();
+				NewChild->Key = strdup(IpToListenOn_s);
+				NewChild->Value = strdup((char*)xmlNodeGetContent(Child));
+				NewEntry->Children.push_back(NewChild);
+				
+			} else if (strcmp((char*)Child->name, Port_s) == 0) {
+				NewChild = new Entry();
+				NewChild->Key = strdup(Port_s);
+				NewChild->Value = strdup((char*)xmlNodeGetContent(Child));
+				NewEntry->Children.push_back(NewChild);
+			}
+			Child = xmlNextElementSibling(Child);
+		}
+
+		return;
+	}
+	
 	bool
 	Configuration::ServerLoadConfig()
 	{

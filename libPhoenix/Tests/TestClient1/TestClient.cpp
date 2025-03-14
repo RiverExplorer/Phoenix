@@ -1,6 +1,6 @@
 /**
  * Project: Phoenix
- * Time-stamp: <2025-03-03 11:50:11 doug>
+ * Time-stamp: <2025-03-07 00:57:15 doug>
  *
  * @file TestClient.cpp
  * @copyright (C) 2025 by Douglas Mark Royer (A.K.A. RiverExplorer)
@@ -88,7 +88,7 @@ std::mutex								PendingCommandsMutex;
 SEQ_t											NextSeqToUse = 0;
 Client									*	OurClient = nullptr;
 Configuration::Server		* OurServer = nullptr;
-Command									* CapPre = nullptr;
+//Command									* CapPre = nullptr;
 
 VendorIDCapability			* VendorIDCap = nullptr;
 VendorCapability				*	VendorExtension1Cap = nullptr;
@@ -150,7 +150,8 @@ ClientTest::DeleteServerTest(size_t Initial)
 	
 	Configuration::Server * Host;
 
-	// Look for 'localhost' so we can delete (testing) , then add it (testing)
+	// Look for 'localhost' so we can delete (testing) ,
+	// then add it (testing)
 	//
 	for (ServerIt = ServerList.cbegin()
 				 ; ServerIt != ServerList.cend()
@@ -257,7 +258,8 @@ ClientTest::CreateCapabilityVendorIDTest()
 	CPPUNIT_ASSERT(VendorIDCap != nullptr);
 	CPPUNIT_ASSERT(VendorIDCap->Cmd() == VENDOR_ID);
 
-	CPPUNIT_ASSERT(strcmp(VendorIDCap->VendorString(), RiverExplorerVendor) == 0);
+	CPPUNIT_ASSERT(strcmp(VendorIDCap->VendorString(),
+												RiverExplorerVendor) == 0);
 
 	// We push this first to show that if a client sends
 	// vendor specific capabilities, that the vendor-id MUST go first.
@@ -268,34 +270,12 @@ ClientTest::CreateCapabilityVendorIDTest()
 	//
 	CPPUNIT_ASSERT(PreAuthCapability != nullptr);
 	PreAuthCapability->Add(VendorIDCap);
-
 	CPPUNIT_ASSERT(PreAuthCapability->size() == 1);
 
-	VendorIDCapability * Saved = dynamic_cast<VendorIDCapability*>((*PreAuthCapability)[0]);
+	VendorIDCapability * Saved
+		= dynamic_cast<VendorIDCapability*>((*PreAuthCapability)[0]);
 
 	CPPUNIT_ASSERT(Saved == VendorIDCap);
-
-	return;
-}
-
-void
-ClientTest::CreateCapabilityPreTest()
-{
-	CapPre = new CapabilityCommandPre(NextSeqToUse);
-
-	CPPUNIT_ASSERT(CapPre != nullptr);
-	CPPUNIT_ASSERT(CapPre->Payload.Cmd == CAPABILITY_PRE);
-	CPPUNIT_ASSERT(CapPre->Sequence == NextSeqToUse);
-	
-	// Push the CAPABILITY_PRE
-	//
-	PendingCommandsMutex.lock();
-	PendingCommands.insert(std::make_pair(CapPre->Sequence, CapPre));
-	Capabilities.push_back(CapPre);
-	CPPUNIT_ASSERT(Capabilities.size() == 2);
-	PendingCommandsMutex.unlock();
-	
-	NextSeqToUse += 2;
 
 	return;
 }
@@ -332,7 +312,8 @@ ClientTest::CreateCapabilityVendorExtension1Test()
 	PreAuthCapability->Add(VendorExtension1Cap);
 	CPPUNIT_ASSERT(PreAuthCapability->size() == 2);
 
-	VendorCapability * Saved = dynamic_cast<VendorCapability*>((*PreAuthCapability)[1]);
+	VendorCapability * Saved
+		= dynamic_cast<VendorCapability*>((*PreAuthCapability)[1]);
 
 	CPPUNIT_ASSERT(Saved == VendorExtension1Cap);
 	
@@ -399,10 +380,10 @@ main(int /*argc*/, char ** argv)
 	//
 	Event::Register(CAPABILITY_PRE,	GotCapabilityPre);
 
-	std::ofstream XmlTestResultFile;
+	//std::ofstream XmlTestResultFile;
 	
-	unlink("XMLResults.xml");
-	XmlTestResultFile.open("XMLResults.xml", std::ios::out);
+	//unlink("XMLResults.xml");
+	//XmlTestResultFile.open("XMLResults.xml", std::ios::out);
 	
 	CppUnit::TestResultCollector Results;
 	CppUnit::TestResult Controller;
@@ -423,8 +404,8 @@ main(int /*argc*/, char ** argv)
 	CppUnit::TextOutputter Outputter(&Results, std::cerr);
 	Outputter.write();
 
-	CppUnit::XmlOutputter XmlOut(&Results, XmlTestResultFile);
-	XmlOut.write();
+	//CppUnit::XmlOutputter XmlOut(&Results, XmlTestResultFile);
+	//XmlOut.write();
 	
 	return Results.wasSuccessful() ? 0 : 1;
 

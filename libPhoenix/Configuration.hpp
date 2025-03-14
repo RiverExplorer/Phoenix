@@ -1,6 +1,6 @@
 /**
  * Project: Phoenix
- * Time-stamp: <2025-03-01 16:58:47 doug>
+ * Time-stamp: <2025-03-07 09:09:50 doug>
  *
  * @file Configuration.hpp
  * @copyright (C) 2025 by Douglas Mark Royer (A.K.A. RiverExplorer)
@@ -487,6 +487,353 @@ namespace RiverExplorer::Phoenix
 		 */
 		static bool ServerLoadConfig();
 
+		// A
+		//
+		/**
+		 * A configuration option or value.
+		 *
+		 * Allow IPv4 addresses
+		 */
+		static const char * const AllowIpV4_s;
+
+		/**
+		 * A configuration option or value.
+		 *
+		 * Allow IPv6 addresses
+		 */
+		static const char * const AllowIpV6_s;
+
+		/**
+		 * A configuration option or value.
+		 *
+		 * Auth: The authentication to use for a specific server
+		 */
+		static const char * const Auth_s;
+		static const char * const Account_s;
+		static const char * const Anonymous_s;
+		static const char * const AuthCertUser_s;
+		static const char * const AuthCertTls_s;
+
+		// B
+		//
+
+		// C
+		//
+		/**
+		 * A configuration option or value.
+		 *
+		 * All configuration information is in an XML "Configure" node.
+		 */
+		static const char * const ConfigNode_s;
+
+		/**
+		 * A configuration option or value.
+		 *
+		 * The minimum time that can be set for the client to
+		 * check the sockets for incoming data from servers
+		 * on the client side is stored in the XML 'MinServerCheck' node.
+		 */
+		static const char * const ClientMinCheckServerKey_s;
+
+		/**
+		 * A configuration option or value.
+		 *
+		 * The currently configured time that can be set for the client to
+		 * check the sockets for incoming data from servers
+		 * on the client side
+		 * is stored in the XML 'ServerCheck' node.
+		 */
+		static const char * const ClientCheckServerKey_s;
+		static const char * const ClientXmlNsConfig_s;
+		static const char * const ClientXmlNsConfigUrl_s;
+
+		// D
+		//
+		/**
+		 * A configuration option or value.
+		 *
+		 * The cert to use for a specific Server.
+		 * An empty value means to use the default OpenSSL certificates.
+		 */
+		static const char * const Default_s;
+		static const char * const DefaultPublic_s;
+		static const char * const DefaultPrivate_s;
+		
+		/**
+		 * A configuration option or value.
+		 *
+		 * An empty value means use the default OpenSSL cert.
+		 * The format is
+		 * Certs: The DefaultCert is the default certificate set to use.
+		 */
+		static const char * const DefaultCertToUse_s;
+
+		/**
+		 * A configuration option or value.
+		 *
+		 * Detailed information about the Key/Value pair
+		 * is stored in a XML "Detail" node.
+		 */
+		static const char * const Detail_s;
+
+		// E
+		//
+
+		// F
+		//
+		/**
+		 * A configuration option or value.
+		 *
+		 * The string 'false'.
+		 */
+		static const char * const False_s;
+	
+		// G
+		//
+		/**
+		 * A configuration option or value.
+		 *
+		 * Generate HTML file when configuration file updates.
+		 */
+		static const char * const GenerateHTML_s;
+
+		// H
+		//
+		static const char * const HTMLDirectory_s;
+		static const char * const Host_s;
+		static const char * const HostName_s;
+		static const char * const Hosts_s;
+		static const char * const HostOrIp_s;
+
+		// I
+		//
+		/**
+		 * A configuration option or value.
+		 *
+		 * The IP addresses for the server to listen on.
+		 */
+		static const char * const IpToListenOn_s;
+
+		/**
+		 * A configuration option or value.
+		 *
+		 * The interface for the server to listen on.
+		 */
+		static const char * const InterfacesToListenOn_s;
+
+		// J
+		//
+
+		// K
+		//
+		/**
+		 * A configuration option or value.
+		 *
+		 * The Key value is stored in an XML Key node.
+		 */
+		static const char * const Key_s;
+
+		// L
+		//
+		/**
+		 * A configuration option or value.
+		 *
+		 * The 'LogDevice' XML node holds the value of where
+		 * to store log information.
+		 * -When it starts with a '/', it is a full path to the file.
+		 * -When it starts with 'syslog:', it goes to syslog.
+		 * -When it starts with 'sql:', it goes to a database.
+		 */
+		static const char * const LogDevice_s;
+
+		// M
+		//
+		static const char * const MD5_s;
+
+		// N
+		//
+		static const char * const NoTls_s;
+		/**
+		 * A configuration option or value.
+		 *
+		 * The Key/Value, Summary, and detail are stored in an XML 'Name' node.
+		 */
+		static const char * const Name_s;
+
+		// O
+		//
+		static const char * const OurHostName_s;
+		static const char * const OurServerNames_s;
+
+		// P
+		//
+		static const char * const Password_s;
+
+		/**
+		 * A configuration option or value.
+		 *
+		 * The string 'Phoenix' needed in the code.
+		 */
+		static const char * const Phoenix_s;
+
+		/**
+		 * A configuration option or value.
+		 *
+		 * The port the server to listen on.
+		 */
+		static const char * const PortToListenOn_s;
+
+		/**
+		 * A configuration option or value.
+		 *
+		 * The string 'Private'.
+		 */
+		static const char * const Private_s;
+	
+		/**
+		 * A configuration option or value.
+		 *
+		 * The string 'Public'.
+		 */
+		static const char * const Public_s;
+		static const char * const Port_s;
+		static const char * const Position_s;
+	
+		// Q
+		//
+
+		// R
+		//
+		/**
+		 * A configuration option or value.
+		 *
+		 * The string 'ReadOnly' needed in the code.
+		 */
+		static const char * const ReadOnly_s;
+	
+		/**
+		 * A configuration option or value.
+		 *
+		 * The string 'RiverExplorer' needed in the code.
+		 */
+		static const char * const RiverExplorer_s;
+
+		// S
+		//
+		/**
+		 * A configuration option or value.
+		 *
+		 * The configuration key for a specific server.
+		 *
+		 * The configuration each known server contains
+		 * one or more of the following elements in any order:
+		 *
+		 * @verbatim
+		 *	<Server>
+		 *   <HostOrIp>host or ip</HostOrIp>
+		 *   <Port>Port number</Port>
+		 *   <Position>User view order</Position>
+		 *	 <Auth Method="xxx"/>
+		 *   <Account>Login account</Account>
+		 *   <Password>encrypted password</Account>
+		 *   <PublicCert>Path to public cert</PublicCert>
+		 *   <PrivateCert>Path to private Key</PrivateCert>
+		 *  </Server>
+		 * @endverbatim
+		 */
+		static const char * const Server_s;
+		static const char * const Servers_s;
+		static const char * const ServerName_s;
+		static const char * const ServerXmlNsConfig_s;
+		static const char * const ServerXmlNsConfigUrl_s;
+		static const char * const ServerXmlNsRE_s;
+
+		/**
+		 * A configuration option or value.
+		 *
+		 * The short description of the Key/Value pair is stored
+		 * int the XML 'Summary' node.
+		 */
+		static const char * const Summary_s;
+
+		// T
+		//
+		static const char * const Type_s;
+		
+		/**
+		 * A configuration option or value.
+		 *
+		 * The string 'true'.
+		 */
+		static const char * const True_s;
+
+		// U
+		//
+		/**
+		 * A configuration option or value.
+		 *
+		 * The XML files are stored in the UTF-8 charset.
+		 */
+		static const char * const Utf8_s;
+
+
+		// V
+		//
+		/**
+		 * A configuration option or value.
+		 *
+		 * The value part of the Key/Value are stored in the 'Value' XML node.
+		 */
+		static const char * const Value_s;
+
+		/**
+		 * A configuration option or value.
+		 *
+		 * The vendor unique ID is stored in the 'VendorID' XML node.
+		 * This is used identify compatible and non standard
+		 * usages of the Phoenix protocol.
+		 */
+		static const char * const VendorIDKey_s;
+
+		/**
+		 * A configuration option or value.
+		 *
+		 * The VendorID for this Phoenix implementation.
+		 * Vendors should update this.
+		 * It may include comma (,) separated values.
+		 */
+		static const char * const VendorIDValue_s;
+
+		/**
+		 * A configuration option or value.
+		 *
+		 * The version of the configuration information
+		 * is stored in the 'Version' XML node.
+		 */
+		static const char * const VersionKey_s;
+
+		/**
+		 * A configuration option or value.
+		 *
+		 * This implementations version.
+		 */
+		static const uint64_t			Version_i;
+
+		// W
+		//
+
+		// X
+		//
+		static const char * const XmlNs_s;
+		static const char * const XmlNsRE_s;
+		static const char * const XmlNsREUrl_s;
+
+		// Y
+		//
+
+		// Z
+		//
+		
 	private:
 		
 		/**
@@ -613,8 +960,21 @@ namespace RiverExplorer::Phoenix
 		 *
 		 * @param IsServer When true, process server configuration
 		 * information. Else process client information.
+		 *
+		 * @param Node The node to process.
 		 */
 		static void _ProcessNode(bool IsServer, void * Node);
+
+		/**
+		 * Used by _LoadConfig() to process each "OurServerNames" nodes.
+		 * Should only be one.
+		 *
+		 * I am using (void*) to keep the implementation
+		 * details out of the header file.
+		 *
+		 * @param Node The parent OurServerNames node.
+		 */
+		static void _ProcessHostNode(void * Node);
 
 		/**
 		 * The client name (or nullptr)

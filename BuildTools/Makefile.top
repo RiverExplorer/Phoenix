@@ -1,6 +1,6 @@
 #
 # Project: Phoenix
-# Time-stamp: <2025-03-12 23:38:39 doug>
+# Time-stamp: <2025-03-13 10:20:19 doug>
 #
 # @file FILL-IN
 # @author Douglas Mark Royer
@@ -520,13 +520,13 @@ W64_LDFLAGS.Release	+= \
 W64_LDFLAGS.Debug		+= \
 										-L$(W64_INSTALL_DIR.Debug)/lib \
 										-Wl,-rpath=$(W64_INSTALL_DIR.Debug)/lib \
-										-Wl,-rpath=$(W64_INSTALL_DIR.Release/lib
+										-Wl,-rpath=$(W64_INSTALL_DIR.Release)/lib
 
 W64_LDFLAGS.Tcov		+= \
 										-L$(W64_INSTALL_DIR.Tcov)/lib \
 										-Wl,-rpath=$(W64_INSTALL_DIR.Tcov)/lib \
 										-Wl,-rpath=$(W64_INSTALL_DIR.Debug)/lib \
-										-Wl,-rpath=$(W64_INSTALL_Dir.Release/lib
+										-Wl,-rpath=$(W64_INSTALL_Dir.Release)/lib
 
 ANDROID_LDFLAGS.Release	+= \
 										-L$(ANDROID_INSTALL_DIR.Releaes)/lib \

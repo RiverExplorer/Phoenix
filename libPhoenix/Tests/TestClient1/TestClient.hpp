@@ -1,6 +1,6 @@
 /**
  * Project: Phoenix
- * Time-stamp: <2025-03-03 08:56:15 doug>
+ * Time-stamp: <2025-03-07 00:57:03 doug>
  *
  * @file TestClient1.hpp
  * @copyright (C) 2025 by Douglas Mark Royer (A.K.A. RiverExplorer)
@@ -35,11 +35,10 @@ class ClientTest : public CppUnit::TestFixture {
 	CPPUNIT_TEST(AddServerTest);
 	CPPUNIT_TEST(ClientConstructorTest);
 	CPPUNIT_TEST(CreateCapabilityPreConstructorTest);
-	CPPUNIT_TEST(CreateCapabilityPostConstructorTest);
 	CPPUNIT_TEST(CreateCapabilityVendorIDTest);
-	CPPUNIT_TEST(CreateCapabilityPreTest);
 	CPPUNIT_TEST(CreateCapabilityVendorExtension1Test);
 	CPPUNIT_TEST(ConnectToServerTest);
+	CPPUNIT_TEST(CreateCapabilityPostConstructorTest);
 	CPPUNIT_TEST_SUITE_END();
 
 private:
@@ -62,12 +61,11 @@ public:
 	void AddServerTest();
 	void ClientConstructorTest();
 	void CreateCapabilityPreConstructorTest();
-	void CreateCapabilityPostConstructorTest();
 	void CreateCapabilityVendorIDTest();
-	void CreateCapabilityPreTest();
 	void CreateCapabilityVendorExtension1Test();
-	
 	void ConnectToServerTest();
+	void CreateCapabilityPostConstructorTest();
+	
 };
 // Register the test suite
 CPPUNIT_TEST_SUITE_REGISTRATION(ClientTest);

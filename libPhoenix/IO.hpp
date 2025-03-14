@@ -36,6 +36,8 @@
 #include <openssl/err.h>
 #include <openssl/pem.h>
 #include <openssl/ssl.h>
+#include <openssl/err.h>
+#include <openssl/x509v3.h>
 
 namespace RiverExplorer::Phoenix
 {
@@ -155,9 +157,25 @@ namespace RiverExplorer::Phoenix
 								const std::string & PublicCertFile,
 								const std::string & PrivateKeyFile);
 
+			/**
+			 * Get the connected to host name.
+			 *
+			 * @return The connected to host name.
+			 * Or nullptr when there is no connection.
+			 */
+			const char * HostName() const;
+
 		private:
 
+			/**
+			 * Clean up data on delete.
+			 */
 			void _Cleanup();
+
+			/**
+			 * The host we are connected to.
+			 */
+			const char * _HostOrIp;
 			
 		};
 
