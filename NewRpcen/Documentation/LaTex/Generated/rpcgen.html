@@ -1,0 +1,476 @@
+<!DOCTYPE html> 
+<html lang='en-US' xml:lang='en-US'> 
+<head><title>RPCGEN++ An XDR compiler and code generator</title> 
+<meta charset='utf-8' /> 
+<meta content='TeX4ht (https://tug.org/tex4ht/)' name='generator' /> 
+<meta content='width=device-width,initial-scale=1' name='viewport' /> 
+<link href='rpcgen.css' rel='stylesheet' type='text/css' /> 
+<meta content='rpcgen.tex' name='src' /> 
+</head><body>
+   <div class='maketitle'>
+                                                                  
+
+                                                                  
+                                                                  
+
+                                                                  
+
+<h2 class='titleHead'>RPCGEN++ An XDR compiler and code
+generator</h2>
+<div class='author'><span class='rm-lmr-12'>Doug Royer / RiverExplorer</span><span class='ts1-lmr12-'>™</span></div><br />
+<div class='date'><span class='rm-lmr-12'>13-MAR-2025</span></div>
+   </div><figure class='figure'> 
+
+                                                                  
+
+                                                                  
+                                                                  
+
+                                                                  
+<!-- l. 18 --><p class='noindent'><img alt='PIC' src='Images//RiverExplorerLLC-Logo-BLACK-131x50-Transparent.ps.png' />
+                                                                  
+
+                                                                  
+</p>
+   </figure>
+   <section class='abstract' role='doc-abstract'> 
+<h3 class='abstracttitle'>
+<span class='rm-lmbx-9'>Abstract</span>
+</h3>
+     <!-- l. 23 --><p class='noindent'><img alt='PIC' src='Images//UnderConstruction.png' /> <span class='underline'><span class='rm-lmbx-9'>THIS IS WORK IN PROGRESS</span></span>
+     </p><!-- l. 26 --><p class='indent'>   <span class='rm-lmr-9'>RPCGEN++  is  an  Open  Source  XDR  and  ABNF  processor  and
+     code generator. RPCGEN++ can read </span><a href='https://ietf.org'><span class='rm-lmr-9'>IETF</span></a> <span class='rm-lmr-9'>data description formats;</span>
+     <a href='https://datatracker.ietf.org/doc/html/rfc4506'><span class='rm-lmr-9'>[RFC-4506]</span></a> <span class='rm-lmr-9'>XDR and </span><a href='https://datatracker.ietf.org/doc/html/rfc5234'><span class='rm-lmr-9'>[RFC-5234]</span></a> <span class='rm-lmr-9'>ABNF input files and produce runnable
+     code for Linux, Windows, and Android. The resulting code has also been
+     tested on the Android Oculus virtual reality headset.</span>
+     </p><!-- l. 35 --><p class='indent'>   <span class='rm-lmr-9'>The code generated can connect systems across the internet, or your
+     intranet.  RPCGEN++  takes  care  of  encoding,  transferring,  decoding
+     and over TLS. This RPCGEN++ processor can also create the client
+     and server side prototypes where you fill in the details of your design.
+     RPCGEN++ also allows for describing bit field data for XDR and ABNF.</span>
+     </p><!-- l. 42 --><p class='indent'>   <span class='rm-lmr-9'>The XDR side of the implementation was inspired by the ONC rpcgen
+     program written by Sun Microsystems in the 1990’s. This version has
+     extensions that allow for C++ like, classes, class methods, and comments
+     to be in included into the (.x) source XDR description files. RPCGEN++
+     was written using the antlr4 protocol compiler. It produces C++ code,
+     and has been designed to be able to create other languages.</span>
+     </p><!-- l. 51 --><p class='indent'>   <span class='rm-lmr-9'>The ABNF code is from scratch and allows the user to annotate the
+     ABNF with instructions about the intent of the structure of the intended
+     program.</span>
+     </p><!-- l. 55 --><p class='indent'>   <span class='rm-lmr-9'>RPCGEN++ was originally written to support the Phoenix project.
+     Its source is part of the Phoenix project. (</span><a href='https://github.com/RiverExplorer/Phoenix'><span class='rm-lmr-9'>Phoenix Open Source Project</span></a><span class='rm-lmr-9'>)
+     RPCGEN++ and Phoenix are both Open Source.</span>
+</p>
+</section>
+   <h3 class='likesectionHead' id='contents'><a id='x1-1000'></a>Contents</h3>
+   <div class='tableofcontents'>
+    <span class='sectionToc'>1 <a href='#introduction' id='QQ2-1-2'>Introduction</a></span>
+<br />    <span class='sectionToc'>2 <a href='#xdr-differences-from-rfc' id='QQ2-1-3'>XDR Differences from RFC-4506</a></span>
+<br />    <span class='sectionToc'>3 <a href='#abnf-differences-from-rfc' id='QQ2-1-4'>ABNF Differences from RFC-5234</a></span>
+<br />    <span class='sectionToc'>4 <a href='#command-line' id='QQ2-1-5'>Command Line</a></span>
+<br />    <span class='sectionToc'>5 <a href='#comments' id='QQ2-1-6'>Comments</a></span>
+<br />     <span class='subsectionToc'>5.1 <a href='#single-line-comments' id='QQ2-1-7'>Single Line Comments</a></span>
+<br />     <span class='subsectionToc'>5.2 <a href='#multiple-line-comments' id='QQ2-1-8'>Multiple Line Comments</a></span>
+<br />    <span class='sectionToc'>6 <a href='#conditionals' id='QQ2-1-9'>Conditionals</a></span>
+                                                                  
+
+                                                                  
+<br />    <span class='sectionToc'>7 <a href='#pass-through' id='QQ2-1-10'>Pass Through</a></span>
+<br />    <span class='sectionToc'>8 <a href='#data-types' id='QQ2-1-11'>Data Types</a></span>
+<br />    <span class='sectionToc'>9 <a href='#fixed-size-arrays' id='QQ2-1-12'>Fixed Size Arrays</a></span>
+<br />    <span class='sectionToc'>10 <a href='#variable-sized-arrays' id='QQ2-1-13'>Variable Sized Arrays</a></span>
+<br />    <span class='sectionToc'>11 <a href='#strings' id='QQ2-1-14'>Strings</a></span>
+<br />     <span class='subsectionToc'>11.1 <a href='#fixed-size-strings' id='QQ2-1-15'>Fixed Size Strings</a></span>
+<br />     <span class='subsectionToc'>11.2 <a href='#variable-size-strings' id='QQ2-1-16'>Variable Size Strings</a></span>
+<br />     <span class='subsectionToc'>11.3 <a href='#specifying-a-maximum-size' id='QQ2-1-17'>Specifying a Maximum Size</a></span>
+<br />    <span class='sectionToc'>12 <a href='#opaque-data' id='QQ2-1-18'>Opaque Data</a></span>
+<br />    <span class='sectionToc'>13 <a href='#member-functions' id='QQ2-1-19'>Member Functions</a></span>
+<br />    <span class='sectionToc'>14 <a href='#bit-fields' id='QQ2-1-20'>Bit Fields</a></span>
+<br />    <span class='sectionToc'>15 <a href='#where-to-get-rpcgen' id='QQ2-1-21'>Where to get RPCGEN++</a></span>
+<br />    <span class='sectionToc'>16 <a href='#building-rpcgen' id='QQ2-1-22'>Building RPCGEN++</a></span>
+<br />     <span class='subsectionToc'>16.1 <a href='#building-for-linux' id='QQ2-1-23'>Building For Linux</a></span>
+<br />      <span class='subsubsectionToc'>16.1.1 <a href='#building-debug-for-linux' id='QQ2-1-24'>Building debug for Linux</a></span>
+<br />      <span class='subsubsectionToc'>16.1.2 <a href='#building-release-for-linux' id='QQ2-1-25'>Building release for Linux</a></span>
+<br />      <span class='subsubsectionToc'>16.1.3 <a href='#building-test-coverage-for-linux' id='QQ2-1-26'>Building test coverage for Linux</a></span>
+<br />      <span class='subsubsectionToc'>16.1.4 <a href='#building-everything-for-linux' id='QQ2-1-27'>Building everything for Linux</a></span>
+<br />     <span class='subsectionToc'>16.2 <a href='#building-for-windows-on-linux' id='QQ2-1-28'>Building For Windows on Linux</a></span>
+<br />      <span class='subsubsectionToc'>16.2.1 <a href='#building-debug-for-windows' id='QQ2-1-29'>Building debug for Windows</a></span>
+<br />      <span class='subsubsectionToc'>16.2.2 <a href='#building-releaes-for-windows' id='QQ2-1-30'>Building releaes for Windows</a></span>
+<br />      <span class='subsubsectionToc'>16.2.3 <a href='#building-test-coverage-for-windows' id='QQ2-1-31'>Building test coverage for Windows</a></span>
+<br />      <span class='subsubsectionToc'>16.2.4 <a href='#building-everyting-for-windows' id='QQ2-1-32'>Building everyting for Windows</a></span>
+<br />     <span class='subsectionToc'>16.3 <a href='#building-for-android-on-linux' id='QQ2-1-33'>Building For Android on Linux</a></span>
+<br />      <span class='subsubsectionToc'>16.3.1 <a href='#building-debug-for-android' id='QQ2-1-34'>Building debug for Android</a></span>
+<br />      <span class='subsubsectionToc'>16.3.2 <a href='#building-android-for-android' id='QQ2-1-35'>Building Android for Android</a></span>
+<br />      <span class='subsubsectionToc'>16.3.3 <a href='#building-test-coverage-for-android' id='QQ2-1-36'>Building Test Coverage for Android</a></span>
+<br />      <span class='subsubsectionToc'>16.3.4 <a href='#building-everything-for-android' id='QQ2-1-37'>Building everything for Android</a></span>
+<br />     <span class='subsectionToc'>16.4 <a href='#building-the-documentation' id='QQ2-1-38'>Building the Documentation</a></span>
+<br />     <span class='subsectionToc'>16.5 <a href='#filing-bugs-reports' id='QQ2-1-39'>Filing Bugs Reports</a></span>
+<br />    <span class='sectionToc'>17 <a href='#test-coverage' id='QQ2-1-40'>Test Coverage</a></span>
+<br />    <span class='sectionToc'>18 <a href='#legal-mumbo-jumbo' id='QQ2-1-41'>Legal Mumbo Jumbo</a></span>
+<br />     <span class='subsectionToc'>18.1 <a href='#license' id='QQ2-1-43'>License</a></span>
+   </div>
+   <h3 class='sectionHead' id='introduction'><span class='titlemark'>1   </span> <a id='x1-20001'></a>Introduction</h3>
+     <ul class='itemize1'>
+     <li class='itemize'>Can process RFC-4506 compliant files.
+                                                                  
+
+                                                                  
+     </li>
+     <li class='itemize'>Can process RFC-5234 compliant files.
+     </li>
+     <li class='itemize'>Generates C++ code and header files.
+     </li>
+     <li class='itemize'>Designed to be able to produce for other output languages.
+     </li>
+     <li class='itemize'>Preserves comments in the .x files.
+     </li>
+     <li class='itemize'>Preserves comments in the .abnf files.
+     </li>
+     <li class='itemize'>Allows for class member functions.
+     </li>
+     <li class='itemize'>Extends RFC-4506 to include bit fields.
+     </li>
+     <li class='itemize'>Extends RFC-5234 to include bit fields.
+     </li>
+     <li class='itemize'>Generates ABNF definitions per RFC-5234 from RFC-4506 files.</li></ul>
+<!-- l. 15 --><p class='noindent'>The basic XDR process is:
+     </p><ol class='enumerate1'>
+<li class='enumerate' id='x1-2002x1'>Edit an XDR definition file (.x file).
+     </li>
+<li class='enumerate' id='x1-2004x2'>Run ’rpcgen++’ on the file.
+                                                                  
+
+                                                                  
+     </li>
+<li class='enumerate' id='x1-2006x3'>Compile the results.</li></ol>
+<!-- l. 22 --><p class='indent'>   And the basic ABNF process is:
+     </p><ol class='enumerate1'>
+<li class='enumerate' id='x1-2008x1'>Edit an ABNF definition file (.abnf file).
+     </li>
+<li class='enumerate' id='x1-2010x2'>Run ’rpcgen++’ on the file.
+     </li>
+<li class='enumerate' id='x1-2012x3'>Compile the results.</li></ol>
+<!-- l. 1 --><p class='noindent'>
+</p>
+   <h3 class='sectionHead' id='xdr-differences-from-rfc'><span class='titlemark'>2   </span> <a id='x1-30002'></a>XDR Differences from RFC-4506</h3>
+<!-- l. 1 --><p class='noindent'>
+</p>
+   <h3 class='sectionHead' id='abnf-differences-from-rfc'><span class='titlemark'>3   </span> <a id='x1-40003'></a>ABNF Differences from RFC-5234</h3>
+<!-- l. 1 --><p class='noindent'>
+</p>
+   <h3 class='sectionHead' id='command-line'><span class='titlemark'>4   </span> <a id='x1-50004'></a>Command Line</h3>
+<!-- l. 1 --><p class='noindent'>
+</p>
+   <h3 class='sectionHead' id='comments'><span class='titlemark'>5   </span> <a id='x1-60005'></a>Comments</h3>
+                                                                  
+
+                                                                  
+<!-- l. 2 --><p class='noindent'>
+</p>
+   <h4 class='subsectionHead' id='single-line-comments'><span class='titlemark'>5.1   </span> <a id='x1-70005.1'></a>Single Line Comments</h4>
+<!-- l. 3 --><p class='noindent'>
+</p>
+   <h4 class='subsectionHead' id='multiple-line-comments'><span class='titlemark'>5.2   </span> <a id='x1-80005.2'></a>Multiple Line Comments</h4>
+<!-- l. 1 --><p class='noindent'>
+</p>
+   <h3 class='sectionHead' id='conditionals'><span class='titlemark'>6   </span> <a id='x1-90006'></a>Conditionals</h3>
+<!-- l. 1 --><p class='noindent'>
+</p>
+   <h3 class='sectionHead' id='pass-through'><span class='titlemark'>7   </span> <a id='x1-100007'></a>Pass Through</h3>
+<!-- l. 1 --><p class='noindent'>
+</p>
+   <h3 class='sectionHead' id='data-types'><span class='titlemark'>8   </span> <a id='x1-110008'></a>Data Types</h3>
+<!-- l. 1 --><p class='noindent'>
+</p>
+   <h3 class='sectionHead' id='fixed-size-arrays'><span class='titlemark'>9   </span> <a id='x1-120009'></a>Fixed Size Arrays</h3>
+<!-- l. 1 --><p class='noindent'>
+</p>
+   <h3 class='sectionHead' id='variable-sized-arrays'><span class='titlemark'>10   </span> <a id='x1-1300010'></a>Variable Sized Arrays</h3>
+<!-- l. 1 --><p class='noindent'>
+</p>
+   <h3 class='sectionHead' id='strings'><span class='titlemark'>11   </span> <a id='x1-1400011'></a>Strings</h3>
+                                                                  
+
+                                                                  
+<!-- l. 2 --><p class='noindent'>
+</p>
+   <h4 class='subsectionHead' id='fixed-size-strings'><span class='titlemark'>11.1   </span> <a id='x1-1500011.1'></a>Fixed Size Strings</h4>
+<!-- l. 3 --><p class='noindent'>
+</p>
+   <h4 class='subsectionHead' id='variable-size-strings'><span class='titlemark'>11.2   </span> <a id='x1-1600011.2'></a>Variable Size Strings</h4>
+<!-- l. 4 --><p class='noindent'>
+</p>
+   <h4 class='subsectionHead' id='specifying-a-maximum-size'><span class='titlemark'>11.3   </span> <a id='x1-1700011.3'></a>Specifying a Maximum Size</h4>
+<!-- l. 1 --><p class='noindent'>
+</p>
+   <h3 class='sectionHead' id='opaque-data'><span class='titlemark'>12   </span> <a id='x1-1800012'></a>Opaque Data</h3>
+<!-- l. 1 --><p class='noindent'>
+</p>
+   <h3 class='sectionHead' id='member-functions'><span class='titlemark'>13   </span> <a id='x1-1900013'></a>Member Functions</h3>
+<!-- l. 1 --><p class='noindent'>
+</p>
+   <h3 class='sectionHead' id='bit-fields'><span class='titlemark'>14   </span> <a id='x1-2000014'></a>Bit Fields</h3>
+<!-- l. 1 --><p class='noindent'>
+</p>
+   <h3 class='sectionHead' id='where-to-get-rpcgen'><span class='titlemark'>15   </span> <a id='x1-2100015'></a>Where to get RPCGEN++</h3>
+<!-- l. 1 --><p class='noindent'>
+</p>
+   <h3 class='sectionHead' id='building-rpcgen'><span class='titlemark'>16   </span> <a id='x1-2200016'></a>Building RPCGEN++</h3>
+<!-- l. 2 --><p class='noindent'>The entire Phoenix build system is designed to build everything on Linux for all
+platforms. It uses the GNU compilers on Linux. The mingw compilers to cross
+compile for Windows. And the android NDK package to cross compile for
+                                                                  
+
+                                                                  
+Android. The build has been tested on the Android based Oculus virtual reality
+headsets.
+</p><!-- l. 10 --><p class='indent'>   The build uses the POSIX make command. And can build debug, release, and
+test coverage libraries, commands, and test code from the make system.
+</p><!-- l. 14 --><p class='indent'>   You can build any of the options below, or ’<span class='rm-lmbx-10'>make all </span>to build everything.
+</p><!-- l. 17 --><p class='indent'>   For each build, it builds 2 libraries and commands. First using dynamic shared
+libraries, or crates them. And the second pass builds with a minimum number of
+dynamic libraries, using as many static libraries as possible.
+</p><!-- l. 23 --><p class='indent'>   The BuildTools directory contains the Makefiles that are included to do all of the
+different builds and cross compiling.
+</p><!-- l. 27 --><p class='indent'>   You will need to modify the paths to the mingw and android NDK paths to
+match your installation in the Makefile.top and Makefile.top.lib files.
+</p><!-- l. 31 --><p class='indent'>   You will have to set the ANDROID_CC, ANDROID_CXX, ANDROID_STRIP,
+W64_CC, W64_CXX, and W64_STRIP settings.
+</p><!-- l. 34 --><p class='indent'>   On Linux the mingw packages are often loaded using the operating systems
+installation tools (dnf, apt, yum).
+</p><!-- l. 37 --><p class='indent'>   The Android NDK packages have to be downloaded using the latest
+google instructions, which seem to change over time. I used the NDK r26
+version.
+</p><!-- l. 41 --><p class='noindent'>
+</p>
+   <h4 class='subsectionHead' id='building-for-linux'><span class='titlemark'>16.1   </span> <a id='x1-2300016.1'></a>Building For Linux</h4>
+<!-- l. 42 --><p class='noindent'>From the top of the GIT repository you downloaded, type one of these commands to
+build for Linux:
+</p><!-- l. 45 --><p class='noindent'>
+</p>
+   <h5 class='subsubsectionHead' id='building-debug-for-linux'><span class='titlemark'>16.1.1   </span> <a id='x1-2400016.1.1'></a>Building debug for Linux</h5>
+<!-- l. 46 --><p class='noindent'>Type <span class='rm-lmbx-10'>make LinuxDebug</span>
+</p><!-- l. 48 --><p class='indent'>   To build the Linux libraries and commands with symbol and debugging
+information.
+</p><!-- l. 51 --><p class='indent'>   The output will be in BuildTemp/Linux/Debug. The static library will
+be in BuildTemp/Linux/Debug/lib and the shared library will be named
+libname.so.version. The static library will be named libname.a.
+</p><!-- l. 56 --><p class='indent'>   Any commands built will be in BuildTemp/Linux/Debug/bin for dynamic.
+</p><!-- l. 59 --><p class='indent'>   And BuildTemp/Linux/Debug/sbin for static programs.
+</p><!-- l. 61 --><p class='noindent'>
+</p>
+   <h5 class='subsubsectionHead' id='building-release-for-linux'><span class='titlemark'>16.1.2   </span> <a id='x1-2500016.1.2'></a>Building release for Linux</h5>
+<!-- l. 62 --><p class='noindent'>Type <span class='rm-lmbx-10'>make LinuxRelease</span>
+                                                                  
+
+                                                                  
+</p><!-- l. 64 --><p class='indent'>   To build the Linux libraries and commands with the libraries and programs
+compiled with the optimize switch turned on. The necessary symbols will be stripped
+from them to make them smaller.
+</p><!-- l. 69 --><p class='indent'>   The output will be in BuildTemp/Linux/Release. The static library will
+be in BuildTemp/Linux/Release/lib and the shared library will be named
+libname.so.version. The static library will be named libname.a.
+</p><!-- l. 74 --><p class='indent'>   Any commands built will be in BuildTemp/Linux/Release/bin for dynamic.
+</p><!-- l. 77 --><p class='indent'>   And BuildTemp/Linux/Release/sbin for static programs.
+</p><!-- l. 79 --><p class='noindent'>
+</p>
+   <h5 class='subsubsectionHead' id='building-test-coverage-for-linux'><span class='titlemark'>16.1.3   </span> <a id='x1-2600016.1.3'></a>Building test coverage for Linux</h5>
+<!-- l. 80 --><p class='noindent'>Type <span class='rm-lmbx-10'>make LinuxTcov</span>
+</p><!-- l. 82 --><p class='indent'>   To build the Linux libraries and commands with the libraries and programs
+compiled with the test code and test metric collection information built into them.
+See test coverage <span class='rm-lmbx-10'>??</span> for more information. Debug symbols are included in TCOV
+builds.
+</p><!-- l. 88 --><p class='indent'>   The output will be in BuildTemp/Linux/Tcov. The static library will be in
+BuildTemp/Linux/Tcov/lib and the shared library will be named libname.so.version.
+The static library will be named libname.a.
+</p><!-- l. 93 --><p class='indent'>   Any commands built will be in BuildTemp/Linux/Tcov/bin for dynamic.
+</p><!-- l. 96 --><p class='indent'>   And BuildTemp/Linux/Tcov/sbin for static programs.
+</p><!-- l. 98 --><p class='indent'>   <span class='rm-lmbx-10'>When you run a TCOV build file or library, it generates a LOT of
+output files</span>. Be sure to read <span class='rm-lmbx-10'>??</span>.
+</p><!-- l. 100 --><p class='noindent'>
+</p>
+   <h5 class='subsubsectionHead' id='building-everything-for-linux'><span class='titlemark'>16.1.4   </span> <a id='x1-2700016.1.4'></a>Building everything for Linux</h5>
+<!-- l. 101 --><p class='noindent'>Type <span class='rm-lmbx-10'>make Linux</span>
+</p><!-- l. 103 --><p class='indent'>   To build LinuxDebug, LinuxRelease, and LinuxTcov.
+</p><!-- l. 105 --><p class='noindent'>
+</p>
+   <h4 class='subsectionHead' id='building-for-windows-on-linux'><span class='titlemark'>16.2   </span> <a id='x1-2800016.2'></a>Building For Windows on Linux</h4>
+<!-- l. 107 --><p class='noindent'>From the top of the GIT repository you downloaded, type one of these commands to
+build for Windows, 64-bit:
+</p><!-- l. 111 --><p class='noindent'>
+</p>
+   <h5 class='subsubsectionHead' id='building-debug-for-windows'><span class='titlemark'>16.2.1   </span> <a id='x1-2900016.2.1'></a>Building debug for Windows</h5>
+<!-- l. 112 --><p class='noindent'>Type <span class='rm-lmbx-10'>make W64Debug</span>
+                                                                  
+
+                                                                  
+</p><!-- l. 114 --><p class='indent'>   To build the Windows 64-bit libraries and commands with symbol and debugging
+information.
+</p><!-- l. 117 --><p class='indent'>   The output will be in BuildTemp/W64/Debug. The static library will be in
+BuildTemp/W64/Debug/lib and the shared library will be named libname.so.version.
+The static library will be named libname.a.
+</p><!-- l. 122 --><p class='indent'>   Any commands built will be in BuildTemp/W65/Debug/bin, for dynamic.
+</p><!-- l. 125 --><p class='indent'>   And BuildTemp/W64/Debug/sbin for static programs.
+</p><!-- l. 127 --><p class='noindent'>
+</p>
+   <h5 class='subsubsectionHead' id='building-releaes-for-windows'><span class='titlemark'>16.2.2   </span> <a id='x1-3000016.2.2'></a>Building releaes for Windows</h5>
+<!-- l. 128 --><p class='noindent'>Type <span class='rm-lmbx-10'>make W64Release</span>
+</p><!-- l. 130 --><p class='indent'>   To build the Windows 64-bit libraries and commands with the libraries and
+programs compiled with the optimize switch turned on. The necessary symbols will
+be stripped from them to make them smaller.
+</p><!-- l. 135 --><p class='indent'>   The output will be in BuildTemp/W64/Release. The static library will
+be in BuildTemp/W64/Release/lib and the shared library will be named
+libname.so.version. The static library will be named libname.a.
+</p><!-- l. 140 --><p class='indent'>   Any commands built will be in BuildTemp/W65/Release/bin, for dynamic.
+</p><!-- l. 143 --><p class='indent'>   And BuildTemp/W64/Release/sbin for static programs.
+</p><!-- l. 145 --><p class='noindent'>
+</p>
+   <h5 class='subsubsectionHead' id='building-test-coverage-for-windows'><span class='titlemark'>16.2.3   </span> <a id='x1-3100016.2.3'></a>Building test coverage for Windows</h5>
+<!-- l. 146 --><p class='noindent'>Type <span class='rm-lmbx-10'>make W64Tcov</span>
+</p><!-- l. 148 --><p class='indent'>   To build the Windows libraries and commands with the libraries and programs
+compiled with the test code and test metric collection information built into them.
+See test coverage <span class='rm-lmbx-10'>??</span> for more information. Debug symbols are included in TCOV
+builds.
+</p><!-- l. 154 --><p class='indent'>   The output will be in BuildTemp/W64/Tcov. The static library will be in
+BuildTemp/W64/Tcov/lib and the shared library will be named libname.so.version.
+The static library will be named libname.a.
+</p><!-- l. 159 --><p class='indent'>   Any commands built will be in BuildTemp/W64/Tcov/bin for dynamic.
+</p><!-- l. 162 --><p class='indent'>   And BuildTemp/W64/Tcov/sbin for static programs.
+</p><!-- l. 164 --><p class='indent'>   <span class='rm-lmbx-10'>When you run a TCOV build file or library, it generates a LOT of
+output files</span>. Be sure to read <span class='rm-lmbx-10'>??</span>.
+</p><!-- l. 166 --><p class='indent'>   You have to run the built programs on a Widows device with the matching GNU
+tools.
+</p><!-- l. 169 --><p class='noindent'>
+</p>
+   <h5 class='subsubsectionHead' id='building-everyting-for-windows'><span class='titlemark'>16.2.4   </span> <a id='x1-3200016.2.4'></a>Building everyting for Windows</h5>
+                                                                  
+
+                                                                  
+<!-- l. 170 --><p class='noindent'>Type <span class='rm-lmbx-10'>make W64</span>
+</p><!-- l. 172 --><p class='indent'>   To build W64Debug, W64Release, and W64Tcov.
+</p><!-- l. 174 --><p class='noindent'>
+</p>
+   <h4 class='subsectionHead' id='building-for-android-on-linux'><span class='titlemark'>16.3   </span> <a id='x1-3300016.3'></a>Building For Android on Linux</h4>
+<!-- l. 176 --><p class='noindent'>From the top of the GIT repository you downloaded, type one of these commands to
+build for Android, 64-bit: You will need the GCC NDK build tools in your
+path.
+</p><!-- l. 180 --><p class='noindent'>
+</p>
+   <h5 class='subsubsectionHead' id='building-debug-for-android'><span class='titlemark'>16.3.1   </span> <a id='x1-3400016.3.1'></a>Building debug for Android</h5>
+<!-- l. 181 --><p class='noindent'>Type <span class='rm-lmbx-10'>make AndroidDebug</span>
+</p><!-- l. 183 --><p class='indent'>   To build the Android 64-bit libraries and commands with symbol and debugging
+information.
+</p><!-- l. 186 --><p class='indent'>   The output will be in BuildTemp/Android/Debug. The static library will be
+in BuildTemp/Android/Debug/lib and the shared library will be named
+libname.so.version. The static library will be named libname.a.
+</p><!-- l. 191 --><p class='indent'>   Any commands built will be in BuildTemp/Android/Debug/bin, for
+dynamic.
+</p><!-- l. 194 --><p class='indent'>   And BuildTemp/Android/Debug/sbin for static programs.
+</p><!-- l. 196 --><p class='noindent'>
+</p>
+   <h5 class='subsubsectionHead' id='building-android-for-android'><span class='titlemark'>16.3.2   </span> <a id='x1-3500016.3.2'></a>Building Android for Android</h5>
+<!-- l. 197 --><p class='noindent'>Type <span class='rm-lmbx-10'>make AndroidRelease</span>
+</p><!-- l. 199 --><p class='indent'>   To build the Android 64-bit libraries and commands with the libraries and
+programs compiled with the optimize switch turned on. The necessary symbols will
+be stripped from them to make them smaller.
+</p><!-- l. 204 --><p class='indent'>   The output will be in BuildTemp/Android/Release. The static library will
+be in BuildTemp/W64/Release/lib and the shared library will be named
+libname.so.version. The static library will be named libname.a.
+</p><!-- l. 209 --><p class='indent'>   Any commands built will be in BuildTemp/Android/Release/bin, for
+dynamic.
+</p><!-- l. 212 --><p class='indent'>   And BuildTemp/Android/Release/sbin for static programs.
+</p><!-- l. 214 --><p class='noindent'>
+</p>
+   <h5 class='subsubsectionHead' id='building-test-coverage-for-android'><span class='titlemark'>16.3.3   </span> <a id='x1-3600016.3.3'></a>Building Test Coverage for Android</h5>
+<!-- l. 215 --><p class='noindent'>Type <span class='rm-lmbx-10'>make AndroidTcov</span>
+                                                                  
+
+                                                                  
+</p><!-- l. 217 --><p class='indent'>   To build the Android libraries and commands with the libraries and programs
+compiled with the test code and test metric collection information built into them.
+See test coverage <span class='rm-lmbx-10'>??</span> for more information. Debug symbols are included in TCOV
+builds.
+</p><!-- l. 223 --><p class='indent'>   The output will be in BuildTemp/Android/Tcov. The static library will
+be in BuildTemp/Android/Tcov/lib and the shared library will be named
+libname.so.version. The static library will be named libname.a.
+</p><!-- l. 228 --><p class='indent'>   Any commands built will be in BuildTemp/Android/Tcov/bin for dynamic.
+</p><!-- l. 231 --><p class='indent'>   And BuildTemp/Android/Tcov/sbin for static programs.
+</p><!-- l. 233 --><p class='indent'>   <span class='rm-lmbx-10'>When you run a TCOV build file or library, it generates a LOT of
+output files</span>. Be sure to read <span class='rm-lmbx-10'>??</span>.
+</p><!-- l. 235 --><p class='indent'>   You have to run the built programs on a Android device with the matching GNU
+tools.
+</p><!-- l. 238 --><p class='noindent'>
+</p>
+   <h5 class='subsubsectionHead' id='building-everything-for-android'><span class='titlemark'>16.3.4   </span> <a id='x1-3700016.3.4'></a>Building everything for Android</h5>
+<!-- l. 239 --><p class='noindent'>Type <span class='rm-lmbx-10'>make Android</span>
+</p><!-- l. 241 --><p class='indent'>   To build AndroidDebug, AndroidRelease, and AndroidTcov.
+</p><!-- l. 243 --><p class='noindent'>
+</p>
+   <h4 class='subsectionHead' id='building-the-documentation'><span class='titlemark'>16.4   </span> <a id='x1-3800016.4'></a>Building the Documentation</h4>
+<!-- l. 244 --><p class='noindent'>The documentation for RPCGEN++ is built using latex and make4ht. You will need
+those. Go to the NewRpcgen/Documentation/LaTex directory and type
+’make’.
+</p><!-- l. 249 --><p class='noindent'>
+</p>
+   <h4 class='subsectionHead' id='filing-bugs-reports'><span class='titlemark'>16.5   </span> <a id='x1-3900016.5'></a>Filing Bugs Reports</h4>
+<!-- l. 250 --><p class='noindent'>File bug, issues, and questions on github, at: <a href='https://github.com/RiverExplorer/Phoenix/issues'>Bug and Issue Reports</a>
+</p>
+   <h3 class='sectionHead' id='test-coverage'><span class='titlemark'>17   </span> <a id='x1-4000017'></a>Test Coverage</h3>
+<!-- l. 2 --><p class='noindent'>This project uses <span class='rm-lmri-10'>gcov </span>and <span class='rm-lmri-10'>gcovr </span>to generate the HTML test coverage results.
+</p><!-- l. 5 --><p class='indent'>   This produces a lot of data and this section will get you started in understanting
+what you have produced.
+</p><!-- l. 8 --><p class='indent'>   Once the program or library is compiled with the test coverage tools, you must
+run them on the target operating system. So the Windows 64-bit builds (W64) must
+be run on a windows computer to get the test results for windows. And same with
+                                                                  
+
+                                                                  
+the Android devices.
+</p><!-- l. 14 --><p class='indent'>   More ....
+</p><!-- l. 1 --><p class='noindent'>
+</p>
+   <h3 class='sectionHead' id='legal-mumbo-jumbo'><span class='titlemark'>18   </span> <a id='x1-4100018'></a>Legal Mumbo Jumbo</h3>
+<!-- l. 3 --><p class='noindent'><span class='rm-lmbx-10'>This document is Copyright 2025 Douglas Mark Royer</span>.
+</p>
+<figure class='figure' id='-riverexplorer-company-logo'> 
+
+                                                                  
+
+                                                                  
+<a id='x1-410011'></a>
+                                                                  
+
+                                                                  
+<!-- l. 8 --><p class='noindent'><img alt='PIC' src='Images//RiverExplorerLLC-Logo-BLACK-131x50-Transparent.ps.png' />
+</p>
+<figcaption class='caption'><span class='id'>Figure 1: </span><span class='content'>RiverExplorer Company Logo</span></figcaption><!-- tex4ht:label?: x1-410011  -->
+                                                                  
+
+                                                                  
+</figure>
+<!-- l. 14 --><p class='noindent'><span class='rm-lmbx-10'>’RiverExplorer’ and the logo shown in figure </span><a href='#-riverexplorer-company-logo'><span class='rm-lmbx-10'>1</span><!-- tex4ht:ref: fig:RiverExplorerLogo  --></a> <span class='rm-lmbx-10'>are trademarks of
+Douglas Mark Royer</span>. <span class='rm-lmbx-10'>’RiverExplorer Games LLC’ is a wholly owned
+subsidiary of RiverExplorer LLC.</span>
+</p>
+<h4 class='subsectionHead' id='license'><span class='titlemark'>18.1   </span> <a id='x1-4200018.1'></a>License</h4>
+<!-- l. 18 --><p class='noindent'><span class='rm-lmri-10'>Permission is hereby granted, free of charge, to any person obtaining a copy of this
+software and associated documentation files (the “Software”), to deal in the Software
+without restriction, including without limitation the rights to use, copy, modify,
+merge, publish, distribute, sublicense, and/or sell copies of the Software, and to
+permit persons to whom the Software is furnished to do so, subject to the following
+conditions:</span>
+</p><!-- l. 20 --><p class='noindent'><span class='rm-lmri-10'>The above copyright notice and this permission notice shall be included in all copies
+or substantial portions of the Software.</span>
+</p><!-- l. 22 --><p class='noindent'><span class='rm-lmri-10'>THE SOFTWARE IS PROVIDED “AS IS”, WITHOUT WARRANTY OF ANY
+KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE
+WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR
+PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS
+OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR
+OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT
+OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
+WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.</span>
+</p>
+ 
+</body> 
+</html>

@@ -1,6 +1,6 @@
 #
 # Project: Phoenix
-# Time-stamp: <2025-03-14 09:52:16 doug>
+# Time-stamp: <2025-03-14 10:13:17 doug>
 #
 # @file Makefile for RPCGEN++
 # @author Douglas Mark Royer
@@ -22,7 +22,8 @@ SOURCES.tex = \
 	Comments.tex \
 	Conditionals.tex \
 	DataTypes.tex \
-	Differences.tex \
+	DifferencesABNF.tex \
+	DifferencesXDR.tex \
 	FixedSizedArrays.tex \
 	Introduction.tex \
 	LegalMumboJumbo.tex \
@@ -48,6 +49,5 @@ clean :
 	$(RM) rpcgen.lg
 	$(RM) rpcgen.log
 	$(RM) rpcgen.pdf
-	$(RM) rpcgen.tex
 	$(RM) rpcgen.tmp
 	$(RM) rpcgen.xref
