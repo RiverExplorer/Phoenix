@@ -1,0 +1,11 @@
+\section{XDR Decode}\label{sec:XdrDecode}
+It gets packets from the TLS input code (\ref{TlsIOIn}).
+As the data is decoded, it is converted from a network
+packet to a IovPacket and pushes it into the queue {textit{IQ}).
+
+\begin{figure}
+  \centering
+  \includesvg{Generated/MultiplePacket.svg}
+  \caption{Packet Multiple Commands}
+  \label{fig:Packet}
+\end{figure}

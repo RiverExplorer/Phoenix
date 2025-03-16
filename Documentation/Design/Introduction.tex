@@ -1,0 +1,78 @@
+\section{Introduction}
+The client and the server send data to the network, and get
+data from the network.
+This \mbox{input/output} model (IO Model) works with
+both the Phoenix client and Phoenix server.
+
+This model support both threaded and non threaded
+implementations.
+For non-threaded systems the data is processed serially
+or however the implementation handles both incoming
+and outgoing data.
+The data flow is the same for both threaded and non threaded
+implementations.
+
+\begin{figure}
+  \centering
+  \caption{I/O Model}
+  \label{fig:IOModel}
+  \includesvg{Generated/IO-00.svg}
+\end{figure}
+
+\begin{description}
+\item[(A)Main Thread]\label{item:MainThread}
+	The main thread processes data and formats it into
+  IOVectorPacket objects that contains the command
+  and references to the data that will be sent.
+  Then stores the IOVectorPackt (figures: \ref{fig:IovPacket} and \ref{fig:IovPacket2})
+  into queue \textit{OQ}.
+  The client \textit{Main Thread} is described in section \ref{sec:ClientMainThread}
+  And the server \textit{Main Thread} is described in section \ref{sec:ServerMainThread}
+
+\item[(B) Output Thread]
+  This thread waits for the output queue \textit{OQ} to have
+  content.
+  It checks to make sure that the network is writable and not write blocked
+  or otherwise busy.
+  When it can proceed, it takes an entry out of the queue,
+  and (C) XDR encodes it.
+  The XDR stream is opened to the TLS enctyption.
+  The \textit{Output Thread} is described in section \ref{sec:OutputThread}
+  
+\item[(C) XDR Encoding]\label{item:XdrEncodingThread}
+	This thread, takes one packet at at time
+	out of the input queue,	converts it from the native computer
+  to network compatible XDR format.
+  It reads the IOVectorPacket data to an XDR stream and that streams is sent directly
+  to the \textit{(D) TLS Encryption} code.
+  \textit{XDR Encoding} is described in section \ref{sec:XdrEncode}
+
+\item[(D) TLS Encryption]\label{item:TlsEncryption}
+  This code takes the XDR encoded data from its input stream
+  and encrypts it to the network.
+  Which encrypts it according to the certificates supplied by the configuration.
+  and sends it out to the network.
+  \textit{TLS Encryption} is described in section \ref{sec:TlsIOOut}
+
+\item[(E) Input Thread]\label{item:InputThread}
+  This thread waits for any data coming from the network
+  and feeds it into the \textit{TLS Decryption} code.
+    
+\item[(F) TLS Decryption]\label{item:TlsDecryptionThread}
+  This code decrypts it on the fly, and streams it to \textit{(G) XDR Decoding} code.
+  \textit{TLS Decryption} is described in section \ref{sec:TlsIOIn}
+
+\item[(G) XDR DECODING]\label{item:XdrDecoding}
+  This takes data from the \textit{TLS Decryption} code and decodes
+  it back to native computer data format.
+  \textit{XDR Decoding} is described in section \ref{sec:XdrDecode}
+  
+\item[(H) Dispatch Thread]\label{DispatchThread}
+	This is the dispatch thread.
+  It takes the decoded packet and dispatches it to the code that can handle the data.
+  The \textit{Dispatch Thread} is described in section \ref{sec:DispatchThread}
+
+\end{description}
+
+
+This model is the core of both the client and server.

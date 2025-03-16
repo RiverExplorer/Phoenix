@@ -1,0 +1,103 @@
+\documentclass[2pt]{book}
+\usepackage{graphicx}
+\usepackage{html}
+\usepackage{hyperref}
+\usepackage{lmodern}
+\usepackage{tocloft}
+\usepackage{svg}
+\setlength{\cftpartindent}{0em}
+\setlength{\cftchapindent}{0em}
+\setlength{\cftsecindent}{0em}
+\setlength{\cftsubsecindent}{0em}
+\setlength{\cftsubsubsecindent}{0em}
+\graphicspath{{Images/}}
+\author{Doug Royer / RiverExplorer™}
+\date{13-MAR-2025}
+\title{Phoenix: Server and Client Implementation Design}
+%
+% Define Abstract ..
+%
+\newenvironment{abstract}
+{%
+  \small
+  \begin{center}
+    \bfseries{abstract}
+  \end{center}
+}
+{}
+
+\begin{document}
+\maketitle
+\frontmatter
+\begin{figure}
+  \centering
+  \includegraphics{RiverExplorerLLC-Logo-BLACK-131x50-Transparent.ps.png}
+\end{figure}
+
+\begin{abstract}
+
+  \includegraphics{UnderConstruction.png}
+  \underline{\textbf{THIS IS WORK IN PROGRESS}}
+  
+  Email and MIME messages account for one the largest volumes of data
+  on the internet. The transfer of these MIME message has not had a
+  major updated in decades.
+  Part of the reason is that it is very important data and altering it
+  takes a great deal of care and planning.
+
+  This application transport can also transfer non-MIME data.
+  It can be used as an XDR transport, or for opaque data (blobs
+  of known or unknown data) transport.
+
+  Another major concern is security and authentication.
+  This proposal allows for existing authentication to continue to work.
+
+  This is a MIME message transport that can facilitate the transfer
+  of any kind of MIME message.
+  Including email, calendaring, and text, image, or multimedia MIME
+  messages. It can transfer multipart and simple MIME messages.
+
+  The POP and IMAP protocols are overly chatty and now that the
+  Internet can handle 8-bit transfers, there is no need for the
+  overly complex text handling of messages.
+
+  This proposal includes a sample implementation.
+  (Github - Phoenix) Which also includes a gateway from this proposal
+  to existing systems.
+  Thunderbird and Outlook plugins are part of the sample implementation.
+  A Linux, Windows DLL and .NET, and Android client library are
+  part of the sample implementation
+  
+\end{abstract}
+
+\tableofcontents
+\listoffigures
+\listoftables
+
+\mainmatter
+\chapter{Introduction}
+\include{Introduction}
+\chapter{Packet Details}
+\chapter{Code Segments}
+\include{ClientMainThread}
+\include{ServerMainThread}
+\include{OutputThread}
+\input{XdrEncode}
+\input{TlsIOOut}
+\input{TlsIOIn}
+\input{XdrDecode}
+\input{DispatchThread}
+\chapter{Client Implementation}
+\input{ClientImplementation}
+\chapter{Server Implementation}
+\input{ServerImplementation}
+\chapter{Getting the Code, Building, and Testing}
+\input{WhereToGet}
+\input{Building}
+\input{TestCoverage}
+\chapter{Legal}
+\include{LegalMumboJumbo}
+\appendix
+\chapter{Sample XDR files}
+\chapter{Sample ABNF files}
+\end{document}

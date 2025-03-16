@@ -1,0 +1,24 @@
+\section{Server Main Thread}\label{sec:ServerMainThread}
+The server main thread ...
+
+\begin{enumerate}
+\item The main thread assigns the command (CMD).
+\item The main thread creates a I/O Vector Packet.
+And creates an IO vector entry for each section of data that is part of the command.
+\item Then it deposits ths IOVPacket into the queue \textit{OQ}.
+\end{enumerate}
+
+\begin{figure}
+  \centering
+  \includesvg{Generated/IovPacket.svg}
+  \caption{I/O Vector Packet - One Entry}
+  \label{fig:IovPacket}
+\end{figure}
+
+\begin{figure}
+  \centering
+  \includesvg{Generated/IovPacket2.svg}
+  \caption{I/O Vector Packet - Multiple Entries}
+  \label{fig:IovPacket2}
+\end{figure}
+
