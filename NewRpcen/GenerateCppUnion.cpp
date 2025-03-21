@@ -1,6 +1,6 @@
 /**
  * Project: Phoenix
- * Time-stamp: <2025-03-12 09:46:02 doug>
+ * Time-stamp: <2025-03-21 09:53:13 doug>
  * 
  * @file GenerateUnion.cpp
  * @author Douglas Mark Royer
@@ -41,6 +41,7 @@ namespace RiverExplorer::rpcgen
 	void
 	Union::PrintCppHeader(ofstream & Stream)
 	{
+		PrintCppNamespaceBegin(Stream);
 		Stream << endl;
 		
 		string I = Indent();
@@ -143,6 +144,7 @@ namespace RiverExplorer::rpcgen
 		Stream << endl;
 		Stream << "}; // End class " << Name << endl;
 
+		PrintCppNamespaceEnd(Stream);
 		return;
 	}
 	

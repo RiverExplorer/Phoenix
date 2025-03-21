@@ -32,7 +32,7 @@ bitfield TwoFourBitValues:8 {
 \label{fig:A32BitExampleXDR}
 \end{figure}
 
-The number of bits inside of the \textit{bitfiled} must be equal to or
+The number of bits inside of the \textit{bitfield} must be equal to or
 less than the number of bits declared in the bitfield name.
 
 You must declare them with the least significant bits first.
@@ -99,4 +99,133 @@ bitfield A192BitOne:192 {
 \caption{Packed 192-bit device example}
 \label{fig:A192BitXDR}
 \end{figure}
+
+\subsection{Added a \textit{class} object that extends \textit{struct}}
+RPCGEN++ accepts the keyword \textit{class} to be substituted in
+place of \textit{struct}.
+When \textit{class} is used, the object may have member functions.
+See \ref{ClassDefinition} for the full specification.
+\begin{figure}
+\begin{verbatim}
+class OverTheWirePacket {
+  Command    Cmd;
+  uint8_t    Payload<>;
+
+  /**
+   * You can define a constructor
+   *
+   * @param WhatToDo the command to process.
+   *
+   * @param Data In this example, the contents of Data is determinable
+   * from WhatToDo.
+   */
+  ObjectName(Command WhatToDo, uint8_t Data<>);
+
+  /**  
+   * When you define a constructor (like the previous line),
+   * RPCGEN++ will only create the ones you specify. If you specify none,
+   * it will generate a default constructor. So we also define a
+   * a default constructor
+   */
+  ObjectName();
+
+  /**
+   * You can define a destructor
+   */
+  ~ObjectName();
+
+  /**
+   * You can define an unlimited number of member functions.
+   * The 'const' signifies that the method GetTheAverageValues()
+   * does not alter the contents of this object.
+   *
+   * @param Value1 Any kind or number of function parameters.
+   *
+   * @param Enabled Another parameter
+   */
+  float GetTheAverageValues(float Value1, bool Enabled) const;
+};
+
+\end{verbatim}
+\caption{Example of new class keyword}
+\label{fig:ClassIntroXDR}
+\end{figure}
+
+\subsection{The \textit{class} data type}\label{sec:ClassDefinition}
+RPCGEN++ allows member functions to be placed inside
+of class elements that are passed to the target
+language as members of the object.
+
+Member names are of the form:
+\begin{figure}
+\begin{verbatim}
+;
+; For output languages that do not have pointer or reference types,
+; the pointer (*) or reference (&) is ignored.
+;
+; A method returns a TypeSpecifier type of data,
+;
+; Has a name (IDENTIFIER),
+; and takes zero or more parameters.
+;
+; For languages that support 'const', it signifies that
+; the named member is not allowed to modify the contents
+; of the object, and has read-only access.
+;
+method: 'const'? TypeSpecifier '*'? IDENTIFIER '(' Param* (',' Param)* ')' 'const'? ';'
+
+; An Param is of type Typespecifier, an optional pointer indicator '*',
+; or an optional reference indicator '&', and an optional
+; IDENTIFIER
+.
+Param : 'const'? TypeSpecifier ('*' | '&')? IDENTIFIER*
+
+;
+; A TypeSpecifier is any XDR data type
+; OR any user defined data type.
+;
+TypeSpecifier : XdrDataType | UserDataType
+\end{verbatim}
+\caption{Class Method Definition}
+\label{fig:ClassIntroXDR}
+\end{figure}
+
+\subsubsection{XDRDataType}
+Where XdrDataType is defined
+as \href {https://datatracker.ietf.org/doc/html/rfc4506#page-4}{XDR Data Types}
+
+\subsubsection{IDENTIFIER}
+An IDENTIFIER is a string starting with an upper or lower
+case letter, followed by zero or more upper or lower case
+letters or digits, or underline.
+
+\begin{figure}
+\begin{verbatim}
+IDENTIFIER : [a-zA-Z] ([a-zA-Z0-9_])*
+\end{verbatim}
+\caption{IDENTIFIER Definition}
+\label{fig:IDENTIFIERDefinitionXDR}
+\end{figure}
+
+\subsubsection{UserDataType}
+A user data type, is any typedef, struct, enum, or class
+name defined in the XDR file.
+\begin{figure}
+\begin{verbatim}
+enum User1 { cat = 1, dog = 2, human = 3};
+
+struct Car {
+ uint16_t Year;
+ string Make<>;
+ string Model<>;
+}
+
+typedef struct Car Cars<>;
+\end{verbatim}
+\caption{UserDataType Definition}
+\label{fig:UserDataTypeDefinitionXDR}
+\end{figure}
+
+In figure \ref{fig:UserDataTypeDefinitionXDR)}, User1, Car, and Cars
+are examples of a UserDataType.
 

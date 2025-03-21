@@ -1,6 +1,6 @@
 #
 # Project: Phoenix
-# Time-stamp: <2025-03-14 11:19:36 doug>
+# Time-stamp: <2025-03-17 17:31:35 doug>
 #
 # Copyright (C) 2025 by Douglas Mark Royer (A.K.A. RiverExplorer)
 # Author Douglas Mark Royer
@@ -85,6 +85,7 @@ SOURCES.hpp = \
 	GenerateCpp.hpp \
 	Generate.hpp \
 	rpcgen.hpp \
+	RpcgenShared.hpp \
 	$(ANTLR4_GENERATED.h)
 
 W64_CPPFLAGS	+=

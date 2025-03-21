@@ -1,6 +1,6 @@
 /**
  * Project: Phoenix
- * Time-stamp: <2025-03-13 13:22:23 doug>
+ * Time-stamp: <2025-03-21 09:58:23 doug>
  * 
  * @file rpcgen.cpp
  * @author Douglas Mark Royer
@@ -58,6 +58,7 @@ namespace RiverExplorer::rpcgen
 	std::string						ThisFileWasGenerated;
 	
 	std::string						Namespace;
+	std::string						CppNamespace;
 	std::vector<Item*>		OrderedItems;
 	State									CurrentState = Unknown;
 	bool									InArray = false;
@@ -498,6 +499,10 @@ namespace RiverExplorer::rpcgen
 					//
 					if (Text == "[") {
 						CurrentTypeDef->IsFixedArray = true;
+						
+					} else if (Text == "<>") {
+						CurrentTypeDef->IsVariableArray = true;
+
 					} else if (Text == "<") {
 						CurrentTypeDef->IsVariableArray = true;
 
@@ -580,7 +585,12 @@ namespace RiverExplorer::rpcgen
 					/*Ignore*/
 					
 				} else if (Text == ";" ) {
-					CurrentStruct->Members.push_back(CurrentStructMember);
+					// This is a hack fix for a bug.
+					// Something is generating an empty one that is not needed.
+					//
+					if (CurrentStructMember->Type != "" && CurrentStructMember->Name != "") {
+						CurrentStruct->Members.push_back(CurrentStructMember);
+					}
 					CurrentStructMember = nullptr;
 					
 				} else if (CurrentStructMember->Type == "") {
@@ -590,6 +600,9 @@ namespace RiverExplorer::rpcgen
 					CurrentStructMember->IsPointer = true;
 					std::cout << "Got Struct " << CurrentStruct->Name << " Pointer" << std::endl;
 
+				} else if (Text == "<>") {
+					CurrentStructMember->IsVariableArray = true;
+					
 				} else if (Text == "<") {
 					CurrentStructMember->IsVariableArray = true;
 					InArray = true;
@@ -635,7 +648,12 @@ namespace RiverExplorer::rpcgen
 				}
 			
 			} else {
-				CurrentStruct->Members.push_back(CurrentStructMember);
+				// This is a hack fix for a bug.
+				// Something is generating an empty one that is not needed.
+				//
+				if (CurrentStructMember->Type != "" && CurrentStructMember->Name != "") {
+					CurrentStruct->Members.push_back(CurrentStructMember);
+				}
 				CurrentStructMember = nullptr;
 			}
 			break;
@@ -724,6 +742,10 @@ namespace RiverExplorer::rpcgen
 					CurrentUnionCase = nullptr;
 					CurrentState = InUnion;
 				
+				} else if (Text == "<>") {
+					CurrentUnionCase->IsVariableArray = true;
+					WaitingValue = false;
+					
 				} else if (Text == "<") {
 					CurrentUnionCase->IsVariableArray = true;
 					WaitingValue = true;
@@ -1765,8 +1787,8 @@ main(int argc, char *argv[])
 		case 0: // Input
 			if (optarg) {
 				Input = optarg;
-				InputFileName = Input;
-				InputNoExtension = RemoveFileExtension(Input);
+				InputFileName = basename(Input.c_str());
+				InputNoExtension = basename(RemoveFileExtension(Input).c_str());
 				
 				if (!RunQuiet) {
 					std::cout << "Reading from input: " << Input << std::endl;
@@ -1960,6 +1982,8 @@ main(int argc, char *argv[])
 		
 		//		std::cout << Tree->toStringTree(&parser) << std::endl;
 
+		CppNamespace = NamespaceToCppNamespace();
+		
 		if (OrderedItems.size() > 0) {
 			if (!RunQuiet) {
 				std::cout << OrderedItems.size()
@@ -1998,6 +2022,8 @@ main(int argc, char *argv[])
 
 					ofstream Header(HeaderFile);
 
+					bool NamespacePrinted  = false;
+					
 					Header << "/**" << std::endl;
 					if (!NoBanner) {
 						GenerateThisFileWasGenerated(" * ", Header);
@@ -2021,25 +2047,53 @@ main(int argc, char *argv[])
 					Header << "#include <unistd.h>" << std::endl;
 					Header << "#endif // W64" << std::endl;
 					Header << "#include <memory.h>" << std::endl;
+
+#if wrong_method					
+					// Find the last '^%#include'
+					//
+					Item * LastInclude = nullptr;
 					
-					if (Namespace != "") {
-						Header << std::endl;
-						Header << "namespace " << NamespaceToCppNamespace()
-									 << std::endl << "{" << std::endl;
-						IndentLevel++;
-					}
 					for (ItemIt = OrderedItems.cbegin()
 								 ; ItemIt != OrderedItems.cend()
 								 ; ItemIt++) {
-							
+
+						OneItem = *ItemIt;
+
+						if (OneItem->Type == "PassThrough") {
+							if (OneItem->Name.starts_with("#include")) {
+								LastInclude = OneItem;
+							}
+						}
+					}
+#endif							
+					for (ItemIt = OrderedItems.cbegin()
+								 ; ItemIt != OrderedItems.cend()
+								 ; ItemIt++) {
+
+#if NOPE
+						// Only print namespace, after the last
+						// '#include', so we don't accidently
+						// double the depth of the namespaces.
+						//
+						if (!NamespacePrinted) {
+							if (Namespace != "") {
+								Header << std::endl;
+								Header << "namespace " << NamespaceToCppNamespace()
+											 << std::endl << "{" << std::endl;
+								IndentLevel++;
+							}
+						}
+#endif
 						OneItem = *ItemIt;
 						OneItem->PrintCppHeader(Header);
 					}
+#ifdef NOPE					
 					if (Namespace != "") {
 						IndentLevel--;
 						Header << "} // End namespace "
 									 << NamespaceToCppNamespace()<< std::endl;
 					}
+#endif					
 					Header << std::endl << "#endif // " << Define << std::endl;
 					Header.close();
 				}
@@ -2136,13 +2190,15 @@ main(int argc, char *argv[])
 
 				XdrFile << "#include \"" << InputNoExtension
 								<< ".hpp\"" << std::endl;
-						
+
+#ifdef NOPE				
 				if (Namespace != "") {
 					XdrFile << std::endl;
 					XdrFile << "namespace " << Namespace
 									<< std::endl << "{" << std::endl;
 					IndentLevel++;
 				}
+#endif				
 				for (ItemIt = OrderedItems.cbegin()
 							 ; ItemIt != OrderedItems.cend()
 							 ; ItemIt++) {
@@ -2150,10 +2206,12 @@ main(int argc, char *argv[])
 					OneItem = *ItemIt;
 					OneItem->PrintCppXDR(XdrFile);
 				}
+#ifdef NOPE				
 				if (Namespace != "") {
 					IndentLevel--;
 					XdrFile << "} // End namespace " << Namespace << std::endl;
 				}
+#endif				
 				XdrFile.close();
 			}
 

@@ -1,6 +1,6 @@
 /**
  * Project: Phoenix
- * Time-stamp: <2025-03-10 12:33:02 doug>
+ * Time-stamp: <2025-03-21 09:47:40 doug>
  * 
  * @file GenerateCpp.hpp
  * @author Douglas Mark Royer
@@ -21,6 +21,9 @@
 
 namespace RiverExplorer::rpcgen
 {
+	extern std::string Namespace;
+	extern std::string CppNamespace;
+	
 	/**
 	 * Convert the XDR type, to a C++ type.
 	 *
@@ -37,5 +40,8 @@ namespace RiverExplorer::rpcgen
 
 	extern void	GenerateSharedHpp(const std::string & InDirectory);
 
+	extern void	PrintCppNamespaceBegin(std::ofstream & Stream);
+	extern void	PrintCppNamespaceEnd(std::ofstream & Stream);
+	
 }
 #endif // _RIVEREXPLORER_RPCGEN_GENERATECPP_HPP_

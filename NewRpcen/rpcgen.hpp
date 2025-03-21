@@ -1,6 +1,6 @@
 /**
  * Project: Phoenix
- * Time-stamp: <2025-03-13 12:48:23 doug>
+ * Time-stamp: <2025-03-21 09:45:54 doug>
  * 
  * @file rpcgen.hpp
  * @author Douglas Mark Royer
@@ -26,6 +26,8 @@
 #include "xdrBaseListener.h"
 
 #include <rpc/rpc.h>
+
+#include "GenerateCpp.hpp"
 
 using namespace antlr4;
 using namespace std;
@@ -62,6 +64,11 @@ namespace RiverExplorer::rpcgen
 	 * When not empty, everything goes into this namespace.
 	 */
 	extern std::string Namespace;
+	
+	/**
+	 * Namespace converted to 'part1::part2::...' format.
+	 */
+	extern std::string CppNamespace;
 	
 	/**
 	 * Indentation level used when generating code.
@@ -173,40 +180,6 @@ namespace RiverExplorer::rpcgen
 	 */
 	extern std::string Indent(int Level);
 	
-	/**
-	 * @class Item
-	 * This exists as a base class for evertying, so
-	 * we can put them into one vector and keep the
-	 * original objcet order.
-	 */
-	class Item
-	{
-	public:
-
-		virtual void PrintCppHeader(ofstream & Stream) = 0;
-		virtual void PrintCppXDR(ofstream & Steam) = 0;
-		virtual void PrintCppStubs(ofstream & Stream) = 0;
-		virtual void PrintXSD(ofstream & Stream) = 0;
-		virtual void PrintAbnf(ofstream & Stream) = 0;
-		virtual void PrintServer(ofstream & Stream) = 0;
-		
-		bool IsPointer = false;
-		bool IsReference = false;
-		bool IsFixedArray = false;
-		bool IsVariableArray = false;
-		std::string ArraySize;
-
-		std::string Type;
-		std::string Name;
-
-		/**
-		 * Print the variable for a CPP Header.
-		 */
-		void PrintCppDeclareVariable(ofstream & Stream);
-	};
-
-	extern std::vector<Item*> OrderedItems;
-
 	enum State	{
 		Unknown,
 		InVar,
@@ -236,6 +209,40 @@ namespace RiverExplorer::rpcgen
 		InConstant,
 		InMethod
 	};
+
+	/**
+	 * @class Item
+	 * This exists as a base class for evertying, so
+	 * we can put them into one vector and keep the
+	 * original objcet order.
+	 */
+	class Item
+	{
+	public:
+		
+		virtual void PrintCppHeader(ofstream & Stream) = 0;
+		virtual void PrintCppXDR(ofstream & Steam) = 0;
+		virtual void PrintCppStubs(ofstream & Stream) = 0;
+		virtual void PrintXSD(ofstream & Stream) = 0;
+		virtual void PrintAbnf(ofstream & Stream) = 0;
+		virtual void PrintServer(ofstream & Stream) = 0;
+		
+		bool IsPointer = false;
+		bool IsReference = false;
+		bool IsFixedArray = false;
+		bool IsVariableArray = false;
+		std::string ArraySize;
+
+		std::string Type;
+		std::string Name;
+
+		/**
+		 * Print the variable for a CPP Header.
+		 */
+		void PrintCppDeclareVariable(ofstream & Stream);
+	};
+
+	extern std::vector<Item*> OrderedItems;
 
 	extern State CurrentState;
 	extern bool InArray;

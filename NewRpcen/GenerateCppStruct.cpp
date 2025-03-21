@@ -1,6 +1,6 @@
 /**
  * Project: Phoenix
- * Time-stamp: <2025-03-12 14:19:26 doug>
+ * Time-stamp: <2025-03-21 09:52:38 doug>
  * 
  * @file GenerateStuct.cpp
  * @author Douglas Mark Royer
@@ -51,6 +51,8 @@ namespace RiverExplorer::rpcgen
 		Stream << endl;
 
 		string I = Indent();
+
+		PrintCppNamespaceBegin(Stream);
 		
 		Stream << I << "class " << Name << endl;
 		Stream << I << "{" << endl;
@@ -146,9 +148,11 @@ namespace RiverExplorer::rpcgen
 		Stream << I << " * " << endl;
 		Stream << I << " * @return true on no errors." << endl;
 		Stream << I << " */" << endl;
-		Stream << I << "bool xdr_" << Name << "(XDR & Xdr, " << Name << " * Object);" << endl;
+		Stream << I << "bool xdr_" << Name << "(XDR * Xdr, " << Name << " * Object);" << endl;
 
 		Stream << endl;
+
+		PrintCppNamespaceEnd(Stream);
 		return;
 	}
 
@@ -160,6 +164,8 @@ namespace RiverExplorer::rpcgen
 
 		bool NeedSemi;
 		
+		PrintCppNamespaceBegin(Stream);
+
 		Stream << endl;
 
 		string I = Indent();
@@ -398,6 +404,7 @@ namespace RiverExplorer::rpcgen
 		Stream << I << "}; // End of " << Name << "::Xdr()" << endl;
 		Stream << endl;
 
+		PrintCppNamespaceEnd(Stream);
 		return;
 	}
 
@@ -490,6 +497,15 @@ namespace RiverExplorer::rpcgen
 			Member = dynamic_cast<StructMember*>(*MIt);
 
 			if (Member != nullptr) {
+
+				// This is a hack fix for a bug.
+				//
+				if (Member->Type == "" && Member->Name == "") {
+					continue;
+				}
+				//
+				// End Hack
+				
 				ToPad = Longest - Member->Name.length();
 				Pad.clear();
 				Pad.append(ToPad, ' ');

@@ -1,6 +1,6 @@
 /**
  * Project: Phoenix
- * Time-stamp: <2025-03-12 16:06:15 doug>
+ * Time-stamp: <2025-03-21 09:48:53 doug>
  * 
  * @file GenerateTypeDef.cpp
  * @author Douglas Mark Royer
@@ -28,9 +28,11 @@ namespace RiverExplorer::rpcgen
 	{
 		string I = Indent();
 
+		PrintCppNamespaceBegin(Stream);
 		Stream << I << "typedef ";
 		PrintCppDeclareVariable(Stream);
 		Stream << endl << endl;
+		PrintCppNamespaceEnd(Stream);
 		
 		return;
 	}

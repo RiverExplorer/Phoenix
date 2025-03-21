@@ -1,6 +1,6 @@
 /**
  * Project: Phoenix
- * Time-stamp: <2025-03-12 12:20:55 doug>
+ * Time-stamp: <2025-03-21 09:50:23 doug>
  * 
  * @file GenerateEnumValue.cpp
  * @author Douglas Mark Royer
@@ -32,7 +32,8 @@ namespace RiverExplorer::rpcgen
 		
 		string I = Indent();
 		bool PrintedOne = false;
-		
+
+		PrintCppNamespaceBegin(Stream);
 		Stream << I << "enum " << Name << " {" << endl;
 		
 		for (MIt = Enums.cbegin(); MIt != Enums.cend(); MIt++) {
@@ -61,8 +62,10 @@ namespace RiverExplorer::rpcgen
 		Stream << I << " * " << endl;
 		Stream << I << " * @return true on no errors." << endl;
 		Stream << I << " */" << endl;
-		Stream << I << "bool xdr_" << Name << "(XDR & Xdr, " << Name << " * Object);" << endl;
+		Stream << I << "bool xdr_" << Name << "(XDR * Xdr, " << Name << " * Object);" << endl;
 		Stream << endl;
+
+		PrintCppNamespaceEnd(Stream);
 	}
 
 	void
