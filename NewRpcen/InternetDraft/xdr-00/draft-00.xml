@@ -1,0 +1,259 @@
+<?xml version="1.0" encoding="utf-8"?>
+<?xml-model href="rfc7991bis.rnc"?>
+<?xml-stylesheet type="text/xsl" href="rfc2629.xslt" ?>
+<!-- This third-party XSLT can be enabled for direct transformations in XML processors, including most browsers -->
+<!DOCTYPE rfc [
+  <!ENTITY nbsp    "&#160;">
+  <!ENTITY zwsp   "&#8203;">
+  <!ENTITY nbhy   "&#8209;">
+  <!ENTITY wj     "&#8288;">
+]>
+<!-- If further character entities are required then they should be added to the DOCTYPE above.
+     Use of an external entity file is not recommended. -->
+
+<rfc
+  xmlns:xi="http://www.w3.org/2001/XInclude"
+  category="info"
+  docName="draft-royer-bits-in-xdr-00"
+  ipr="trust200902"
+  obsoletes=""
+  updates=""
+  submissionType="IETF"
+  xml:lang="en"
+  version="3">
+<!-- [REPLACE] 
+       * docName with name of your draft
+     [CHECK] 
+       * category should be one of std, bcp, info, exp, historic
+       * ipr should be one of trust200902, noModificationTrust200902, noDerivativesTrust200902, pre5378Trust200902
+       * updates can be an RFC number as NNNN
+       * obsoletes can be an RFC number as NNNN 
+-->
+
+  <front>
+    <title abbrev="Abbreviated Title">Bits in XDR</title>
+    <seriesInfo name="Internet-Draft" value="draft-royer-bits-in-xdr-00"/>
+   
+    <author fullname="Doug Royer" initials="DM" surname="Royer">
+      <organization>RiverExplorer LLC</organization>
+      <address>
+        <postal>
+          <!-- Reorder these if your country does things differently -->
+          <street>848 N. Rainbow Blvd, Ste-1120</street>
+          <city>Las Vegas</city>
+          <region>Nevada</region>
+          <code>89107</code>
+          <country>US</country>
+          <!-- Uses two letter country code -->
+        </postal>        
+        <phone>+1-208-806-1358</phone>
+        <email>DouglasRoyer@gmail.com</email>  
+        <!-- Can have more than one <email> element -->
+        <uri>https://DougRoyer.US</uri>
+      </address>
+    </author>
+   
+    <date year="2025"/>
+    <area>General</area>
+    <workgroup>Internet Engineering Task Force</workgroup>
+    <keyword>XDR</keyword>
+    <keyword>bit</keyword>
+    <abstract>
+      <t>
+				This is an extension to the XDR specification to allow
+				for bits to be described and sent.
+			</t>
+			<t>
+				With protocols that have a large number of boolean values
+				the existing standard requires each to be individually
+				packed into a 32-bit value.
+			</t>
+			<t>
+				This addition does not alter any XDR data streams or
+				effect existing implementations.
+			</t>
+			<ul>
+				<li>
+					This specification describes how to pack a bit-boolean and
+					short bit-width data values into the 32-bit XDR block size.
+				</li>
+				<li>
+					And this specification describes how to describe them
+					by extending "The XDR Language Specification" to include
+					bits.
+				</li>
+			</ul>
+    </abstract>
+ 
+  </front>
+
+  <middle>
+    
+    <section>
+      <name>Introduction</name>
+			<t>
+				Definitions:
+			</t>
+			<ul>
+				<li>
+					<t>
+						A value with 2 to 31 bits is called a bit-value.
+						In order for it to be a bit-value, it must be
+						less than 32-bits in width as a 32-bit
+						value are processed as described in RFC-XDR.
+					</t>
+					<t>
+						A bit-value value can be signed or unsigned.
+						They often represent a set of possible conditions
+						and not a numeric value and would be unsigned.
+						And in other usages, the bits could represent a positive or
+						negative value.
+					</t>
+				</li>
+				<li>
+					A single bit value is called a bit-boolean.
+					A bit-boolean is a single bit in a 32-bit value.
+					A bit-boolean by itself has no sign.
+					Up to 32 bit-booleans fit in a 32-bit XDR block.
+				</li>
+			</ul>
+			<t>
+			</t>
+			<t>
+				All multi bit width values are placed into network byte
+				order the same as their 32-bit or wider values
+				as described in RFC-XDR.
+			</t>
+			<t>
+				The bits are packed into a 32-bit block with the
+				first bits included taking the least significant position.
+				And later included bits taking position up to the
+				most significant position.
+			</t>
+      <section>
+        <name>Requirements Language</name>
+        <t>The key words "MUST", "MUST NOT", "REQUIRED", "SHALL",
+          "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT
+          RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be
+          interpreted as described in BCP 14 <xref target="RFC2119"/>
+          <xref target="RFC8174"/> when, and only when, they appear in
+          all capitals, as shown here.</t>
+      </section>
+      <!-- [CHECK] The 'Requirements Language' section is optional -->
+
+    </section>
+    
+    <section>
+      <name>Packing Bits</name>
+      <t>
+				This specification has two objectives.
+			</t>
+			<ul>
+				<li>Boolean value packing.</li>
+				<li>Small value packing.</li>
+			</ul>
+      <figure>
+        <name>Source [REPLACE]</name>
+        <sourcecode name="suggested filename [REPLACE/DELETE]" type="language [REPLACE/DELETE]" markers="true">
+          <![CDATA[
+source code goes here [REPLACE]
+          ]]>
+        </sourcecode>
+        <!-- [CHECK] markers="true" means that the rendered file will have <CODE BEGINS> and <CODE ENDS> added -->
+      </figure>
+
+      <figure>
+        <name>Diagram [REPLACE]</name>
+        <artset>
+        <!-- This <artset> includes two <artwork> elements, each of a different type -->
+          <artwork type="svg" src="https://www.rfc-editor.org/materials/format/svg/stream.svg" />
+          <!-- [REPLACE] src points to either a local file or a URI. -->
+          <artwork type="ascii-art" name="stream.txt">
+            <!-- [REPLACE/DELETE] name recommends a filename to use if the diagram is extracted -->  
+            <![CDATA[
+ ascii-art diagram goes here [REPLACE]
+            ]]>
+          </artwork>
+        </artset>
+      </figure>
+    </section>   
+    
+    <section anchor="IANA">
+    <!-- All drafts are required to have an IANA considerations section. See RFC 8126 for a guide.-->
+      <name>IANA Considerations</name>
+      <t>This memo includes no request to IANA. [CHECK]</t>
+    </section>
+    
+    <section anchor="Security">
+      <!-- All drafts are required to have a security considerations section. See RFC 3552 for a guide. -->
+      <name>Security Considerations</name>
+      <t>This document should not affect the security of the Internet. [CHECK]</t>
+    </section>
+    
+    <!-- NOTE: The Acknowledgements and Contributors sections are at the end of this template -->
+  </middle>
+
+  <back>
+    <references>
+      <name>References</name>
+      <references>
+        <name>Normative References</name>
+        
+        <xi:include href="References/reference.RFC.2119.xml"/>
+        <xi:include href="References/reference.RFC.4506.xml"/>
+        <xi:include href="References/reference.RFC.8174.xml"/>
+        <!-- The recommended and simplest way to include a well known reference -->
+        
+      </references>
+ 
+      <references>
+        <name>Informative References</name>
+       
+        <reference anchor="exampleRefMin">
+        <!-- [REPLACE/DELETE] Example minimum reference -->
+          <front>
+            <title>Title [REPLACE]</title>
+            <author initials="Initials [REPLACE]" surname="Surname [REPLACE]">
+              <organization/>
+            </author>
+            <date year="2006"/>
+            <!-- [CHECK] -->
+          </front>
+        </reference>
+
+        <reference anchor="exampleRefOrg" target="http://www.example.com/">
+        <!-- [REPLACE/DELETE] Example reference written by an organization not a person -->
+          <front>
+            <title>Title [REPLACE]</title>
+            <author>
+              <organization>Organization [REPLACE]</organization>
+            </author>
+            <date year="1984"/>
+            <!-- [CHECK] -->
+          </front>
+        </reference>       
+       
+      </references>
+    </references>
+    
+    <section>
+      <name>Appendix 1 [REPLACE/DELETE]</name>
+      <t>This becomes an Appendix [REPLACE]</t>
+    </section>
+
+    <section anchor="Acknowledgements" numbered="false">
+      <!-- [REPLACE/DELETE] an Acknowledgements section is optional -->
+      <name>Acknowledgments</name>
+      <t>This template uses extracts from templates written by Pekka Savola, Elwyn Davies and 
+        Henrik Levkowetz. [REPLACE]</t>
+    </section>
+    
+    <section anchor="Contributors" numbered="false">
+      <!-- [REPLACE/DELETE] a Contributors section is optional -->
+      <name>Contributors</name>
+      <t>Thanks to all of the contributors. [REPLACE]</t>
+      <!-- [CHECK] it is optional to add a <contact> record for some or all contributors -->
+    </section>
+    
+ </back>
+</rfc>
