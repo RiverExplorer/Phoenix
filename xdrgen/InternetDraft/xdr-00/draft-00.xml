@@ -1,0 +1,696 @@
+<?xml version="1.0" encoding="utf-8"?>
+<?xml-model href="rfc7991bis.rnc"?>
+<?xml-stylesheet type="text/xsl" href="rfc2629.xslt" ?>
+<!-- This third-party XSLT can be enabled for direct transformations in XML processors, including most browsers -->
+<!DOCTYPE rfc [
+  <!ENTITY nbsp    "&#160;">
+  <!ENTITY zwsp   "&#8203;">
+  <!ENTITY nbhy   "&#8209;">
+  <!ENTITY wj     "&#8288;">
+]>
+<!-- If further character entities are required then they should be added to the DOCTYPE above.
+     Use of an external entity file is not recommended. -->
+
+<rfc
+  xmlns:xi="http://www.w3.org/2001/XInclude"
+  category="info"
+  docName="draft-royer-bits-in-xdr-00"
+  ipr="trust200902"
+  obsoletes=""
+  updates=""
+  submissionType="IETF"
+  xml:lang="en"
+  version="3">
+<!-- [REPLACE] 
+       * docName with name of your draft
+     [CHECK] 
+       * category should be one of std, bcp, info, exp, historic
+       * ipr should be one of trust200902, noModificationTrust200902, noDerivativesTrust200902, pre5378Trust200902
+       * updates can be an RFC number as NNNN
+       * obsoletes can be an RFC number as NNNN 
+-->
+
+  <front>
+    <title abbrev="Abbreviated Title">Bits in XDR</title>
+    <seriesInfo name="Internet-Draft" value="draft-royer-bits-in-xdr-00"/>
+   
+    <author fullname="Doug Royer" initials="DM" surname="Royer">
+      <organization>RiverExplorer LLC</organization>
+      <address>
+        <postal>
+          <!-- Reorder these if your country does things differently -->
+          <street>848 N. Rainbow Blvd, Ste-1120</street>
+          <city>Las Vegas</city>
+          <region>Nevada</region>
+          <code>89107</code>
+          <country>US</country>
+          <!-- Uses two letter country code -->
+        </postal>        
+        <phone>+1-208-806-1358</phone>
+        <email>DouglasRoyer@gmail.com</email>  
+        <!-- Can have more than one <email> element -->
+        <uri>https://DougRoyer.US</uri>
+      </address>
+    </author>
+   
+    <date year="2025"/>
+    <area>General</area>
+    <workgroup>Internet Engineering Task Force</workgroup>
+    <keyword>XDR</keyword>
+    <keyword>bit</keyword>
+    <abstract>
+      <t>
+				This is an extension to the XDR specification to allow
+				for bits to be described and sent.
+			</t>
+			<t>
+				With protocols that have a large number of boolean values
+				the existing standard requires each to be individually
+				packed into a 32-bit value.
+			</t>
+			<t>
+				This addition does not alter any existing XDR data streams or
+				effect existing implementations. 
+			</t>
+			<ul>
+				<li>
+					This specification describes how to pack a bit-boolean and
+					short bit-width data values into the 32-bit XDR block chunks.
+				</li>
+				<li>
+					And this specification describes how to describe them
+					by extending "The XDR Language Specification" to include
+					bits.
+				</li>
+				<li>
+					And a new namespace declaration type is specified
+					to aid in the reduction of name collisions in
+					large projects.
+				</li>
+			</ul>
+    </abstract>
+ 
+  </front>
+
+  <middle>
+    
+    <section>
+      <name>Introduction</name>
+			<t>
+				Definitions:
+			</t>
+			<ul>
+				<li>
+					<t>
+						A value with 2 or more bits is called a bit-value.
+					</t>
+					<t>
+						A bit-value value can be signed or unsigned.
+						They often represent a set of possible conditions
+						and not a numeric value and would be unsigned.
+						And in other usages, the bits could represent a positive or
+						negative value.
+					</t>
+				</li>
+				<li>
+					A single bit value is called a bit-boolean.
+					A bit-boolean is a single bit representing
+					a true or false value.
+					A bit-boolean by itself has no sign.
+					Up to 32 bit-boolean fit in a 32-bit XDR block.
+				</li>
+				<li>
+					A scope is a way of extending a name of a item
+					to uniquely identify it.
+					As an example, file A variable 'a' and file B variable 'a'
+					can be difficult to uniquely identify in code.
+					By adding a 'namespace A' and a second 'namespace B',
+					they can then be identified with 'A:a' and 'B:a'.
+				</li>
+			</ul>
+			<t>
+			</t>
+			<t>
+				All multi bit width values are placed into network byte
+				order the same as their 32-bit or wider values
+				as described in XDR <xref target="RFC4506"/>.
+			</t>
+    </section>
+
+		<section>
+			<name>The XDR Bit Language Specification</name>
+			<t>
+				With an large amount of bits and data packets
+				it is easier to have name collisions between
+				generated object.
+				For this reason a new 'namespace' declaration'
+				type is specified in <xref target="NamespaceSec"/>
+			</t>
+			<t>
+				A new RFC-XDR type-specifier of 'bitobject'
+				is added to the one shown
+				in <xref target="RFC4506" section="6.3"/>.
+				Resulting in 'type-specifier' becoming:
+			</t>
+			<figure anchor="NewTypeSpecifier">
+				<name>Extended type-specifier ABNF</name>
+			 <artwork type="abnf" name="" align="left" alt=""><![CDATA[
+type-specifier:
+           [ "unsigned" ] "int"
+         | [ "unsigned" ] "hyper"
+         | "float"
+         | "double"
+         | "quadruple"
+         | "bool"
+         | enum-type-spec
+         | struct-type-spec
+         | union-type-spec
+         | identifier
+         | bitobject
+]]></artwork>
+			</figure>
+
+			 <t>
+				 The properties of a bitobject are:
+			 </t>
+			 <ul>
+				 <li><t>A bitobject only consists of one or more of:</t>
+				 <ul>
+					 <li>A signed integer value: "sbits"</li>
+					 <li>An unsigned integer value: "ubits"</li>
+					 <li>A boolean "bit"</li>
+				 </ul>
+				 </li>
+				 <li>
+					 Floating point numbers would be transmitted as
+					 a float value as already described in <xref target="RFC4506"/>
+					 as they have a sign, exponent and a mantissa.
+					 No floating value is defined in a bitobject.
+				 </li>
+				 <li>
+					 Unused bits are set to zero (0).
+				 </li>
+				 <li>
+					 All bit widths that exceed 32-bits would be placed
+					 into two or more bitobject values. With the ones
+					 containing the most significant bits sent first
+					 and the one with the least signification bits
+					 sent last.
+				 </li>
+				 <li>
+					 A bitobject does not need to define 32-bits of data.
+					 The undefined bits are at the most significant end
+					 of the 32-bits object and and are set to zero.
+				 </li>
+				 <li>
+					 All <xref target="RFC4506"/> type-specifier objects
+					 are at least 32-bits wide which means that "sbits",
+					 "ubits", or "bit" can never occupy a 32-bit XDR block
+					 with a  <xref target="RFC4506"/> type-specifier.
+				 </li>
+				 <li>
+					 A 32-bit wide "sbits" is the same as a
+					 <xref target="RFC4506" section="4.1" sectionFormat="comma"/>
+					 signed integer.
+					 Except when they span 32-bit blocks.
+					 See <xref target="WideBits"/>.
+				 </li>
+				 <li>
+					 A 32-bit wide "ubits" is the same as a
+					 <xref target="RFC4506" section="4.2" sectionFormat="comma"/>
+					 unsigned integer.
+					 Except when they span 32-bit blocks.
+					 See <xref target="WideBits"/>.
+				 </li>
+			 </ul>
+			 <figure>
+				 <name>bitobject ABNF</name>
+			 <artwork type="abnf" name="" align="left" alt=""><![CDATA[
+bitobject:
+      "{"
+         ( width-declaration ";" )
+         ( width-declaration ";" )*
+      "}"
+				 
+width-declaration:
+      "bit"   identifier
+      "sbits" identifier ":" %d
+      "ubits" identifier ":" %d
+]]></artwork>
+			 </figure>
+			 <t>
+				 <xref target="bits1"/> is one example of a bitobject.
+				 that is 32-bits wide.
+			 </t>
+			 <figure anchor="bits1">
+				 <name>Multiple Bits Example</name>
+				 <artwork type="abnf" name="" align="left" alt=""><![CDATA[
+bitobject AssemblyLineStatus
+{
+  bit   LightOn;
+  ubits Status:3;
+  ubits SwitchPosition:4;
+  sbits Rotation:10;
+  bit   Active;
+  ubits UnitsPerMinute:8;
+  ubits UnitID:5;
+};
+]]></artwork>
+			 </figure>
+			 <t>
+				 Example <xref target="bits2"/> uses 11 bit-boolean
+				 values and would be transmitted
+				 in one 32-bit block.
+			 </t>
+			 <figure anchor="bits2">
+				 <name>Flags Example</name>
+				 <artwork type="abnf" name="" align="left" alt=""><![CDATA[
+bitobject EmailStatus
+{
+  bit Seen:1;
+  bit Answered:1;
+  bit Flagged:1
+  bit Deleted:1
+  bit Draft:1
+  bit Recent:1
+  bit Forwarded:1
+  bit Ignored:1
+  bit Watched:1
+  bit Shared:1
+  bit ReadOnly:1
+};
+]]></artwork>
+			 </figure>
+			 <t>
+				 Example <xref target="bits3"/> contains two 42 bit-boolean
+				 values and would be transmitted
+				 in three 32-bit blocks.
+			 </t>
+			 <figure anchor="bits3">
+				 <name>Wider than 32 bit example:</name>
+				 <artwork type="abnf" name="" align="left" alt=""><![CDATA[
+bitobject Trajectory
+{
+  ubits Velocity:42;
+  sbits VectorX:14;
+  sbits VectorY:14;
+  sbits VectorZ:14;
+};
+]]></artwork>
+			 </figure>
+			 <t>
+				 In some cases, like in <xref target="bits1"/>
+				 "AssemblyLineStatus" and in 
+				 <xref target="bits3"/> "Trajectory",
+				 the bits could represent the output of a hardware device
+				 where the bits are defined by a manufacturer.
+			 </t>
+			 <t>
+				 And in other cases the bits could be logical software
+				 flags that have a predefined bit-position in a bit stream
+				 as exampled in <xref target="bits2"/>.
+			 </t>
+		</section>
+    
+    <section>
+      <name>Packing Bits</name>
+			<t>
+				The bit-boolean and bit-value objects are processed
+				from the top to the bottom as shown in their bitobject
+				XDR language definition.
+			</t>
+			<t>
+				The top most value would be packed into the least
+				significant bits.
+				The second from the top value would be placed
+				next to it, and so on.
+			</t>
+			<t>
+				bit-values are converted to network byte order
+				and then bit packed.
+			</t>
+			<t>
+				And a caution to the implementors for signed bit-value
+				data.
+				Many computer languages will convert a narrower bit value
+				into a wider bit value and move the sign bit to the
+				most significant position.
+				So when preparing a signed bit-value, be sure to clamp the value
+				and adjust the sign to the correct bit position before
+				packing the bits.
+				This would apply to "sbits" and not "ubits".
+			</t>
+			<section>
+				<name>Packing bit-boolean</name>
+				<t>
+					This is how the XDR Language bitobject "EmailStatus" in
+					<xref target="bits2"/> would be packed.
+					"EmailStatus" is a bitobject that only
+					contains bit-boolean values.
+				</t>
+				<figure>
+					<name>How <xref target="bits2"/> would be packed.</name>
+					<artset>
+						<artwork type="ascii-art" src="EmailStatusTxt.txt"/>
+						<artwork type="svg" src="EmailStatusSvg.svg"/>
+					</artset>
+				</figure>
+			</section>
+			<section>
+				<name>Packing bit-values</name>
+				<t>
+					This example has both bit-boolean and bit-value data
+					being packed together.
+				</t>
+				<t>
+					Here is how the XDR Language bitobject "AssemblyLineStatus"
+					shown in <xref target="bits1"/> would be packed:
+				</t>
+				<figure>
+					<name>How <xref target="bits1"/> would be packed.</name>
+					<artset>
+						<artwork type="ascii-art" src="Assy.txt"/>
+						<artwork type="svg" src="Assy.svg"/>
+					</artset>
+				</figure>
+				<section anchor="WideBits">
+					<name>Packing wider than 32-bit-values or spanning blocks</name>
+					<t>
+						This shows how to pack values that are wider
+						than 32-bits.
+					</t>
+					<t>
+						The values would be converted to network byte order like
+						with 
+						<xref target="RFC4506" section="4.5" sectionFormat="comma"/>
+						Hyper Integer and Unsigned Hyper Integer values.
+						With their values clamped to the width defined
+						and sbits values having their sign at their own
+						most significant bit position.
+					</t>
+					<t>
+						Here is how the XDR Language bitobject "Trajectory"
+						shown in <xref target="bits3"/> would be packed into
+						three 32-bit XDR blocks:
+					</t>
+					<figure anchor="bits3-again">
+						<name>Trajectory - shown again</name>
+						<artset>
+							<artwork type="ascii-art" src="ExtraWide.txt"/>
+							<artwork type="svg" src="ExtraWide.svg"/>
+						</artset>
+					</figure>
+						<section>
+							<name>Most significant 32-bit block of
+							<xref target="bits3-again"/> "Trajectory"
+							</name>
+						<ul>
+							<li>11 unused bits set to zero (0).</li>
+							<li>14-bit "VectorZ:14"</li>
+							<li>The most significant 7 bits of 14-bit "VectorY:14"</li>
+						</ul>
+						<figure anchor="bit3-a">
+							<name>
+								How <xref target="bits3-again"/> "Trajectory" most
+								signification 32-bit block would be packed.
+							</name>
+							<artset>
+								<artwork type="ascii-art" src="ExtraWideA.txt"/>
+								<artwork type="svg" src="ExtraWideA.svg"/>
+							</artset>
+						</figure>
+					</section>
+					<section>
+						<name>
+							How <xref target="bits3-again"/> "Trajectory" middle
+							signification 32-bit block would be packed.
+						</name>
+						<t>
+							The middle signification 32-bit block of "Trajectory" would
+							have:
+						</t>
+						<ul>
+							<li>The least significant 7 bits of 14-bit "VectorY:14.</li>
+							<li>14-bit "VectorX:14"</li>
+							<li>The most significant 10 bits of 42-bit "Velocity:42"</li>
+						</ul>
+						<figure anchor="bits3-b">
+							<name>
+								How <xref target="bits3-again"/> "Trajectory" middle
+								signification 32-bit block would be packed.
+							</name>
+							<artset>
+								<artwork type="ascii-art" src="ExtraWideB.txt"/>
+								<artwork type="svg" src="ExtraWideB.svg"/>
+							</artset>
+						</figure>
+					</section>
+					<section>
+						<name>
+							How <xref target="bits3-again"/> "Trajectory" least
+							signification 32-bit block would be packed.
+						</name>
+						<figure anchor="bits3-c">
+							<name>
+								How <xref target="bits3-again"/> "Trajectory" least
+								signification 32-bit block would be packed.
+							</name>
+							<artset>
+								<artwork type="ascii-art" src="ExtraWideC.txt"/>
+								<artwork type="svg" src="ExtraWideC.svg"/>
+							</artset>
+						</figure>
+					</section>
+					<section>
+					</section>
+				</section>
+			</section>
+    </section>
+
+		<section anchor="NamespaceSec">
+			<name>Reducing Namespace Collision in Generated Code</name>
+
+			<t>
+				When gathering specifications and definitions from multiple
+				specifications it can be much more convenient to be able
+				to name each identifier in a way the most resembles the
+				original specification.
+				However it can be confusing to uniquely identify them
+				in generated code, and match them up to the XDR
+				Language file that generated them.
+			</t>
+			<t>
+				For this reason a new 'namespace' declaration type
+				is being defined.
+			</t>
+			<figure anchor="Namespace">
+				<name>namespace declaration type</name>
+				<artwork type="abnf" name="" align="left" alt=""><![CDATA[
+namespace = 'namespace' identifier *( ':' identifier) ';'
+]]></artwork>
+			</figure>
+			<t>
+				A namespace may have several scope levels.
+				Each scope name separated by a colon (:).
+			</t>
+			<t>
+				As each 'namespace' is encountered, all objects
+				that follow will be in that scoped namespace.
+				Zero or more 'namespaces' declarations may be in
+				one XDR Language source.
+			</t>
+			<t>
+				<xref target="RFC4506" section="6.3"/> 'declaration'
+				is modified to:
+			</t>
+			<figure anchor="NewDeclaration">
+				<name>Extended declaration ABNF</name>
+			 <artwork type="abnf" name="" align="left" alt=""><![CDATA[
+declaration:
+           type-specifier identifier
+         | type-specifier identifier "[" value "]"
+         | type-specifier identifier "<" [ value ] ">"
+         | "opaque" identifier "[" value "]"
+         | "opaque" identifier "<" [ value ] ">"
+         | "string" identifier "<" [ value ] ">"
+         | type-specifier "*" identifier
+         | "void"
+         | namespace
+]]></artwork>
+			</figure>
+			<t>
+				Examples:
+			</t>
+			<figure anchor="NamespaceAbnf">
+				<name>namespace type-specifier</name>
+				<artwork type="abnf" name="" align="left" alt=""><![CDATA[
+namespace ietf:xdr:example_namespace;
+
+namespace RiverExplorer:Phoenix:xdrgen;
+]]></artwork>
+			</figure>
+			<t>
+				Multiple namespaces in one definition could look like this:
+			</t>
+			<figure anchor="NamespaceEx">
+				<name>Namespace Example</name>
+				<artwork type="abnf" name="" align="left" alt=""><![CDATA[
+namespace MyCompany:LauchPad;
+				 
+bitobject Status
+{
+  bit   OffLine;
+  bit   LightOn;
+  ubits Status:3;
+  ubits SwitchPosition:4;
+  sbits Rotation:10;
+  bit   Active;
+  ubits UnitsPerMinute:8;
+  ubits UnitID:5;
+};
+	
+namspace MyCompany:Projectile;
+
+bitobject Status
+{
+  bit   OffLine;
+  ubits Status:3;
+  sbits Rotation:14;
+  ubits Velocity:42;
+  sbits VectorX:14;
+  sbits VectorY:14;
+  sbits VectorZ:14;
+};
+]]></artwork>
+			</figure>
+			<t>
+				The result would be two 'Status' data types.
+				They are similar, and unique.
+				Perhaps they came from different specifications.
+				And each uniquely identifiable by their scope.
+				And the variables produced could be referenced
+				with:
+			</t>
+			<ul>
+				<li>'MyCompany:LaunchPad:Status'</li>
+				<li>'MyCompany:Projectile:Status'</li>
+			</ul>
+			<t>
+				This also makes it easier to identify an object
+				in an XDR <xref target="RFC4506" section="4.15"/> union:
+			</t>
+			<t>
+				Multiple namespaces used in one definition could look like this:
+			</t>
+			<figure anchor="NamespaceUnion">
+				<name>Namespace Example</name>
+				<artwork type="abnf" name="" align="left" alt=""><![CDATA[
+enum Type = {
+ LaunchPadType = 1,
+ ProjectileType = 2
+};
+
+union ObjectStatus (Type WhichType)
+{
+  case LaunchPadType:
+   MyCompany:LaunchPad:Status PadStatus;
+	
+  case ProjectilePadType:
+   MyCompany:ProjectilePad:Status ProjectileStatus;
+
+  default:
+   void;
+};
+]]></artwork>
+			</figure>
+			
+		</section>
+    <section anchor="IANA">
+    <!-- All drafts are required to have an IANA considerations section. See RFC 8126 for a guide.-->
+      <name>IANA Considerations</name>
+      <t>This memo includes no request to IANA. [CHECK]</t>
+    </section>
+    
+    <section anchor="Security">
+      <!-- All drafts are required to have a security considerations section. See RFC 3552 for a guide. -->
+      <name>Security Considerations</name>
+      <t>This document should not affect the security of the Internet. [CHECK]</t>
+    </section>
+    
+    <!-- NOTE: The Acknowledgements and Contributors sections are at the end of this template -->
+  </middle>
+
+  <back>
+    <references>
+      <name>References</name>
+      <references>
+        <name>Normative References</name>
+        
+        <xi:include href="References/reference.RFC.2119.xml"/>
+        <xi:include href="References/reference.RFC.4506.xml"/>
+        <!-- The recommended and simplest way to include a well known reference -->
+        
+      </references>
+      <references>
+        <name>Informative References</name>
+       
+        <reference anchor="xdrgen" target="https://github.com/RiverExplorer/Phoenix/xdrgen">
+        <!-- [REPLACE/DELETE] Example minimum reference -->
+          <front>
+            <title>XDR Code Generator, Open Source</title>
+            <author initials="DM" surname="Royer">
+              <organization>RiverExplorer LLC</organization>
+            </author>
+            <date year="2025"/>
+            <!-- [CHECK] -->
+          </front>
+        </reference>
+
+        <reference anchor="abnfbits" target="https://www.ietf.org/archive/id/draft-royer-bits-in-abnf-00.txt">
+        <!-- [REPLACE/DELETE] Example minimum reference -->
+          <front>
+            <title>Bits in ABNF, Work in Progress</title>
+            <author initials="DM" surname="Royer">
+              <organization>RiverExplorer LLC</organization>
+            </author>
+            <date year="2025"/>
+            <!-- [CHECK] -->
+          </front>
+        </reference>
+
+        <reference anchor="exampleRefOrg" target="http://www.example.com/">
+        <!-- [REPLACE/DELETE] Example reference written by an organization not a person -->
+          <front>
+            <title>Title [REPLACE]</title>
+            <author>
+              <organization>Organization [REPLACE]</organization>
+            </author>
+            <date year="1984"/>
+            <!-- [CHECK] -->
+          </front>
+        </reference>       
+       
+      </references>
+    </references>
+    
+    <section>
+      <name>Appendix 1 [REPLACE/DELETE]</name>
+      <t>This becomes an Appendix [REPLACE]</t>
+    </section>
+
+    <section anchor="Acknowledgements" numbered="false">
+      <!-- [REPLACE/DELETE] an Acknowledgements section is optional -->
+      <name>Acknowledgments</name>
+      <t>This template uses extracts from templates written by Pekka Savola, Elwyn Davies and 
+        Henrik Levkowetz. [REPLACE]</t>
+    </section>
+    
+    <section anchor="Contributors" numbered="false">
+      <!-- [REPLACE/DELETE] a Contributors section is optional -->
+      <name>Contributors</name>
+      <t>Thanks to all of the contributors. [REPLACE]</t>
+      <!-- [CHECK] it is optional to add a <contact> record for some or all contributors -->
+    </section>
+    
+ </back>
+</rfc>
