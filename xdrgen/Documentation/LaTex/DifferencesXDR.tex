@@ -1,0 +1,231 @@
+\section{XDR Differences from RFC-4506}
+\subsection{Place 'struct' Outside of 'union'}
+Currently RPCGEN++ does not allow structs to be defined in unions.
+Define them out side of the union, and then use them.
+
+For example, this is valid as defined in RFC-4506:
+\input{StructInUnion}
+
+Currently, with RPCGEN++, you will need to define your
+structure outside of the union as shown in this example:
+\input{StructOutsideUnion}
+
+\subsection{RPCGEN++ has support for bit XDR fields}
+The \textit{bitfield} objects are useful when you have boolean or other
+values that do not need to have their own 32-bit storage.
+Or they could represent the bit values needed to interface
+with hardware.
+
+They are declared by appending a colon (:) and a decimal number
+after the data type or variable name.
+They are defined using the \textit{bitfield} data type.
+In this example, \textit{TwoFourBitValues} is declared
+as 8-bits in size, and it contains two 4-bit values.
+\begin{figure}
+\begin{verbatim}
+bitfield TwoFourBitValues:8 {
+   int8_t:4 MyVariableName:4;
+   int8_t:4 TheOtherFourBits:4;
+};
+\end{verbatim}
+\caption{Two Four Bit values in one 8-bit value}
+\label{fig:A32BitExampleXDR}
+\end{figure}
+
+The number of bits inside of the \textit{bitfield} must be equal to or
+less than the number of bits declared in the bitfield name.
+
+You must declare them with the least significant bits first.
+\textit{MyVariableName} in the example would be placed in
+bit positions 0-3 and \textit{TheOtherFourBits} would occupy
+bit position 4-7.
+
+\textit{For signed values}, make sure that the value you pass
+into the encoding call is correctly signed for the bit
+width you specified in the XDR file.
+If you specify a 4-bit value as signed
+and pass it in as an 8-bit signed value, the sign bit will not
+be encoded.
+
+The \textit{bitfield} values can be signed or unsigned and
+are XDR encoded and XDR decoded on their own.
+Once encoded the \textit{bitfield} itself is sent as
+opaque data.
+
+In this example, the \textit{bitfield} is 64-bits and
+contains multiple values that are not byte aligned:
+\begin{figure}
+\begin{verbatim}
+bitfield ALargeOne:64 {
+   int8_t:1 DeviceEnabled:1;     /* 'A' */
+   int8_t:2 DeviceMode:2;        /* 'B' */
+   int8_t:4 DeviceRotation:4;    /* 'C' */
+   int8_t:4 DeviceStatus:4;      /* 'D' */
+   int32_t:32 DevicePosition:32; /* 'E' */
+};
+\end{verbatim}
+\caption{Packed 64-bit device example}
+\label{fig:ALargeOneXDR}
+\end{figure}
+The upper 21 bits are undefined in this example,
+and are set to zero (0) in this
+implementation.
+XDR and this implementation sends data in chunks of 32-bits.
+The 'A', 'B', 'C', 'D', and 'E' comments in figure
+\ref{fig:ALargeOneXDR} are represented as the bits in
+the 64-bit figure \ref{fig:ALargeOneBitsXDR}.
+\begin{itemize}
+\item 'A' is one bit wide.
+\item 'B' is two bits wide.
+\item 'C' is four bits wide.
+\item 'D' is four bits wide.
+\item 'E' is 32 bits wide.
+\end{itemize}
+\begin{figure}
+  \includesvg{64bitBitField.svg}
+  \caption{64-bit 'ALargeOne' bitfield}
+  \label{fig:ALargeOneBitsXDR}
+\end{figure}
+
+RPCGEN++ does not impose a size limit on the bit width.
+This is an example of a 192-bits object.
+
+\begin{figure}
+\begin{verbatim}
+bitfield A192BitOne:192 {
+  ... define up to 192 bits ...
+};
+\end{verbatim}
+\caption{Packed 192-bit device example}
+\label{fig:A192BitXDR}
+\end{figure}
+
+\subsection{Added a \textit{class} object that extends \textit{struct}}
+RPCGEN++ accepts the keyword \textit{class} to be substituted in
+place of \textit{struct}.
+When \textit{class} is used, the object may have member functions.
+See \ref{ClassDefinition} for the full specification.
+\begin{figure}
+\begin{verbatim}
+class OverTheWirePacket {
+  Command    Cmd;
+  uint8_t    Payload<>;
+
+  /**
+   * You can define a constructor
+   *
+   * @param WhatToDo the command to process.
+   *
+   * @param Data In this example, the contents of Data is determinable
+   * from WhatToDo.
+   */
+  ObjectName(Command WhatToDo, uint8_t Data<>);
+
+  /**  
+   * When you define a constructor (like the previous line),
+   * RPCGEN++ will only create the ones you specify. If you specify none,
+   * it will generate a default constructor. So we also define a
+   * a default constructor
+   */
+  ObjectName();
+
+  /**
+   * You can define a destructor
+   */
+  ~ObjectName();
+
+  /**
+   * You can define an unlimited number of member functions.
+   * The 'const' signifies that the method GetTheAverageValues()
+   * does not alter the contents of this object.
+   *
+   * @param Value1 Any kind or number of function parameters.
+   *
+   * @param Enabled Another parameter
+   */
+  float GetTheAverageValues(float Value1, bool Enabled) const;
+};
+
+\end{verbatim}
+\caption{Example of new class keyword}
+\label{fig:ClassIntroXDR}
+\end{figure}
+
+\subsection{The \textit{class} data type}\label{sec:ClassDefinition}
+RPCGEN++ allows member functions to be placed inside
+of class elements that are passed to the target
+language as members of the object.
+
+Member names are of the form:
+\begin{figure}
+\begin{verbatim}
+;
+; For output languages that do not have pointer or reference types,
+; the pointer (*) or reference (&) is ignored.
+;
+; A method returns a TypeSpecifier type of data,
+;
+; Has a name (IDENTIFIER),
+; and takes zero or more parameters.
+;
+; For languages that support 'const', it signifies that
+; the named member is not allowed to modify the contents
+; of the object, and has read-only access.
+;
+method: 'const'? TypeSpecifier '*'? IDENTIFIER '(' Param* (',' Param)* ')' 'const'? ';'
+
+; An Param is of type Typespecifier, an optional pointer indicator '*',
+; or an optional reference indicator '&', and an optional
+; IDENTIFIER
+.
+Param : 'const'? TypeSpecifier ('*' | '&')? IDENTIFIER*
+
+;
+; A TypeSpecifier is any XDR data type
+; OR any user defined data type.
+;
+TypeSpecifier : XdrDataType | UserDataType
+\end{verbatim}
+\caption{Class Method Definition}
+\label{fig:ClassIntroXDR}
+\end{figure}
+
+\subsubsection{XDRDataType}
+Where XdrDataType is defined
+as \href {https://datatracker.ietf.org/doc/html/rfc4506#page-4}{XDR Data Types}
+
+\subsubsection{IDENTIFIER}
+An IDENTIFIER is a string starting with an upper or lower
+case letter, followed by zero or more upper or lower case
+letters or digits, or underline.
+
+\begin{figure}
+\begin{verbatim}
+IDENTIFIER : [a-zA-Z] ([a-zA-Z0-9_])*
+\end{verbatim}
+\caption{IDENTIFIER Definition}
+\label{fig:IDENTIFIERDefinitionXDR}
+\end{figure}
+
+\subsubsection{UserDataType}
+A user data type, is any typedef, struct, enum, or class
+name defined in the XDR file.
+\begin{figure}
+\begin{verbatim}
+enum User1 { cat = 1, dog = 2, human = 3};
+
+struct Car {
+ uint16_t Year;
+ string Make<>;
+ string Model<>;
+}
+
+typedef struct Car Cars<>;
+\end{verbatim}
+\caption{UserDataType Definition}
+\label{fig:UserDataTypeDefinitionXDR}
+\end{figure}
+
+In figure \ref{fig:UserDataTypeDefinitionXDR)}, User1, Car, and Cars
+are examples of a UserDataType.
+

@@ -1,0 +1,112 @@
+\documentclass[2pt]{book}
+\usepackage{graphicx}
+\usepackage{html}
+\usepackage{hyperref}
+\usepackage{lmodern}
+\usepackage{tocloft}
+\usepackage{svg}
+\setlength{\cftpartindent}{0em}
+\setlength{\cftchapindent}{0em}
+\setlength{\cftsecindent}{0em}
+\setlength{\cftsubsecindent}{0em}
+\setlength{\cftsubsubsecindent}{0em}
+\graphicspath{{Images/}}
+\author{Doug Royer / RiverExplorer™}
+\date{13-MAR-2025}
+\title{RPCGEN++ An XDR and ABNF compiler and code generator}
+\begin{htmlonly}
+  <link rel='stylesheet' type='text/css' href='rpcgen++.css'/>
+\end{htmlonly}
+%
+% Define Abstract ..
+%
+\newenvironment{abstract}
+{%
+  \small
+  \begin{center}
+    \bfseries{abstract}
+  \end{center}
+}
+{}
+
+\begin{document}
+\maketitle
+\frontmatter
+\begin{figure}
+  \centering
+  \includegraphics{RiverExplorerLLC-Logo-BLACK-131x50-Transparent.ps.png}
+\end{figure}
+
+\begin{abstract}
+
+  \includegraphics{UnderConstruction.png}
+  \underline{\textbf{THIS IS WORK IN PROGRESS}}
+  
+  RPCGEN++ is an Open Source XDR and ABNF processor and code generator.
+  RPCGEN++ can read \href{https://ietf.org}{IETF} data description
+  formats;
+  \href{https://datatracker.ietf.org/doc/html/rfc4506}{[RFC-4506]}
+  XDR and \href{https://datatracker.ietf.org/doc/html/rfc5234}{[RFC-5234]}
+  ABNF input files and produce runnable code for Linux, Windows,
+  and Android. The resulting code has also been tested on the Android
+  Oculus virtual reality headset.
+
+  The code generated can connect systems across the internet,
+  or your intranet.
+  RPCGEN++ takes care of encoding, transferring, decoding and over
+  TLS. This RPCGEN++ processor can also create the client and server side
+  prototypes where you fill in the details of your design.
+  RPCGEN++ also allows for describing bit field data for XDR and ABNF.
+  
+  The XDR side of the implementation was inspired by the ONC
+  rpcgen program written by Sun Microsystems
+  in the 1990's.
+  This version has extensions that allow for C++ like, classes, class
+  methods, and comments to be in included into the (.x) source XDR
+  description files. RPCGEN++ was written using the antlr4 protocol
+  compiler. It produces C++ code, and has been designed to be able
+  to create other languages.
+
+  The ABNF code is from scratch and allows the user to annotate
+  the ABNF with instructions about the intent of the structure
+  of the intended program.
+  
+  RPCGEN++ was originally written to support the Phoenix project.
+  Its source is part of the Phoenix project.
+  (\href{https://github.com/RiverExplorer/Phoenix}{Phoenix Open Source Project})
+  RPCGEN++ and Phoenix are both Open Source.
+\end{abstract}
+\tableofcontents
+\listoffigures
+\listoftables
+
+\mainmatter
+\chapter{Overview}
+\input{Introduction}
+\input{DifferencesXDR}
+\input{DifferencesABNF}
+\chapter{Command Line}
+\input{CommandLine}
+\chapter{XDR files}
+\input{Comments}
+\input{Conditionals}
+\input{PassThrough}
+\input{DataTypes}
+\input{FixedSizedArrays}
+\input{VariableSizedArrays}
+\input{Strings}
+\input{OpaqueData}
+\input{MemberFunctions}
+\input{BitFields}
+\chapter{ABNF files}
+\chapter{Getting The source Code}
+\input{WhereToGet}
+\chapter{Builing RPCGEN++ for yourself}
+\input{Building}
+\input{TestCoverage}
+\chapter{Legal}
+\include{LegalMumboJumbo}
+\appendix
+\chapter{Sample XDR files}
+\chapter{Sample ABNF files}
+\end{document}

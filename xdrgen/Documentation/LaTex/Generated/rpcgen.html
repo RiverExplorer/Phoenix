@@ -1,0 +1,1219 @@
+<!DOCTYPE html> 
+<html lang='en-US' xml:lang='en-US'> 
+<head><title>RPCGEN++ An XDR and ABNF compiler and code generator</title> 
+<meta charset='utf-8' /> 
+<meta content='TeX4ht (https://tug.org/tex4ht/)' name='generator' /> 
+<meta content='width=device-width,initial-scale=1' name='viewport' /> 
+<link href='rpcgen.css' rel='stylesheet' type='text/css' /> 
+<meta content='rpcgen.tex' name='src' /> 
+</head><body>
+   <div class='maketitle'>
+                                                                  
+
+                                                                  
+                                                                  
+
+                                                                  
+                                                                  
+
+                                                                  
+
+<h2 class='titleHead'>RPCGEN++ An XDR and ABNF compiler and
+code generator</h2>
+<div class='author'><span class='rm-lmr-12'>Doug Royer / RiverExplorer</span><span class='ts1-lmr12-'>™</span></div><br />
+<div class='date'><span class='rm-lmr-12'>13-MAR-2025</span></div>
+                                                                  
+
+                                                                  
+   </div>
+                                                                  
+
+                                                                  
+   <figure class='figure'> 
+
+                                                                  
+
+                                                                  
+                                                                  
+
+                                                                  
+<!-- l. 37 --><p class='noindent'><img alt='PIC' src='Images//RiverExplorerLLC-Logo-BLACK-131x50-Transparent.ps.png' />
+                                                                  
+
+                                                                  
+</p>
+   </figure>
+<div class='center'>
+<!-- l. 40 --><p class='noindent'>
+</p><!-- l. 40 --><p class='noindent'><span class='rm-lmbx-9'>abstract</span></p></div>
+<!-- l. 42 --><p class='indent'>   <img alt='PIC' src='Images//UnderConstruction.png' /> <span class='underline'><span class='rm-lmbx-9'>THIS IS WORK IN PROGRESS</span></span>
+</p><!-- l. 45 --><p class='indent'>   <span class='rm-lmr-9'>RPCGEN++ is an Open Source XDR and ABNF processor and code generator.
+RPCGEN++ can read </span><a href='https://ietf.org'><span class='rm-lmr-9'>IETF</span></a> <span class='rm-lmr-9'>data description formats; </span><a href='https://datatracker.ietf.org/doc/html/rfc4506'><span class='rm-lmr-9'>[RFC-4506]</span></a> <span class='rm-lmr-9'>XDR and </span><a href='https://datatracker.ietf.org/doc/html/rfc5234'><span class='rm-lmr-9'>[RFC-5234]</span></a>
+<span class='rm-lmr-9'>ABNF input files and produce runnable code for Linux, Windows, and Android.
+The resulting code has also been tested on the Android Oculus virtual reality
+headset.</span>
+</p><!-- l. 54 --><p class='indent'>   <span class='rm-lmr-9'>The code generated can connect systems across the internet, or your intranet.
+RPCGEN++ takes care of encoding, transferring, decoding and over TLS. This
+RPCGEN++ processor can also create the client and server side prototypes where you fill in
+the details of your design. RPCGEN++ also allows for describing bit field data for XDR
+and ABNF.</span>
+</p><!-- l. 61 --><p class='indent'>   <span class='rm-lmr-9'>The XDR side of the implementation was inspired by the ONC rpcgen program written
+by Sun Microsystems in the 1990’s. This version has extensions that allow for
+C++ like, classes, class methods, and comments to be in included into the (.x)
+source XDR description files. RPCGEN++ was written using the antlr4 protocol
+compiler. It produces C++ code, and has been designed to be able to create other
+languages.</span>
+</p><!-- l. 70 --><p class='indent'>   <span class='rm-lmr-9'>The ABNF code is from scratch and allows the user to annotate the ABNF with
+instructions about the intent of the structure of the intended program.</span>
+</p><!-- l. 74 --><p class='indent'>   <span class='rm-lmr-9'>RPCGEN++ was originally written to support the Phoenix project. Its source is part of
+the Phoenix project. (</span><a href='https://github.com/RiverExplorer/Phoenix'><span class='rm-lmr-9'>Phoenix Open Source Project</span></a><span class='rm-lmr-9'>) RPCGEN++ and Phoenix are both
+Open Source.</span>
+                                                                  
+
+                                                                  
+</p>
+   <h2 class='likechapterHead' id='contents'><a id='x1-1000'></a>Contents</h2>
+   <div class='tableofcontents'>
+   <span class='chapterToc'>1 <a href='#overview' id='QQ2-1-4'>Overview</a></span>
+<br />    <span class='sectionToc'>1.1 <a href='#introduction' id='QQ2-1-5'>Introduction</a></span>
+<br />    <span class='sectionToc'>1.2 <a href='#xdr-differences-from-rfc' id='QQ2-1-6'>XDR Differences from RFC-4506</a></span>
+<br />     <span class='subsectionToc'>1.2.1 <a href='#place-struct-outside-of-union' id='QQ2-1-7'>Place ’struct’ Outside of ’union’</a></span>
+<br />     <span class='subsectionToc'>1.2.2 <a href='#rpcgen-has-support-for-bit-xdr-fields' id='QQ2-1-10'>RPCGEN++ has support for bit XDR fields</a></span>
+<br />     <span class='subsectionToc'>1.2.3 <a href='#added-a-class-object-that-extends-struct' id='QQ2-1-15'>Added a <span class='rm-lmri-10'>class </span>object that extends <span class='rm-lmri-10'>struct</span></a></span>
+<br />     <span class='subsectionToc'>1.2.4 <a href='#the-class-data-type' id='QQ2-1-17'>The <span class='rm-lmri-10'>class </span>data type</a></span>
+<br />    <span class='sectionToc'>1.3 <a href='#abnf-differences-from-rfc' id='QQ2-1-24'>ABNF Differences from RFC-5234</a></span>
+<br />     <span class='subsectionToc'>1.3.1 <a href='#rpcgen-has-added-bit-fields-to-abnf' id='QQ2-1-25'>RPCGEN++ Has Added Bit Fields to ABNF</a></span>
+<br />     <span class='subsectionToc'>1.3.2 <a href='#comment-tags-to-aid-with-code-conversion' id='QQ2-1-30'>Comment tags to aid with code conversion</a></span>
+<br />   <span class='chapterToc'>2 <a href='#command-line' id='QQ2-1-33'>Command Line</a></span>
+<br />    <span class='sectionToc'>2.1 <a href='#command-line1' id='QQ2-1-34'>Command Line</a></span>
+<br />     <span class='subsectionToc'>2.1.1 <a href='#command-line-arguments' id='QQ2-1-35'>Command Line Arguments</a></span>
+<br />     <span class='subsectionToc'>2.1.2 <a href='#generating-c-code-from-xdr-files' id='QQ2-1-36'>Generating C++ code from XDR files</a></span>
+<br />     <span class='subsectionToc'>2.1.3 <a href='#generating-c-code-from-abnf-files' id='QQ2-1-37'>Generating C++ code from ABNF files</a></span>
+<br />     <span class='subsectionToc'>2.1.4 <a href='#generating-abnf-from-xdr-files' id='QQ2-1-38'>Generating ABNF from XDR files</a></span>
+<br />   <span class='chapterToc'>3 <a href='#xdr-files' id='QQ2-1-39'>XDR files</a></span>
+<br />    <span class='sectionToc'>3.1 <a href='#comments' id='QQ2-1-40'>Comments</a></span>
+<br />     <span class='subsectionToc'>3.1.1 <a href='#single-line-comments' id='QQ2-1-41'>Single Line Comments</a></span>
+<br />     <span class='subsectionToc'>3.1.2 <a href='#multiple-line-comments' id='QQ2-1-42'>Multiple Line Comments</a></span>
+<br />    <span class='sectionToc'>3.2 <a href='#conditionals' id='QQ2-1-43'>Conditionals</a></span>
+<br />    <span class='sectionToc'>3.3 <a href='#pass-through' id='QQ2-1-44'>Pass Through</a></span>
+<br />    <span class='sectionToc'>3.4 <a href='#data-types' id='QQ2-1-45'>Data Types</a></span>
+<br />    <span class='sectionToc'>3.5 <a href='#fixed-size-arrays' id='QQ2-1-46'>Fixed Size Arrays</a></span>
+<br />    <span class='sectionToc'>3.6 <a href='#variable-sized-arrays' id='QQ2-1-47'>Variable Sized Arrays</a></span>
+<br />    <span class='sectionToc'>3.7 <a href='#strings' id='QQ2-1-48'>Strings</a></span>
+<br />     <span class='subsectionToc'>3.7.1 <a href='#fixed-size-strings' id='QQ2-1-49'>Fixed Size Strings</a></span>
+<br />     <span class='subsectionToc'>3.7.2 <a href='#variable-size-strings' id='QQ2-1-50'>Variable Size Strings</a></span>
+<br />     <span class='subsectionToc'>3.7.3 <a href='#specifying-a-maximum-size' id='QQ2-1-51'>Specifying a Maximum Size</a></span>
+<br />    <span class='sectionToc'>3.8 <a href='#opaque-data' id='QQ2-1-52'>Opaque Data</a></span>
+<br />    <span class='sectionToc'>3.9 <a href='#member-functions' id='QQ2-1-53'>Member Functions</a></span>
+<br />    <span class='sectionToc'>3.10 <a href='#bit-fields' id='QQ2-1-54'>Bit Fields</a></span>
+<br />   <span class='chapterToc'>4 <a href='#abnf-files' id='QQ2-1-55'>ABNF files</a></span>
+<br />   <span class='chapterToc'>5 <a href='#getting-the-source-code' id='QQ2-1-56'>Getting The source Code</a></span>
+                                                                  
+
+                                                                  
+<br />    <span class='sectionToc'>5.1 <a href='#where-to-get-rpcgen' id='QQ2-1-57'>Where to get RPCGEN++</a></span>
+<br />   <span class='chapterToc'>6 <a href='#builing-rpcgen-for-yourself' id='QQ2-1-58'>Builing RPCGEN++ for yourself</a></span>
+<br />    <span class='sectionToc'>6.1 <a href='#building-rpcgen' id='QQ2-1-59'>Building RPCGEN++</a></span>
+<br />     <span class='subsectionToc'>6.1.1 <a href='#building-for-linux' id='QQ2-1-60'>Building For Linux</a></span>
+<br />     <span class='subsectionToc'>6.1.2 <a href='#building-for-windows-on-linux' id='QQ2-1-65'>Building For Windows on Linux</a></span>
+<br />     <span class='subsectionToc'>6.1.3 <a href='#building-for-android-on-linux' id='QQ2-1-70'>Building For Android on Linux</a></span>
+<br />     <span class='subsectionToc'>6.1.4 <a href='#building-the-documentation' id='QQ2-1-75'>Building the Documentation</a></span>
+<br />     <span class='subsectionToc'>6.1.5 <a href='#filing-bugs-reports' id='QQ2-1-76'>Filing Bugs Reports</a></span>
+<br />    <span class='sectionToc'>6.2 <a href='#test-coverage' id='QQ2-1-77'>Test Coverage</a></span>
+<br />   <span class='chapterToc'>7 <a href='#legal' id='QQ2-1-78'>Legal</a></span>
+<br />    <span class='sectionToc'>7.1 <a href='#legal-mumbo-jumbo' id='QQ2-1-79'>Legal Mumbo Jumbo</a></span>
+<br />    <span class='sectionToc'>7.2 <a href='#license' id='QQ2-1-81'>License</a></span>
+<br />   <span class='appendixToc'>A <a href='#sample-xdr-files' id='QQ2-1-82'>Sample XDR files</a></span>
+<br />   <span class='appendixToc'>B <a href='#sample-abnf-files' id='QQ2-1-83'>Sample ABNF files</a></span>
+   </div>
+                                                                  
+
+                                                                  
+   <h2 class='likechapterHead' id='list-of-figures'><a id='x1-2000'></a>List of Figures</h2>
+   <div class='tableofcontents'><span class='lofToc'>1.1 <a href='#-structure-inside-of-union'>Structure Inside of Union</a></span><br /><span class='lofToc'>1.2 <a href='#-structure-outside-of-union'>Structure Outside of Union</a></span><br /><span class='lofToc'>1.3 <a href='#-two-four-bit-values-in-one-bit-value'>Two Four Bit
+values in one 8-bit value</a></span><br /><span class='lofToc'>1.4 <a href='#-packed-bit-device-example'>Packed 64-bit device example</a></span><br /><span class='lofToc'>1.5 <a href='#-bit-alargeone-bitfield'>64-bit ’ALargeOne’
+bitfield</a></span><br /><span class='lofToc'>1.6 <a href='#-packed-bit-device-example1'>Packed 192-bit device example</a></span><br /><span class='lofToc'>1.7 <a href='#-example-of-new-class-keyword'>Example of new class keyword</a></span><br /><span class='lofToc'>1.8 <a href='#-class-method-definition'>Class
+Method Definition</a></span><br /><span class='lofToc'>1.9 <a href='#-identifier-definition'>IDENTIFIER Definition</a></span><br /><span class='lofToc'>1.10 <a href='#-userdatatype-definition'>UserDataType Definition</a></span><br /><span class='lofToc'>1.11 <a href='#-a-bit-abnf-example'>A
+32-bit ABNF example</a></span><br /><span class='lofToc'>1.12 <a href='#-packed-bit-device-abnf-example'>Packed 64-bit device ABNF example</a></span><br /><span class='lofToc'>1.13 <a href='#-bit-alargeone-bitfield1'>64-bit
+’ALargeOne’ bitfield</a></span><br /><span class='lofToc'>1.14 <a href='#-packed-bit-device-example2'>Packed 192-bit device example</a></span><br /><span class='lofToc'>1.15 <a href='#-sample-of-abnf-comment'>Sample of ABNF
+comment</a></span><br /><span class='lofToc'>1.16 <a href='#-example-of-tagging-abnf-comments'>Example of Tagging ABNF Comments.</a></span><br /><span class='lofToc'>7.1 <a href='#-riverexplorer-company-logo'>RiverExplorer Company Logo</a></span><br />
+   </div>
+                                                                  
+
+                                                                  
+                                                                  
+
+                                                                  
+   <h2 class='likechapterHead' id='list-of-tables'><a id='x1-3000'></a>List of Tables</h2>
+   <div class='tableofcontents'>
+   </div>
+                                                                  
+
+                                                                  
+<!-- l. 83 --><p class='indent'>
+                                                                  
+
+                                                                  
+                                                                  
+
+                                                                  
+</p><!-- l. 84 --><p class='indent'>
+                                                                  
+
+                                                                  
+</p>
+   <h2 class='chapterHead' id='overview'><span class='titlemark'>Chapter 1</span><br /><a id='x1-40001'></a>Overview</h2>
+   <h3 class='sectionHead' id='introduction'><span class='titlemark'>1.1   </span> <a id='x1-50001.1'></a>Introduction</h3>
+     <ul class='itemize1'>
+     <li class='itemize'>Can process RFC-4506 compliant files.
+     </li>
+     <li class='itemize'>Can process RFC-5234 compliant files.
+     </li>
+     <li class='itemize'>Generates C++ code and header files.
+     </li>
+     <li class='itemize'>Designed to be able to produce for other output languages.
+     </li>
+     <li class='itemize'>Preserves comments in the .x files.
+     </li>
+     <li class='itemize'>Preserves comments in the .abnf files.
+     </li>
+     <li class='itemize'>Allows for class member functions.
+     </li>
+     <li class='itemize'>Extends RFC-4506 to include bit fields.
+     </li>
+     <li class='itemize'>Extends RFC-5234 to include bit fields.
+     </li>
+     <li class='itemize'>Generates ABNF definitions per RFC-5234 from RFC-4506 files.</li></ul>
+                                                                  
+
+                                                                  
+<!-- l. 15 --><p class='noindent'>The basic XDR process is:
+     </p><ol class='enumerate1'>
+<li class='enumerate' id='x1-5002x1'>Edit an XDR definition file (.x file).
+     </li>
+<li class='enumerate' id='x1-5004x2'>Run ’rpcgen++’ on the file.
+     </li>
+<li class='enumerate' id='x1-5006x3'>Compile the results.</li></ol>
+<!-- l. 22 --><p class='indent'>   And the basic ABNF process is:
+     </p><ol class='enumerate1'>
+<li class='enumerate' id='x1-5008x1'>Edit an ABNF definition file (.abnf file).
+     </li>
+<li class='enumerate' id='x1-5010x2'>Run ’rpcgen++’ on the file.
+     </li>
+<li class='enumerate' id='x1-5012x3'>Compile the results.</li></ol>
+<!-- l. 1 --><p class='noindent'>
+</p>
+   <h3 class='sectionHead' id='xdr-differences-from-rfc'><span class='titlemark'>1.2   </span> <a id='x1-60001.2'></a>XDR Differences from RFC-4506</h3>
+<!-- l. 2 --><p class='noindent'>
+</p>
+   <h4 class='subsectionHead' id='place-struct-outside-of-union'><span class='titlemark'>1.2.1   </span> <a id='x1-70001.2.1'></a>Place ’struct’ Outside of ’union’</h4>
+<!-- l. 3 --><p class='noindent'>Currently RPCGEN++ does not allow structs to be defined in unions. Define them
+out side of the union, and then use them.
+</p><!-- l. 6 --><p class='indent'>   For example, this is valid as defined in RFC-4506: </p><figure class='figure' id='-structure-inside-of-union'> 
+
+                                                                  
+
+                                                                  
+<a id='x1-70011'></a>
+                                                                  
+
+                                                                  
+<pre class='verbatim' id='verbatim-1'>
+union MasterOfAllTrades (uint32_t Control) {
+
+case 0:
+ struct {
+   string item&lt;&gt;;
+   stringlist Next;
+ } element;
+
+ case 1:
+   .
+   .
+   .
+</pre>
+<!-- l. 15 --><p class='nopar'>
+</p>
+<figcaption class='caption'><span class='id'>Figure 1.1: </span><span class='content'>Structure Inside of Union</span></figcaption><!-- tex4ht:label?: x1-70011  -->
+                                                                  
+
+                                                                  
+   </figure>
+<!-- l. 9 --><p class='indent'>   Currently, with RPCGEN++, you will need to define your structure outside of
+the union as shown in this example: </p><figure class='figure' id='-structure-outside-of-union'> 
+
+                                                                  
+
+                                                                  
+<a id='x1-70022'></a>
+                                                                  
+
+                                                                  
+<pre class='verbatim' id='verbatim-2'>
+ struct {
+   string item&lt;&gt;;
+   stringlist Next;
+ } elementObject;
+
+union MasterOfAllTrades (uint32_t Control) {
+
+case 0:
+ elementObject element;
+
+ case 1:
+   .
+   .
+   .
+</pre>
+<!-- l. 17 --><p class='nopar'>
+</p>
+<figcaption class='caption'><span class='id'>Figure 1.2: </span><span class='content'>Structure Outside of Union</span></figcaption><!-- tex4ht:label?: x1-70022  -->
+                                                                  
+
+                                                                  
+   </figure>
+   <h4 class='subsectionHead' id='rpcgen-has-support-for-bit-xdr-fields'><span class='titlemark'>1.2.2   </span> <a id='x1-80001.2.2'></a>RPCGEN++ has support for bit XDR fields</h4>
+<!-- l. 14 --><p class='noindent'>The <span class='rm-lmri-10'>bitfield </span>objects are useful when you have boolean or other values that do not
+need to have their own 32-bit storage. Or they could represent the bit values needed
+to interface with hardware.
+</p><!-- l. 19 --><p class='indent'>   They are declared by appending a colon (:) and a decimal number after the data
+type or variable name. They are defined using the <span class='rm-lmri-10'>bitfield </span>data type. In this example,
+<span class='rm-lmri-10'>TwoFourBitValues </span>is declared as 8-bits in size, and it contains two 4-bit values.
+</p><figure class='figure' id='-two-four-bit-values-in-one-bit-value'> 
+
+                                                                  
+
+                                                                  
+<a id='x1-80013'></a>
+                                                                  
+
+                                                                  
+<pre class='verbatim' id='verbatim-3'>
+bitfield TwoFourBitValues:8 {
+   int8_t:4 MyVariableName:4;
+   int8_t:4 TheOtherFourBits:4;
+};
+</pre>
+<!-- l. 30 --><p class='nopar'>
+</p>
+<figcaption class='caption'><span class='id'>Figure 1.3: </span><span class='content'>Two Four Bit values in one 8-bit value</span></figcaption><!-- tex4ht:label?: x1-80013  -->
+                                                                  
+
+                                                                  
+   </figure>
+<!-- l. 35 --><p class='indent'>   The number of bits inside of the <span class='rm-lmri-10'>bitfield </span>must be equal to or less than the number
+of bits declared in the bitfield name.
+</p><!-- l. 38 --><p class='indent'>   You must declare them with the least significant bits first. <span class='rm-lmri-10'>MyVariableName </span>in
+the example would be placed in bit positions 0-3 and <span class='rm-lmri-10'>TheOtherFourBits </span>would
+occupy bit position 4-7.
+</p><!-- l. 43 --><p class='indent'>   <span class='rm-lmri-10'>For signed values</span>, make sure that the value you pass into the encoding call is
+correctly signed for the bit width you specified in the XDR file. If you specify a 4-bit
+value as signed and pass it in as an 8-bit signed value, the sign bit will not be
+encoded.
+</p><!-- l. 50 --><p class='indent'>   The <span class='rm-lmri-10'>bitfield </span>values can be signed or unsigned and are XDR encoded and XDR
+decoded on their own. Once encoded the <span class='rm-lmri-10'>bitfield </span>itself is sent as opaque
+data.
+</p><!-- l. 55 --><p class='indent'>   In this example, the <span class='rm-lmri-10'>bitfield </span>is 64-bits and contains multiple values that are not
+byte aligned: </p><figure class='figure' id='-packed-bit-device-example'> 
+
+                                                                  
+
+                                                                  
+<a id='x1-80024'></a>
+                                                                  
+
+                                                                  
+<pre class='verbatim' id='verbatim-4'>
+bitfield ALargeOne:64 {
+   int8_t:1 DeviceEnabled:1;     /* ’A’ */
+   int8_t:2 DeviceMode:2;        /* ’B’ */
+   int8_t:4 DeviceRotation:4;    /* ’C’ */
+   int8_t:4 DeviceStatus:4;      /* ’D’ */
+   int32_t:32 DevicePosition:32; /* ’E’ */
+};
+</pre>
+<!-- l. 66 --><p class='nopar'>
+</p>
+<figcaption class='caption'><span class='id'>Figure 1.4: </span><span class='content'>Packed 64-bit device example</span></figcaption><!-- tex4ht:label?: x1-80024  -->
+                                                                  
+
+                                                                  
+   </figure>
+<!-- l. 70 --><p class='indent'>   The upper 21 bits are undefined in this example, and are set to zero (0) in this
+implementation. XDR and this implementation sends data in chunks of 32-bits. The
+’A’, ’B’, ’C’, ’D’, and ’E’ comments in figure <a href='#-packed-bit-device-example'>1.4<!-- tex4ht:ref: fig:ALargeOneXDR  --></a> are represented as the bits in the
+64-bit figure <a href='#-bit-alargeone-bitfield'>1.5<!-- tex4ht:ref: fig:ALargeOneBitsXDR  --></a>. </p>
+     <ul class='itemize1'>
+     <li class='itemize'>’A’ is one bit wide.
+     </li>
+     <li class='itemize'>’B’ is two bits wide.
+     </li>
+     <li class='itemize'>’C’ is four bits wide.
+     </li>
+     <li class='itemize'>’D’ is four bits wide.
+     </li>
+     <li class='itemize'>’E’ is 32 bits wide.</li></ul>
+<figure class='figure' id='-bit-alargeone-bitfield'> 
+<a id='x1-80035'></a> <img alt='PIC' src='64bitBitField.svg' />
+<figcaption class='caption'><span class='id'>Figure 1.5: </span><span class='content'>64-bit ’ALargeOne’ bitfield</span></figcaption><!-- tex4ht:label?: x1-80035  -->
+   </figure>
+<!-- l. 90 --><p class='indent'>   RPCGEN++ does not impose a size limit on the bit width. This is an example of
+a 192-bits object.
+</p>
+   <figure class='figure' id='-packed-bit-device-example1'> 
+
+                                                                  
+
+                                                                  
+<a id='x1-80046'></a>
+                                                                  
+
+                                                                  
+<pre class='verbatim' id='verbatim-5'>
+bitfield A192BitOne:192 {
+  ... define up to 192 bits ...
+};
+</pre>
+<!-- l. 98 --><p class='nopar'>
+</p>
+<figcaption class='caption'><span class='id'>Figure 1.6: </span><span class='content'>Packed 192-bit device example</span></figcaption><!-- tex4ht:label?: x1-80046  -->
+                                                                  
+
+                                                                  
+   </figure>
+   <h4 class='subsectionHead' id='added-a-class-object-that-extends-struct'><span class='titlemark'>1.2.3   </span> <a id='x1-90001.2.3'></a>Added a <span class='rm-lmri-10'>class </span>object that extends <span class='rm-lmri-10'>struct</span></h4>
+<!-- l. 104 --><p class='noindent'>RPCGEN++ accepts the keyword <span class='rm-lmri-10'>class </span>to be substituted in place of <span class='rm-lmri-10'>struct</span>. When
+<span class='rm-lmri-10'>class </span>is used, the object may have member functions. See <span class='rm-lmbx-10'>??</span> for the full specification.
+</p><figure class='figure' id='-example-of-new-class-keyword'> 
+
+                                                                  
+
+                                                                  
+<a id='x1-90017'></a>
+                                                                  
+
+                                                                  
+<pre class='verbatim' id='verbatim-6'>
+class OverTheWirePacket {
+  Command    Cmd;
+  uint8_t    Payload&lt;&gt;;
+
+  /**
+   * You can define a constructor
+   *
+   * @param WhatToDo the command to process.
+   *
+   * @param Data In this example, the contents of Data is determinable
+   * from WhatToDo.
+   */
+  ObjectName(Command WhatToDo, uint8_t Data&lt;&gt;);
+
+  /**
+   * When you define a constructor (like the previous line),
+   * RPCGEN++ will only create the ones you specify. If you specify none,
+   * it will generate a default constructor. So we also define a
+   * a default constructor
+   */
+  ObjectName();
+
+  /**
+   * You can define a destructor
+   */
+  ~ObjectName();
+
+  /**
+   * You can define an unlimited number of member functions.
+   * The ’const’ signifies that the method GetTheAverageValues()
+   * does not alter the contents of this object.
+   *
+   * @param Value1 Any kind or number of function parameters.
+   *
+   * @param Enabled Another parameter
+   */
+  float GetTheAverageValues(float Value1, bool Enabled) const;
+};
+
+</pre>
+<!-- l. 149 --><p class='nopar'>
+</p>
+<figcaption class='caption'><span class='id'>Figure 1.7: </span><span class='content'>Example of new class keyword</span></figcaption><!-- tex4ht:label?: x1-90017  -->
+                                                                  
+
+                                                                  
+                                                                  
+
+                                                                  
+   </figure>
+   <h4 class='subsectionHead' id='the-class-data-type'><span class='titlemark'>1.2.4   </span> <a id='x1-100001.2.4'></a>The <span class='rm-lmri-10'>class </span>data type</h4>
+<!-- l. 155 --><p class='noindent'>RPCGEN++ allows member functions to be placed inside of class elements that are
+passed to the target language as members of the object.
+</p><!-- l. 159 --><p class='indent'>   Member names are of the form: </p><figure class='figure' id='-class-method-definition'> 
+
+                                                                  
+
+                                                                  
+<a id='x1-100018'></a>
+                                                                  
+
+                                                                  
+<pre class='verbatim' id='verbatim-7'>
+;
+; For output languages that do not have pointer or reference types,
+; the pointer (*) or reference (&amp;) is ignored.
+;
+; A method returns a TypeSpecifier type of data,
+;
+; Has a name (IDENTIFIER),
+; and takes zero or more parameters.
+;
+; For languages that support const, it signifies that
+; the named member is not allowed to modify the contents
+; of the object, and has read-only access.
+;
+method: ’const’? TypeSpecifier ’*’? IDENTIFIER ’(’ Param* (’,’ Param)* ’)’ ’const’? ’;’
+
+; An Param is of type Typespecifier, an optional pointer indicator ’*’,
+; or an optional reference indicator ’&amp;’, and an optional
+; IDENTIFIER
+.
+Param : ’const’? TypeSpecifier (’*’ | ’&amp;’)? IDENTIFIER*
+
+;
+; A TypeSpecifier is any XDR data type
+; OR any user defined data type.
+;
+TypeSpecifier : XdrDataType | UserDataType
+</pre>
+<!-- l. 188 --><p class='nopar'>
+</p>
+<figcaption class='caption'><span class='id'>Figure 1.8: </span><span class='content'>Class Method Definition</span></figcaption><!-- tex4ht:label?: x1-100018  -->
+                                                                  
+
+                                                                  
+   </figure>
+   <h5 class='subsubsectionHead' id='xdrdatatype'><a id='x1-11000'></a>XDRDataType</h5>
+<!-- l. 194 --><p class='noindent'>Where XdrDataType is defined as <a href='https://datatracker.ietf.org/doc/html/rfc4506#page-4'>XDR Data Types</a>
+</p><!-- l. 197 --><p class='noindent'>
+</p>
+   <h5 class='subsubsectionHead' id='identifier'><a id='x1-12000'></a>IDENTIFIER</h5>
+<!-- l. 198 --><p class='noindent'>An IDENTIFIER is a string starting with an upper or lower case letter, followed by
+zero or more upper or lower case letters or digits, or underline.
+</p>
+   <figure class='figure' id='-identifier-definition'> 
+
+                                                                  
+
+                                                                  
+<a id='x1-120019'></a>
+                                                                  
+
+                                                                  
+<pre class='verbatim' id='verbatim-8'>
+IDENTIFIER : [a-zA-Z] ([a-zA-Z0-9_])*
+</pre>
+<!-- l. 205 --><p class='nopar'>
+</p>
+<figcaption class='caption'><span class='id'>Figure 1.9: </span><span class='content'>IDENTIFIER Definition</span></figcaption><!-- tex4ht:label?: x1-120019  -->
+                                                                  
+
+                                                                  
+   </figure>
+   <h5 class='subsubsectionHead' id='userdatatype'><a id='x1-13000'></a>UserDataType</h5>
+<!-- l. 211 --><p class='noindent'>A user data type, is any typedef, struct, enum, or class name defined in the XDR file.
+</p><figure class='figure' id='-userdatatype-definition'> 
+
+                                                                  
+
+                                                                  
+<a id='x1-1300110'></a>
+                                                                  
+
+                                                                  
+<pre class='verbatim' id='verbatim-9'>
+enum User1 { cat = 1, dog = 2, human = 3};
+
+struct Car {
+ uint16_t Year;
+ string Make&lt;&gt;;
+ string Model&lt;&gt;;
+}
+
+typedef struct Car Cars&lt;&gt;;
+</pre>
+<!-- l. 224 --><p class='nopar'>
+</p>
+<figcaption class='caption'><span class='id'>Figure 1.10: </span><span class='content'>UserDataType Definition</span></figcaption><!-- tex4ht:label?: x1-1300110  -->
+                                                                  
+
+                                                                  
+   </figure>
+<!-- l. 229 --><p class='indent'>   In figure <span class='rm-lmbx-10'>??</span>, User1, Car, and Cars are examples of a UserDataType.
+</p>
+   <h3 class='sectionHead' id='abnf-differences-from-rfc'><span class='titlemark'>1.3   </span> <a id='x1-140001.3'></a>ABNF Differences from RFC-5234</h3>
+<!-- l. 3 --><p class='noindent'>
+</p>
+   <h4 class='subsectionHead' id='rpcgen-has-added-bit-fields-to-abnf'><span class='titlemark'>1.3.1   </span> <a id='x1-150001.3.1'></a>RPCGEN++ Has Added Bit Fields to ABNF</h4>
+<!-- l. 4 --><p class='noindent'>The ability to assign the individual bits in objects are useful when you have boolean
+or other values that do not need to have their own 32-bit storage. Or they could
+represent the bit values needed to interface with hardware.
+</p><!-- l. 10 --><p class='indent'>   They are declared by appending a colon (:) and a decimal number after the or
+rule name or terminal value. Example:
+</p>
+   <figure class='figure' id='-a-bit-abnf-example'> 
+
+                                                                  
+
+                                                                  
+<a id='x1-1500111'></a>
+                                                                  
+
+                                                                  
+<pre class='verbatim' id='verbatim-10'>
+
+RuleWith32Bits:32 =  %x0:8 Value1:4 Value2:4 uint16_t:16
+
+</pre>
+<!-- l. 18 --><p class='nopar'>
+</p>
+<figcaption class='caption'><span class='id'>Figure 1.11: </span><span class='content'>A 32-bit ABNF example</span></figcaption><!-- tex4ht:label?: x1-1500111  -->
+                                                                  
+
+                                                                  
+   </figure>
+<!-- l. 23 --><p class='indent'>   The number of bits on the left side of the equal sign (=) must equal to the total
+number of bits on the right side. Pad with values such as %0:8, %0:2, %0:12, or
+whatever number of bits you need to pad in order to make the number of bits on each
+side of the equal sign the same.
+</p><!-- l. 29 --><p class='indent'>   You must declare them with the least significant bits on the right most of
+the equal sign. In figure <a href='#-a-bit-abnf-example'>1.11<!-- tex4ht:ref: fig:A32BitExampleABNF  --></a>, the 16 bit value would be in bit positions
+0-15, Value2 would be in bit positions 16-19, and Value2 would be in bit
+positions 20-23, the upper 8 bits (24-32) are 8-bits of padding to make the total
+32-bits.
+</p><!-- l. 37 --><p class='indent'>   <span class='rm-lmri-10'>For signed values</span>, make sure that the value you pass into the encoding call is
+correctly signed for the bit width you assigned in the ABNF file. If you specify a 4-bit
+value as signed and pass it in as an 8-bit signed value, the sign bit will not be
+encoded.
+</p><!-- l. 44 --><p class='indent'>   The <span class='rm-lmri-10'>bitfield </span>values can be signed or unsigned and are XDR encoded and XDR
+decoded on their own. Once encoded the <span class='rm-lmri-10'>bitfield </span>itself is sent as opaque
+data.
+</p><!-- l. 49 --><p class='indent'>   In this example, the <span class='rm-lmri-10'>bitfield </span>is 64-bits and contains multiple values that are not
+byte aligned: </p><figure class='figure' id='-packed-bit-device-abnf-example'> 
+
+                                                                  
+
+                                                                  
+<a id='x1-1500212'></a>
+                                                                  
+
+                                                                  
+<pre class='verbatim' id='verbatim-11'>
+
+             ; With:
+             ; DeviceEnable as ’A’ in the bit diagram.
+             ; DeviceMode as ’B’ in the bit diagram.
+             ; DeviceRotation as ’C’ in the bit diagram.
+             ; DeviceStatus as ’D’ in the bit diagram.
+             ; DevicePosition as ’E’ in the bit diagram.
+             ; And %0:24 is zero padding to fill the
+             ; 64-bit value.
+             ;
+             ; With ABNF, the most significant bits are
+             ; on the left and the least significant
+             ; values are to the right.
+             ;
+ALargeOne:64 = %0:21 DevicePosition:32 DeviceStatus:4 DeviceRotation:4
+               DeviveMode:2 DeviceEnabled:1
+</pre>
+<!-- l. 69 --><p class='nopar'>
+</p>
+<figcaption class='caption'><span class='id'>Figure 1.12: </span><span class='content'>Packed 64-bit device ABNF example</span></figcaption><!-- tex4ht:label?: x1-1500212  -->
+                                                                  
+
+                                                                  
+   </figure>
+<!-- l. 73 --><p class='indent'>   Unlike the XDR bitfields, no automatic padding is done. You will need to specify
+any padding in the ABNF file. XDR and this implementation sends data in chunks of
+32-bits. The ’A’, ’B’, ’C’, ’D’, and ’E’ comments in figure <a href='#-packed-bit-device-abnf-example'>1.12<!-- tex4ht:ref: fig:ALargeOneABNF  --></a> are represented as the
+bits in the 64-bit figure <a href='#-bit-alargeone-bitfield1'>1.13<!-- tex4ht:ref: fig:ALargeOneBitsABNF  --></a>. </p>
+     <ul class='itemize1'>
+     <li class='itemize'>’A’ is one bit wide.
+     </li>
+     <li class='itemize'>’B’ is two bits wide.
+     </li>
+     <li class='itemize'>’C’ is four bits wide.
+     </li>
+     <li class='itemize'>’D’ is four bits wide.
+     </li>
+     <li class='itemize'>’E’ is 32 bits wide.
+     </li>
+     <li class='itemize'>’0’ is 21 padding bits.</li></ul>
+<figure class='figure' id='-bit-alargeone-bitfield1'> 
+<a id='x1-1500313'></a> <img alt='PIC' src='64bitBitField.svg' />
+<figcaption class='caption'><span class='id'>Figure 1.13: </span><span class='content'>64-bit ’ALargeOne’ bitfield</span></figcaption><!-- tex4ht:label?: x1-1500313  -->
+   </figure>
+<!-- l. 93 --><p class='indent'>   RPCGEN++ does not impose a size limit on the bit width.
+</p>
+   <figure class='figure' id='-packed-bit-device-example2'> 
+
+                                                                  
+
+                                                                  
+<a id='x1-1500414'></a>
+                                                                  
+
+                                                                  
+<pre class='verbatim' id='verbatim-12'>
+A192BitOne:192 =   ... define up to 192 bits ...
+</pre>
+<!-- l. 98 --><p class='nopar'>
+</p>
+<figcaption class='caption'><span class='id'>Figure 1.14: </span><span class='content'>Packed 192-bit device example</span></figcaption><!-- tex4ht:label?: x1-1500414  -->
+                                                                  
+
+                                                                  
+   </figure>
+   <h4 class='subsectionHead' id='comment-tags-to-aid-with-code-conversion'><span class='titlemark'>1.3.2   </span> <a id='x1-160001.3.2'></a>Comment tags to aid with code conversion</h4>
+<!-- l. 104 --><p class='noindent'>In ABNF, the semicolon (;)is a comment character. For example: </p><figure class='figure' id='-sample-of-abnf-comment'> 
+
+                                                                  
+
+                                                                  
+<a id='x1-1600115'></a>
+                                                                  
+
+                                                                  
+<pre class='verbatim' id='verbatim-13'>
+                  ; This is a comment
+                  ;
+OverTheWirePacket = Command CommandPayload
+
+</pre>
+<!-- l. 112 --><p class='nopar'>
+</p>
+<figcaption class='caption'><span class='id'>Figure 1.15: </span><span class='content'>Sample of ABNF comment</span></figcaption><!-- tex4ht:label?: x1-1600115  -->
+                                                                  
+
+                                                                  
+   </figure>
+<!-- l. 117 --><p class='indent'>   By adding tags to the comments you can define methods that can apply to the
+object rule. The character sequence colon+percent (:%) is used to signify to the
+RPCGEN++ code generator that it will look close at what follows: This example
+defines four methods in the ABNF comments: </p><figure class='figure' id='-example-of-tagging-abnf-comments'> 
+
+                                                                  
+
+                                                                  
+<a id='x1-1600216'></a>
+                                                                  
+
+                                                                  
+<pre class='verbatim' id='verbatim-14'>
+;
+; You can define a constructor that takes parameters.
+;
+;% OverTheWirePacket(Command WhatToDo, uint8_t Data&lt;&gt;);
+;
+; When you define a constructor (like the previous line),
+; RPCGEN++ will only create the ones you specify. If you specify none,
+; it will generate a default constructor. So we also define a
+; a default constructor:
+;
+;% OverTheWirePacket();
+;
+; You can define a destructing.
+;
+;% ~OverTheWirePacket();
+;
+; You can define an unlimited number of member functions.
+; The ’const’ signifies that the method GetTheAverageValues()
+; does not alter the contents of this object.
+;
+; @param Value1 Any kind or number of function parameters.
+;
+; @param Enabled Another parameter
+;
+;% float GetTheAverageValues(float Value1, bool Enabled) const;
+;
+; The above tags apply to the first rule after they are
+; provided. In this case they apply to the OverTheWirePacket rule.
+; The RPCGEN++ generator creates an object with the name
+; OverTheWirePacket and includes the tagged methods
+; that proceed it in these comments.
+;
+OverTheWirePacket = Command Payload
+
+Payload           = Length *uint8_t
+Length            = uint32_t
+
+</pre>
+<!-- l. 162 --><p class='nopar'>
+</p>
+<figcaption class='caption'><span class='id'>Figure 1.16: </span><span class='content'>Example of Tagging ABNF Comments.</span></figcaption><!-- tex4ht:label?: x1-1600216  -->
+                                                                  
+
+                                                                  
+   </figure>
+<!-- l. 168 --><p class='indent'>   <span class='rm-lmbx-10'>The full member function definition syntax is described in the section</span>
+<a href='#the-class-data-type'><span class='rm-lmbx-10'>1.2.4</span><!-- tex4ht:ref: sec:ClassDefinition  --></a>
+                                                                  
+
+                                                                  
+</p><!-- l. 88 --><p class='indent'>
+                                                                  
+
+                                                                  
+</p>
+   <h2 class='chapterHead' id='command-line'><span class='titlemark'>Chapter 2</span><br /><a id='x1-170002'></a>Command Line</h2>
+   <h3 class='sectionHead' id='command-line1'><span class='titlemark'>2.1   </span> <a id='x1-180002.1'></a>Command Line</h3>
+<!-- l. 2 --><p class='noindent'>RPCGEN++ can currently generate: </p>
+     <ul class='itemize1'>
+     <li class='itemize'>C++ code from XDR (.x) files.
+     </li>
+     <li class='itemize'>C++ from ABNF (.abnf) files.
+     </li>
+     <li class='itemize'>ABNF files from XDR files.</li></ul>
+<!-- l. 9 --><p class='noindent'>
+</p>
+   <h4 class='subsectionHead' id='command-line-arguments'><span class='titlemark'>2.1.1   </span> <a id='x1-190002.1.1'></a>Command Line Arguments</h4>
+<!-- l. 10 --><p class='noindent'>Here is a list of RPCGEN++ command line options. Not all of these options are
+available at any time. See the sections on generating code.
+</p>
+     <ul class='itemize1'>
+     <li class='itemize'>
+     <!-- l. 16 --><p class='noindent'>–abnf
+     </p><!-- l. 18 --><p class='noindent'>Optional: When the input files is an XDR file, this produces ABNF out
+     files for the XDR definitions.
+     </p></li>
+     <li class='itemize'>
+     <!-- l. 21 --><p class='noindent'>–client
+     </p><!-- l. 23 --><p class='noindent'>Optional: Create a client that understands the input grammar and can
+     interact with servers.
+     </p></li>
+     <li class='itemize'>
+     <!-- l. 26 --><p class='noindent'>-Dname[=value]
+     </p><!-- l. 28 --><p class='noindent'>Optional: May occur more than once. The input files are processed with
+     the  c-preprocessor  ’cpp’  command.  All  ’-D’  values  are  passed  to  the
+     c-preprocessor command.
+                                                                  
+
+                                                                  
+     </p></li>
+     <li class='itemize'>
+     <!-- l. 32 --><p class='noindent'>–headers
+     </p><!-- l. 34 --><p class='noindent'>Optional:  Produce  header  files  needed  by  the  lang.  As  other  output
+     languages are added, if they have definition files, this will create their
+     definition files.
+     </p></li>
+     <li class='itemize'>
+     <!-- l. 38 --><p class='noindent'>–input input-file
+     </p><!-- l. 40 --><p class='noindent'>Required: The name of the input file to be processed. Files that end with
+     ’.x’ will be processed as XDR files. Files that end with ’.abnf” will be
+     processed as ABNF files.
+     </p></li>
+     <li class='itemize'>
+     <!-- l. 44 --><p class='noindent'>–lang=CPP
+     </p><!-- l. 46 --><p class='noindent'>Optional:  Optional.  If  not  supplied,  CPP  is  assumed.  More  output
+     languages will be added later. Currently only ’CPP’ is supported.
+     </p></li>
+     <li class='itemize'>
+     <!-- l. 50 --><p class='noindent'>–outdir out-directory-name
+     </p><!-- l. 52 --><p class='noindent'>Optional: If not specified the files will be generated in a directory named
+     ’Generated’.
+     </p></li>
+     <li class='itemize'>
+     <!-- l. 55 --><p class='noindent'>–server
+     </p><!-- l. 57 --><p class='noindent'>Optional:  Create  a  server  that  understands  the  input  grammar  and
+     responds to clients.
+     </p></li>
+     <li class='itemize'>
+     <!-- l. 60 --><p class='noindent'>–stubs
+     </p><!-- l. 62 --><p class='noindent'>Optional: Create the source code wrappers for users to use as their staring
+     point to get, set, transmit, and receive these objects over the network.
+     </p></li>
+     <li class='itemize'>
+     <!-- l. 66 --><p class='noindent'>–xdr
+     </p><!-- l. 68 --><p class='noindent'>Optional: Produce the source code. These are the source code files that
+     match the –headers option.
+                                                                  
+
+                                                                  
+     </p></li>
+     <li class='itemize'>
+     <!-- l. 71 --><p class='noindent'>–xds
+     </p><!-- l. 73 --><p class='noindent'>Optional: Produce an XML XSD file.
+</p>
+     </li></ul>
+<!-- l. 1 --><p class='noindent'>
+</p>
+   <h4 class='subsectionHead' id='generating-c-code-from-xdr-files'><span class='titlemark'>2.1.2   </span> <a id='x1-200002.1.2'></a>Generating C++ code from XDR files</h4>
+<!-- l. 1 --><p class='noindent'>
+</p>
+   <h4 class='subsectionHead' id='generating-c-code-from-abnf-files'><span class='titlemark'>2.1.3   </span> <a id='x1-210002.1.3'></a>Generating C++ code from ABNF files</h4>
+<!-- l. 1 --><p class='noindent'>
+</p>
+   <h4 class='subsectionHead' id='generating-abnf-from-xdr-files'><span class='titlemark'>2.1.4   </span> <a id='x1-220002.1.4'></a>Generating ABNF from XDR files</h4>
+                                                                  
+
+                                                                  
+<!-- l. 90 --><p class='indent'>
+                                                                  
+
+                                                                  
+</p>
+   <h2 class='chapterHead' id='xdr-files'><span class='titlemark'>Chapter 3</span><br /><a id='x1-230003'></a>XDR files</h2>
+   <h3 class='sectionHead' id='comments'><span class='titlemark'>3.1   </span> <a id='x1-240003.1'></a>Comments</h3>
+<!-- l. 2 --><p class='noindent'>
+</p>
+   <h4 class='subsectionHead' id='single-line-comments'><span class='titlemark'>3.1.1   </span> <a id='x1-250003.1.1'></a>Single Line Comments</h4>
+<!-- l. 3 --><p class='noindent'>
+</p>
+   <h4 class='subsectionHead' id='multiple-line-comments'><span class='titlemark'>3.1.2   </span> <a id='x1-260003.1.2'></a>Multiple Line Comments</h4>
+<!-- l. 1 --><p class='noindent'>
+</p>
+   <h3 class='sectionHead' id='conditionals'><span class='titlemark'>3.2   </span> <a id='x1-270003.2'></a>Conditionals</h3>
+<!-- l. 1 --><p class='noindent'>
+</p>
+   <h3 class='sectionHead' id='pass-through'><span class='titlemark'>3.3   </span> <a id='x1-280003.3'></a>Pass Through</h3>
+<!-- l. 1 --><p class='noindent'>
+</p>
+   <h3 class='sectionHead' id='data-types'><span class='titlemark'>3.4   </span> <a id='x1-290003.4'></a>Data Types</h3>
+<!-- l. 1 --><p class='noindent'>
+</p>
+   <h3 class='sectionHead' id='fixed-size-arrays'><span class='titlemark'>3.5   </span> <a id='x1-300003.5'></a>Fixed Size Arrays</h3>
+<!-- l. 1 --><p class='noindent'>
+</p>
+   <h3 class='sectionHead' id='variable-sized-arrays'><span class='titlemark'>3.6   </span> <a id='x1-310003.6'></a>Variable Sized Arrays</h3>
+                                                                  
+
+                                                                  
+<!-- l. 1 --><p class='noindent'>
+</p>
+   <h3 class='sectionHead' id='strings'><span class='titlemark'>3.7   </span> <a id='x1-320003.7'></a>Strings</h3>
+<!-- l. 2 --><p class='noindent'>
+</p>
+   <h4 class='subsectionHead' id='fixed-size-strings'><span class='titlemark'>3.7.1   </span> <a id='x1-330003.7.1'></a>Fixed Size Strings</h4>
+<!-- l. 3 --><p class='noindent'>
+</p>
+   <h4 class='subsectionHead' id='variable-size-strings'><span class='titlemark'>3.7.2   </span> <a id='x1-340003.7.2'></a>Variable Size Strings</h4>
+<!-- l. 4 --><p class='noindent'>
+</p>
+   <h4 class='subsectionHead' id='specifying-a-maximum-size'><span class='titlemark'>3.7.3   </span> <a id='x1-350003.7.3'></a>Specifying a Maximum Size</h4>
+<!-- l. 1 --><p class='noindent'>
+</p>
+   <h3 class='sectionHead' id='opaque-data'><span class='titlemark'>3.8   </span> <a id='x1-360003.8'></a>Opaque Data</h3>
+<!-- l. 1 --><p class='noindent'>
+</p>
+   <h3 class='sectionHead' id='member-functions'><span class='titlemark'>3.9   </span> <a id='x1-370003.9'></a>Member Functions</h3>
+<!-- l. 1 --><p class='noindent'>
+</p>
+   <h3 class='sectionHead' id='bit-fields'><span class='titlemark'>3.10   </span> <a id='x1-380003.10'></a>Bit Fields</h3>
+                                                                  
+
+                                                                  
+   <h2 class='chapterHead' id='abnf-files'><span class='titlemark'>Chapter 4</span><br /><a id='x1-390004'></a>ABNF files</h2>
+                                                                  
+
+                                                                  
+<!-- l. 102 --><p class='indent'>
+                                                                  
+
+                                                                  
+</p>
+   <h2 class='chapterHead' id='getting-the-source-code'><span class='titlemark'>Chapter 5</span><br /><a id='x1-400005'></a>Getting The source Code</h2>
+   <h3 class='sectionHead' id='where-to-get-rpcgen'><span class='titlemark'>5.1   </span> <a id='x1-410005.1'></a>Where to get RPCGEN++</h3>
+                                                                  
+
+                                                                  
+<!-- l. 104 --><p class='indent'>
+                                                                  
+
+                                                                  
+</p>
+   <h2 class='chapterHead' id='builing-rpcgen-for-yourself'><span class='titlemark'>Chapter 6</span><br /><a id='x1-420006'></a>Builing RPCGEN++ for yourself</h2>
+   <h3 class='sectionHead' id='building-rpcgen'><span class='titlemark'>6.1   </span> <a id='x1-430006.1'></a>Building RPCGEN++</h3>
+<!-- l. 2 --><p class='noindent'>The entire Phoenix build system is designed to build everything on Linux for all
+platforms. It uses the GNU compilers on Linux. The mingw compilers to cross
+compile for Windows. And the android NDK package to cross compile for
+Android. The build has been tested on the Android based Oculus virtual reality
+headsets.
+</p><!-- l. 10 --><p class='indent'>   The build uses the POSIX make command. And can build debug, release, and
+test coverage libraries, commands, and test code from the make system.
+</p><!-- l. 14 --><p class='indent'>   You can build any of the options below, or ’<span class='rm-lmbx-10'>make all </span>to build everything.
+</p><!-- l. 17 --><p class='indent'>   For each build, it builds 2 libraries and commands. First using dynamic shared
+libraries, or crates them. And the second pass builds with a minimum number of
+dynamic libraries, using as many static libraries as possible.
+</p><!-- l. 23 --><p class='indent'>   The BuildTools directory contains the Makefiles that are included to do all of the
+different builds and cross compiling.
+</p><!-- l. 27 --><p class='indent'>   You will need to modify the paths to the mingw and android NDK paths to
+match your installation in the Makefile.top and Makefile.top.lib files.
+</p><!-- l. 31 --><p class='indent'>   You will have to set the ANDROID_CC, ANDROID_CXX, ANDROID_STRIP,
+W64_CC, W64_CXX, and W64_STRIP settings.
+</p><!-- l. 34 --><p class='indent'>   On Linux the mingw packages are often loaded using the operating systems
+installation tools (dnf, apt, yum).
+</p><!-- l. 37 --><p class='indent'>   The Android NDK packages have to be downloaded using the latest
+google instructions, which seem to change over time. I used the NDK r26
+version.
+</p><!-- l. 41 --><p class='noindent'>
+</p>
+   <h4 class='subsectionHead' id='building-for-linux'><span class='titlemark'>6.1.1   </span> <a id='x1-440006.1.1'></a>Building For Linux</h4>
+<!-- l. 42 --><p class='noindent'>From the top of the GIT repository you downloaded, type one of these commands to
+build for Linux:
+</p><!-- l. 45 --><p class='noindent'>
+</p>
+   <h5 class='subsubsectionHead' id='building-debug-for-linux'><a id='x1-45000'></a>Building debug for Linux</h5>
+<!-- l. 46 --><p class='noindent'>Type <span class='rm-lmbx-10'>make LinuxDebug</span>
+</p><!-- l. 48 --><p class='indent'>   To build the Linux libraries and commands with symbol and debugging
+information.
+</p><!-- l. 51 --><p class='indent'>   The output will be in BuildTemp/Linux/Debug. The static library will
+be in BuildTemp/Linux/Debug/lib and the shared library will be named
+libname.so.version. The static library will be named libname.a.
+</p><!-- l. 56 --><p class='indent'>   Any commands built will be in BuildTemp/Linux/Debug/bin for dynamic.
+                                                                  
+
+                                                                  
+</p><!-- l. 59 --><p class='indent'>   And BuildTemp/Linux/Debug/sbin for static programs.
+</p><!-- l. 61 --><p class='noindent'>
+</p>
+   <h5 class='subsubsectionHead' id='building-release-for-linux'><a id='x1-46000'></a>Building release for Linux</h5>
+<!-- l. 62 --><p class='noindent'>Type <span class='rm-lmbx-10'>make LinuxRelease</span>
+</p><!-- l. 64 --><p class='indent'>   To build the Linux libraries and commands with the libraries and programs
+compiled with the optimize switch turned on. The necessary symbols will be stripped
+from them to make them smaller.
+</p><!-- l. 69 --><p class='indent'>   The output will be in BuildTemp/Linux/Release. The static library will
+be in BuildTemp/Linux/Release/lib and the shared library will be named
+libname.so.version. The static library will be named libname.a.
+</p><!-- l. 74 --><p class='indent'>   Any commands built will be in BuildTemp/Linux/Release/bin for dynamic.
+</p><!-- l. 77 --><p class='indent'>   And BuildTemp/Linux/Release/sbin for static programs.
+</p><!-- l. 79 --><p class='noindent'>
+</p>
+   <h5 class='subsubsectionHead' id='building-test-coverage-for-linux'><a id='x1-47000'></a>Building test coverage for Linux</h5>
+<!-- l. 80 --><p class='noindent'>Type <span class='rm-lmbx-10'>make LinuxTcov</span>
+</p><!-- l. 82 --><p class='indent'>   To build the Linux libraries and commands with the libraries and programs
+compiled with the test code and test metric collection information built into them.
+See test coverage section <a href='#test-coverage'>6.2<!-- tex4ht:ref: sec:TestCoverage  --></a> for more information. Debug symbols are included in
+TCOV builds.
+</p><!-- l. 88 --><p class='indent'>   The output will be in BuildTemp/Linux/Tcov. The static library will be in
+BuildTemp/Linux/Tcov/lib and the shared library will be named libname.so.version.
+The static library will be named libname.a.
+</p><!-- l. 93 --><p class='indent'>   Any commands built will be in BuildTemp/Linux/Tcov/bin for dynamic.
+</p><!-- l. 96 --><p class='indent'>   And BuildTemp/Linux/Tcov/sbin for static programs.
+</p><!-- l. 98 --><p class='indent'>   <span class='rm-lmbx-10'>When you run a TCOV build file or library, it generates a LOT of
+output files</span>. Be sure to read section <a href='#test-coverage'>6.2<!-- tex4ht:ref: sec:TestCoverage  --></a>Test Coverage.
+</p><!-- l. 100 --><p class='noindent'>
+</p>
+   <h5 class='subsubsectionHead' id='building-everything-for-linux'><a id='x1-48000'></a>Building everything for Linux</h5>
+<!-- l. 101 --><p class='noindent'>Type <span class='rm-lmbx-10'>make Linux</span>
+</p><!-- l. 103 --><p class='indent'>   To build LinuxDebug, LinuxRelease, and LinuxTcov.
+</p><!-- l. 105 --><p class='noindent'>
+</p>
+   <h4 class='subsectionHead' id='building-for-windows-on-linux'><span class='titlemark'>6.1.2   </span> <a id='x1-490006.1.2'></a>Building For Windows on Linux</h4>
+                                                                  
+
+                                                                  
+<!-- l. 107 --><p class='noindent'>From the top of the GIT repository you downloaded, type one of these commands to
+build for Windows, 64-bit:
+</p><!-- l. 111 --><p class='noindent'>
+</p>
+   <h5 class='subsubsectionHead' id='building-debug-for-windows'><a id='x1-50000'></a>Building debug for Windows</h5>
+<!-- l. 112 --><p class='noindent'>Type <span class='rm-lmbx-10'>make W64Debug</span>
+</p><!-- l. 114 --><p class='indent'>   To build the Windows 64-bit libraries and commands with symbol and debugging
+information.
+</p><!-- l. 117 --><p class='indent'>   The output will be in BuildTemp/W64/Debug. The static library will be in
+BuildTemp/W64/Debug/lib and the shared library will be named libname.so.version.
+The static library will be named libname.a.
+</p><!-- l. 122 --><p class='indent'>   Any commands built will be in BuildTemp/W65/Debug/bin, for dynamic.
+</p><!-- l. 125 --><p class='indent'>   And BuildTemp/W64/Debug/sbin for static programs.
+</p><!-- l. 127 --><p class='noindent'>
+</p>
+   <h5 class='subsubsectionHead' id='building-releaes-for-windows'><a id='x1-51000'></a>Building releaes for Windows</h5>
+<!-- l. 128 --><p class='noindent'>Type <span class='rm-lmbx-10'>make W64Release</span>
+</p><!-- l. 130 --><p class='indent'>   To build the Windows 64-bit libraries and commands with the libraries and
+programs compiled with the optimize switch turned on. The necessary symbols will
+be stripped from them to make them smaller.
+</p><!-- l. 135 --><p class='indent'>   The output will be in BuildTemp/W64/Release. The static library will
+be in BuildTemp/W64/Release/lib and the shared library will be named
+libname.so.version. The static library will be named libname.a.
+</p><!-- l. 140 --><p class='indent'>   Any commands built will be in BuildTemp/W65/Release/bin, for dynamic.
+</p><!-- l. 143 --><p class='indent'>   And BuildTemp/W64/Release/sbin for static programs.
+</p><!-- l. 145 --><p class='noindent'>
+</p>
+   <h5 class='subsubsectionHead' id='building-test-coverage-for-windows'><a id='x1-52000'></a>Building test coverage for Windows</h5>
+<!-- l. 146 --><p class='noindent'>Type <span class='rm-lmbx-10'>make W64Tcov</span>
+</p><!-- l. 148 --><p class='indent'>   To build the Windows libraries and commands with the libraries and programs
+compiled with the test code and test metric collection information built into them.
+See test coverage section <a href='#test-coverage'>6.2<!-- tex4ht:ref: sec:TestCoverage  --></a> for more information. Debug symbols are included in
+TCOV builds.
+</p><!-- l. 154 --><p class='indent'>   The output will be in BuildTemp/W64/Tcov. The static library will be in
+BuildTemp/W64/Tcov/lib and the shared library will be named libname.so.version.
+The static library will be named libname.a.
+</p><!-- l. 159 --><p class='indent'>   Any commands built will be in BuildTemp/W64/Tcov/bin for dynamic.
+</p><!-- l. 162 --><p class='indent'>   And BuildTemp/W64/Tcov/sbin for static programs.
+                                                                  
+
+                                                                  
+</p><!-- l. 164 --><p class='indent'>   <span class='rm-lmbx-10'>When you run a TCOV build file or library, it generates a LOT of
+output files</span>. Be sure to read section <a href='#test-coverage'>6.2<!-- tex4ht:ref: sec:TestCoverage  --></a> Test Coverage.
+</p><!-- l. 166 --><p class='indent'>   You have to run the built programs on a Widows device with the matching GNU
+tools.
+</p><!-- l. 169 --><p class='noindent'>
+</p>
+   <h5 class='subsubsectionHead' id='building-everyting-for-windows'><a id='x1-53000'></a>Building everyting for Windows</h5>
+<!-- l. 170 --><p class='noindent'>Type <span class='rm-lmbx-10'>make W64</span>
+</p><!-- l. 172 --><p class='indent'>   To build W64Debug, W64Release, and W64Tcov.
+</p><!-- l. 174 --><p class='noindent'>
+</p>
+   <h4 class='subsectionHead' id='building-for-android-on-linux'><span class='titlemark'>6.1.3   </span> <a id='x1-540006.1.3'></a>Building For Android on Linux</h4>
+<!-- l. 176 --><p class='noindent'>From the top of the GIT repository you downloaded, type one of these commands to
+build for Android, 64-bit: You will need the GCC NDK build tools in your
+path.
+</p><!-- l. 180 --><p class='noindent'>
+</p>
+   <h5 class='subsubsectionHead' id='building-debug-for-android'><a id='x1-55000'></a>Building debug for Android</h5>
+<!-- l. 181 --><p class='noindent'>Type <span class='rm-lmbx-10'>make AndroidDebug</span>
+</p><!-- l. 183 --><p class='indent'>   To build the Android 64-bit libraries and commands with symbol and debugging
+information.
+</p><!-- l. 186 --><p class='indent'>   The output will be in BuildTemp/Android/Debug. The static library will be
+in BuildTemp/Android/Debug/lib and the shared library will be named
+libname.so.version. The static library will be named libname.a.
+</p><!-- l. 191 --><p class='indent'>   Any commands built will be in BuildTemp/Android/Debug/bin, for
+dynamic.
+</p><!-- l. 194 --><p class='indent'>   And BuildTemp/Android/Debug/sbin for static programs.
+</p><!-- l. 196 --><p class='noindent'>
+</p>
+   <h5 class='subsubsectionHead' id='building-android-for-android'><a id='x1-56000'></a>Building Android for Android</h5>
+<!-- l. 197 --><p class='noindent'>Type <span class='rm-lmbx-10'>make AndroidRelease</span>
+</p><!-- l. 199 --><p class='indent'>   To build the Android 64-bit libraries and commands with the libraries and
+programs compiled with the optimize switch turned on. The necessary symbols will
+be stripped from them to make them smaller.
+</p><!-- l. 204 --><p class='indent'>   The output will be in BuildTemp/Android/Release. The static library will
+be in BuildTemp/W64/Release/lib and the shared library will be named
+libname.so.version. The static library will be named libname.a.
+                                                                  
+
+                                                                  
+</p><!-- l. 209 --><p class='indent'>   Any commands built will be in BuildTemp/Android/Release/bin, for
+dynamic.
+</p><!-- l. 212 --><p class='indent'>   And BuildTemp/Android/Release/sbin for static programs.
+</p><!-- l. 214 --><p class='noindent'>
+</p>
+   <h5 class='subsubsectionHead' id='building-test-coverage-for-android'><a id='x1-57000'></a>Building Test Coverage for Android</h5>
+<!-- l. 215 --><p class='noindent'>Type <span class='rm-lmbx-10'>make AndroidTcov</span>
+</p><!-- l. 217 --><p class='indent'>   To build the Android libraries and commands with the libraries and programs
+compiled with the test code and test metric collection information built into them.
+See test coverage section <a href='#test-coverage'>6.2<!-- tex4ht:ref: sec:TestCoverage  --></a> for more information. Debug symbols are included in
+TCOV builds.
+</p><!-- l. 223 --><p class='indent'>   The output will be in BuildTemp/Android/Tcov. The static library will
+be in BuildTemp/Android/Tcov/lib and the shared library will be named
+libname.so.version. The static library will be named libname.a.
+</p><!-- l. 228 --><p class='indent'>   Any commands built will be in BuildTemp/Android/Tcov/bin for dynamic.
+</p><!-- l. 231 --><p class='indent'>   And BuildTemp/Android/Tcov/sbin for static programs.
+</p><!-- l. 233 --><p class='indent'>   <span class='rm-lmbx-10'>When you run a TCOV build file or library, it generates a LOT of
+output files</span>. Be sure to read section <a href='#test-coverage'>6.2<!-- tex4ht:ref: sec:TestCoverage  --></a> Test Coverage.
+</p><!-- l. 235 --><p class='indent'>   You have to run the built programs on a Android device with the matching GNU
+tools.
+</p><!-- l. 238 --><p class='noindent'>
+</p>
+   <h5 class='subsubsectionHead' id='building-everything-for-android'><a id='x1-58000'></a>Building everything for Android</h5>
+<!-- l. 239 --><p class='noindent'>Type <span class='rm-lmbx-10'>make Android</span>
+</p><!-- l. 241 --><p class='indent'>   To build AndroidDebug, AndroidRelease, and AndroidTcov.
+</p><!-- l. 243 --><p class='noindent'>
+</p>
+   <h4 class='subsectionHead' id='building-the-documentation'><span class='titlemark'>6.1.4   </span> <a id='x1-590006.1.4'></a>Building the Documentation</h4>
+<!-- l. 244 --><p class='noindent'>The documentation for RPCGEN++ is built using latex and make4ht. You will need
+those. Go to the NewRpcgen/Documentation/LaTex directory and type
+’make’.
+</p><!-- l. 249 --><p class='noindent'>
+</p>
+   <h4 class='subsectionHead' id='filing-bugs-reports'><span class='titlemark'>6.1.5   </span> <a id='x1-600006.1.5'></a>Filing Bugs Reports</h4>
+<!-- l. 250 --><p class='noindent'>File bug, issues, and questions on github, at: <a href='https://github.com/RiverExplorer/Phoenix/issues'>Bug and Issue Reports</a>
+                                                                  
+
+                                                                  
+</p>
+   <h3 class='sectionHead' id='test-coverage'><span class='titlemark'>6.2   </span> <a id='x1-610006.2'></a>Test Coverage</h3>
+<!-- l. 2 --><p class='noindent'>This project uses <span class='rm-lmri-10'>gcov </span>and <span class='rm-lmri-10'>gcovr </span>to generate the HTML test coverage results.
+</p><!-- l. 5 --><p class='indent'>   This produces a lot of data and this section will get you started in understanting
+what you have produced.
+</p><!-- l. 8 --><p class='indent'>   Once the program or library is compiled with the test coverage tools, you must
+run them on the target operating system. So the Windows 64-bit builds (W64) must
+be run on a windows computer to get the test results for windows. And same with
+the Android devices.
+</p><!-- l. 14 --><p class='indent'>   More ....
+                                                                  
+
+                                                                  
+</p>
+   <h2 class='chapterHead' id='legal'><span class='titlemark'>Chapter 7</span><br /><a id='x1-620007'></a>Legal</h2>
+                                                                  
+
+                                                                  
+   <h3 class='sectionHead' id='legal-mumbo-jumbo'><span class='titlemark'>7.1   </span> <a id='x1-630007.1'></a>Legal Mumbo Jumbo</h3>
+<!-- l. 3 --><p class='noindent'><span class='rm-lmbx-10'>This document is Copyright 2025 Douglas Mark Royer</span>.
+</p>
+<figure class='figure' id='-riverexplorer-company-logo'> 
+
+                                                                  
+
+                                                                  
+<a id='x1-630011'></a>
+                                                                  
+
+                                                                  
+<!-- l. 8 --><p class='noindent'><img alt='PIC' src='Images//RiverExplorerLLC-Logo-BLACK-131x50-Transparent.ps.png' />
+</p>
+<figcaption class='caption'><span class='id'>Figure 7.1: </span><span class='content'>RiverExplorer Company Logo</span></figcaption><!-- tex4ht:label?: x1-630011  -->
+                                                                  
+
+                                                                  
+</figure>
+<!-- l. 14 --><p class='noindent'><span class='rm-lmbx-10'>’RiverExplorer’ and the logo shown in figure </span><a href='#-riverexplorer-company-logo'><span class='rm-lmbx-10'>7.1</span><!-- tex4ht:ref: fig:RiverExplorerLogo  --></a> <span class='rm-lmbx-10'>are trademarks of
+Douglas Mark Royer</span>. <span class='rm-lmbx-10'>’RiverExplorer Games LLC’ is a wholly owned
+subsidiary of RiverExplorer LLC.</span>
+</p>
+<h3 class='sectionHead' id='license'><span class='titlemark'>7.2   </span> <a id='x1-640007.2'></a>License</h3>
+<!-- l. 18 --><p class='noindent'><span class='rm-lmri-10'>Permission is hereby granted, free of charge, to any person obtaining a copy of this
+software and associated documentation files (the “Software”), to deal in the Software
+without restriction, including without limitation the rights to use, copy, modify,
+merge, publish, distribute, sublicense, and/or sell copies of the Software, and to
+permit persons to whom the Software is furnished to do so, subject to the following
+conditions:</span>
+</p><!-- l. 20 --><p class='noindent'><span class='rm-lmri-10'>The above copyright notice and this permission notice shall be included in all copies
+or substantial portions of the Software.</span>
+</p><!-- l. 22 --><p class='noindent'><span class='rm-lmri-10'>THE SOFTWARE IS PROVIDED “AS IS”, WITHOUT WARRANTY OF ANY
+KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE
+WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR
+PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS
+OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR
+OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT
+OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
+WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.</span>
+                                                                  
+
+                                                                  
+                                                                  
+
+                                                                  
+                                                                  
+
+                                                                  
+</p><!-- l. 110 --><p class='noindent'>
+                                                                  
+
+                                                                  
+<a id='x1-64001r78'></a>
+</p>
+<h2 class='appendixHead' id='sample-xdr-files'><span class='titlemark'>Appendix A</span><br /><a id='x1-65000A'></a>Sample XDR files</h2>
+                                                                  
+
+                                                                  
+<!-- l. 111 --><p class='noindent'>
+                                                                  
+
+                                                                  
+<a id='x1-65001r78'></a>
+</p>
+<h2 class='appendixHead' id='sample-abnf-files'><span class='titlemark'>Appendix B</span><br /><a id='x1-66000B'></a>Sample ABNF files</h2>
+ 
+</body> 
+</html>
