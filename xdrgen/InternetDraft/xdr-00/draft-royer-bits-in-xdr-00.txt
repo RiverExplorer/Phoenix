@@ -32,6 +32,9 @@ Abstract
    *  And a new namespace declaration type is specified to aid in the
       reduction of name collisions in large projects.
 
+   While in draft status, a new Open Source XDR generation tool is being
+   developed [xdrgen].
+
 Status of This Memo
 
    This Internet-Draft is submitted in full conformance with the
@@ -47,9 +50,6 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 24 September 2025.
-
-
 
 
 
@@ -57,6 +57,8 @@ Royer                   Expires 24 September 2025               [Page 1]
 
 Internet-Draft              Abbreviated Title                 March 2025
 
+
+   This Internet-Draft will expire on 24 September 2025.
 
 Copyright Notice
 
@@ -84,10 +86,9 @@ Table of Contents
    4.  Reducing Namespace Collision in Generated Code  . . . . . . .  11
    5.  IANA Considerations . . . . . . . . . . . . . . . . . . . . .  13
    6.  Security Considerations . . . . . . . . . . . . . . . . . . .  13
-   7.  References  . . . . . . . . . . . . . . . . . . . . . . . . .  13
-     7.1.  Normative References  . . . . . . . . . . . . . . . . . .  13
-     7.2.  Informative References  . . . . . . . . . . . . . . . . .  13
-   Appendix A.  Appendix 1 [REPLACE/DELETE]  . . . . . . . . . . . .  14
+   7.  Normative References  . . . . . . . . . . . . . . . . . . . .  13
+   8.  Informative References  . . . . . . . . . . . . . . . . . . .  13
+   Appendix A.  Appendix 1 Full XDR Language Grammar . . . . . . . .  13
    Acknowledgments . . . . . . . . . . . . . . . . . . . . . . . . .  14
    Contributors  . . . . . . . . . . . . . . . . . . . . . . . . . .  14
    Author's Address  . . . . . . . . . . . . . . . . . . . . . . . .  14
@@ -102,7 +103,6 @@ Table of Contents
       a set of possible conditions and not a numeric value and would be
       unsigned.  And in other usages, the bits could represent a
       positive or negative value.
-
 
 
 
@@ -702,23 +702,23 @@ Internet-Draft              Abbreviated Title                 March 2025
    This document should not affect the security of the Internet.
    [CHECK]
 
-7.  References
-
-7.1.  Normative References
-
-   [RFC2119]  Bradner, S., "Key words for use in RFCs to Indicate
-              Requirement Levels", BCP 14, RFC 2119,
-              DOI 10.17487/RFC2119, March 1997,
-              <https://www.rfc-editor.org/info/rfc2119>.
+7.  Normative References
 
    [RFC4506]  Eisler, M., Ed., "XDR: External Data Representation
               Standard", STD 67, RFC 4506, DOI 10.17487/RFC4506, May
               2006, <https://www.rfc-editor.org/info/rfc4506>.
 
-7.2.  Informative References
+8.  Informative References
 
    [xdrgen]   Royer, DM., "XDR Code Generator, Open Source", 2025,
-              <https://github.com/RiverExplorer/Phoenix/xdrgen>.
+              <https://github.com/RiverExplorer/Phoenix>.
+
+Appendix A.  Appendix 1 Full XDR Language Grammar
+
+   TODO
+
+
+
 
 
 
@@ -730,26 +730,9 @@ Royer                   Expires 24 September 2025              [Page 13]
 Internet-Draft              Abbreviated Title                 March 2025
 
 
-   [abnfbits] Royer, DM., "Bits in ABNF, Work in Progress", 2025,
-              <https://www.ietf.org/archive/id/draft-royer-bits-in-abnf-
-              00.txt>.
-
-   [exampleRefOrg]
-              Organization [REPLACE], "Title [REPLACE]", 1984,
-              <http://www.example.com/>.
-
-Appendix A.  Appendix 1 [REPLACE/DELETE]
-
-   This becomes an Appendix [REPLACE]
-
 Acknowledgments
 
-   This template uses extracts from templates written by Pekka Savola,
-   Elwyn Davies and Henrik Levkowetz.  [REPLACE]
-
 Contributors
-
-   Thanks to all of the contributors.  [REPLACE]
 
 Author's Address
 
@@ -761,6 +744,23 @@ Author's Address
    Phone: +1-208-806-1358
    Email: DouglasRoyer@gmail.com
    URI:   https://DougRoyer.US
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

@@ -36,6 +36,10 @@
  large projects.
   
        
+       
+ While in draft status, a new Open Source XDR generation tool
+ is being developed  .
+       
     ' name="description">
 <meta content="xml2rfc 3.23.2" name="generator">
 <meta content="XDR" name="keyword">
@@ -1302,6 +1306,9 @@ li > p:last-of-type:only-child {
  large projects.<a href="#section-abstract-4.3" class="pilcrow">¶</a>
 </li>
       </ul>
+<p id="section-abstract-5">
+ While in draft status, a new Open Source XDR generation tool
+ is being developed <span>[<a href="#xdrgen" class="cite xref">xdrgen</a>]</span>.<a href="#section-abstract-5" class="pilcrow">¶</a></p>
 </section>
 <div id="status-of-memo">
 <section id="section-boilerplate.1">
@@ -1383,27 +1390,22 @@ li > p:last-of-type:only-child {
             <p id="section-toc.1-1.6.1"><a href="#section-6" class="auto internal xref">6</a>.  <a href="#name-security-considerations" class="internal xref">Security Considerations</a></p>
 </li>
           <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.7">
-            <p id="section-toc.1-1.7.1"><a href="#section-7" class="auto internal xref">7</a>.  <a href="#name-references" class="internal xref">References</a></p>
-<ul class="compact toc ulBare ulEmpty">
-<li class="compact toc ulBare ulEmpty" id="section-toc.1-1.7.2.1">
-                <p id="section-toc.1-1.7.2.1.1"><a href="#section-7.1" class="auto internal xref">7.1</a>.  <a href="#name-normative-references" class="internal xref">Normative References</a></p>
-</li>
-              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.7.2.2">
-                <p id="section-toc.1-1.7.2.2.1"><a href="#section-7.2" class="auto internal xref">7.2</a>.  <a href="#name-informative-references" class="internal xref">Informative References</a></p>
-</li>
-            </ul>
+            <p id="section-toc.1-1.7.1"><a href="#section-7" class="auto internal xref">7</a>.  <a href="#name-normative-references" class="internal xref">Normative References</a></p>
 </li>
           <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.8">
-            <p id="section-toc.1-1.8.1"><a href="#appendix-A" class="auto internal xref">Appendix A</a>.  <a href="#name-appendix-1-replace-delete" class="internal xref">Appendix 1 [REPLACE/DELETE]</a></p>
+            <p id="section-toc.1-1.8.1"><a href="#section-8" class="auto internal xref">8</a>.  <a href="#name-informative-references" class="internal xref">Informative References</a></p>
 </li>
           <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.9">
-            <p id="section-toc.1-1.9.1"><a href="#appendix-B" class="auto internal xref"></a><a href="#name-acknowledgments" class="internal xref">Acknowledgments</a></p>
+            <p id="section-toc.1-1.9.1"><a href="#appendix-A" class="auto internal xref">Appendix A</a>.  <a href="#name-appendix-1-full-xdr-languag" class="internal xref">Appendix 1 Full XDR Language Grammar</a></p>
 </li>
           <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.10">
-            <p id="section-toc.1-1.10.1"><a href="#appendix-C" class="auto internal xref"></a><a href="#name-contributors" class="internal xref">Contributors</a></p>
+            <p id="section-toc.1-1.10.1"><a href="#appendix-B" class="auto internal xref"></a><a href="#name-acknowledgments" class="internal xref">Acknowledgments</a></p>
 </li>
           <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.11">
-            <p id="section-toc.1-1.11.1"><a href="#appendix-D" class="auto internal xref"></a><a href="#name-authors-address" class="internal xref">Author's Address</a></p>
+            <p id="section-toc.1-1.11.1"><a href="#appendix-C" class="auto internal xref"></a><a href="#name-contributors" class="internal xref">Contributors</a></p>
+</li>
+          <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.12">
+            <p id="section-toc.1-1.12.1"><a href="#appendix-D" class="auto internal xref"></a><a href="#name-authors-address" class="internal xref">Author's Address</a></p>
 </li>
         </ul>
 </nav>
@@ -2460,64 +2462,45 @@ union ObjectStatus (Type WhichType)
 </section>
 </div>
 <section id="section-7">
-      <h2 id="name-references">
-<a href="#section-7" class="section-number selfRef">7. </a><a href="#name-references" class="section-name selfRef">References</a>
+      <h2 id="name-normative-references">
+<a href="#section-7" class="section-number selfRef">7. </a><a href="#name-normative-references" class="section-name selfRef">Normative References</a>
       </h2>
-<section id="section-7.1">
-        <h3 id="name-normative-references">
-<a href="#section-7.1" class="section-number selfRef">7.1. </a><a href="#name-normative-references" class="section-name selfRef">Normative References</a>
-        </h3>
 <dl class="references">
-<dt id="RFC2119">[RFC2119]</dt>
-        <dd>
-<span class="refAuthor">Bradner, S.</span>, <span class="refTitle">"Key words for use in RFCs to Indicate Requirement Levels"</span>, <span class="seriesInfo">BCP 14</span>, <span class="seriesInfo">RFC 2119</span>, <span class="seriesInfo">DOI 10.17487/RFC2119</span>, <time datetime="1997-03" class="refDate">March 1997</time>, <span>&lt;<a href="https://www.rfc-editor.org/info/rfc2119">https://www.rfc-editor.org/info/rfc2119</a>&gt;</span>. </dd>
-<dd class="break"></dd>
 <dt id="RFC4506">[RFC4506]</dt>
-        <dd>
+    <dd>
 <span class="refAuthor">Eisler, M., Ed.</span>, <span class="refTitle">"XDR: External Data Representation Standard"</span>, <span class="seriesInfo">STD 67</span>, <span class="seriesInfo">RFC 4506</span>, <span class="seriesInfo">DOI 10.17487/RFC4506</span>, <time datetime="2006-05" class="refDate">May 2006</time>, <span>&lt;<a href="https://www.rfc-editor.org/info/rfc4506">https://www.rfc-editor.org/info/rfc4506</a>&gt;</span>. </dd>
-<dd class="break"></dd></dl>
-</section>
-<section id="section-7.2">
-        <h3 id="name-informative-references">
-<a href="#section-7.2" class="section-number selfRef">7.2. </a><a href="#name-informative-references" class="section-name selfRef">Informative References</a>
-        </h3>
-<dl class="references">
-<dt id="xdrgen">[xdrgen]</dt>
-        <dd>
-<span class="refAuthor">Royer, DM.</span>, <span class="refTitle">"XDR Code Generator, Open Source"</span>, <time datetime="2025" class="refDate">2025</time>, <span>&lt;<a href="https://github.com/RiverExplorer/Phoenix/xdrgen">https://github.com/RiverExplorer/Phoenix/xdrgen</a>&gt;</span>. </dd>
-<dd class="break"></dd>
-<dt id="abnfbits">[abnfbits]</dt>
-        <dd>
-<span class="refAuthor">Royer, DM.</span>, <span class="refTitle">"Bits in ABNF, Work in Progress"</span>, <time datetime="2025" class="refDate">2025</time>, <span>&lt;<a href="https://www.ietf.org/archive/id/draft-royer-bits-in-abnf-00.txt">https://www.ietf.org/archive/id/draft-royer-bits-in-abnf-00.txt</a>&gt;</span>. </dd>
-<dd class="break"></dd>
-<dt id="exampleRefOrg">[exampleRefOrg]</dt>
-      <dd>
-<span class="refAuthor">Organization [REPLACE]</span>, <span class="refTitle">"Title [REPLACE]"</span>, <time datetime="1984" class="refDate">1984</time>, <span>&lt;<a href="http://www.example.com/">http://www.example.com/</a>&gt;</span>. </dd>
 <dd class="break"></dd>
 </dl>
 </section>
+<section id="section-8">
+      <h2 id="name-informative-references">
+<a href="#section-8" class="section-number selfRef">8. </a><a href="#name-informative-references" class="section-name selfRef">Informative References</a>
+      </h2>
+<dl class="references">
+<dt id="xdrgen">[xdrgen]</dt>
+    <dd>
+<span class="refAuthor">Royer, DM.</span>, <span class="refTitle">"XDR Code Generator, Open Source"</span>, <time datetime="2025" class="refDate">2025</time>, <span>&lt;<a href="https://github.com/RiverExplorer/Phoenix">https://github.com/RiverExplorer/Phoenix</a>&gt;</span>. </dd>
+<dd class="break"></dd>
+</dl>
 </section>
 <section id="appendix-A">
-      <h2 id="name-appendix-1-replace-delete">
-<a href="#appendix-A" class="section-number selfRef">Appendix A. </a><a href="#name-appendix-1-replace-delete" class="section-name selfRef">Appendix 1 [REPLACE/DELETE]</a>
+      <h2 id="name-appendix-1-full-xdr-languag">
+<a href="#appendix-A" class="section-number selfRef">Appendix A. </a><a href="#name-appendix-1-full-xdr-languag" class="section-name selfRef">Appendix 1 Full XDR Language Grammar</a>
       </h2>
-<p id="appendix-A-1">This becomes an Appendix [REPLACE]<a href="#appendix-A-1" class="pilcrow">¶</a></p>
+<p id="appendix-A-1">TODO<a href="#appendix-A-1" class="pilcrow">¶</a></p>
 </section>
 <div id="Acknowledgements">
 <section id="appendix-B">
       <h2 id="name-acknowledgments">
 <a href="#name-acknowledgments" class="section-name selfRef">Acknowledgments</a>
-      </h2>
-<p id="appendix-B-1">This template uses extracts from templates written by Pekka Savola, Elwyn Davies and 
-        Henrik Levkowetz. [REPLACE]<a href="#appendix-B-1" class="pilcrow">¶</a></p>
+    </h2>
 </section>
 </div>
 <div id="Contributors">
 <section id="appendix-C">
       <h2 id="name-contributors">
 <a href="#name-contributors" class="section-name selfRef">Contributors</a>
-      </h2>
-<p id="appendix-C-1">Thanks to all of the contributors. [REPLACE]<a href="#appendix-C-1" class="pilcrow">¶</a></p>
+    </h2>
 </section>
 </div>
 <div id="authors-addresses">

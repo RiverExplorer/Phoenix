@@ -21,15 +21,6 @@
   submissionType="IETF"
   xml:lang="en"
   version="3">
-<!-- [REPLACE] 
-       * docName with name of your draft
-     [CHECK] 
-       * category should be one of std, bcp, info, exp, historic
-       * ipr should be one of trust200902, noModificationTrust200902, noDerivativesTrust200902, pre5378Trust200902
-       * updates can be an RFC number as NNNN
-       * obsoletes can be an RFC number as NNNN 
--->
-
   <front>
     <title abbrev="Abbreviated Title">Bits in XDR</title>
     <seriesInfo name="Internet-Draft" value="draft-royer-bits-in-xdr-00"/>
@@ -88,6 +79,10 @@
 					large projects.
 				</li>
 			</ul>
+			<t>
+				While in draft status, a new Open Source XDR generation tool
+				is being developed <xref target="xdrgen"/>.
+			</t>
     </abstract>
  
   </front>
@@ -622,74 +617,34 @@ union ObjectStatus (Type WhichType)
 
   <back>
     <references>
-      <name>References</name>
-      <references>
-        <name>Normative References</name>
-        
-        <xi:include href="References/reference.RFC.2119.xml"/>
-        <xi:include href="References/reference.RFC.4506.xml"/>
-        <!-- The recommended and simplest way to include a well known reference -->
-        
-      </references>
-      <references>
-        <name>Informative References</name>
-       
-        <reference anchor="xdrgen" target="https://github.com/RiverExplorer/Phoenix/xdrgen">
-        <!-- [REPLACE/DELETE] Example minimum reference -->
-          <front>
-            <title>XDR Code Generator, Open Source</title>
-            <author initials="DM" surname="Royer">
-              <organization>RiverExplorer LLC</organization>
-            </author>
-            <date year="2025"/>
-            <!-- [CHECK] -->
-          </front>
-        </reference>
-
-        <reference anchor="abnfbits" target="https://www.ietf.org/archive/id/draft-royer-bits-in-abnf-00.txt">
-        <!-- [REPLACE/DELETE] Example minimum reference -->
-          <front>
-            <title>Bits in ABNF, Work in Progress</title>
-            <author initials="DM" surname="Royer">
-              <organization>RiverExplorer LLC</organization>
-            </author>
-            <date year="2025"/>
-            <!-- [CHECK] -->
-          </front>
-        </reference>
-
-        <reference anchor="exampleRefOrg" target="http://www.example.com/">
-        <!-- [REPLACE/DELETE] Example reference written by an organization not a person -->
-          <front>
-            <title>Title [REPLACE]</title>
-            <author>
-              <organization>Organization [REPLACE]</organization>
-            </author>
-            <date year="1984"/>
-            <!-- [CHECK] -->
-          </front>
-        </reference>       
-       
-      </references>
+      <name>Normative References</name>
+      <xi:include href="References/reference.RFC.4506.xml"/>
     </references>
+
+    <references>
+      <name>Informative References</name>
+      <reference anchor="xdrgen" target="https://github.com/RiverExplorer/Phoenix">
+        <front>
+          <title>XDR Code Generator, Open Source</title>
+          <author initials="DM" surname="Royer">
+            <organization>RiverExplorer LLC</organization>
+          </author>
+          <date year="2025"/>
+        </front>
+      </reference>
+		</references>
     
     <section>
-      <name>Appendix 1 [REPLACE/DELETE]</name>
-      <t>This becomes an Appendix [REPLACE]</t>
+      <name>Appendix 1 Full XDR Language Grammar</name>
+      <t>TODO</t>
     </section>
 
     <section anchor="Acknowledgements" numbered="false">
-      <!-- [REPLACE/DELETE] an Acknowledgements section is optional -->
       <name>Acknowledgments</name>
-      <t>This template uses extracts from templates written by Pekka Savola, Elwyn Davies and 
-        Henrik Levkowetz. [REPLACE]</t>
     </section>
     
     <section anchor="Contributors" numbered="false">
-      <!-- [REPLACE/DELETE] a Contributors section is optional -->
       <name>Contributors</name>
-      <t>Thanks to all of the contributors. [REPLACE]</t>
-      <!-- [CHECK] it is optional to add a <contact> record for some or all contributors -->
     </section>
     
  </back>
