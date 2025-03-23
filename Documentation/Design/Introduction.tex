@@ -4,6 +4,12 @@ data from the network.
 This \mbox{input/output} model (IO Model) works with
 both the Phoenix client and Phoenix server.
 
+\textbf{NOTE: It is possible that specific implementations allow
+  each endpoint to act as a client and server.
+  For the purposes of this specification, the client is
+  the one that is originating actions and expects
+  results or replies from the other endpoint}
+
 This model support both threaded and non threaded
 implementations.
 For non-threaded systems the data is processed serially
@@ -24,7 +30,7 @@ implementations.
 	The main thread processes data and formats it into
   IOVectorPacket objects that contains the command
   and references to the data that will be sent.
-  Then stores the IOVectorPackt (figures: \ref{fig:IovPacket} and \ref{fig:IovPacket2})
+  Then stores the IOVectorPackt (figure: \ref{fig:IovPacket})
   into queue \textit{OQ}.
   The client \textit{Main Thread} is described in section \ref{sec:ClientMainThread}
   And the server \textit{Main Thread} is described in section \ref{sec:ServerMainThread}
@@ -36,7 +42,7 @@ implementations.
   or otherwise busy.
   When it can proceed, it takes an entry out of the queue,
   and (C) XDR encodes it.
-  The XDR stream is opened to the TLS enctyption.
+  The XDR stream is opened to the TLS encryption.
   The \textit{Output Thread} is described in section \ref{sec:OutputThread}
   
 \item[(C) XDR Encoding]\label{item:XdrEncodingThread}
@@ -72,6 +78,14 @@ implementations.
   It takes the decoded packet and dispatches it to the code that can handle the data.
   The \textit{Dispatch Thread} is described in section \ref{sec:DispatchThread}
 
+\item[(OQ) Output Queue]
+  This is a C++ \textit{std::deque} of I/O Vector Packets
+  shown in figure \ref{fig:IovPacket}.
+  
+\item[(IQ) Input Queue]
+  This is a C++ \textit{std::deque} of I/O Vector Packets
+  shown in figure 1\ref{fig:IovPacket}.
+  
 \end{description}
 
 

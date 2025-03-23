@@ -1,6 +1,0 @@
-#!/bin/tcsh -f
-
-foreach f (  Tests/OriginalX/*.x )
-  ./BuildTemp/Linux/Debug/bin/rpcgen++ --input $f --outdir Generated --lang=CPP -DRPC_HDR -DXDR_HDR --xdr --headers --abnf
-end
-

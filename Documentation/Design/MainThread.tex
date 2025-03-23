@@ -1,0 +1,28 @@
+\section{Main Thread}\label{sec:MainThread}
+The client main thread might be controlled by a user, with
+a user interface.
+And a client program could exist that automates the
+transfer of mime objects without human intervention.
+
+A server is mostly responsive to commands from the client.
+
+Once the main thread has gathered the MIME information to
+be transmitted to the server, it takes these basic steps:
+
+\begin{enumerate}
+\item Assigns the command (CMD). Commands are defined
+  in \ref{todo}.
+  
+\item Then creates an I/O Vector Packet (\ref{fig:IovPacket}).
+  And creates one IO vector Blob for each section of data
+  that is part of the command, it appends that Blob object
+  to the \_Q member variable in the order needed by CMD.
+
+\item Puts a temporary lock on the output queue \textit{OQ})
+  
+\item Pushes the new I/O Vector Packet onto the
+  end of \textit{OQ}.
+
+\item Removes the temporary lock on the output queue.
+  
+\end{enumerate}

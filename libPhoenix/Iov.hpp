@@ -1,6 +1,17 @@
 /**
- * Phoenix (C) 2025 by Douglas Mark Royer (A.K.A. RiverExplorer) is licensed under CC BY 4.0.
- * RiverExplorer is a trademark of RiverExplorer Games LLC.
+ * Project: Phoenix
+ * Time-stamp: <2025-03-17 17:07:30 doug>
+ * 
+ * @file Iov.hpp
+ * @author Douglas Mark Royer
+ * @date 24-FEB-2025
+ * 
+ * @Copyright(C) 2025 by Douglas Mark Royer (A.K.A. RiverExplorer)
+ * 
+ * Licensed under the MIT License. See LICENSE file
+ * or https://opensource.org/licenses/MIT for details.
+ * 
+ * RiverExplorer is a trademark of Douglas Mark Royer
  */
 
 #ifndef _RIVEREXPLORER_PHOENIX_IOV_HPP_
@@ -45,11 +56,13 @@ namespace RiverExplorer::Phoenix
 			
 			/**
 			 * The data.
+			 * This is mutable, delete OriginalData, not this
+			 * when done with the data.
 			 */
 			uint8_t	*	Data;
 
 			/**
-			 * As we take data, Data is updated.
+			 * As we take data, The Data variable is updated.
 			 * OriginalData is kept so we know what to delete or unmap.
 			 */
 			uint8_t * OriginalData;
@@ -147,6 +160,7 @@ namespace RiverExplorer::Phoenix
 		std::deque<Blob*>	_Q;
 		
 	};
+
 }
 	
 #endif // _RIVEREXPLORER_PHOENIX_IOV_HPP_

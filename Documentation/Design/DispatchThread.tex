@@ -1,2 +1,38 @@
 \section{Dispatch Thread}\label{sec:DispatchThread}
+The dispatch thread awaits data from the other
+endpoint and dispatches the implementation code
+based on the command and sequence number.
 
+It waits for data to be deposited in the \textit{IQ}.
+When data arrives, it:
+
+\begin{enumerate}
+
+\item It places a temporary lock on \textit{IQ}.
+  
+\item Pulls one I/O Vector Packet out of \textit{IQ}.
+
+\item Removes the a temporary lock on \textit{IQ}.
+
+\item Examines the command (CMD) and sequence number (SEQ\_t).
+  When a client gets an even sequence number, it is a command
+  reply from the server and dispatches the command
+  specific actions.
+
+  When a client gets an odd sequence number, it is a
+  command from the server.
+  These types of commands are status messages of some
+  kind. Perhaps notifying the client the server is shutting down
+  and logging out the user. Or other server commands
+  specified in the specification \ref{TODO}.
+  The dispatch thread calls the appropriate methods to handle
+  the server command.
+
+  When a server gets an even sequence number, it is a command
+  from the client and dispatches the implementation
+  code based on the CMD.
+
+  When a server gets an odd sequence number, it is a
+  reply from the client. None are defined at this time.
+
+\end{enumerate}

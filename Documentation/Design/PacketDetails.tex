@@ -1,3 +1,68 @@
 \section{Packet Details}
-\subsection{I/O Vector Packet}
-\subsection{Comamnd Packet}
+There are two basic kinds of packets in this implementation.
+Internal packets \textit{IovCommand} and over the wire
+packets \textit{Command}.
+The \textit{Iov} object is separate because it is used
+later in this specification for another purpose.
+
+\subsection{I/O Vector Command}
+\begin{figure}
+  \centering
+  \includesvg{Generated/IovPacket.svg}
+  \caption{I/O Vector Command}
+  \label{fig:IovPacket}
+\end{figure}
+
+An Iov packet is much like a system iovec that readv() might use.
+Except is is a C++ class and methods and additional information.
+The Iov object has a boolean that indicates if the segment
+is memory mapped or allocated.
+
+A memory mapped file does not have to be read into memory, while
+the program can still has random access to the data in a virtual
+memory segment.
+
+Here is a stripped down version of \textit{Iov}.
+The \textit{Iov} is essentially a \verb|std::deque<Blob*>| queue.
+And the \textit{IovCommand} is an \textit{Iov} plus a command
+and sequence.
+
+\lstinputlisting[caption={Iov Source},label={code:Iov}]{Include/Iov.hpp}
+% For some reason the above command removes the first character of the
+% next word, so I added a '_' it will skip == hack fix.
+_Pointers to \textit{Iov} objects, are what is stored in the
+out queue \textit{OQ}
+and in queue \textit{IQ} shown in figure \ref{fig:IOModel}
+
+\subsection{Command Packet}
+Here is a stripped down version of a single \textit{Command} and
+a \textit{PacketBody} object that is sent over the wire.
+The command packet is an over the wire packet, so it is defined in
+the XDR (.x) format:
+
+\lstinputlisting[caption={Iov Source},label={code:Iov}]{Include/PacketBody.x}
+% For some reason the above command removes the first character of the
+% next word, so I added a '_' it will skip == hack fix.
+_Where \textit{SEQ\_t} is a unsigned 32-bit integer (\textit{uint32\_t}).
+
+A sequence \textit{SEQ\_t} The endpoint that originates
+the connection to the other endpoint only sends even
+numbered sequence numbers in the commands.
+The side that is connected to, only sends odd numbered
+sequence numbers in the commands.
+In this way an endpoint can quickly determine if the incoming packet
+is a command, or a reply.
+
+\textbf{NOTE: It is possible that specific implementations allow
+  each endpoint to act as a client and server.
+  For the purposes of this specification, the client is
+  the one that is originating actions and expects
+  results or replies from the other endpoint}
+
+The side that initiates the connection only sends
+even numbered sequence numbers in the commands.
+Even when acting in a dual role.
+
+The side that gets connected to, only sends
+odd numbered sequence numbers in the commands.
+Even when acting in a dual role.

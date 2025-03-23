@@ -1,10 +1,18 @@
 
+Specification compliant IovCommand:
 +-+--------------------------------+
-|0| Command (CMD:31)               |
+|0| Command (CMD:31-bits wide)     | <-- 32-bits wide.
 +-+--------------------------------+
-| Number of IOV's being sent       |
-+-+--------------------------------+
-| Length of data to send (uint32_t)|
+| 32-bit Sequence number (SEQ_t)   |
++-+--------------------------------+----------------------------------+
+| A 'class Iov' object pointer 64-bits wide.                          |
 +----------------------------------+----------------------------------+
-| Pointer to Length data (uint64_t)                                   |  
+
+Vendor specific IovCommand has the Vendor bit set to one (1):
++-+--------------------------------+
+|1| Command (CMD:31-bis wide)      | <-- 32-bits wide.
++-+--------------------------------+
+| 32-bit Sequence number (SEQ_t)   |
++-+--------------------------------+----------------------------------+
+| A 'class Iov' object pointer 64-bits wide                           |
 +----------------------------------+----------------------------------+

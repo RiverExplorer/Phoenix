@@ -1,0 +1,17 @@
+ClientMainThread.aux
+Generated/
+Introduction.aux
+LegalMumboJumbo.aux
+OutputThread.aux
+*.4ct
+*.4tc
+*.aux
+*.css
+*.dvi
+Phoenix.html
+*.idv
+*.lg
+*.log
+*.tmp
+*.xref
+*.aux

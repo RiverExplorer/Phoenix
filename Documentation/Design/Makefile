@@ -1,6 +1,6 @@
 #
 # Project: Phoenix
-# Time-stamp: <2025-03-16 00:03:11 doug>
+# Time-stamp: <2025-03-16 09:41:15 doug>
 #
 # @file Makefile
 # @author Douglas Mark Royer
@@ -21,8 +21,7 @@ SOURCES.tex = \
 	Phoenix.tex \
 	Introduction.tex \
 	PacketDetails.tex \
-	ClientMainThread.tex \
-	ServerMainThread.tex \
+	MainThread.tex \
 	OutputThread.tex \
 	XdrEncode.tex \
 	TlsIOOut.tex \
@@ -49,9 +48,13 @@ TXT_DRAWINGS.txt = \
 	MultiplePacket.txt \
 	SinglePacket.txt
 
+INCLUDE_FILES	= \
+	Include/Iov.hpp \
+	Include/PacketBody.x
+
 GENERATED_DRAWINGS  = $(addprefix Generated/,$(TXT_DRAWINGS.txt:.txt=.svg))
 
-$(TARGET) : Generated $(SOURCES.tex) $(GENERATED_DRAWINGS)
+$(TARGET) : Generated $(SOURCES.tex) $(GENERATED_DRAWINGS) $(INCLUDE_FILES)
 	make4ht -d Generated Phoenix.tex
 
 Generated :
