@@ -346,8 +346,12 @@ bitobject Trajectory
 				<figure>
 					<name>How <xref target="bits2"/> would be packed.</name>
 					<artset>
-						<artwork type="ascii-art" src="EmailStatusTxt.txt"/>
-						<artwork type="svg" src="EmailStatusSvg.svg"/>
+						<artwork type="ascii-art">
+.so EmailStatusTxt.txt
+						</artwork>
+						<artwork type="svg">
+.so EmailStatusSvg.svg
+						</artwork>
 					</artset>
 				</figure>
 			</section>
@@ -364,8 +368,12 @@ bitobject Trajectory
 				<figure>
 					<name>How <xref target="bits1"/> would be packed.</name>
 					<artset>
-						<artwork type="ascii-art" src="Assy.txt"/>
-						<artwork type="svg" src="Assy.svg"/>
+						<artwork type="ascii-art">
+.so Assy.txt
+						</artwork>
+						<artwork type="svg">
+.so Assy.svg
+						</artwork>
 					</artset>
 				</figure>
 				<section anchor="WideBits">
@@ -391,8 +399,12 @@ bitobject Trajectory
 					<figure anchor="bits3-again">
 						<name>Trajectory - shown again</name>
 						<artset>
-							<artwork type="ascii-art" src="ExtraWide.txt"/>
-							<artwork type="svg" src="ExtraWide.svg"/>
+							<artwork type="ascii-art">
+.so ExtraWide.txt
+							</artwork>
+							<artwork type="svg">
+.so ExtraWide.svg
+							</artwork>
 						</artset>
 					</figure>
 						<section>
@@ -410,8 +422,12 @@ bitobject Trajectory
 								signification 32-bit block would be packed.
 							</name>
 							<artset>
-								<artwork type="ascii-art" src="ExtraWideA.txt"/>
-								<artwork type="svg" src="ExtraWideA.svg"/>
+								<artwork type="ascii-art">
+.so ExtraWideA.txt
+								</artwork>
+								<artwork type="svg">
+.so ExtraWideA.svg
+								</artwork>
 							</artset>
 						</figure>
 					</section>
@@ -435,8 +451,12 @@ bitobject Trajectory
 								signification 32-bit block would be packed.
 							</name>
 							<artset>
-								<artwork type="ascii-art" src="ExtraWideB.txt"/>
-								<artwork type="svg" src="ExtraWideB.svg"/>
+								<artwork type="ascii-art">
+.so ExtraWideB.txt
+								</artwork>
+								<artwork type="svg">
+.so ExtraWideB.svg
+								</artwork>
 							</artset>
 						</figure>
 					</section>
@@ -451,8 +471,12 @@ bitobject Trajectory
 								signification 32-bit block would be packed.
 							</name>
 							<artset>
-								<artwork type="ascii-art" src="ExtraWideC.txt"/>
-								<artwork type="svg" src="ExtraWideC.svg"/>
+								<artwork type="ascii-art">
+.so ExtraWideC.txt
+								</artwork>
+								<artwork type="svg">
+.so ExtraWideC.svg
+								</artwork>
 							</artset>
 						</figure>
 					</section>

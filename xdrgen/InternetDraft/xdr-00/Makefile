@@ -69,7 +69,8 @@ $(TARGET.html):$(ARTWORK.svg) $(TOPDOC.xml) $(REFERENCES.xml) $(INCLUDES)
 	xml2rfc $(XML2RFC_FLAGS) --html -o $@ $(TOPDOC.xml) $(REMOVE_SVG_WARNING)
 
 $(TOPDOC.xml) : draft-00.xml $(SOURCES.xml) $(REFERENCES.xml) $(INCLUDES)
-	xmllint --xinclude --format $< > $@
+	soelim $< | sed '/^\.lf*/d' > temp.xml
+	xmllint --xinclude --format temp.xml > $@
 
 $(INCLUDE.xml) : $(INCLUDE.cpp)
 
@@ -79,7 +80,7 @@ scp : $(TARGET.html) $(TARGET.pdf) $(TARGET.txt)
 	scp $(TARGET.txt) riverexplorer.games:~/public_html/Phoenix
 
 clean :
-	$(RM) tmp.*
+	$(RM) tmp.* temp.xml
 	$(RM) $(ARTWORK.svg)
 	$(RM) $(TOPDOC.xml)
 	$(RM) $(GENERATED.XDR)
