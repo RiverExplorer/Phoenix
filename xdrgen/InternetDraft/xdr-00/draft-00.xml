@@ -568,7 +568,7 @@ bitobject Status
   ubits UnitID:5;
 };
 	
-namspace MyCompany:Projectile;
+namespace MyCompany:Projectile;
 
 bitobject Status
 {
