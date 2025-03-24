@@ -1,0 +1,900 @@
+<?xml version="1.0" encoding="utf-8"?>
+<?xml-model href="rfc7991bis.rnc"?>
+<?xml-stylesheet type="text/xsl" href="rfc2629.xslt" ?>
+<!-- This third-party XSLT can be enabled for direct transformations in XML processors, including most browsers -->
+<!DOCTYPE rfc [
+<!ENTITY nbsp "&#160;">
+<!ENTITY zwsp "&#8203;">
+<!ENTITY nbhy "&#8209;">
+<!ENTITY wj "&#8288;">
+]>
+<!-- If further character entities are required then they should be added to the DOCTYPE above.
+     Use of an external entity file is not recommended. -->
+<rfc xmlns:xi="http://www.w3.org/2001/XInclude" category="info" docName="draft-royer-bits-in-abnf-00" ipr="trust200902" obsoletes="" updates="" submissionType="IETF" xml:lang="en" version="3">
+  <front>
+    <title abbrev="Abbreviated Title">Bits in ABNF</title>
+    <seriesInfo name="Internet-Draft" value="draft-royer-bits-in-abnf-00"/>
+    <author fullname="Doug Royer" initials="DM" surname="Royer">
+      <organization>RiverExplorer LLC</organization>
+      <address>
+        <postal>
+          <!-- Reorder these if your country does things differently -->
+          <street>848 N. Rainbow Blvd, Ste-1120</street>
+          <city>Las Vegas</city>
+          <region>Nevada</region>
+          <code>89107</code>
+          <country>US</country>
+          <!-- Uses two letter country code -->
+        </postal>
+        <phone>+1-208-806-1358</phone>
+        <email>DouglasRoyer@gmail.com</email>
+        <!-- Can have more than one <email> element -->
+        <uri>https://DougRoyer.US</uri>
+      </address>
+    </author>
+    <date year="2025"/>
+    <area>General</area>
+    <workgroup>Internet Engineering Task Force</workgroup>
+    <keyword>ABNF</keyword>
+    <keyword>XDR</keyword>
+    <keyword>bit</keyword>
+    <abstract>
+      <t>
+				This is an extension to the ABNF specification to allow
+				for bits definitions to be defined.
+			</t>
+      <t>
+				When interacting with hardware or bit oriented
+				over the wire protocols ABNF is not currently the choice.
+				This specification describes a method to
+				add boolean and narrow bit values in order to fix
+				that limitation.
+			</t>
+      <t>
+				And this note while in in draft status: A new Open Source
+				XDR <xref target="RFC4506"/> and ABNF generation tool is
+				being developed	<xref target="xdrgen"/> which generates
+				code from ABNF and XDR.
+				It can also generate ABNF from XDR.
+				And it can generate XDR from ABNF.
+				Both also can produce C++ source and header files.
+			</t>
+    </abstract>
+  </front>
+  <middle>
+    <section>
+      <name>Introduction</name>
+      <t>
+				This specification adds to
+				<xref target="RFC5234" section="2.3" sectionFormat="comma"/>
+				Terminal values by adding an optional
+				bit width to the binary, decimal, and hexadecimal terminals:
+			</t>
+      <ul>
+        <li>
+					The width is a positive integer expressed in decimal.
+					This width is the number of bits in the terminal.
+				</li>
+        <li>
+					The width must be equal to or greater than one (1).
+				</li>
+        <li>
+					When the left side has a width then,
+					the number of bits on the left of the equal sign
+					must be the total of the widths on the right side
+					of the equal sign.
+				</li>
+        <li>
+					When the right side of the equal sign has widths
+					and the left side does not. Then the right
+					side can be a rule with a variable length.
+				</li>
+        <li>
+					The left side only needs a width when it is
+					significant and relevant to the protocol.
+					A left side with no width may be present
+					even when the right side is fixed with.
+				</li>
+        <li>
+					The addition of a %p padding indicator with
+					a required bit-width.
+				</li>
+        <li>
+					An alteration of the "rulename" ABNF as
+					shown in <xref target="NewTerminal"/>.
+				</li>
+      </ul>
+      <t>
+				A caution to the implementors of code generated
+				from ABNF that specifies bit widths for signed
+				integer values.
+        Many computer languages will convert a narrower bit value
+        into a wider bit value and move the sign bit to the
+        most significant position.
+        So when preparing a signed bit value, be sure to clamp the value
+        and adjust the sign to the correct bit position before
+        packing the bits.
+        This would apply to signed integer values and not
+				unsigned integer values.
+			</t>
+      <t>
+				The right most elements are placed into
+				the least signification part of the value.
+				The left most bits being more significant
+				than the bits to the right of them as
+				shown in examples
+				<xref target="DeviceStatus"/>
+				and <xref target="EmailStatus"/>.
+			</t>
+      <t>
+				The result are these existing definitions
+				with the added optional width indicators.
+			</t>
+      <figure anchor="NewTerminal">
+        <name>Extended ABNF Terminal Values</name>
+        <artwork type="abnf" name="" align="left" alt=""><![CDATA[
+ABNF
+----				
+				
+b           = binary
+
+b:%d        = binary with a bit width of %d
+
+d           = decimal
+
+d:%d        = decimal with a bit width of %d
+
+x           = hexadecimal
+
+x:%d        = hexadecimal with a bit width of %d.
+
+p:%d        = pad with %d zero bits.
+
+one-or-more = %x31-39 *(0x30-39)
+
+rulename    = ALPHA *(ALPHA / DIGIT / "_") *(":" one-or-more)
+
+]]></artwork>
+      </figure>
+      <t>
+				In <xref target="DeviceStatus"/> example, "device-status"
+				is 8-bits wide, and the three values to the
+				right of the equal sign have a total width
+				of 8-bits.
+			</t>
+      <figure anchor="DeviceStatus">
+        <name>"device-status"</name>
+        <artwork type="abnf" name="" align="left" alt=""><![CDATA[
+ABNF
+----				
+				
+device-status:8 = light-on:1 status:3 switch-position:4
+]]></artwork>
+      </figure>
+      <artset>
+        <artwork type="ascii-art">
+
+  light-on:1 (A)
+  |     status:3 (B)
+  |       |     switch-position:4 (C)
+  |       |             |
+  |    .-' '-.     .---' '---.
+  |   |       |   |           |
+  v   v       v   v           v
++---+---+---+---+---+---+---+---+
+| A | B | B | B | C | C | C | C |
++---+---+---+---+---+---+---+---+
+^                               ^
+|                               |
+ '-------------. .-------------'
+                |
+         device-status:8
+				</artwork>
+        <artwork type="svg">
+          <svg xmlns="http://www.w3.org/2000/svg" version="1.1" height="272" width="304" viewBox="0 0 304 272" class="diagram" text-anchor="middle" font-family="monospace" font-size="13px" stroke-linecap="round">
+            <path d="M 8,144 L 8,208" fill="none" stroke="black"/>
+            <path d="M 24,48 L 24,136" fill="none" stroke="black"/>
+            <path d="M 40,144 L 40,176" fill="none" stroke="black"/>
+            <path d="M 56,112 L 56,136" fill="none" stroke="black"/>
+            <path d="M 72,144 L 72,176" fill="none" stroke="black"/>
+            <path d="M 88,64 L 88,80" fill="none" stroke="black"/>
+            <path d="M 104,144 L 104,176" fill="none" stroke="black"/>
+            <path d="M 120,112 L 120,136" fill="none" stroke="black"/>
+            <path d="M 136,144 L 136,176" fill="none" stroke="black"/>
+            <path d="M 152,112 L 152,136" fill="none" stroke="black"/>
+            <path d="M 168,144 L 168,176" fill="none" stroke="black"/>
+            <path d="M 200,144 L 200,176" fill="none" stroke="black"/>
+            <path d="M 232,144 L 232,176" fill="none" stroke="black"/>
+            <path d="M 248,112 L 248,136" fill="none" stroke="black"/>
+            <path d="M 264,144 L 264,208" fill="none" stroke="black"/>
+            <path d="M 168,96 L 184,96" fill="none" stroke="black"/>
+            <path d="M 216,96 L 232,96" fill="none" stroke="black"/>
+            <path d="M 8,144 L 264,144" fill="none" stroke="black"/>
+            <path d="M 8,176 L 264,176" fill="none" stroke="black"/>
+            <path d="M 24,224 L 120,224" fill="none" stroke="black"/>
+            <path d="M 152,224 L 248,224" fill="none" stroke="black"/>
+            <path d="M 72,96 C 63.16936,96 56,103.16936 56,112" fill="none" stroke="black"/>
+            <path d="M 72,96 C 80.83064,96 88,88.83064 88,80" fill="none" stroke="black"/>
+            <path d="M 104,96 C 95.16936,96 88,88.83064 88,80" fill="none" stroke="black"/>
+            <path d="M 104,96 C 112.83064,96 120,103.16936 120,112" fill="none" stroke="black"/>
+            <path d="M 168,96 C 159.16936,96 152,103.16936 152,112" fill="none" stroke="black"/>
+            <path d="M 184,96 C 192.83064,96 200,88.83064 200,80" fill="none" stroke="black"/>
+            <path d="M 216,96 C 207.16936,96 200,88.83064 200,80" fill="none" stroke="black"/>
+            <path d="M 232,96 C 240.83064,96 248,103.16936 248,112" fill="none" stroke="black"/>
+            <path d="M 24,224 C 15.16936,224 8,216.83064 8,208" fill="none" stroke="black"/>
+            <path d="M 120,224 C 128.83064,224 136,231.16936 136,240" fill="none" stroke="black"/>
+            <path d="M 152,224 C 143.16936,224 136,231.16936 136,240" fill="none" stroke="black"/>
+            <path d="M 248,224 C 256.83064,224 264,216.83064 264,208" fill="none" stroke="black"/>
+            <polygon class="arrowhead" points="272,184 260,178.4 260,189.6" fill="black" transform="rotate(270,264,184)"/>
+            <polygon class="arrowhead" points="256,136 244,130.4 244,141.6" fill="black" transform="rotate(90,248,136)"/>
+            <polygon class="arrowhead" points="160,136 148,130.4 148,141.6" fill="black" transform="rotate(90,152,136)"/>
+            <polygon class="arrowhead" points="128,136 116,130.4 116,141.6" fill="black" transform="rotate(90,120,136)"/>
+            <polygon class="arrowhead" points="64,136 52,130.4 52,141.6" fill="black" transform="rotate(90,56,136)"/>
+            <polygon class="arrowhead" points="32,136 20,130.4 20,141.6" fill="black" transform="rotate(90,24,136)"/>
+            <polygon class="arrowhead" points="16,184 4,178.4 4,189.6" fill="black" transform="rotate(270,8,184)"/>
+            <g class="text">
+              <text x="76" y="36">light-on:1 (A)</text>
+              <text x="116" y="52">status:3 (B)</text>
+              <text x="216" y="68">switch-position:4 (C)</text>
+              <text x="24" y="164">A</text>
+              <text x="56" y="164">B</text>
+              <text x="88" y="164">B</text>
+              <text x="120" y="164">B</text>
+              <text x="152" y="164">C</text>
+              <text x="184" y="164">C</text>
+              <text x="216" y="164">C</text>
+              <text x="248" y="164">C</text>
+              <text x="136" y="260">device-status:8</text>
+            </g>
+          </svg>
+        </artwork>
+      </artset>
+      <t>
+				in <xref target="EmailStatus"/> "email-status" is defined to be 8-bits wide,
+				and only three bits are used, so five 
+				zero bits have been defined to be
+				at the most significant positions.
+				The total to the right of the equal sign is 8-bits:
+			</t>
+      <figure anchor="EmailStatus">
+        <name>"email-status"</name>
+        <artwork type="abnf" name="" align="left" alt=""><![CDATA[
+ABNF
+----				
+
+ email-status:8  = %p:5 seen:1 flagged:1 deleted:1
+]]></artwork>
+      </figure>
+      <artset>
+        <artwork type="ascii-art">
+
+       pad:5 (0)
+          |           seen:1 (A)
+          |           |   flagged:1 (B)
+   .-----' '-----.    |   |   deleted:1 (C)
+  |               |   |   |   | 
+  v               v   v   v   v            
++---+---+---+---+---+---+---+---+
+| 0 | 0 | 0 | 0 | 0 | A | B | C |
++---+---+---+---+---+---+---+---+
+^                               ^
+|                               |
+ '-------------. .-------------'
+                |
+          email-status:8
+				</artwork>
+        <artwork type="svg">
+          <svg xmlns="http://www.w3.org/2000/svg" version="1.1" height="256" width="352" viewBox="0 0 352 256" class="diagram" text-anchor="middle" font-family="monospace" font-size="13px" stroke-linecap="round">
+            <path d="M 8,128 L 8,192" fill="none" stroke="black"/>
+            <path d="M 24,96 L 24,120" fill="none" stroke="black"/>
+            <path d="M 40,128 L 40,160" fill="none" stroke="black"/>
+            <path d="M 72,128 L 72,160" fill="none" stroke="black"/>
+            <path d="M 88,48 L 88,64" fill="none" stroke="black"/>
+            <path d="M 104,128 L 104,160" fill="none" stroke="black"/>
+            <path d="M 136,128 L 136,160" fill="none" stroke="black"/>
+            <path d="M 152,96 L 152,120" fill="none" stroke="black"/>
+            <path d="M 168,128 L 168,160" fill="none" stroke="black"/>
+            <path d="M 184,64 L 184,120" fill="none" stroke="black"/>
+            <path d="M 200,128 L 200,160" fill="none" stroke="black"/>
+            <path d="M 216,80 L 216,120" fill="none" stroke="black"/>
+            <path d="M 232,128 L 232,160" fill="none" stroke="black"/>
+            <path d="M 248,96 L 248,120" fill="none" stroke="black"/>
+            <path d="M 264,128 L 264,192" fill="none" stroke="black"/>
+            <path d="M 40,80 L 72,80" fill="none" stroke="black"/>
+            <path d="M 104,80 L 136,80" fill="none" stroke="black"/>
+            <path d="M 8,128 L 264,128" fill="none" stroke="black"/>
+            <path d="M 8,160 L 264,160" fill="none" stroke="black"/>
+            <path d="M 24,208 L 120,208" fill="none" stroke="black"/>
+            <path d="M 152,208 L 248,208" fill="none" stroke="black"/>
+            <path d="M 40,80 C 31.16936,80 24,87.16936 24,96" fill="none" stroke="black"/>
+            <path d="M 72,80 C 80.83064,80 88,72.83064 88,64" fill="none" stroke="black"/>
+            <path d="M 104,80 C 95.16936,80 88,72.83064 88,64" fill="none" stroke="black"/>
+            <path d="M 136,80 C 144.83064,80 152,87.16936 152,96" fill="none" stroke="black"/>
+            <path d="M 24,208 C 15.16936,208 8,200.83064 8,192" fill="none" stroke="black"/>
+            <path d="M 120,208 C 128.83064,208 136,215.16936 136,224" fill="none" stroke="black"/>
+            <path d="M 152,208 C 143.16936,208 136,215.16936 136,224" fill="none" stroke="black"/>
+            <path d="M 248,208 C 256.83064,208 264,200.83064 264,192" fill="none" stroke="black"/>
+            <polygon class="arrowhead" points="272,168 260,162.4 260,173.6" fill="black" transform="rotate(270,264,168)"/>
+            <polygon class="arrowhead" points="256,120 244,114.4 244,125.6" fill="black" transform="rotate(90,248,120)"/>
+            <polygon class="arrowhead" points="224,120 212,114.4 212,125.6" fill="black" transform="rotate(90,216,120)"/>
+            <polygon class="arrowhead" points="192,120 180,114.4 180,125.6" fill="black" transform="rotate(90,184,120)"/>
+            <polygon class="arrowhead" points="160,120 148,114.4 148,125.6" fill="black" transform="rotate(90,152,120)"/>
+            <polygon class="arrowhead" points="32,120 20,114.4 20,125.6" fill="black" transform="rotate(90,24,120)"/>
+            <polygon class="arrowhead" points="16,168 4,162.4 4,173.6" fill="black" transform="rotate(270,8,168)"/>
+            <g class="text">
+              <text x="96" y="36">pad:5 (0)</text>
+              <text x="220" y="52">seen:1 (A)</text>
+              <text x="264" y="68">flagged:1 (B)</text>
+              <text x="296" y="84">deleted:1 (C)</text>
+              <text x="24" y="148">0</text>
+              <text x="56" y="148">0</text>
+              <text x="88" y="148">0</text>
+              <text x="120" y="148">0</text>
+              <text x="152" y="148">0</text>
+              <text x="184" y="148">A</text>
+              <text x="216" y="148">B</text>
+              <text x="248" y="148">C</text>
+              <text x="140" y="244">email-status:8</text>
+            </g>
+          </svg>
+        </artwork>
+      </artset>
+      <t>
+				Figure <xref target="VariableWidth"/> shows
+				an example where "c-string" on the left sides has no
+				predefined width	and the right side has a variable number of 8-bit
+				wide values.
+			</t>
+      <t>
+				And "collection" has no predefined with and the right
+				side is set of values with various and variable widths.
+			</t>
+      <figure anchor="VariableWidth">
+        <name>Padding in the Middle</name>
+        <artwork type="abnf" name="" align="left" alt=""><![CDATA[
+ABNF
+----
+c-string   = (ALPHA:8 / DIGIT:8 ) *(ALPHA:8 / DIGIT:8) %x00:8
+
+collection = %p:4 header:12 c-string width:32 *(ALPHA:8)
+]]></artwork>
+      </figure>
+      <t>
+				The padding does not need to be at the left.
+				it can be in the middle and could have many
+				zero bits as shown in <xref target="Example3"/>.
+			</t>
+      <figure anchor="Example3">
+        <name>Padding in the Middle</name>
+        <artwork type="abnf" name="" align="left" alt=""><![CDATA[
+ABNF
+----
+				
+trajectory:64 = %p:18 rotation:10 %p:2 vector-x:10 %p:2
+                vector-y:10 %p:2 vector-z:10
+]]></artwork>
+      </figure>
+      <artset>
+        <artwork type="ascii-art">
+              Most significant 16 bits of trajectory:64
+              -----------------------------------------
+
+                      16 most significant bits of
+                              %p:18 (0)
+                                |
+                                |
+   .---------------------------' '---------------------------.
+  |                                                           |
+  v                                                           v
++---+---+---+---+---+---+---+---+---+---+---+---+---+---+---+---+
+| 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 |
++---+---+---+---+---+---+---+---+---+---+---+---+---+---+---+---+
+^                                                               ^
+|                                                               |
+ '-----------------------------. .-----------------------------'
+                                |
+                             16-bits
+				</artwork>
+        <artwork type="svg">
+          <svg xmlns="http://www.w3.org/2000/svg" version="1.1" height="304" width="528" viewBox="0 0 528 304" class="diagram" text-anchor="middle" font-family="monospace" font-size="13px" stroke-linecap="round">
+            <path d="M 8,176 L 8,240" fill="none" stroke="black"/>
+            <path d="M 24,144 L 24,168" fill="none" stroke="black"/>
+            <path d="M 40,176 L 40,208" fill="none" stroke="black"/>
+            <path d="M 72,176 L 72,208" fill="none" stroke="black"/>
+            <path d="M 104,176 L 104,208" fill="none" stroke="black"/>
+            <path d="M 136,176 L 136,208" fill="none" stroke="black"/>
+            <path d="M 168,176 L 168,208" fill="none" stroke="black"/>
+            <path d="M 200,176 L 200,208" fill="none" stroke="black"/>
+            <path d="M 232,176 L 232,208" fill="none" stroke="black"/>
+            <path d="M 264,96 L 264,112" fill="none" stroke="black"/>
+            <path d="M 264,176 L 264,208" fill="none" stroke="black"/>
+            <path d="M 296,176 L 296,208" fill="none" stroke="black"/>
+            <path d="M 328,176 L 328,208" fill="none" stroke="black"/>
+            <path d="M 360,176 L 360,208" fill="none" stroke="black"/>
+            <path d="M 392,176 L 392,208" fill="none" stroke="black"/>
+            <path d="M 424,176 L 424,208" fill="none" stroke="black"/>
+            <path d="M 456,176 L 456,208" fill="none" stroke="black"/>
+            <path d="M 488,176 L 488,208" fill="none" stroke="black"/>
+            <path d="M 504,144 L 504,168" fill="none" stroke="black"/>
+            <path d="M 520,176 L 520,240" fill="none" stroke="black"/>
+            <path d="M 120,32 L 440,32" fill="none" stroke="black"/>
+            <path d="M 40,128 L 248,128" fill="none" stroke="black"/>
+            <path d="M 280,128 L 488,128" fill="none" stroke="black"/>
+            <path d="M 8,176 L 520,176" fill="none" stroke="black"/>
+            <path d="M 8,208 L 520,208" fill="none" stroke="black"/>
+            <path d="M 24,256 L 248,256" fill="none" stroke="black"/>
+            <path d="M 280,256 L 504,256" fill="none" stroke="black"/>
+            <path d="M 40,128 C 31.16936,128 24,135.16936 24,144" fill="none" stroke="black"/>
+            <path d="M 248,128 C 256.83064,128 264,120.83064 264,112" fill="none" stroke="black"/>
+            <path d="M 280,128 C 271.16936,128 264,120.83064 264,112" fill="none" stroke="black"/>
+            <path d="M 488,128 C 496.83064,128 504,135.16936 504,144" fill="none" stroke="black"/>
+            <path d="M 24,256 C 15.16936,256 8,248.83064 8,240" fill="none" stroke="black"/>
+            <path d="M 248,256 C 256.83064,256 264,263.16936 264,272" fill="none" stroke="black"/>
+            <path d="M 280,256 C 271.16936,256 264,263.16936 264,272" fill="none" stroke="black"/>
+            <path d="M 504,256 C 512.83064,256 520,248.83064 520,240" fill="none" stroke="black"/>
+            <polygon class="arrowhead" points="528,216 516,210.4 516,221.6" fill="black" transform="rotate(270,520,216)"/>
+            <polygon class="arrowhead" points="512,168 500,162.4 500,173.6" fill="black" transform="rotate(90,504,168)"/>
+            <polygon class="arrowhead" points="32,168 20,162.4 20,173.6" fill="black" transform="rotate(90,24,168)"/>
+            <polygon class="arrowhead" points="16,216 4,210.4 4,221.6" fill="black" transform="rotate(270,8,216)"/>
+            <g class="text">
+              <text x="280" y="20">Most significant 16 bits of trajectory:64</text>
+              <text x="288" y="68">16 most significant bits of</text>
+              <text x="280" y="84">%p:18 (0)</text>
+              <text x="24" y="196">0</text>
+              <text x="56" y="196">0</text>
+              <text x="88" y="196">0</text>
+              <text x="120" y="196">0</text>
+              <text x="152" y="196">0</text>
+              <text x="184" y="196">0</text>
+              <text x="216" y="196">0</text>
+              <text x="248" y="196">0</text>
+              <text x="280" y="196">0</text>
+              <text x="312" y="196">0</text>
+              <text x="344" y="196">0</text>
+              <text x="376" y="196">0</text>
+              <text x="408" y="196">0</text>
+              <text x="440" y="196">0</text>
+              <text x="472" y="196">0</text>
+              <text x="504" y="196">0</text>
+              <text x="264" y="292">16-bits</text>
+            </g>
+          </svg>
+        </artwork>
+      </artset>
+      <artset>
+        <artwork type="ascii-art">
+         Next most significant 16 bits of trajectory:64
+         ----------------------------------------------
+
+  Two least                            Top two most significant
+  significant                                 bits of vector-x:10
+  bits of                                                   | (X)
+  %p:18               rotation:10 (R)             %p:2      |
+    |                      |                        |       |
+    .                      |                        .       .
+   / \     .--------------' '----------------.     / \     / \
+  |   |   |                                   |   |   |   |   |
+  v   v   v                                   v   v   v   v   v
++---+---+---+---+---+---+---+---+---+---+---+---+---+---+---+---+
+| 0 | 0 | R | R | R | R | R | R | R | R | R | R | 0 | 0 | X | X |
++---+---+---+---+---+---+---+---+---+---+---+---+---+---+---+---+
+^                                                               ^
+|                                                               |
+ '-----------------------------. .-----------------------------'
+                                |
+                             16-bits
+				</artwork>
+        <artwork type="svg">
+          <svg xmlns="http://www.w3.org/2000/svg" version="1.1" height="336" width="528" viewBox="0 0 528 336" class="diagram" text-anchor="middle" font-family="monospace" font-size="13px" stroke-linecap="round">
+            <path d="M 8,208 L 8,272" fill="none" stroke="black"/>
+            <path d="M 24,176 L 24,200" fill="none" stroke="black"/>
+            <path d="M 40,208 L 40,240" fill="none" stroke="black"/>
+            <path d="M 56,176 L 56,200" fill="none" stroke="black"/>
+            <path d="M 72,208 L 72,240" fill="none" stroke="black"/>
+            <path d="M 88,176 L 88,200" fill="none" stroke="black"/>
+            <path d="M 104,208 L 104,240" fill="none" stroke="black"/>
+            <path d="M 136,208 L 136,240" fill="none" stroke="black"/>
+            <path d="M 168,208 L 168,240" fill="none" stroke="black"/>
+            <path d="M 200,208 L 200,240" fill="none" stroke="black"/>
+            <path d="M 224,128 L 224,144" fill="none" stroke="black"/>
+            <path d="M 232,208 L 232,240" fill="none" stroke="black"/>
+            <path d="M 264,208 L 264,240" fill="none" stroke="black"/>
+            <path d="M 296,208 L 296,240" fill="none" stroke="black"/>
+            <path d="M 328,208 L 328,240" fill="none" stroke="black"/>
+            <path d="M 360,208 L 360,240" fill="none" stroke="black"/>
+            <path d="M 376,176 L 376,200" fill="none" stroke="black"/>
+            <path d="M 392,208 L 392,240" fill="none" stroke="black"/>
+            <path d="M 408,176 L 408,200" fill="none" stroke="black"/>
+            <path d="M 424,208 L 424,240" fill="none" stroke="black"/>
+            <path d="M 440,176 L 440,200" fill="none" stroke="black"/>
+            <path d="M 456,208 L 456,240" fill="none" stroke="black"/>
+            <path d="M 472,176 L 472,200" fill="none" stroke="black"/>
+            <path d="M 488,88 L 488,136" fill="none" stroke="black"/>
+            <path d="M 488,208 L 488,240" fill="none" stroke="black"/>
+            <path d="M 504,176 L 504,200" fill="none" stroke="black"/>
+            <path d="M 520,208 L 520,272" fill="none" stroke="black"/>
+            <path d="M 80,32 L 440,32" fill="none" stroke="black"/>
+            <path d="M 104,160 L 208,160" fill="none" stroke="black"/>
+            <path d="M 240,160 L 360,160" fill="none" stroke="black"/>
+            <path d="M 8,208 L 520,208" fill="none" stroke="black"/>
+            <path d="M 8,240 L 520,240" fill="none" stroke="black"/>
+            <path d="M 24,288 L 248,288" fill="none" stroke="black"/>
+            <path d="M 280,288 L 504,288" fill="none" stroke="black"/>
+            <path d="M 40,144 L 56,176" fill="none" stroke="black"/>
+            <path d="M 424,144 L 440,176" fill="none" stroke="black"/>
+            <path d="M 488,144 L 504,176" fill="none" stroke="black"/>
+            <path d="M 24,176 L 40,144" fill="none" stroke="black"/>
+            <path d="M 408,176 L 424,144" fill="none" stroke="black"/>
+            <path d="M 472,176 L 488,144" fill="none" stroke="black"/>
+            <path d="M 104,160 C 95.16936,160 88,167.16936 88,176" fill="none" stroke="black"/>
+            <path d="M 208,160 C 216.83064,160 224,152.83064 224,144" fill="none" stroke="black"/>
+            <path d="M 240,160 C 231.16936,160 224,152.83064 224,144" fill="none" stroke="black"/>
+            <path d="M 360,160 C 368.83064,160 376,167.16936 376,176" fill="none" stroke="black"/>
+            <path d="M 24,288 C 15.16936,288 8,280.83064 8,272" fill="none" stroke="black"/>
+            <path d="M 248,288 C 256.83064,288 264,295.16936 264,304" fill="none" stroke="black"/>
+            <path d="M 280,288 C 271.16936,288 264,295.16936 264,304" fill="none" stroke="black"/>
+            <path d="M 504,288 C 512.83064,288 520,280.83064 520,272" fill="none" stroke="black"/>
+            <polygon class="arrowhead" points="528,248 516,242.4 516,253.6" fill="black" transform="rotate(270,520,248)"/>
+            <polygon class="arrowhead" points="512,200 500,194.4 500,205.6" fill="black" transform="rotate(90,504,200)"/>
+            <polygon class="arrowhead" points="480,200 468,194.4 468,205.6" fill="black" transform="rotate(90,472,200)"/>
+            <polygon class="arrowhead" points="448,200 436,194.4 436,205.6" fill="black" transform="rotate(90,440,200)"/>
+            <polygon class="arrowhead" points="416,200 404,194.4 404,205.6" fill="black" transform="rotate(90,408,200)"/>
+            <polygon class="arrowhead" points="384,200 372,194.4 372,205.6" fill="black" transform="rotate(90,376,200)"/>
+            <polygon class="arrowhead" points="96,200 84,194.4 84,205.6" fill="black" transform="rotate(90,88,200)"/>
+            <polygon class="arrowhead" points="64,200 52,194.4 52,205.6" fill="black" transform="rotate(90,56,200)"/>
+            <polygon class="arrowhead" points="32,200 20,194.4 20,205.6" fill="black" transform="rotate(90,24,200)"/>
+            <polygon class="arrowhead" points="16,248 4,242.4 4,253.6" fill="black" transform="rotate(270,8,248)"/>
+            <g class="text">
+              <text x="260" y="20">Next most significant 16 bits of trajectory:64</text>
+              <text x="56" y="68">Two least</text>
+              <text x="412" y="68">Top two most significant</text>
+              <text x="64" y="84">significant</text>
+              <text x="448" y="84">bits of vector-x:10</text>
+              <text x="48" y="100">bits of</text>
+              <text x="512" y="100">(X)</text>
+              <text x="40" y="116">%p:18</text>
+              <text x="240" y="116">rotation:10 (R)</text>
+              <text x="420" y="116">%p:2</text>
+              <text x="40" y="132">|</text>
+              <text x="424" y="132">|</text>
+              <text x="24" y="228">0</text>
+              <text x="56" y="228">0</text>
+              <text x="88" y="228">R</text>
+              <text x="120" y="228">R</text>
+              <text x="152" y="228">R</text>
+              <text x="184" y="228">R</text>
+              <text x="216" y="228">R</text>
+              <text x="248" y="228">R</text>
+              <text x="280" y="228">R</text>
+              <text x="312" y="228">R</text>
+              <text x="344" y="228">R</text>
+              <text x="376" y="228">R</text>
+              <text x="408" y="228">0</text>
+              <text x="440" y="228">0</text>
+              <text x="472" y="228">X</text>
+              <text x="504" y="228">X</text>
+              <text x="264" y="324">16-bits</text>
+            </g>
+          </svg>
+        </artwork>
+      </artset>
+      <artset>
+        <artwork type="ascii-art">
+         Second least significant 16 bits of trajectory:64
+         -------------------------------------------------
+
+      8 least significant bits    %p:2    6 most significant bits
+       bits of vector-x:10 (X)      |        of vector-y:10 (Y)
+                 |                  .               |
+   .------------' '----------.     / \     .-------' '--------.
+  |                           |   |   |   |                   |
+  v                           v   v   v   v                   v
++---+---+---+---+---+---+---+---+---+---+---+---+---+---+---+---+
+| X | X | X | X | X | X | X | x | 0 | 0 | Y | Y | Y | Y | Y | Y |
++---+---+---+---+---+---+---+---+---+---+---+---+---+---+---+---+
+^                                                               ^
+|                                                               |
+ '-----------------------------. .-----------------------------'
+                                |
+                             16-bits
+				</artwork>
+        <artwork type="svg">
+          <svg xmlns="http://www.w3.org/2000/svg" version="1.1" height="288" width="528" viewBox="0 0 528 288" class="diagram" text-anchor="middle" font-family="monospace" font-size="13px" stroke-linecap="round">
+            <path d="M 8,160 L 8,224" fill="none" stroke="black"/>
+            <path d="M 24,128 L 24,152" fill="none" stroke="black"/>
+            <path d="M 40,160 L 40,192" fill="none" stroke="black"/>
+            <path d="M 72,160 L 72,192" fill="none" stroke="black"/>
+            <path d="M 104,160 L 104,192" fill="none" stroke="black"/>
+            <path d="M 136,160 L 136,192" fill="none" stroke="black"/>
+            <path d="M 168,160 L 168,192" fill="none" stroke="black"/>
+            <path d="M 200,160 L 200,192" fill="none" stroke="black"/>
+            <path d="M 232,160 L 232,192" fill="none" stroke="black"/>
+            <path d="M 248,128 L 248,152" fill="none" stroke="black"/>
+            <path d="M 264,160 L 264,192" fill="none" stroke="black"/>
+            <path d="M 280,128 L 280,152" fill="none" stroke="black"/>
+            <path d="M 296,160 L 296,192" fill="none" stroke="black"/>
+            <path d="M 312,128 L 312,152" fill="none" stroke="black"/>
+            <path d="M 328,160 L 328,192" fill="none" stroke="black"/>
+            <path d="M 344,128 L 344,152" fill="none" stroke="black"/>
+            <path d="M 360,160 L 360,192" fill="none" stroke="black"/>
+            <path d="M 392,160 L 392,192" fill="none" stroke="black"/>
+            <path d="M 424,160 L 424,192" fill="none" stroke="black"/>
+            <path d="M 456,160 L 456,192" fill="none" stroke="black"/>
+            <path d="M 488,160 L 488,192" fill="none" stroke="black"/>
+            <path d="M 504,112 L 504,152" fill="none" stroke="black"/>
+            <path d="M 520,160 L 520,224" fill="none" stroke="black"/>
+            <path d="M 80,32 L 464,32" fill="none" stroke="black"/>
+            <path d="M 40,112 L 128,112" fill="none" stroke="black"/>
+            <path d="M 160,112 L 232,112" fill="none" stroke="black"/>
+            <path d="M 360,112 L 408,112" fill="none" stroke="black"/>
+            <path d="M 440,112 L 504,112" fill="none" stroke="black"/>
+            <path d="M 8,160 L 520,160" fill="none" stroke="black"/>
+            <path d="M 8,192 L 520,192" fill="none" stroke="black"/>
+            <path d="M 24,240 L 248,240" fill="none" stroke="black"/>
+            <path d="M 280,240 L 504,240" fill="none" stroke="black"/>
+            <path d="M 296,96 L 312,128" fill="none" stroke="black"/>
+            <path d="M 280,128 L 296,96" fill="none" stroke="black"/>
+            <path d="M 40,112 C 31.16936,112 24,119.16936 24,128" fill="none" stroke="black"/>
+            <path d="M 128,112 C 136.83064,112 144,104.83064 144,96" fill="none" stroke="black"/>
+            <path d="M 160,112 C 151.16936,112 144,104.83064 144,96" fill="none" stroke="black"/>
+            <path d="M 232,112 C 240.83064,112 248,119.16936 248,128" fill="none" stroke="black"/>
+            <path d="M 360,112 C 351.16936,112 344,119.16936 344,128" fill="none" stroke="black"/>
+            <path d="M 408,112 C 416.83064,112 424,104.83064 424,96" fill="none" stroke="black"/>
+            <path d="M 440,112 C 431.16936,112 424,104.83064 424,96" fill="none" stroke="black"/>
+            <path d="M 24,240 C 15.16936,240 8,232.83064 8,224" fill="none" stroke="black"/>
+            <path d="M 248,240 C 256.83064,240 264,247.16936 264,256" fill="none" stroke="black"/>
+            <path d="M 280,240 C 271.16936,240 264,247.16936 264,256" fill="none" stroke="black"/>
+            <path d="M 504,240 C 512.83064,240 520,232.83064 520,224" fill="none" stroke="black"/>
+            <polygon class="arrowhead" points="528,200 516,194.4 516,205.6" fill="black" transform="rotate(270,520,200)"/>
+            <polygon class="arrowhead" points="512,152 500,146.4 500,157.6" fill="black" transform="rotate(90,504,152)"/>
+            <polygon class="arrowhead" points="352,152 340,146.4 340,157.6" fill="black" transform="rotate(90,344,152)"/>
+            <polygon class="arrowhead" points="320,152 308,146.4 308,157.6" fill="black" transform="rotate(90,312,152)"/>
+            <polygon class="arrowhead" points="288,152 276,146.4 276,157.6" fill="black" transform="rotate(90,280,152)"/>
+            <polygon class="arrowhead" points="256,152 244,146.4 244,157.6" fill="black" transform="rotate(90,248,152)"/>
+            <polygon class="arrowhead" points="32,152 20,146.4 20,157.6" fill="black" transform="rotate(90,24,152)"/>
+            <polygon class="arrowhead" points="16,200 4,194.4 4,205.6" fill="black" transform="rotate(270,8,200)"/>
+            <g class="text">
+              <text x="272" y="20">Second least significant 16 bits of trajectory:64</text>
+              <text x="148" y="68">8 least significant bits</text>
+              <text x="292" y="68">%p:2</text>
+              <text x="432" y="68">6 most significant bits</text>
+              <text x="152" y="84">bits of vector-x:10 (X)</text>
+              <text x="296" y="84">|</text>
+              <text x="436" y="84">of vector-y:10 (Y)</text>
+              <text x="24" y="180">X</text>
+              <text x="56" y="180">X</text>
+              <text x="88" y="180">X</text>
+              <text x="120" y="180">X</text>
+              <text x="152" y="180">X</text>
+              <text x="184" y="180">X</text>
+              <text x="216" y="180">X</text>
+              <text x="248" y="180">x</text>
+              <text x="280" y="180">0</text>
+              <text x="312" y="180">0</text>
+              <text x="344" y="180">Y</text>
+              <text x="376" y="180">Y</text>
+              <text x="408" y="180">Y</text>
+              <text x="440" y="180">Y</text>
+              <text x="472" y="180">Y</text>
+              <text x="504" y="180">Y</text>
+              <text x="264" y="276">16-bits</text>
+            </g>
+          </svg>
+        </artwork>
+      </artset>
+      <artset>
+        <artwork type="ascii-art">
+             Least significant 16 bits of trajectory:64
+             ------------------------------------------
+
+ 4 least significant
+ bits of vector-y:10 (Y)
+        |
+        |         %p:2                vector-z:10 (Z)
+        |           .                       |
+   .---' '---.     / \     .---------------' '---------------.
+  |           |   |   |   |                                   |
+  v           v   v   v   v                                   v
++---+---+---+---+---+---+---+---+---+---+---+---+---+---+---+---+
+| Y | Y | Y | Y | 0 | 0 | Z | Z | Z | Z | Z | Z | Z | Z | Z | Z |
++---+---+---+---+---+---+---+---+---+---+---+---+---+---+---+---+
+^                                                               ^
+|                                                               |
+ '-----------------------------. .-----------------------------'
+                                |
+                             16-bits
+				</artwork>
+        <artwork type="svg">
+          <svg xmlns="http://www.w3.org/2000/svg" version="1.1" height="320" width="528" viewBox="0 0 528 320" class="diagram" text-anchor="middle" font-family="monospace" font-size="13px" stroke-linecap="round">
+            <path d="M 8,192 L 8,256" fill="none" stroke="black"/>
+            <path d="M 24,160 L 24,184" fill="none" stroke="black"/>
+            <path d="M 40,192 L 40,224" fill="none" stroke="black"/>
+            <path d="M 72,96 L 72,128" fill="none" stroke="black"/>
+            <path d="M 72,192 L 72,224" fill="none" stroke="black"/>
+            <path d="M 104,192 L 104,224" fill="none" stroke="black"/>
+            <path d="M 120,160 L 120,184" fill="none" stroke="black"/>
+            <path d="M 136,192 L 136,224" fill="none" stroke="black"/>
+            <path d="M 152,160 L 152,184" fill="none" stroke="black"/>
+            <path d="M 168,192 L 168,224" fill="none" stroke="black"/>
+            <path d="M 184,160 L 184,184" fill="none" stroke="black"/>
+            <path d="M 200,192 L 200,224" fill="none" stroke="black"/>
+            <path d="M 216,160 L 216,184" fill="none" stroke="black"/>
+            <path d="M 232,192 L 232,224" fill="none" stroke="black"/>
+            <path d="M 264,192 L 264,224" fill="none" stroke="black"/>
+            <path d="M 296,192 L 296,224" fill="none" stroke="black"/>
+            <path d="M 328,192 L 328,224" fill="none" stroke="black"/>
+            <path d="M 360,192 L 360,224" fill="none" stroke="black"/>
+            <path d="M 392,192 L 392,224" fill="none" stroke="black"/>
+            <path d="M 424,192 L 424,224" fill="none" stroke="black"/>
+            <path d="M 456,192 L 456,224" fill="none" stroke="black"/>
+            <path d="M 488,192 L 488,224" fill="none" stroke="black"/>
+            <path d="M 504,160 L 504,184" fill="none" stroke="black"/>
+            <path d="M 520,192 L 520,256" fill="none" stroke="black"/>
+            <path d="M 112,32 L 440,32" fill="none" stroke="black"/>
+            <path d="M 40,144 L 56,144" fill="none" stroke="black"/>
+            <path d="M 88,144 L 104,144" fill="none" stroke="black"/>
+            <path d="M 232,144 L 344,144" fill="none" stroke="black"/>
+            <path d="M 376,144 L 488,144" fill="none" stroke="black"/>
+            <path d="M 8,192 L 520,192" fill="none" stroke="black"/>
+            <path d="M 8,224 L 520,224" fill="none" stroke="black"/>
+            <path d="M 24,272 L 248,272" fill="none" stroke="black"/>
+            <path d="M 280,272 L 504,272" fill="none" stroke="black"/>
+            <path d="M 168,128 L 184,160" fill="none" stroke="black"/>
+            <path d="M 152,160 L 168,128" fill="none" stroke="black"/>
+            <path d="M 40,144 C 31.16936,144 24,151.16936 24,160" fill="none" stroke="black"/>
+            <path d="M 56,144 C 64.83064,144 72,136.83064 72,128" fill="none" stroke="black"/>
+            <path d="M 88,144 C 79.16936,144 72,136.83064 72,128" fill="none" stroke="black"/>
+            <path d="M 104,144 C 112.83064,144 120,151.16936 120,160" fill="none" stroke="black"/>
+            <path d="M 232,144 C 223.16936,144 216,151.16936 216,160" fill="none" stroke="black"/>
+            <path d="M 344,144 C 352.83064,144 360,136.83064 360,128" fill="none" stroke="black"/>
+            <path d="M 376,144 C 367.16936,144 360,136.83064 360,128" fill="none" stroke="black"/>
+            <path d="M 488,144 C 496.83064,144 504,151.16936 504,160" fill="none" stroke="black"/>
+            <path d="M 24,272 C 15.16936,272 8,264.83064 8,256" fill="none" stroke="black"/>
+            <path d="M 248,272 C 256.83064,272 264,279.16936 264,288" fill="none" stroke="black"/>
+            <path d="M 280,272 C 271.16936,272 264,279.16936 264,288" fill="none" stroke="black"/>
+            <path d="M 504,272 C 512.83064,272 520,264.83064 520,256" fill="none" stroke="black"/>
+            <polygon class="arrowhead" points="528,232 516,226.4 516,237.6" fill="black" transform="rotate(270,520,232)"/>
+            <polygon class="arrowhead" points="512,184 500,178.4 500,189.6" fill="black" transform="rotate(90,504,184)"/>
+            <polygon class="arrowhead" points="224,184 212,178.4 212,189.6" fill="black" transform="rotate(90,216,184)"/>
+            <polygon class="arrowhead" points="192,184 180,178.4 180,189.6" fill="black" transform="rotate(90,184,184)"/>
+            <polygon class="arrowhead" points="160,184 148,178.4 148,189.6" fill="black" transform="rotate(90,152,184)"/>
+            <polygon class="arrowhead" points="128,184 116,178.4 116,189.6" fill="black" transform="rotate(90,120,184)"/>
+            <polygon class="arrowhead" points="32,184 20,178.4 20,189.6" fill="black" transform="rotate(90,24,184)"/>
+            <polygon class="arrowhead" points="16,232 4,226.4 4,237.6" fill="black" transform="rotate(270,8,232)"/>
+            <g class="text">
+              <text x="276" y="20">Least significant 16 bits of trajectory:64</text>
+              <text x="88" y="68">4 least significant</text>
+              <text x="104" y="84">bits of vector-y:10 (Y)</text>
+              <text x="164" y="116">%p:2</text>
+              <text x="368" y="116">vector-z:10 (Z)</text>
+              <text x="24" y="212">Y</text>
+              <text x="56" y="212">Y</text>
+              <text x="88" y="212">Y</text>
+              <text x="120" y="212">Y</text>
+              <text x="152" y="212">0</text>
+              <text x="184" y="212">0</text>
+              <text x="216" y="212">Z</text>
+              <text x="248" y="212">Z</text>
+              <text x="280" y="212">Z</text>
+              <text x="312" y="212">Z</text>
+              <text x="344" y="212">Z</text>
+              <text x="376" y="212">Z</text>
+              <text x="408" y="212">Z</text>
+              <text x="440" y="212">Z</text>
+              <text x="472" y="212">Z</text>
+              <text x="504" y="212">Z</text>
+              <text x="264" y="308">16-bits</text>
+            </g>
+          </svg>
+        </artwork>
+      </artset>
+    </section>
+    <section>
+      <name>Additional Examples</name>
+      <t>
+				The following sets of rules are identical and valid:
+			</t>
+      <figure anchor="AdditionalExamples">
+        <name>Comparing Rulesets.</name>
+        <artwork type="abnf" name="" align="left" alt=""><![CDATA[
+ABNF
+----				
+
+; Original CRLF
+CRLF          = %d13.10
+
+; Declaring CRLF is 16-bits wide.
+CRLF:16       = %d13.10
+
+; Declaring CRLF is 16-bits wide.
+CRLF:16       = %d13:8.10:8
+
+; CRLF still is 16-bits wide, but declaring it is optional.
+CRLF          = %d13:8.10:8
+
+; Original rulename
+rulename      = %d97 %d98 %d99
+
+; Declaring rulename is 24-bits wide
+rulename:24   = %d97:8 %d98:8 %d99:8
+
+; rulename still is 24-bits wide, but declaring it is optional.
+rulename      = %d97:8 %d98:8 %d99:8
+
+; Orignal DIGIT
+DIGIT         = %x30-39
+
+; Declaring DIGIT is 8-bits wide.
+DIGIT:8       = %x30-39
+
+; Declaring DIGIT is 8-bits wide.
+DIGIT:8       = %x30:8-39:8
+
+; DIGIT is still 8-bits wide, but declaring it is optional.
+DIGIT         = %x30:8-39:8
+]]></artwork>
+      </figure>
+    </section>
+    <section anchor="IANA">
+      <!-- All drafts are required to have an IANA considerations section. See RFC 8126 for a guide.-->
+      <name>IANA Considerations</name>
+      <t>This memo includes no request to IANA.</t>
+    </section>
+    <section anchor="Security">
+      <!-- All drafts are required to have a security considerations section. See RFC 3552 for a guide. -->
+      <name>Security Considerations</name>
+      <t>This document should not affect the security of the Internet.</t>
+    </section>
+    <!-- NOTE: The Acknowledgements and Contributors sections are at the end of this template -->
+  </middle>
+  <back>
+    <references>
+      <name>Normative References</name>
+      <reference anchor="RFC4506" target="https://www.rfc-editor.org/info/rfc4506" xml:base="References/reference.RFC.4506.xml">
+        <front>
+          <title>XDR: External Data Representation Standard</title>
+          <author fullname="M. Eisler" initials="M." role="editor" surname="Eisler"/>
+          <date month="May" year="2006"/>
+          <abstract>
+            <t>This document describes the External Data Representation Standard (XDR) protocol as it is currently deployed and accepted. This document obsoletes RFC 1832. [STANDARDS-TRACK]</t>
+          </abstract>
+        </front>
+        <seriesInfo name="STD" value="67"/>
+        <seriesInfo name="RFC" value="4506"/>
+        <seriesInfo name="DOI" value="10.17487/RFC4506"/>
+      </reference>
+      <reference anchor="RFC5234" target="https://www.rfc-editor.org/info/rfc5234" xml:base="References/reference.RFC.5234.xml">
+        <front>
+          <title>Augmented BNF for Syntax Specifications: ABNF</title>
+          <author fullname="D. Crocker" initials="D." role="editor" surname="Crocker"/>
+          <author fullname="P. Overell" initials="P." surname="Overell"/>
+          <date month="January" year="2008"/>
+          <abstract>
+            <t>Internet technical specifications often need to define a formal syntax. Over the years, a modified version of Backus-Naur Form (BNF), called Augmented BNF (ABNF), has been popular among many Internet specifications. The current specification documents ABNF. It balances compactness and simplicity with reasonable representational power. The differences between standard BNF and ABNF involve naming rules, repetition, alternatives, order-independence, and value ranges. This specification also supplies additional rule definitions and encoding for a core lexical analyzer of the type common to several Internet specifications. [STANDARDS-TRACK]</t>
+          </abstract>
+        </front>
+        <seriesInfo name="STD" value="68"/>
+        <seriesInfo name="RFC" value="5234"/>
+        <seriesInfo name="DOI" value="10.17487/RFC5234"/>
+      </reference>
+    </references>
+    <references>
+      <name>Informative References</name>
+      <reference anchor="xdrgen" target="https://github.com/RiverExplorer/Phoenix">
+        <front>
+          <title>XDR Code Generator, Open Source</title>
+          <author initials="DM" surname="Royer">
+            <organization>RiverExplorer LLC</organization>
+          </author>
+          <date year="2025"/>
+        </front>
+      </reference>
+    </references>
+    <section anchor="Acknowledgements" numbered="false">
+      <name>Acknowledgments</name>
+    </section>
+    <section anchor="Contributors" numbered="false">
+      <name>Contributors</name>
+    </section>
+  </back>
+</rfc>

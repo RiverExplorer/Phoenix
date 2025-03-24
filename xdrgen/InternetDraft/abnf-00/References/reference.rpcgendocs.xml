@@ -1,0 +1,19 @@
+<reference anchor="rpcgendocs" target="https://docs.oracle.com/cd/E37838_01/html/E61058/rpcgenpguide-12915.html">
+  <front>
+    <title>rpcgen Protocol Compiler</title>
+    <author fullname="Unknown Author" initials="" surname="Unknown Author"/>
+    <date month="January" year="2025"/>
+    <abstract>
+			<t>
+				The rpcgen protocol compiler accepts a remote program interface
+				definition written in the Remote Procedure Call language (RPCL),
+				which is similar to the C language.
+			</t>
+			<t>
+				rpcgen++ is an updated rpcgen that can generate C++ code.
+				And is available at
+				<eref target="https://github.com/RiverExplorer/Phoenix"/>
+			</t>
+    </abstract>
+  </front>
+</reference>
