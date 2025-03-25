@@ -1,0 +1,17 @@
+#!/bin/tcsh -f
+
+/bin/rm -rf Generated
+
+foreach f (  Tests/OriginalX/*.x )
+  set F = ${f:t:r}
+
+		echo "./BuildTemp/Linux/Debug/bin/xdrgen --namespace=RiverExplorer:Phoenix --input $f --out=GeneratedFromXDR/${F}xdr.cpp --lang=CPP -DRPC_HDR -DXDR_HDR --xdr"
+		./BuildTemp/Linux/Debug/bin/xdrgen --namespace=RiverExplorer:Phoenix --input $f --out=GeneratedFromXDR/${F}_xdr.c --lang=CPP -DRPC_HDR -DXDR_HDR --xdr
+		
+		echo "./BuildTemp/Linux/Debug/bin/xdrgen --namespace=RiverExplorer:Phoenix --input $f --out=GeneratedFromXDR/${F}.hpp --lang=CPP -DRPC_HDR -DXDR_HDR --headers"
+		./BuildTemp/Linux/Debug/bin/xdrgen --namespace=RiverExplorer:Phoenix --input $f --out=GeneratedFromXDR/${F}.hpp --lang=CPP -DRPC_HDR -DXDR_HDR --headers
+		
+		echo "./BuildTemp/Linux/Debug/bin/xdrgen --namespace=RiverExplorer:Phoenix --input $f --out=GeneratedFromXDR/${F}.abnf --lang=CPP -DRPC_HDR -DXDR_HDR --abnf"
+		./BuildTemp/Linux/Debug/bin/xdrgen --namespace=RiverExplorer:Phoenix --input $f --out=GeneratedFromXDR/${F}.abnf --lang=CPP -DRPC_HDR -DXDR_HDR --abnf
+end
+

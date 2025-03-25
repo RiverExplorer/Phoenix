@@ -1,6 +1,6 @@
 /**
  * Project: Phoenix
- * Time-stamp: <2025-03-12 14:18:21 doug>
+ * Time-stamp: <2025-03-24 22:22:25 doug>
  * 
  * @file GenerateComment.cpp
  * @author Douglas Mark Royer
@@ -13,9 +13,9 @@
  * 
  * RiverExplorer is a trademark of Douglas Mark Royer
  */
-#include "rpcgen.hpp"
+#include "xdrgen.hpp"
 
-namespace RiverExplorer::rpcgen
+namespace RiverExplorer::xdrgen
 {
 	extern std::string Indent(int Level);
 	

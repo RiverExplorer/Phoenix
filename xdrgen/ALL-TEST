@@ -3,7 +3,7 @@
 /bin/rm -rf Generated
 
 foreach f (  Tests/OriginalX/*.x )
-  echo "./BuildTemp/Linux/Debug/bin/rpcgen++ --namespace=RiverExplorer:Phoenix --input $f --outdir Generated --lang=CPP -DRPC_HDR -DXDR_HDR --xdr --headers --abnf"
-  ./BuildTemp/Linux/Debug/bin/rpcgen++ --namespace=RiverExplorer:Phoenix --input $f --outdir Generated --lang=CPP -DRPC_HDR -DXDR_HDR --xdr --headers --abnf
+	echo "./BuildTemp/Linux/Debug/bin/xdrgen --namespace=RiverExplorer:Phoenix --input $f --outdir GeneratedFromXDR --lang=CPP -DRPC_HDR -DXDR_HDR --xdr --headers --abnf"
+	./BuildTemp/Linux/Debug/bin/xdrgen --namespace=RiverExplorer:Phoenix --input $f --outdir GeneratedFromXDR --lang=CPP -DRPC_HDR -DXDR_HDR --xdr --headers --abnf
 end
 

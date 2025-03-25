@@ -1,6 +1,6 @@
 /**
  * Project: Phoenix
- * Time-stamp: <2025-03-13 12:10:56 doug>
+ * Time-stamp: <2025-03-24 22:22:46 doug>
  * 
  * @file Generate.hpp
  * @author Douglas Mark Royer
@@ -17,7 +17,7 @@
 #include <iostream>
 #include <fstream>
 
-namespace RiverExplorer::rpcgen
+namespace RiverExplorer::xdrgen
 {
 	/**
 	 * Make the path, or print error if it can not

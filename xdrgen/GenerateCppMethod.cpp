@@ -1,6 +1,6 @@
 /**
  * Project: Phoenix
- * Time-stamp: <2025-03-13 13:29:29 doug>
+ * Time-stamp: <2025-03-24 22:29:14 doug>
  * 
  * @file GenerateMethod.cpp
  * @author Douglas Mark Royer
@@ -13,9 +13,9 @@
  * 
  * RiverExplorer is a trademark of Douglas Mark Royer
  */
-#include "rpcgen.hpp"
+#include "xdrgen.hpp"
 
-namespace RiverExplorer::rpcgen
+namespace RiverExplorer::xdrgen
 {
 	using namespace std;
 

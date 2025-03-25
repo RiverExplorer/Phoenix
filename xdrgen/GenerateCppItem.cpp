@@ -1,6 +1,6 @@
 /**
  * Project: Phoenix
- * Time-stamp: <2025-03-12 16:22:26 doug>
+ * Time-stamp: <2025-03-24 22:21:40 doug>
  * 
  * @file Item.cpp
  * @author Douglas Mark Royer
@@ -13,7 +13,7 @@
  * 
  * RiverExplorer is a trademark of Douglas Mark Royer
  */
-#include "rpcgen.hpp"
+#include "xdrgen.hpp"
 #include "Generate.hpp"
 #include "GenerateCpp.hpp"
 #include <unistd.h>
@@ -21,7 +21,7 @@
 
 using namespace std;
 
-namespace RiverExplorer::rpcgen
+namespace RiverExplorer::xdrgen
 {
 	void
 	Item::PrintCppDeclareVariable(ofstream & Stream)

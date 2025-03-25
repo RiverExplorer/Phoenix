@@ -1,6 +1,6 @@
 /**
  * Project: Phoenix
- * Time-stamp: <2025-03-13 12:09:03 doug>
+ * Time-stamp: <2025-03-24 22:23:01 doug>
  * 
  * @file Generate.cpp
  * @author Douglas Mark Royer
@@ -20,7 +20,7 @@
 #include <unistd.h>
 #endif
 
-#include "rpcgen.hpp"
+#include "xdrgen.hpp"
 #include <iostream>
 #include <fstream>
 #include <string>
@@ -44,7 +44,7 @@
 using namespace antlr4;
 using namespace std;
 
-namespace RiverExplorer::rpcgen
+namespace RiverExplorer::xdrgen
 {
 	extern std::string	Indent(int Level);
 
@@ -83,7 +83,7 @@ namespace RiverExplorer::rpcgen
 	
 }
 
-namespace RiverExplorer::rpcgen
+namespace RiverExplorer::xdrgen
 {
 
 	string
@@ -194,7 +194,7 @@ namespace RiverExplorer::rpcgen
 					 << "It was generated from: " << InputFileName << endl;
 		
 		Stream << Prefix
-					 << "Using RiverExplorer rpcgen++ program." << endl;
+					 << "Using RiverExplorer xdrgen program." << endl;
 		
 		Stream << Prefix
 					 << "Available at: https://github.com/Phoenix." << endl;
@@ -212,7 +212,7 @@ namespace RiverExplorer::rpcgen
 					 << "It was generated from: " << InputFileName << endl;
 		
 		Stream << Prefix
-					 << "Using RiverExplorer rpcgen++ program." << endl;
+					 << "Using RiverExplorer xdrgen program." << endl;
 		
 		Stream << Prefix
 					 << "Available at: https://github.com/Phoenix." << endl;

@@ -1,6 +1,6 @@
 #
 # Project: Phoenix
-# Time-stamp: <2025-03-17 17:31:35 doug>
+# Time-stamp: <2025-03-24 22:18:02 doug>
 #
 # Copyright (C) 2025 by Douglas Mark Royer (A.K.A. RiverExplorer)
 # Author Douglas Mark Royer
@@ -26,7 +26,7 @@ LIBTOP			= ..
 # What to call this program.
 # And what the include/RiverExplorer/$(TARGET) header directory will be.
 #
-TARGET			= rpcgen++
+TARGET			= xdrgen
 
 NOW = $(shell date +%Y%m%dT%H%M%S)
 
@@ -78,14 +78,14 @@ SOURCES.cpp = \
 	GenerateCppTypeDef.cpp \
 	GenerateCppUnion.cpp \
 	GenerateCppVersion.cpp \
-	rpcgen.cpp \
+	xdrgen.cpp \
 	$(ANTLR4_GENERATED.cpp)
 
 SOURCES.hpp = \
 	GenerateCpp.hpp \
 	Generate.hpp \
-	rpcgen.hpp \
-	RpcgenShared.hpp \
+	xdrgen.hpp \
+	XdrGenShared.hpp \
 	$(ANTLR4_GENERATED.h)
 
 W64_CPPFLAGS	+=
@@ -133,7 +133,7 @@ include $(TOP)/BuildTools/Makefile.bottom
 clean ::
 	$(RM) XMLResults.xml
 	$(RM) $(GENERATED.cpp) $(GENERATED.h) $(GENERATED.other)
-	$(RM) -rf Generated/* $(ANTLR4_GENERATED.cpp) $(ANTLR4_GENERATED.h)
+	$(RM) -rf GeneratedFromXDR/* $(ANTLR4_GENERATED.cpp) $(ANTLR4_GENERATED.h)
 
 $(ANTLR4_GENERATED.cpp) $(ANTLR4_GENERATED.h) : xdr.g4
 	antlr4 -Dlanguage=Cpp -o $(ANTLR4_DIRECTORY) xdr.g4

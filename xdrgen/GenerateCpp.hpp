@@ -1,6 +1,6 @@
 /**
  * Project: Phoenix
- * Time-stamp: <2025-03-21 09:47:40 doug>
+ * Time-stamp: <2025-03-24 22:21:50 doug>
  * 
  * @file GenerateCpp.hpp
  * @author Douglas Mark Royer
@@ -13,13 +13,13 @@
  * 
  * RiverExplorer is a trademark of Douglas Mark Royer
  */
-#ifndef _RIVEREXPLORER_RPCGEN_GENERATECPP_HPP_
-#define _RIVEREXPLORER_RPCGEN_GENERATECPP_HPP_
+#ifndef _RIVEREXPLORER_XDRGEN_GENERATECPP_HPP_
+#define _RIVEREXPLORER_XDRGEN_GENERATECPP_HPP_
 
 #include <string>
 #include "Generate.hpp"
 
-namespace RiverExplorer::rpcgen
+namespace RiverExplorer::xdrgen
 {
 	extern std::string Namespace;
 	extern std::string CppNamespace;
@@ -44,4 +44,4 @@ namespace RiverExplorer::rpcgen
 	extern void	PrintCppNamespaceEnd(std::ofstream & Stream);
 	
 }
-#endif // _RIVEREXPLORER_RPCGEN_GENERATECPP_HPP_
+#endif // _RIVEREXPLORER_XDRGEN_GENERATECPP_HPP_

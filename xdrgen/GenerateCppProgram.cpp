@@ -1,6 +1,6 @@
 /**
  * Project: Phoenix
- * Time-stamp: <2025-03-12 09:48:18 doug>
+ * Time-stamp: <2025-03-24 22:21:07 doug>
  * 
  * @file GenerateProgram.cpp
  * @author Douglas Mark Royer
@@ -13,9 +13,9 @@
  * 
  * RiverExplorer is a trademark of Douglas Mark Royer
  */
-#include "rpcgen.hpp"
+#include "xdrgen.hpp"
 
-namespace RiverExplorer::rpcgen
+namespace RiverExplorer::xdrgen
 {
 	Program::~Program()
 	{

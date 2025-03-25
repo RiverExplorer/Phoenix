@@ -1,8 +1,8 @@
 /**
  * Project: Phoenix
- * Time-stamp: <2025-03-17 23:41:47 doug>
+ * Time-stamp: <2025-03-24 22:20:06 doug>
  * 
- * @file RpcgenShared.hpp
+ * @file XdrGenShared.hpp
  * @author Douglas Mark Royer
  * @date 24-FEB-2025
  * 
@@ -14,8 +14,8 @@
  * RiverExplorer is a trademark of Douglas Mark Royer
  */
 
-#ifndef _RIVEREXPLORER_RPCGEN_SHARED_EXAMPLE12_X_HPP_
-#define _RIVEREXPLORER_RPCGEN_SHARED_EXAMPLE12_X_HPP_
+#ifndef _RIVEREXPLORER_XDRGEN_SHARED_HPP_
+#define _RIVEREXPLORER_XDRGEN_SHARED_HPP_
 
 #include <string>
 #include <vector>
@@ -26,7 +26,7 @@
 #endif // W64
 #include <memory.h>
 
-namespace RiverExplorer::rpcgen
+namespace RiverExplorer::xdrgen
 {
 	/**
 	 * An implementation of an XDR routine
@@ -88,6 +88,6 @@ namespace RiverExplorer::rpcgen
 	
 		return(Results);
 	}
-} // End namespace RiverExplorer:rpcgen:test
+} // End namespace RiverExplorer:xdrgen:test
 
-#endif // _RIVEREXPLORER_RPCGEN_SHARED_EXAMPLE12_X_HPP_
+#endif // _RIVEREXPLORER_XDRGEN_SHARED_HPP_

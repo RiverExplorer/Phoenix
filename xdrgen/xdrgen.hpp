@@ -1,8 +1,8 @@
 /**
  * Project: Phoenix
- * Time-stamp: <2025-03-21 11:04:15 doug>
+ * Time-stamp: <2025-03-24 22:19:36 doug>
  * 
- * @file rpcgen.hpp
+ * @file xdrgen.hpp
  * @author Douglas Mark Royer
  * @date 08-MAR-2025
  * 
@@ -13,8 +13,8 @@
  * 
  * RiverExplorer is a trademark of Douglas Mark Royer
  */
-#ifndef _RIVEREXPLORER_RPCGEN_RPCGEN_HPP_
-#define _RIVEREXPLORER_RPCGEN_RPCGEN_HPP_
+#ifndef _RIVEREXPLORER_XDRGEN_XDRGEN_HPP_
+#define _RIVEREXPLORER_XDRGEN_XDRGEN_HPP_
 
 #include <iostream>
 #include <fstream>
@@ -32,7 +32,7 @@
 using namespace antlr4;
 using namespace std;
 
-namespace RiverExplorer::rpcgen
+namespace RiverExplorer::xdrgen
 {
 	/**
 	 * The input file name.
@@ -248,7 +248,7 @@ namespace RiverExplorer::rpcgen
 	extern bool InArray;
 
 	/**
-	 * @class Constant rpcgen.hpp <RiverExplorer/rpcgen/rpcgen.hpp>
+	 * @class Constant xdrgen.hpp <RiverExplorer/xdrgen/xdrgen.hpp>
 	 */
 	class Constant
 		: public Item
@@ -267,7 +267,7 @@ namespace RiverExplorer::rpcgen
 	extern Constant * CurrentConstant;
 
 	/**
-	 * @class EnumValue rpcgen.hpp <RiverExplorer/rpcgen/rpcgen.hpp>
+	 * @class EnumValue xdrgen.hpp <RiverExplorer/xdrgen/xdrgen.hpp>
 	 */
 	class EnumValue
 		: public Item
@@ -285,7 +285,7 @@ namespace RiverExplorer::rpcgen
 	};
 
 	/**
-	 * @class Enum rpcgen.hpp <RiverExplorer/rpcgen/rpcgen.hpp>
+	 * @class Enum xdrgen.hpp <RiverExplorer/xdrgen/xdrgen.hpp>
 	 */
 	class Enum
 		: public Item
@@ -305,7 +305,7 @@ namespace RiverExplorer::rpcgen
 	};
 
 	/**
-	 * @class TypeDef rpcgen.hpp <RiverExplorer/rpcgen/rpcgen.hpp>
+	 * @class TypeDef xdrgen.hpp <RiverExplorer/xdrgen/xdrgen.hpp>
 	 */
 	class TypeDef
 		: public Item
@@ -323,7 +323,7 @@ namespace RiverExplorer::rpcgen
 	};
 
 	/**
-	 * @class StructMember rpcgen.hpp <RiverExplorer/rpcgen/rpcgen.hpp>
+	 * @class StructMember xdrgen.hpp <RiverExplorer/xdrgen/xdrgen.hpp>
 	 */
 	class StructMember
 		: public Item
@@ -342,7 +342,7 @@ namespace RiverExplorer::rpcgen
 	extern StructMember * CurrentStructMember;
 
 	/**
-	 * @class Struct rpcgen.hpp <RiverExplorer/rpcgen/rpcgen.hpp>
+	 * @class Struct xdrgen.hpp <RiverExplorer/xdrgen/xdrgen.hpp>
 	 */
 	class Struct
 		: public Item
@@ -363,7 +363,7 @@ namespace RiverExplorer::rpcgen
 	extern Struct * CurrentStruct;
 
 	/**
-	 * @class UnionCase rpcgen.hpp <RiverExplorer/rpcgen/rpcgen.hpp>
+	 * @class UnionCase xdrgen.hpp <RiverExplorer/xdrgen/xdrgen.hpp>
 	 */
 	class UnionCase
 		: public Item
@@ -384,7 +384,7 @@ namespace RiverExplorer::rpcgen
 	};
 
 	/**
-	 * @class Union rpcgen.hpp <RiverExplorer/rpcgen/rpcgen.hpp>
+	 * @class Union xdrgen.hpp <RiverExplorer/xdrgen/xdrgen.hpp>
 	 */
 	class Union
 		: public Item
@@ -410,7 +410,7 @@ namespace RiverExplorer::rpcgen
 	extern Union * CurrentUnion;
 
 	/**
-	 * @class Procedure rpcgen.hpp <RiverExplorer/rpcgen/rpcgen.hpp>
+	 * @class Procedure xdrgen.hpp <RiverExplorer/xdrgen/xdrgen.hpp>
 	 */
 	class Procedure
 		: public Item
@@ -432,7 +432,7 @@ namespace RiverExplorer::rpcgen
 	};
 
 	/**
-	 * @class Version rpcgen.hpp <RiverExplorer/rpcgen/rpcgen.hpp>
+	 * @class Version xdrgen.hpp <RiverExplorer/xdrgen/xdrgen.hpp>
 	 */
 	class Version
 		: public Item
@@ -453,7 +453,7 @@ namespace RiverExplorer::rpcgen
 	};
 
 	/**
-	 * @class Program rpcgen.hpp <RiverExplorer/rpcgen/rpcgen.hpp>
+	 * @class Program xdrgen.hpp <RiverExplorer/xdrgen/xdrgen.hpp>
 	 */
 	class Program
 		: public Item
@@ -479,7 +479,7 @@ namespace RiverExplorer::rpcgen
 	};
 
 	/**
-	 * @class Comment rpcgen.hpp <RiverExplorer/rpcgen/rpcgen.hpp>
+	 * @class Comment xdrgen.hpp <RiverExplorer/xdrgen/xdrgen.hpp>
 	 */
 	class Comment
 		: public Item
@@ -497,7 +497,7 @@ namespace RiverExplorer::rpcgen
 	};
 
 	/**
-	 * @class PassThrough rpcgen.hpp <RiverExplorer/rpcgen/rpcgen.hpp>
+	 * @class PassThrough xdrgen.hpp <RiverExplorer/xdrgen/xdrgen.hpp>
 	 */
 	class PassThrough
 		: public Item
@@ -515,7 +515,7 @@ namespace RiverExplorer::rpcgen
 	};
 
 	/**
-	 * @class Method rpcgen.hpp <RiverExplorer/rpcgen/rpcgen.hpp>
+	 * @class Method xdrgen.hpp <RiverExplorer/xdrgen/xdrgen.hpp>
 	 * A 'Method' is of the form:
 	 *
 	 * returnType MethodName(Parameter1, ...);
@@ -541,7 +541,7 @@ namespace RiverExplorer::rpcgen
 	};
 	
 	/**
-	 * @class MyXdrListener rpcgen.hpp <RiverExplorer/rpcgen/rpcgen.hpp>
+	 * @class MyXdrListener xdrgen.hpp <RiverExplorer/xdrgen/xdrgen.hpp>
 	 * A support class for the antlr4 generated code.
 	 */
 	class MyXdrListener
@@ -781,4 +781,4 @@ namespace RiverExplorer::rpcgen
 		
 	};
 }
-#endif // _RIVEREXPLORER_RPCGEN_RPCGEN_HPP_
+#endif // _RIVEREXPLORER_XDRGEN_XDRGEN_HPP_

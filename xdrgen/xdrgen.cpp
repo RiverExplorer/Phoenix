@@ -1,8 +1,8 @@
 /**
  * Project: Phoenix
- * Time-stamp: <2025-03-21 11:06:42 doug>
+ * Time-stamp: <2025-03-24 23:59:53 doug>
  * 
- * @file rpcgen.cpp
+ * @file xdrgen.cpp
  * @author Douglas Mark Royer
  * @date 08-MAR-2025
  * 
@@ -13,7 +13,7 @@
  * 
  * RiverExplorer is a trademark of Douglas Mark Royer
  */
-#include "rpcgen.hpp"
+#include "xdrgen.hpp"
 #include "GenerateCpp.hpp"
 #include <iostream>
 #include <fstream>
@@ -31,11 +31,12 @@
 #include <getopt.h>
 #include <fcntl.h>
 #include <sys/stat.h>
+#include <libgen.h>
 
 using namespace antlr4;
 using namespace std;
 
-namespace RiverExplorer::rpcgen
+namespace RiverExplorer::xdrgen
 {
 	extern std::string ToUpper(const std::string & In);
 	extern void GenerateSharedHpp();
@@ -1495,7 +1496,7 @@ namespace RiverExplorer::rpcgen
 		ProcessNode(false, "ProcFirstArg Exit : ", Ctx);
 	}
 
-} // End namespace RiverExplorer::rpcgen
+} // End namespace RiverExplorer::xdrgen
 
 void
 Usage(const char * Pgm)
@@ -1503,10 +1504,10 @@ Usage(const char * Pgm)
 	std::cout << std::endl
 						<< "Usage: "
 						<< std::endl
-						<< basename(Pgm)
+						<< basename(strdup(Pgm))
 						<< " [--quiet]"
 						<< " --input <filename.x>"
-						<< " --outdir Dir"
+						<< " (--outdir Dir | -out OutFile"
 						<< " --lang (CPP|C#)"
 						<< " -D[cpp-value]"
 						<< " [--namespace=part1:part2:...]"
@@ -1516,7 +1517,7 @@ Usage(const char * Pgm)
 	return;
 }
 
-using namespace RiverExplorer::rpcgen;
+using namespace RiverExplorer::xdrgen;
 
 /**
  * Open CPP and send the input file to it.
@@ -1527,7 +1528,7 @@ Preprocess(const std::string & InFile,
 						const std::vector<std::string> & Args)
 {
 	if (access(InFile.c_str(), R_OK) == F_OK) {
-		PostCppFileName = "/tmp/rpcgen_";
+		PostCppFileName = "/tmp/xdrgen_";
 		PostCppFileName += std::to_string(getpid());
 
 		std::string Cmd = "/bin/cpp -nostdinc -P -E -C ";
@@ -1569,6 +1570,7 @@ main(int argc, char *argv[])
 	std::vector<std::string> CppArgs;
 	std::string Input;
 	std::string OutDir;
+	std::string OutFile;
 	std::string Language;
 	
 	bool GenerateXdr = false;
@@ -1605,6 +1607,7 @@ main(int argc, char *argv[])
 			{"server",		NoArgument,				0, 11},
 			{"nobanner",	NoArgument,				0, 12},
 			{"namespace",	RequiredArgument,	0, 13},
+			{"out",				RequiredArgument,	0, 14},
 			{nullptr,			NoArgument,				0, 0}
 		};
 		
@@ -1620,8 +1623,8 @@ main(int argc, char *argv[])
 		case 0: // Input
 			if (optarg) {
 				Input = optarg;
-				InputFileName = basename(Input.c_str());
-				InputNoExtension = basename(RemoveFileExtension(Input).c_str());
+				InputFileName = basename(strdup(Input.c_str()));
+				InputNoExtension = basename(strdup(RemoveFileExtension(Input).c_str()));
 				
 				if (!RunQuiet) {
 					std::cout << "Reading from input: " << Input << std::endl;
@@ -1641,6 +1644,19 @@ main(int argc, char *argv[])
 			}
 			break;
 
+		case 14: // Out (file)
+			if (optarg) {
+				OutFile = optarg;
+				OutputDirectory = dirname(strdup(OutFile.c_str()));
+				if (OutputDirectory == "/") {
+					OutputDirectory = ".";
+				}
+				if (!RunQuiet) {
+					std::cout << "Writing to file: " << OutFile << std::endl;
+				}
+			}
+			break;
+			
 		case 3: // Lang
 			if (Language != "") {
 				std::cout << "ERROR: Only 1 language at a time." << std::endl;
@@ -1731,6 +1747,12 @@ main(int argc, char *argv[])
 		exit(1);
 	}
 
+	if (OutDir != "" && OutFile != "") {
+		std::cout << "Error: You can specify --outdir OR --out, but not both"
+							<< std::endl;
+		Usage(argv[0]);
+		exit(1);
+	}
 	if (!GenerateXdr
 			&& !GenerateXsd
 			&& !GenerateHeaders
@@ -1744,9 +1766,9 @@ main(int argc, char *argv[])
 
 	}
 
-	if (OutDir == "") {
+	if (OutDir == "" && OutFile == "") {
 		std::cout << std::endl
-							<< "Error: Must specific output directory --outdir <dir>"
+							<< "Error: Must specific output directory --outdir <dir> or -out File"
 							<< std::endl;
 		Error = true;
 	}
@@ -1764,21 +1786,23 @@ main(int argc, char *argv[])
 		exit(1);
 	}
 
-	if (access(OutDir.c_str(), W_OK|R_OK|X_OK) != 0) {
+	if (access(OutputDirectory.c_str(), W_OK|R_OK|X_OK) != 0) {
 		if (!RunQuiet) {
 			std::cout << "Output directory: '"
-								<< OutDir
+								<< OutputDirectory
 								<< " 'does not exist, or can't access it."
 								<< " Attepting to fix."
 								<< std::endl;
 		}
-		chmod(OutDir.c_str(), 0700);
-		if (access(OutDir.c_str(), W_OK|R_OK|X_OK) != 0) {
-			mkdir(OutDir.c_str(), 0700);
+		if (OutputDirectory != ".") {
+			chmod(OutputDirectory.c_str(), 0700);
+		}
+		if (access(OutputDirectory.c_str(), W_OK|R_OK|X_OK) != 0) {
+			mkdir(OutputDirectory.c_str(), 0700);
 
-			if (access(OutDir.c_str(), W_OK|R_OK|X_OK) != 0) {
+			if (access(OutputDirectory.c_str(), W_OK|R_OK|X_OK) != 0) {
 				std::cout << "ERROR: Can not create or fix output directory: '"
-									<< OutDir
+									<< OutputDirectory
 									<< "'"
 									<< std::endl;
 				exit(2);
@@ -1825,11 +1849,13 @@ main(int argc, char *argv[])
 
 			if (Language == "CPP" ) {
 				CppOutputDirectory += OutputDirectory;
-				if (Namespace != "") {
-					CppOutputDirectory += "/";
-					CppOutputDirectory += NamespaceToIncludePath();
+				if (OutFile == "") {
+					if (Namespace != "") {
+						CppOutputDirectory += "/";
+						CppOutputDirectory += NamespaceToIncludePath();
+					}
+					CppOutputDirectory += "/c++";
 				}
-				CppOutputDirectory += "/c++";
 				MakePath(CppOutputDirectory);
 
 				// C++ Headers.
@@ -1858,7 +1884,7 @@ main(int argc, char *argv[])
 					}
 					Header << " */" << std::endl << std::endl;
 							
-					Define = "_RIVEREXPLORER_RPCGEN_";
+					Define = "_RIVEREXPLORER_XDRGEN_";
 
 					Define += ToUpper(InputNoExtension);
 					Define += "_X_HPP_";
@@ -1866,7 +1892,7 @@ main(int argc, char *argv[])
 					Header << "#define " << Define << std::endl;
 					Header << std::endl;
 
-					Header << "#include <RpcgenShared.hpp>" << std::endl;
+					Header << "#include <XdrGenShared.hpp>" << std::endl;
 					Header << "#include <string>" << std::endl;
 					Header << "#include <vector>" << std::endl;
 					Header << "#include <map>" << std::endl;
@@ -2005,8 +2031,13 @@ main(int argc, char *argv[])
 				std::string XdrFileFile = CppOutputDirectory;
 
 				XdrFileFile += "/";
-				XdrFileFile += InputNoExtension;
-				XdrFileFile += "_xdr.cpp";
+
+				if (OutFile == "") {
+					XdrFileFile += InputNoExtension;
+					XdrFileFile += "_xdr.cpp";
+				} else {
+					XdrFileFile = OutFile;
+				}
 
 				ofstream XdrFile(XdrFileFile);
 
@@ -2050,18 +2081,20 @@ main(int argc, char *argv[])
 
 				AbnfOutputDirectory += OutputDirectory;
 
-				if (Namespace != "") {
-					AbnfOutputDirectory += "/";
-					AbnfOutputDirectory += NamespaceToIncludePath();
+				if (OutFile == "") {
+					if (Namespace != "") {
+						AbnfOutputDirectory += "/";
+						AbnfOutputDirectory += NamespaceToIncludePath();
+					}
+					AbnfOutputDirectory += "/ABNF";
 				}
-				AbnfOutputDirectory += "/ABNF";
 				
 				MakePath(AbnfOutputDirectory);
 
 				AbnfFile = AbnfOutputDirectory;
 				AbnfFile += "/";
 				AbnfFile += InputNoExtension;
-				AbnfFile += ".annf";
+				AbnfFile += ".abnf";
 
 				ofstream Abnf(AbnfFile);
 				

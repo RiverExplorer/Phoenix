@@ -1,6 +1,6 @@
 /**
  * Project: Phoenix
- * Time-stamp: <2025-03-21 09:46:37 doug>
+ * Time-stamp: <2025-03-24 22:22:05 doug>
  * 
  * @file GenerateCpp.cpp
  * @author Douglas Mark Royer
@@ -21,7 +21,7 @@
 
 using namespace std;
 
-namespace RiverExplorer::rpcgen
+namespace RiverExplorer::xdrgen
 {
 	extern string Namespace;
 	extern string InputNoExtension;
