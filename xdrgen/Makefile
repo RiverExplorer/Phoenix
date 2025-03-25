@@ -1,6 +1,6 @@
 #
 # Project: Phoenix
-# Time-stamp: <2025-03-24 22:18:02 doug>
+# Time-stamp: <2025-03-25 01:53:58 doug>
 #
 # Copyright (C) 2025 by Douglas Mark Royer (A.K.A. RiverExplorer)
 # Author Douglas Mark Royer
@@ -79,6 +79,7 @@ SOURCES.cpp = \
 	GenerateCppUnion.cpp \
 	GenerateCppVersion.cpp \
 	xdrgen.cpp \
+	XdrGenShared.cpp \
 	$(ANTLR4_GENERATED.cpp)
 
 SOURCES.hpp = \

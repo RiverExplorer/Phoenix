@@ -1,6 +1,6 @@
 /**
  * Project: Phoenix
- * Time-stamp: <2025-03-24 22:22:05 doug>
+ * Time-stamp: <2025-03-25 02:06:30 doug>
  * 
  * @file GenerateCpp.cpp
  * @author Douglas Mark Royer
@@ -23,6 +23,8 @@ using namespace std;
 
 namespace RiverExplorer::xdrgen
 {
+	extern void GenerateXdrGenSharedHpp(std::ofstream & Stream);
+	
 	extern string Namespace;
 	extern string InputNoExtension;
 	extern int IndentLevel;
@@ -134,9 +136,21 @@ namespace RiverExplorer::xdrgen
 
 	
 	void
-	GenerateSharedHpp(const string & InDirectory)
+	GenerateSharedHpp(const string & IntoDirectory)
 	{
-		/** @todo */
+		std::string Path = IntoDirectory;
+
+		Path += "/";
+		Path += "XdrGenShared.hpp";
+
+		ofstream Header(Path);
+
+		Header << "/**" << std::endl;
+		GenerateThisFileWasGenerated(" * ", Header);
+		Header << " */" << std::endl;
+		GenerateXdrGenSharedHpp(Header);
+		
+		Header.close();
 		
 		return;
 	}
