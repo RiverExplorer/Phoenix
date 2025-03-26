@@ -1,0 +1,75 @@
+
+                 CLIENT  |  SERVER
+                 ------  |  ------
+   (A)                   |
+Have Previous            |
+AUTH Success             |
+ History?                |          AUTH PASS?
+   .                     |               .
+  / \                                   / \ (D)
+ /   \  YES    SEND AUTH (B)           /   \
++  ?  +------+----------------------->+  ?  +-.
+ \   /       | AND SEND CAPABILITY_PRE \   /   | P (E)
+  \ /        |    (C)                   \ /    | A
+   +         |                       (F) +     | S
+   | NO      |                           | F   | S
+   | (L)     |                           | A   |
+   |         v (I)                       | I   |
+   |      +--+--+     <--CAPABILITY_PRE  | L   |
+   |      | WAIT |<---------------------'      |
+   |      |      |<---------------------------'
+   |      +--+---+    <--CAPABILITY_POST (G)
+   |         |
+   |         + (H) Got CAPABILITY_POST?
+   |        / \ 
+   |       /   \ YES (J)
+   |      +  ?  +---> GO TO (Y) AUTHENTICATED.
+   |       \   / 
+   |        \ /
+   |         + NO (K)
+   |         |
+   |         v
+   |         GO TO START AUTH (Q)
+   |
+   v    (M)
++--+------------------+
+| SEND CAPABILITY_PRE +------------------. 
++--+------------------+                  |
+   |                                (N)  v
+   |                                +----+----+
+   |                                | SERVER  |
+   |                                | SENDS   |
+   |                                | CAP_PRE |
+   v (O)                            +----+----+
++--+--+     <- CAPABILITY_PRE            |     
+|Wait |<---------------------------------' (P)
++--+--+
+   |
+   |  (Q) START AUTH
+   v  Any AUTH IN LIST WE CAN USE?
+   +
+  / \
+ /   \  NO
++  ?  +----> UNABLE TO TALK (R)
+ \   /       TO THIS SERVER!
+  \ /
+   +  YES (S)                       (T)
+   |                                AUTH
+   |    <-- SENT CAPABILITY_PRE     FAIL
+   +<-------------------------------. 
+   |                                 |
+   |                                 +
+   v (U)                         (V)/ \
++--+---+      AUTH -->             /   \
+| AUTH +------------------------->+ OK? +
++--+---+                           \   /
+   |                            (W) \ /
+   |                           AUTH  +
+   |                           PASS  |
++--+---+ (X)                         |
+| WAIT |<---------------------------'
++--+---+  <-- SENT CAPABILITY_POST 
+   |
+   v
+    (Y) CLIENT IS AUTHENTICATED
+

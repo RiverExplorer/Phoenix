@@ -1,0 +1,2141 @@
+<!DOCTYPE html>
+<html lang="en" class="Internet-Draft">
+<head>
+<meta charset="utf-8">
+<meta content="Common,Latin" name="scripts">
+<meta content="initial-scale=1.0" name="viewport">
+<title>Bits in ABNF</title>
+<meta content="Doug Royer" name="author">
+<meta content="
+       
+ This is an extension to the ABNF specification to allow
+ for bits definitions to be defined.
+       
+       
+ When interacting with hardware or bit oriented
+ over the wire protocols ABNF is not currently the choice.
+ This specification describes a method to
+ add boolean and narrow bit values in order to fix
+ that limitation.
+       
+       
+ And this note while in in draft status: A new Open Source
+ XDR   and ABNF generation tool is
+ being developed   which generates
+ code from ABNF and XDR.
+ It can also generate ABNF from XDR.
+ And it can generate XDR from ABNF.
+ Both also can produce C++ source and header files.
+       
+    " name="description">
+<meta content="xml2rfc 3.23.2" name="generator">
+<meta content="ABNF" name="keyword">
+<meta content="XDR" name="keyword">
+<meta content="bit" name="keyword">
+<meta content="draft-royer-bits-in-abnf-00" name="ietf.draft">
+<!-- Generator version information:
+  xml2rfc 3.23.2
+    Python 3.12.9
+    ConfigArgParse 1.7
+    google-i18n-address 3.1.1
+    intervaltree 3.1.0
+    Jinja2 3.1.5
+    lxml 5.1.0
+    platformdirs 3.11.0
+    pycountry 24.6.1
+    pydyf 0.9.0
+    PyYAML 6.0.1
+    requests 2.31.0
+    setuptools 69.0.3
+    wcwidth 0.2.13
+    weasyprint 61.2
+-->
+<link href="draft-royer-bits-in-abnf-00.xml" rel="alternate" type="application/rfc+xml">
+<link href="#copyright" rel="license">
+<style type="text/css">/*
+
+  NOTE: Changes at the bottom of this file overrides some earlier settings.
+
+  Once the style has stabilized and has been adopted as an official RFC style,
+  this can be consolidated so that style settings occur only in one place, but
+  for now the contents of this file consists first of the initial CSS work as
+  provided to the RFC Formatter (xml2rfc) work, followed by itemized and
+  commented changes found necessary during the development of the v3
+  formatters.
+
+*/
+
+/* fonts */
+@import url('https://fonts.googleapis.com/css?family=Noto+Sans'); /* Sans-serif */
+@import url('https://fonts.googleapis.com/css?family=Noto+Serif'); /* Serif (print) */
+@import url('https://fonts.googleapis.com/css?family=Roboto+Mono'); /* Monospace */
+
+:root {
+  --font-sans: 'Noto Sans', Arial, Helvetica, sans-serif;
+  --font-serif: 'Noto Serif', 'Times', 'Times New Roman', serif;
+  --font-mono: 'Roboto Mono', Courier, 'Courier New', monospace;
+}
+
+@viewport {
+  zoom: 1.0;
+}
+@-ms-viewport {
+  width: extend-to-zoom;
+  zoom: 1.0;
+}
+/* general and mobile first */
+html {
+}
+body {
+  max-width: 90%;
+  margin: 1.5em auto;
+  color: #222;
+  background-color: #fff;
+  font-size: 14px;
+  font-family: var(--font-sans);
+  line-height: 1.6;
+  scroll-behavior: smooth;
+  overflow-wrap: break-word;
+}
+.ears {
+  display: none;
+}
+
+/* headings */
+#title, h1, h2, h3, h4, h5, h6 {
+  margin: 1em 0 0.5em;
+  font-weight: bold;
+  line-height: 1.3;
+}
+#title {
+  clear: both;
+  border-bottom: 1px solid #ddd;
+  margin: 0 0 0.5em 0;
+  padding: 1em 0 0.5em;
+}
+.author {
+  padding-bottom: 4px;
+}
+h1 {
+  font-size: 26px;
+  margin: 1em 0;
+}
+h2 {
+  font-size: 22px;
+  margin-top: -20px;  /* provide offset for in-page anchors */
+  padding-top: 33px;
+}
+h3 {
+  font-size: 18px;
+  margin-top: -36px;  /* provide offset for in-page anchors */
+  padding-top: 42px;
+}
+h4 {
+  font-size: 16px;
+  margin-top: -36px;  /* provide offset for in-page anchors */
+  padding-top: 42px;
+}
+h5, h6 {
+  font-size: 14px;
+}
+#n-copyright-notice {
+  border-bottom: 1px solid #ddd;
+  padding-bottom: 1em;
+  margin-bottom: 1em;
+}
+/* general structure */
+p {
+  padding: 0;
+  margin: 0 0 1em 0;
+  text-align: left;
+}
+div, span {
+  position: relative;
+}
+div {
+  margin: 0;
+}
+.alignRight.art-text {
+  background-color: #f9f9f9;
+  border: 1px solid #eee;
+  border-radius: 3px;
+  padding: 1em 1em 0;
+  margin-bottom: 1.5em;
+}
+.alignRight.art-text pre {
+  padding: 0;
+}
+.alignRight {
+  margin: 1em 0;
+}
+.alignRight > *:first-child {
+  border: none;
+  margin: 0;
+  float: right;
+  clear: both;
+}
+.alignRight > *:nth-child(2) {
+  clear: both;
+  display: block;
+  border: none;
+}
+svg {
+  display: block;
+}
+svg[font-family~="serif" i], svg [font-family~="serif" i] {
+  font-family: var(--font-serif);
+}
+svg[font-family~="sans-serif" i], svg [font-family~="sans-serif" i] {
+  font-family: var(--font-sans);
+}
+svg[font-family~="monospace" i], svg [font-family~="monospace" i] {
+  font-family: var(--font-mono);
+}
+.alignCenter.art-text {
+  background-color: #f9f9f9;
+  border: 1px solid #eee;
+  border-radius: 3px;
+  padding: 1em 1em 0;
+  margin-bottom: 1.5em;
+}
+.alignCenter.art-text pre {
+  padding: 0;
+}
+.alignCenter {
+  margin: 1em 0;
+}
+.alignCenter > *:first-child {
+  display: table;
+  border: none;
+  margin: 0 auto;
+}
+
+/* lists */
+ol, ul {
+  padding: 0;
+  margin: 0 0 1em 2em;
+}
+ol ol, ul ul, ol ul, ul ol {
+  margin-left: 1em;
+}
+li {
+  margin: 0 0 0.25em 0;
+}
+.ulCompact li {
+  margin: 0;
+}
+ul.empty, .ulEmpty {
+  list-style-type: none;
+}
+ul.empty li, .ulEmpty li {
+  margin-top: 0.5em;
+}
+ul.ulBare, li.ulBare {
+  margin-left: 0em !important;
+}
+ul.compact, .ulCompact,
+ol.compact, .olCompact {
+  line-height: 100%;
+  margin: 0 0 0 2em;
+}
+
+/* definition lists */
+dl {
+}
+dl > dt {
+  float: left;
+  margin-right: 1em;
+}
+/* 
+dl.nohang > dt {
+  float: none;
+}
+*/
+dl > dd {
+  margin-bottom: .8em;
+  min-height: 1.3em;
+}
+dl.compact > dd, .dlCompact > dd {
+  margin-bottom: 0em;
+}
+dl > dd > dl {
+  margin-top: 0.5em;
+  margin-bottom: 0em;
+}
+
+/* links */
+a {
+  text-decoration: none;
+}
+a[href] {
+  color: #22e; /* Arlen: WCAG 2019 */
+}
+a[href]:hover {
+  background-color: #f2f2f2;
+}
+figcaption a[href],
+a[href].selfRef {
+  color: #222;
+}
+/* XXX probably not this:
+a.selfRef:hover {
+  background-color: transparent;
+  cursor: default;
+} */
+
+/* Figures */
+tt, code, pre {
+  background-color: #f9f9f9;
+  font-family: var(--font-mono);
+}
+pre {
+  border: 1px solid #eee;
+  margin: 0;
+  padding: 1em;
+}
+img {
+  max-width: 100%;
+}
+figure {
+  margin: 0;
+}
+figure blockquote {
+  margin: 0.8em 0.4em 0.4em;
+}
+figcaption {
+  font-style: italic;
+  margin: 0 0 1em 0;
+}
+@media screen {
+  pre {
+    overflow-x: auto;
+    max-width: 100%;
+    max-width: calc(100% - 22px);
+  }
+}
+
+/* aside, blockquote */
+aside, blockquote {
+  margin-left: 0;
+  padding: 1.2em 2em;
+}
+blockquote {
+  background-color: #f9f9f9;
+  color: #111; /* Arlen: WCAG 2019 */
+  border: 1px solid #ddd;
+  border-radius: 3px;
+  margin: 1em 0;
+}
+blockquote > *:last-child {
+  margin-bottom: 0;
+}
+cite {
+  display: block;
+  text-align: right;
+  font-style: italic;
+}
+.xref {
+  overflow-wrap: normal;
+}
+
+/* tables */
+table {
+  width: 100%;
+  margin: 0 0 1em;
+  border-collapse: collapse;
+  border: 1px solid #eee;
+}
+th, td {
+  text-align: left;
+  vertical-align: top;
+  padding: 0.5em 0.75em;
+}
+th {
+  text-align: left;
+  background-color: #e9e9e9;
+}
+tr:nth-child(2n+1) > td {
+  background-color: #f5f5f5;
+}
+table caption {
+  font-style: italic;
+  margin: 0;
+  padding: 0;
+  text-align: left;
+}
+table p {
+  /* XXX to avoid bottom margin on table row signifiers. If paragraphs should
+     be allowed within tables more generally, it would be far better to select on a class. */
+  margin: 0;
+}
+
+/* pilcrow */
+a.pilcrow {
+  color: #666; /* Arlen: AHDJ 2019 */
+  text-decoration: none;
+  visibility: hidden;
+  user-select: none;
+  -ms-user-select: none;
+  -o-user-select:none;
+  -moz-user-select: none;
+  -khtml-user-select: none;
+  -webkit-user-select: none;
+  -webkit-touch-callout: none;
+}
+@media screen {
+  aside:hover > a.pilcrow,
+  p:hover > a.pilcrow,
+  blockquote:hover > a.pilcrow,
+  div:hover > a.pilcrow,
+  li:hover > a.pilcrow,
+  pre:hover > a.pilcrow {
+    visibility: visible;
+  }
+  a.pilcrow:hover {
+    background-color: transparent;
+  }
+}
+
+/* misc */
+hr {
+  border: 0;
+  border-top: 1px solid #eee;
+}
+.bcp14 {
+  font-variant: small-caps;
+}
+
+.role {
+  font-variant: all-small-caps;
+}
+
+/* info block */
+#identifiers {
+  margin: 0;
+  font-size: 0.9em;
+}
+#identifiers dt {
+  width: 3em;
+  clear: left;
+}
+#identifiers dd {
+  float: left;
+  margin-bottom: 0;
+}
+/* Fix PDF info block run off issue */
+@media print {
+  #identifiers dd {
+    float: none;
+  }
+}
+#identifiers .authors .author {
+  display: inline-block;
+  margin-right: 1.5em;
+}
+#identifiers .authors .org {
+  font-style: italic;
+}
+
+/* The prepared/rendered info at the very bottom of the page */
+.docInfo {
+  color: #666; /* Arlen: WCAG 2019 */
+  font-size: 0.9em;
+  font-style: italic;
+  margin-top: 2em;
+}
+.docInfo .prepared {
+  float: left;
+}
+.docInfo .prepared {
+  float: right;
+}
+
+/* table of contents */
+#toc  {
+  padding: 0.75em 0 2em 0;
+  margin-bottom: 1em;
+}
+nav.toc ul {
+  margin: 0 0.5em 0 0;
+  padding: 0;
+  list-style: none;
+}
+nav.toc li {
+  line-height: 1.3em;
+  margin: 0.75em 0;
+  padding-left: 1.2em;
+  text-indent: -1.2em;
+}
+/* references */
+.references dt {
+  text-align: right;
+  font-weight: bold;
+  min-width: 7em;
+}
+.references dd {
+  margin-left: 8em;
+  overflow: auto;
+}
+
+.refInstance {
+  margin-bottom: 1.25em;
+}
+
+.refSubseries {
+  margin-bottom: 1.25em;
+}
+
+.references .ascii {
+  margin-bottom: 0.25em;
+}
+
+/* index */
+.index ul {
+  margin: 0 0 0 1em;
+  padding: 0;
+  list-style: none;
+}
+.index ul ul {
+  margin: 0;
+}
+.index li {
+  margin: 0;
+  text-indent: -2em;
+  padding-left: 2em;
+  padding-bottom: 5px;
+}
+.indexIndex {
+  margin: 0.5em 0 1em;
+}
+.index a {
+  font-weight: 700;
+}
+/* make the index two-column on all but the smallest screens */
+@media (min-width: 600px) {
+  .index ul {
+    -moz-column-count: 2;
+    -moz-column-gap: 20px;
+  }
+  .index ul ul {
+    -moz-column-count: 1;
+    -moz-column-gap: 0;
+  }
+}
+
+/* authors */
+address.vcard {
+  font-style: normal;
+  margin: 1em 0;
+}
+
+address.vcard .nameRole {
+  font-weight: 700;
+  margin-left: 0;
+}
+address.vcard .label {
+  font-family: var(--font-sans);
+  margin: 0.5em 0;
+}
+address.vcard .type {
+  display: none;
+}
+.alternative-contact {
+  margin: 1.5em 0 1em;
+}
+hr.addr {
+  border-top: 1px dashed;
+  margin: 0;
+  color: #ddd;
+  max-width: calc(100% - 16px);
+}
+
+/* temporary notes */
+.rfcEditorRemove::before {
+  position: absolute;
+  top: 0.2em;
+  right: 0.2em;
+  padding: 0.2em;
+  content: "The RFC Editor will remove this note";
+  color: #9e2a00; /* Arlen: WCAG 2019 */
+  background-color: #ffd; /* Arlen: WCAG 2019 */
+}
+.rfcEditorRemove {
+  position: relative;
+  padding-top: 1.8em;
+  background-color: #ffd; /* Arlen: WCAG 2019 */
+  border-radius: 3px;
+}
+.cref {
+  background-color: #ffd; /* Arlen: WCAG 2019 */
+  padding: 2px 4px;
+}
+.crefSource {
+  font-style: italic;
+}
+/* alternative layout for smaller screens */
+@media screen and (max-width: 1023px) {
+  body {
+    padding-top: 2em;
+  }
+  #title {
+    padding: 1em 0;
+  }
+  h1 {
+    font-size: 24px;
+  }
+  h2 {
+    font-size: 20px;
+    margin-top: -18px;  /* provide offset for in-page anchors */
+    padding-top: 38px;
+  }
+  #identifiers dd {
+    max-width: 60%;
+  }
+  #toc {
+    position: fixed;
+    z-index: 2;
+    top: 0;
+    right: 0;
+    padding: 0;
+    margin: 0;
+    background-color: inherit;
+    border-bottom: 1px solid #ccc;
+  }
+  #toc h2 {
+    margin: -1px 0 0 0;
+    padding: 4px 0 4px 6px;
+    padding-right: 1em;
+    min-width: 190px;
+    font-size: 1.1em;
+    text-align: right;
+    background-color: #444;
+    color: white;
+    cursor: pointer;
+  }
+  #toc h2::before { /* css hamburger */
+    float: right;
+    position: relative;
+    width: 1em;
+    height: 1px;
+    left: -164px;
+    margin: 6px 0 0 0;
+    background: white none repeat scroll 0 0;
+    box-shadow: 0 4px 0 0 white, 0 8px 0 0 white;
+    content: "";
+  }
+  #toc nav {
+    display: none;
+    padding: 0.5em 1em 1em;
+    overflow: auto;
+    height: calc(100vh - 48px);
+    border-left: 1px solid #ddd;
+  }
+}
+
+/* alternative layout for wide screens */
+@media screen and (min-width: 1024px) {
+  body {
+    max-width: 724px;
+    margin: 42px auto;
+    padding-left: 1.5em;
+    padding-right: 29em;
+  }
+  #toc {
+    position: fixed;
+    top: 42px;
+    right: 42px;
+    width: 25%;
+    margin: 0;
+    padding: 0 1em;
+    z-index: 1;
+  }
+  #toc h2 {
+    border-top: none;
+    border-bottom: 1px solid #ddd;
+    font-size: 1em;
+    font-weight: normal;
+    margin: 0;
+    padding: 0.25em 1em 1em 0;
+  }
+  #toc nav {
+    display: block;
+    height: calc(90vh - 84px);
+    bottom: 0;
+    padding: 0.5em 0 0;
+    overflow: auto;
+  }
+  img { /* future proofing */
+    max-width: 100%;
+    height: auto;
+  }
+}
+
+/* pagination */
+@media print {
+  body {
+    width: 100%;
+  }
+  p {
+    orphans: 3;
+    widows: 3;
+  }
+  #n-copyright-notice {
+    border-bottom: none;
+  }
+  #toc, #n-introduction {
+    page-break-before: always;
+  }
+  #toc {
+    border-top: none;
+    padding-top: 0;
+  }
+  figure, pre {
+    page-break-inside: avoid;
+  }
+  figure {
+    overflow: scroll;
+  }
+  .breakable pre {
+    break-inside: auto;
+  }
+  h1, h2, h3, h4, h5, h6 {
+    page-break-after: avoid;
+  }
+  h2+*, h3+*, h4+*, h5+*, h6+* {
+    page-break-before: avoid;
+  }
+  pre {
+    white-space: pre-wrap;
+    word-wrap: break-word;
+    font-size: 10pt;
+  }
+  table {
+    border: 1px solid #ddd;
+  }
+  td {
+    border-top: 1px solid #ddd;
+  }
+}
+
+/* This is commented out here, as the string-set: doesn't
+   pass W3C validation currently */
+/*
+.ears thead .left {
+  string-set: ears-top-left content();
+}
+
+.ears thead .center {
+  string-set: ears-top-center content();
+}
+
+.ears thead .right {
+  string-set: ears-top-right content();
+}
+
+.ears tfoot .left {
+  string-set: ears-bottom-left content();
+}
+
+.ears tfoot .center {
+  string-set: ears-bottom-center content();
+}
+
+.ears tfoot .right {
+  string-set: ears-bottom-right content();
+}
+*/
+
+@page :first {
+  padding-top: 0;
+  @top-left {
+    content: normal;
+    border: none;
+  }
+  @top-center {
+    content: normal;
+    border: none;
+  }
+  @top-right {
+    content: normal;
+    border: none;
+  }
+}
+
+@page {
+  size: A4;
+  margin-bottom: 45mm;
+  padding-top: 20px;
+  /* The following is commented out here, but set appropriately by in code, as
+     the content depends on the document */
+  /*
+  @top-left {
+    content: 'Internet-Draft';
+    vertical-align: bottom;
+    border-bottom: solid 1px #ccc;
+  }
+  @top-left {
+    content: string(ears-top-left);
+    vertical-align: bottom;
+    border-bottom: solid 1px #ccc;
+  }
+  @top-center {
+    content: string(ears-top-center);
+    vertical-align: bottom;
+    border-bottom: solid 1px #ccc;
+  }
+  @top-right {
+    content: string(ears-top-right);
+    vertical-align: bottom;
+    border-bottom: solid 1px #ccc;
+  }
+  @bottom-left {
+    content: string(ears-bottom-left);
+    vertical-align: top;
+    border-top: solid 1px #ccc;
+  }
+  @bottom-center {
+    content: string(ears-bottom-center);
+    vertical-align: top;
+    border-top: solid 1px #ccc;
+  }
+  @bottom-right {
+      content: '[Page ' counter(page) ']';
+      vertical-align: top;
+      border-top: solid 1px #ccc;
+  }
+  */
+
+}
+
+/* Changes introduced to fix issues found during implementation */
+/* Make sure links are clickable even if overlapped by following H* */
+a {
+  z-index: 2;
+}
+/* Separate body from document info even without intervening H1 */
+section {
+  clear: both;
+}
+
+
+/* Top align author divs, to avoid names without organization dropping level with org names */
+.author {
+  vertical-align: top;
+}
+
+/* Leave room in document info to show Internet-Draft on one line */
+#identifiers dt {
+  width: 8em;
+}
+
+/* Don't waste quite as much whitespace between label and value in doc info */
+#identifiers dd {
+  margin-left: 1em;
+}
+
+/* Give floating toc a background color (needed when it's a div inside section */
+#toc {
+  background-color: white;
+}
+
+/* Make the collapsed ToC header render white on gray also when it's a link */
+@media screen and (max-width: 1023px) {
+  #toc h2 a,
+  #toc h2 a:link,
+  #toc h2 a:focus,
+  #toc h2 a:hover,
+  #toc a.toplink,
+  #toc a.toplink:hover {
+    color: white;
+    background-color: #444;
+    text-decoration: none;
+  }
+}
+
+/* Give the bottom of the ToC some whitespace */
+@media screen and (min-width: 1024px) {
+  #toc {
+    padding: 0 0 1em 1em;
+  }
+}
+
+/* Style section numbers with more space between number and title */
+.section-number {
+  padding-right: 0.5em;
+}
+
+/* prevent monospace from becoming overly large */
+tt, code, pre {
+  font-size: 95%;
+}
+
+/* Fix the height/width aspect for ascii art*/
+.sourcecode pre,
+.art-text pre {
+  line-height: 1.12;
+}
+
+
+/* Add styling for a link in the ToC that points to the top of the document */
+a.toplink {
+  float: right;
+  margin-right: 0.5em;
+}
+
+/* Fix the dl styling to match the RFC 7992 attributes */
+dl > dt,
+dl.dlParallel > dt {
+  float: left;
+  margin-right: 1em;
+}
+dl.dlNewline > dt {
+  float: none;
+}
+
+/* Provide styling for table cell text alignment */
+table td.text-left,
+table th.text-left {
+  text-align: left;
+}
+table td.text-center,
+table th.text-center {
+  text-align: center;
+}
+table td.text-right,
+table th.text-right {
+  text-align: right;
+}
+
+/* Make the alternative author contact information look less like just another
+   author, and group it closer with the primary author contact information */
+.alternative-contact {
+  margin: 0.5em 0 0.25em 0;
+}
+address .non-ascii {
+  margin: 0 0 0 2em;
+}
+
+/* With it being possible to set tables with alignment
+  left, center, and right, { width: 100%; } does not make sense */
+table {
+  width: auto;
+}
+
+/* Avoid reference text that sits in a block with very wide left margin,
+   because of a long floating dt label.*/
+.references dd {
+  overflow: visible;
+}
+
+/* Control caption placement */
+caption {
+  caption-side: bottom;
+}
+
+/* Limit the width of the author address vcard, so names in right-to-left
+   script don't end up on the other side of the page. */
+
+address.vcard {
+  max-width: 30em;
+  margin-right: auto;
+}
+
+/* For address alignment dependent on LTR or RTL scripts */
+address div.left {
+  text-align: left;
+}
+address div.right {
+  text-align: right;
+}
+
+/* Provide table alignment support.  We can't use the alignX classes above
+   since they do unwanted things with caption and other styling. */
+table.right {
+ margin-left: auto;
+ margin-right: 0;
+}
+table.center {
+ margin-left: auto;
+ margin-right: auto;
+}
+table.left {
+ margin-left: 0;
+ margin-right: auto;
+}
+
+/* Give the table caption label the same styling as the figcaption */
+caption a[href] {
+  color: #222;
+}
+
+@media print {
+  .toplink {
+    display: none;
+  }
+
+  /* avoid overwriting the top border line with the ToC header */
+  #toc {
+    padding-top: 1px;
+  }
+
+  /* Avoid page breaks inside dl and author address entries */
+  .vcard {
+    page-break-inside: avoid;
+  }
+
+}
+/* Tweak the bcp14 keyword presentation */
+.bcp14 {
+  font-variant: small-caps;
+  font-weight: bold;
+  font-size: 0.9em;
+}
+/* Tweak the invisible space above H* in order not to overlay links in text above */
+ h2 {
+  margin-top: -18px;  /* provide offset for in-page anchors */
+  padding-top: 31px;
+ }
+ h3 {
+  margin-top: -18px;  /* provide offset for in-page anchors */
+  padding-top: 24px;
+ }
+ h4 {
+  margin-top: -18px;  /* provide offset for in-page anchors */
+  padding-top: 24px;
+ }
+/* Float artwork pilcrow to the right */
+@media screen {
+  .artwork a.pilcrow {
+    display: block;
+    line-height: 0.7;
+    margin-top: 0.15em;
+  }
+}
+/* Make pilcrows on dd visible */
+@media screen {
+  dd:hover > a.pilcrow {
+    visibility: visible;
+  }
+}
+/* Make the placement of figcaption match that of a table's caption
+   by removing the figure's added bottom margin */
+.alignLeft.art-text,
+.alignCenter.art-text,
+.alignRight.art-text {
+   margin-bottom: 0;
+}
+.alignLeft,
+.alignCenter,
+.alignRight {
+  margin: 1em 0 0 0;
+}
+/* In print, the pilcrow won't show on hover, so prevent it from taking up space,
+   possibly even requiring a new line */
+@media print {
+  a.pilcrow {
+    display: none;
+  }
+}
+/* Styling for the external metadata */
+div#external-metadata {
+  background-color: #eee;
+  padding: 0.5em;
+  margin-bottom: 0.5em;
+  display: none;
+}
+div#internal-metadata {
+  padding: 0.5em;                       /* to match the external-metadata padding */
+}
+/* Styling for title RFC Number */
+h1#rfcnum {
+  clear: both;
+  margin: 0 0 -1em;
+  padding: 1em 0 0 0;
+}
+/* Make .olPercent look the same as <ol><li> */
+dl.olPercent > dd {
+  margin-bottom: 0.25em;
+  min-height: initial;
+}
+/* Give aside some styling to set it apart */
+aside {
+  border-left: 1px solid #ddd;
+  margin: 1em 0 1em 2em;
+  padding: 0.2em 2em;
+}
+aside > dl,
+aside > ol,
+aside > ul,
+aside > table,
+aside > p {
+  margin-bottom: 0.5em;
+}
+/* Additional page break settings */
+@media print {
+  figcaption, table caption {
+    page-break-before: avoid;
+  }
+}
+/* Font size adjustments for print */
+@media print {
+  body  { font-size: 10pt;      line-height: normal; max-width: 96%; }
+  h1    { font-size: 1.72em;    padding-top: 1.5em; } /* 1*1.2*1.2*1.2 */
+  h2    { font-size: 1.44em;    padding-top: 1.5em; } /* 1*1.2*1.2 */
+  h3    { font-size: 1.2em;     padding-top: 1.5em; } /* 1*1.2 */
+  h4    { font-size: 1em;       padding-top: 1.5em; }
+  h5, h6 { font-size: 1em;      margin: initial; padding: 0.5em 0 0.3em; }
+}
+/* Sourcecode margin in print, when there's no pilcrow */
+@media print {
+  .artwork,
+  .artwork > pre,
+  .sourcecode {
+    margin-bottom: 1em;
+  }
+}
+/* Avoid narrow tables forcing too narrow table captions, which may render badly */
+table {
+  min-width: 20em;
+}
+/* ol type a */
+ol.type-a { list-style-type: lower-alpha; }
+ol.type-A { list-style-type: upper-alpha; }
+ol.type-i { list-style-type: lower-roman; }
+ol.type-I { list-style-type: upper-roman; }
+/* Apply the print table and row borders in general, on request from the RPC,
+and increase the contrast between border and odd row background slightly */
+table {
+  border: 1px solid #ddd;
+}
+td {
+  border-top: 1px solid #ddd;
+}
+tr {
+  break-inside: avoid;
+}
+tr:nth-child(2n+1) > td {
+  background-color: #f8f8f8;
+}
+/* Use style rules to govern display of the TOC. */
+@media screen and (max-width: 1023px) {
+  #toc nav { display: none; }
+  #toc.active nav { display: block; }
+}
+/* Add support for keepWithNext */
+.keepWithNext {
+  break-after: avoid-page;
+  break-after: avoid-page;
+}
+/* Add support for keepWithPrevious */
+.keepWithPrevious {
+  break-before: avoid-page;
+}
+/* Change the approach to avoiding breaks inside artwork etc. */
+figure, pre, table, .artwork, .sourcecode  {
+  break-before: auto;
+  break-after: auto;
+}
+/* Avoid breaks between <dt> and <dd> */
+dl {
+  break-before: auto;
+  break-inside: auto;
+}
+dt {
+  break-before: auto;
+  break-after: avoid-page;
+}
+dd {
+  break-before: avoid-page;
+  break-after: auto;
+  orphans: 3;
+  widows: 3
+}
+span.break, dd.break {
+  margin-bottom: 0;
+  min-height: 0;
+  break-before: auto;
+  break-inside: auto;
+  break-after: auto;
+}
+/* Undo break-before ToC */
+@media print {
+  #toc {
+    break-before: auto;
+  }
+}
+/* Text in compact lists should not get extra bottom margin space,
+   since that would makes the list not compact */
+ul.compact p, .ulCompact p,
+ol.compact p, .olCompact p {
+ margin: 0;
+}
+/* But the list as a whole needs the extra space at the end */
+section ul.compact,
+section .ulCompact,
+section ol.compact,
+section .olCompact {
+  margin-bottom: 1em;                    /* same as p not within ul.compact etc. */
+}
+/* The tt and code background above interferes with for instance table cell
+   backgrounds.  Changed to something a bit more selective. */
+tt, code {
+  background-color: transparent;
+}
+p tt, p code, li tt, li code, dt tt, dt code {
+  background-color: #f8f8f8;
+}
+/* Tweak the pre margin -- 0px doesn't come out well */
+pre {
+   margin-top: 0.5px;
+}
+/* Tweak the compact list text */
+ul.compact, .ulCompact,
+ol.compact, .olCompact,
+dl.compact, .dlCompact {
+  line-height: normal;
+}
+/* Don't add top margin for nested lists */
+li > ul, li > ol, li > dl,
+dd > ul, dd > ol, dd > dl,
+dl > dd > dl {
+  margin-top: initial;
+}
+/* Elements that should not be rendered on the same line as a <dt> */
+/* This should match the element list in writer.text.TextWriter.render_dl() */
+dd > div.artwork:first-child,
+dd > aside:first-child,
+dd > figure:first-child,
+dd > ol:first-child,
+dd > div.sourcecode:first-child,
+dd > table:first-child,
+dd > ul:first-child {
+  clear: left;
+}
+/* fix for weird browser behaviour when <dd/> is empty */
+dt+dd:empty::before{
+  content: "\00a0";
+}
+/* Make paragraph spacing inside <li> smaller than in body text, to fit better within the list */
+li > p {
+  margin-bottom: 0.5em
+}
+/* Don't let p margin spill out from inside list items */
+li > p:last-of-type:only-child {
+  margin-bottom: 0;
+}
+</style>
+<link href="rfc-local.css" rel="stylesheet" type="text/css">
+<script type="application/javascript">async function addMetadata(){try{const e=document.styleSheets[0].cssRules;for(let t=0;t<e.length;t++)if(/#identifiers/.exec(e[t].selectorText)){const a=e[t].cssText.replace("#identifiers","#external-updates");document.styleSheets[0].insertRule(a,document.styleSheets[0].cssRules.length)}}catch(e){console.log(e)}const e=document.getElementById("external-metadata");if(e)try{var t,a="",o=function(e){const t=document.getElementsByTagName("meta");for(let a=0;a<t.length;a++)if(t[a].getAttribute("name")===e)return t[a].getAttribute("content");return""}("rfc.number");if(o){t="https://www.rfc-editor.org/rfc/rfc"+o+".json";try{const e=await fetch(t);a=await e.json()}catch(e){t=document.URL.indexOf("html")>=0?document.URL.replace(/html$/,"json"):document.URL+".json";const o=await fetch(t);a=await o.json()}}if(!a)return;e.style.display="block";const s="",d="https://datatracker.ietf.org/doc",n="https://datatracker.ietf.org/ipr/search",c="https://www.rfc-editor.org/info",l=a.doc_id.toLowerCase(),i=a.doc_id.slice(0,3).toLowerCase(),f=a.doc_id.slice(3).replace(/^0+/,""),u={status:"Status",obsoletes:"Obsoletes",obsoleted_by:"Obsoleted By",updates:"Updates",updated_by:"Updated By",see_also:"See Also",errata_url:"Errata"};let h="<dl style='overflow:hidden' id='external-updates'>";["status","obsoletes","obsoleted_by","updates","updated_by","see_also","errata_url"].forEach(e=>{if("status"==e){a[e]=a[e].toLowerCase();var t=a[e].split(" "),o=t.length,w="",p=1;for(let e=0;e<o;e++)p<o?w=w+r(t[e])+" ":w+=r(t[e]),p++;a[e]=w}else if("obsoletes"==e||"obsoleted_by"==e||"updates"==e||"updated_by"==e){var g,m="",b=1;g=a[e].length;for(let t=0;t<g;t++)a[e][t]&&(a[e][t]=String(a[e][t]).toLowerCase(),m=b<g?m+"<a href='"+s+"/rfc/".concat(a[e][t])+"'>"+a[e][t].slice(3)+"</a>, ":m+"<a href='"+s+"/rfc/".concat(a[e][t])+"'>"+a[e][t].slice(3)+"</a>",b++);a[e]=m}else if("see_also"==e){var y,L="",C=1;y=a[e].length;for(let t=0;t<y;t++)if(a[e][t]){a[e][t]=String(a[e][t]);var _=a[e][t].slice(0,3),v=a[e][t].slice(3).replace(/^0+/,"");L=C<y?"RFC"!=_?L+"<a href='"+s+"/info/"+_.toLowerCase().concat(v.toLowerCase())+"'>"+_+" "+v+"</a>, ":L+"<a href='"+s+"/info/"+_.toLowerCase().concat(v.toLowerCase())+"'>"+v+"</a>, ":"RFC"!=_?L+"<a href='"+s+"/info/"+_.toLowerCase().concat(v.toLowerCase())+"'>"+_+" "+v+"</a>":L+"<a href='"+s+"/info/"+_.toLowerCase().concat(v.toLowerCase())+"'>"+v+"</a>",C++}a[e]=L}else if("errata_url"==e){var R="";R=a[e]?R+"<a href='"+a[e]+"'>Errata exist</a> | <a href='"+d+"/"+l+"'>Datatracker</a>| <a href='"+n+"/?"+i+"="+f+"&submit="+i+"'>IPR</a> | <a href='"+c+"/"+l+"'>Info page</a>":"<a href='"+d+"/"+l+"'>Datatracker</a> | <a href='"+n+"/?"+i+"="+f+"&submit="+i+"'>IPR</a> | <a href='"+c+"/"+l+"'>Info page</a>",a[e]=R}""!=a[e]?"Errata"==u[e]?h+=`<dt>More info:</dt><dd>${a[e]}</dd>`:h+=`<dt>${u[e]}:</dt><dd>${a[e]}</dd>`:"Errata"==u[e]&&(h+=`<dt>More info:</dt><dd>${a[e]}</dd>`)}),h+="</dl>",e.innerHTML=h}catch(e){console.log(e)}else console.log("Could not locate metadata <div> element");function r(e){return e.charAt(0).toUpperCase()+e.slice(1)}}window.removeEventListener("load",addMetadata),window.addEventListener("load",addMetadata);</script>
+</head>
+<body class="xml2rfc">
+<script src="metadata.min.js"></script>
+<table class="ears">
+<thead><tr>
+<td class="left">Internet-Draft</td>
+<td class="center">Abbreviated Title</td>
+<td class="right">March 2025</td>
+</tr></thead>
+<tfoot><tr>
+<td class="left">Royer</td>
+<td class="center">Expires 25 September 2025</td>
+<td class="right">[Page]</td>
+</tr></tfoot>
+</table>
+<div id="external-metadata" class="document-information"></div>
+<div id="internal-metadata" class="document-information">
+<dl id="identifiers">
+<dt class="label-workgroup">Workgroup:</dt>
+<dd class="workgroup">Internet Engineering Task Force</dd>
+<dt class="label-internet-draft">Internet-Draft:</dt>
+<dd class="internet-draft">draft-royer-bits-in-abnf-00</dd>
+<dt class="label-published">Published:</dt>
+<dd class="published">
+<time datetime="2025-03-24" class="published">24 March 2025</time>
+    </dd>
+<dt class="label-intended-status">Intended Status:</dt>
+<dd class="intended-status">Informational</dd>
+<dt class="label-expires">Expires:</dt>
+<dd class="expires"><time datetime="2025-09-25">25 September 2025</time></dd>
+<dt class="label-authors">Author:</dt>
+<dd class="authors">
+<div class="author">
+      <div class="author-name">DM. Royer</div>
+<div class="org">RiverExplorer LLC</div>
+</div>
+</dd>
+</dl>
+</div>
+<h1 id="title">Bits in ABNF</h1>
+<section id="section-abstract">
+      <h2 id="abstract"><a href="#abstract" class="selfRef">Abstract</a></h2>
+<p id="section-abstract-1">
+ This is an extension to the ABNF specification to allow
+ for bits definitions to be defined.<a href="#section-abstract-1" class="pilcrow">¶</a></p>
+<p id="section-abstract-2">
+ When interacting with hardware or bit oriented
+ over the wire protocols ABNF is not currently the choice.
+ This specification describes a method to
+ add boolean and narrow bit values in order to fix
+ that limitation.<a href="#section-abstract-2" class="pilcrow">¶</a></p>
+<p id="section-abstract-3">
+ And this note while in in draft status: A new Open Source
+ XDR <span>[<a href="#RFC4506" class="cite xref">RFC4506</a>]</span> and ABNF generation tool is
+ being developed <span>[<a href="#xdrgen" class="cite xref">xdrgen</a>]</span> which generates
+ code from ABNF and XDR.
+ It can also generate ABNF from XDR.
+ And it can generate XDR from ABNF.
+ Both also can produce C++ source and header files.<a href="#section-abstract-3" class="pilcrow">¶</a></p>
+</section>
+<div id="status-of-memo">
+<section id="section-boilerplate.1">
+        <h2 id="name-status-of-this-memo">
+<a href="#name-status-of-this-memo" class="section-name selfRef">Status of This Memo</a>
+        </h2>
+<p id="section-boilerplate.1-1">
+        This Internet-Draft is submitted in full conformance with the
+        provisions of BCP 78 and BCP 79.<a href="#section-boilerplate.1-1" class="pilcrow">¶</a></p>
+<p id="section-boilerplate.1-2">
+        Internet-Drafts are working documents of the Internet Engineering Task
+        Force (IETF). Note that other groups may also distribute working
+        documents as Internet-Drafts. The list of current Internet-Drafts is
+        at <span><a href="https://datatracker.ietf.org/drafts/current/">https://datatracker.ietf.org/drafts/current/</a></span>.<a href="#section-boilerplate.1-2" class="pilcrow">¶</a></p>
+<p id="section-boilerplate.1-3">
+        Internet-Drafts are draft documents valid for a maximum of six months
+        and may be updated, replaced, or obsoleted by other documents at any
+        time. It is inappropriate to use Internet-Drafts as reference
+        material or to cite them other than as "work in progress."<a href="#section-boilerplate.1-3" class="pilcrow">¶</a></p>
+<p id="section-boilerplate.1-4">
+        This Internet-Draft will expire on 25 September 2025.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
+</section>
+</div>
+<div id="copyright">
+<section id="section-boilerplate.2">
+        <h2 id="name-copyright-notice">
+<a href="#name-copyright-notice" class="section-name selfRef">Copyright Notice</a>
+        </h2>
+<p id="section-boilerplate.2-1">
+            Copyright (c) 2025 IETF Trust and the persons identified as the
+            document authors. All rights reserved.<a href="#section-boilerplate.2-1" class="pilcrow">¶</a></p>
+<p id="section-boilerplate.2-2">
+            This document is subject to BCP 78 and the IETF Trust's Legal
+            Provisions Relating to IETF Documents
+            (<span><a href="https://trustee.ietf.org/license-info">https://trustee.ietf.org/license-info</a></span>) in effect on the date of
+            publication of this document. Please review these documents
+            carefully, as they describe your rights and restrictions with
+            respect to this document. Code Components extracted from this
+            document must include Revised BSD License text as described in
+            Section 4.e of the Trust Legal Provisions and are provided without
+            warranty as described in the Revised BSD License.<a href="#section-boilerplate.2-2" class="pilcrow">¶</a></p>
+</section>
+</div>
+<div id="toc">
+<section id="section-toc.1">
+        <a href="#" onclick="scroll(0,0)" class="toplink">▲</a><h2 id="name-table-of-contents">
+<a href="#name-table-of-contents" class="section-name selfRef">Table of Contents</a>
+        </h2>
+<nav class="toc"><ul class="compact toc ulBare ulEmpty">
+<li class="compact toc ulBare ulEmpty" id="section-toc.1-1.1">
+            <p id="section-toc.1-1.1.1" class="keepWithNext"><a href="#section-1" class="auto internal xref">1</a>.  <a href="#name-introduction" class="internal xref">Introduction</a></p>
+</li>
+          <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.2">
+            <p id="section-toc.1-1.2.1" class="keepWithNext"><a href="#section-2" class="auto internal xref">2</a>.  <a href="#name-additional-examples" class="internal xref">Additional Examples</a></p>
+</li>
+          <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.3">
+            <p id="section-toc.1-1.3.1" class="keepWithNext"><a href="#section-3" class="auto internal xref">3</a>.  <a href="#name-iana-considerations" class="internal xref">IANA Considerations</a></p>
+</li>
+          <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.4">
+            <p id="section-toc.1-1.4.1"><a href="#section-4" class="auto internal xref">4</a>.  <a href="#name-security-considerations" class="internal xref">Security Considerations</a></p>
+</li>
+          <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.5">
+            <p id="section-toc.1-1.5.1"><a href="#section-5" class="auto internal xref">5</a>.  <a href="#name-normative-references" class="internal xref">Normative References</a></p>
+</li>
+          <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.6">
+            <p id="section-toc.1-1.6.1"><a href="#section-6" class="auto internal xref">6</a>.  <a href="#name-informative-references" class="internal xref">Informative References</a></p>
+</li>
+          <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.7">
+            <p id="section-toc.1-1.7.1"><a href="#appendix-A" class="auto internal xref"></a><a href="#name-acknowledgments" class="internal xref">Acknowledgments</a></p>
+</li>
+          <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.8">
+            <p id="section-toc.1-1.8.1"><a href="#appendix-B" class="auto internal xref"></a><a href="#name-contributors" class="internal xref">Contributors</a></p>
+</li>
+          <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.9">
+            <p id="section-toc.1-1.9.1"><a href="#appendix-C" class="auto internal xref"></a><a href="#name-authors-address" class="internal xref">Author's Address</a></p>
+</li>
+        </ul>
+</nav>
+</section>
+</div>
+<section id="section-1">
+      <h2 id="name-introduction">
+<a href="#section-1" class="section-number selfRef">1. </a><a href="#name-introduction" class="section-name selfRef">Introduction</a>
+      </h2>
+<p id="section-1-1">
+ This specification adds to
+ <span>[<a href="#RFC5234" class="cite xref">RFC5234</a>], <a href="https://rfc-editor.org/rfc/rfc5234#section-2.3" class="relref">Section 2.3</a></span>
+ Terminal values by adding an optional
+ bit width to the binary, decimal, and hexadecimal terminals:<a href="#section-1-1" class="pilcrow">¶</a></p>
+<ul class="normal">
+<li class="normal" id="section-1-2.1">
+ The width is a positive integer expressed in decimal.
+ This width is the number of bits in the terminal.<a href="#section-1-2.1" class="pilcrow">¶</a>
+</li>
+        <li class="normal" id="section-1-2.2">
+ The width must be equal to or greater than one (1).<a href="#section-1-2.2" class="pilcrow">¶</a>
+</li>
+        <li class="normal" id="section-1-2.3">
+ When the left side has a width then,
+ the number of bits on the left of the equal sign
+ must be the total of the widths on the right side
+ of the equal sign.<a href="#section-1-2.3" class="pilcrow">¶</a>
+</li>
+        <li class="normal" id="section-1-2.4">
+ When the right side of the equal sign has widths
+ and the left side does not. Then the right
+ side can be a rule with a variable length.<a href="#section-1-2.4" class="pilcrow">¶</a>
+</li>
+        <li class="normal" id="section-1-2.5">
+ The left side only needs a width when it is
+ significant and relevant to the protocol.
+ A left side with no width may be present
+ even when the right side is fixed with.<a href="#section-1-2.5" class="pilcrow">¶</a>
+</li>
+        <li class="normal" id="section-1-2.6">
+ The addition of a %p padding indicator with
+ a required bit-width.<a href="#section-1-2.6" class="pilcrow">¶</a>
+</li>
+        <li class="normal" id="section-1-2.7">
+ An alteration of the "rulename" ABNF as
+ shown in <a href="#NewTerminal" class="auto internal xref">Figure 1</a>.<a href="#section-1-2.7" class="pilcrow">¶</a>
+</li>
+      </ul>
+<p id="section-1-3">
+ A caution to the implementors of code generated
+ from ABNF that specifies bit widths for signed
+ integer values.
+        Many computer languages will convert a narrower bit value
+        into a wider bit value and move the sign bit to the
+        most significant position.
+        So when preparing a signed bit value, be sure to clamp the value
+        and adjust the sign to the correct bit position before
+        packing the bits.
+        This would apply to signed integer values and not
+ unsigned integer values.<a href="#section-1-3" class="pilcrow">¶</a></p>
+<p id="section-1-4">
+ The right most elements are placed into
+ the least signification part of the value.
+ The left most bits being more significant
+ than the bits to the right of them as
+ shown in examples
+ <a href="#DeviceStatus" class="auto internal xref">Figure 2</a>
+ and <a href="#EmailStatus" class="auto internal xref">Figure 3</a>.<a href="#section-1-4" class="pilcrow">¶</a></p>
+<p id="section-1-5">
+ The result are these existing definitions
+ with the added optional width indicators.<a href="#section-1-5" class="pilcrow">¶</a></p>
+<span id="name-extended-abnf-terminal-valu"></span><div id="NewTerminal">
+<figure id="figure-1">
+        <div class="alignLeft art-abnf art-text artwork" id="section-1-6.1">
+<pre>
+ABNF
+----
+
+b           = binary
+
+b:%d        = binary with a bit width of %d
+
+d           = decimal
+
+d:%d        = decimal with a bit width of %d
+
+x           = hexadecimal
+
+x:%d        = hexadecimal with a bit width of %d.
+
+p:%d        = pad with %d zero bits.
+
+one-or-more = %x31-39 *(0x30-39)
+
+rulename    = ALPHA *(ALPHA / DIGIT / "_") *(":" one-or-more)
+
+</pre>
+</div>
+<figcaption><a href="#figure-1" class="selfRef">Figure 1</a>:
+<a href="#name-extended-abnf-terminal-valu" class="selfRef">Extended ABNF Terminal Values</a>
+        </figcaption></figure>
+</div>
+<p id="section-1-7">
+ In <a href="#DeviceStatus" class="auto internal xref">Figure 2</a> example, "device-status"
+ is 8-bits wide, and the three values to the
+ right of the equal sign have a total width
+ of 8-bits.<a href="#section-1-7" class="pilcrow">¶</a></p>
+<span id="name-device-status"></span><div id="DeviceStatus">
+<figure id="figure-2">
+        <div class="alignLeft art-abnf art-text artwork" id="section-1-8.1">
+<pre>
+ABNF
+----
+
+device-status:8 = light-on:1 status:3 switch-position:4
+</pre>
+</div>
+<figcaption><a href="#figure-2" class="selfRef">Figure 2</a>:
+<a href="#name-device-status" class="selfRef">"device-status"</a>
+        </figcaption></figure>
+</div>
+<div id="section-1-9">
+        <div class="alignLeft art-svg artwork" id="section-1-9.2">
+<svg xmlns="http://www.w3.org/2000/svg" version="1.1" height="272" width="304" viewBox="0 0 304 272" class="diagram" text-anchor="middle" font-family="monospace" font-size="13px" stroke-linecap="round">
+            <path d="M 8,144 L 8,208" fill="none" stroke="black"></path>
+            <path d="M 24,48 L 24,136" fill="none" stroke="black"></path>
+            <path d="M 40,144 L 40,176" fill="none" stroke="black"></path>
+            <path d="M 56,112 L 56,136" fill="none" stroke="black"></path>
+            <path d="M 72,144 L 72,176" fill="none" stroke="black"></path>
+            <path d="M 88,64 L 88,80" fill="none" stroke="black"></path>
+            <path d="M 104,144 L 104,176" fill="none" stroke="black"></path>
+            <path d="M 120,112 L 120,136" fill="none" stroke="black"></path>
+            <path d="M 136,144 L 136,176" fill="none" stroke="black"></path>
+            <path d="M 152,112 L 152,136" fill="none" stroke="black"></path>
+            <path d="M 168,144 L 168,176" fill="none" stroke="black"></path>
+            <path d="M 200,144 L 200,176" fill="none" stroke="black"></path>
+            <path d="M 232,144 L 232,176" fill="none" stroke="black"></path>
+            <path d="M 248,112 L 248,136" fill="none" stroke="black"></path>
+            <path d="M 264,144 L 264,208" fill="none" stroke="black"></path>
+            <path d="M 168,96 L 184,96" fill="none" stroke="black"></path>
+            <path d="M 216,96 L 232,96" fill="none" stroke="black"></path>
+            <path d="M 8,144 L 264,144" fill="none" stroke="black"></path>
+            <path d="M 8,176 L 264,176" fill="none" stroke="black"></path>
+            <path d="M 24,224 L 120,224" fill="none" stroke="black"></path>
+            <path d="M 152,224 L 248,224" fill="none" stroke="black"></path>
+            <path d="M 72,96 C 63.16936,96 56,103.16936 56,112" fill="none" stroke="black"></path>
+            <path d="M 72,96 C 80.83064,96 88,88.83064 88,80" fill="none" stroke="black"></path>
+            <path d="M 104,96 C 95.16936,96 88,88.83064 88,80" fill="none" stroke="black"></path>
+            <path d="M 104,96 C 112.83064,96 120,103.16936 120,112" fill="none" stroke="black"></path>
+            <path d="M 168,96 C 159.16936,96 152,103.16936 152,112" fill="none" stroke="black"></path>
+            <path d="M 184,96 C 192.83064,96 200,88.83064 200,80" fill="none" stroke="black"></path>
+            <path d="M 216,96 C 207.16936,96 200,88.83064 200,80" fill="none" stroke="black"></path>
+            <path d="M 232,96 C 240.83064,96 248,103.16936 248,112" fill="none" stroke="black"></path>
+            <path d="M 24,224 C 15.16936,224 8,216.83064 8,208" fill="none" stroke="black"></path>
+            <path d="M 120,224 C 128.83064,224 136,231.16936 136,240" fill="none" stroke="black"></path>
+            <path d="M 152,224 C 143.16936,224 136,231.16936 136,240" fill="none" stroke="black"></path>
+            <path d="M 248,224 C 256.83064,224 264,216.83064 264,208" fill="none" stroke="black"></path>
+            <polygon class="arrowhead" points="272,184 260,178.4 260,189.6" fill="black" transform="rotate(270,264,184)"></polygon>
+            <polygon class="arrowhead" points="256,136 244,130.4 244,141.6" fill="black" transform="rotate(90,248,136)"></polygon>
+            <polygon class="arrowhead" points="160,136 148,130.4 148,141.6" fill="black" transform="rotate(90,152,136)"></polygon>
+            <polygon class="arrowhead" points="128,136 116,130.4 116,141.6" fill="black" transform="rotate(90,120,136)"></polygon>
+            <polygon class="arrowhead" points="64,136 52,130.4 52,141.6" fill="black" transform="rotate(90,56,136)"></polygon>
+            <polygon class="arrowhead" points="32,136 20,130.4 20,141.6" fill="black" transform="rotate(90,24,136)"></polygon>
+            <polygon class="arrowhead" points="16,184 4,178.4 4,189.6" fill="black" transform="rotate(270,8,184)"></polygon>
+            <g class="text">
+              <text x="76" y="36">light-on:1 (A)</text>
+              <text x="116" y="52">status:3 (B)</text>
+              <text x="216" y="68">switch-position:4 (C)</text>
+              <text x="24" y="164">A</text>
+              <text x="56" y="164">B</text>
+              <text x="88" y="164">B</text>
+              <text x="120" y="164">B</text>
+              <text x="152" y="164">C</text>
+              <text x="184" y="164">C</text>
+              <text x="216" y="164">C</text>
+              <text x="248" y="164">C</text>
+              <text x="136" y="260">device-status:8</text>
+            </g>
+          </svg><a href="#section-1-9.2" class="pilcrow">¶</a>
+</div>
+</div>
+<p id="section-1-10">
+ in <a href="#EmailStatus" class="auto internal xref">Figure 3</a> "email-status" is defined to be 8-bits wide,
+ and only three bits are used, so five 
+ zero bits have been defined to be
+ at the most significant positions.
+ The total to the right of the equal sign is 8-bits:<a href="#section-1-10" class="pilcrow">¶</a></p>
+<span id="name-email-status"></span><div id="EmailStatus">
+<figure id="figure-3">
+        <div class="alignLeft art-abnf art-text artwork" id="section-1-11.1">
+<pre>
+ABNF
+----
+
+ email-status:8  = %p:5 seen:1 flagged:1 deleted:1
+</pre>
+</div>
+<figcaption><a href="#figure-3" class="selfRef">Figure 3</a>:
+<a href="#name-email-status" class="selfRef">"email-status"</a>
+        </figcaption></figure>
+</div>
+<div id="section-1-12">
+        <div class="alignLeft art-svg artwork" id="section-1-12.2">
+<svg xmlns="http://www.w3.org/2000/svg" version="1.1" height="256" width="352" viewBox="0 0 352 256" class="diagram" text-anchor="middle" font-family="monospace" font-size="13px" stroke-linecap="round">
+            <path d="M 8,128 L 8,192" fill="none" stroke="black"></path>
+            <path d="M 24,96 L 24,120" fill="none" stroke="black"></path>
+            <path d="M 40,128 L 40,160" fill="none" stroke="black"></path>
+            <path d="M 72,128 L 72,160" fill="none" stroke="black"></path>
+            <path d="M 88,48 L 88,64" fill="none" stroke="black"></path>
+            <path d="M 104,128 L 104,160" fill="none" stroke="black"></path>
+            <path d="M 136,128 L 136,160" fill="none" stroke="black"></path>
+            <path d="M 152,96 L 152,120" fill="none" stroke="black"></path>
+            <path d="M 168,128 L 168,160" fill="none" stroke="black"></path>
+            <path d="M 184,64 L 184,120" fill="none" stroke="black"></path>
+            <path d="M 200,128 L 200,160" fill="none" stroke="black"></path>
+            <path d="M 216,80 L 216,120" fill="none" stroke="black"></path>
+            <path d="M 232,128 L 232,160" fill="none" stroke="black"></path>
+            <path d="M 248,96 L 248,120" fill="none" stroke="black"></path>
+            <path d="M 264,128 L 264,192" fill="none" stroke="black"></path>
+            <path d="M 40,80 L 72,80" fill="none" stroke="black"></path>
+            <path d="M 104,80 L 136,80" fill="none" stroke="black"></path>
+            <path d="M 8,128 L 264,128" fill="none" stroke="black"></path>
+            <path d="M 8,160 L 264,160" fill="none" stroke="black"></path>
+            <path d="M 24,208 L 120,208" fill="none" stroke="black"></path>
+            <path d="M 152,208 L 248,208" fill="none" stroke="black"></path>
+            <path d="M 40,80 C 31.16936,80 24,87.16936 24,96" fill="none" stroke="black"></path>
+            <path d="M 72,80 C 80.83064,80 88,72.83064 88,64" fill="none" stroke="black"></path>
+            <path d="M 104,80 C 95.16936,80 88,72.83064 88,64" fill="none" stroke="black"></path>
+            <path d="M 136,80 C 144.83064,80 152,87.16936 152,96" fill="none" stroke="black"></path>
+            <path d="M 24,208 C 15.16936,208 8,200.83064 8,192" fill="none" stroke="black"></path>
+            <path d="M 120,208 C 128.83064,208 136,215.16936 136,224" fill="none" stroke="black"></path>
+            <path d="M 152,208 C 143.16936,208 136,215.16936 136,224" fill="none" stroke="black"></path>
+            <path d="M 248,208 C 256.83064,208 264,200.83064 264,192" fill="none" stroke="black"></path>
+            <polygon class="arrowhead" points="272,168 260,162.4 260,173.6" fill="black" transform="rotate(270,264,168)"></polygon>
+            <polygon class="arrowhead" points="256,120 244,114.4 244,125.6" fill="black" transform="rotate(90,248,120)"></polygon>
+            <polygon class="arrowhead" points="224,120 212,114.4 212,125.6" fill="black" transform="rotate(90,216,120)"></polygon>
+            <polygon class="arrowhead" points="192,120 180,114.4 180,125.6" fill="black" transform="rotate(90,184,120)"></polygon>
+            <polygon class="arrowhead" points="160,120 148,114.4 148,125.6" fill="black" transform="rotate(90,152,120)"></polygon>
+            <polygon class="arrowhead" points="32,120 20,114.4 20,125.6" fill="black" transform="rotate(90,24,120)"></polygon>
+            <polygon class="arrowhead" points="16,168 4,162.4 4,173.6" fill="black" transform="rotate(270,8,168)"></polygon>
+            <g class="text">
+              <text x="96" y="36">pad:5 (0)</text>
+              <text x="220" y="52">seen:1 (A)</text>
+              <text x="264" y="68">flagged:1 (B)</text>
+              <text x="296" y="84">deleted:1 (C)</text>
+              <text x="24" y="148">0</text>
+              <text x="56" y="148">0</text>
+              <text x="88" y="148">0</text>
+              <text x="120" y="148">0</text>
+              <text x="152" y="148">0</text>
+              <text x="184" y="148">A</text>
+              <text x="216" y="148">B</text>
+              <text x="248" y="148">C</text>
+              <text x="140" y="244">email-status:8</text>
+            </g>
+          </svg><a href="#section-1-12.2" class="pilcrow">¶</a>
+</div>
+</div>
+<p id="section-1-13">
+ Figure <a href="#VariableWidth" class="auto internal xref">Figure 4</a> shows
+ an example where "c-string" on the left sides has no
+ predefined width and the right side has a variable number of 8-bit
+ wide values.<a href="#section-1-13" class="pilcrow">¶</a></p>
+<p id="section-1-14">
+ And "collection" has no predefined with and the right
+ side is set of values with various and variable widths.<a href="#section-1-14" class="pilcrow">¶</a></p>
+<span id="name-padding-in-the-middle"></span><div id="VariableWidth">
+<figure id="figure-4">
+        <div class="alignLeft art-abnf art-text artwork" id="section-1-15.1">
+<pre>
+ABNF
+----
+c-string   = (ALPHA:8 / DIGIT:8 ) *(ALPHA:8 / DIGIT:8) %x00:8
+
+collection = %p:4 header:12 c-string width:32 *(ALPHA:8)
+</pre>
+</div>
+<figcaption><a href="#figure-4" class="selfRef">Figure 4</a>:
+<a href="#name-padding-in-the-middle" class="selfRef">Padding in the Middle</a>
+        </figcaption></figure>
+</div>
+<p id="section-1-16">
+ The padding does not need to be at the left.
+ it can be in the middle and could have many
+ zero bits as shown in <a href="#Example3" class="auto internal xref">Figure 5</a>.<a href="#section-1-16" class="pilcrow">¶</a></p>
+<span id="name-padding-in-the-middle-2"></span><div id="Example3">
+<figure id="figure-5">
+        <div class="alignLeft art-abnf art-text artwork" id="section-1-17.1">
+<pre>
+ABNF
+----
+
+trajectory:64 = %p:18 rotation:10 %p:2 vector-x:10 %p:2
+                vector-y:10 %p:2 vector-z:10
+</pre>
+</div>
+<figcaption><a href="#figure-5" class="selfRef">Figure 5</a>:
+<a href="#name-padding-in-the-middle-2" class="selfRef">Padding in the Middle</a>
+        </figcaption></figure>
+</div>
+<div id="section-1-18">
+        <div class="alignLeft art-svg artwork" id="section-1-18.2">
+<svg xmlns="http://www.w3.org/2000/svg" version="1.1" height="304" width="528" viewBox="0 0 528 304" class="diagram" text-anchor="middle" font-family="monospace" font-size="13px" stroke-linecap="round">
+            <path d="M 8,176 L 8,240" fill="none" stroke="black"></path>
+            <path d="M 24,144 L 24,168" fill="none" stroke="black"></path>
+            <path d="M 40,176 L 40,208" fill="none" stroke="black"></path>
+            <path d="M 72,176 L 72,208" fill="none" stroke="black"></path>
+            <path d="M 104,176 L 104,208" fill="none" stroke="black"></path>
+            <path d="M 136,176 L 136,208" fill="none" stroke="black"></path>
+            <path d="M 168,176 L 168,208" fill="none" stroke="black"></path>
+            <path d="M 200,176 L 200,208" fill="none" stroke="black"></path>
+            <path d="M 232,176 L 232,208" fill="none" stroke="black"></path>
+            <path d="M 264,96 L 264,112" fill="none" stroke="black"></path>
+            <path d="M 264,176 L 264,208" fill="none" stroke="black"></path>
+            <path d="M 296,176 L 296,208" fill="none" stroke="black"></path>
+            <path d="M 328,176 L 328,208" fill="none" stroke="black"></path>
+            <path d="M 360,176 L 360,208" fill="none" stroke="black"></path>
+            <path d="M 392,176 L 392,208" fill="none" stroke="black"></path>
+            <path d="M 424,176 L 424,208" fill="none" stroke="black"></path>
+            <path d="M 456,176 L 456,208" fill="none" stroke="black"></path>
+            <path d="M 488,176 L 488,208" fill="none" stroke="black"></path>
+            <path d="M 504,144 L 504,168" fill="none" stroke="black"></path>
+            <path d="M 520,176 L 520,240" fill="none" stroke="black"></path>
+            <path d="M 120,32 L 440,32" fill="none" stroke="black"></path>
+            <path d="M 40,128 L 248,128" fill="none" stroke="black"></path>
+            <path d="M 280,128 L 488,128" fill="none" stroke="black"></path>
+            <path d="M 8,176 L 520,176" fill="none" stroke="black"></path>
+            <path d="M 8,208 L 520,208" fill="none" stroke="black"></path>
+            <path d="M 24,256 L 248,256" fill="none" stroke="black"></path>
+            <path d="M 280,256 L 504,256" fill="none" stroke="black"></path>
+            <path d="M 40,128 C 31.16936,128 24,135.16936 24,144" fill="none" stroke="black"></path>
+            <path d="M 248,128 C 256.83064,128 264,120.83064 264,112" fill="none" stroke="black"></path>
+            <path d="M 280,128 C 271.16936,128 264,120.83064 264,112" fill="none" stroke="black"></path>
+            <path d="M 488,128 C 496.83064,128 504,135.16936 504,144" fill="none" stroke="black"></path>
+            <path d="M 24,256 C 15.16936,256 8,248.83064 8,240" fill="none" stroke="black"></path>
+            <path d="M 248,256 C 256.83064,256 264,263.16936 264,272" fill="none" stroke="black"></path>
+            <path d="M 280,256 C 271.16936,256 264,263.16936 264,272" fill="none" stroke="black"></path>
+            <path d="M 504,256 C 512.83064,256 520,248.83064 520,240" fill="none" stroke="black"></path>
+            <polygon class="arrowhead" points="528,216 516,210.4 516,221.6" fill="black" transform="rotate(270,520,216)"></polygon>
+            <polygon class="arrowhead" points="512,168 500,162.4 500,173.6" fill="black" transform="rotate(90,504,168)"></polygon>
+            <polygon class="arrowhead" points="32,168 20,162.4 20,173.6" fill="black" transform="rotate(90,24,168)"></polygon>
+            <polygon class="arrowhead" points="16,216 4,210.4 4,221.6" fill="black" transform="rotate(270,8,216)"></polygon>
+            <g class="text">
+              <text x="280" y="20">Most significant 16 bits of trajectory:64</text>
+              <text x="288" y="68">16 most significant bits of</text>
+              <text x="280" y="84">%p:18 (0)</text>
+              <text x="24" y="196">0</text>
+              <text x="56" y="196">0</text>
+              <text x="88" y="196">0</text>
+              <text x="120" y="196">0</text>
+              <text x="152" y="196">0</text>
+              <text x="184" y="196">0</text>
+              <text x="216" y="196">0</text>
+              <text x="248" y="196">0</text>
+              <text x="280" y="196">0</text>
+              <text x="312" y="196">0</text>
+              <text x="344" y="196">0</text>
+              <text x="376" y="196">0</text>
+              <text x="408" y="196">0</text>
+              <text x="440" y="196">0</text>
+              <text x="472" y="196">0</text>
+              <text x="504" y="196">0</text>
+              <text x="264" y="292">16-bits</text>
+            </g>
+          </svg><a href="#section-1-18.2" class="pilcrow">¶</a>
+</div>
+</div>
+<div id="section-1-19">
+        <div class="alignLeft art-svg artwork" id="section-1-19.2">
+<svg xmlns="http://www.w3.org/2000/svg" version="1.1" height="336" width="528" viewBox="0 0 528 336" class="diagram" text-anchor="middle" font-family="monospace" font-size="13px" stroke-linecap="round">
+            <path d="M 8,208 L 8,272" fill="none" stroke="black"></path>
+            <path d="M 24,176 L 24,200" fill="none" stroke="black"></path>
+            <path d="M 40,208 L 40,240" fill="none" stroke="black"></path>
+            <path d="M 56,176 L 56,200" fill="none" stroke="black"></path>
+            <path d="M 72,208 L 72,240" fill="none" stroke="black"></path>
+            <path d="M 88,176 L 88,200" fill="none" stroke="black"></path>
+            <path d="M 104,208 L 104,240" fill="none" stroke="black"></path>
+            <path d="M 136,208 L 136,240" fill="none" stroke="black"></path>
+            <path d="M 168,208 L 168,240" fill="none" stroke="black"></path>
+            <path d="M 200,208 L 200,240" fill="none" stroke="black"></path>
+            <path d="M 224,128 L 224,144" fill="none" stroke="black"></path>
+            <path d="M 232,208 L 232,240" fill="none" stroke="black"></path>
+            <path d="M 264,208 L 264,240" fill="none" stroke="black"></path>
+            <path d="M 296,208 L 296,240" fill="none" stroke="black"></path>
+            <path d="M 328,208 L 328,240" fill="none" stroke="black"></path>
+            <path d="M 360,208 L 360,240" fill="none" stroke="black"></path>
+            <path d="M 376,176 L 376,200" fill="none" stroke="black"></path>
+            <path d="M 392,208 L 392,240" fill="none" stroke="black"></path>
+            <path d="M 408,176 L 408,200" fill="none" stroke="black"></path>
+            <path d="M 424,208 L 424,240" fill="none" stroke="black"></path>
+            <path d="M 440,176 L 440,200" fill="none" stroke="black"></path>
+            <path d="M 456,208 L 456,240" fill="none" stroke="black"></path>
+            <path d="M 472,176 L 472,200" fill="none" stroke="black"></path>
+            <path d="M 488,88 L 488,136" fill="none" stroke="black"></path>
+            <path d="M 488,208 L 488,240" fill="none" stroke="black"></path>
+            <path d="M 504,176 L 504,200" fill="none" stroke="black"></path>
+            <path d="M 520,208 L 520,272" fill="none" stroke="black"></path>
+            <path d="M 80,32 L 440,32" fill="none" stroke="black"></path>
+            <path d="M 104,160 L 208,160" fill="none" stroke="black"></path>
+            <path d="M 240,160 L 360,160" fill="none" stroke="black"></path>
+            <path d="M 8,208 L 520,208" fill="none" stroke="black"></path>
+            <path d="M 8,240 L 520,240" fill="none" stroke="black"></path>
+            <path d="M 24,288 L 248,288" fill="none" stroke="black"></path>
+            <path d="M 280,288 L 504,288" fill="none" stroke="black"></path>
+            <path d="M 40,144 L 56,176" fill="none" stroke="black"></path>
+            <path d="M 424,144 L 440,176" fill="none" stroke="black"></path>
+            <path d="M 488,144 L 504,176" fill="none" stroke="black"></path>
+            <path d="M 24,176 L 40,144" fill="none" stroke="black"></path>
+            <path d="M 408,176 L 424,144" fill="none" stroke="black"></path>
+            <path d="M 472,176 L 488,144" fill="none" stroke="black"></path>
+            <path d="M 104,160 C 95.16936,160 88,167.16936 88,176" fill="none" stroke="black"></path>
+            <path d="M 208,160 C 216.83064,160 224,152.83064 224,144" fill="none" stroke="black"></path>
+            <path d="M 240,160 C 231.16936,160 224,152.83064 224,144" fill="none" stroke="black"></path>
+            <path d="M 360,160 C 368.83064,160 376,167.16936 376,176" fill="none" stroke="black"></path>
+            <path d="M 24,288 C 15.16936,288 8,280.83064 8,272" fill="none" stroke="black"></path>
+            <path d="M 248,288 C 256.83064,288 264,295.16936 264,304" fill="none" stroke="black"></path>
+            <path d="M 280,288 C 271.16936,288 264,295.16936 264,304" fill="none" stroke="black"></path>
+            <path d="M 504,288 C 512.83064,288 520,280.83064 520,272" fill="none" stroke="black"></path>
+            <polygon class="arrowhead" points="528,248 516,242.4 516,253.6" fill="black" transform="rotate(270,520,248)"></polygon>
+            <polygon class="arrowhead" points="512,200 500,194.4 500,205.6" fill="black" transform="rotate(90,504,200)"></polygon>
+            <polygon class="arrowhead" points="480,200 468,194.4 468,205.6" fill="black" transform="rotate(90,472,200)"></polygon>
+            <polygon class="arrowhead" points="448,200 436,194.4 436,205.6" fill="black" transform="rotate(90,440,200)"></polygon>
+            <polygon class="arrowhead" points="416,200 404,194.4 404,205.6" fill="black" transform="rotate(90,408,200)"></polygon>
+            <polygon class="arrowhead" points="384,200 372,194.4 372,205.6" fill="black" transform="rotate(90,376,200)"></polygon>
+            <polygon class="arrowhead" points="96,200 84,194.4 84,205.6" fill="black" transform="rotate(90,88,200)"></polygon>
+            <polygon class="arrowhead" points="64,200 52,194.4 52,205.6" fill="black" transform="rotate(90,56,200)"></polygon>
+            <polygon class="arrowhead" points="32,200 20,194.4 20,205.6" fill="black" transform="rotate(90,24,200)"></polygon>
+            <polygon class="arrowhead" points="16,248 4,242.4 4,253.6" fill="black" transform="rotate(270,8,248)"></polygon>
+            <g class="text">
+              <text x="260" y="20">Next most significant 16 bits of trajectory:64</text>
+              <text x="56" y="68">Two least</text>
+              <text x="412" y="68">Top two most significant</text>
+              <text x="64" y="84">significant</text>
+              <text x="448" y="84">bits of vector-x:10</text>
+              <text x="48" y="100">bits of</text>
+              <text x="512" y="100">(X)</text>
+              <text x="40" y="116">%p:18</text>
+              <text x="240" y="116">rotation:10 (R)</text>
+              <text x="420" y="116">%p:2</text>
+              <text x="40" y="132">|</text>
+              <text x="424" y="132">|</text>
+              <text x="24" y="228">0</text>
+              <text x="56" y="228">0</text>
+              <text x="88" y="228">R</text>
+              <text x="120" y="228">R</text>
+              <text x="152" y="228">R</text>
+              <text x="184" y="228">R</text>
+              <text x="216" y="228">R</text>
+              <text x="248" y="228">R</text>
+              <text x="280" y="228">R</text>
+              <text x="312" y="228">R</text>
+              <text x="344" y="228">R</text>
+              <text x="376" y="228">R</text>
+              <text x="408" y="228">0</text>
+              <text x="440" y="228">0</text>
+              <text x="472" y="228">X</text>
+              <text x="504" y="228">X</text>
+              <text x="264" y="324">16-bits</text>
+            </g>
+          </svg><a href="#section-1-19.2" class="pilcrow">¶</a>
+</div>
+</div>
+<div id="section-1-20">
+        <div class="alignLeft art-svg artwork" id="section-1-20.2">
+<svg xmlns="http://www.w3.org/2000/svg" version="1.1" height="288" width="528" viewBox="0 0 528 288" class="diagram" text-anchor="middle" font-family="monospace" font-size="13px" stroke-linecap="round">
+            <path d="M 8,160 L 8,224" fill="none" stroke="black"></path>
+            <path d="M 24,128 L 24,152" fill="none" stroke="black"></path>
+            <path d="M 40,160 L 40,192" fill="none" stroke="black"></path>
+            <path d="M 72,160 L 72,192" fill="none" stroke="black"></path>
+            <path d="M 104,160 L 104,192" fill="none" stroke="black"></path>
+            <path d="M 136,160 L 136,192" fill="none" stroke="black"></path>
+            <path d="M 168,160 L 168,192" fill="none" stroke="black"></path>
+            <path d="M 200,160 L 200,192" fill="none" stroke="black"></path>
+            <path d="M 232,160 L 232,192" fill="none" stroke="black"></path>
+            <path d="M 248,128 L 248,152" fill="none" stroke="black"></path>
+            <path d="M 264,160 L 264,192" fill="none" stroke="black"></path>
+            <path d="M 280,128 L 280,152" fill="none" stroke="black"></path>
+            <path d="M 296,160 L 296,192" fill="none" stroke="black"></path>
+            <path d="M 312,128 L 312,152" fill="none" stroke="black"></path>
+            <path d="M 328,160 L 328,192" fill="none" stroke="black"></path>
+            <path d="M 344,128 L 344,152" fill="none" stroke="black"></path>
+            <path d="M 360,160 L 360,192" fill="none" stroke="black"></path>
+            <path d="M 392,160 L 392,192" fill="none" stroke="black"></path>
+            <path d="M 424,160 L 424,192" fill="none" stroke="black"></path>
+            <path d="M 456,160 L 456,192" fill="none" stroke="black"></path>
+            <path d="M 488,160 L 488,192" fill="none" stroke="black"></path>
+            <path d="M 504,112 L 504,152" fill="none" stroke="black"></path>
+            <path d="M 520,160 L 520,224" fill="none" stroke="black"></path>
+            <path d="M 80,32 L 464,32" fill="none" stroke="black"></path>
+            <path d="M 40,112 L 128,112" fill="none" stroke="black"></path>
+            <path d="M 160,112 L 232,112" fill="none" stroke="black"></path>
+            <path d="M 360,112 L 408,112" fill="none" stroke="black"></path>
+            <path d="M 440,112 L 504,112" fill="none" stroke="black"></path>
+            <path d="M 8,160 L 520,160" fill="none" stroke="black"></path>
+            <path d="M 8,192 L 520,192" fill="none" stroke="black"></path>
+            <path d="M 24,240 L 248,240" fill="none" stroke="black"></path>
+            <path d="M 280,240 L 504,240" fill="none" stroke="black"></path>
+            <path d="M 296,96 L 312,128" fill="none" stroke="black"></path>
+            <path d="M 280,128 L 296,96" fill="none" stroke="black"></path>
+            <path d="M 40,112 C 31.16936,112 24,119.16936 24,128" fill="none" stroke="black"></path>
+            <path d="M 128,112 C 136.83064,112 144,104.83064 144,96" fill="none" stroke="black"></path>
+            <path d="M 160,112 C 151.16936,112 144,104.83064 144,96" fill="none" stroke="black"></path>
+            <path d="M 232,112 C 240.83064,112 248,119.16936 248,128" fill="none" stroke="black"></path>
+            <path d="M 360,112 C 351.16936,112 344,119.16936 344,128" fill="none" stroke="black"></path>
+            <path d="M 408,112 C 416.83064,112 424,104.83064 424,96" fill="none" stroke="black"></path>
+            <path d="M 440,112 C 431.16936,112 424,104.83064 424,96" fill="none" stroke="black"></path>
+            <path d="M 24,240 C 15.16936,240 8,232.83064 8,224" fill="none" stroke="black"></path>
+            <path d="M 248,240 C 256.83064,240 264,247.16936 264,256" fill="none" stroke="black"></path>
+            <path d="M 280,240 C 271.16936,240 264,247.16936 264,256" fill="none" stroke="black"></path>
+            <path d="M 504,240 C 512.83064,240 520,232.83064 520,224" fill="none" stroke="black"></path>
+            <polygon class="arrowhead" points="528,200 516,194.4 516,205.6" fill="black" transform="rotate(270,520,200)"></polygon>
+            <polygon class="arrowhead" points="512,152 500,146.4 500,157.6" fill="black" transform="rotate(90,504,152)"></polygon>
+            <polygon class="arrowhead" points="352,152 340,146.4 340,157.6" fill="black" transform="rotate(90,344,152)"></polygon>
+            <polygon class="arrowhead" points="320,152 308,146.4 308,157.6" fill="black" transform="rotate(90,312,152)"></polygon>
+            <polygon class="arrowhead" points="288,152 276,146.4 276,157.6" fill="black" transform="rotate(90,280,152)"></polygon>
+            <polygon class="arrowhead" points="256,152 244,146.4 244,157.6" fill="black" transform="rotate(90,248,152)"></polygon>
+            <polygon class="arrowhead" points="32,152 20,146.4 20,157.6" fill="black" transform="rotate(90,24,152)"></polygon>
+            <polygon class="arrowhead" points="16,200 4,194.4 4,205.6" fill="black" transform="rotate(270,8,200)"></polygon>
+            <g class="text">
+              <text x="272" y="20">Second least significant 16 bits of trajectory:64</text>
+              <text x="148" y="68">8 least significant bits</text>
+              <text x="292" y="68">%p:2</text>
+              <text x="432" y="68">6 most significant bits</text>
+              <text x="152" y="84">bits of vector-x:10 (X)</text>
+              <text x="296" y="84">|</text>
+              <text x="436" y="84">of vector-y:10 (Y)</text>
+              <text x="24" y="180">X</text>
+              <text x="56" y="180">X</text>
+              <text x="88" y="180">X</text>
+              <text x="120" y="180">X</text>
+              <text x="152" y="180">X</text>
+              <text x="184" y="180">X</text>
+              <text x="216" y="180">X</text>
+              <text x="248" y="180">x</text>
+              <text x="280" y="180">0</text>
+              <text x="312" y="180">0</text>
+              <text x="344" y="180">Y</text>
+              <text x="376" y="180">Y</text>
+              <text x="408" y="180">Y</text>
+              <text x="440" y="180">Y</text>
+              <text x="472" y="180">Y</text>
+              <text x="504" y="180">Y</text>
+              <text x="264" y="276">16-bits</text>
+            </g>
+          </svg><a href="#section-1-20.2" class="pilcrow">¶</a>
+</div>
+</div>
+<div id="section-1-21">
+        <div class="alignLeft art-svg artwork" id="section-1-21.2">
+<svg xmlns="http://www.w3.org/2000/svg" version="1.1" height="320" width="528" viewBox="0 0 528 320" class="diagram" text-anchor="middle" font-family="monospace" font-size="13px" stroke-linecap="round">
+            <path d="M 8,192 L 8,256" fill="none" stroke="black"></path>
+            <path d="M 24,160 L 24,184" fill="none" stroke="black"></path>
+            <path d="M 40,192 L 40,224" fill="none" stroke="black"></path>
+            <path d="M 72,96 L 72,128" fill="none" stroke="black"></path>
+            <path d="M 72,192 L 72,224" fill="none" stroke="black"></path>
+            <path d="M 104,192 L 104,224" fill="none" stroke="black"></path>
+            <path d="M 120,160 L 120,184" fill="none" stroke="black"></path>
+            <path d="M 136,192 L 136,224" fill="none" stroke="black"></path>
+            <path d="M 152,160 L 152,184" fill="none" stroke="black"></path>
+            <path d="M 168,192 L 168,224" fill="none" stroke="black"></path>
+            <path d="M 184,160 L 184,184" fill="none" stroke="black"></path>
+            <path d="M 200,192 L 200,224" fill="none" stroke="black"></path>
+            <path d="M 216,160 L 216,184" fill="none" stroke="black"></path>
+            <path d="M 232,192 L 232,224" fill="none" stroke="black"></path>
+            <path d="M 264,192 L 264,224" fill="none" stroke="black"></path>
+            <path d="M 296,192 L 296,224" fill="none" stroke="black"></path>
+            <path d="M 328,192 L 328,224" fill="none" stroke="black"></path>
+            <path d="M 360,192 L 360,224" fill="none" stroke="black"></path>
+            <path d="M 392,192 L 392,224" fill="none" stroke="black"></path>
+            <path d="M 424,192 L 424,224" fill="none" stroke="black"></path>
+            <path d="M 456,192 L 456,224" fill="none" stroke="black"></path>
+            <path d="M 488,192 L 488,224" fill="none" stroke="black"></path>
+            <path d="M 504,160 L 504,184" fill="none" stroke="black"></path>
+            <path d="M 520,192 L 520,256" fill="none" stroke="black"></path>
+            <path d="M 112,32 L 440,32" fill="none" stroke="black"></path>
+            <path d="M 40,144 L 56,144" fill="none" stroke="black"></path>
+            <path d="M 88,144 L 104,144" fill="none" stroke="black"></path>
+            <path d="M 232,144 L 344,144" fill="none" stroke="black"></path>
+            <path d="M 376,144 L 488,144" fill="none" stroke="black"></path>
+            <path d="M 8,192 L 520,192" fill="none" stroke="black"></path>
+            <path d="M 8,224 L 520,224" fill="none" stroke="black"></path>
+            <path d="M 24,272 L 248,272" fill="none" stroke="black"></path>
+            <path d="M 280,272 L 504,272" fill="none" stroke="black"></path>
+            <path d="M 168,128 L 184,160" fill="none" stroke="black"></path>
+            <path d="M 152,160 L 168,128" fill="none" stroke="black"></path>
+            <path d="M 40,144 C 31.16936,144 24,151.16936 24,160" fill="none" stroke="black"></path>
+            <path d="M 56,144 C 64.83064,144 72,136.83064 72,128" fill="none" stroke="black"></path>
+            <path d="M 88,144 C 79.16936,144 72,136.83064 72,128" fill="none" stroke="black"></path>
+            <path d="M 104,144 C 112.83064,144 120,151.16936 120,160" fill="none" stroke="black"></path>
+            <path d="M 232,144 C 223.16936,144 216,151.16936 216,160" fill="none" stroke="black"></path>
+            <path d="M 344,144 C 352.83064,144 360,136.83064 360,128" fill="none" stroke="black"></path>
+            <path d="M 376,144 C 367.16936,144 360,136.83064 360,128" fill="none" stroke="black"></path>
+            <path d="M 488,144 C 496.83064,144 504,151.16936 504,160" fill="none" stroke="black"></path>
+            <path d="M 24,272 C 15.16936,272 8,264.83064 8,256" fill="none" stroke="black"></path>
+            <path d="M 248,272 C 256.83064,272 264,279.16936 264,288" fill="none" stroke="black"></path>
+            <path d="M 280,272 C 271.16936,272 264,279.16936 264,288" fill="none" stroke="black"></path>
+            <path d="M 504,272 C 512.83064,272 520,264.83064 520,256" fill="none" stroke="black"></path>
+            <polygon class="arrowhead" points="528,232 516,226.4 516,237.6" fill="black" transform="rotate(270,520,232)"></polygon>
+            <polygon class="arrowhead" points="512,184 500,178.4 500,189.6" fill="black" transform="rotate(90,504,184)"></polygon>
+            <polygon class="arrowhead" points="224,184 212,178.4 212,189.6" fill="black" transform="rotate(90,216,184)"></polygon>
+            <polygon class="arrowhead" points="192,184 180,178.4 180,189.6" fill="black" transform="rotate(90,184,184)"></polygon>
+            <polygon class="arrowhead" points="160,184 148,178.4 148,189.6" fill="black" transform="rotate(90,152,184)"></polygon>
+            <polygon class="arrowhead" points="128,184 116,178.4 116,189.6" fill="black" transform="rotate(90,120,184)"></polygon>
+            <polygon class="arrowhead" points="32,184 20,178.4 20,189.6" fill="black" transform="rotate(90,24,184)"></polygon>
+            <polygon class="arrowhead" points="16,232 4,226.4 4,237.6" fill="black" transform="rotate(270,8,232)"></polygon>
+            <g class="text">
+              <text x="276" y="20">Least significant 16 bits of trajectory:64</text>
+              <text x="88" y="68">4 least significant</text>
+              <text x="104" y="84">bits of vector-y:10 (Y)</text>
+              <text x="164" y="116">%p:2</text>
+              <text x="368" y="116">vector-z:10 (Z)</text>
+              <text x="24" y="212">Y</text>
+              <text x="56" y="212">Y</text>
+              <text x="88" y="212">Y</text>
+              <text x="120" y="212">Y</text>
+              <text x="152" y="212">0</text>
+              <text x="184" y="212">0</text>
+              <text x="216" y="212">Z</text>
+              <text x="248" y="212">Z</text>
+              <text x="280" y="212">Z</text>
+              <text x="312" y="212">Z</text>
+              <text x="344" y="212">Z</text>
+              <text x="376" y="212">Z</text>
+              <text x="408" y="212">Z</text>
+              <text x="440" y="212">Z</text>
+              <text x="472" y="212">Z</text>
+              <text x="504" y="212">Z</text>
+              <text x="264" y="308">16-bits</text>
+            </g>
+          </svg><a href="#section-1-21.2" class="pilcrow">¶</a>
+</div>
+</div>
+</section>
+<section id="section-2">
+      <h2 id="name-additional-examples">
+<a href="#section-2" class="section-number selfRef">2. </a><a href="#name-additional-examples" class="section-name selfRef">Additional Examples</a>
+      </h2>
+<p id="section-2-1">
+ The following sets of rules are identical and valid:<a href="#section-2-1" class="pilcrow">¶</a></p>
+<span id="name-comparing-rulesets"></span><div id="AdditionalExamples">
+<figure id="figure-6">
+        <div class="alignLeft art-abnf art-text artwork" id="section-2-2.1">
+<pre>
+ABNF
+----
+
+; Original CRLF
+CRLF          = %d13.10
+
+; Declaring CRLF is 16-bits wide.
+CRLF:16       = %d13.10
+
+; Declaring CRLF is 16-bits wide.
+CRLF:16       = %d13:8.10:8
+
+; CRLF still is 16-bits wide, but declaring it is optional.
+CRLF          = %d13:8.10:8
+
+; Original rulename
+rulename      = %d97 %d98 %d99
+
+; Declaring rulename is 24-bits wide
+rulename:24   = %d97:8 %d98:8 %d99:8
+
+; rulename still is 24-bits wide, but declaring it is optional.
+rulename      = %d97:8 %d98:8 %d99:8
+
+; Orignal DIGIT
+DIGIT         = %x30-39
+
+; Declaring DIGIT is 8-bits wide.
+DIGIT:8       = %x30-39
+
+; Declaring DIGIT is 8-bits wide.
+DIGIT:8       = %x30:8-39:8
+
+; DIGIT is still 8-bits wide, but declaring it is optional.
+DIGIT         = %x30:8-39:8
+</pre>
+</div>
+<figcaption><a href="#figure-6" class="selfRef">Figure 6</a>:
+<a href="#name-comparing-rulesets" class="selfRef">Comparing Rulesets.</a>
+        </figcaption></figure>
+</div>
+</section>
+<div id="IANA">
+<section id="section-3">
+      <h2 id="name-iana-considerations">
+<a href="#section-3" class="section-number selfRef">3. </a><a href="#name-iana-considerations" class="section-name selfRef">IANA Considerations</a>
+      </h2>
+<p id="section-3-1">This memo includes no request to IANA.<a href="#section-3-1" class="pilcrow">¶</a></p>
+</section>
+</div>
+<div id="Security">
+<section id="section-4">
+      <h2 id="name-security-considerations">
+<a href="#section-4" class="section-number selfRef">4. </a><a href="#name-security-considerations" class="section-name selfRef">Security Considerations</a>
+      </h2>
+<p id="section-4-1">This document should not affect the security of the Internet.<a href="#section-4-1" class="pilcrow">¶</a></p>
+</section>
+</div>
+<section id="section-5">
+      <h2 id="name-normative-references">
+<a href="#section-5" class="section-number selfRef">5. </a><a href="#name-normative-references" class="section-name selfRef">Normative References</a>
+      </h2>
+<dl class="references">
+<dt id="RFC4506">[RFC4506]</dt>
+      <dd>
+<span class="refAuthor">Eisler, M., Ed.</span>, <span class="refTitle">"XDR: External Data Representation Standard"</span>, <span class="seriesInfo">STD 67</span>, <span class="seriesInfo">RFC 4506</span>, <span class="seriesInfo">DOI 10.17487/RFC4506</span>, <time datetime="2006-05" class="refDate">May 2006</time>, <span>&lt;<a href="https://www.rfc-editor.org/info/rfc4506">https://www.rfc-editor.org/info/rfc4506</a>&gt;</span>. </dd>
+<dd class="break"></dd>
+<dt id="RFC5234">[RFC5234]</dt>
+    <dd>
+<span class="refAuthor">Crocker, D., Ed.</span> and <span class="refAuthor">P. Overell</span>, <span class="refTitle">"Augmented BNF for Syntax Specifications: ABNF"</span>, <span class="seriesInfo">STD 68</span>, <span class="seriesInfo">RFC 5234</span>, <span class="seriesInfo">DOI 10.17487/RFC5234</span>, <time datetime="2008-01" class="refDate">January 2008</time>, <span>&lt;<a href="https://www.rfc-editor.org/info/rfc5234">https://www.rfc-editor.org/info/rfc5234</a>&gt;</span>. </dd>
+<dd class="break"></dd>
+</dl>
+</section>
+<section id="section-6">
+      <h2 id="name-informative-references">
+<a href="#section-6" class="section-number selfRef">6. </a><a href="#name-informative-references" class="section-name selfRef">Informative References</a>
+      </h2>
+<dl class="references">
+<dt id="xdrgen">[xdrgen]</dt>
+    <dd>
+<span class="refAuthor">Royer, DM.</span>, <span class="refTitle">"XDR Code Generator, Open Source"</span>, <time datetime="2025" class="refDate">2025</time>, <span>&lt;<a href="https://github.com/RiverExplorer/Phoenix">https://github.com/RiverExplorer/Phoenix</a>&gt;</span>. </dd>
+<dd class="break"></dd>
+</dl>
+</section>
+<div id="Acknowledgements">
+<section id="appendix-A">
+      <h2 id="name-acknowledgments">
+<a href="#name-acknowledgments" class="section-name selfRef">Acknowledgments</a>
+    </h2>
+</section>
+</div>
+<div id="Contributors">
+<section id="appendix-B">
+      <h2 id="name-contributors">
+<a href="#name-contributors" class="section-name selfRef">Contributors</a>
+    </h2>
+</section>
+</div>
+<div id="authors-addresses">
+<section id="appendix-C">
+      <h2 id="name-authors-address">
+<a href="#name-authors-address" class="section-name selfRef">Author's Address</a>
+      </h2>
+<address class="vcard">
+        <div dir="auto" class="left"><span class="fn nameRole">Doug Royer</span></div>
+<div dir="auto" class="left"><span class="org">RiverExplorer LLC</span></div>
+<div dir="auto" class="left"><span class="street-address">848 N. Rainbow Blvd, Ste-1120</span></div>
+<div dir="auto" class="left">
+<span class="locality">Las Vegas</span>, <span class="region">Nevada</span> <span class="postal-code">89107</span>
+</div>
+<div dir="auto" class="left"><span class="country-name">United States of America</span></div>
+<div class="tel">
+<span>Phone:</span>
+<a href="tel:+1-208-806-1358" class="tel">+1-208-806-1358</a>
+</div>
+<div class="email">
+<span>Email:</span>
+<a href="mailto:DouglasRoyer@gmail.com" class="email">DouglasRoyer@gmail.com</a>
+</div>
+<div class="url">
+<span>URI:</span>
+<a href="https://DougRoyer.US" class="url">https://DougRoyer.US</a>
+</div>
+</address>
+</section>
+</div>
+<script>const toc = document.getElementById("toc");
+toc.querySelector("h2").addEventListener("click", e => {
+  toc.classList.toggle("active");
+});
+toc.querySelector("nav").addEventListener("click", e => {
+  toc.classList.remove("active");
+});
+</script>
+</body>
+</html>

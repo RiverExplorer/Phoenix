@@ -1,0 +1,2555 @@
+<?xml version="1.0" encoding="utf-8"?>
+<?xml-model href="rfc7991bis.rnc"?>
+<!DOCTYPE rfc [
+  <!ENTITY nbsp    "&#160;">
+  <!ENTITY zwsp   "&#8203;">
+  <!ENTITY nbhy   "&#8209;">
+  <!ENTITY wj     "&#8288;">
+]>
+<!-- Copyright 2025 RiverExplorer LLC and Douglas Mark Royer -->
+<rfc
+  xmlns:xi="http://www.w3.org/2001/XInclude"
+	category="info"
+  docName="draft-royer-phoenix-00"
+  ipr="trust200902"
+  obsoletes=""
+  updates=""
+  submissionType="IETF"
+  xml:lang="en"
+  version="3"
+	sortRefs="true">
+  <front>
+    <title abbrev="Phoenix: Lemonade Risen Again">Phoenix: Lemonade Risen Again</title>
+    <seriesInfo name="Internet-Draft" value="draft-royer-phoenix-00"/>
+   
+    <author fullname="Doug Royer" initials="DM" surname="Royer">
+      <organization>RiverExplorer LLC</organization>
+      <address>
+        <postal>
+          <!-- Reorder these if your country does things differently -->
+          <street>848 N. Rainbow Blvd #1120</street>
+          <city>Las Vegas</city>
+          <region>Nevada</region>
+          <code>89107</code>
+          <country>US</country>
+          <!-- Uses two letter country code -->
+        </postal>        
+        <phone>1+208-806-1358</phone>
+        <email>DouglasRoyer@gmail.com</email>  
+        <!-- Can have more than one <email> element -->
+        <uri>https://DougRoyer.US</uri>
+      </address>
+    </author>
+   
+    <date year="2025"/>
+    <area>General</area>
+    <workgroup>Internet Engineering Task Force</workgroup>
+    <keyword>imap</keyword>
+    <keyword>pop</keyword>
+    <keyword>smtp</keyword>
+    <keyword>mime</keyword>
+    <keyword>lemonade</keyword>
+    <keyword>phoenix</keyword>
+    <xi:include href="Abstract.xml"/>
+  </front>
+
+  <middle> 
+    <xi:include href="RequirementsLanguage.xml"/>
+    <xi:include href="Introduction.xml"/>
+    <xi:include href="ABNF.xml"/>
+    <xi:include href="Definitions.xml"/>
+<!-- Copyright 2025 RiverExplorer LLC and Douglas Mark Royer -->
+
+<section xmlns:xi="http://www.w3.org/2001/XInclude">
+	<name>Commands</name>
+	<t>
+		The endpoint that initiates the connection is called the client.
+    The endpoint that is connected to, is called the server.
+    The client is the protocol authority, and the server responds
+    to client commands as configured or instructed by the client.
+  </t>
+	<t>
+		This section provides an overview of the basic commands.
+		Each command has a detailed section in this specification.
+	</t>
+	<t>
+		When a command is sent to the remote endpoint and received,
+		the remote endpoint determines if the connection is authenticated
+		or authorized to perform the command.
+		If not supported, or not authorized, a NotSupported command
+		is send as a reply.
+		The NotSupported command sent back has the same Sequence number 
+		that was in the original command.
+	</t>
+	<t>
+		Many commands are only valid after authentication.
+	</t>
+	<t>
+		When the client connects to a server it immediately sends
+		a CAPABILITY_PRE list to the server.
+		Or the client sends an AUTH command.
+	</t>
+	<t>
+		When the server gets a new connection followed by
+		a pre authentication capability command, it immediately sends
+		its pre authentication capabilities to the client.
+	</t>
+	<t>
+		When the client and server have had a relationship, the
+		client may send an Auth Command to initiate the authorization
+		and does not send its pre authentication capability list
+		to the server.
+		The client then waits for the Auth reply from the server.
+	</t>
+	<ul>
+		<li>
+			If the client gets a successful Auth reply,
+			then the client sends its post authentication capability list to the server.
+		</li>
+		<li>
+			If the client get an unsuccessful Auth reply,
+			then the client sends its pre authentication
+			capability list to the server followed by another
+			Auth command.
+			Upon too many retries, the server or client may terminate
+			the connection.
+		</li>
+	</ul>
+	<t>
+		When a servers first received packet is a Auth command,
+		It processes the Auth command and sends the Auth reply.
+	</t>
+	<ul>
+		<li>
+			If the Auth was successful, then the server sends
+			a post authentication capability list.
+		</li>
+		<li>
+			If the Auth was unsuccessful, then the server sends its
+			pre authentication capability list to the client.
+		</li>
+	</ul>
+	<t>
+		When the server gets a new connection, it waits for
+		a packet from the client. It will be a pre authentication
+		capability packet, or a authentication packet.
+		When the server has an unauthenticated connection, it
+		only accepts two kinds of packets:
+	</t>
+	<ul>
+		<li>
+			A pre authentication capability packet.
+			Which is replied to by the server with its pre authentication
+			packet.
+		</li>
+		<li>An authentication packet.</li>
+	</ul>
+	<t>
+			Upon too many retries, the server or client may terminate
+			the connection.
+	</t>
+<!-- Copyright 2025 RiverExplorer LLC and Douglas Mark Royer -->
+
+<section xmlns:xi="http://www.w3.org/2001/XInclude">
+	<name>Commands Overview - Packet and Reply</name>
+	<t>
+		In addition to the protocols listed in this specification.
+		Additional protocols and commands can be added in the future.
+		They must follow the same framework listed here.
+	</t>
+	<t>
+		This protocol connects two endpoints over a network and facilitates
+		the secure and authorized transfer of MIME objects.
+	</t>
+	<t>
+		This is a binary protocol.
+		The payload can be anything, text or binary.
+		This protocol was designed to reduce the number of back and forth
+		requests and replies between the client and server.
+		By using XDR as the format for transferring binary control
+		information it is portable to any computer architecture.
+		<xref target="all-xdr">Complete XDR</xref> has the rpcgen definition for the protocol
+		defined in this specification.
+		And <xref target="all-abnf">Complete ABNF</xref> has the complete ABNF
+		for this protocol.
+	</t>
+	<t>
+		The basic connection starts in one of two modes.
+	</t>
+	<ul>
+		<li>
+			An account is connecting to a server for the first time
+			and does not know which authentication methods the
+			server supports.
+		</li>
+		<li>
+			An account has authenticated to a server in the past or the
+			client is already aware of a valid authentication protocol
+			to use.
+		</li>
+	</ul>
+	<t>
+		When connection is made, the server waits for a packet from
+		the client.
+		It will be one of two kinds.
+	</t>
+	<ul>
+		<li>A pre authentication capability packet (CAPABILITY_PRE).</li>
+		<li>An authentication packet. (AUTH...).</li>
+	</ul>
+	<t>
+		If the first packet the server receives
+		is a pre authentication capability packet,
+		The server examines the clients packet and determines what
+		authentication options to present to the client.
+		The server then sends back its pre authentication capability packet
+		which includes the supported authentication methods.
+		Then the client, using the information from the server starts
+		the authentication process.
+	</t>
+	<t>
+		If the first packet the server receives is any of the supported
+		authentication packets, then the server processes the authentication
+		packet.
+		On failure to authenticate, the server sends the client a pre
+		authentication capability packet with the same sequence number
+		that was in the authentication attempt and includes the
+		servers supported authentication methods.
+		On a successful authentication, the server sends the client
+		a post authentication capability packet with a new sequence number.
+	</t>
+	<t>
+		After the connection is successful and authenticated, ether endpoint
+		may send commands to the other endpoint.
+		When the server initiates an unsolicited command, it could be a
+		any kind of notification or message for the client side application
+		or the user. It could be reporting errors or updates to
+		previous client initiated commands.
+	</t>
+	<ul>
+		<li>
+			All commands initiated from the client have even
+			numbered command sequence numbers.
+		</li>
+		<li>
+			All commands initiated from the server have odd
+			numbered command sequence numbers.
+		</li>
+	</ul>
+	<t>
+		Some commands expect a command reply.
+		Other commands do not expect a command reply.
+		An example of a command that expects a reply is the ping command.
+		An example of a command that does not expect a reply is the keep-alive
+		command.
+		Conceptually there are two kinds of commands:
+	</t>
+	<dl>
+		<dt>Directive commands:</dt>
+		<dd>
+			A directive type command expects the other endpoint to process
+			the command and possibly reply with some results.
+			An example could be: Send me an index of my emails in my InBox.
+			The client would expect a result.
+			Another example is a bye command, once sent, no reply is expected.
+		</dd>
+		<dt>Request commands:</dt>
+		<dd>
+			A request type command may or might not have any reply.
+			For example, a keep-alive command is a request to not
+			timeout and has no reply.
+			And a send new email notifications command would expect
+			zero or more replies and it would not require them, as they
+			might not happen.
+		</dd>
+	</dl>
+	<t>
+		These are not specific protocol entities, these concepts will
+		be used to describe the expected behavior when one of these
+		are transmitted.
+	</t>
+	<section anchor="PACKET_SUMMARY">
+		<name>Packet Overview</name>
+		<t>
+			All commands are sent in a packet.
+			A packet has two parts:
+		</t>
+		<ol>
+			<li>The packet header.</li>
+			<li>The packet body.</li>
+		</ol>
+		<section>
+			<name>Packet Header</name>
+			<t>
+				The packet header has one value, the total length
+				of the packet body, and payload sent as an
+				unsigned 32-bit integer	in network byte order.
+				The length does not include its own length.
+				It is the total length that follows the length value.
+			</t>
+			<table>
+				<name>Packet Header ABNF/XDR Mapping</name>
+				<thead>
+					<tr>
+						<th>
+							Name
+						</th>
+						<th>
+							Description
+						</th>
+						<th>
+							XDR API
+						</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr>
+						<td>
+							PacketHeader
+						</td>
+						<td>
+							<t>
+								The number of octets that follow this value that
+								are part of this packet.
+							</t>
+						</td>
+						<td>
+							xdr_PacketHeader()
+						</td>
+					</tr>
+				</tbody>
+			</table>
+			<section>
+				<name>Packet Header ABNF</name>
+				<t>
+					ABNF:
+				</t>
+				<figure>
+					<name>Packet Header ABNF</name>
+					<xi:include href="include/03-PacketHeader-ABNF.xml"/>
+				</figure>
+			</section>
+			<section>
+				<name>Packet Header XDR</name>
+				<t>
+					XDR Definition:
+				</t>
+				<figure>
+					<name>Packet Header XDR</name>
+					<xi:include href="include/03-PacketHeader-XDR.xml"/>
+				</figure>
+			</section>
+		</section>
+
+		<section>
+			<name>Packet Body (PacketBody)</name>
+			<t>
+				The packet body is divided into four parts:
+			</t>
+			<ol>
+				<li>Number of commands that are in the packet.</li>
+				<li>Sequence (SEQ)</li>
+				<li>
+					Command (CMD):
+				</li>
+				<li>
+					Payload (CmdPayload):
+					The command specific data. 
+				</li>
+			</ol>
+			<t>
+				PacketBody details:
+			</t>
+			<table>
+				<name>Packet Body ABNF/XDR Mapping</name>
+				<thead>
+					<tr>
+						<th>
+							Name
+						</th>
+						<th>
+							Value
+						</th>
+						<th>
+							Description
+						</th>
+						<th>
+							XDR API
+						</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr>
+						<td>
+							Length
+						</td>
+						<td>
+							A number
+						</td>
+						<td>
+							The number of CMD objects in this packet.
+						</td>
+						<td>
+							xdr_Length()
+						</td>
+					</tr>
+					<tr>
+						<td>
+							SEQ
+						</td>
+						<td>
+							uint32_t
+						</td>
+						<td>
+							<t>
+								The Command SEQ is a uint32_t.
+								This SEQ is an even number when initiated from
+								the client,	and an odd number when initiated
+								from the server.
+							</t>
+							<t>
+								The first SEQ value sent from the client is zero (0)
+								and is incremented by two each time.
+							</t>
+							<t>
+								The first SEQ value sent from the server is one (1)
+								and is incremented by two each time.
+							</t>
+							<t>
+								In the event an endpoint command SEQ reaches its maximum
+								value, then its numbering starts over at zero (0) for
+								the client and one (1) for the server.
+								An implementation must keep track of outstanding
+								commands and not accidentally re-issue the same
+								SEQ that may still get replies from the other endpoint.
+							</t>
+						</td>
+						<td>
+							xdr_SEQ()
+						</td>
+					</tr>
+					<tr>
+						<td>
+							CMD
+						</td>
+						<td>
+							1 bit + 31 bits.
+						</td>
+						<td>
+							<t>
+								A 31-bit value that is a Phoenix compliant
+								command or a command with the VENDOR_BIT set
+								(a vendor command).
+							</t>
+							<t>
+								<br/>
+								A command (CMD) is a unsigned integer that
+								specifics a unique operation that describes
+								and defines the data that follows.
+							</t>
+							<t>
+								<br/>
+								The highest bit in the 32-bit value is
+								a VENDOR_BIT or PHOENIX_BIT.
+								So CMD covers vendor and phoenix commands.
+							</t>
+							<t>
+								-Phoenix CMD range is: %x00000000-7fffffff.
+							</t>
+							<t>
+								-Vendor CMD range is: 80000000-fffffffe.
+							</t>
+							<t>
+								-With %xffffffff reserved.
+							</t>
+							<t>
+								All vendor commands are followed by another
+								32-bit Length value indicating how
+								may octets follow the Length that are in the payload.
+								This is so that compliant implementation that do
+								not support the vendor extensions know how
+								many octets to skip to find the next command
+								or end of packet.
+							</t>
+						</td>
+						<td>
+							xdr_Cmd()
+						</td>
+					</tr>
+					<tr>
+						<td>
+							CmdPayload
+						</td>
+						<td>
+							Variable
+						</td>
+						<td>
+							<t>
+								The Payload is whatever data follows the command.
+								In some cases it is a blob of opaque data.
+								In other cases it is a structured XDR set of data.
+								See the specific CMD for details.
+							</t>
+						</td>
+						<td>
+							xdr_CmdPayload()
+						</td>
+					</tr>
+				</tbody>
+			</table>
+			<t>
+				A command conforming to this specification is not
+				a vendor command.
+				A command created by any vendor that implements
+				vendor specific commands or operations is a vendor
+				command.
+				Vendor commands have the VENDOR_BIT set in the
+				commands or operations.
+				And vendor commands MUST have a Length value
+				that follows the command that indicates how
+				many octets follow the length.
+				This is so that implementations that do not understand
+				the vendor extension can skip that many more octets
+				to find the next command or operation.
+			</t>
+			<t>
+				If any operation in a command has the VENDOR_BIT set
+				it may effect implementations that do not support that
+				specific vendor operation.
+				So caution must be used when creating vendor command
+				operation extensions.
+				If the vendor operation can not be performed by
+				client conforming to this specification, then
+				the command must also have the VENDOR_BIT set.
+			</t>
+			<t>
+				In this example the server is sending a CAPABILITY_PRE
+				command telling the client that the server supports
+				AUTHMD5 and some made up vendor authentication AUTH_Vendor_3.
+				The AUTHMD5 does not have the VENDOR_BIT set, and
+				AUTH_Vendor_e has the VENDOR_BIT set.
+			</t>
+			<t>
+				Clients or servers that are not using vendor specific
+				extensions, can:
+			</t>
+			<ul>
+				<li>Send a VENDOR_ID with the value as an	empty string.</li>
+				<li>
+					Or set the string, and just do not send
+					any command or command operations with extensions.
+				</li>
+			</ul>
+			<t>
+				Clients that do not understand the string value in VENDOR_ID
+				would ignore the commands and capabilities with the
+				VENDOR_BIT set.
+				Which is AUTH_Vendor_3 in this example.
+			</t>
+			<t>
+				This is an example of a CAPABILITY_PRE being sent
+				from the server to the client.
+				A client that is conforming to this specification and
+				does not support any vendor extensions, would ignore the
+				AUTH_Vendor_3	and authenticate with AUTHMD5.
+			</t>
+			<figure>
+				<name>Packet Body Non-Vendor- Diagram</name>
+				<artset>
+					<artwork align="center" type="ascii-art" src="Drawings/Packet-01.txt"/>
+          <artwork align="center" type="svg" src="Generated/Packet-01.svg"/>
+				</artset>
+			</figure>
+			
+			<t>
+				In this example, the server is telling the
+				client that it is using a vendor specific AUTHMD5
+				and a vendor specific AUTH_Vendor_e only.
+			</t>
+			<t>
+				When when vendor specific extensions make the connection
+				incompatible with implementations conforming to this
+				specification, then it MUST also set the VENDOR_BIT in the command.
+				In this example it is being set in the CAPABILITY_PRE command.
+				A conforming client would then know that there are zero compatible
+				authentication methods to this server.
+				A client implementations that understand the contents of the string
+				value for VENDOR_ID, may also understand these extensions.
+			</t>
+			<t>
+				After each entry that has the VENDOR_BIT set, the next
+				value must be a Length indicating how many octets of data
+				follow the Length, even when zero.
+			</t>
+			<figure anchor="P01-01">
+				<name>Packet Body Vendor - Diagram</name>
+				<artset>
+					<artwork align="center" type="ascii-art" src="Drawings/Packet-01-01.txt"/>
+          <artwork align="center" type="svg" src="Generated/Packet-01-01.svg"/>
+				</artset>
+			</figure>
+
+			<t>
+				And the matching data for <xref target="P01-01"/> could be:
+			</t>				
+			<figure anchor="P01-02">
+				<name>Packet Body Vendor - Diagram Data</name>
+				<artset>
+					<artwork align="center" type="ascii-art" src="Drawings/Packet-01-02.txt"/>
+          <artwork align="center" type="svg" src="Generated/Packet-01-02.svg"/>
+				</artset>
+			</figure>
+			<t>
+				Note that the CAPABILITY_PRE in <xref target="P01-01"/> and <xref target="P01-02"/>
+				has the VENDOR_BIT set, so it is followed by the number of octets
+				in the vendor extension.
+			</t>
+			<t>
+				Multiple commands may be sent in one packet.
+				And PHOENIX and non-vendor (NON-PHOENIX) commands may be sent
+				in one packet body by setting VENDOR_BIT (1)
+				or PHOENIX_BIT (0) in the packet.
+				This example shows two commands and the start of a third,
+				one that is a PHOENIX command	the other is a vendor command.
+			</t>
+			<figure>
+				<name>Packet Body Multiple Commands - Diagram</name>
+				<artset>
+					<artwork align="center" type="ascii-art" src="Drawings/Packet-03.txt"/>
+          <artwork align="center" type="svg" src="Generated/Packet-03.svg"/>
+				</artset>
+			</figure>
+			
+			<section>
+				<name>Packet Body ABNF</name>
+				<t>
+					ABNF:
+				</t>
+				<figure>
+					<name>Packet Body ABNF</name>
+					<xi:include href="include/04-PacketBody-ABNF.xml"/>
+				</figure>
+			</section>
+			<section>
+				<name>Packet Body XDR</name>
+				<t>
+					XDR Definition:
+				</t>
+				<figure>
+					<name>Packet Body XDR</name>
+					<xi:include href="include/04-PacketBody-XDR.xml"/>
+				</figure>
+			</section>
+
+			<section>
+				<name>Multiple Commands per Packet</name>
+			</section>
+		</section>
+			
+	</section>
+	<section anchor="PACKET_REPLY_SUMMARY">
+		<name>Packet Reply Overview</name>
+		<t>
+			All replies to a command are also a command packet.
+			They contain the same command SEQ and command
+			as the original packet.
+			The endpoint recognizes it is a reply because:
+		</t>
+		<ul>
+			<li>
+				The	command SEQ matches one that is waiting a reply.
+			</li>
+			<li>
+				When the client gets an even numbered SEQ, it can only
+				be a reply.
+			</li>
+			<li>
+				When the server gets an odd numbered
+				SEQ, it can only be a reply.
+			</li>
+		</ul>
+		<t>
+			Some commands have zero to many replies.
+			Each of these multiple replies contains the same SEQ as the
+			original command. An example, the client sends a request
+			to be notified when new email arrives and uses command
+			SEQ 20. Each time a new email arrives, a reply will
+			be sent from the server with a command SEQ of 20.
+			And over time, the client may get many with a SEQ of 20
+			as new emails arrive on the server.
+		</t>
+		<t>
+			And like the original command, multiple replies may be
+			in one packet.
+		</t>
+	</section>
+</section>
+<!-- Copyright 2025 RiverExplorer LLC and Douglas Mark Royer -->
+<section xmlns:xi="http://www.w3.org/2001/XInclude">
+	<name>Administration Commands</name>
+	
+	<t>
+		Implementations are not required to implement any ADMIN command.
+		A client will know the server supports one or more ADMIN
+		commands when it gets a CAPABILITY_POST with an ADMIN capability
+		in it, from the server.
+	</t>
+	<t>
+		Administrative command can be used to configure, audit, and manage
+		the remote endpoint.
+		Administrative command can be used to configure, audit, and manage
+		user access for the server implementation.
+	</t>
+
+	<section>
+		<name>Administration Capability Definitions</name>
+		<t>
+			Implementations MUST NOT send any ADMIN capability
+			in the CAPABILITY_PRE list.
+		</t>
+		<t>
+			Implementations that support any administration command
+			will include an ADMIN capability in the CAPABILITY_POST list.
+			An implementation may decide that only specified and
+			authorized users may issue administrative commands and
+			send only those authenticated users an ADMIN capability.
+		</t>
+		<t>
+			The ADMIN capability includes the list of ADMIN commands the user is
+			allowed to perform.
+			For example, if a user only has permission to only view user lists, then
+			only the USER_LIST ADMIN capability will be provided.
+		</t>
+		<t>
+			The capability name is also the command name to use
+			when invoking that capability.
+		</t>
+		<t>
+			When a user attempts to send a commmand they are not authorized
+			to send, the remote endpoint will reply with a NOT_SUPPORTED command
+			with its sequence number set to the sequence number from offending
+			command.
+		</t>
+	</section>
+
+	<section>
+		<name>Administration Command Payload</name>
+		<t>
+			To simplify naming, the capability names and command/reply names
+			are the same.
+		</t>
+		<t>
+			The following operations are defined for administration.
+			Each is part of an ADMIN command or ADMIN reply.
+			They each have a unique identifier, called an ADMIN CMD.
+		</t>
+		<t>
+			All of their XDR API is: xdr_CMD().
+		</t>
+		<table>
+			<name>Administration Comamnd Payload Operations</name>
+			<thead>
+				<tr>
+					<th>Name</th>
+					<th>CMD</th>
+					<th>Capability Description.</th>
+					<th>Command Description.</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr>
+					<td></td>
+					<td>CMD</td>
+					<td>
+						An Administrative Operation Identifier.
+					</td>
+					<td>
+						Holds the (VENDOR_BIT or PHOENIX_BIT) value
+						and one of ADMIN commands described in this section.
+					</td>
+				</tr>
+				<tr>
+					<td>SERVER_CONFIGURE</td>
+					<td>%x05:8</td>
+					<td>
+						May configure the server.
+						A reply may have zero to many of the reply values
+						set to READ_ONLY indicating the client may not
+						alter them
+					</td>
+					<td>
+						The command to view and alter the server configuration
+						information.
+					</td>
+				</tr>
+				<tr>
+					<td>SERVER_KICK_USER</td>
+					<td>%x06:8</td>
+					<td>
+						logs out a user. And may limit when they can use the server again.
+					</td>
+					<td>
+						The command to kick and limit a user.
+					</td>
+				</tr>
+				<tr>
+					<td>SERVER_LOGS</td>
+					<td>%x07:8</td>
+					<td>
+						May view the server logs.
+					</td>
+					<td>
+						The command to view server logs.
+					</td>
+				</tr>
+				<tr>
+					<td>SERVER_MANAGE_BANS</td>
+					<td>%x08:8</td>
+					<td>
+						May manage IP and user bans.
+					</td>
+					<td>
+						The command to manage ban users and IP addresses.
+					</td>
+				</tr>
+				<tr>
+					<td>SERVER_SHUTDOWN</td>
+					<td>%x09:8</td>
+					<td>
+						May shutdown the server.
+					</td>
+					<td>
+						The command to shutdown the server.
+					</td>
+				</tr>
+				<tr>
+					<td>SERVER_VIEW_STATS</td>
+					<td>%x0a:8</td>
+					<td>
+						May view server statistics.
+					</td>
+					<td>
+						The command to view statistics.
+					</td>
+				</tr>
+				<tr>
+					<td>USER_CREATE</td>
+					<td>%x0b:8</td>
+					<td>
+						May create a new user.
+					</td>
+					<td>
+						The command to create a Phoenix server user.
+					</td>
+				</tr>
+				<tr>
+					<td>USER_DELETE</td>
+					<td>%x0c:8</td>
+					<td>
+						May delete a user.
+					</td>
+					<td>
+						The command to delete a user.
+					</td>
+				</tr>
+				<tr>
+					<td>USER_LIST</td>
+					<td>%x0d:8</td>
+					<td>
+						May list users and their capabilities.
+					</td>
+					<td>
+						The command to list users.
+					</td>
+				</tr>
+				<tr>
+					<td>USER_PERMISSIONS</td>
+					<td>%x0e:8</td>
+					<td>
+						May update other users permissions.
+					</td>
+					<td>
+						The command to view and set user permissions.
+					</td>
+				</tr>
+				<tr>
+					<td>USER_RENAME</td>
+					<td>%x0f:8</td>
+					<td>
+						May rename a user.
+					</td>
+					<td>	
+						The command to rename a user.
+					</td>
+				</tr>
+			</tbody>
+		</table>
+
+	</section>
+		
+	<xi:include href="ServerConfigure.xml"/>
+	<xi:include href="ServerKickUser.xml"/>
+	<xi:include href="ServerLogs.xml"/>
+	<xi:include href="ServerManageBans.xml"/>
+	<xi:include href="ServerShutdown.xml"/>
+	<xi:include href="ServerViewStats.xml"/>
+	<xi:include href="UserCreate.xml"/>
+	<xi:include href="UserDelete.xml"/>
+	<xi:include href="UserList.xml"/>
+	<xi:include href="UserPermissions.xml"/>
+	<xi:include href="UserRename.xml"/>
+
+</section>
+<!-- Copyright 2025 RiverExplorer LLC and Douglas Mark Royer -->
+
+<section anchor="AUTH_SUMMARY" xmlns:xi="http://www.w3.org/2001/XInclude">
+	<name>Authentication Commands Summary</name>
+	<t>
+		The first thing a client must do, is authenticate
+		with the server.
+	</t>
+	<t>
+		Some users may also be administrators.
+		In those cases the user and client may wish to do further
+		authentication steps.
+		A user may wish to temporarily step up their authentication
+		level to perform some operations, then step back down
+		to do their personal operations.
+		This would be done on separate connection.
+	</t>
+	<t>
+		A server may if it wishes include AUTH capabilities in
+		the CAPABILITY_POST command.
+		It can decide which authenticated users can or must use
+		additional authentication.
+	</t>
+	<ul>
+		<li>
+			Some user accounts can be user only, without administrative
+			abilities of any kind.
+			Their CAPABILITY_POST list will not include any administrative
+			capabilities.
+		</li>
+		<li>
+			Some user accounts can be administrative only, and are limited
+			to CAPABILITY_POST actions that only include administrative
+			capabilities.
+		</li>
+		<li>
+			Some user accounts can be a normal user, with the ability
+			to step up their account to be able to do administrative actions.
+			While in stepped up mode, they are not able to act as their
+			original user account.
+			These users will get one or more administrative capabilities in
+			their CAPABILITY_POST list.
+		</li>
+		<li>
+			And some user account can be allowed all operations.
+			This protocol does not limit users.
+			This protocol enables user permissions to be configured.
+		</li>
+	</ul>
+
+	<section>
+		<name>Authentication process</name>
+		<t>
+			The client initiates the authentication process.
+			When the client makes a connection to a server it
+			takes one of two paths, depending
+			on [<xref target="AuthSummary01"/> (A)]:
+		</t>
+		<ul>
+			<li>
+				If it has never authenticated to this server using the
+				current account.[<xref target="AuthSummary01"/> (L)]:
+			</li>
+			<li>
+				If its last connection had a successful authentication
+				to this server using the current account.
+				[<xref target="AuthSummary01"/> (B)]:
+			</li>
+		</ul>
+		<t>
+			Part of the authentication process is determining which
+			authentication process a server requires.
+			So upon initial connection the client sends a CAPABILITY_PRE
+			packet that includes all of the authentication methods
+			it is willing to use.
+			It is an ordered list with the more desirable ones at
+			the front of the list, and the least desirable ones
+			at the end if the list.
+			And if the client wishes to do any vendor specific operations,
+			then it must also	include the VENDOR_ID string in the
+			initial packet.
+		</t>
+		<t>
+			Similarly, the CAPABILITY_PRE packet sent from the server
+			includes the same information.
+			The server is the authentication mechanism authority.
+		</t>
+		<t>
+			When a client sends a VENDOR_ID command in
+			its CAPABILITY_PRE command, then the server MUST
+			reply back in its CAPABILITY_PRE reply,
+			its VENDOR_ID (It is valid for it to be empty).
+			(See <xref target="VendorID">VendorID</xref>)
+		</t>
+		<figure anchor="AuthSummary01">
+			<name>Authentication Overview</name>
+			<artset>
+<artwork type="ascii-art"><![CDATA[
+
+                 CLIENT  |  SERVER
+                 ------  |  ------
+   (A)                   |
+Have Previous            |
+AUTH Success             |
+ History?                |          AUTH PASS?
+   .                     |               .
+  / \                                   / \ (D)
+ /   \  YES    SEND AUTH (B)           /   \
++  ?  +------+----------------------->+  ?  +-.
+ \   /       | AND SEND CAPABILITY_PRE \   /   | P (E)
+  \ /        |    (C)                   \ /    | A
+   +         |                       (F) +     | S
+   | NO      |                           | F   | S
+   | (L)     |                           | A   |
+   |         v (I)                       | I   |
+   |      +--+--+     <--CAPABILITY_PRE  | L   |
+   |      | WAIT |<---------------------'      |
+   |      |      |<---------------------------'
+   |      +--+---+    <--CAPABILITY_POST (G)
+   |         |
+   |         + (H) Got CAPABILITY_POST?
+   |        / \ 
+   |       /   \ YES (J)
+   |      +  ?  +---> GO TO (Y) AUTHENTICATED.
+   |       \   / 
+   |        \ /
+   |         + NO (K)
+   |         |
+   |         v
+   |         GO TO START AUTH (Q)
+   |
+   v    (M)
++--+------------------+
+| SEND CAPABILITY_PRE +------------------. 
++--+------------------+                  |
+   |                                (N)  v
+   |                                +----+----+
+   |                                | SERVER  |
+   |                                | SENDS   |
+   |                                | CAP_PRE |
+   v (O)                            +----+----+
++--+--+     <- CAPABILITY_PRE            |     
+|Wait |<---------------------------------' (P)
++--+--+
+   |
+   |  (Q) START AUTH
+   v  Any AUTH IN LIST WE CAN USE?
+   +
+  / \
+ /   \  NO
++  ?  +----> UNABLE TO TALK (R)
+ \   /       TO THIS SERVER!
+  \ /
+   +  YES (S)                       (T)
+   |                                AUTH
+   |    <-- SENT CAPABILITY_PRE     FAIL
+   +<-------------------------------. 
+   |                                 |
+   |                                 +
+   v (U)                         (V)/ \
++--+---+      AUTH -->             /   \
+| AUTH +------------------------->+ OK? +
++--+---+                           \   /
+   |                            (W) \ /
+   |                           AUTH  +
+   |                           PASS  |
++--+---+ (X)                         |
+| WAIT |<---------------------------'
++--+---+  <-- SENT CAPABILITY_POST 
+   |
+   v
+    (Y) CLIENT IS AUTHENTICATED
+
+]]></artwork>
+<artwork type="svg">
+<svg xmlns="http://www.w3.org/2000/svg" version="1.1" height="1216" width="440" viewBox="0 0 440 1216" class="diagram" text-anchor="middle" font-family="monospace" font-size="13px" stroke-linecap="round">
+<path d="M 8,560 L 8,592" fill="none" stroke="black"/>
+<path d="M 8,704 L 8,736" fill="none" stroke="black"/>
+<path d="M 8,1008 L 8,1040" fill="none" stroke="black"/>
+<path d="M 8,1104 L 8,1136" fill="none" stroke="black"/>
+<path d="M 32,224 L 32,552" fill="none" stroke="black"/>
+<path d="M 32,592 L 32,696" fill="none" stroke="black"/>
+<path d="M 32,736 L 32,792" fill="none" stroke="black"/>
+<path d="M 32,896 L 32,1000" fill="none" stroke="black"/>
+<path d="M 32,1040 L 32,1104" fill="none" stroke="black"/>
+<path d="M 32,1136 L 32,1168" fill="none" stroke="black"/>
+<path d="M 56,704 L 56,736" fill="none" stroke="black"/>
+<path d="M 64,1000 L 64,1040" fill="none" stroke="black"/>
+<path d="M 64,1104 L 64,1136" fill="none" stroke="black"/>
+<path d="M 88,288 L 88,336" fill="none" stroke="black"/>
+<path d="M 112,176 L 112,280" fill="none" stroke="black"/>
+<path d="M 112,336 L 112,368" fill="none" stroke="black"/>
+<path d="M 112,464 L 112,496" fill="none" stroke="black"/>
+<path d="M 144,304 L 144,336" fill="none" stroke="black"/>
+<path d="M 184,560 L 184,592" fill="none" stroke="black"/>
+<path d="M 208,32 L 208,128" fill="none" stroke="black"/>
+<path d="M 296,616 L 296,688" fill="none" stroke="black"/>
+<path d="M 304,960 L 304,976" fill="none" stroke="black"/>
+<path d="M 304,1072 L 304,1104" fill="none" stroke="black"/>
+<path d="M 336,224 L 336,288" fill="none" stroke="black"/>
+<path d="M 336,576 L 336,616" fill="none" stroke="black"/>
+<path d="M 336,688 L 336,720" fill="none" stroke="black"/>
+<path d="M 376,624 L 376,688" fill="none" stroke="black"/>
+<path d="M 384,192 L 384,304" fill="none" stroke="black"/>
+<path d="M 144,48 L 184,48" fill="none" stroke="black"/>
+<path d="M 232,48 L 272,48" fill="none" stroke="black"/>
+<path d="M 56,176 L 304,176" fill="none" stroke="black"/>
+<path d="M 360,176 L 368,176" fill="none" stroke="black"/>
+<path d="M 88,288 L 128,288" fill="none" stroke="black"/>
+<path d="M 184,288 L 200,288" fill="none" stroke="black"/>
+<path d="M 152,304 L 320,304" fill="none" stroke="black"/>
+<path d="M 152,320 L 368,320" fill="none" stroke="black"/>
+<path d="M 88,336 L 144,336" fill="none" stroke="black"/>
+<path d="M 184,336 L 200,336" fill="none" stroke="black"/>
+<path d="M 136,416 L 168,416" fill="none" stroke="black"/>
+<path d="M 8,560 L 184,560" fill="none" stroke="black"/>
+<path d="M 184,576 L 336,576" fill="none" stroke="black"/>
+<path d="M 8,592 L 184,592" fill="none" stroke="black"/>
+<path d="M 296,624 L 376,624" fill="none" stroke="black"/>
+<path d="M 296,688 L 376,688" fill="none" stroke="black"/>
+<path d="M 8,704 L 48,704" fill="none" stroke="black"/>
+<path d="M 64,720 L 336,720" fill="none" stroke="black"/>
+<path d="M 8,736 L 56,736" fill="none" stroke="black"/>
+<path d="M 56,848 L 96,848" fill="none" stroke="black"/>
+<path d="M 72,928 L 88,928" fill="none" stroke="black"/>
+<path d="M 40,944 L 288,944" fill="none" stroke="black"/>
+<path d="M 8,1008 L 64,1008" fill="none" stroke="black"/>
+<path d="M 160,1008 L 176,1008" fill="none" stroke="black"/>
+<path d="M 64,1024 L 272,1024" fill="none" stroke="black"/>
+<path d="M 8,1040 L 64,1040" fill="none" stroke="black"/>
+<path d="M 8,1104 L 64,1104" fill="none" stroke="black"/>
+<path d="M 72,1120 L 288,1120" fill="none" stroke="black"/>
+<path d="M 8,1136 L 64,1136" fill="none" stroke="black"/>
+<path d="M 88,1136 L 104,1136" fill="none" stroke="black"/>
+<path d="M 8,848 L 32,896" fill="none" stroke="black"/>
+<path d="M 32,800 L 56,848" fill="none" stroke="black"/>
+<path d="M 280,1024 L 304,1072" fill="none" stroke="black"/>
+<path d="M 304,976 L 328,1024" fill="none" stroke="black"/>
+<path d="M 88,416 L 112,464" fill="none" stroke="black"/>
+<path d="M 8,176 L 32,224" fill="none" stroke="black"/>
+<path d="M 112,368 L 136,416" fill="none" stroke="black"/>
+<path d="M 32,128 L 56,176" fill="none" stroke="black"/>
+<path d="M 312,176 L 336,224" fill="none" stroke="black"/>
+<path d="M 336,128 L 360,176" fill="none" stroke="black"/>
+<path d="M 8,176 L 32,128" fill="none" stroke="black"/>
+<path d="M 32,224 L 56,176" fill="none" stroke="black"/>
+<path d="M 88,416 L 112,368" fill="none" stroke="black"/>
+<path d="M 112,464 L 136,416" fill="none" stroke="black"/>
+<path d="M 312,176 L 336,128" fill="none" stroke="black"/>
+<path d="M 8,848 L 32,800" fill="none" stroke="black"/>
+<path d="M 336,224 L 360,176" fill="none" stroke="black"/>
+<path d="M 32,896 L 56,848" fill="none" stroke="black"/>
+<path d="M 280,1024 L 304,976" fill="none" stroke="black"/>
+<path d="M 304,1072 L 328,1024" fill="none" stroke="black"/>
+<path d="M 368,176 C 376.83064,176 384,183.16936 384,192" fill="none" stroke="black"/>
+<path d="M 128,288 C 136.83064,288 144,295.16936 144,304" fill="none" stroke="black"/>
+<path d="M 320,304 C 328.83064,304 336,296.83064 336,288" fill="none" stroke="black"/>
+<path d="M 368,320 C 376.83064,320 384,312.83064 384,304" fill="none" stroke="black"/>
+<path d="M 288,944 C 296.83064,944 304,951.16936 304,960" fill="none" stroke="black"/>
+<path d="M 288,1120 C 296.83064,1120 304,1112.83064 304,1104" fill="none" stroke="black"/>
+<polygon class="arrowhead" points="344,616 332,610.4 332,621.6" fill="black" transform="rotate(90,336,616)"/>
+<polygon class="arrowhead" points="312,176 300,170.4 300,181.6" fill="black" transform="rotate(0,304,176)"/>
+<polygon class="arrowhead" points="280,1024 268,1018.4 268,1029.6" fill="black" transform="rotate(0,272,1024)"/>
+<polygon class="arrowhead" points="192,336 180,330.4 180,341.6" fill="black" transform="rotate(180,184,336)"/>
+<polygon class="arrowhead" points="192,288 180,282.4 180,293.6" fill="black" transform="rotate(180,184,288)"/>
+<polygon class="arrowhead" points="184,1008 172,1002.4 172,1013.6" fill="black" transform="rotate(0,176,1008)"/>
+<polygon class="arrowhead" points="176,416 164,410.4 164,421.6" fill="black" transform="rotate(0,168,416)"/>
+<polygon class="arrowhead" points="160,320 148,314.4 148,325.6" fill="black" transform="rotate(180,152,320)"/>
+<polygon class="arrowhead" points="160,304 148,298.4 148,309.6" fill="black" transform="rotate(180,152,304)"/>
+<polygon class="arrowhead" points="120,496 108,490.4 108,501.6" fill="black" transform="rotate(90,112,496)"/>
+<polygon class="arrowhead" points="120,280 108,274.4 108,285.6" fill="black" transform="rotate(90,112,280)"/>
+<polygon class="arrowhead" points="104,848 92,842.4 92,853.6" fill="black" transform="rotate(0,96,848)"/>
+<polygon class="arrowhead" points="96,1136 84,1130.4 84,1141.6" fill="black" transform="rotate(180,88,1136)"/>
+<polygon class="arrowhead" points="80,1120 68,1114.4 68,1125.6" fill="black" transform="rotate(180,72,1120)"/>
+<polygon class="arrowhead" points="80,928 68,922.4 68,933.6" fill="black" transform="rotate(180,72,928)"/>
+<polygon class="arrowhead" points="72,720 60,714.4 60,725.6" fill="black" transform="rotate(180,64,720)"/>
+<polygon class="arrowhead" points="48,944 36,938.4 36,949.6" fill="black" transform="rotate(180,40,944)"/>
+<polygon class="arrowhead" points="40,1168 28,1162.4 28,1173.6" fill="black" transform="rotate(90,32,1168)"/>
+<polygon class="arrowhead" points="40,1000 28,994.4 28,1005.6" fill="black" transform="rotate(90,32,1000)"/>
+<polygon class="arrowhead" points="40,792 28,786.4 28,797.6" fill="black" transform="rotate(90,32,792)"/>
+<polygon class="arrowhead" points="40,696 28,690.4 28,701.6" fill="black" transform="rotate(90,32,696)"/>
+<polygon class="arrowhead" points="40,552 28,546.4 28,557.6" fill="black" transform="rotate(90,32,552)"/>
+<g class="text">
+<text x="164" y="36">CLIENT</text>
+<text x="252" y="36">SERVER</text>
+<text x="40" y="68">(A)</text>
+<text x="56" y="84">Have Previous</text>
+<text x="52" y="100">AUTH Success</text>
+<text x="44" y="116">History?</text>
+<text x="332" y="116">AUTH PASS?</text>
+<text x="368" y="148">(D)</text>
+<text x="80" y="164">YES</text>
+<text x="176" y="164">SEND AUTH (B)</text>
+<text x="32" y="180">?</text>
+<text x="336" y="180">?</text>
+<text x="216" y="196">AND SEND CAPABILITY_PRE</text>
+<text x="416" y="196">P (E)</text>
+<text x="160" y="212">(C)</text>
+<text x="400" y="212">A</text>
+<text x="312" y="228">(F)</text>
+<text x="400" y="228">S</text>
+<text x="52" y="244">NO</text>
+<text x="352" y="244">F</text>
+<text x="400" y="244">S</text>
+<text x="56" y="260">(L)</text>
+<text x="352" y="260">A</text>
+<text x="136" y="276">(I)</text>
+<text x="352" y="276">I</text>
+<text x="260" y="292">CAPABILITY_PRE</text>
+<text x="352" y="292">L</text>
+<text x="116" y="308">WAIT</text>
+<text x="280" y="340">CAPABILITY_POST (G)</text>
+<text x="220" y="372">(H) Got CAPABILITY_POST?</text>
+<text x="168" y="404">YES (J)</text>
+<text x="112" y="420">?</text>
+<text x="276" y="420">GO TO (Y) AUTHENTICATED.</text>
+<text x="148" y="468">NO (K)</text>
+<text x="188" y="516">GO TO START AUTH (Q)</text>
+<text x="80" y="548">(M)</text>
+<text x="96" y="580">SEND CAPABILITY_PRE</text>
+<text x="304" y="612">(N)</text>
+<text x="332" y="644">SERVER</text>
+<text x="328" y="660">SENDS</text>
+<text x="336" y="676">CAP_PRE</text>
+<text x="56" y="692">(O)</text>
+<text x="168" y="708">&lt;- CAPABILITY_PRE</text>
+<text x="28" y="724">Wait</text>
+<text x="360" y="724">(P)</text>
+<text x="108" y="772">(Q) START AUTH</text>
+<text x="164" y="788">Any AUTH IN LIST WE CAN USE?</text>
+<text x="76" y="836">NO</text>
+<text x="32" y="852">?</text>
+<text x="180" y="852">UNABLE TO TALK (R)</text>
+<text x="168" y="868">TO THIS SERVER!</text>
+<text x="80" y="900">YES (S)</text>
+<text x="304" y="900">(T)</text>
+<text x="308" y="916">AUTH</text>
+<text x="176" y="932">SENT CAPABILITY_PRE</text>
+<text x="308" y="932">FAIL</text>
+<text x="56" y="996">(U)</text>
+<text x="280" y="996">(V)</text>
+<text x="132" y="1012">AUTH</text>
+<text x="36" y="1028">AUTH</text>
+<text x="304" y="1028">OK?</text>
+<text x="272" y="1060">(W)</text>
+<text x="268" y="1076">AUTH</text>
+<text x="268" y="1092">PASS</text>
+<text x="88" y="1108">(X)</text>
+<text x="36" y="1124">WAIT</text>
+<text x="196" y="1140">SENT CAPABILITY_POST</text>
+<text x="144" y="1188">(Y) CLIENT IS AUTHENTICATED</text>
+</g>
+</svg>
+				</artwork>
+			</artset>
+		</figure>
+	</section>
+	<section>
+		<name>Authenticating With Successful History</name>
+		<t>
+			When a client has had a successful connection to the server
+			using the current client login name, then the client
+			sends the AUTH command and appends as a second
+			command in the same packet, the clients CAPABILITY_PRE command
+			as shown in <xref target="AuthSummary01"/> (B & C).
+			Then the client waits for a server reply at
+			<xref target="AuthSummary01"/> (I):
+		</t>
+		<t>
+			When the server gets this dual command packet
+			<xref target="AuthSummary01"/> at (D) and attempts the
+			authentication process.
+			If the authentication passes,[<xref target="AuthSummary01"/> (E)]:
+			the server sends a	CAPABILITY_POST
+			[<xref target="AuthSummary01"/> (G)]
+			command to the client as the okay reply.
+		</t>
+		<t>
+			If the authentication fails, then the server sends
+			the client its first CAPABILITY_PRE command.
+			[<xref target="AuthSummary01"/> (F)]
+		</t>
+		<t>
+			The client waits for a reply from the server
+			at <xref target="AuthSummary01"/> (I).
+		</t>
+		<t>
+			When the client gets a CAPABILITY_PRE
+			[<xref target="AuthSummary01"/> (F)]
+			it knows the authentication failed, so the client
+			goes to start a normal authentication
+			process [<xref target="AuthSummary01"/> (K) & (Q)]
+		</t>
+		<t>
+			If the received command was a CAPABILITY_POST
+			[<xref target="AuthSummary01"/> (G)], then
+			the authentication passed and the client
+			is authenticated.
+			And starts any post authentication work.
+			[<xref target="AuthSummary01"/> (J & Y)]
+		</t>
+
+	</section>
+	<section>
+		<name>Authenticating With No History</name>
+		<t>
+			When there is not successful history between
+			the client and server, the authentication
+			process starts at 
+			[<xref target="AuthSummary01"/> (M)]
+			with the client sending its CAPABILITY_PRE
+			command to the server.
+			Then waits for a server reply
+			[<xref target="AuthSummary01"/> (O)]
+		</t>
+		<t>
+			As soon as the server gets its
+			authentication CAPABILITY_PRE at
+			[<xref target="AuthSummary01"/> (N)],
+			the server evaluates the contents of
+			the CAPABILITY_PRE from the client,
+			matches it to the servers configured
+			ability, and sends a CAPABILITY_PRE
+			packet back to the client.
+			[<xref target="AuthSummary01"/> (P)]
+			This CAPABILITY_PRE packet contains
+			the authentication method(s) that the
+			client must use to authenticate with
+			the server.
+			A CAPABILITY_PRE command from the
+			server is only sent after receiving
+			one from the client.
+			So the server only sends the common
+			authentication method using a priority
+			configured into the server.
+		</t>
+		<t>
+			The servers CAPABILITY_PRE command
+			may contain zero or more authentication
+			methods.
+			When more than one, all must be used.
+			For example, the server could require
+			a client certificate (AUTHCERT_TLS),
+			and a user MD5 login (AUTHMD5).
+			So both would be sent back, in this example.
+			When the servers CAPABILITY_PRE command
+			does not have any authentication methods,
+			the server is telling the client that no
+			authentication is possible.
+			When this happens the server then terminates
+			the connection.
+			And the client then terminates the connection.
+		</t>
+
+	</section>
+
+	<section>
+		<name>Authentication Failure</name>
+		<t>
+			If the authentication fails, then the server replies
+			back with a CAPABILITY_PRE with the sequence
+			number the same as in the authentication request.
+			And includes the supported authentication methods.
+		</t>
+		<t>
+			After too many retries, the client or server may terminate the connection.
+		</t>
+		<figure>
+			<name>AUTHCERT_USER</name>
+			<artset>
+				<artwork align="center" type="ascii-art"><![CDATA[
+Failed authentication:
+
++---------------------------------+
+| PacketHeader (Length:32)        |
++---------------------------------+
+| Number of commands (Length:32)  |
++---------------------------------+
+| Sequence (SEQ:32)               |
++-+-------------------------------+
+|0| CAPABILITY_PRE (%x29:31)      |
++-+-------------------------------+
+| ,,,
++----------------------------------
+]]></artwork>
+				<artwork align="center" type="svg">
+<svg xmlns="http://www.w3.org/2000/svg" version="1.1" height="224" width="288" viewBox="0 0 288 224" class="diagram" text-anchor="middle" font-family="monospace" font-size="13px" stroke-linecap="round">
+<path d="M 8,48 L 8,208" fill="none" stroke="black"/>
+<path d="M 24,144 L 24,176" fill="none" stroke="black"/>
+<path d="M 280,48 L 280,176" fill="none" stroke="black"/>
+<path d="M 8,48 L 280,48" fill="none" stroke="black"/>
+<path d="M 8,80 L 280,80" fill="none" stroke="black"/>
+<path d="M 8,112 L 280,112" fill="none" stroke="black"/>
+<path d="M 8,144 L 280,144" fill="none" stroke="black"/>
+<path d="M 8,176 L 280,176" fill="none" stroke="black"/>
+<path d="M 8,208 L 280,208" fill="none" stroke="black"/>
+<g class="text">
+<text x="92" y="20">Failed authentication:</text>
+<text x="116" y="68">PacketHeader (Length:32)</text>
+<text x="140" y="100">Number of commands (Length:32)</text>
+<text x="88" y="132">Sequence (SEQ:32)</text>
+<text x="16" y="164">0</text>
+<text x="132" y="164">CAPABILITY_PRE (%x29:31)</text>
+<text x="32" y="196">,,,</text>
+</g>
+</svg>
+				</artwork>
+			</artset>
+		</figure>
+	</section>
+
+</section>
+<!-- Copyright 2025 RiverExplorer LLC and Douglas Mark Royer -->
+<section anchor="AUTHANONYMOUS" xmlns:xi="http://www.w3.org/2001/XInclude">
+	<name>Authentication - ANONYMOUS</name>
+	<t>
+		ANONYMOUS is both a capability and a command.
+	</t>
+	<section anchor="AUTHANONYMOUS-CAPABILITY">
+		<name>Authentication - AUTHANONYMOUS - Capability</name>
+		<t>
+			When sent as a capability, a true or false value
+			follows.
+			When true, it means that anonymous login is supported.
+			When false, it means that anonymous login is not supported.
+		</t>
+		<t>
+			The highest bit is set to zero (0) which indicates
+			this is a Phoenix defined capability, and
+			not a vendor created and known capability.
+			Followed by the 31-bit capability value.
+		</t>
+		<figure>
+			<name>Capability - AUTHANONYMOUS</name>
+			<artset>
+				<artwork align="center" type="ascii-art" src="Drawings/ANONYMOUS-00.txt"/>
+				<artwork align="center" type="svg" src="Generated/ANONYMOUS-00.svg"/>
+			</artset>
+		</figure>
+	</section>
+
+	<section anchor="AUTHANONYMOUS-COMMAND">
+		<name>Authentication - AUTHANONYMOUS - Command</name>
+		<t>
+			Once the connection is made the client sends its CAPABILITY_PRE
+			list, or an authentication to the server..
+		</t>
+		<t>
+			If the client has already had a relationship with the server,
+			then the client may send the AUTHANONYMOUS command to the server.
+			And only if AUTHANONYMOUS	had been successful in the past, to that same server.
+		</t>
+		<t>
+			If the server does not support (or no longer supports) an AUTHANONYMOUS
+			command, it will reply with a CAPABILITY_PRE packet with
+			the same sequence number the same as in the AUTHANONYMOUS login request.
+			And include the authorized authentication methods.
+		</t>
+		<t>
+			After the server receives an AUTHANONYMOUS, and if it supports it,
+			it allows the connection and considers the user a valid
+			anonymous user.
+			Then the server replies with a CAPABILITY_POST command.
+			When the client gets the CAPABILITY_POST command, it knows
+			the AUTHANONYMOUS was successful.
+			The client may then send any CAPABILITY_POST items to the server.
+		</t>
+			
+		<figure>
+			<name>AUTHANONYMOUS - Login Flow</name>
+			<artset>
+				<artwork align="center" type="ascii-art" src="Drawings/AnonFlow-00.txt"/>
+				<artwork align="center" type="svg" src="Generated/AnonFlow-00.svg"/>
+			</artset>
+		</figure>
+
+		<figure>
+			<name>Capability - AUTHANONYMOUS</name>
+			<artset>
+				<artwork align="center" type="ascii-art" src="Drawings/ANONYMOUS-01.txt"/>
+				<artwork align="center" type="svg" src="Generated/ANONYMOUS-01.svg"/>
+			</artset>
+		</figure>
+
+		<section>
+			<name>Authentication - ANONYMOUS - ABNF</name>
+			<figure>
+				<name>Authentication - ANONYMOUS - ABNF</name>
+				<xi:include href="include/10-AuthAnonymous-ABNF.xml"/>
+			</figure>
+		</section>
+		
+		<section>
+			<name>Authentication - ANONYMOUS - XDR</name>
+			<figure>
+				<name>Authentication - ANONYMOUS - XDR</name>
+				<xi:include href="include/10-AuthAnonymous-XDR.xml"/>
+			</figure>
+		</section>
+	</section>
+	
+</section>
+<!-- Copyright 2025 RiverExplorer LLC and Douglas Mark Royer -->
+<section xmlns:xi="http://www.w3.org/2001/XInclude">
+	<name>Authentication - Certificate</name>
+	<t>
+		There are two kinds of AUTHCERT.
+	</t>
+	<ul>
+		<li>
+			Authentication by TLS certificate at connection time.
+			This is called an AUTHCERT_TLS.
+		</li>
+		<li>
+			Authentication challenge and response after connection time.
+			This is called an AUTHCERT_USER. 
+		</li>
+	</ul>
+
+	<section>
+		<name>Authentication - Certificate - Capability</name>
+		<t>
+			When the server sends the AUTHCERT capability to the
+			client, it is followed by two "enabled" values.
+			One for AUTHCERT_TLS and the other for AUTHCERT_USER.
+		</t>
+		
+	</section>
+
+	<section>
+		<name>AUTHCERT_TLS</name>
+		<t>
+			When the client connects to the server, it uses a
+			pre authorized digital certificate for the TLS connection.
+		</t>
+		<t>
+			The certificate itself could be sufficient.
+			Or the server may look into the contents of the client
+			public certificate supplied at TLS connection time
+			for information to help it determine the level of trust,
+			including none.
+		</t>
+		<t>
+			The server could be configured to accept self-signed
+			certificates, or it may be configured to verify
+			a certificate chain to a root certificate it trusts.
+			Or some combination.
+		</t>
+		<t>
+			A server could be configured to only allow AUTHCERT_TLS
+			from a subset of IP addresses or networks.
+		</t>
+		<t>
+			When the client successfully authenticates using AUTHCERT_TLS,
+			then the server replies with a CAPABILITY_POST
+			command to the client. And no CAPABILITY_PRE
+			command is sent by the server.
+		</t>
+		<t>
+			When a client fails the AUTHCERT_TLS, then the
+			server sends a CAPABILITY_PRE command	to the client.
+			The client can then proceed with other authentication
+			methods that were provided in the capability list supplied by
+			the server.
+		</t>
+		<t>
+			When a client gets a CAPABILITY_POST command from the
+			server after connection, without having sent any
+			authentication commands, the the client knows it has
+			been authenticated with AUTHCERT_TLS.
+		</t>
+		<t>
+			Clients expecting an AUTHCERT_TLS must wait for
+			the CAPABILITY_POST or CAPABILITY_PRE command before
+			continuing with client operations with associated
+			folders and files.
+		</t>
+		<t>
+			When a client that was not expecting an AUTHCERT_TLS
+			gets a CAPABILITY_POST after connection
+			and did not get a CAPABILITY_PRE, then the client know
+			they are authenticated using the supplied TLS certificate.
+		</t>
+	</section>
+	
+	<section>
+		<name>AUTHCERT_USER</name>
+		<t>
+			This authentication method still requires a valid TLS
+			connection certificate, as it does with all connections.
+			It also requires that the client send a public certificate
+			to the server as a separate authentication step for the
+			user.
+		</t>
+		<t>
+			This type of login could be used when traveling or
+			the server requires more control over security.
+			The users certificates could be under the control
+			of the users company, and easier to create and
+			revoke than traditional certificate sources.
+		</t>
+		<t>
+			In order for AUTHCERT_USER to work, the server MUST
+			already have the users public certificate.
+			This could have been setup by a servers implementation
+			configuration files, or from a previous successful
+			non-AUTHCERT_USER connection where the client informed
+			the server of the users public certificate.
+		</t>
+		<t>
+			To authenticate with a AUTHCERT_USER,
+			the client sends a AUTHCERT_USER command with
+			a clear text token over the TLS connection, followed by a
+			the both the secret login name and password encrypted with
+			the users private certificate.
+		</t>
+		<t>
+			The token could be one time, or reusable.
+			The server implementation is the authority on the token
+			and token usage.
+			It could be possible that the user never knows the
+			actual login and password.
+			They could be installed on a device for the user.
+			They, perhaps, go to a web page, or other method to get the token.
+			Then perhaps enter their personal password to allow
+			access to the certificates and secret login information
+			that is installed and already encrypted on the client.
+		</t>
+		<t>
+			The server decrypts the users login name
+			and password with the users public certificate
+			selected from the clear text token sent.
+		</t>
+		<t>
+			If the decrypted user login and password match
+			what is expected, then the authentication is successful and
+			the server replies with a CAPABILITY_POST
+			command.
+		</t>
+
+	</section>
+
+	<section>
+		<name>Certificate Management</name>
+		<t>
+			A Phoenix server may use AUTHCERT_USER authentication.
+			When it does, it needs a way for the user, if authorized
+			to upload their public certificate to the server.
+			This can be enabled or disabled by server configuration
+			on the site, per user, or any other rules implemented
+			in the server.
+		</t>
+		<t>
+			User certificate management can only be used after
+			the user has authenticated with the server.
+		</t>
+	</section>
+</section>
+<!-- Copyright 2025 RiverExplorer LLC and Douglas Mark Royer -->
+<section anchor="AUTHMD5" xmlns:xi="http://www.w3.org/2001/XInclude">
+	<name>Authentication - MD5</name>
+	<t>
+		AUTHMD5 is both a capability and a command.
+	</t>
+	<section anchor="AUTHMD5-CAPABILITY">
+		<name>Authentication - MD5 - Capability</name>
+		<t>
+			When sent as a capability, a true or false value
+			follows.
+			When true, it means that AUTHMD5 is supported.
+			When false, it means that AUTHMD5 is not supported.
+		</t>
+		<t>
+			The highest bit is set to zero (0) which indicates
+			this is a Phoenix defined capability, and
+			not a vendor created and known capability.
+			Followed by the 31-bit capability value.
+		</t>
+		<figure>
+			<name>Capability - AUTHMD5</name>
+			<artset>
+				<artwork align="center" type="ascii-art" src="Drawings/MD5-00.txt"/>
+				<artwork align="center" type="svg" src="Generated/MD5-00.svg"/>
+			</artset>
+		</figure>
+	</section>
+
+	<section anchor="AUTHMD5-COMMAND">
+		<name>Authentication - MD5 - Command</name>
+		<t>
+			Once the connection is made the server sends its pre authentication
+			capability list to the client.
+			If AUTHMD5 is included in that list, then the client
+			may initiate an AUTHMD5 login.
+		</t>
+		<t>
+			If the client has already had a relationship with the server,
+			then the client may send the AUTHMD5 command to the server
+			before receiving the servers capability list, and only if AUTHMD5
+			had been successful in the past, to that server.
+		</t>
+		<t>
+			If the server does not support (or no longer supports) an MD5
+			command, it will reply with a NotSupported packet with the
+			sequence number	the same as in the MD5 login request.
+		</t>
+		<t>
+			After the server receives an AUTHMD5, and if it supports it,
+			then it attempts to verify the provided information.
+			One of two replies are possible, success, or failure.
+		</t>
+		<t>
+			On failure the server replies with a AUTHMD5 packet,
+			with the sequence number the same that was in the
+			AUTHMD5 command it received.
+			With the login and password fields empty and their
+			lengths set to zero.
+		</t>
+			<figure>
+			<name>Capability - AUTHMD5</name>
+			<artset>
+				<artwork align="center" type="ascii-art" src="Drawings/MD5-01.txt"/>
+				<artwork align="center" type="svg" src="Generated/MD5-01.svg"/>
+			</artset>
+		</figure>
+		<t>
+			On success the server replies with a post authentication
+			capability command.
+		</t>
+			
+
+		<section>
+			<name>Authentication - MD5 - ABNF</name>
+			<figure>
+				<name>Authentication - MD5 - ABNF</name>
+				<xi:include href="include/09-AuthMD5-ABNF.xml"/>
+			</figure>
+		</section>
+		
+		<section>
+			<name>Authentication - MD5 - XDR</name>
+			<figure>
+				<name>Authentication - MD5 - XDR</name>
+				<xi:include href="include/09-AuthMD5-XDR.xml"/>
+			</figure>
+		</section>
+	</section>
+	
+</section>
+<!-- Copyright 2025 RiverExplorer LLC and Douglas Mark Royer -->
+
+<section anchor="CALENDAR_SUMMARY">
+	<name>Calendar Commands Summary</name>
+	<t>
+		These command are based on iCalendar and iTIp.
+	</t>
+</section>
+<!-- Copyright 2025 RiverExplorer LLC and Douglas Mark Royer -->
+
+<section anchor="CAPABILITY"  xmlns:xi="http://www.w3.org/2001/XInclude">
+	<name>Capability Commands Summary</name>
+	<t>
+		The purpose of this protocol is to facilitate the transfer
+		of MIME objects, not to define how they are used.
+		Capabilities allow each endpoint to ensure the other
+		endpoint is capable of transferring the desired content
+		and optionally allow control of the other endpoint.
+	</t>
+	<t>
+		Capabilities are attributes of both a client and server
+		implementation.
+		Some may provide a superset or subset when compared
+		to other implementations.
+		This can be done to split workload or just because
+		they specialize in specific operations.
+	</t>
+	<t>
+		A capability is a 31-bit unsigned integer.
+		Plus a 1-bit identifier signifying if it is a Phoenix capability
+		or vendor specific capability, for a total of 32-bits.
+	</t>
+	<t>
+		This specification describes several capabilities.
+		Some are described in other sections, and some are
+		described in this section.
+		See the <xref target="CapabilityIndex">Capability Index</xref>
+		for a complete list	in this specification.
+	</t>
+	<t>
+		These are not a negotiation.
+		Each sends their abilities to the other.
+	</t>
+	<t>
+		Capabilities from the server are sent once or twice.
+		Optionally one before the user is authenticated (CAPABILITY_PRE),
+		and once after (CAPABILITY_POST).
+		If a user logs out and stays connected, then the process starts
+		over with the server assuming a new client just connected.
+	</t>
+	<t>
+		Capabilities from the client may be sent, once, or twice
+		per authentication process.
+		The client sends a CAPABILITY_PRE with its connection to a server.
+		And optionally once after the user is authenticated (CAPABILITY_POST).
+	</t>
+	<t>
+		There is no requirement that a server provides
+		an authentication method for any client.
+		There is no requirement that a server provide
+		any non-vendor capability for any client.
+		They could be configured to only allow vendor
+		specific authentication or only vendor specific commands because they
+		are not servers open to the public and require
+		non standard authentication methods,
+		or only from clients providing a correct CAPABILITY_PRE
+		value.
+	</t>
+	<t>
+		<em>NOTE: Vendor specific capabilities MUST include a Length
+		value after the capability value.
+		This is because there is no way a non compatible implementation
+		could calculate the length of the data that would follow it
+		in order to find the next capability or command in the packet.
+		</em>
+	</t>
+
+	<t>
+		Table <xref target="PreAuthCap"/> lists some CAPABILITY_PRE
+		capabilities.
+	</t>
+
+	<t>
+		Some capabilities have data associated with them, others do not.
+	</t>
+	<section>
+		<name>Capability - CAPABILITY_PRE</name>
+		<t>
+			Pre authentication capabilities are sent before authentication.
+		</t>
+		<t>
+			When the client connects to a server it always sends a
+			CAPABILITY_PRE as soon as the connection is established.
+			This packet contains all of the authentication methods
+			supported by the client.
+			It is an ordered list with the most preferred at the start
+			of the list and the lesser preferred at the end of the list.
+		</t>
+		<t>
+			The CAPABILITY_PRE that the client sends to the server
+			in this specification includes an optional VENDOR_ID.
+			Vendors may add new client to server capabilities as long
+			as they set the VENDOR_BIT in the command and are implemented
+			to understand that not all server will understand their
+			vendor specific extensions.
+		</t>
+		<t>
+			xxx
+		</t>
+		<table anchor="PreAuthCap">
+			<name>Capabilities - CAPABILITY_PRE</name>
+			<thead>
+				<tr>
+					<th>Name</th>
+					<th>Value</th>
+					<th>Value Type</th>
+					<th>Description</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr>
+					<td>AUTHANONYMOUS</td>
+					<td>%x26:31</td>
+					<td></td>
+					<td>
+						<t>
+							No authentication required.
+							An example usage could be a shared company
+							bulletin board where most employees had
+							view only access to the messages.
+							And perhaps the server only allowed
+							company local IP addresses to use this
+							authentication method.
+						</t>
+						<t>
+						</t>
+					</td>
+				</tr>
+				<tr>
+					<td>AUTHMD5</td>
+					<td>%x10:31</td>
+					<td></td>
+					<td>
+						<t>
+							Authenticate by providing an account name
+							and an MD5 password.
+						</t>
+					</td>
+				</tr>
+				<tr>
+					<td>AUTHCERT_TLS</td>
+					<td>%x27:31</td>
+					<td>
+						CMD_e
+					</td>
+					<td>
+						<t>
+							Authenticate using the connections TLS certificate.
+						</t>
+					</td>
+				</tr>
+				<tr>
+					<td>AUTHCERT_USER</td>
+					<td>%x28:31</td>
+					<td>
+						CMD_e
+					</td>
+					<td>
+						Like AUTHMD5, an account and password are provided
+						in the payload and they are encrypted with a
+						prearranged certificate.
+						The server must already have the accounts public certificate.
+					</td>
+				</tr>
+				<tr>
+					<td>VENDOR_ID</td>
+					<td>%x12:31</td>
+					<td>string</td>
+					<td>
+						<t>
+							VENDOR_ID includes a vendor ID
+							string that can be used to help the server determine
+							if it will send a post-authentication ADMIN capability
+							or other vendor specific abilities.
+						</t>
+						<t>
+							The specific string value is determined by the server
+							implementation and is out of scope for this specification.
+						</t>
+					</td>
+				</tr>
+			</tbody>
+		</table>
+	</section>
+
+	<section>
+		<name>Capability - CAPABILITY_POST</name>
+		<t>
+			Table <xref target="PostAuthCap"/> lists the CAPABILITY_POST
+			capabilities.
+			Post-Authentication capabilities are sent to the client after a
+			a user authenticates.
+		</t>
+		<t>
+			A client or server may or might not also send an additional CAPABILITY_POST command
+			as account permissions change.
+		</t>
+		<t>
+			For example after authentication an administrator could give the
+			current user more permissions.
+			At that time the server would send a new CAPABILITY_POST to the client.
+			Or perhaps the client needs to update the server with a new VENDOR_ID
+			and CAPABILITY_POST after a license key is installed.
+			Or perhaps remove capabilities after business hours.
+		</t>
+
+		<table anchor="PostAuthCap">
+			<name>Capabilities - CAPABILITY_POST</name>
+			<thead>
+				<tr>
+					<th>Name</th><th>Value</th><th>Description</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr>
+					<td>x</td><td>x1</td><td>x2</td>
+				</tr>
+			</tbody>
+		</table>
+	</section>
+</section>
+
+<!-- Copyright 2025 RiverExplorer LLC and Douglas Mark Royer -->
+
+<section anchor="EMAIL_SUMMARY">
+	<name>EMail Commands Summary</name>
+	<t>
+		These commands allow for the fetching and submission
+		of EMail messages
+	</t>
+</section>
+
+<!-- Copyright 2025 RiverExplorer LLC and Douglas Mark Royer -->
+
+<section anchor="FOLDERS">
+	<name>File and Folder Commands Summary</name>
+
+	<t>
+		The file operations (FileOp) have protocol names.
+		Here are their protocol names and a breif description.
+	</t>
+	<t>
+		Implementations are not required to support any or all of these
+		commands.
+	</t>
+	<t>
+		
+	</t>
+	<table>
+		<name>File and Folder Command List</name>
+		<thead>
+			<tr>
+				<th>Op Name</th>
+				<th>Valule</th>
+				<th>Brief Description.
+			</th></tr>
+		</thead>
+		<tbody>
+			<tr>
+				<td>FOLDER_CAPABILITY</td>
+				<td>%x13:32</td>
+				<td>
+					When sent as a command, request the list of
+					folder commands supported.
+					When sent as a reply, includes the list of
+					folder commands supported.
+				</td>
+			</tr>
+			<tr>
+				<td>FOLDER_CREATE</td>
+				<td>%x14:32</td>
+				<td>
+					Create a new folder.
+					Also the name of the capability for this permission.
+				</td>
+			</tr>
+			<tr>
+				<td>FOLDER_COPY</td>
+				<td>%x15:32</td>
+				<td>
+					Copy a folder.
+					Also the name of the capability for this permission.
+				</td>
+			</tr>
+			<tr>
+				<td>FOLDER_DELETE</td>
+				<td>%x16:32</td>
+				<td>
+					Delete a folder.
+					Also the name of the capability for this permission.
+				</td>
+			</tr>
+			<tr>
+				<td>FOLDER_RENAME</td>
+				<td>%x17:32</td>
+				<td>
+					Rename a folder.
+					Also the name of the capability for this permission.
+				</td>
+			</tr>
+			<tr>
+				<td>FOLDER_METADATA</td>
+				<td>%x18:32</td>
+				<td>
+					Get, set, and update information associated with the
+					folder.
+					File meta data is also returned with the FOLDER_OPEN
+					command.
+				</td>
+			</tr>
+			<tr>
+				<td>FOLDER_MOVE</td>
+				<td>%x19:32</td>
+				<td>
+					Move a folder.
+					Also the name of the capability for this permission.
+				</td>
+			</tr>
+			<tr>
+				<td>FOLDER_OPEN</td>
+				<td>%x1a:32</td>
+				<td>
+					Open a folder and get information about the folder
+					and files in the folder.
+				</td>
+			</tr>
+			<tr>
+				<td>FOLDER_SHARE</td>
+				<td>%x1b:32</td>
+				<td>
+					Share a folder.
+					Also the name of the capability for this permission.
+				</td>
+			</tr>
+			<tr>
+				<td>FOLDER_LIST</td>
+				<td>%x1c:32</td>
+				<td>
+					List folders and files.
+					Also the name of the capability for this permission.
+				</td>
+			</tr>
+			
+			<tr>
+				<td>FILE_CREATE</td>
+				<td>%x1d:32</td>
+				<td>
+					Create a new file.
+					Also the name of the capability for this permission.
+				</td>
+			</tr>
+
+			<tr>
+				<td>FILE_COPY</td>
+				<td>%x1e:32</td>
+				<td>
+					Copy a file.
+					Also the name of the capability for this permission.
+				</td>
+			</tr>
+
+			<tr>
+				<td>FILE_DELETE</td>
+				<td>%x1f:32</td>
+				<td>
+					Delete a file.
+					Also the name of the capability for this permission.
+				</td>
+			</tr>
+			<tr>
+				<td>FILE_RENAME</td>
+				<td>%x20:32</td>
+				<td>
+					Rename a file.
+					Also the name of the capability for this permission.
+				</td>
+			</tr>
+			<tr>
+				<td>FILE_METADATA</td>
+				<td>%x21:32</td>
+				<td>
+					Get, set, and update information associated with the
+					folder.
+					File meta data is also returned with the FOLDER_OPEN
+					command.
+				</td>
+			</tr>
+			<tr>
+				<td>FILE_MOVE</td>
+				<td>%x22:32</td>
+				<td>
+					Move a file.
+					Also the name of the capability for this permission.
+				</td>
+			</tr>
+			<tr>
+				<td>FILE_SHARE</td>
+				<td>%x23:32</td>
+				<td>
+					Share a file.
+					Also the name of the capability for this permission.
+				</td>
+			</tr>
+			<tr>
+				<td>FILE_GET</td>
+				<td>%x24:32</td>
+				<td>
+					Get a file.
+					Also the name of the capability for this permission.
+				</td>
+			</tr>
+			<tr>
+				<td>FILE_MODIFY</td>
+				<td>%x25:32</td>
+				<td>
+					Modify the contents of an existing file.
+					Also the name of the capability for this permission.
+				</td>
+			</tr>
+		</tbody>
+	</table>
+
+	<section>
+		<name>File and Folder - FOLDER_CAPABILITY</name>
+	</section>
+
+	<section>
+		<name>File and Folder - FOLDER_CREATE</name>
+	</section>
+
+	<section>
+		<name>File and Folder - FOLDER_COPY</name>
+	</section>
+
+	<section>
+		<name>File and Folder - FOLDER_DELETE</name>
+	</section>
+
+	<section>
+		<name>File and Folder - FOLDER_RENAME</name>
+	</section>
+
+	<section>
+		<name>File and Folder - FOLDER_METADATA</name>
+	</section>
+
+	<section>
+		<name>File and Folder - FOLDER_MOVE</name>
+	</section>
+
+	<section>
+		<name>File and Folder - FOLDER_OPEN</name>
+	</section>
+
+	<section>
+		<name>File and Folder - FOLDER_LIST</name>
+	</section>
+
+	<section>
+		<name>File and Folder - FOLDER_SHARE</name>
+	</section>
+
+	<section>
+		<name>File and Folder - FILE_CREATE</name>
+	</section>
+
+	<section>
+		<name>File and Folder - FILE_COPY</name>
+	</section>
+
+	<section>
+		<name>File and Folder - FILE_DELETE</name>
+	</section>
+
+	<section>
+		<name>File and Folder - FILE_RENAME</name>
+	</section>
+
+	<section>
+		<name>File and Folder - FILE_METADATA</name>
+	</section>
+
+	<section>
+		<name>File and Folder - FILE_MOVE</name>
+	</section>
+
+	<section>
+		<name>File and Folder - FILE_SHARE</name>
+	</section>
+
+	<section>
+		<name>File and Folder - FILE_GET</name>
+	</section>
+
+	<section>
+		<name>File and Folder - FILE_MODIFY</name>
+	</section>
+
+</section>
+<!-- Copyright 2025 RiverExplorer LLC and Douglas Mark Royer -->
+
+<section anchor="KEEPALIVE_SUMMARY">
+	<name>KeepAlive Command Summary</name>
+
+	<t>
+		The KeepAlive command is sent to the server from the client.
+		It requests the server not time out.
+		The server may honor or ignore the request.
+	</t>
+	<t>
+		The Phoenix protocol is designed to transfer data and a server
+		may handle a small subsets of what is possible.
+		Which is why the server decides what is an important command
+		while determining idle timeout.
+	</t>
+	<t>
+		When the server sends the post authentication capabilities to the
+		client, it includes an IdleTimeout capability that includes the
+		number of seconds it allows for idle time.
+		If no significant action has been taken by the client, as determined
+		by the server, in that time	the server may timeout and close the connection.
+	</t>
+	<t>
+		The KeepAlive command tells the server that the client wishes the
+		server not to time out as long as a KeepAlive or other command
+		is sent to the server before IdleTimeout seconds have passed.
+	</t>
+	<t>
+		An IdleTimeout capability can be a positive number, zero, or
+		a negative number.
+	</t>
+	<ul>
+		<li>
+			A positive number is the maximum idle time in seconds before the server
+			terminates the connection.
+		</li>
+		<li>
+			When the IdleTimeout is zero (0), the server does not timeout.
+		</li>
+		<li>
+			When the IdleTimeout is less than zero (&lt; 0), it means it ignores
+			KeepAlive and it will idle out in the absolute value of the IdleTimeout
+			value in seconds.
+			For example, a value of (-300) means it will ignore KeepAlive
+			and timeout when the server determines nothing significant has
+			happened in 5 minutes (300 seconds).
+		</li>
+	</ul>
+	<t>
+		Servers that are not threaded or can not reply to simultaneous
+		or overlapping commands, MUST set their IdleTimeout to zero (0)
+		or a negative number.
+	</t>
+	<t>
+		Clients MUST NOT send KeepAlive commands to a server
+		that has an IdleTimeout of zero (0) or negative (&lt; 0).
+	</t>
+	<t>
+		Clients MUST NOT send KeepAlive commands to the server until
+		at least 75% of the idle time has passed since the last
+		command has been sent to the server.
+	</t>
+	<t>
+		A server may terminate a connection if the server implementation
+		determines that KeepAlive commands are arriving to quickly.
+	</t>
+</section>
+<!-- Copyright 2025 RiverExplorer LLC and Douglas Mark Royer -->
+
+<section anchor="PING_SUMMARY">
+	<name>Ping Command Summary</name>
+
+	<t>
+		The ping command is only sent when the client implementation
+		has determined it has waited too long for a command reply.
+		The ping command is only initiated from the client.
+		It is not valid for the server to send a ping command to a client.
+	</t>
+	<t>
+		A ping command must not be sent before a successful authentication.
+	</t>
+	<t>
+		The ping command MUST NOT be the first command sent to the server.
+		It should only be sent when the client implementation determines
+		it has waited too long for a reply.
+	</t>
+	<t>
+		If the server supports the ping command, then a PING capability
+		is sent in the CAPABILITY_POST command.
+	</t>
+	<t>
+		Sometimes servers are unavailable and can go down.
+		A server could be down for maintenance, or in a shutdown mode.
+		It might limit the number of simultaneous connections.
+		It might be very busy.
+		The packets might not be making it to the server because of
+		network issues.
+	</t>
+	<t>
+		When a ping command is received by the server:
+	</t>
+	<ul>
+		<li>
+			When the server did not send PING capability in the
+			post authentication capability list to the client.
+			The server ignores the PING command.
+		</li>
+		<li>
+			When the connection is not authenticated,
+			The server ignores the PING command.
+		</li>
+		<li>
+			When the client is authenticated,
+			and when the server is available for processing commands.
+			Then the server replies with a ping reply with the same sequence number.
+			This could happen when the client implementation had determined it
+			has waited too long	for an expected reply.
+		</li>
+	</ul>
+	<t>
+		If the server is alive and not available, the server
+		will reply with a NotSupported command, with its sequence
+		number set to the sequence number in the ping command.
+	</t>
+	<t>
+		If a connected and authenticated client has been waiting for a reply
+		or for some other reason needs to determine if the server is still
+		available. It can send a ping command.
+		If the server is still available, it sends a ping reply.
+		If it is no longer available for any reason, it sends a NotSupported
+		reply.
+	</t>
+	<t>
+		A client MUST NOT send a ping command if it is waiting
+		the results of a previously sent ping command.
+		If the server is ignoring PING commands, a reply will
+		never happen.
+	</t>
+	<t>
+		A client MUST NOT send a ping command more frequently
+		than 90% of the SERVER_TIMEOUT value that the server sent
+		in the CAPABILITY_POST command.
+	</t>
+	<t>
+		Servers must give priority to ping commands.
+		If possible, reply as soon as it receives the command.
+	</t>
+	<t>
+		With servers that support PING, clients MUST NOT send any other
+		command while wating for the PING reply.
+	</t>
+	<t>
+		The server MAY consider too many ping commands as a malfunctioning
+		or malicious client and terminate the connection.
+	</t>
+	<t>
+		Servers that are not threaded or can not reply to simultaneous
+		or overlapping commands, MUST NOT include PING in
+		their post authentication capability command.
+	</t>
+</section>
+<!-- Copyright 2025 RiverExplorer LLC and Douglas Mark Royer -->
+
+<section anchor="SMIME_SUMMARY">
+	<name>S/MIME Commands Summary</name>
+	<t>
+		ToDo
+	</t>
+</section>
+<!-- Copyright 2025 RiverExplorer LLC and Douglas Mark Royer -->
+<section anchor="VendorID">
+	<name>Command - VENDOR_ID</name>
+	<t>
+		When sent, the VENDOR_ID command is accompanied
+		by a string.
+		This string is unique and defined by the server implementation
+		or instance.
+	</t>
+	<t>
+		When a server gets a VENDOR_ID command, it compares
+		it to what it expects.
+		When they match, then after the user is authenticated
+		the server can then determine if it will send 
+		the SERVER_CONFIGURE capability to the client.
+	</t>
+	<t>
+		It would be expected that any client sending its VENDOR_ID
+		command to the server is expecting the possibility
+		of receiving a SERVER_CONFIGURE capability back.
+	</t>
+	<t>
+		The purpose of the VENDOR_ID command and its value
+		is to help ensure that any SERVER_CONFIGURE commands
+		are compatible between the client and server.
+	</t>
+	<t>
+		Over the life of the connection, the VENDOR_ID command
+		and value can change and would need to be sent again.
+		It might update the value after authentication.
+		Or after some action has been performed.
+	</t>
+	<t>
+		For example, a server may perform one set of vendor specific operations
+		during working hours, and a different set after hours.
+		It may or might not also send an additional CAPABILITY_PRE command
+		as account permissions change.
+	</t>
+</section>
+
+</section>
+<!--    <xi:include href="Commands.xml"/> -->
+    <xi:include href="Shared.xml"/>
+    <xi:include href="MetaData.xml"/>
+		<xi:include href="Index.xml"/>
+		<xi:include href="IANA.xml"/>
+    <xi:include href="SecurityConsiderations.xml"/>
+    
+    <!-- NOTE: The Acknowledgements and Contributors sections are at the end of this template -->
+  </middle>
+
+  <back>
+    <references>
+      <name>References</name>
+      <references>
+        <name>Normative References</name>
+        
+        <xi:include href="References/reference.RFC.0822.xml"/>
+        <xi:include href="References/reference.RFC.2119.xml"/>
+        <xi:include href="References/reference.RFC.4506.xml"/>
+        <xi:include href="References/reference.RFC.5234.xml"/>
+        <xi:include href="References/reference.RFC.8174.xml"/>
+        <xi:include href="References/reference.RFC.8446.xml"/>
+        <xi:include href="References/reference.RFC.9051.xml"/>
+        <xi:include href="References/reference.POSIX.xml"/>
+      </references>
+ 
+      <references>
+        <name>Informative References</name>
+				<xi:include href="References/reference.rpcgen++.xml"/>
+				<xi:include href="References/reference.rpcgendocs.xml"/>
+<!--
+				<reference anchor="rpcgensource" target="https://github.com/RiverExplorer/Phoenix">
+					<front>
+						<title>rpcgen++ tool - source code</title>
+						<author initials="" surname="Unknown" fullname="Unknown"/>
+						<date year="2025"/>
+						<abstract>
+							<t>
+								rpcgen++ is an updated rpcgen that can generate C++ code.
+								And is available at
+								<eref target="https://github.com/RiverExplorer/Phoenix"/>
+							</t>
+						</abstract>
+					</front>
+					</reference>
+-->
+					<reference anchor="PhoenixImplementation" target="https://github.com/RiverExplorer/Phoenix">
+					<front>
+						<title>Phoenix Sample Implementation</title>
+						<author initials="D." surname="Royer" fullname="D. Royer"/>
+						<date year="2025"/>
+						<abstract>
+							<t>
+								A sample Phoenix implentation.
+								<xref target="PhoenixImplementation"/>
+							</t>
+						</abstract>
+					</front>
+					</reference>
+      </references>
+    </references>
+    <xi:include href="AdminBinaryValues.xml"/>
+    <xi:include href="AuthBinaryValues.xml"/>
+    <xi:include href="CapabilityIndex.xml"/>
+    <xi:include href="FileBinaryValues.xml"/>
+    <xi:include href="ProtocolBinaryValues.xml"/>
+    <xi:include href="ALL-ABNF.xml"/>
+    <xi:include href="ALL-XDR.xml"/>
+
+    <section anchor="Acknowledgements" numbered="false">
+      <!-- [REPLACE/DELETE] an Acknowledgements section is optional -->
+      <name>Acknowledgments</name>
+      <t></t>
+    </section>
+    
+    <section anchor="Contributors" numbered="false">
+      <!-- [REPLACE/DELETE] a Contributors section is optional -->
+      <name>Contributors</name>
+      <t>Thanks to all of the contributors. [REPLACE]</t>
+      <!-- [CHECK] it is optional to add a <contact> record for some or all contributors -->
+    </section>
+    
+ </back>
+</rfc>

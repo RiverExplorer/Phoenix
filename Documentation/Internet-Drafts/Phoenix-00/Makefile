@@ -61,6 +61,7 @@ ARTWORK.src = \
 	AUTHCERT-01.txt \
 	AUTHCERT-02.txt \
 	AuthSummary-00.txt \
+	AuthSummary-01.txt \
 	IndexList-01.txt \
 	IndexList-02.txt \
 	IndexList-03.txt \
@@ -167,8 +168,7 @@ CPP = $(TOP)/MyTools/SimpleCpp
 
 XML2RFC_FLAGS = --v3 \
 	--id-is-work-in-progress \
-	--allow-local-file-access \
-	--utf8
+	--allow-local-file-access 
 
 all : $(TARGET.html) $(TARGET.pdf) $(TARGET.txt)
 
@@ -187,8 +187,9 @@ $(TARGET.pdf) : ALL-ABNF.xml ALL-XDR.xml $(ARTWORK.svg) $(TOPDOC.xml) $(REFERENC
 $(TARGET.html): ALL-ABNF.xml ALL-XDR.xml $(ARTWORK.svg) $(TOPDOC.xml) $(REFERENCES.xml) $(INCLUDES)
 	xml2rfc $(XML2RFC_FLAGS) --html -o $@ $(TOPDOC.xml) $(REMOVE_SVG_WARNING)
 
-$(TOPDOC.xml) : draft-00.xml ALL-ABNF.xml ALL-XDR.xml $(SOURCES.xml) $(REFERENCES.xml) $(INCLUDES)
-	xmllint --xinclude --format $< > $@
+$(TOPDOC.xml) : draft-00.xml ALL-ABNF.xml ALL-XDR.xml $(SOURCES.xml) $(REFERENCES.xml) $(INCLUDES) $(ARTWORK.txt) $(ARTWORK.svg)
+	soelim < draft-00.xml | sed '/^\.lf*/d' > temp.xml
+	xmllint --xinclude --format temp.xml > $@
 
 ALL-ABNF.xml : $(ABNF)
 	echo "<section anchor='all-abnf'>" > $@
@@ -215,6 +216,7 @@ clean :
 	$(RM) $(TOPDOC.xml)
 	$(RM) ALL-ABNF.xml ALL-XDR.xml
 	$(RM) $(GENERATED.XDR)
+	$(RM) temp.xml
 
 Generated/%.svg : Drawings/%.txt
 	aasvg < $< > $@ 

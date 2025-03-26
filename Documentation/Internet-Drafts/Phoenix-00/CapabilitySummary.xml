@@ -33,7 +33,6 @@
 		These are not a negotiation.
 		Each sends their abilities to the other.
 	</t>
-
 	<t>
 		Capabilities from the server are sent once or twice.
 		Optionally one before the user is authenticated (CAPABILITY_PRE),
@@ -42,11 +41,9 @@
 		over with the server assuming a new client just connected.
 	</t>
 	<t>
-		Capabilities from the client may be sent, zero, once, or twice
+		Capabilities from the client may be sent, once, or twice
 		per authentication process.
-		Optionally once included with the AUTH command packet (CAPABILITY_PRE),
-		to inform the	server of any required vendor or authentication
-		specific information.
+		The client sends a CAPABILITY_PRE with its connection to a server.
 		And optionally once after the user is authenticated (CAPABILITY_POST).
 	</t>
 	<t>
@@ -84,12 +81,23 @@
 			Pre authentication capabilities are sent before authentication.
 		</t>
 		<t>
-			The only CAPABILITY_PRE that the client sends to the server
-			in this specification is optionally the VENDOR_ID.
+			When the client connects to a server it always sends a
+			CAPABILITY_PRE as soon as the connection is established.
+			This packet contains all of the authentication methods
+			supported by the client.
+			It is an ordered list with the most preferred at the start
+			of the list and the lesser preferred at the end of the list.
+		</t>
+		<t>
+			The CAPABILITY_PRE that the client sends to the server
+			in this specification includes an optional VENDOR_ID.
 			Vendors may add new client to server capabilities as long
 			as they set the VENDOR_BIT in the command and are implemented
 			to understand that not all server will understand their
 			vendor specific extensions.
+		</t>
+		<t>
+			xxx
 		</t>
 		<table anchor="PreAuthCap">
 			<name>Capabilities - CAPABILITY_PRE</name>
@@ -139,7 +147,7 @@
 					</td>
 					<td>
 						<t>
-							Authenticate using the connection TLS certificate.
+							Authenticate using the connections TLS certificate.
 						</t>
 					</td>
 				</tr>
@@ -182,7 +190,7 @@
 		<t>
 			Table <xref target="PostAuthCap"/> lists the CAPABILITY_POST
 			capabilities.
-			Post-Authentication capabilities are sent to the client aftera
+			Post-Authentication capabilities are sent to the client after a
 			a user authenticates.
 		</t>
 		<t>

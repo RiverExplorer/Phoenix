@@ -1,5 +1,5 @@
 <!-- Copyright 2025 RiverExplorer LLC and Douglas Mark Royer -->
-<section>
+<section anchor="VendorID">
 	<name>Command - VENDOR_ID</name>
 	<t>
 		When sent, the VENDOR_ID command is accompanied

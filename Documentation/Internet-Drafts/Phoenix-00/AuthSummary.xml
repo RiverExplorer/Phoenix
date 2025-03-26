@@ -13,6 +13,7 @@
 		A user may wish to temporarily step up their authentication
 		level to perform some operations, then step back down
 		to do their personal operations.
+		This would be done on separate connection.
 	</t>
 	<t>
 		A server may if it wishes include AUTH capabilities in
@@ -24,18 +25,20 @@
 		<li>
 			Some user accounts can be user only, without administrative
 			abilities of any kind.
-			Their CAPABILITY_POST list will not include any ADMIN capabilities.
+			Their CAPABILITY_POST list will not include any administrative
+			capabilities.
 		</li>
 		<li>
 			Some user accounts can be administrative only, and are limited
-			to CAPABILITY_POST actions that only include ADMIN capabilities.
+			to CAPABILITY_POST actions that only include administrative
+			capabilities.
 		</li>
 		<li>
 			Some user accounts can be a normal user, with the ability
 			to step up their account to be able to do administrative actions.
 			While in stepped up mode, they are not able to act as their
 			original user account.
-			These users will get one or more AUTH capabilities in
+			These users will get one or more administrative capabilities in
 			their CAPABILITY_POST list.
 		</li>
 		<li>
@@ -44,6 +47,161 @@
 			This protocol enables user permissions to be configured.
 		</li>
 	</ul>
+
+	<section>
+		<name>Authentication process</name>
+		<t>
+			The client initiates the authentication process.
+			When the client makes a connection to a server it
+			takes one of two paths, depending
+			on [<xref target="AuthSummary01"/> (A)]:
+		</t>
+		<ul>
+			<li>
+				If it has never authenticated to this server using the
+				current account.[<xref target="AuthSummary01"/> (L)]:
+			</li>
+			<li>
+				If its last connection had a successful authentication
+				to this server using the current account.
+				[<xref target="AuthSummary01"/> (B)]:
+			</li>
+		</ul>
+		<t>
+			Part of the authentication process is determining which
+			authentication process a server requires.
+			So upon initial connection the client sends a CAPABILITY_PRE
+			packet that includes all of the authentication methods
+			it is willing to use.
+			It is an ordered list with the more desirable ones at
+			the front of the list, and the least desirable ones
+			at the end if the list.
+			And if the client wishes to do any vendor specific operations,
+			then it must also	include the VENDOR_ID string in the
+			initial packet.
+		</t>
+		<t>
+			Similarly, the CAPABILITY_PRE packet sent from the server
+			includes the same information.
+			The server is the authentication mechanism authority.
+		</t>
+		<t>
+			When a client sends a VENDOR_ID command in
+			its CAPABILITY_PRE command, then the server MUST
+			reply back in its CAPABILITY_PRE reply,
+			its VENDOR_ID (It is valid for it to be empty).
+			(See <xref target="VendorID">VendorID</xref>)
+		</t>
+		<figure anchor="AuthSummary01">
+			<name>Authentication Overview</name>
+			<artset>
+<artwork type="ascii-art"><![CDATA[
+.so Drawings/AuthSummary-01.txt
+]]></artwork>
+<artwork type="svg">
+.so Generated/AuthSummary-01.svg
+				</artwork>
+			</artset>
+		</figure>
+	</section>
+	<section>
+		<name>Authenticating With Successful History</name>
+		<t>
+			When a client has had a successful connection to the server
+			using the current client login name, then the client
+			sends the AUTH command and appends as a second
+			command in the same packet, the clients CAPABILITY_PRE command
+			as shown in <xref target="AuthSummary01"/> (B & C).
+			Then the client waits for a server reply at
+			<xref target="AuthSummary01"/> (I):
+		</t>
+		<t>
+			When the server gets this dual command packet
+			<xref target="AuthSummary01"/> at (D) and attempts the
+			authentication process.
+			If the authentication passes,[<xref target="AuthSummary01"/> (E)]:
+			the server sends a	CAPABILITY_POST
+			[<xref target="AuthSummary01"/> (G)]
+			command to the client as the okay reply.
+		</t>
+		<t>
+			If the authentication fails, then the server sends
+			the client its first CAPABILITY_PRE command.
+			[<xref target="AuthSummary01"/> (F)]
+		</t>
+		<t>
+			The client waits for a reply from the server
+			at <xref target="AuthSummary01"/> (I).
+		</t>
+		<t>
+			When the client gets a CAPABILITY_PRE
+			[<xref target="AuthSummary01"/> (F)]
+			it knows the authentication failed, so the client
+			goes to start a normal authentication
+			process [<xref target="AuthSummary01"/> (K) & (Q)]
+		</t>
+		<t>
+			If the received command was a CAPABILITY_POST
+			[<xref target="AuthSummary01"/> (G)], then
+			the authentication passed and the client
+			is authenticated.
+			And starts any post authentication work.
+			[<xref target="AuthSummary01"/> (J & Y)]
+		</t>
+
+	</section>
+	<section>
+		<name>Authenticating With No History</name>
+		<t>
+			When there is not successful history between
+			the client and server, the authentication
+			process starts at 
+			[<xref target="AuthSummary01"/> (M)]
+			with the client sending its CAPABILITY_PRE
+			command to the server.
+			Then waits for a server reply
+			[<xref target="AuthSummary01"/> (O)]
+		</t>
+		<t>
+			As soon as the server gets its
+			authentication CAPABILITY_PRE at
+			[<xref target="AuthSummary01"/> (N)],
+			the server evaluates the contents of
+			the CAPABILITY_PRE from the client,
+			matches it to the servers configured
+			ability, and sends a CAPABILITY_PRE
+			packet back to the client.
+			[<xref target="AuthSummary01"/> (P)]
+			This CAPABILITY_PRE packet contains
+			the authentication method(s) that the
+			client must use to authenticate with
+			the server.
+			A CAPABILITY_PRE command from the
+			server is only sent after receiving
+			one from the client.
+			So the server only sends the common
+			authentication method using a priority
+			configured into the server.
+		</t>
+		<t>
+			The servers CAPABILITY_PRE command
+			may contain zero or more authentication
+			methods.
+			When more than one, all must be used.
+			For example, the server could require
+			a client certificate (AUTHCERT_TLS),
+			and a user MD5 login (AUTHMD5).
+			So both would be sent back, in this example.
+			When the servers CAPABILITY_PRE command
+			does not have any authentication methods,
+			the server is telling the client that no
+			authentication is possible.
+			When this happens the server then terminates
+			the connection.
+			And the client then terminates the connection.
+		</t>
+
+	</section>
 
 	<section>
 		<name>Authentication Failure</name>
@@ -59,8 +217,12 @@
 		<figure>
 			<name>AUTHCERT_USER</name>
 			<artset>
-				<artwork align="center" type="ascii-art" src="Drawings/AuthSummary-00.txt"/>
-				<artwork align="center" type="svg" src="Generated/AuthSummary-00.svg"/>
+				<artwork align="center" type="ascii-art"><![CDATA[
+.so Drawings/AuthSummary-00.txt
+]]></artwork>
+				<artwork align="center" type="svg">
+.so Generated/AuthSummary-00.svg
+				</artwork>
 			</artset>
 		</figure>
 	</section>

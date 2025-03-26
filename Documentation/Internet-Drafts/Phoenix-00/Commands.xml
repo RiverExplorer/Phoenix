@@ -88,19 +88,19 @@
 			Upon too many retries, the server or client may terminate
 			the connection.
 	</t>
-	<xi:include href="ProtocolSummary.xml"/>
-	<xi:include href="AdminSummary.xml"/>
-	<xi:include href="AuthSummary.xml"/>
-	<xi:include href="AuthAnonymous.xml"/>
-	<xi:include href="AuthCert.xml"/>
-	<xi:include href="AuthMD5.xml"/>
-	<xi:include href="CalendarSummary.xml"/>
-	<xi:include href="CapabilitySummary.xml"/>
-	<xi:include href="EMailSummary.xml"/>
-	<xi:include href="Folder.xml"/>
-	<xi:include href="KeepAliveSummary.xml"/>
-	<xi:include href="PingSummary.xml"/>
-	<xi:include href="SMimeSummary.xml"/>
-	<xi:include href="VendorID.xml"/>
+.so ProtocolSummary.xml
+.so AdminSummary.xml
+.so AuthSummary.xml
+.so AuthAnonymous.xml
+.so AuthCert.xml
+.so AuthMD5.xml
+.so CalendarSummary.xml
+.so CapabilitySummary.xml
+.so EMailSummary.xml
+.so Folder.xml
+.so KeepAliveSummary.xml
+.so PingSummary.xml
+.so SMimeSummary.xml
+.so VendorID.xml
 
 </section>

@@ -1,0 +1,2543 @@
+<!DOCTYPE html>
+<html lang="en" class="Internet-Draft">
+<head>
+<meta charset="utf-8">
+<meta content="Common,Latin" name="scripts">
+<meta content="initial-scale=1.0" name="viewport">
+<title>Bits in XDR</title>
+<meta content="Doug Royer" name="author">
+<meta content='
+       
+ This is an extension to the XDR specification to allow
+ for bits to be described and sent.
+       
+       
+ With protocols that have a large number of boolean values
+ the existing standard requires each to be individually
+ packed into a 32-bit value.
+       
+       
+ This addition does not alter any existing XDR data streams or
+ effect existing implementations. 
+       
+       
+         
+ This specification describes how to pack a bit-boolean and
+ short bit-width data values into the 32-bit XDR block chunks.
+  
+         
+ And this specification describes how to describe them
+ by extending "The XDR Language Specification" to include
+ bits.
+  
+         
+ And a new namespace declaration type is specified
+ to aid in the reduction of name collisions in
+ large projects.
+  
+       
+       
+ While in draft status, a new Open Source XDR generation tool
+ is being developed  .
+       
+    ' name="description">
+<meta content="xml2rfc 3.23.2" name="generator">
+<meta content="XDR" name="keyword">
+<meta content="bit" name="keyword">
+<meta content="draft-royer-bits-in-xdr-00" name="ietf.draft">
+<!-- Generator version information:
+  xml2rfc 3.23.2
+    Python 3.12.9
+    ConfigArgParse 1.7
+    google-i18n-address 3.1.1
+    intervaltree 3.1.0
+    Jinja2 3.1.5
+    lxml 5.1.0
+    platformdirs 3.11.0
+    pycountry 24.6.1
+    pydyf 0.9.0
+    PyYAML 6.0.1
+    requests 2.31.0
+    setuptools 69.0.3
+    wcwidth 0.2.13
+    weasyprint 61.2
+-->
+<link href="draft-royer-bits-in-xdr-00.xml" rel="alternate" type="application/rfc+xml">
+<link href="#copyright" rel="license">
+<style type="text/css">/*
+
+  NOTE: Changes at the bottom of this file overrides some earlier settings.
+
+  Once the style has stabilized and has been adopted as an official RFC style,
+  this can be consolidated so that style settings occur only in one place, but
+  for now the contents of this file consists first of the initial CSS work as
+  provided to the RFC Formatter (xml2rfc) work, followed by itemized and
+  commented changes found necessary during the development of the v3
+  formatters.
+
+*/
+
+/* fonts */
+@import url('https://fonts.googleapis.com/css?family=Noto+Sans'); /* Sans-serif */
+@import url('https://fonts.googleapis.com/css?family=Noto+Serif'); /* Serif (print) */
+@import url('https://fonts.googleapis.com/css?family=Roboto+Mono'); /* Monospace */
+
+:root {
+  --font-sans: 'Noto Sans', Arial, Helvetica, sans-serif;
+  --font-serif: 'Noto Serif', 'Times', 'Times New Roman', serif;
+  --font-mono: 'Roboto Mono', Courier, 'Courier New', monospace;
+}
+
+@viewport {
+  zoom: 1.0;
+}
+@-ms-viewport {
+  width: extend-to-zoom;
+  zoom: 1.0;
+}
+/* general and mobile first */
+html {
+}
+body {
+  max-width: 90%;
+  margin: 1.5em auto;
+  color: #222;
+  background-color: #fff;
+  font-size: 14px;
+  font-family: var(--font-sans);
+  line-height: 1.6;
+  scroll-behavior: smooth;
+  overflow-wrap: break-word;
+}
+.ears {
+  display: none;
+}
+
+/* headings */
+#title, h1, h2, h3, h4, h5, h6 {
+  margin: 1em 0 0.5em;
+  font-weight: bold;
+  line-height: 1.3;
+}
+#title {
+  clear: both;
+  border-bottom: 1px solid #ddd;
+  margin: 0 0 0.5em 0;
+  padding: 1em 0 0.5em;
+}
+.author {
+  padding-bottom: 4px;
+}
+h1 {
+  font-size: 26px;
+  margin: 1em 0;
+}
+h2 {
+  font-size: 22px;
+  margin-top: -20px;  /* provide offset for in-page anchors */
+  padding-top: 33px;
+}
+h3 {
+  font-size: 18px;
+  margin-top: -36px;  /* provide offset for in-page anchors */
+  padding-top: 42px;
+}
+h4 {
+  font-size: 16px;
+  margin-top: -36px;  /* provide offset for in-page anchors */
+  padding-top: 42px;
+}
+h5, h6 {
+  font-size: 14px;
+}
+#n-copyright-notice {
+  border-bottom: 1px solid #ddd;
+  padding-bottom: 1em;
+  margin-bottom: 1em;
+}
+/* general structure */
+p {
+  padding: 0;
+  margin: 0 0 1em 0;
+  text-align: left;
+}
+div, span {
+  position: relative;
+}
+div {
+  margin: 0;
+}
+.alignRight.art-text {
+  background-color: #f9f9f9;
+  border: 1px solid #eee;
+  border-radius: 3px;
+  padding: 1em 1em 0;
+  margin-bottom: 1.5em;
+}
+.alignRight.art-text pre {
+  padding: 0;
+}
+.alignRight {
+  margin: 1em 0;
+}
+.alignRight > *:first-child {
+  border: none;
+  margin: 0;
+  float: right;
+  clear: both;
+}
+.alignRight > *:nth-child(2) {
+  clear: both;
+  display: block;
+  border: none;
+}
+svg {
+  display: block;
+}
+svg[font-family~="serif" i], svg [font-family~="serif" i] {
+  font-family: var(--font-serif);
+}
+svg[font-family~="sans-serif" i], svg [font-family~="sans-serif" i] {
+  font-family: var(--font-sans);
+}
+svg[font-family~="monospace" i], svg [font-family~="monospace" i] {
+  font-family: var(--font-mono);
+}
+.alignCenter.art-text {
+  background-color: #f9f9f9;
+  border: 1px solid #eee;
+  border-radius: 3px;
+  padding: 1em 1em 0;
+  margin-bottom: 1.5em;
+}
+.alignCenter.art-text pre {
+  padding: 0;
+}
+.alignCenter {
+  margin: 1em 0;
+}
+.alignCenter > *:first-child {
+  display: table;
+  border: none;
+  margin: 0 auto;
+}
+
+/* lists */
+ol, ul {
+  padding: 0;
+  margin: 0 0 1em 2em;
+}
+ol ol, ul ul, ol ul, ul ol {
+  margin-left: 1em;
+}
+li {
+  margin: 0 0 0.25em 0;
+}
+.ulCompact li {
+  margin: 0;
+}
+ul.empty, .ulEmpty {
+  list-style-type: none;
+}
+ul.empty li, .ulEmpty li {
+  margin-top: 0.5em;
+}
+ul.ulBare, li.ulBare {
+  margin-left: 0em !important;
+}
+ul.compact, .ulCompact,
+ol.compact, .olCompact {
+  line-height: 100%;
+  margin: 0 0 0 2em;
+}
+
+/* definition lists */
+dl {
+}
+dl > dt {
+  float: left;
+  margin-right: 1em;
+}
+/* 
+dl.nohang > dt {
+  float: none;
+}
+*/
+dl > dd {
+  margin-bottom: .8em;
+  min-height: 1.3em;
+}
+dl.compact > dd, .dlCompact > dd {
+  margin-bottom: 0em;
+}
+dl > dd > dl {
+  margin-top: 0.5em;
+  margin-bottom: 0em;
+}
+
+/* links */
+a {
+  text-decoration: none;
+}
+a[href] {
+  color: #22e; /* Arlen: WCAG 2019 */
+}
+a[href]:hover {
+  background-color: #f2f2f2;
+}
+figcaption a[href],
+a[href].selfRef {
+  color: #222;
+}
+/* XXX probably not this:
+a.selfRef:hover {
+  background-color: transparent;
+  cursor: default;
+} */
+
+/* Figures */
+tt, code, pre {
+  background-color: #f9f9f9;
+  font-family: var(--font-mono);
+}
+pre {
+  border: 1px solid #eee;
+  margin: 0;
+  padding: 1em;
+}
+img {
+  max-width: 100%;
+}
+figure {
+  margin: 0;
+}
+figure blockquote {
+  margin: 0.8em 0.4em 0.4em;
+}
+figcaption {
+  font-style: italic;
+  margin: 0 0 1em 0;
+}
+@media screen {
+  pre {
+    overflow-x: auto;
+    max-width: 100%;
+    max-width: calc(100% - 22px);
+  }
+}
+
+/* aside, blockquote */
+aside, blockquote {
+  margin-left: 0;
+  padding: 1.2em 2em;
+}
+blockquote {
+  background-color: #f9f9f9;
+  color: #111; /* Arlen: WCAG 2019 */
+  border: 1px solid #ddd;
+  border-radius: 3px;
+  margin: 1em 0;
+}
+blockquote > *:last-child {
+  margin-bottom: 0;
+}
+cite {
+  display: block;
+  text-align: right;
+  font-style: italic;
+}
+.xref {
+  overflow-wrap: normal;
+}
+
+/* tables */
+table {
+  width: 100%;
+  margin: 0 0 1em;
+  border-collapse: collapse;
+  border: 1px solid #eee;
+}
+th, td {
+  text-align: left;
+  vertical-align: top;
+  padding: 0.5em 0.75em;
+}
+th {
+  text-align: left;
+  background-color: #e9e9e9;
+}
+tr:nth-child(2n+1) > td {
+  background-color: #f5f5f5;
+}
+table caption {
+  font-style: italic;
+  margin: 0;
+  padding: 0;
+  text-align: left;
+}
+table p {
+  /* XXX to avoid bottom margin on table row signifiers. If paragraphs should
+     be allowed within tables more generally, it would be far better to select on a class. */
+  margin: 0;
+}
+
+/* pilcrow */
+a.pilcrow {
+  color: #666; /* Arlen: AHDJ 2019 */
+  text-decoration: none;
+  visibility: hidden;
+  user-select: none;
+  -ms-user-select: none;
+  -o-user-select:none;
+  -moz-user-select: none;
+  -khtml-user-select: none;
+  -webkit-user-select: none;
+  -webkit-touch-callout: none;
+}
+@media screen {
+  aside:hover > a.pilcrow,
+  p:hover > a.pilcrow,
+  blockquote:hover > a.pilcrow,
+  div:hover > a.pilcrow,
+  li:hover > a.pilcrow,
+  pre:hover > a.pilcrow {
+    visibility: visible;
+  }
+  a.pilcrow:hover {
+    background-color: transparent;
+  }
+}
+
+/* misc */
+hr {
+  border: 0;
+  border-top: 1px solid #eee;
+}
+.bcp14 {
+  font-variant: small-caps;
+}
+
+.role {
+  font-variant: all-small-caps;
+}
+
+/* info block */
+#identifiers {
+  margin: 0;
+  font-size: 0.9em;
+}
+#identifiers dt {
+  width: 3em;
+  clear: left;
+}
+#identifiers dd {
+  float: left;
+  margin-bottom: 0;
+}
+/* Fix PDF info block run off issue */
+@media print {
+  #identifiers dd {
+    float: none;
+  }
+}
+#identifiers .authors .author {
+  display: inline-block;
+  margin-right: 1.5em;
+}
+#identifiers .authors .org {
+  font-style: italic;
+}
+
+/* The prepared/rendered info at the very bottom of the page */
+.docInfo {
+  color: #666; /* Arlen: WCAG 2019 */
+  font-size: 0.9em;
+  font-style: italic;
+  margin-top: 2em;
+}
+.docInfo .prepared {
+  float: left;
+}
+.docInfo .prepared {
+  float: right;
+}
+
+/* table of contents */
+#toc  {
+  padding: 0.75em 0 2em 0;
+  margin-bottom: 1em;
+}
+nav.toc ul {
+  margin: 0 0.5em 0 0;
+  padding: 0;
+  list-style: none;
+}
+nav.toc li {
+  line-height: 1.3em;
+  margin: 0.75em 0;
+  padding-left: 1.2em;
+  text-indent: -1.2em;
+}
+/* references */
+.references dt {
+  text-align: right;
+  font-weight: bold;
+  min-width: 7em;
+}
+.references dd {
+  margin-left: 8em;
+  overflow: auto;
+}
+
+.refInstance {
+  margin-bottom: 1.25em;
+}
+
+.refSubseries {
+  margin-bottom: 1.25em;
+}
+
+.references .ascii {
+  margin-bottom: 0.25em;
+}
+
+/* index */
+.index ul {
+  margin: 0 0 0 1em;
+  padding: 0;
+  list-style: none;
+}
+.index ul ul {
+  margin: 0;
+}
+.index li {
+  margin: 0;
+  text-indent: -2em;
+  padding-left: 2em;
+  padding-bottom: 5px;
+}
+.indexIndex {
+  margin: 0.5em 0 1em;
+}
+.index a {
+  font-weight: 700;
+}
+/* make the index two-column on all but the smallest screens */
+@media (min-width: 600px) {
+  .index ul {
+    -moz-column-count: 2;
+    -moz-column-gap: 20px;
+  }
+  .index ul ul {
+    -moz-column-count: 1;
+    -moz-column-gap: 0;
+  }
+}
+
+/* authors */
+address.vcard {
+  font-style: normal;
+  margin: 1em 0;
+}
+
+address.vcard .nameRole {
+  font-weight: 700;
+  margin-left: 0;
+}
+address.vcard .label {
+  font-family: var(--font-sans);
+  margin: 0.5em 0;
+}
+address.vcard .type {
+  display: none;
+}
+.alternative-contact {
+  margin: 1.5em 0 1em;
+}
+hr.addr {
+  border-top: 1px dashed;
+  margin: 0;
+  color: #ddd;
+  max-width: calc(100% - 16px);
+}
+
+/* temporary notes */
+.rfcEditorRemove::before {
+  position: absolute;
+  top: 0.2em;
+  right: 0.2em;
+  padding: 0.2em;
+  content: "The RFC Editor will remove this note";
+  color: #9e2a00; /* Arlen: WCAG 2019 */
+  background-color: #ffd; /* Arlen: WCAG 2019 */
+}
+.rfcEditorRemove {
+  position: relative;
+  padding-top: 1.8em;
+  background-color: #ffd; /* Arlen: WCAG 2019 */
+  border-radius: 3px;
+}
+.cref {
+  background-color: #ffd; /* Arlen: WCAG 2019 */
+  padding: 2px 4px;
+}
+.crefSource {
+  font-style: italic;
+}
+/* alternative layout for smaller screens */
+@media screen and (max-width: 1023px) {
+  body {
+    padding-top: 2em;
+  }
+  #title {
+    padding: 1em 0;
+  }
+  h1 {
+    font-size: 24px;
+  }
+  h2 {
+    font-size: 20px;
+    margin-top: -18px;  /* provide offset for in-page anchors */
+    padding-top: 38px;
+  }
+  #identifiers dd {
+    max-width: 60%;
+  }
+  #toc {
+    position: fixed;
+    z-index: 2;
+    top: 0;
+    right: 0;
+    padding: 0;
+    margin: 0;
+    background-color: inherit;
+    border-bottom: 1px solid #ccc;
+  }
+  #toc h2 {
+    margin: -1px 0 0 0;
+    padding: 4px 0 4px 6px;
+    padding-right: 1em;
+    min-width: 190px;
+    font-size: 1.1em;
+    text-align: right;
+    background-color: #444;
+    color: white;
+    cursor: pointer;
+  }
+  #toc h2::before { /* css hamburger */
+    float: right;
+    position: relative;
+    width: 1em;
+    height: 1px;
+    left: -164px;
+    margin: 6px 0 0 0;
+    background: white none repeat scroll 0 0;
+    box-shadow: 0 4px 0 0 white, 0 8px 0 0 white;
+    content: "";
+  }
+  #toc nav {
+    display: none;
+    padding: 0.5em 1em 1em;
+    overflow: auto;
+    height: calc(100vh - 48px);
+    border-left: 1px solid #ddd;
+  }
+}
+
+/* alternative layout for wide screens */
+@media screen and (min-width: 1024px) {
+  body {
+    max-width: 724px;
+    margin: 42px auto;
+    padding-left: 1.5em;
+    padding-right: 29em;
+  }
+  #toc {
+    position: fixed;
+    top: 42px;
+    right: 42px;
+    width: 25%;
+    margin: 0;
+    padding: 0 1em;
+    z-index: 1;
+  }
+  #toc h2 {
+    border-top: none;
+    border-bottom: 1px solid #ddd;
+    font-size: 1em;
+    font-weight: normal;
+    margin: 0;
+    padding: 0.25em 1em 1em 0;
+  }
+  #toc nav {
+    display: block;
+    height: calc(90vh - 84px);
+    bottom: 0;
+    padding: 0.5em 0 0;
+    overflow: auto;
+  }
+  img { /* future proofing */
+    max-width: 100%;
+    height: auto;
+  }
+}
+
+/* pagination */
+@media print {
+  body {
+    width: 100%;
+  }
+  p {
+    orphans: 3;
+    widows: 3;
+  }
+  #n-copyright-notice {
+    border-bottom: none;
+  }
+  #toc, #n-introduction {
+    page-break-before: always;
+  }
+  #toc {
+    border-top: none;
+    padding-top: 0;
+  }
+  figure, pre {
+    page-break-inside: avoid;
+  }
+  figure {
+    overflow: scroll;
+  }
+  .breakable pre {
+    break-inside: auto;
+  }
+  h1, h2, h3, h4, h5, h6 {
+    page-break-after: avoid;
+  }
+  h2+*, h3+*, h4+*, h5+*, h6+* {
+    page-break-before: avoid;
+  }
+  pre {
+    white-space: pre-wrap;
+    word-wrap: break-word;
+    font-size: 10pt;
+  }
+  table {
+    border: 1px solid #ddd;
+  }
+  td {
+    border-top: 1px solid #ddd;
+  }
+}
+
+/* This is commented out here, as the string-set: doesn't
+   pass W3C validation currently */
+/*
+.ears thead .left {
+  string-set: ears-top-left content();
+}
+
+.ears thead .center {
+  string-set: ears-top-center content();
+}
+
+.ears thead .right {
+  string-set: ears-top-right content();
+}
+
+.ears tfoot .left {
+  string-set: ears-bottom-left content();
+}
+
+.ears tfoot .center {
+  string-set: ears-bottom-center content();
+}
+
+.ears tfoot .right {
+  string-set: ears-bottom-right content();
+}
+*/
+
+@page :first {
+  padding-top: 0;
+  @top-left {
+    content: normal;
+    border: none;
+  }
+  @top-center {
+    content: normal;
+    border: none;
+  }
+  @top-right {
+    content: normal;
+    border: none;
+  }
+}
+
+@page {
+  size: A4;
+  margin-bottom: 45mm;
+  padding-top: 20px;
+  /* The following is commented out here, but set appropriately by in code, as
+     the content depends on the document */
+  /*
+  @top-left {
+    content: 'Internet-Draft';
+    vertical-align: bottom;
+    border-bottom: solid 1px #ccc;
+  }
+  @top-left {
+    content: string(ears-top-left);
+    vertical-align: bottom;
+    border-bottom: solid 1px #ccc;
+  }
+  @top-center {
+    content: string(ears-top-center);
+    vertical-align: bottom;
+    border-bottom: solid 1px #ccc;
+  }
+  @top-right {
+    content: string(ears-top-right);
+    vertical-align: bottom;
+    border-bottom: solid 1px #ccc;
+  }
+  @bottom-left {
+    content: string(ears-bottom-left);
+    vertical-align: top;
+    border-top: solid 1px #ccc;
+  }
+  @bottom-center {
+    content: string(ears-bottom-center);
+    vertical-align: top;
+    border-top: solid 1px #ccc;
+  }
+  @bottom-right {
+      content: '[Page ' counter(page) ']';
+      vertical-align: top;
+      border-top: solid 1px #ccc;
+  }
+  */
+
+}
+
+/* Changes introduced to fix issues found during implementation */
+/* Make sure links are clickable even if overlapped by following H* */
+a {
+  z-index: 2;
+}
+/* Separate body from document info even without intervening H1 */
+section {
+  clear: both;
+}
+
+
+/* Top align author divs, to avoid names without organization dropping level with org names */
+.author {
+  vertical-align: top;
+}
+
+/* Leave room in document info to show Internet-Draft on one line */
+#identifiers dt {
+  width: 8em;
+}
+
+/* Don't waste quite as much whitespace between label and value in doc info */
+#identifiers dd {
+  margin-left: 1em;
+}
+
+/* Give floating toc a background color (needed when it's a div inside section */
+#toc {
+  background-color: white;
+}
+
+/* Make the collapsed ToC header render white on gray also when it's a link */
+@media screen and (max-width: 1023px) {
+  #toc h2 a,
+  #toc h2 a:link,
+  #toc h2 a:focus,
+  #toc h2 a:hover,
+  #toc a.toplink,
+  #toc a.toplink:hover {
+    color: white;
+    background-color: #444;
+    text-decoration: none;
+  }
+}
+
+/* Give the bottom of the ToC some whitespace */
+@media screen and (min-width: 1024px) {
+  #toc {
+    padding: 0 0 1em 1em;
+  }
+}
+
+/* Style section numbers with more space between number and title */
+.section-number {
+  padding-right: 0.5em;
+}
+
+/* prevent monospace from becoming overly large */
+tt, code, pre {
+  font-size: 95%;
+}
+
+/* Fix the height/width aspect for ascii art*/
+.sourcecode pre,
+.art-text pre {
+  line-height: 1.12;
+}
+
+
+/* Add styling for a link in the ToC that points to the top of the document */
+a.toplink {
+  float: right;
+  margin-right: 0.5em;
+}
+
+/* Fix the dl styling to match the RFC 7992 attributes */
+dl > dt,
+dl.dlParallel > dt {
+  float: left;
+  margin-right: 1em;
+}
+dl.dlNewline > dt {
+  float: none;
+}
+
+/* Provide styling for table cell text alignment */
+table td.text-left,
+table th.text-left {
+  text-align: left;
+}
+table td.text-center,
+table th.text-center {
+  text-align: center;
+}
+table td.text-right,
+table th.text-right {
+  text-align: right;
+}
+
+/* Make the alternative author contact information look less like just another
+   author, and group it closer with the primary author contact information */
+.alternative-contact {
+  margin: 0.5em 0 0.25em 0;
+}
+address .non-ascii {
+  margin: 0 0 0 2em;
+}
+
+/* With it being possible to set tables with alignment
+  left, center, and right, { width: 100%; } does not make sense */
+table {
+  width: auto;
+}
+
+/* Avoid reference text that sits in a block with very wide left margin,
+   because of a long floating dt label.*/
+.references dd {
+  overflow: visible;
+}
+
+/* Control caption placement */
+caption {
+  caption-side: bottom;
+}
+
+/* Limit the width of the author address vcard, so names in right-to-left
+   script don't end up on the other side of the page. */
+
+address.vcard {
+  max-width: 30em;
+  margin-right: auto;
+}
+
+/* For address alignment dependent on LTR or RTL scripts */
+address div.left {
+  text-align: left;
+}
+address div.right {
+  text-align: right;
+}
+
+/* Provide table alignment support.  We can't use the alignX classes above
+   since they do unwanted things with caption and other styling. */
+table.right {
+ margin-left: auto;
+ margin-right: 0;
+}
+table.center {
+ margin-left: auto;
+ margin-right: auto;
+}
+table.left {
+ margin-left: 0;
+ margin-right: auto;
+}
+
+/* Give the table caption label the same styling as the figcaption */
+caption a[href] {
+  color: #222;
+}
+
+@media print {
+  .toplink {
+    display: none;
+  }
+
+  /* avoid overwriting the top border line with the ToC header */
+  #toc {
+    padding-top: 1px;
+  }
+
+  /* Avoid page breaks inside dl and author address entries */
+  .vcard {
+    page-break-inside: avoid;
+  }
+
+}
+/* Tweak the bcp14 keyword presentation */
+.bcp14 {
+  font-variant: small-caps;
+  font-weight: bold;
+  font-size: 0.9em;
+}
+/* Tweak the invisible space above H* in order not to overlay links in text above */
+ h2 {
+  margin-top: -18px;  /* provide offset for in-page anchors */
+  padding-top: 31px;
+ }
+ h3 {
+  margin-top: -18px;  /* provide offset for in-page anchors */
+  padding-top: 24px;
+ }
+ h4 {
+  margin-top: -18px;  /* provide offset for in-page anchors */
+  padding-top: 24px;
+ }
+/* Float artwork pilcrow to the right */
+@media screen {
+  .artwork a.pilcrow {
+    display: block;
+    line-height: 0.7;
+    margin-top: 0.15em;
+  }
+}
+/* Make pilcrows on dd visible */
+@media screen {
+  dd:hover > a.pilcrow {
+    visibility: visible;
+  }
+}
+/* Make the placement of figcaption match that of a table's caption
+   by removing the figure's added bottom margin */
+.alignLeft.art-text,
+.alignCenter.art-text,
+.alignRight.art-text {
+   margin-bottom: 0;
+}
+.alignLeft,
+.alignCenter,
+.alignRight {
+  margin: 1em 0 0 0;
+}
+/* In print, the pilcrow won't show on hover, so prevent it from taking up space,
+   possibly even requiring a new line */
+@media print {
+  a.pilcrow {
+    display: none;
+  }
+}
+/* Styling for the external metadata */
+div#external-metadata {
+  background-color: #eee;
+  padding: 0.5em;
+  margin-bottom: 0.5em;
+  display: none;
+}
+div#internal-metadata {
+  padding: 0.5em;                       /* to match the external-metadata padding */
+}
+/* Styling for title RFC Number */
+h1#rfcnum {
+  clear: both;
+  margin: 0 0 -1em;
+  padding: 1em 0 0 0;
+}
+/* Make .olPercent look the same as <ol><li> */
+dl.olPercent > dd {
+  margin-bottom: 0.25em;
+  min-height: initial;
+}
+/* Give aside some styling to set it apart */
+aside {
+  border-left: 1px solid #ddd;
+  margin: 1em 0 1em 2em;
+  padding: 0.2em 2em;
+}
+aside > dl,
+aside > ol,
+aside > ul,
+aside > table,
+aside > p {
+  margin-bottom: 0.5em;
+}
+/* Additional page break settings */
+@media print {
+  figcaption, table caption {
+    page-break-before: avoid;
+  }
+}
+/* Font size adjustments for print */
+@media print {
+  body  { font-size: 10pt;      line-height: normal; max-width: 96%; }
+  h1    { font-size: 1.72em;    padding-top: 1.5em; } /* 1*1.2*1.2*1.2 */
+  h2    { font-size: 1.44em;    padding-top: 1.5em; } /* 1*1.2*1.2 */
+  h3    { font-size: 1.2em;     padding-top: 1.5em; } /* 1*1.2 */
+  h4    { font-size: 1em;       padding-top: 1.5em; }
+  h5, h6 { font-size: 1em;      margin: initial; padding: 0.5em 0 0.3em; }
+}
+/* Sourcecode margin in print, when there's no pilcrow */
+@media print {
+  .artwork,
+  .artwork > pre,
+  .sourcecode {
+    margin-bottom: 1em;
+  }
+}
+/* Avoid narrow tables forcing too narrow table captions, which may render badly */
+table {
+  min-width: 20em;
+}
+/* ol type a */
+ol.type-a { list-style-type: lower-alpha; }
+ol.type-A { list-style-type: upper-alpha; }
+ol.type-i { list-style-type: lower-roman; }
+ol.type-I { list-style-type: upper-roman; }
+/* Apply the print table and row borders in general, on request from the RPC,
+and increase the contrast between border and odd row background slightly */
+table {
+  border: 1px solid #ddd;
+}
+td {
+  border-top: 1px solid #ddd;
+}
+tr {
+  break-inside: avoid;
+}
+tr:nth-child(2n+1) > td {
+  background-color: #f8f8f8;
+}
+/* Use style rules to govern display of the TOC. */
+@media screen and (max-width: 1023px) {
+  #toc nav { display: none; }
+  #toc.active nav { display: block; }
+}
+/* Add support for keepWithNext */
+.keepWithNext {
+  break-after: avoid-page;
+  break-after: avoid-page;
+}
+/* Add support for keepWithPrevious */
+.keepWithPrevious {
+  break-before: avoid-page;
+}
+/* Change the approach to avoiding breaks inside artwork etc. */
+figure, pre, table, .artwork, .sourcecode  {
+  break-before: auto;
+  break-after: auto;
+}
+/* Avoid breaks between <dt> and <dd> */
+dl {
+  break-before: auto;
+  break-inside: auto;
+}
+dt {
+  break-before: auto;
+  break-after: avoid-page;
+}
+dd {
+  break-before: avoid-page;
+  break-after: auto;
+  orphans: 3;
+  widows: 3
+}
+span.break, dd.break {
+  margin-bottom: 0;
+  min-height: 0;
+  break-before: auto;
+  break-inside: auto;
+  break-after: auto;
+}
+/* Undo break-before ToC */
+@media print {
+  #toc {
+    break-before: auto;
+  }
+}
+/* Text in compact lists should not get extra bottom margin space,
+   since that would makes the list not compact */
+ul.compact p, .ulCompact p,
+ol.compact p, .olCompact p {
+ margin: 0;
+}
+/* But the list as a whole needs the extra space at the end */
+section ul.compact,
+section .ulCompact,
+section ol.compact,
+section .olCompact {
+  margin-bottom: 1em;                    /* same as p not within ul.compact etc. */
+}
+/* The tt and code background above interferes with for instance table cell
+   backgrounds.  Changed to something a bit more selective. */
+tt, code {
+  background-color: transparent;
+}
+p tt, p code, li tt, li code, dt tt, dt code {
+  background-color: #f8f8f8;
+}
+/* Tweak the pre margin -- 0px doesn't come out well */
+pre {
+   margin-top: 0.5px;
+}
+/* Tweak the compact list text */
+ul.compact, .ulCompact,
+ol.compact, .olCompact,
+dl.compact, .dlCompact {
+  line-height: normal;
+}
+/* Don't add top margin for nested lists */
+li > ul, li > ol, li > dl,
+dd > ul, dd > ol, dd > dl,
+dl > dd > dl {
+  margin-top: initial;
+}
+/* Elements that should not be rendered on the same line as a <dt> */
+/* This should match the element list in writer.text.TextWriter.render_dl() */
+dd > div.artwork:first-child,
+dd > aside:first-child,
+dd > figure:first-child,
+dd > ol:first-child,
+dd > div.sourcecode:first-child,
+dd > table:first-child,
+dd > ul:first-child {
+  clear: left;
+}
+/* fix for weird browser behaviour when <dd/> is empty */
+dt+dd:empty::before{
+  content: "\00a0";
+}
+/* Make paragraph spacing inside <li> smaller than in body text, to fit better within the list */
+li > p {
+  margin-bottom: 0.5em
+}
+/* Don't let p margin spill out from inside list items */
+li > p:last-of-type:only-child {
+  margin-bottom: 0;
+}
+</style>
+<link href="rfc-local.css" rel="stylesheet" type="text/css">
+<script type="application/javascript">async function addMetadata(){try{const e=document.styleSheets[0].cssRules;for(let t=0;t<e.length;t++)if(/#identifiers/.exec(e[t].selectorText)){const a=e[t].cssText.replace("#identifiers","#external-updates");document.styleSheets[0].insertRule(a,document.styleSheets[0].cssRules.length)}}catch(e){console.log(e)}const e=document.getElementById("external-metadata");if(e)try{var t,a="",o=function(e){const t=document.getElementsByTagName("meta");for(let a=0;a<t.length;a++)if(t[a].getAttribute("name")===e)return t[a].getAttribute("content");return""}("rfc.number");if(o){t="https://www.rfc-editor.org/rfc/rfc"+o+".json";try{const e=await fetch(t);a=await e.json()}catch(e){t=document.URL.indexOf("html")>=0?document.URL.replace(/html$/,"json"):document.URL+".json";const o=await fetch(t);a=await o.json()}}if(!a)return;e.style.display="block";const s="",d="https://datatracker.ietf.org/doc",n="https://datatracker.ietf.org/ipr/search",c="https://www.rfc-editor.org/info",l=a.doc_id.toLowerCase(),i=a.doc_id.slice(0,3).toLowerCase(),f=a.doc_id.slice(3).replace(/^0+/,""),u={status:"Status",obsoletes:"Obsoletes",obsoleted_by:"Obsoleted By",updates:"Updates",updated_by:"Updated By",see_also:"See Also",errata_url:"Errata"};let h="<dl style='overflow:hidden' id='external-updates'>";["status","obsoletes","obsoleted_by","updates","updated_by","see_also","errata_url"].forEach(e=>{if("status"==e){a[e]=a[e].toLowerCase();var t=a[e].split(" "),o=t.length,w="",p=1;for(let e=0;e<o;e++)p<o?w=w+r(t[e])+" ":w+=r(t[e]),p++;a[e]=w}else if("obsoletes"==e||"obsoleted_by"==e||"updates"==e||"updated_by"==e){var g,m="",b=1;g=a[e].length;for(let t=0;t<g;t++)a[e][t]&&(a[e][t]=String(a[e][t]).toLowerCase(),m=b<g?m+"<a href='"+s+"/rfc/".concat(a[e][t])+"'>"+a[e][t].slice(3)+"</a>, ":m+"<a href='"+s+"/rfc/".concat(a[e][t])+"'>"+a[e][t].slice(3)+"</a>",b++);a[e]=m}else if("see_also"==e){var y,L="",C=1;y=a[e].length;for(let t=0;t<y;t++)if(a[e][t]){a[e][t]=String(a[e][t]);var _=a[e][t].slice(0,3),v=a[e][t].slice(3).replace(/^0+/,"");L=C<y?"RFC"!=_?L+"<a href='"+s+"/info/"+_.toLowerCase().concat(v.toLowerCase())+"'>"+_+" "+v+"</a>, ":L+"<a href='"+s+"/info/"+_.toLowerCase().concat(v.toLowerCase())+"'>"+v+"</a>, ":"RFC"!=_?L+"<a href='"+s+"/info/"+_.toLowerCase().concat(v.toLowerCase())+"'>"+_+" "+v+"</a>":L+"<a href='"+s+"/info/"+_.toLowerCase().concat(v.toLowerCase())+"'>"+v+"</a>",C++}a[e]=L}else if("errata_url"==e){var R="";R=a[e]?R+"<a href='"+a[e]+"'>Errata exist</a> | <a href='"+d+"/"+l+"'>Datatracker</a>| <a href='"+n+"/?"+i+"="+f+"&submit="+i+"'>IPR</a> | <a href='"+c+"/"+l+"'>Info page</a>":"<a href='"+d+"/"+l+"'>Datatracker</a> | <a href='"+n+"/?"+i+"="+f+"&submit="+i+"'>IPR</a> | <a href='"+c+"/"+l+"'>Info page</a>",a[e]=R}""!=a[e]?"Errata"==u[e]?h+=`<dt>More info:</dt><dd>${a[e]}</dd>`:h+=`<dt>${u[e]}:</dt><dd>${a[e]}</dd>`:"Errata"==u[e]&&(h+=`<dt>More info:</dt><dd>${a[e]}</dd>`)}),h+="</dl>",e.innerHTML=h}catch(e){console.log(e)}else console.log("Could not locate metadata <div> element");function r(e){return e.charAt(0).toUpperCase()+e.slice(1)}}window.removeEventListener("load",addMetadata),window.addEventListener("load",addMetadata);</script>
+</head>
+<body class="xml2rfc">
+<script src="metadata.min.js"></script>
+<table class="ears">
+<thead><tr>
+<td class="left">Internet-Draft</td>
+<td class="center">Abbreviated Title</td>
+<td class="right">March 2025</td>
+</tr></thead>
+<tfoot><tr>
+<td class="left">Royer</td>
+<td class="center">Expires 24 September 2025</td>
+<td class="right">[Page]</td>
+</tr></tfoot>
+</table>
+<div id="external-metadata" class="document-information"></div>
+<div id="internal-metadata" class="document-information">
+<dl id="identifiers">
+<dt class="label-workgroup">Workgroup:</dt>
+<dd class="workgroup">Internet Engineering Task Force</dd>
+<dt class="label-internet-draft">Internet-Draft:</dt>
+<dd class="internet-draft">draft-royer-bits-in-xdr-00</dd>
+<dt class="label-published">Published:</dt>
+<dd class="published">
+<time datetime="2025-03-23" class="published">23 March 2025</time>
+    </dd>
+<dt class="label-intended-status">Intended Status:</dt>
+<dd class="intended-status">Informational</dd>
+<dt class="label-expires">Expires:</dt>
+<dd class="expires"><time datetime="2025-09-24">24 September 2025</time></dd>
+<dt class="label-authors">Author:</dt>
+<dd class="authors">
+<div class="author">
+      <div class="author-name">DM. Royer</div>
+<div class="org">RiverExplorer LLC</div>
+</div>
+</dd>
+</dl>
+</div>
+<h1 id="title">Bits in XDR</h1>
+<section id="section-abstract">
+      <h2 id="abstract"><a href="#abstract" class="selfRef">Abstract</a></h2>
+<p id="section-abstract-1">
+ This is an extension to the XDR specification to allow
+ for bits to be described and sent.<a href="#section-abstract-1" class="pilcrow">¶</a></p>
+<p id="section-abstract-2">
+ With protocols that have a large number of boolean values
+ the existing standard requires each to be individually
+ packed into a 32-bit value.<a href="#section-abstract-2" class="pilcrow">¶</a></p>
+<p id="section-abstract-3">
+ This addition does not alter any existing XDR data streams or
+ effect existing implementations.<a href="#section-abstract-3" class="pilcrow">¶</a></p>
+<ul class="normal">
+<li class="normal" id="section-abstract-4.1">
+ This specification describes how to pack a bit-boolean and
+ short bit-width data values into the 32-bit XDR block chunks.<a href="#section-abstract-4.1" class="pilcrow">¶</a>
+</li>
+        <li class="normal" id="section-abstract-4.2">
+ And this specification describes how to describe them
+ by extending "The XDR Language Specification" to include
+ bits.<a href="#section-abstract-4.2" class="pilcrow">¶</a>
+</li>
+        <li class="normal" id="section-abstract-4.3">
+ And a new namespace declaration type is specified
+ to aid in the reduction of name collisions in
+ large projects.<a href="#section-abstract-4.3" class="pilcrow">¶</a>
+</li>
+      </ul>
+<p id="section-abstract-5">
+ While in draft status, a new Open Source XDR generation tool
+ is being developed <span>[<a href="#xdrgen" class="cite xref">xdrgen</a>]</span>.<a href="#section-abstract-5" class="pilcrow">¶</a></p>
+</section>
+<div id="status-of-memo">
+<section id="section-boilerplate.1">
+        <h2 id="name-status-of-this-memo">
+<a href="#name-status-of-this-memo" class="section-name selfRef">Status of This Memo</a>
+        </h2>
+<p id="section-boilerplate.1-1">
+        This Internet-Draft is submitted in full conformance with the
+        provisions of BCP 78 and BCP 79.<a href="#section-boilerplate.1-1" class="pilcrow">¶</a></p>
+<p id="section-boilerplate.1-2">
+        Internet-Drafts are working documents of the Internet Engineering Task
+        Force (IETF). Note that other groups may also distribute working
+        documents as Internet-Drafts. The list of current Internet-Drafts is
+        at <span><a href="https://datatracker.ietf.org/drafts/current/">https://datatracker.ietf.org/drafts/current/</a></span>.<a href="#section-boilerplate.1-2" class="pilcrow">¶</a></p>
+<p id="section-boilerplate.1-3">
+        Internet-Drafts are draft documents valid for a maximum of six months
+        and may be updated, replaced, or obsoleted by other documents at any
+        time. It is inappropriate to use Internet-Drafts as reference
+        material or to cite them other than as "work in progress."<a href="#section-boilerplate.1-3" class="pilcrow">¶</a></p>
+<p id="section-boilerplate.1-4">
+        This Internet-Draft will expire on 24 September 2025.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
+</section>
+</div>
+<div id="copyright">
+<section id="section-boilerplate.2">
+        <h2 id="name-copyright-notice">
+<a href="#name-copyright-notice" class="section-name selfRef">Copyright Notice</a>
+        </h2>
+<p id="section-boilerplate.2-1">
+            Copyright (c) 2025 IETF Trust and the persons identified as the
+            document authors. All rights reserved.<a href="#section-boilerplate.2-1" class="pilcrow">¶</a></p>
+<p id="section-boilerplate.2-2">
+            This document is subject to BCP 78 and the IETF Trust's Legal
+            Provisions Relating to IETF Documents
+            (<span><a href="https://trustee.ietf.org/license-info">https://trustee.ietf.org/license-info</a></span>) in effect on the date of
+            publication of this document. Please review these documents
+            carefully, as they describe your rights and restrictions with
+            respect to this document. Code Components extracted from this
+            document must include Revised BSD License text as described in
+            Section 4.e of the Trust Legal Provisions and are provided without
+            warranty as described in the Revised BSD License.<a href="#section-boilerplate.2-2" class="pilcrow">¶</a></p>
+</section>
+</div>
+<div id="toc">
+<section id="section-toc.1">
+        <a href="#" onclick="scroll(0,0)" class="toplink">▲</a><h2 id="name-table-of-contents">
+<a href="#name-table-of-contents" class="section-name selfRef">Table of Contents</a>
+        </h2>
+<nav class="toc"><ul class="compact toc ulBare ulEmpty">
+<li class="compact toc ulBare ulEmpty" id="section-toc.1-1.1">
+            <p id="section-toc.1-1.1.1" class="keepWithNext"><a href="#section-1" class="auto internal xref">1</a>.  <a href="#name-introduction" class="internal xref">Introduction</a></p>
+</li>
+          <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.2">
+            <p id="section-toc.1-1.2.1" class="keepWithNext"><a href="#section-2" class="auto internal xref">2</a>.  <a href="#name-the-xdr-bit-language-specif" class="internal xref">The XDR Bit Language Specification</a></p>
+</li>
+          <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.3">
+            <p id="section-toc.1-1.3.1"><a href="#section-3" class="auto internal xref">3</a>.  <a href="#name-packing-bits" class="internal xref">Packing Bits</a></p>
+<ul class="compact toc ulBare ulEmpty">
+<li class="compact toc ulBare ulEmpty" id="section-toc.1-1.3.2.1">
+                <p id="section-toc.1-1.3.2.1.1" class="keepWithNext"><a href="#section-3.1" class="auto internal xref">3.1</a>.  <a href="#name-packing-bit-boolean" class="internal xref">Packing bit-boolean</a></p>
+</li>
+              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.3.2.2">
+                <p id="section-toc.1-1.3.2.2.1"><a href="#section-3.2" class="auto internal xref">3.2</a>.  <a href="#name-packing-bit-values" class="internal xref">Packing bit-values</a></p>
+<ul class="compact toc ulBare ulEmpty">
+<li class="compact toc ulBare ulEmpty" id="section-toc.1-1.3.2.2.2.1">
+                    <p id="section-toc.1-1.3.2.2.2.1.1"><a href="#section-3.2.1" class="auto internal xref">3.2.1</a>.  <a href="#name-packing-wider-than-32-bit-v" class="internal xref">Packing wider than 32-bit-values or spanning blocks</a></p>
+</li>
+                </ul>
+</li>
+            </ul>
+</li>
+          <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.4">
+            <p id="section-toc.1-1.4.1"><a href="#section-4" class="auto internal xref">4</a>.  <a href="#name-reducing-namespace-collisio" class="internal xref">Reducing Namespace Collision in Generated Code</a></p>
+</li>
+          <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.5">
+            <p id="section-toc.1-1.5.1"><a href="#section-5" class="auto internal xref">5</a>.  <a href="#name-iana-considerations" class="internal xref">IANA Considerations</a></p>
+</li>
+          <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.6">
+            <p id="section-toc.1-1.6.1"><a href="#section-6" class="auto internal xref">6</a>.  <a href="#name-security-considerations" class="internal xref">Security Considerations</a></p>
+</li>
+          <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.7">
+            <p id="section-toc.1-1.7.1"><a href="#section-7" class="auto internal xref">7</a>.  <a href="#name-normative-references" class="internal xref">Normative References</a></p>
+</li>
+          <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.8">
+            <p id="section-toc.1-1.8.1"><a href="#section-8" class="auto internal xref">8</a>.  <a href="#name-informative-references" class="internal xref">Informative References</a></p>
+</li>
+          <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.9">
+            <p id="section-toc.1-1.9.1"><a href="#appendix-A" class="auto internal xref">Appendix A</a>.  <a href="#name-appendix-1-full-xdr-languag" class="internal xref">Appendix 1 Full XDR Language Grammar</a></p>
+</li>
+          <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.10">
+            <p id="section-toc.1-1.10.1"><a href="#appendix-B" class="auto internal xref"></a><a href="#name-acknowledgments" class="internal xref">Acknowledgments</a></p>
+</li>
+          <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.11">
+            <p id="section-toc.1-1.11.1"><a href="#appendix-C" class="auto internal xref"></a><a href="#name-contributors" class="internal xref">Contributors</a></p>
+</li>
+          <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.12">
+            <p id="section-toc.1-1.12.1"><a href="#appendix-D" class="auto internal xref"></a><a href="#name-authors-address" class="internal xref">Author's Address</a></p>
+</li>
+        </ul>
+</nav>
+</section>
+</div>
+<section id="section-1">
+      <h2 id="name-introduction">
+<a href="#section-1" class="section-number selfRef">1. </a><a href="#name-introduction" class="section-name selfRef">Introduction</a>
+      </h2>
+<p id="section-1-1">
+ Definitions:<a href="#section-1-1" class="pilcrow">¶</a></p>
+<ul class="normal">
+<li class="normal" id="section-1-2.1">
+          <p id="section-1-2.1.1">
+ A value with 2 or more bits is called a bit-value.<a href="#section-1-2.1.1" class="pilcrow">¶</a></p>
+<p id="section-1-2.1.2">
+ A bit-value value can be signed or unsigned.
+ They often represent a set of possible conditions
+ and not a numeric value and would be unsigned.
+ And in other usages, the bits could represent a positive or
+ negative value.<a href="#section-1-2.1.2" class="pilcrow">¶</a></p>
+</li>
+        <li class="normal" id="section-1-2.2">
+ A single bit value is called a bit-boolean.
+ A bit-boolean is a single bit representing
+ a true or false value.
+ A bit-boolean by itself has no sign.
+ Up to 32 bit-boolean fit in a 32-bit XDR block.<a href="#section-1-2.2" class="pilcrow">¶</a>
+</li>
+        <li class="normal" id="section-1-2.3">
+ A scope is a way of extending a name of a item
+ to uniquely identify it.
+ As an example, file A variable 'a' and file B variable 'a'
+ can be difficult to uniquely identify in code.
+ By adding a 'namespace A' and a second 'namespace B',
+ they can then be identified with 'A:a' and 'B:a'.<a href="#section-1-2.3" class="pilcrow">¶</a>
+</li>
+      </ul>
+<p id="section-1-3"></p>
+<p id="section-1-4">
+ All multi bit width values are placed into network byte
+ order the same as their 32-bit or wider values
+ as described in XDR <span>[<a href="#RFC4506" class="cite xref">RFC4506</a>]</span>.<a href="#section-1-4" class="pilcrow">¶</a></p>
+</section>
+<section id="section-2">
+      <h2 id="name-the-xdr-bit-language-specif">
+<a href="#section-2" class="section-number selfRef">2. </a><a href="#name-the-xdr-bit-language-specif" class="section-name selfRef">The XDR Bit Language Specification</a>
+      </h2>
+<p id="section-2-1">
+ With an large amount of bits and data packets
+ it is easier to have name collisions between
+ generated object.
+ For this reason a new 'namespace' declaration'
+ type is specified in <a href="#NamespaceSec" class="auto internal xref">Section 4</a><a href="#section-2-1" class="pilcrow">¶</a></p>
+<p id="section-2-2">
+ A new RFC-XDR type-specifier of 'bitobject'
+ is added to the one shown
+ in <span><a href="https://rfc-editor.org/rfc/rfc4506#section-6.3" class="relref">Section 6.3</a> of [<a href="#RFC4506" class="cite xref">RFC4506</a>]</span>.
+ Resulting in 'type-specifier' becoming:<a href="#section-2-2" class="pilcrow">¶</a></p>
+<span id="name-extended-type-specifier-abn"></span><div id="NewTypeSpecifier">
+<figure id="figure-1">
+        <div class="alignLeft art-abnf art-text artwork" id="section-2-3.1">
+<pre>
+type-specifier:
+           [ "unsigned" ] "int"
+         | [ "unsigned" ] "hyper"
+         | "float"
+         | "double"
+         | "quadruple"
+         | "bool"
+         | enum-type-spec
+         | struct-type-spec
+         | union-type-spec
+         | identifier
+         | bitobject
+</pre>
+</div>
+<figcaption><a href="#figure-1" class="selfRef">Figure 1</a>:
+<a href="#name-extended-type-specifier-abn" class="selfRef">Extended type-specifier ABNF</a>
+        </figcaption></figure>
+</div>
+<p id="section-2-4">
+  The properties of a bitobject are:<a href="#section-2-4" class="pilcrow">¶</a></p>
+<ul class="normal">
+<li class="normal" id="section-2-5.1">
+          <p id="section-2-5.1.1">A bitobject only consists of one or more of:<a href="#section-2-5.1.1" class="pilcrow">¶</a></p>
+<ul class="normal">
+<li class="normal" id="section-2-5.1.2.1">A signed integer value: "sbits"<a href="#section-2-5.1.2.1" class="pilcrow">¶</a>
+</li>
+            <li class="normal" id="section-2-5.1.2.2">An unsigned integer value: "ubits"<a href="#section-2-5.1.2.2" class="pilcrow">¶</a>
+</li>
+            <li class="normal" id="section-2-5.1.2.3">A boolean "bit"<a href="#section-2-5.1.2.3" class="pilcrow">¶</a>
+</li>
+          </ul>
+</li>
+        <li class="normal" id="section-2-5.2">
+  Floating point numbers would be transmitted as
+  a float value as already described in <span>[<a href="#RFC4506" class="cite xref">RFC4506</a>]</span>
+  as they have a sign, exponent and a mantissa.
+  No floating value is defined in a bitobject.<a href="#section-2-5.2" class="pilcrow">¶</a>
+</li>
+        <li class="normal" id="section-2-5.3">
+  Unused bits are set to zero (0).<a href="#section-2-5.3" class="pilcrow">¶</a>
+</li>
+        <li class="normal" id="section-2-5.4">
+  All bit widths that exceed 32-bits would be placed
+  into two or more bitobject values. With the ones
+  containing the most significant bits sent first
+  and the one with the least signification bits
+  sent last.<a href="#section-2-5.4" class="pilcrow">¶</a>
+</li>
+        <li class="normal" id="section-2-5.5">
+  A bitobject does not need to define 32-bits of data.
+  The undefined bits are at the most significant end
+  of the 32-bits object and and are set to zero.<a href="#section-2-5.5" class="pilcrow">¶</a>
+</li>
+        <li class="normal" id="section-2-5.6">
+  All <span>[<a href="#RFC4506" class="cite xref">RFC4506</a>]</span> type-specifier objects
+  are at least 32-bits wide which means that "sbits",
+  "ubits", or "bit" can never occupy a 32-bit XDR block
+  with a  <span>[<a href="#RFC4506" class="cite xref">RFC4506</a>]</span> type-specifier.<a href="#section-2-5.6" class="pilcrow">¶</a>
+</li>
+        <li class="normal" id="section-2-5.7">
+  A 32-bit wide "sbits" is the same as a
+  <span>[<a href="#RFC4506" class="cite xref">RFC4506</a>], <a href="https://rfc-editor.org/rfc/rfc4506#section-4.1" class="relref">Section 4.1</a></span>
+  signed integer.
+  Except when they span 32-bit blocks.
+  See <a href="#WideBits" class="auto internal xref">Section 3.2.1</a>.<a href="#section-2-5.7" class="pilcrow">¶</a>
+</li>
+        <li class="normal" id="section-2-5.8">
+  A 32-bit wide "ubits" is the same as a
+  <span>[<a href="#RFC4506" class="cite xref">RFC4506</a>], <a href="https://rfc-editor.org/rfc/rfc4506#section-4.2" class="relref">Section 4.2</a></span>
+  unsigned integer.
+  Except when they span 32-bit blocks.
+  See <a href="#WideBits" class="auto internal xref">Section 3.2.1</a>.<a href="#section-2-5.8" class="pilcrow">¶</a>
+</li>
+      </ul>
+<span id="name-bitobject-abnf"></span><figure id="figure-2">
+        <div class="alignLeft art-abnf art-text artwork" id="section-2-6.1">
+<pre>
+bitobject:
+      "{"
+         ( width-declaration ";" )
+         ( width-declaration ";" )*
+      "}"
+
+width-declaration:
+      "bit"   identifier
+      "sbits" identifier ":" %d
+      "ubits" identifier ":" %d
+</pre>
+</div>
+<figcaption><a href="#figure-2" class="selfRef">Figure 2</a>:
+<a href="#name-bitobject-abnf" class="selfRef">bitobject ABNF</a>
+        </figcaption></figure>
+<p id="section-2-7"><a href="#bits1" class="auto internal xref">Figure 3</a> is one example of a bitobject.
+  that is 32-bits wide.<a href="#section-2-7" class="pilcrow">¶</a></p>
+<span id="name-multiple-bits-example"></span><div id="bits1">
+<figure id="figure-3">
+        <div class="alignLeft art-abnf art-text artwork" id="section-2-8.1">
+<pre>
+bitobject AssemblyLineStatus
+{
+  bit   LightOn;
+  ubits Status:3;
+  ubits SwitchPosition:4;
+  sbits Rotation:10;
+  bit   Active;
+  ubits UnitsPerMinute:8;
+  ubits UnitID:5;
+};
+</pre>
+</div>
+<figcaption><a href="#figure-3" class="selfRef">Figure 3</a>:
+<a href="#name-multiple-bits-example" class="selfRef">Multiple Bits Example</a>
+        </figcaption></figure>
+</div>
+<p id="section-2-9">
+  Example <a href="#bits2" class="auto internal xref">Figure 4</a> uses 11 bit-boolean
+  values and would be transmitted
+  in one 32-bit block.<a href="#section-2-9" class="pilcrow">¶</a></p>
+<span id="name-flags-example"></span><div id="bits2">
+<figure id="figure-4">
+        <div class="alignLeft art-abnf art-text artwork" id="section-2-10.1">
+<pre>
+bitobject EmailStatus
+{
+  bit Seen:1;
+  bit Answered:1;
+  bit Flagged:1
+  bit Deleted:1
+  bit Draft:1
+  bit Recent:1
+  bit Forwarded:1
+  bit Ignored:1
+  bit Watched:1
+  bit Shared:1
+  bit ReadOnly:1
+};
+</pre>
+</div>
+<figcaption><a href="#figure-4" class="selfRef">Figure 4</a>:
+<a href="#name-flags-example" class="selfRef">Flags Example</a>
+        </figcaption></figure>
+</div>
+<p id="section-2-11">
+  Example <a href="#bits3" class="auto internal xref">Figure 5</a> contains two 42 bit-boolean
+  values and would be transmitted
+  in three 32-bit blocks.<a href="#section-2-11" class="pilcrow">¶</a></p>
+<span id="name-wider-than-32-bit-example"></span><div id="bits3">
+<figure id="figure-5">
+        <div class="alignLeft art-abnf art-text artwork" id="section-2-12.1">
+<pre>
+bitobject Trajectory
+{
+  ubits Velocity:42;
+  sbits VectorX:14;
+  sbits VectorY:14;
+  sbits VectorZ:14;
+};
+</pre>
+</div>
+<figcaption><a href="#figure-5" class="selfRef">Figure 5</a>:
+<a href="#name-wider-than-32-bit-example" class="selfRef">Wider than 32 bit example:</a>
+        </figcaption></figure>
+</div>
+<p id="section-2-13">
+  In some cases, like in <a href="#bits1" class="auto internal xref">Figure 3</a>
+  "AssemblyLineStatus" and in 
+  <a href="#bits3" class="auto internal xref">Figure 5</a> "Trajectory",
+  the bits could represent the output of a hardware device
+  where the bits are defined by a manufacturer.<a href="#section-2-13" class="pilcrow">¶</a></p>
+<p id="section-2-14">
+  And in other cases the bits could be logical software
+  flags that have a predefined bit-position in a bit stream
+  as exampled in <a href="#bits2" class="auto internal xref">Figure 4</a>.<a href="#section-2-14" class="pilcrow">¶</a></p>
+</section>
+<section id="section-3">
+      <h2 id="name-packing-bits">
+<a href="#section-3" class="section-number selfRef">3. </a><a href="#name-packing-bits" class="section-name selfRef">Packing Bits</a>
+      </h2>
+<p id="section-3-1">
+ The bit-boolean and bit-value objects are processed
+ from the top to the bottom as shown in their bitobject
+ XDR language definition.<a href="#section-3-1" class="pilcrow">¶</a></p>
+<p id="section-3-2">
+ The top most value would be packed into the least
+ significant bits.
+ The second from the top value would be placed
+ next to it, and so on.<a href="#section-3-2" class="pilcrow">¶</a></p>
+<p id="section-3-3">
+ bit-values are converted to network byte order
+ and then bit packed.<a href="#section-3-3" class="pilcrow">¶</a></p>
+<p id="section-3-4">
+ And a caution to the implementors for signed bit-value
+ data.
+ Many computer languages will convert a narrower bit value
+ into a wider bit value and move the sign bit to the
+ most significant position.
+ So when preparing a signed bit-value, be sure to clamp the value
+ and adjust the sign to the correct bit position before
+ packing the bits.
+ This would apply to "sbits" and not "ubits".<a href="#section-3-4" class="pilcrow">¶</a></p>
+<section id="section-3.1">
+        <h3 id="name-packing-bit-boolean">
+<a href="#section-3.1" class="section-number selfRef">3.1. </a><a href="#name-packing-bit-boolean" class="section-name selfRef">Packing bit-boolean</a>
+        </h3>
+<p id="section-3.1-1">
+ This is how the XDR Language bitobject "EmailStatus" in
+ <a href="#bits2" class="auto internal xref">Figure 4</a> would be packed.
+ "EmailStatus" is a bitobject that only
+ contains bit-boolean values.<a href="#section-3.1-1" class="pilcrow">¶</a></p>
+<span id="name-how-would-be-packed"></span><figure id="figure-6">
+          <div id="section-3.1-2.1">
+            <div class="alignLeft art-svg artwork" id="section-3.1-2.1.2">
+<svg xmlns="http://www.w3.org/2000/svg" version="1.1" height="416" width="536" viewBox="0 0 536 416" class="diagram" text-anchor="middle" font-family="monospace" font-size="13px" stroke-linecap="round">
+                <path d="M 16,272 L 16,304" fill="none" stroke="black"></path>
+                <path d="M 32,272 L 32,304" fill="none" stroke="black"></path>
+                <path d="M 48,272 L 48,304" fill="none" stroke="black"></path>
+                <path d="M 64,272 L 64,304" fill="none" stroke="black"></path>
+                <path d="M 80,272 L 80,304" fill="none" stroke="black"></path>
+                <path d="M 96,272 L 96,304" fill="none" stroke="black"></path>
+                <path d="M 112,272 L 112,304" fill="none" stroke="black"></path>
+                <path d="M 128,272 L 128,304" fill="none" stroke="black"></path>
+                <path d="M 144,272 L 144,304" fill="none" stroke="black"></path>
+                <path d="M 160,272 L 160,304" fill="none" stroke="black"></path>
+                <path d="M 176,272 L 176,304" fill="none" stroke="black"></path>
+                <path d="M 192,272 L 192,304" fill="none" stroke="black"></path>
+                <path d="M 208,272 L 208,304" fill="none" stroke="black"></path>
+                <path d="M 224,272 L 224,304" fill="none" stroke="black"></path>
+                <path d="M 240,272 L 240,304" fill="none" stroke="black"></path>
+                <path d="M 256,272 L 256,304" fill="none" stroke="black"></path>
+                <path d="M 272,272 L 272,304" fill="none" stroke="black"></path>
+                <path d="M 288,272 L 288,304" fill="none" stroke="black"></path>
+                <path d="M 304,272 L 304,304" fill="none" stroke="black"></path>
+                <path d="M 320,272 L 320,304" fill="none" stroke="black"></path>
+                <path d="M 336,272 L 336,304" fill="none" stroke="black"></path>
+                <path d="M 352,272 L 352,304" fill="none" stroke="black"></path>
+                <path d="M 360,224 L 360,264" fill="none" stroke="black"></path>
+                <path d="M 368,272 L 368,304" fill="none" stroke="black"></path>
+                <path d="M 376,208 L 376,264" fill="none" stroke="black"></path>
+                <path d="M 384,272 L 384,304" fill="none" stroke="black"></path>
+                <path d="M 392,192 L 392,264" fill="none" stroke="black"></path>
+                <path d="M 400,272 L 400,304" fill="none" stroke="black"></path>
+                <path d="M 408,176 L 408,264" fill="none" stroke="black"></path>
+                <path d="M 416,272 L 416,304" fill="none" stroke="black"></path>
+                <path d="M 424,160 L 424,264" fill="none" stroke="black"></path>
+                <path d="M 432,272 L 432,304" fill="none" stroke="black"></path>
+                <path d="M 440,144 L 440,264" fill="none" stroke="black"></path>
+                <path d="M 448,272 L 448,304" fill="none" stroke="black"></path>
+                <path d="M 456,128 L 456,264" fill="none" stroke="black"></path>
+                <path d="M 464,272 L 464,304" fill="none" stroke="black"></path>
+                <path d="M 472,112 L 472,264" fill="none" stroke="black"></path>
+                <path d="M 480,272 L 480,304" fill="none" stroke="black"></path>
+                <path d="M 488,96 L 488,264" fill="none" stroke="black"></path>
+                <path d="M 496,272 L 496,304" fill="none" stroke="black"></path>
+                <path d="M 504,80 L 504,264" fill="none" stroke="black"></path>
+                <path d="M 512,272 L 512,304" fill="none" stroke="black"></path>
+                <path d="M 520,64 L 520,264" fill="none" stroke="black"></path>
+                <path d="M 528,272 L 528,304" fill="none" stroke="black"></path>
+                <path d="M 104,48 L 504,48" fill="none" stroke="black"></path>
+                <path d="M 136,64 L 488,64" fill="none" stroke="black"></path>
+                <path d="M 128,80 L 472,80" fill="none" stroke="black"></path>
+                <path d="M 128,96 L 456,96" fill="none" stroke="black"></path>
+                <path d="M 112,112 L 440,112" fill="none" stroke="black"></path>
+                <path d="M 120,128 L 424,128" fill="none" stroke="black"></path>
+                <path d="M 144,144 L 408,144" fill="none" stroke="black"></path>
+                <path d="M 128,160 L 392,160" fill="none" stroke="black"></path>
+                <path d="M 128,176 L 376,176" fill="none" stroke="black"></path>
+                <path d="M 120,192 L 360,192" fill="none" stroke="black"></path>
+                <path d="M 136,208 L 344,208" fill="none" stroke="black"></path>
+                <path d="M 16,272 L 528,272" fill="none" stroke="black"></path>
+                <path d="M 16,304 L 528,304" fill="none" stroke="black"></path>
+                <path d="M 24,368 L 232,368" fill="none" stroke="black"></path>
+                <path d="M 264,368 L 504,368" fill="none" stroke="black"></path>
+                <path d="M 504,48 C 512.83064,48 520,55.16936 520,64" fill="none" stroke="black"></path>
+                <path d="M 488,64 C 496.83064,64 504,71.16936 504,80" fill="none" stroke="black"></path>
+                <path d="M 472,80 C 480.83064,80 488,87.16936 488,96" fill="none" stroke="black"></path>
+                <path d="M 456,96 C 464.83064,96 472,103.16936 472,112" fill="none" stroke="black"></path>
+                <path d="M 440,112 C 448.83064,112 456,119.16936 456,128" fill="none" stroke="black"></path>
+                <path d="M 424,128 C 432.83064,128 440,135.16936 440,144" fill="none" stroke="black"></path>
+                <path d="M 408,144 C 416.83064,144 424,151.16936 424,160" fill="none" stroke="black"></path>
+                <path d="M 392,160 C 400.83064,160 408,167.16936 408,176" fill="none" stroke="black"></path>
+                <path d="M 376,176 C 384.83064,176 392,183.16936 392,192" fill="none" stroke="black"></path>
+                <path d="M 360,192 C 368.83064,192 376,199.16936 376,208" fill="none" stroke="black"></path>
+                <path d="M 344,208 C 352.83064,208 360,215.16936 360,224" fill="none" stroke="black"></path>
+                <path d="M 24,368 C 15.16936,368 8,360.83064 8,352" fill="none" stroke="black"></path>
+                <path d="M 232,368 C 240.83064,368 248,375.16936 248,384" fill="none" stroke="black"></path>
+                <path d="M 264,368 C 255.16936,368 248,375.16936 248,384" fill="none" stroke="black"></path>
+                <path d="M 504,368 C 512.83064,368 520,360.83064 520,352" fill="none" stroke="black"></path>
+                <polygon class="arrowhead" points="528,264 516,258.4 516,269.6" fill="black" transform="rotate(90,520,264)"></polygon>
+                <polygon class="arrowhead" points="512,264 500,258.4 500,269.6" fill="black" transform="rotate(90,504,264)"></polygon>
+                <polygon class="arrowhead" points="496,264 484,258.4 484,269.6" fill="black" transform="rotate(90,488,264)"></polygon>
+                <polygon class="arrowhead" points="480,264 468,258.4 468,269.6" fill="black" transform="rotate(90,472,264)"></polygon>
+                <polygon class="arrowhead" points="464,264 452,258.4 452,269.6" fill="black" transform="rotate(90,456,264)"></polygon>
+                <polygon class="arrowhead" points="448,264 436,258.4 436,269.6" fill="black" transform="rotate(90,440,264)"></polygon>
+                <polygon class="arrowhead" points="432,264 420,258.4 420,269.6" fill="black" transform="rotate(90,424,264)"></polygon>
+                <polygon class="arrowhead" points="416,264 404,258.4 404,269.6" fill="black" transform="rotate(90,408,264)"></polygon>
+                <polygon class="arrowhead" points="400,264 388,258.4 388,269.6" fill="black" transform="rotate(90,392,264)"></polygon>
+                <polygon class="arrowhead" points="384,264 372,258.4 372,269.6" fill="black" transform="rotate(90,376,264)"></polygon>
+                <polygon class="arrowhead" points="368,264 356,258.4 356,269.6" fill="black" transform="rotate(90,360,264)"></polygon>
+                <g class="text">
+                  <text x="92" y="20">bit-object EmailStatus</text>
+                  <text x="8" y="36">{</text>
+                  <text x="56" y="52">bit Seen;</text>
+                  <text x="72" y="68">bit Answered;</text>
+                  <text x="68" y="84">bit Flagged;</text>
+                  <text x="68" y="100">bit Deleted;</text>
+                  <text x="60" y="116">bit Draft;</text>
+                  <text x="64" y="132">bit Recent;</text>
+                  <text x="76" y="148">bit Forwarded;</text>
+                  <text x="68" y="164">bit Ignored;</text>
+                  <text x="68" y="180">bit Watched;</text>
+                  <text x="64" y="196">bit Shared;</text>
+                  <text x="72" y="212">bit ReadOnly;</text>
+                  <text x="12" y="228">};</text>
+                  <text x="24" y="292">0</text>
+                  <text x="40" y="292">0</text>
+                  <text x="56" y="292">0</text>
+                  <text x="72" y="292">0</text>
+                  <text x="88" y="292">0</text>
+                  <text x="104" y="292">0</text>
+                  <text x="120" y="292">0</text>
+                  <text x="136" y="292">0</text>
+                  <text x="152" y="292">0</text>
+                  <text x="168" y="292">0</text>
+                  <text x="184" y="292">0</text>
+                  <text x="200" y="292">0</text>
+                  <text x="216" y="292">0</text>
+                  <text x="232" y="292">0</text>
+                  <text x="248" y="292">0</text>
+                  <text x="264" y="292">0</text>
+                  <text x="280" y="292">0</text>
+                  <text x="296" y="292">0</text>
+                  <text x="312" y="292">0</text>
+                  <text x="328" y="292">0</text>
+                  <text x="344" y="292">0</text>
+                  <text x="96" y="324">Most Significant Bits</text>
+                  <text x="444" y="324">Least significant Bits</text>
+                  <text x="124" y="340">unused bits in this example.</text>
+                  <text x="252" y="404">32-bits wide</text>
+                </g>
+              </svg><a href="#section-3.1-2.1.2" class="pilcrow">¶</a>
+</div>
+</div>
+<figcaption><a href="#figure-6" class="selfRef">Figure 6</a>:
+<a href="#name-how-would-be-packed" class="selfRef">How <span class="cite xref">Figure 4</span> would be packed.</a>
+          </figcaption></figure>
+</section>
+<section id="section-3.2">
+        <h3 id="name-packing-bit-values">
+<a href="#section-3.2" class="section-number selfRef">3.2. </a><a href="#name-packing-bit-values" class="section-name selfRef">Packing bit-values</a>
+        </h3>
+<p id="section-3.2-1">
+ This example has both bit-boolean and bit-value data
+ being packed together.<a href="#section-3.2-1" class="pilcrow">¶</a></p>
+<p id="section-3.2-2">
+ Here is how the XDR Language bitobject "AssemblyLineStatus"
+ shown in <a href="#bits1" class="auto internal xref">Figure 3</a> would be packed:<a href="#section-3.2-2" class="pilcrow">¶</a></p>
+<span id="name-how-would-be-packed-2"></span><figure id="figure-7">
+          <div id="section-3.2-3.1">
+            <div class="alignLeft art-svg artwork" id="section-3.2-3.1.2">
+<svg xmlns="http://www.w3.org/2000/svg" version="1.1" height="448" width="536" viewBox="0 0 536 448" class="diagram" text-anchor="middle" font-family="monospace" font-size="13px" stroke-linecap="round">
+                <path d="M 16,304 L 16,336" fill="none" stroke="black"></path>
+                <path d="M 24,272 L 24,296" fill="none" stroke="black"></path>
+                <path d="M 32,304 L 32,336" fill="none" stroke="black"></path>
+                <path d="M 48,304 L 48,336" fill="none" stroke="black"></path>
+                <path d="M 56,208 L 56,256" fill="none" stroke="black"></path>
+                <path d="M 64,304 L 64,336" fill="none" stroke="black"></path>
+                <path d="M 80,304 L 80,336" fill="none" stroke="black"></path>
+                <path d="M 88,272 L 88,296" fill="none" stroke="black"></path>
+                <path d="M 96,304 L 96,336" fill="none" stroke="black"></path>
+                <path d="M 104,272 L 104,296" fill="none" stroke="black"></path>
+                <path d="M 112,304 L 112,336" fill="none" stroke="black"></path>
+                <path d="M 128,304 L 128,336" fill="none" stroke="black"></path>
+                <path d="M 144,304 L 144,336" fill="none" stroke="black"></path>
+                <path d="M 160,304 L 160,336" fill="none" stroke="black"></path>
+                <path d="M 168,240 L 168,256" fill="none" stroke="black"></path>
+                <path d="M 176,304 L 176,336" fill="none" stroke="black"></path>
+                <path d="M 184,160 L 184,176" fill="none" stroke="black"></path>
+                <path d="M 192,304 L 192,336" fill="none" stroke="black"></path>
+                <path d="M 208,304 L 208,336" fill="none" stroke="black"></path>
+                <path d="M 216,272 L 216,296" fill="none" stroke="black"></path>
+                <path d="M 224,304 L 224,336" fill="none" stroke="black"></path>
+                <path d="M 232,240 L 232,296" fill="none" stroke="black"></path>
+                <path d="M 240,304 L 240,336" fill="none" stroke="black"></path>
+                <path d="M 248,272 L 248,296" fill="none" stroke="black"></path>
+                <path d="M 256,304 L 256,336" fill="none" stroke="black"></path>
+                <path d="M 272,128 L 272,208" fill="none" stroke="black"></path>
+                <path d="M 272,304 L 272,336" fill="none" stroke="black"></path>
+                <path d="M 288,304 L 288,336" fill="none" stroke="black"></path>
+                <path d="M 304,304 L 304,336" fill="none" stroke="black"></path>
+                <path d="M 320,304 L 320,336" fill="none" stroke="black"></path>
+                <path d="M 328,112 L 328,256" fill="none" stroke="black"></path>
+                <path d="M 336,304 L 336,336" fill="none" stroke="black"></path>
+                <path d="M 352,304 L 352,336" fill="none" stroke="black"></path>
+                <path d="M 368,304 L 368,336" fill="none" stroke="black"></path>
+                <path d="M 384,304 L 384,336" fill="none" stroke="black"></path>
+                <path d="M 392,272 L 392,296" fill="none" stroke="black"></path>
+                <path d="M 400,304 L 400,336" fill="none" stroke="black"></path>
+                <path d="M 408,272 L 408,296" fill="none" stroke="black"></path>
+                <path d="M 416,304 L 416,336" fill="none" stroke="black"></path>
+                <path d="M 432,96 L 432,256" fill="none" stroke="black"></path>
+                <path d="M 432,304 L 432,336" fill="none" stroke="black"></path>
+                <path d="M 448,304 L 448,336" fill="none" stroke="black"></path>
+                <path d="M 456,272 L 456,296" fill="none" stroke="black"></path>
+                <path d="M 464,304 L 464,336" fill="none" stroke="black"></path>
+                <path d="M 472,272 L 472,296" fill="none" stroke="black"></path>
+                <path d="M 480,304 L 480,336" fill="none" stroke="black"></path>
+                <path d="M 488,80 L 488,256" fill="none" stroke="black"></path>
+                <path d="M 496,304 L 496,336" fill="none" stroke="black"></path>
+                <path d="M 504,272 L 504,296" fill="none" stroke="black"></path>
+                <path d="M 512,304 L 512,336" fill="none" stroke="black"></path>
+                <path d="M 520,64 L 520,296" fill="none" stroke="black"></path>
+                <path d="M 528,304 L 528,336" fill="none" stroke="black"></path>
+                <path d="M 144,48 L 504,48" fill="none" stroke="black"></path>
+                <path d="M 152,64 L 472,64" fill="none" stroke="black"></path>
+                <path d="M 216,80 L 416,80" fill="none" stroke="black"></path>
+                <path d="M 176,96 L 312,96" fill="none" stroke="black"></path>
+                <path d="M 136,112 L 256,112" fill="none" stroke="black"></path>
+                <path d="M 216,128 L 232,128" fill="none" stroke="black"></path>
+                <path d="M 152,144 L 168,144" fill="none" stroke="black"></path>
+                <path d="M 72,192 L 168,192" fill="none" stroke="black"></path>
+                <path d="M 184,224 L 200,224" fill="none" stroke="black"></path>
+                <path d="M 248,224 L 256,224" fill="none" stroke="black"></path>
+                <path d="M 40,256 L 72,256" fill="none" stroke="black"></path>
+                <path d="M 120,256 L 200,256" fill="none" stroke="black"></path>
+                <path d="M 264,256 L 376,256" fill="none" stroke="black"></path>
+                <path d="M 424,256 L 440,256" fill="none" stroke="black"></path>
+                <path d="M 16,304 L 528,304" fill="none" stroke="black"></path>
+                <path d="M 16,336 L 528,336" fill="none" stroke="black"></path>
+                <path d="M 24,400 L 232,400" fill="none" stroke="black"></path>
+                <path d="M 264,400 L 504,400" fill="none" stroke="black"></path>
+                <path d="M 216,208 L 248,144" fill="none" stroke="black"></path>
+                <path d="M 504,48 C 512.83064,48 520,55.16936 520,64" fill="none" stroke="black"></path>
+                <path d="M 472,64 C 480.83064,64 488,71.16936 488,80" fill="none" stroke="black"></path>
+                <path d="M 416,80 C 424.83064,80 432,87.16936 432,96" fill="none" stroke="black"></path>
+                <path d="M 312,96 C 320.83064,96 328,103.16936 328,112" fill="none" stroke="black"></path>
+                <path d="M 256,112 C 264.83064,112 272,119.16936 272,128" fill="none" stroke="black"></path>
+                <path d="M 232,128 C 240.83064,128 248,135.16936 248,144" fill="none" stroke="black"></path>
+                <path d="M 168,144 C 176.83064,144 184,151.16936 184,160" fill="none" stroke="black"></path>
+                <path d="M 72,192 C 63.16936,192 56,199.16936 56,208" fill="none" stroke="black"></path>
+                <path d="M 168,192 C 176.83064,192 184,184.83064 184,176" fill="none" stroke="black"></path>
+                <path d="M 184,224 C 175.16936,224 168,231.16936 168,240" fill="none" stroke="black"></path>
+                <path d="M 200,224 C 208.83064,224 216,216.83064 216,208" fill="none" stroke="black"></path>
+                <path d="M 248,224 C 239.16936,224 232,231.16936 232,240" fill="none" stroke="black"></path>
+                <path d="M 256,224 C 264.83064,224 272,216.83064 272,208" fill="none" stroke="black"></path>
+                <path d="M 40,256 C 31.16936,256 24,263.16936 24,272" fill="none" stroke="black"></path>
+                <path d="M 72,256 C 80.83064,256 88,263.16936 88,272" fill="none" stroke="black"></path>
+                <path d="M 120,256 C 111.16936,256 104,263.16936 104,272" fill="none" stroke="black"></path>
+                <path d="M 200,256 C 208.83064,256 216,263.16936 216,272" fill="none" stroke="black"></path>
+                <path d="M 264,256 C 255.16936,256 248,263.16936 248,272" fill="none" stroke="black"></path>
+                <path d="M 376,256 C 384.83064,256 392,263.16936 392,272" fill="none" stroke="black"></path>
+                <path d="M 424,256 C 415.16936,256 408,263.16936 408,272" fill="none" stroke="black"></path>
+                <path d="M 440,256 C 448.83064,256 456,263.16936 456,272" fill="none" stroke="black"></path>
+                <path d="M 488,256 C 479.16936,256 472,263.16936 472,272" fill="none" stroke="black"></path>
+                <path d="M 488,256 C 496.83064,256 504,263.16936 504,272" fill="none" stroke="black"></path>
+                <path d="M 24,400 C 15.16936,400 8,392.83064 8,384" fill="none" stroke="black"></path>
+                <path d="M 232,400 C 240.83064,400 248,407.16936 248,416" fill="none" stroke="black"></path>
+                <path d="M 264,400 C 255.16936,400 248,407.16936 248,416" fill="none" stroke="black"></path>
+                <path d="M 504,400 C 512.83064,400 520,392.83064 520,384" fill="none" stroke="black"></path>
+                <polygon class="arrowhead" points="528,296 516,290.4 516,301.6" fill="black" transform="rotate(90,520,296)"></polygon>
+                <polygon class="arrowhead" points="512,296 500,290.4 500,301.6" fill="black" transform="rotate(90,504,296)"></polygon>
+                <polygon class="arrowhead" points="480,296 468,290.4 468,301.6" fill="black" transform="rotate(90,472,296)"></polygon>
+                <polygon class="arrowhead" points="464,296 452,290.4 452,301.6" fill="black" transform="rotate(90,456,296)"></polygon>
+                <polygon class="arrowhead" points="416,296 404,290.4 404,301.6" fill="black" transform="rotate(90,408,296)"></polygon>
+                <polygon class="arrowhead" points="400,296 388,290.4 388,301.6" fill="black" transform="rotate(90,392,296)"></polygon>
+                <polygon class="arrowhead" points="256,296 244,290.4 244,301.6" fill="black" transform="rotate(90,248,296)"></polygon>
+                <polygon class="arrowhead" points="240,296 228,290.4 228,301.6" fill="black" transform="rotate(90,232,296)"></polygon>
+                <polygon class="arrowhead" points="224,296 212,290.4 212,301.6" fill="black" transform="rotate(90,216,296)"></polygon>
+                <polygon class="arrowhead" points="112,296 100,290.4 100,301.6" fill="black" transform="rotate(90,104,296)"></polygon>
+                <polygon class="arrowhead" points="96,296 84,290.4 84,301.6" fill="black" transform="rotate(90,88,296)"></polygon>
+                <polygon class="arrowhead" points="32,296 20,290.4 20,301.6" fill="black" transform="rotate(90,24,296)"></polygon>
+                <g class="text">
+                  <text x="120" y="20">bit-object AssemblyLineStatus</text>
+                  <text x="8" y="36">{</text>
+                  <text x="32" y="52">bit</text>
+                  <text x="100" y="52">LightOn;</text>
+                  <text x="80" y="68">ubits Status:3;</text>
+                  <text x="112" y="84">ubits SwitchPosition:4;</text>
+                  <text x="92" y="100">sbits Rotation:10;</text>
+                  <text x="32" y="116">bit</text>
+                  <text x="96" y="116">Active;</text>
+                  <text x="112" y="132">ubits UnitsPerMinute:8;</text>
+                  <text x="80" y="148">ubits UnitID:5;</text>
+                  <text x="12" y="164">};</text>
+                  <text x="96" y="356">Most Significant Bits</text>
+                  <text x="444" y="356">Least significant Bits</text>
+                  <text x="252" y="436">32-bits wide</text>
+                </g>
+              </svg><a href="#section-3.2-3.1.2" class="pilcrow">¶</a>
+</div>
+</div>
+<figcaption><a href="#figure-7" class="selfRef">Figure 7</a>:
+<a href="#name-how-would-be-packed-2" class="selfRef">How <span class="cite xref">Figure 3</span> would be packed.</a>
+          </figcaption></figure>
+<div id="WideBits">
+<section id="section-3.2.1">
+          <h4 id="name-packing-wider-than-32-bit-v">
+<a href="#section-3.2.1" class="section-number selfRef">3.2.1. </a><a href="#name-packing-wider-than-32-bit-v" class="section-name selfRef">Packing wider than 32-bit-values or spanning blocks</a>
+          </h4>
+<p id="section-3.2.1-1">
+ This shows how to pack values that are wider
+ than 32-bits.<a href="#section-3.2.1-1" class="pilcrow">¶</a></p>
+<p id="section-3.2.1-2">
+ The values would be converted to network byte order like
+ with 
+ <span>[<a href="#RFC4506" class="cite xref">RFC4506</a>], <a href="https://rfc-editor.org/rfc/rfc4506#section-4.5" class="relref">Section 4.5</a></span>
+ Hyper Integer and Unsigned Hyper Integer values.
+ With their values clamped to the width defined
+ and sbits values having their sign at their own
+ most significant bit position.<a href="#section-3.2.1-2" class="pilcrow">¶</a></p>
+<p id="section-3.2.1-3">
+ Here is how the XDR Language bitobject "Trajectory"
+ shown in <a href="#bits3" class="auto internal xref">Figure 5</a> would be packed into
+ three 32-bit XDR blocks:<a href="#section-3.2.1-3" class="pilcrow">¶</a></p>
+<span id="name-trajectory-shown-again"></span><div id="bits3-again">
+<figure id="figure-8">
+            <div id="section-3.2.1-4.1">
+              <div class="alignLeft art-svg artwork" id="section-3.2.1-4.1.2">
+<svg xmlns="http://www.w3.org/2000/svg" version="1.1" height="128" width="176" viewBox="0 0 176 128" class="diagram" text-anchor="middle" font-family="monospace" font-size="13px" stroke-linecap="round">
+                  <g class="text">
+                    <text x="88" y="20">bit-object Trajectory</text>
+                    <text x="8" y="36">{</text>
+                    <text x="92" y="52">ubits Velocity:42;</text>
+                    <text x="88" y="68">sbits VectorX:14;</text>
+                    <text x="88" y="84">sbits VectorY:14;</text>
+                    <text x="88" y="100">sbits VectorZ:14;</text>
+                    <text x="12" y="116">};</text>
+                  </g>
+                </svg><a href="#section-3.2.1-4.1.2" class="pilcrow">¶</a>
+</div>
+</div>
+<figcaption><a href="#figure-8" class="selfRef">Figure 8</a>:
+<a href="#name-trajectory-shown-again" class="selfRef">Trajectory - shown again</a>
+            </figcaption></figure>
+</div>
+<section id="section-3.2.1.1">
+            <h5 id="name-most-significant-32-bit-blo">
+<a href="#section-3.2.1.1" class="section-number selfRef">3.2.1.1. </a><a href="#name-most-significant-32-bit-blo" class="section-name selfRef">Most significant 32-bit block of
+ <span class="cite xref">Figure 8</span> "Trajectory"</a>
+            </h5>
+<ul class="normal">
+<li class="normal" id="section-3.2.1.1-1.1">11 unused bits set to zero (0).<a href="#section-3.2.1.1-1.1" class="pilcrow">¶</a>
+</li>
+              <li class="normal" id="section-3.2.1.1-1.2">14-bit "VectorZ:14"<a href="#section-3.2.1.1-1.2" class="pilcrow">¶</a>
+</li>
+              <li class="normal" id="section-3.2.1.1-1.3">The most significant 7 bits of 14-bit "VectorY:14"<a href="#section-3.2.1.1-1.3" class="pilcrow">¶</a>
+</li>
+            </ul>
+<span id="name-how-trajectory-most-signifi"></span><div id="bit3-a">
+<figure id="figure-9">
+              <div id="section-3.2.1.1-2.1">
+                <div class="alignLeft art-svg artwork" id="section-3.2.1.1-2.1.2">
+<svg xmlns="http://www.w3.org/2000/svg" version="1.1" height="304" width="528" viewBox="0 0 528 304" class="diagram" text-anchor="middle" font-family="monospace" font-size="13px" stroke-linecap="round">
+                    <path d="M 8,128 L 8,160" fill="none" stroke="black"></path>
+                    <path d="M 24,128 L 24,160" fill="none" stroke="black"></path>
+                    <path d="M 40,128 L 40,160" fill="none" stroke="black"></path>
+                    <path d="M 56,128 L 56,160" fill="none" stroke="black"></path>
+                    <path d="M 72,128 L 72,160" fill="none" stroke="black"></path>
+                    <path d="M 88,128 L 88,160" fill="none" stroke="black"></path>
+                    <path d="M 104,128 L 104,160" fill="none" stroke="black"></path>
+                    <path d="M 120,128 L 120,160" fill="none" stroke="black"></path>
+                    <path d="M 136,128 L 136,160" fill="none" stroke="black"></path>
+                    <path d="M 152,128 L 152,160" fill="none" stroke="black"></path>
+                    <path d="M 168,128 L 168,160" fill="none" stroke="black"></path>
+                    <path d="M 184,128 L 184,160" fill="none" stroke="black"></path>
+                    <path d="M 200,128 L 200,160" fill="none" stroke="black"></path>
+                    <path d="M 216,128 L 216,160" fill="none" stroke="black"></path>
+                    <path d="M 232,128 L 232,160" fill="none" stroke="black"></path>
+                    <path d="M 248,128 L 248,160" fill="none" stroke="black"></path>
+                    <path d="M 264,128 L 264,160" fill="none" stroke="black"></path>
+                    <path d="M 280,128 L 280,160" fill="none" stroke="black"></path>
+                    <path d="M 296,128 L 296,160" fill="none" stroke="black"></path>
+                    <path d="M 312,128 L 312,160" fill="none" stroke="black"></path>
+                    <path d="M 328,128 L 328,160" fill="none" stroke="black"></path>
+                    <path d="M 344,128 L 344,160" fill="none" stroke="black"></path>
+                    <path d="M 360,128 L 360,160" fill="none" stroke="black"></path>
+                    <path d="M 376,128 L 376,160" fill="none" stroke="black"></path>
+                    <path d="M 392,128 L 392,160" fill="none" stroke="black"></path>
+                    <path d="M 408,128 L 408,160" fill="none" stroke="black"></path>
+                    <path d="M 424,128 L 424,160" fill="none" stroke="black"></path>
+                    <path d="M 440,128 L 440,160" fill="none" stroke="black"></path>
+                    <path d="M 456,128 L 456,160" fill="none" stroke="black"></path>
+                    <path d="M 472,128 L 472,160" fill="none" stroke="black"></path>
+                    <path d="M 488,128 L 488,160" fill="none" stroke="black"></path>
+                    <path d="M 504,128 L 504,160" fill="none" stroke="black"></path>
+                    <path d="M 520,128 L 520,160" fill="none" stroke="black"></path>
+                    <path d="M 200,80 L 272,80" fill="none" stroke="black"></path>
+                    <path d="M 304,80 L 392,80" fill="none" stroke="black"></path>
+                    <path d="M 424,80 L 448,80" fill="none" stroke="black"></path>
+                    <path d="M 480,80 L 496,80" fill="none" stroke="black"></path>
+                    <path d="M 8,128 L 520,128" fill="none" stroke="black"></path>
+                    <path d="M 8,160 L 520,160" fill="none" stroke="black"></path>
+                    <path d="M 24,208 L 232,208" fill="none" stroke="black"></path>
+                    <path d="M 264,208 L 504,208" fill="none" stroke="black"></path>
+                    <path d="M 136,272 L 360,272" fill="none" stroke="black"></path>
+                    <path d="M 200,80 C 191.16936,80 184,87.16936 184,96" fill="none" stroke="black"></path>
+                    <path d="M 272,80 C 280.83064,80 288,72.83064 288,64" fill="none" stroke="black"></path>
+                    <path d="M 304,80 C 295.16936,80 288,72.83064 288,64" fill="none" stroke="black"></path>
+                    <path d="M 392,80 C 400.83064,80 408,87.16936 408,96" fill="none" stroke="black"></path>
+                    <path d="M 424,80 C 415.16936,80 408,87.16936 408,96" fill="none" stroke="black"></path>
+                    <path d="M 448,80 C 456.83064,80 464,72.83064 464,64" fill="none" stroke="black"></path>
+                    <path d="M 480,80 C 471.16936,80 464,72.83064 464,64" fill="none" stroke="black"></path>
+                    <path d="M 496,80 C 504.83064,80 512,87.16936 512,96" fill="none" stroke="black"></path>
+                    <path d="M 24,208 C 15.16936,208 8,200.83064 8,192" fill="none" stroke="black"></path>
+                    <path d="M 232,208 C 240.83064,208 248,215.16936 248,224" fill="none" stroke="black"></path>
+                    <path d="M 264,208 C 255.16936,208 248,215.16936 248,224" fill="none" stroke="black"></path>
+                    <path d="M 504,208 C 512.83064,208 520,200.83064 520,192" fill="none" stroke="black"></path>
+                    <g class="text">
+                      <text x="460" y="20">Most significant</text>
+                      <text x="464" y="36">7-bits of</text>
+                      <text x="296" y="52">14-bit VectorZ:14</text>
+                      <text x="468" y="52">VectorY:14</text>
+                      <text x="48" y="116"> </text>
+                      <text x="16" y="148">0</text>
+                      <text x="32" y="148">0</text>
+                      <text x="48" y="148">0</text>
+                      <text x="64" y="148">0</text>
+                      <text x="80" y="148">0</text>
+                      <text x="96" y="148">0</text>
+                      <text x="112" y="148">0</text>
+                      <text x="128" y="148">0</text>
+                      <text x="144" y="148">0</text>
+                      <text x="160" y="148">0</text>
+                      <text x="176" y="148">0</text>
+                      <text x="112" y="180">Most significant of 32-bits</text>
+                      <text x="404" y="180">Least signification of 32-bits</text>
+                      <text x="252" y="244">32-bits wide</text>
+                      <text x="248" y="260">Most significant 32-bit block</text>
+                    </g>
+                  </svg><a href="#section-3.2.1.1-2.1.2" class="pilcrow">¶</a>
+</div>
+</div>
+<figcaption><a href="#figure-9" class="selfRef">Figure 9</a>:
+<a href="#name-how-trajectory-most-signifi" class="selfRef">How <span class="cite xref">Figure 8</span> "Trajectory" most
+ signification 32-bit block would be packed.</a>
+              </figcaption></figure>
+</div>
+</section>
+<section id="section-3.2.1.2">
+            <h5 id="name-how-trajectory-middle-signi">
+<a href="#section-3.2.1.2" class="section-number selfRef">3.2.1.2. </a><a href="#name-how-trajectory-middle-signi" class="section-name selfRef">How <span class="cite xref">Figure 8</span> "Trajectory" middle
+ signification 32-bit block would be packed.</a>
+            </h5>
+<p id="section-3.2.1.2-1">
+ The middle signification 32-bit block of "Trajectory" would
+ have:<a href="#section-3.2.1.2-1" class="pilcrow">¶</a></p>
+<ul class="normal">
+<li class="normal" id="section-3.2.1.2-2.1">The least significant 7 bits of 14-bit "VectorY:14.<a href="#section-3.2.1.2-2.1" class="pilcrow">¶</a>
+</li>
+              <li class="normal" id="section-3.2.1.2-2.2">14-bit "VectorX:14"<a href="#section-3.2.1.2-2.2" class="pilcrow">¶</a>
+</li>
+              <li class="normal" id="section-3.2.1.2-2.3">The most significant 10 bits of 42-bit "Velocity:42"<a href="#section-3.2.1.2-2.3" class="pilcrow">¶</a>
+</li>
+            </ul>
+<span id="name-how-trajectory-middle-signif"></span><div id="bits3-b">
+<figure id="figure-10">
+              <div id="section-3.2.1.2-3.1">
+                <div class="alignLeft art-svg artwork" id="section-3.2.1.2-3.1.2">
+<svg xmlns="http://www.w3.org/2000/svg" version="1.1" height="288" width="528" viewBox="0 0 528 288" class="diagram" text-anchor="middle" font-family="monospace" font-size="13px" stroke-linecap="round">
+                    <path d="M 8,128 L 8,160" fill="none" stroke="black"></path>
+                    <path d="M 24,128 L 24,160" fill="none" stroke="black"></path>
+                    <path d="M 40,128 L 40,160" fill="none" stroke="black"></path>
+                    <path d="M 56,128 L 56,160" fill="none" stroke="black"></path>
+                    <path d="M 72,128 L 72,160" fill="none" stroke="black"></path>
+                    <path d="M 88,128 L 88,160" fill="none" stroke="black"></path>
+                    <path d="M 104,128 L 104,160" fill="none" stroke="black"></path>
+                    <path d="M 120,128 L 120,160" fill="none" stroke="black"></path>
+                    <path d="M 136,128 L 136,160" fill="none" stroke="black"></path>
+                    <path d="M 152,128 L 152,160" fill="none" stroke="black"></path>
+                    <path d="M 168,128 L 168,160" fill="none" stroke="black"></path>
+                    <path d="M 184,128 L 184,160" fill="none" stroke="black"></path>
+                    <path d="M 200,128 L 200,160" fill="none" stroke="black"></path>
+                    <path d="M 216,128 L 216,160" fill="none" stroke="black"></path>
+                    <path d="M 232,128 L 232,160" fill="none" stroke="black"></path>
+                    <path d="M 248,128 L 248,160" fill="none" stroke="black"></path>
+                    <path d="M 264,128 L 264,160" fill="none" stroke="black"></path>
+                    <path d="M 280,128 L 280,160" fill="none" stroke="black"></path>
+                    <path d="M 296,128 L 296,160" fill="none" stroke="black"></path>
+                    <path d="M 312,128 L 312,160" fill="none" stroke="black"></path>
+                    <path d="M 328,128 L 328,160" fill="none" stroke="black"></path>
+                    <path d="M 344,128 L 344,160" fill="none" stroke="black"></path>
+                    <path d="M 360,128 L 360,160" fill="none" stroke="black"></path>
+                    <path d="M 376,128 L 376,160" fill="none" stroke="black"></path>
+                    <path d="M 392,128 L 392,160" fill="none" stroke="black"></path>
+                    <path d="M 408,128 L 408,160" fill="none" stroke="black"></path>
+                    <path d="M 424,128 L 424,160" fill="none" stroke="black"></path>
+                    <path d="M 440,128 L 440,160" fill="none" stroke="black"></path>
+                    <path d="M 456,128 L 456,160" fill="none" stroke="black"></path>
+                    <path d="M 472,128 L 472,160" fill="none" stroke="black"></path>
+                    <path d="M 488,128 L 488,160" fill="none" stroke="black"></path>
+                    <path d="M 504,128 L 504,160" fill="none" stroke="black"></path>
+                    <path d="M 520,128 L 520,160" fill="none" stroke="black"></path>
+                    <path d="M 24,80 L 48,80" fill="none" stroke="black"></path>
+                    <path d="M 80,80 L 120,80" fill="none" stroke="black"></path>
+                    <path d="M 152,80 L 232,80" fill="none" stroke="black"></path>
+                    <path d="M 264,80 L 344,80" fill="none" stroke="black"></path>
+                    <path d="M 376,80 L 424,80" fill="none" stroke="black"></path>
+                    <path d="M 456,80 L 504,80" fill="none" stroke="black"></path>
+                    <path d="M 8,128 L 520,128" fill="none" stroke="black"></path>
+                    <path d="M 8,160 L 520,160" fill="none" stroke="black"></path>
+                    <path d="M 24,208 L 232,208" fill="none" stroke="black"></path>
+                    <path d="M 264,208 L 504,208" fill="none" stroke="black"></path>
+                    <path d="M 120,272 L 360,272" fill="none" stroke="black"></path>
+                    <path d="M 24,80 C 15.16936,80 8,87.16936 8,96" fill="none" stroke="black"></path>
+                    <path d="M 48,80 C 56.83064,80 64,72.83064 64,64" fill="none" stroke="black"></path>
+                    <path d="M 80,80 C 71.16936,80 64,72.83064 64,64" fill="none" stroke="black"></path>
+                    <path d="M 120,80 C 128.83064,80 136,87.16936 136,96" fill="none" stroke="black"></path>
+                    <path d="M 152,80 C 143.16936,80 136,87.16936 136,96" fill="none" stroke="black"></path>
+                    <path d="M 232,80 C 240.83064,80 248,72.83064 248,64" fill="none" stroke="black"></path>
+                    <path d="M 264,80 C 255.16936,80 248,72.83064 248,64" fill="none" stroke="black"></path>
+                    <path d="M 344,80 C 352.83064,80 360,87.16936 360,96" fill="none" stroke="black"></path>
+                    <path d="M 376,80 C 367.16936,80 360,87.16936 360,96" fill="none" stroke="black"></path>
+                    <path d="M 424,80 C 432.83064,80 440,72.83064 440,64" fill="none" stroke="black"></path>
+                    <path d="M 456,80 C 447.16936,80 440,72.83064 440,64" fill="none" stroke="black"></path>
+                    <path d="M 504,80 C 512.83064,80 520,87.16936 520,96" fill="none" stroke="black"></path>
+                    <path d="M 24,208 C 15.16936,208 8,200.83064 8,192" fill="none" stroke="black"></path>
+                    <path d="M 232,208 C 240.83064,208 248,215.16936 248,224" fill="none" stroke="black"></path>
+                    <path d="M 264,208 C 255.16936,208 248,215.16936 248,224" fill="none" stroke="black"></path>
+                    <path d="M 504,208 C 512.83064,208 520,200.83064 520,192" fill="none" stroke="black"></path>
+                    <g class="text">
+                      <text x="88" y="20">Least significant</text>
+                      <text x="444" y="20">Most significant</text>
+                      <text x="72" y="36">7-bits of</text>
+                      <text x="436" y="36">10-bits of</text>
+                      <text x="68" y="52">VectorY:14</text>
+                      <text x="256" y="52">14-bit VectorX:14</text>
+                      <text x="440" y="52">Velocity:42</text>
+                      <text x="112" y="180">Most significant of 32-bits</text>
+                      <text x="404" y="180">Least signification of 32-bits</text>
+                      <text x="252" y="244">32-bits wide</text>
+                      <text x="240" y="260">Middle significant 32-bit block</text>
+                    </g>
+                  </svg><a href="#section-3.2.1.2-3.1.2" class="pilcrow">¶</a>
+</div>
+</div>
+<figcaption><a href="#figure-10" class="selfRef">Figure 10</a>:
+<a href="#name-how-trajectory-middle-signif" class="selfRef">How <span class="cite xref">Figure 8</span> "Trajectory" middle
+ signification 32-bit block would be packed.</a>
+              </figcaption></figure>
+</div>
+</section>
+<section id="section-3.2.1.3">
+            <h5 id="name-how-trajectory-least-signif">
+<a href="#section-3.2.1.3" class="section-number selfRef">3.2.1.3. </a><a href="#name-how-trajectory-least-signif" class="section-name selfRef">How <span class="cite xref">Figure 8</span> "Trajectory" least
+ signification 32-bit block would be packed.</a>
+            </h5>
+<span id="name-how-trajectory-least-signifi"></span><div id="bits3-c">
+<figure id="figure-11">
+              <div id="section-3.2.1.3-1.1">
+                <div class="alignLeft art-svg artwork" id="section-3.2.1.3-1.1.2">
+<svg xmlns="http://www.w3.org/2000/svg" version="1.1" height="272" width="528" viewBox="0 0 528 272" class="diagram" text-anchor="middle" font-family="monospace" font-size="13px" stroke-linecap="round">
+                    <path d="M 8,112 L 8,144" fill="none" stroke="black"></path>
+                    <path d="M 24,112 L 24,144" fill="none" stroke="black"></path>
+                    <path d="M 40,112 L 40,144" fill="none" stroke="black"></path>
+                    <path d="M 56,112 L 56,144" fill="none" stroke="black"></path>
+                    <path d="M 72,112 L 72,144" fill="none" stroke="black"></path>
+                    <path d="M 88,112 L 88,144" fill="none" stroke="black"></path>
+                    <path d="M 104,112 L 104,144" fill="none" stroke="black"></path>
+                    <path d="M 120,112 L 120,144" fill="none" stroke="black"></path>
+                    <path d="M 136,112 L 136,144" fill="none" stroke="black"></path>
+                    <path d="M 152,112 L 152,144" fill="none" stroke="black"></path>
+                    <path d="M 168,112 L 168,144" fill="none" stroke="black"></path>
+                    <path d="M 184,112 L 184,144" fill="none" stroke="black"></path>
+                    <path d="M 200,112 L 200,144" fill="none" stroke="black"></path>
+                    <path d="M 216,112 L 216,144" fill="none" stroke="black"></path>
+                    <path d="M 232,112 L 232,144" fill="none" stroke="black"></path>
+                    <path d="M 248,112 L 248,144" fill="none" stroke="black"></path>
+                    <path d="M 264,112 L 264,144" fill="none" stroke="black"></path>
+                    <path d="M 280,112 L 280,144" fill="none" stroke="black"></path>
+                    <path d="M 296,112 L 296,144" fill="none" stroke="black"></path>
+                    <path d="M 312,112 L 312,144" fill="none" stroke="black"></path>
+                    <path d="M 328,112 L 328,144" fill="none" stroke="black"></path>
+                    <path d="M 344,112 L 344,144" fill="none" stroke="black"></path>
+                    <path d="M 360,112 L 360,144" fill="none" stroke="black"></path>
+                    <path d="M 376,112 L 376,144" fill="none" stroke="black"></path>
+                    <path d="M 392,112 L 392,144" fill="none" stroke="black"></path>
+                    <path d="M 408,112 L 408,144" fill="none" stroke="black"></path>
+                    <path d="M 424,112 L 424,144" fill="none" stroke="black"></path>
+                    <path d="M 440,112 L 440,144" fill="none" stroke="black"></path>
+                    <path d="M 456,112 L 456,144" fill="none" stroke="black"></path>
+                    <path d="M 472,112 L 472,144" fill="none" stroke="black"></path>
+                    <path d="M 488,112 L 488,144" fill="none" stroke="black"></path>
+                    <path d="M 504,112 L 504,144" fill="none" stroke="black"></path>
+                    <path d="M 520,112 L 520,144" fill="none" stroke="black"></path>
+                    <path d="M 24,64 L 232,64" fill="none" stroke="black"></path>
+                    <path d="M 264,64 L 504,64" fill="none" stroke="black"></path>
+                    <path d="M 8,112 L 520,112" fill="none" stroke="black"></path>
+                    <path d="M 8,144 L 520,144" fill="none" stroke="black"></path>
+                    <path d="M 24,192 L 232,192" fill="none" stroke="black"></path>
+                    <path d="M 264,192 L 504,192" fill="none" stroke="black"></path>
+                    <path d="M 120,256 L 352,256" fill="none" stroke="black"></path>
+                    <path d="M 24,64 C 15.16936,64 8,71.16936 8,80" fill="none" stroke="black"></path>
+                    <path d="M 232,64 C 240.83064,64 248,56.83064 248,48" fill="none" stroke="black"></path>
+                    <path d="M 264,64 C 255.16936,64 248,56.83064 248,48" fill="none" stroke="black"></path>
+                    <path d="M 504,64 C 512.83064,64 520,71.16936 520,80" fill="none" stroke="black"></path>
+                    <path d="M 24,192 C 15.16936,192 8,184.83064 8,176" fill="none" stroke="black"></path>
+                    <path d="M 232,192 C 240.83064,192 248,199.16936 248,208" fill="none" stroke="black"></path>
+                    <path d="M 264,192 C 255.16936,192 248,199.16936 248,208" fill="none" stroke="black"></path>
+                    <path d="M 504,192 C 512.83064,192 520,184.83064 520,176" fill="none" stroke="black"></path>
+                    <g class="text">
+                      <text x="272" y="36">Lest significant 32-bits of Velocity:42</text>
+                      <text x="96" y="164">Most Significant Bits</text>
+                      <text x="436" y="164">Least significant Bits</text>
+                      <text x="252" y="228">32-bits wide</text>
+                      <text x="236" y="244">Least significant 32-bit block</text>
+                    </g>
+                  </svg><a href="#section-3.2.1.3-1.1.2" class="pilcrow">¶</a>
+</div>
+</div>
+<figcaption><a href="#figure-11" class="selfRef">Figure 11</a>:
+<a href="#name-how-trajectory-least-signifi" class="selfRef">How <span class="cite xref">Figure 8</span> "Trajectory" least
+ signification 32-bit block would be packed.</a>
+              </figcaption></figure>
+</div>
+</section>
+<section id="section-3.2.1.4">
+ </section>
+</section>
+</div>
+</section>
+</section>
+<div id="NamespaceSec">
+<section id="section-4">
+      <h2 id="name-reducing-namespace-collisio">
+<a href="#section-4" class="section-number selfRef">4. </a><a href="#name-reducing-namespace-collisio" class="section-name selfRef">Reducing Namespace Collision in Generated Code</a>
+      </h2>
+<p id="section-4-1">
+ When gathering specifications and definitions from multiple
+ specifications it can be much more convenient to be able
+ to name each identifier in a way the most resembles the
+ original specification.
+ However it can be confusing to uniquely identify them
+ in generated code, and match them up to the XDR
+ Language file that generated them.<a href="#section-4-1" class="pilcrow">¶</a></p>
+<p id="section-4-2">
+ For this reason a new 'namespace' declaration type
+ is being defined.<a href="#section-4-2" class="pilcrow">¶</a></p>
+<span id="name-namespace-declaration-type"></span><div id="Namespace">
+<figure id="figure-12">
+        <div class="alignLeft art-abnf art-text artwork" id="section-4-3.1">
+<pre>
+namespace = 'namespace' identifier *( ':' identifier) ';'
+</pre>
+</div>
+<figcaption><a href="#figure-12" class="selfRef">Figure 12</a>:
+<a href="#name-namespace-declaration-type" class="selfRef">namespace declaration type</a>
+        </figcaption></figure>
+</div>
+<p id="section-4-4">
+ A namespace may have several scope levels.
+ Each scope name separated by a colon (:).<a href="#section-4-4" class="pilcrow">¶</a></p>
+<p id="section-4-5">
+ As each 'namespace' is encountered, all objects
+ that follow will be in that scoped namespace.
+ Zero or more 'namespaces' declarations may be in
+ one XDR Language source.<a href="#section-4-5" class="pilcrow">¶</a></p>
+<p id="section-4-6"><span><a href="https://rfc-editor.org/rfc/rfc4506#section-6.3" class="relref">Section 6.3</a> of [<a href="#RFC4506" class="cite xref">RFC4506</a>]</span> 'declaration'
+ is modified to:<a href="#section-4-6" class="pilcrow">¶</a></p>
+<span id="name-extended-declaration-abnf"></span><div id="NewDeclaration">
+<figure id="figure-13">
+        <div class="alignLeft art-abnf art-text artwork" id="section-4-7.1">
+<pre>
+declaration:
+           type-specifier identifier
+         | type-specifier identifier "[" value "]"
+         | type-specifier identifier "&lt;" [ value ] "&gt;"
+         | "opaque" identifier "[" value "]"
+         | "opaque" identifier "&lt;" [ value ] "&gt;"
+         | "string" identifier "&lt;" [ value ] "&gt;"
+         | type-specifier "*" identifier
+         | "void"
+         | namespace
+</pre>
+</div>
+<figcaption><a href="#figure-13" class="selfRef">Figure 13</a>:
+<a href="#name-extended-declaration-abnf" class="selfRef">Extended declaration ABNF</a>
+        </figcaption></figure>
+</div>
+<p id="section-4-8">
+ Examples:<a href="#section-4-8" class="pilcrow">¶</a></p>
+<span id="name-namespace-type-specifier"></span><div id="NamespaceAbnf">
+<figure id="figure-14">
+        <div class="alignLeft art-abnf art-text artwork" id="section-4-9.1">
+<pre>
+namespace ietf:xdr:example_namespace;
+
+namespace RiverExplorer:Phoenix:xdrgen;
+</pre>
+</div>
+<figcaption><a href="#figure-14" class="selfRef">Figure 14</a>:
+<a href="#name-namespace-type-specifier" class="selfRef">namespace type-specifier</a>
+        </figcaption></figure>
+</div>
+<p id="section-4-10">
+ Multiple namespaces in one definition could look like this:<a href="#section-4-10" class="pilcrow">¶</a></p>
+<span id="name-namespace-example"></span><div id="NamespaceEx">
+<figure id="figure-15">
+        <div class="alignLeft art-abnf art-text artwork" id="section-4-11.1">
+<pre>
+namespace MyCompany:LauchPad;
+
+bitobject Status
+{
+  bit   OffLine;
+  bit   LightOn;
+  ubits Status:3;
+  ubits SwitchPosition:4;
+  sbits Rotation:10;
+  bit   Active;
+  ubits UnitsPerMinute:8;
+  ubits UnitID:5;
+};
+
+namspace MyCompany:Projectile;
+
+bitobject Status
+{
+  bit   OffLine;
+  ubits Status:3;
+  sbits Rotation:14;
+  ubits Velocity:42;
+  sbits VectorX:14;
+  sbits VectorY:14;
+  sbits VectorZ:14;
+};
+</pre>
+</div>
+<figcaption><a href="#figure-15" class="selfRef">Figure 15</a>:
+<a href="#name-namespace-example" class="selfRef">Namespace Example</a>
+        </figcaption></figure>
+</div>
+<p id="section-4-12">
+ The result would be two 'Status' data types.
+ They are similar, and unique.
+ Perhaps they came from different specifications.
+ And each uniquely identifiable by their scope.
+ And the variables produced could be referenced
+ with:<a href="#section-4-12" class="pilcrow">¶</a></p>
+<ul class="normal">
+<li class="normal" id="section-4-13.1">'MyCompany:LaunchPad:Status'<a href="#section-4-13.1" class="pilcrow">¶</a>
+</li>
+        <li class="normal" id="section-4-13.2">'MyCompany:Projectile:Status'<a href="#section-4-13.2" class="pilcrow">¶</a>
+</li>
+      </ul>
+<p id="section-4-14">
+ This also makes it easier to identify an object
+ in an XDR <span><a href="https://rfc-editor.org/rfc/rfc4506#section-4.15" class="relref">Section 4.15</a> of [<a href="#RFC4506" class="cite xref">RFC4506</a>]</span> union:<a href="#section-4-14" class="pilcrow">¶</a></p>
+<p id="section-4-15">
+ Multiple namespaces used in one definition could look like this:<a href="#section-4-15" class="pilcrow">¶</a></p>
+<span id="name-namespace-example-2"></span><div id="NamespaceUnion">
+<figure id="figure-16">
+        <div class="alignLeft art-abnf art-text artwork" id="section-4-16.1">
+<pre>
+enum Type = {
+ LaunchPadType = 1,
+ ProjectileType = 2
+};
+
+union ObjectStatus (Type WhichType)
+{
+  case LaunchPadType:
+   MyCompany:LaunchPad:Status PadStatus;
+
+  case ProjectilePadType:
+   MyCompany:ProjectilePad:Status ProjectileStatus;
+
+  default:
+   void;
+};
+</pre>
+</div>
+<figcaption><a href="#figure-16" class="selfRef">Figure 16</a>:
+<a href="#name-namespace-example-2" class="selfRef">Namespace Example</a>
+        </figcaption></figure>
+</div>
+</section>
+</div>
+<div id="IANA">
+<section id="section-5">
+      <h2 id="name-iana-considerations">
+<a href="#section-5" class="section-number selfRef">5. </a><a href="#name-iana-considerations" class="section-name selfRef">IANA Considerations</a>
+      </h2>
+<p id="section-5-1">This memo includes no request to IANA. [CHECK]<a href="#section-5-1" class="pilcrow">¶</a></p>
+</section>
+</div>
+<div id="Security">
+<section id="section-6">
+      <h2 id="name-security-considerations">
+<a href="#section-6" class="section-number selfRef">6. </a><a href="#name-security-considerations" class="section-name selfRef">Security Considerations</a>
+      </h2>
+<p id="section-6-1">This document should not affect the security of the Internet. [CHECK]<a href="#section-6-1" class="pilcrow">¶</a></p>
+</section>
+</div>
+<section id="section-7">
+      <h2 id="name-normative-references">
+<a href="#section-7" class="section-number selfRef">7. </a><a href="#name-normative-references" class="section-name selfRef">Normative References</a>
+      </h2>
+<dl class="references">
+<dt id="RFC4506">[RFC4506]</dt>
+    <dd>
+<span class="refAuthor">Eisler, M., Ed.</span>, <span class="refTitle">"XDR: External Data Representation Standard"</span>, <span class="seriesInfo">STD 67</span>, <span class="seriesInfo">RFC 4506</span>, <span class="seriesInfo">DOI 10.17487/RFC4506</span>, <time datetime="2006-05" class="refDate">May 2006</time>, <span>&lt;<a href="https://www.rfc-editor.org/info/rfc4506">https://www.rfc-editor.org/info/rfc4506</a>&gt;</span>. </dd>
+<dd class="break"></dd>
+</dl>
+</section>
+<section id="section-8">
+      <h2 id="name-informative-references">
+<a href="#section-8" class="section-number selfRef">8. </a><a href="#name-informative-references" class="section-name selfRef">Informative References</a>
+      </h2>
+<dl class="references">
+<dt id="xdrgen">[xdrgen]</dt>
+    <dd>
+<span class="refAuthor">Royer, DM.</span>, <span class="refTitle">"XDR Code Generator, Open Source"</span>, <time datetime="2025" class="refDate">2025</time>, <span>&lt;<a href="https://github.com/RiverExplorer/Phoenix">https://github.com/RiverExplorer/Phoenix</a>&gt;</span>. </dd>
+<dd class="break"></dd>
+</dl>
+</section>
+<section id="appendix-A">
+      <h2 id="name-appendix-1-full-xdr-languag">
+<a href="#appendix-A" class="section-number selfRef">Appendix A. </a><a href="#name-appendix-1-full-xdr-languag" class="section-name selfRef">Appendix 1 Full XDR Language Grammar</a>
+      </h2>
+<p id="appendix-A-1">TODO<a href="#appendix-A-1" class="pilcrow">¶</a></p>
+</section>
+<div id="Acknowledgements">
+<section id="appendix-B">
+      <h2 id="name-acknowledgments">
+<a href="#name-acknowledgments" class="section-name selfRef">Acknowledgments</a>
+    </h2>
+</section>
+</div>
+<div id="Contributors">
+<section id="appendix-C">
+      <h2 id="name-contributors">
+<a href="#name-contributors" class="section-name selfRef">Contributors</a>
+    </h2>
+</section>
+</div>
+<div id="authors-addresses">
+<section id="appendix-D">
+      <h2 id="name-authors-address">
+<a href="#name-authors-address" class="section-name selfRef">Author's Address</a>
+      </h2>
+<address class="vcard">
+        <div dir="auto" class="left"><span class="fn nameRole">Doug Royer</span></div>
+<div dir="auto" class="left"><span class="org">RiverExplorer LLC</span></div>
+<div dir="auto" class="left"><span class="street-address">848 N. Rainbow Blvd, Ste-1120</span></div>
+<div dir="auto" class="left">
+<span class="locality">Las Vegas</span>, <span class="region">Nevada</span> <span class="postal-code">89107</span>
+</div>
+<div dir="auto" class="left"><span class="country-name">United States of America</span></div>
+<div class="tel">
+<span>Phone:</span>
+<a href="tel:+1-208-806-1358" class="tel">+1-208-806-1358</a>
+</div>
+<div class="email">
+<span>Email:</span>
+<a href="mailto:DouglasRoyer@gmail.com" class="email">DouglasRoyer@gmail.com</a>
+</div>
+<div class="url">
+<span>URI:</span>
+<a href="https://DougRoyer.US" class="url">https://DougRoyer.US</a>
+</div>
+</address>
+</section>
+</div>
+<script>const toc = document.getElementById("toc");
+toc.querySelector("h2").addEventListener("click", e => {
+  toc.classList.toggle("active");
+});
+toc.querySelector("nav").addEventListener("click", e => {
+  toc.classList.remove("active");
+});
+</script>
+</body>
+</html>

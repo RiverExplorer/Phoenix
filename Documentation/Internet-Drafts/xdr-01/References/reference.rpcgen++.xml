@@ -1,0 +1,15 @@
+<reference anchor="rpcgenopensource" target="https://github.com/RiverExplorer/Phoenix/tree/main/rpcgen%2B%2B-src">
+  <front>
+    <title>rpcgen++ Open Source Tool</title>
+    <author fullname="Unknown Author" initials="" surname="Unknown Author"/>
+    <date month="January" year="1983"/>
+    <abstract>
+	<t>
+	rpcgen is an interface generator pre-compiler for Sun Microsystems ONC RPC. It uses an interface definition file to create client and server stubs in C.
+	</t>
+	<t>
+	rpcgen++ is an updated rpcgen that can generate C++ code.
+	</t>
+    </abstract>
+  </front>
+</reference>
