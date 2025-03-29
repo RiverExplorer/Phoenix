@@ -1,7 +1,0 @@
-bit-object Trajectory
-{
-  ubits Velocity:42;
-  sbits VectorX:14;
-  sbits VectorY:14;
-  sbits VectorZ:14;
-};

@@ -1,8 +1,8 @@
 /**
  * Project: Phoenix
- * Time-stamp: <2025-03-24 22:22:20 doug>
+ * Time-stamp: <2025-03-26 18:50:48 doug>
  * 
- * @file GenerateConstant.cpp
+ * @file GenerateCppConstant.cpp
  * @author Douglas Mark Royer
  * @date 08-MAR-2025
  * 
@@ -14,6 +14,8 @@
  * RiverExplorer is a trademark of Douglas Mark Royer
  */
 #include "xdrgen.hpp"
+#include <regex>
+#include <cctype>
 
 namespace RiverExplorer::xdrgen
 {
@@ -22,56 +24,101 @@ namespace RiverExplorer::xdrgen
 	
 	Constant::~Constant()
 	{
+		/*EMPTY*/
+
+		return;
+	}
+
+	bool
+	IsFloatingPoint(const std::string & Str)
+	{
+    const std::regex FloatRegex("^-?\\d+(\\.\\d+)?([eE][-+]?\\d+)?$");
+
+    return std::regex_match(Str, FloatRegex);
 	}
 	
 	void
-	Constant::PrintCppHeader(ofstream & Stream)
+	Constant::PrintCppHeader(ofstream & Stream) const
 	{
 		string I = Indent();
 
-		string  TypeToUse = Type;
-		bool FixedString = false;
-		
-		if (TypeToUse.starts_with("'")) {
-			if (TypeToUse.length() > 3) {
-				TypeToUse[0] = '"';
-				TypeToUse[TypeToUse.length() - 1] = '"';
-				FixedString = true;
-			}
+		PrintCppNamespaceBegin(Stream);
+		// If is string...
+		//
+		if (Type[0] == '"') {
+			Stream << I << "const char * "
+						 << Name << " = " << Type << ";" << endl;
+
+			
+		} else if (Type[0] == '\'') { // Else is char...
+			Stream << I << "const char "
+						 << Name << " = " << Type << ";" << endl;
+			
+		} else if (std::all_of(Type.begin(), Type.end(), ::isdigit)) {
+			// Is all digits.
+			//
+			Stream << I << "const int64_t "
+						 << Name << " = " << Type << ";" << endl;
+
+		} else if (IsFloatingPoint(Type)) {
+			// If floating point.
+			//
+			Stream << I << "const float "
+						 << Name << " = " << Type << ";" << endl;
+		} else {
+			// Assume it is a form read to use as an integer.
+			Stream << I << "const int64_t "
+						 << Name << " = " << Type << ";" << endl;
 		}
-		Stream << "#define " << Name << " " << TypeToUse;
+		PrintCppNamespaceEnd(Stream);
 
-		if (FixedString) {
-			Stream << "  ; Had single quotes ('), changed to (\").";
-		}
-		Stream << endl;
-		
+		return;
 	}
 
 	void
-	Constant::PrintCppXDR(ofstream & Stream)
+	Constant::PrintCppHeaderXdr(ofstream & /*Stream*/) const
 	{
-	}
+		/**@todo*/
 
-	void
-	Constant::PrintCppStubs(ofstream & Stream)
-	{
-	}
-
-	void
-	Constant::PrintXSD(ofstream & Stream)
-	{
+		return;
 	}
 	
 	void
-	Constant::PrintAbnf(ofstream & Stream)
+	Constant::PrintCppXDR(ofstream & /*Stream*/) const
+	{
+		/**@todo*/
+
+		return;
+	}
+
+	void
+	Constant::PrintCppStubs(ofstream & /*Stream*/) const
+	{
+		/**@todo*/
+
+		return;
+	}
+
+	void
+	Constant::PrintXSD(ofstream & /*Stream*/) const
+	{
+		/**@todo*/
+
+		return;
+	}
+	
+	void
+	Constant::PrintAbnf(ofstream & Stream) const
 	{
 		Stream << "const " << Name << " = " << Type << endl;
 	}
 	
 	void
-	Constant::PrintServer(ofstream & Stream)
+	Constant::PrintServer(ofstream & /*Stream*/) const
 	{
+		/**@todo*/
+
+		return;
 	}
 	
 }

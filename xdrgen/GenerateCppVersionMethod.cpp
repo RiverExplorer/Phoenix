@@ -1,8 +1,8 @@
 /**
  * Project: Phoenix
- * Time-stamp: <2025-03-27 18:55:00 doug>
+ * Time-stamp: <2025-03-27 19:03:27 doug>
  * 
- * @file GenerateCppMethod.cpp
+ * @file GenerateCppVersionMethod.cpp
  * @author Douglas Mark Royer
  * @date 08-MAR-2025
  * 
@@ -19,21 +19,21 @@ namespace RiverExplorer::xdrgen
 {
 	using namespace std;
 
-	Method::Method(Struct & Parent)
+	VersionMethod::VersionMethod(Version & Parent)
 		: Parent(Parent)
 	{
 		/*EMPTY*/
 		return;
 	}
 	
-	Method::~Method()
+	VersionMethod::~VersionMethod()
 	{
 		/*EMPTY*/
 		return;
 	}
 	
 	void
-	Method::PrintCppHeader(ofstream & Stream) const
+	VersionMethod::PrintCppHeader(ofstream & Stream) const
 	{
 		std::vector<string>::const_iterator SIt;
 
@@ -41,7 +41,20 @@ namespace RiverExplorer::xdrgen
 		//
 		string I = Indent();
 
-		Stream << I << Type << " " << Name << "(";
+		// Get this objects namespace
+		//
+		//PrintCppNamespaceBegin(Stream, Parent.Name);
+
+		Stream << I << Type << " ";
+
+		if (IsPointer) {
+			Stream << " * ";
+		} else if (IsReference) {
+			Stream << " & ";
+		} else {
+			Stream << " ";
+		}
+		Stream << Name << "(";
 
 		bool PrintedOne = false;
 		bool PrintingType = true;
@@ -61,19 +74,20 @@ namespace RiverExplorer::xdrgen
 			}
 		}
 		Stream << ");" << endl << endl;
+		//PrintCppNamespaceEnd(Stream, Parent.Name);
 
 		return;
 	}
 
 	void
-	Method::PrintCppHeaderXdr(ofstream & /*Stream*/) const
+	VersionMethod::PrintCppHeaderXdr(ofstream & /*Stream*/) const
 	{
 		/**@todo*/
 		return;
 	}
 	
 	void
-	Method::PrintCppXDR(ofstream & /*Stream*/) const
+	VersionMethod::PrintCppXDR(ofstream & /*Stream*/) const
 	{
 		/**@todo*/
 
@@ -81,7 +95,7 @@ namespace RiverExplorer::xdrgen
 	}
 
 	void
-	Method::PrintCppStubs(ofstream & Stream) const
+	VersionMethod::PrintCppStubs(ofstream & Stream) const
 	{
 		std::vector<string>::const_iterator SIt;
 
@@ -100,7 +114,7 @@ namespace RiverExplorer::xdrgen
 		} else {
 			Stream << " ";
 		}
-
+		
 		Stream << Parent.Name << "::" << Name << "(";
 		
 		for (string S : Parameters) {
@@ -119,9 +133,24 @@ namespace RiverExplorer::xdrgen
 		}
 		Stream << ")" << endl;
 		Stream << I << "{" << endl;
+
 		if (Type != "void") {
-			Stream << I2 << "'" << Type << "' Results;" << endl;
+			Stream << I2 << Type;
+
+			if (IsPointer) {
+				Stream << " * ";
+			} else if (IsReference) {
+				Stream << " & ";
+			} else {
+				Stream << " ";
+			}
+			Stream << " Results";
+			if (IsPointer) {
+				Stream << " = nullptr";
+			}
+			Stream << ";" << endl;
 		}
+			
 		Stream << endl;
 		Stream << I2 << "/**@todo write this code */" << endl;
 		Stream << endl;
@@ -134,21 +163,21 @@ namespace RiverExplorer::xdrgen
 	}
 
 	void
-	Method::PrintXSD(ofstream & /*Stream*/) const
+	VersionMethod::PrintXSD(ofstream & /*Stream*/) const
 	{
 		/**@todo*/
 		return;
 	}
 	
 	void
-	Method::PrintAbnf(ofstream & /*Stream*/) const
+	VersionMethod::PrintAbnf(ofstream & /*Stream*/) const
 	{
 		/**@todo*/
 		return;
 	}
 	
 	void
-	Method::PrintServer(ofstream & /*Stream*/) const
+	VersionMethod::PrintServer(ofstream & /*Stream*/) const
 	{
 		/**@todo*/
 		return;

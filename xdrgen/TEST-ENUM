@@ -1,0 +1,24 @@
+#!/bin/tcsh -f
+echo "Testing Enum"
+
+/bin/rm -rf Created/Enum
+
+foreach f (  Tests/Enum/*.x )
+	set F = ${f:t:r}
+
+	echo "./BuildTemp/Linux/Debug/bin/xdrgen --namespace=RiverExplorer:Phoenix --input $f --out=Created/Enum/xdr/${F}_xdr.cpp --lang=CPP -DRPC_HDR -DXDR_HDR --xdr"
+	./BuildTemp/Linux/Debug/bin/xdrgen --namespace=RiverExplorer:Phoenix --input $f --out=Created/Enum/xdr/${F}_xdr.cpp --lang=CPP -DRPC_HDR -DXDR_HDR --xdr
+	
+	echo "./BuildTemp/Linux/Debug/bin/xdrgen --namespace=RiverExplorer:Phoenix --input $f --out=Created/Enum/headers/${F}.hpp --lang=CPP -DRPC_HDR -DXDR_HDR --headers"
+	./BuildTemp/Linux/Debug/bin/xdrgen --namespace=RiverExplorer:Phoenix --input $f --out=Created/Enum/headers/${F}.hpp --lang=CPP -DRPC_HDR -DXDR_HDR --headers
+		
+	echo "./BuildTemp/Linux/Debug/bin/xdrgen --namespace=RiverExplorer:Phoenix --input $f --out=Created/Enum/abnf/${F}.abnf --lang=CPP -DRPC_HDR -DXDR_HDR --abnf"
+	./BuildTemp/Linux/Debug/bin/xdrgen --namespace=RiverExplorer:Phoenix --input $f --out=Created/Enum/abnf/${F}.abnf --lang=CPP -DRPC_HDR -DXDR_HDR --abnf
+
+	echo "./BuildTemp/Linux/Debug/bin/xdrgen --namespace=RiverExplorer:Phoenix --input $f --out=Created/Enum/stubs/${F}.cpp --lang=CPP -DRPC_HDR -DXDR_HDR --stubs"
+	./BuildTemp/Linux/Debug/bin/xdrgen --namespace=RiverExplorer:Phoenix --input $f --out=Created/Enum/Enum/${F}.cpp --lang=CPP -DRPC_HDR -DXDR_HDR --stubs
+
+	echo "./BuildTemp/Linux/Debug/bin/xdrgen --namespace=RiverExplorer:Phoenix --input $f --out=Created/Enum/server/${F}.cpp --lang=CPP -DRPC_HDR -DXDR_HDR --server"
+	./BuildTemp/Linux/Debug/bin/xdrgen --namespace=RiverExplorer:Phoenix --input $f --out=Created/Enum/server/${F}.cpp --lang=CPP -DRPC_HDR -DXDR_HDR --server
+end
+

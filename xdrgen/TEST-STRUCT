@@ -1,0 +1,24 @@
+#!/bin/tcsh -f
+echo "Testing Struct"
+
+/bin/rm -rf Created/Struct
+
+foreach f (  Tests/Struct/*.x )
+	set F = ${f:t:r}
+
+	echo "./BuildTemp/Linux/Debug/bin/xdrgen --namespace=RiverExplorer:Phoenix --input $f --out=Created/Struct/xdr/${F}_xdr.cpp --lang=CPP -DRPC_HDR -DXDR_HDR --xdr"
+	./BuildTemp/Linux/Debug/bin/xdrgen --namespace=RiverExplorer:Phoenix --input $f --out=Created/Struct/xdr/${F}_xdr.cpp --lang=CPP -DRPC_HDR -DXDR_HDR --xdr
+	
+	echo "./BuildTemp/Linux/Debug/bin/xdrgen --namespace=RiverExplorer:Phoenix --input $f --out=Created/Struct/headers/${F}.hpp --lang=CPP -DRPC_HDR -DXDR_HDR --headers"
+	./BuildTemp/Linux/Debug/bin/xdrgen --namespace=RiverExplorer:Phoenix --input $f --out=Created/Struct/headers/${F}.hpp --lang=CPP -DRPC_HDR -DXDR_HDR --headers
+		
+	echo "./BuildTemp/Linux/Debug/bin/xdrgen --namespace=RiverExplorer:Phoenix --input $f --out=Created/Struct/abnf/${F}.abnf --lang=CPP -DRPC_HDR -DXDR_HDR --abnf"
+	./BuildTemp/Linux/Debug/bin/xdrgen --namespace=RiverExplorer:Phoenix --input $f --out=Created/Struct/abnf/${F}.abnf --lang=CPP -DRPC_HDR -DXDR_HDR --abnf
+
+	echo "./BuildTemp/Linux/Debug/bin/xdrgen --namespace=RiverExplorer:Phoenix --input $f --out=Created/Struct/stubs/${F}.cpp --lang=CPP -DRPC_HDR -DXDR_HDR --stubs"
+	./BuildTemp/Linux/Debug/bin/xdrgen --namespace=RiverExplorer:Phoenix --input $f --out=Created/Struct/stubs/${F}.cpp --lang=CPP -DRPC_HDR -DXDR_HDR --stubs
+
+	echo "./BuildTemp/Linux/Debug/bin/xdrgen --namespace=RiverExplorer:Phoenix --input $f --out=Created/Struct/server/${F}.cpp --lang=CPP -DRPC_HDR -DXDR_HDR --server"
+	./BuildTemp/Linux/Debug/bin/xdrgen --namespace=RiverExplorer:Phoenix --input $f --out=Created/Struct/server/${F}.cpp --lang=CPP -DRPC_HDR -DXDR_HDR --server
+end
+

@@ -1,6 +1,6 @@
 /**
  * Project: Phoenix
- * Time-stamp: <2025-03-25 01:53:33 doug>
+ * Time-stamp: <2025-03-25 02:10:13 doug>
  *
  * @file XdrGenShared.cpp
  * @author Douglas Mark Royer
@@ -115,7 +115,7 @@ namespace RiverExplorer::xdrgen
 	
 		return(Results);
 	}
-} // End namespace RiverExplorer:xdrgen:test
+} // End namespace RiverExplorer:xdrgen
 
 #endif // _RIVEREXPLORER_XDRGEN_SHARED_HPP_
 )_LONGSTR_";

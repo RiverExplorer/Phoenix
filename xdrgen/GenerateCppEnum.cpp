@@ -1,8 +1,8 @@
 /**
  * Project: Phoenix
- * Time-stamp: <2025-03-24 22:21:57 doug>
+ * Time-stamp: <2025-03-26 18:52:40 doug>
  * 
- * @file GenerateEnumValue.cpp
+ * @file GenerateCppEnum.cpp
  * @author Douglas Mark Royer
  * @date 08-MAR-2025
  * 
@@ -22,10 +22,13 @@ namespace RiverExplorer::xdrgen
 	
 	Enum::~Enum()
 	{
+		/*EMPTY*/
+
+		return;
 	}
 	
 	void
-	Enum::PrintCppHeader(ofstream & Stream)
+	Enum::PrintCppHeader(ofstream & Stream) const
 	{
 		vector<Item*>::const_iterator MIt;
 		EnumValue * Value;
@@ -69,22 +72,58 @@ namespace RiverExplorer::xdrgen
 	}
 
 	void
-	Enum::PrintCppXDR(ofstream & Stream)
+	Enum::PrintCppHeaderXdr(ofstream & Stream) const
 	{
-	}
-
-	void
-	Enum::PrintCppStubs(ofstream & Stream)
-	{
-	}
-
-	void
-	Enum::PrintXSD(ofstream & Stream)
-	{
+		PrintCppNamespaceBegin(Stream);
+		std::string I = Indent();
+		
+		Stream << endl << I << "bool xdr_" << Name
+					 << "(XDR * xdrs, " << Name << " * obj);" << endl;
+		PrintCppNamespaceEnd(Stream);
+		
+		Stream << endl << I << "extern \"C\" bool xdr_" << Name
+					 << "(XDR * xdrs, " << Name << " * obj) {" << endl
+					 << "\treturn(" << CppNamespace << "::"
+					 << Name << "(xdrs, obj));" << endl
+					 << "}" << endl;
+		
+		return;
 	}
 	
 	void
-	Enum::PrintAbnf(ofstream & Stream)
+	Enum::PrintCppXDR(ofstream & Stream) const
+	{
+		PrintCppNamespaceBegin(Stream);
+		std::string I = Indent();
+		std::string I2 = Indent(IndentLevel + 1);
+
+		Stream << endl << I << "bool xdr_" << Name
+					 << "(XDR * xdrs, " << Name << " * obj) {" << endl;
+		Stream << I2 << "return(xdr_enum(xdrs, obj);" << endl;
+		Stream << I << "}" << endl;
+		PrintCppNamespaceEnd(Stream);
+
+		return;
+	}
+
+	void
+	Enum::PrintCppStubs(ofstream & /*Stream*/) const
+	{
+		/**@todo*/
+
+		return;
+	}
+
+	void
+	Enum::PrintXSD(ofstream & /*Stream*/) const
+	{
+		/**@todo*/
+
+		return;
+	}
+	
+	void
+	Enum::PrintAbnf(ofstream & Stream) const
 	{
 		std::vector<Item*>::const_iterator IIt;
 		Item * TheItem;
@@ -164,18 +203,24 @@ namespace RiverExplorer::xdrgen
 	}
 	
 	void
-	Enum::PrintServer(ofstream & Stream)
+	Enum::PrintServer(ofstream & /*Stream*/) const
 	{
+		/**@todo*/
+
+		return;
 	}
 
 	EnumValue::~EnumValue()
 	{
+		/*EMPTY*/
+
+		return;
 	}
 
 	// HPP
 	//
 	void
-	EnumValue::PrintCppHeader(ofstream & Stream)
+	EnumValue::PrintCppHeader(ofstream & Stream) const
 	{
 		string I2 = Indent(IndentLevel + 1);
 
@@ -184,35 +229,50 @@ namespace RiverExplorer::xdrgen
 		return;
 	}
 
+	void
+	EnumValue::PrintCppHeaderXdr(ofstream & /*Stream*/) const
+	{
+		/**@todo*/
+		return;
+	}
+	
 	// XDR
 	void
-	EnumValue::PrintCppXDR(ofstream & Stream)
+	EnumValue::PrintCppXDR(ofstream & /*Stream*/) const
 	{
+		/**@todo*/
+		return;
 	}
 
 	// STUBS
 	//
 	void
-	EnumValue::PrintCppStubs(ofstream & Stream)
+	EnumValue::PrintCppStubs(ofstream & /*Stream*/) const
 	{
+		/**@todo*/
+		return;
 	}
 
 	// XSD
 	//
 	void
-	EnumValue::PrintXSD(ofstream & Stream)
+	EnumValue::PrintXSD(ofstream & /*Stream*/) const
 	{
+		/**@todo*/
+		return;
 	}
 
 	// ABNF
 	//
 	void
-	EnumValue::PrintAbnf(ofstream & Stream)
+	EnumValue::PrintAbnf(ofstream & Stream) const
 	{
 		Stream << Name << " = ";
 
 		if (Type.starts_with("0x")) {
-			Stream << Type.replace(0, 2, "%0");
+			std::string Copy = Type;
+			
+			Stream << Copy.replace(0, 2, "%0");
 		} else {
 			Stream << Type;
 		}
@@ -222,8 +282,10 @@ namespace RiverExplorer::xdrgen
 	// SERVER
 	//
 	void
-	EnumValue::PrintServer(ofstream & Stream)
+	EnumValue::PrintServer(ofstream & /*Stream*/) const
 	{
+		/**@todo*/
+		return;
 	}
 	
 }

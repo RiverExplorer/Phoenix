@@ -2,7 +2,7 @@ rpcgen++
 *.o
 cscope.*
 LOG
-Generated
+Created
 GeneratedDocs
 *.interp
 *.tokens

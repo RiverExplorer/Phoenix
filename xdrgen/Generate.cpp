@@ -1,6 +1,6 @@
 /**
  * Project: Phoenix
- * Time-stamp: <2025-03-24 22:23:01 doug>
+ * Time-stamp: <2025-03-28 17:33:01 doug>
  * 
  * @file Generate.cpp
  * @author Douglas Mark Royer
@@ -48,6 +48,20 @@ namespace RiverExplorer::xdrgen
 {
 	extern std::string	Indent(int Level);
 
+	std::string
+	Replace(const std::string In, char Old, char With)
+	{
+		std::string Results = In;
+
+		for (size_t i = 0; i < Results.length(); i++) {
+			if (Results[i] == Old) {
+        Results[i] = With;
+			}
+		}
+
+		return(Results);
+	}
+	
 	bool
 	MakePath(const string PathToMake)
 	{
@@ -197,7 +211,8 @@ namespace RiverExplorer::xdrgen
 					 << "Using RiverExplorer xdrgen program." << endl;
 		
 		Stream << Prefix
-					 << "Available at: https://github.com/Phoenix." << endl;
+					 << "Available at: https://github.com/RiverExplorer/Phoenix ." << endl;
+		Stream << endl;
 
 		return;
 	}
@@ -215,7 +230,8 @@ namespace RiverExplorer::xdrgen
 					 << "Using RiverExplorer xdrgen program." << endl;
 		
 		Stream << Prefix
-					 << "Available at: https://github.com/Phoenix." << endl;
+					 << "Available at: https://github.com/RiverExplorer/Phoenix ." << endl;
+		Stream << endl;
 
 		return;
 	}

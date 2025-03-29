@@ -1,8 +1,8 @@
 /**
  * Project: Phoenix
- * Time-stamp: <2025-03-24 22:21:40 doug>
+ * Time-stamp: <2025-03-27 10:35:06 doug>
  * 
- * @file Item.cpp
+ * @file GenerateCppItem.cpp
  * @author Douglas Mark Royer
  * @date 10-MAR-2025
  * 
@@ -24,7 +24,7 @@ using namespace std;
 namespace RiverExplorer::xdrgen
 {
 	void
-	Item::PrintCppDeclareVariable(ofstream & Stream)
+	Item::PrintCppDeclareVariable(ofstream & Stream) const
 	{
 		string I = Indent();
 
@@ -77,6 +77,10 @@ namespace RiverExplorer::xdrgen
 			}
 			if (IsPointer) {
 				Stream << " * ";
+
+			} else	if (IsReference) {
+				Stream << " & ";
+
 			} else {
 				Stream << " ";
 			}

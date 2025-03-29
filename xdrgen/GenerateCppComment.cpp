@@ -1,8 +1,8 @@
 /**
  * Project: Phoenix
- * Time-stamp: <2025-03-24 22:22:25 doug>
+ * Time-stamp: <2025-03-28 18:35:25 doug>
  * 
- * @file GenerateComment.cpp
+ * @file GenerateCppComment.cpp
  * @author Douglas Mark Royer
  * @date 08-MAR-2025
  * 
@@ -23,19 +23,18 @@ namespace RiverExplorer::xdrgen
 	{
 		/*EMPTY*/
 
+		return;
 	}
-	
-	void
-	Comment::PrintCppHeader(ofstream & Stream)
+
+	static void
+	PrintIt(ofstream & Stream, const string & Str)
 	{
 		std::string::const_iterator SIt;
 
-		// I do not know why (-1) works.
-		//
-		std::string I = Indent(IndentLevel);
+		std::string I = Indent();
 
 		Stream << I;
-		for (SIt = Name.cbegin(); SIt != Name.cend(); SIt++) {
+		for (SIt = Str.cbegin(); SIt != Str.cend(); SIt++) {
 			if (*SIt == '\t' || *SIt == '\r') {
 				continue;
 			}
@@ -45,32 +44,69 @@ namespace RiverExplorer::xdrgen
 			}
 		}
 		Stream << std::endl;
-		//Stream << Indent() << Name << std::endl;
-	}
-
-	void
-	Comment::PrintCppXDR(ofstream & Stream)
-	{
-	}
-
-	void
-	Comment::PrintCppStubs(ofstream & Stream)
-	{
-	}
-
-	void
-	Comment::PrintXSD(ofstream & Stream)
-	{
 	}
 	
 	void
-	Comment::PrintAbnf(ofstream & Stream)
+	Comment::PrintCppHeader(ofstream & Stream) const
 	{
+		PrintIt(Stream, Name);
+
+		return;
+	}
+
+	void
+	Comment::PrintCppHeaderXdr(ofstream & Stream) const
+	{
+		PrintIt(Stream, Name);
+
+		return;
 	}
 	
 	void
-	Comment::PrintServer(ofstream & Stream)
+	Comment::PrintCppXDR(ofstream & Stream) const
 	{
+		PrintIt(Stream, Name);
+
+		return;
+	}
+
+	void
+	Comment::PrintCppStubs(ofstream & Stream) const
+	{
+		PrintIt(Stream, Name);
+
+		return;
+	}
+
+	void
+	Comment::PrintXSD(ofstream & Stream) const
+	{
+		/**@todo */
+
+		return;
+	}
+	
+	void
+	Comment::PrintAbnf(ofstream & Stream) const
+	{
+		Stream << ";";
+
+		for (char C : Name) {
+			Stream << C;
+			if (C == '\n') {
+				Stream << ";";
+			}
+		}
+
+		return;
+	}
+	
+	void
+	Comment::PrintServer(ofstream & Stream) const
+	{
+		PrintIt(Stream, Name);
+
+		return;
 	}
 	
 }

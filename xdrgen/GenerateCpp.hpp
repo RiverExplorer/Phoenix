@@ -1,6 +1,6 @@
 /**
  * Project: Phoenix
- * Time-stamp: <2025-03-24 22:21:50 doug>
+ * Time-stamp: <2025-03-26 19:07:25 doug>
  * 
  * @file GenerateCpp.hpp
  * @author Douglas Mark Royer
@@ -41,7 +41,14 @@ namespace RiverExplorer::xdrgen
 	extern void	GenerateSharedHpp(const std::string & InDirectory);
 
 	extern void	PrintCppNamespaceBegin(std::ofstream & Stream);
+
+	extern void	PrintCppNamespaceBegin(std::ofstream & Stream,
+																		 const std::string & NsName);
+	
 	extern void	PrintCppNamespaceEnd(std::ofstream & Stream);
+
+	extern void	PrintCppNamespaceEnd(std::ofstream & Stream,
+																	 const std::string & NsName);
 	
 }
 #endif // _RIVEREXPLORER_XDRGEN_GENERATECPP_HPP_

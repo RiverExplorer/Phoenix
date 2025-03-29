@@ -1,8 +1,8 @@
 /**
  * Project: Phoenix
- * Time-stamp: <2025-03-24 22:21:07 doug>
+ * Time-stamp: <2025-03-27 18:36:47 doug>
  * 
- * @file GenerateProgram.cpp
+ * @file GenerateCppProgram.cpp
  * @author Douglas Mark Royer
  * @date 08-MAR-2025
  * 
@@ -19,35 +19,86 @@ namespace RiverExplorer::xdrgen
 {
 	Program::~Program()
 	{
+		/*EMPTY*/
+		return;
 	}
 	
 	void
-	Program::PrintCppHeader(ofstream & Stream)
+	Program::PrintCppHeader(ofstream & Stream) const
 	{
+		// Name is the 'program' identifier.
+		// Type is the 'program' number (value).
+		//
+		PrintCppNamespaceBegin(Stream);
+
+		std::string I = Indent(IndentLevel + 1);
+
+		Stream << I <<  "/* Begin 'program': " << Name
+					 << ", With and ID of: " << Type << " */" << endl;
+		Stream << I;
+		PrintCppNamespaceBegin(Stream, Name);
+
+		std::vector<Item*>::const_iterator IIt;
+		Item * OneItem;
+		
+		for (IIt = Versions.cbegin(); IIt != Versions.cend(); IIt++) {
+			OneItem = *IIt;
+			if (OneItem != nullptr) {
+				OneItem->PrintCppHeader(Stream);
+			}
+		}
+		
+		PrintCppNamespaceEnd(Stream, Name);
+		Stream << I <<  "/* End 'program': " << Name
+					 << ", With and ID of: " << Type << " */" << endl;
+		PrintCppNamespaceEnd(Stream);
+		return;
 	}
 
 	void
-	Program::PrintCppXDR(ofstream & Stream)
+	Program::PrintCppHeaderXdr(ofstream & /*Stream*/) const
 	{
-	}
-
-	void
-	Program::PrintCppStubs(ofstream & Stream)
-	{
-	}
-
-	void
-	Program::PrintXSD(ofstream & Stream)
-	{
+		/**@todo*/
+		return;
 	}
 	
 	void
-	Program::PrintAbnf(ofstream & Stream)
+	Program::PrintCppXDR(ofstream & /*Stream*/) const
 	{
+		/**@todo*/
+		return;
+	}
+
+	void
+	Program::PrintCppStubs(ofstream & Stream) const
+	{
+		GenerateSharedHpp(CppOutputDirectory);
+		
+		std::string I = Indent();
+
+		for (Item * AnItem : Versions) {
+			AnItem->PrintCppStubs(Stream);
+		}
+		
+		return;
+	}
+
+	void
+	Program::PrintXSD(ofstream & /*Stream*/) const
+	{
+		/**@todo*/
+		return;
 	}
 	
 	void
-	Program::PrintServer(ofstream & Stream)
+	Program::PrintAbnf(ofstream & /*Stream*/) const
+	{
+		/**@todo*/
+		return;
+	}
+	
+	void
+	Program::PrintServer(ofstream & /*Stream*/) const
 	{
 	}
 	

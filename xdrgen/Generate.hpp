@@ -1,6 +1,6 @@
 /**
  * Project: Phoenix
- * Time-stamp: <2025-03-24 22:22:46 doug>
+ * Time-stamp: <2025-03-28 14:12:36 doug>
  * 
  * @file Generate.hpp
  * @author Douglas Mark Royer
@@ -19,6 +19,20 @@
 
 namespace RiverExplorer::xdrgen
 {
+
+	/**
+	 * Replace all occurances of Old with New.
+	 *
+	 * @param In The origina untouch string.
+	 *
+	 * @param Old The character to replace.
+	 *
+	 * @param New Replace with this character.
+	 *
+	 * @return In, with Old replaced with With.
+	 */
+	extern std::string	Replace(const std::string In, char Old, char New);
+	
 	/**
 	 * Make the path, or print error if it can not
 	 * be made or does not exist.

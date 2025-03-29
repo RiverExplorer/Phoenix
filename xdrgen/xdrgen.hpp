@@ -1,6 +1,6 @@
 /**
  * Project: Phoenix
- * Time-stamp: <2025-03-25 02:00:11 doug>
+ * Time-stamp: <2025-03-28 11:01:29 doug>
  * 
  * @file xdrgen.hpp
  * @author Douglas Mark Royer
@@ -38,6 +38,11 @@ namespace RiverExplorer::xdrgen
 	 * The input file name.
 	 */
 	extern std::string InputFileName;
+
+	/**
+	 * Used sometimes for the target output directory.
+	 */
+	extern std::string CppOutputDirectory;
 	
 	/**
 	 * The input file name without extension.
@@ -207,7 +212,14 @@ namespace RiverExplorer::xdrgen
 		InEnum,
 		InEnumBody,
 		InConstant,
-		InMethod
+		InMethod,
+		InProgram,
+		InVersion,
+		InVersionMethod,
+		InDeclaration,
+		InEnumTypeSpec,
+		InStructTypeSpec,
+		InUnionTypeSpec
 	};
 
 	/**
@@ -220,12 +232,13 @@ namespace RiverExplorer::xdrgen
 	{
 	public:
 		
-		virtual void PrintCppHeader(ofstream & Stream) = 0;
-		virtual void PrintCppXDR(ofstream & Steam) = 0;
-		virtual void PrintCppStubs(ofstream & Stream) = 0;
-		virtual void PrintXSD(ofstream & Stream) = 0;
-		virtual void PrintAbnf(ofstream & Stream) = 0;
-		virtual void PrintServer(ofstream & Stream) = 0;
+		virtual void PrintCppHeader(ofstream & Stream) const = 0;
+		virtual void PrintCppHeaderXdr(ofstream & Stream) const = 0;
+		virtual void PrintCppXDR(ofstream & Steam) const = 0;
+		virtual void PrintCppStubs(ofstream & Stream) const = 0;
+		virtual void PrintXSD(ofstream & Stream) const = 0;
+		virtual void PrintAbnf(ofstream & Stream) const = 0;
+		virtual void PrintServer(ofstream & Stream) const = 0;
 		
 		bool IsPointer = false;
 		bool IsReference = false;
@@ -239,7 +252,7 @@ namespace RiverExplorer::xdrgen
 		/**
 		 * Print the variable for a CPP Header.
 		 */
-		void PrintCppDeclareVariable(ofstream & Stream);
+		void PrintCppDeclareVariable(ofstream & Stream) const;
 	};
 
 	extern std::vector<Item*> OrderedItems;
@@ -257,12 +270,13 @@ namespace RiverExplorer::xdrgen
 
 		virtual ~Constant();
 
-		virtual void PrintCppHeader(ofstream & Stream);
-		virtual void PrintCppXDR(ofstream & Stream);
-		virtual void PrintCppStubs(ofstream & Stream);
-		virtual void PrintXSD(ofstream & Stream);
-		virtual void PrintAbnf(ofstream & Stream);
-		virtual void PrintServer(ofstream & Stream);
+		virtual void PrintCppHeader(ofstream & Stream) const;
+		virtual void PrintCppHeaderXdr(ofstream & Stream) const;
+		virtual void PrintCppXDR(ofstream & Stream) const;
+		virtual void PrintCppStubs(ofstream & Stream) const;
+		virtual void PrintXSD(ofstream & Stream) const;
+		virtual void PrintAbnf(ofstream & Stream) const;
+		virtual void PrintServer(ofstream & Stream) const;
 	};
 	extern Constant * CurrentConstant;
 
@@ -276,12 +290,13 @@ namespace RiverExplorer::xdrgen
 
 		virtual ~EnumValue();
 
-		virtual void PrintCppHeader(ofstream & Stream);
-		virtual void PrintCppXDR(ofstream & Stream);
-		virtual void PrintCppStubs(ofstream & Stream);
-		virtual void PrintXSD(ofstream & Stream);
-		virtual void PrintAbnf(ofstream & Stream);
-		virtual void PrintServer(ofstream & Stream);
+		virtual void PrintCppHeader(ofstream & Stream) const;
+		virtual void PrintCppHeaderXdr(ofstream & Stream) const;
+		virtual void PrintCppXDR(ofstream & Stream) const;
+		virtual void PrintCppStubs(ofstream & Stream) const;
+		virtual void PrintXSD(ofstream & Stream) const;
+		virtual void PrintAbnf(ofstream & Stream) const;
+		virtual void PrintServer(ofstream & Stream) const;
 	};
 
 	/**
@@ -296,12 +311,13 @@ namespace RiverExplorer::xdrgen
 
 		std::vector<Item*> Enums;
 		
-		virtual void PrintCppHeader(ofstream & Stream);
-		virtual void PrintCppXDR(ofstream & Stream);
-		virtual void PrintCppStubs(ofstream & Stream);
-		virtual void PrintXSD(ofstream & Stream);
-		virtual void PrintAbnf(ofstream & Stream);
-		virtual void PrintServer(ofstream & Stream);
+		virtual void PrintCppHeader(ofstream & Stream) const;
+		virtual void PrintCppHeaderXdr(ofstream & Stream) const;
+		virtual void PrintCppXDR(ofstream & Stream) const;
+		virtual void PrintCppStubs(ofstream & Stream) const;
+		virtual void PrintXSD(ofstream & Stream) const;
+		virtual void PrintAbnf(ofstream & Stream) const;
+		virtual void PrintServer(ofstream & Stream) const;
 	};
 
 	/**
@@ -314,12 +330,13 @@ namespace RiverExplorer::xdrgen
 
 		virtual ~TypeDef();
 
-		virtual void PrintCppHeader(ofstream & Stream);
-		virtual void PrintCppXDR(ofstream & Stream);
-		virtual void PrintCppStubs(ofstream & Stream);
-		virtual void PrintXSD(ofstream & Stream);
-		virtual void PrintAbnf(ofstream & Stream);
-		virtual void PrintServer(ofstream & Stream);
+		virtual void PrintCppHeader(ofstream & Stream) const;
+		virtual void PrintCppHeaderXdr(ofstream & Stream) const;
+		virtual void PrintCppXDR(ofstream & Stream) const;
+		virtual void PrintCppStubs(ofstream & Stream) const;
+		virtual void PrintXSD(ofstream & Stream) const;
+		virtual void PrintAbnf(ofstream & Stream) const;
+		virtual void PrintServer(ofstream & Stream) const;
 	};
 
 	/**
@@ -332,12 +349,13 @@ namespace RiverExplorer::xdrgen
 
 		virtual ~StructMember();
 
-		virtual void PrintCppHeader(ofstream & Stream);
-		virtual void PrintCppXDR(ofstream & Stream);
-		virtual void PrintCppStubs(ofstream & Stream);
-		virtual void PrintXSD(ofstream & Stream);
-		virtual void PrintAbnf(ofstream & Stream);
-		virtual void PrintServer(ofstream & Stream);
+		virtual void PrintCppHeader(ofstream & Stream) const;
+		virtual void PrintCppHeaderXdr(ofstream & Stream) const;
+		virtual void PrintCppXDR(ofstream & Stream) const;
+		virtual void PrintCppStubs(ofstream & Stream) const;
+		virtual void PrintXSD(ofstream & Stream) const;
+		virtual void PrintAbnf(ofstream & Stream) const;
+		virtual void PrintServer(ofstream & Stream) const;
 	};
 	extern StructMember * CurrentStructMember;
 
@@ -353,12 +371,13 @@ namespace RiverExplorer::xdrgen
 		
 		std::vector<Item*> Members;
 
-		virtual void PrintCppHeader(ofstream & Stream);
-		virtual void PrintCppXDR(ofstream & Stream);
-		virtual void PrintCppStubs(ofstream & Stream);
-		virtual void PrintXSD(ofstream & Stream);
-		virtual void PrintAbnf(ofstream & Stream);
-		virtual void PrintServer(ofstream & Stream);
+		virtual void PrintCppHeader(ofstream & Stream) const;
+		virtual void PrintCppHeaderXdr(ofstream & Stream) const;
+		virtual void PrintCppXDR(ofstream & Stream) const;
+		virtual void PrintCppStubs(ofstream & Stream) const;
+		virtual void PrintXSD(ofstream & Stream) const;
+		virtual void PrintAbnf(ofstream & Stream) const;
+		virtual void PrintServer(ofstream & Stream) const;
 	};
 	extern Struct * CurrentStruct;
 
@@ -375,12 +394,13 @@ namespace RiverExplorer::xdrgen
 		std::string CaseValue;
 		bool IsDefault;
 
-		virtual void PrintCppHeader(ofstream & Stream);
-		virtual void PrintCppXDR(ofstream & Stream);
-		virtual void PrintCppStubs(ofstream & Stream);
-		virtual void PrintXSD(ofstream & Stream);
-		virtual void PrintAbnf(ofstream & Stream);
-		virtual void PrintServer(ofstream & Stream);
+		virtual void PrintCppHeader(ofstream & Stream) const;
+		virtual void PrintCppHeaderXdr(ofstream & Stream) const;
+		virtual void PrintCppXDR(ofstream & Stream) const;
+		virtual void PrintCppStubs(ofstream & Stream) const;
+		virtual void PrintXSD(ofstream & Stream) const;
+		virtual void PrintAbnf(ofstream & Stream) const;
+		virtual void PrintServer(ofstream & Stream) const;
 	};
 
 	/**
@@ -400,12 +420,13 @@ namespace RiverExplorer::xdrgen
 		std::vector<Item*> Cases;
 		UnionCase * Default;
 		
-		virtual void PrintCppHeader(ofstream & Stream);
-		virtual void PrintCppXDR(ofstream & Stream);
-		virtual void PrintCppStubs(ofstream & Stream);
-		virtual void PrintXSD(ofstream & Stream);
-		virtual void PrintAbnf(ofstream & Stream);
-		virtual void PrintServer(ofstream & Stream);
+		virtual void PrintCppHeader(ofstream & Stream) const;
+		virtual void PrintCppHeaderXdr(ofstream & Stream) const;
+		virtual void PrintCppXDR(ofstream & Stream) const;
+		virtual void PrintCppStubs(ofstream & Stream) const;
+		virtual void PrintXSD(ofstream & Stream) const;
+		virtual void PrintAbnf(ofstream & Stream) const;
+		virtual void PrintServer(ofstream & Stream) const;
 	};
 	extern Union * CurrentUnion;
 
@@ -423,33 +444,13 @@ namespace RiverExplorer::xdrgen
 		std::vector<Item*> Params;
 		int64_t ProcNumber;
 
-		virtual void PrintCppHeader(ofstream & Stream);
-		virtual void PrintCppXDR(ofstream & Stream);
-		virtual void PrintCppStubs(ofstream & Stream);
-		virtual void PrintXSD(ofstream & Stream);
-		virtual void PrintAbnf(ofstream & Stream);
-		virtual void PrintServer(ofstream & Stream);
-	};
-
-	/**
-	 * @class Version xdrgen.hpp <RiverExplorer/xdrgen/xdrgen.hpp>
-	 */
-	class Version
-		: public Item
-	{
-	public:
-
-		virtual ~Version();
-		
-		int64_t VersionNumber;
-		std::vector<Item*> Procedures;
-
-		virtual void PrintCppHeader(ofstream & Stream);
-		virtual void PrintCppXDR(ofstream & Stream);
-		virtual void PrintCppStubs(ofstream & Stream);
-		virtual void PrintXSD(ofstream & Stream);
-		virtual void PrintAbnf(ofstream & Stream);
-		virtual void PrintServer(ofstream & Stream);
+		virtual void PrintCppHeader(ofstream & Stream) const;
+		virtual void PrintCppHeaderXdr(ofstream & Stream) const;
+		virtual void PrintCppXDR(ofstream & Stream) const;
+		virtual void PrintCppStubs(ofstream & Stream) const;
+		virtual void PrintXSD(ofstream & Stream) const;
+		virtual void PrintAbnf(ofstream & Stream) const;
+		virtual void PrintServer(ofstream & Stream) const;
 	};
 
 	/**
@@ -462,7 +463,6 @@ namespace RiverExplorer::xdrgen
 
 		virtual ~Program();
 		
-		uint64_t ProgramNumber;
 		std::vector<Item*> Versions;
 		std::map<std::string, Constant*> Constants;
 		std::map<std::string, std::vector<Item*>*> Enums;
@@ -470,12 +470,37 @@ namespace RiverExplorer::xdrgen
 		std::map<std::string, Struct*> Structs;
 		std::map<std::string, Union*> Unions;
 
-		virtual void PrintCppHeader(ofstream & Stream);
-		virtual void PrintCppXDR(ofstream & Stream);
-		virtual void PrintCppStubs(ofstream & Stream);
-		virtual void PrintXSD(ofstream & Stream);
-		virtual void PrintAbnf(ofstream & Stream);
-		virtual void PrintServer(ofstream & Stream);
+		virtual void PrintCppHeader(ofstream & Stream) const;
+		virtual void PrintCppHeaderXdr(ofstream & Stream) const;
+		virtual void PrintCppXDR(ofstream & Stream) const;
+		virtual void PrintCppStubs(ofstream & Stream) const;
+		virtual void PrintXSD(ofstream & Stream) const;
+		virtual void PrintAbnf(ofstream & Stream) const;
+		virtual void PrintServer(ofstream & Stream) const;
+	};
+
+	/**
+	 * @class Version xdrgen.hpp <RiverExplorer/xdrgen/xdrgen.hpp>
+	 */
+	class Version
+		: public Item
+	{
+	public:
+
+		Version(Program & Parent);
+		virtual ~Version();
+		
+		std::vector<Item*> Procedures;
+
+		virtual void PrintCppHeader(ofstream & Stream) const;
+		virtual void PrintCppHeaderXdr(ofstream & Stream) const;
+		virtual void PrintCppXDR(ofstream & Stream) const;
+		virtual void PrintCppStubs(ofstream & Stream) const;
+		virtual void PrintXSD(ofstream & Stream) const;
+		virtual void PrintAbnf(ofstream & Stream) const;
+		virtual void PrintServer(ofstream & Stream) const;
+
+		Program & Parent;
 	};
 
 	/**
@@ -488,12 +513,13 @@ namespace RiverExplorer::xdrgen
 		
 		virtual ~Comment();
 		
-		virtual void PrintCppHeader(ofstream & Stream);
-		virtual void PrintCppXDR(ofstream & Stream);
-		virtual void PrintCppStubs(ofstream & Stream);
-		virtual void PrintXSD(ofstream & Stream);
-		virtual void PrintAbnf(ofstream & Stream);
-		virtual void PrintServer(ofstream & Stream);
+		virtual void PrintCppHeader(ofstream & Stream) const;
+		virtual void PrintCppHeaderXdr(ofstream & Stream) const;
+		virtual void PrintCppXDR(ofstream & Stream) const;
+		virtual void PrintCppStubs(ofstream & Stream) const;
+		virtual void PrintXSD(ofstream & Stream) const;
+		virtual void PrintAbnf(ofstream & Stream) const;
+		virtual void PrintServer(ofstream & Stream) const;
 	};
 
 	/**
@@ -506,19 +532,24 @@ namespace RiverExplorer::xdrgen
 		
 		virtual ~PassThrough();
 
-		virtual void PrintCppHeader(ofstream & Stream);
-		virtual void PrintCppXDR(ofstream & Stream);
-		virtual void PrintCppStubs(ofstream & Stream);
-		virtual void PrintXSD(ofstream & Stream);
-		virtual void PrintAbnf(ofstream & Stream);
-		virtual void PrintServer(ofstream & Stream);
+		virtual void PrintCppHeader(ofstream & Stream) const;
+		virtual void PrintCppHeaderXdr(ofstream & Stream) const;
+		virtual void PrintCppXDR(ofstream & Stream) const;
+		virtual void PrintCppStubs(ofstream & Stream) const;
+		virtual void PrintXSD(ofstream & Stream) const;
+		virtual void PrintAbnf(ofstream & Stream) const;
+		virtual void PrintServer(ofstream & Stream) const;
 	};
 
 	/**
 	 * @class Method xdrgen.hpp <RiverExplorer/xdrgen/xdrgen.hpp>
 	 * A 'Method' is of the form:
 	 *
-	 * returnType MethodName(Parameter1, ...);
+	 *   returnType MethodName(Parameter1, ...);
+	 *
+	 * Or if wihin a program/version:
+	 *
+	 *   returnType MethodName(Parameter1, ...) = value;
 	 */
 	class Method
 		: public Item
@@ -530,16 +561,77 @@ namespace RiverExplorer::xdrgen
 
 		std::vector<std::string> Parameters;
 
-		virtual void PrintCppHeader(ofstream & Stream);
-		virtual void PrintCppXDR(ofstream & Stream);
-		virtual void PrintCppStubs(ofstream & Stream);
-		virtual void PrintXSD(ofstream & Stream);
-		virtual void PrintAbnf(ofstream & Stream);
-		virtual void PrintServer(ofstream & Stream);
+		/**
+		 * Only used inside of a program/version.
+		 */
+		std::string VersionValue;
 
-		Struct & ParentStruct;
+		virtual void PrintCppHeader(ofstream & Stream) const;
+		virtual void PrintCppHeaderXdr(ofstream & Stream) const;
+		virtual void PrintCppXDR(ofstream & Stream) const;
+		virtual void PrintCppStubs(ofstream & Stream) const;
+		virtual void PrintXSD(ofstream & Stream) const;
+		virtual void PrintAbnf(ofstream & Stream) const;
+		virtual void PrintServer(ofstream & Stream) const;
+
+		Struct & Parent;
 	};
 	
+	/**
+	 * @class Method xdrgen.hpp <RiverExplorer/xdrgen/xdrgen.hpp>
+	 * A 'Method' is of the form:
+	 *
+	 *   returnType MethodName(Parameter1, ...);
+	 *
+	 * Or if wihin a program/version:
+	 *
+	 *   returnType MethodName(Parameter1, ...) = value;
+	 */
+	class VersionMethod
+		: public Item
+	{
+	public:
+
+		VersionMethod(Version & Parent);
+		virtual ~VersionMethod();
+
+		std::vector<std::string> Parameters;
+
+		/**
+		 * Only used inside of a program/version.
+		 */
+		std::string MethodValue;
+
+		virtual void PrintCppHeader(ofstream & Stream) const;
+		virtual void PrintCppHeaderXdr(ofstream & Stream) const;
+		virtual void PrintCppXDR(ofstream & Stream) const;
+		virtual void PrintCppStubs(ofstream & Stream) const;
+		virtual void PrintXSD(ofstream & Stream) const;
+		virtual void PrintAbnf(ofstream & Stream) const;
+		virtual void PrintServer(ofstream & Stream) const;
+
+		Version & Parent;
+	};
+	
+	/**
+	 * @class Variable xdrgen.hpp <RiverExplorer/xdrgen/xdrgen.hpp>
+	 */
+	class Variable
+		: public Item
+	{
+	public:
+
+		virtual ~Variable();
+		
+		virtual void PrintCppHeader(ofstream & Stream) const;
+		virtual void PrintCppHeaderXdr(ofstream & Stream) const;
+		virtual void PrintCppXDR(ofstream & Stream) const;
+		virtual void PrintCppStubs(ofstream & Stream) const;
+		virtual void PrintXSD(ofstream & Stream) const;
+		virtual void PrintAbnf(ofstream & Stream) const;
+		virtual void PrintServer(ofstream & Stream) const;
+	};
+
 	/**
 	 * @class MyXdrListener xdrgen.hpp <RiverExplorer/xdrgen/xdrgen.hpp>
 	 * A support class for the antlr4 generated code.
@@ -548,10 +640,6 @@ namespace RiverExplorer::xdrgen
 		: public xdrListener
 	{
 	public:
-		
-		void ProcessNode(bool Enter,
-										 std::string From,
-										 xdrParser::DeclarationContext* Ctx);
 		
 		void ProcessNode(bool Enter,
 										 std::string From,
@@ -615,40 +703,6 @@ namespace RiverExplorer::xdrgen
 		
 		void ProcessNode(bool Enter,
 										 std::string From,
-										 xdrParser::TypeDefDefContext* Ctx);
-
-		void ProcessNode(bool Enter,
-										 std::string From,
-										 xdrParser::VarContext* Ctx);
-
-		
-		void ProcessNode(bool Enter,
-										 std::string From,
-										 xdrParser::VarFixedContext* Ctx);
-
-		
-		void ProcessNode(bool Enter,
-										 std::string From,
-										 xdrParser::VarVariableContext* Ctx);
-
-		void ProcessNode(bool Enter,
-										 std::string From,
-										 xdrParser::OpaqueFixedContext* Ctx);
-		
-		void ProcessNode(bool Enter,
-										 std::string From,
-										 xdrParser::OpaqueVariableContext* Ctx);
-		
-		void ProcessNode(bool Enter,
-										 std::string From,
-										 xdrParser::VoidContext* Ctx);
-		
-		void ProcessNode(bool Enter,
-										 std::string From,
-										 xdrParser::StringContext* Ctx);
-		
-		void ProcessNode(bool Enter,
-										 std::string From,
 										 xdrParser::SpecsContext* Ctx);
 		
 		void ProcessNode(bool Enter,
@@ -665,11 +719,19 @@ namespace RiverExplorer::xdrgen
 		
 		void ProcessNode(bool Enter,
 										 std::string From,
-										 xdrParser::ProcReturnContext* Ctx);
+										 xdrParser::ProcFirstArgContext* Ctx);
 		
 		void ProcessNode(bool Enter,
 										 std::string From,
-										 xdrParser::ProcFirstArgContext* Ctx);
+										 xdrParser::ProgramContext* Ctx);
+		
+		void ProcessNode(bool Enter,
+										 std::string From,
+										 xdrParser::VersionContext* Ctx);
+		
+		void ProcessNode(bool Enter,
+										 std::string From,
+										 xdrParser::VersionMethodContext* Ctx);
 		
 		void ProcessNode(bool Enter,
 										 std::string From,
@@ -680,12 +742,6 @@ namespace RiverExplorer::xdrgen
 										 ParserRuleContext* Ctx);
 		
 		//////////////////////////////////////////////////////////////////////
-		virtual void enterDeclaration(xdrParser::DeclarationContext *Ctx);
-		virtual void exitDeclaration(xdrParser::DeclarationContext *Ctx);
-		
-		virtual void enterDeclaration(xdrParser::ConstantDefContext *Ctx);
-		virtual void exitDeclaration(xdrParser::ConstantDefContext *Ctx);
-		
 		virtual void enterValue(xdrParser::ValueContext *Ctx);
 		virtual void exitValue(xdrParser::ValueContext *Ctx);
 		
@@ -731,41 +787,17 @@ namespace RiverExplorer::xdrgen
 		virtual void enterNamespaceDef(xdrParser::NamespaceDefContext * Ctx);
 		virtual void exitNamespaceDef(xdrParser::NamespaceDefContext * Ctx);
 		
-		virtual void enterTypeDefDef(xdrParser::TypeDefDefContext * Ctx);
-		virtual void exitTypeDefDef(xdrParser::TypeDefDefContext * Ctx);
-		
 		virtual void enterSpecs(xdrParser::SpecsContext * Ctx);
 		virtual void exitSpecs(xdrParser::SpecsContext * Ctx);
 		
 		virtual void enterEveryRule(ParserRuleContext * Ctx);
 		virtual void exitEveryRule(ParserRuleContext * Ctx);
 
-		virtual void enterVar(xdrParser::VarContext * Ctx);
-		virtual void exitVar(xdrParser::VarContext * Ctx);
-
-		virtual void enterVarFixed(xdrParser::VarFixedContext * Ctx);
-		virtual void exitVarFixed(xdrParser::VarFixedContext * Ctx);
-
-		virtual void enterVarVariable(xdrParser::VarVariableContext * Ctx);
-		virtual void exitVarVariable(xdrParser::VarVariableContext * Ctx);
-
-		virtual void enterOpaqueFixed(xdrParser::OpaqueFixedContext * Ctx);
-		virtual void exitOpaqueFixed(xdrParser::OpaqueFixedContext * Ctx);
-
-		virtual void enterOpaqueVariable(xdrParser::OpaqueVariableContext * Ctx);
-		virtual void exitOpaqueVariable(xdrParser::OpaqueVariableContext * Ctx);
-
 		virtual void enterMethod(xdrParser::MethodContext * Ctx);
 		virtual void exitMethod(xdrParser::MethodContext * Ctx);
 
-		virtual void enterProcReturn(xdrParser::ProcReturnContext * Ctx);
-		virtual void exitProcReturn(xdrParser::ProcReturnContext * Ctx);
-
 		virtual void enterProcFirstArg(xdrParser::ProcFirstArgContext * Ctx);
 		virtual void exitProcFirstArg(xdrParser::ProcFirstArgContext * Ctx);
-
-		virtual void enterVoid(xdrParser::VoidContext * Ctx);
-		virtual void exitVoid(xdrParser::VoidContext * Ctx);
 
 		virtual void enterComment(xdrParser::CommentContext * Ctx);
 		virtual void exitComment(xdrParser::CommentContext * Ctx);
@@ -773,8 +805,20 @@ namespace RiverExplorer::xdrgen
 		virtual void enterPassThrough(xdrParser::PassThroughContext * Ctx);
 		virtual void exitPassThrough(xdrParser::PassThroughContext * Ctx);
 
-		virtual void enterString(xdrParser::StringContext * Ctx);
-		virtual void exitString(xdrParser::StringContext * Ctx);
+		virtual void enterProgram(xdrParser::ProgramContext * Ctx);
+		virtual void exitProgram(xdrParser::ProgramContext * Ctx);
+
+		virtual void enterVersion(xdrParser::VersionContext * Ctx);
+		virtual void exitVersion(xdrParser::VersionContext * Ctx);
+
+		virtual void enterVersionMethod(xdrParser::VersionMethodContext * Ctx);
+		virtual void exitVersionMethod(xdrParser::VersionMethodContext * Ctx);
+
+		virtual void enterDataType(xdrParser::DataTypeContext * Ctx);
+		virtual void exitDataType(xdrParser::DataTypeContext * Ctx);
+
+		virtual void enterDeclaration(xdrParser::DeclarationContext * Ctx);
+		virtual void exitDeclaration(xdrParser::DeclarationContext * Ctx);
 
 		virtual void visitTerminal(tree::TerminalNode * Node);
 		virtual void visitErrorNode(tree::ErrorNode * Node);

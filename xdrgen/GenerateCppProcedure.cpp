@@ -1,8 +1,8 @@
 /**
  * Project: Phoenix
- * Time-stamp: <2025-03-24 22:21:15 doug>
+ * Time-stamp: <2025-03-27 16:51:41 doug>
  * 
- * @file GenerateProcedure.cpp
+ * @file GenerateCppProcedure.cpp
  * @author Douglas Mark Royer
  * @date 08-MAR-2025
  * 
@@ -20,36 +20,73 @@ namespace RiverExplorer::xdrgen
 
 	Procedure::~Procedure()
 	{
+		/*EMPTY*/
+		return;
 	}
 	
 	void
-	Procedure::PrintCppHeader(ofstream & Stream)
+	Procedure::PrintCppHeader(ofstream & /*Stream*/) const
 	{
+		/**@todo*/
+		return;
 	}
 
 	void
-	Procedure::PrintCppXDR(ofstream & Stream)
+	Procedure::PrintCppHeaderXdr(ofstream & /*Stream*/) const
 	{
-	}
-
-	void
-	Procedure::PrintCppStubs(ofstream & Stream)
-	{
-	}
-
-	void
-	Procedure::PrintXSD(ofstream & Stream)
-	{
+		/**@todo*/
+		return;
 	}
 	
 	void
-	Procedure::PrintAbnf(ofstream & Stream)
+	Procedure::PrintCppXDR(ofstream & /*Stream*/) const
 	{
+		/**@todo*/
+		return;
+	}
+
+	void
+	Procedure::PrintCppStubs(ofstream & Stream) const
+	{
+		std::string I = Indent();
+		std::string I2 = Indent(IndentLevel + 1);
+		
+		PrintCppDeclareVariable(Stream);
+
+		Stream << " (";
+		for (Item * AnItem: Params) {
+		}
+		Stream << I << ") {" << endl;
+		IndentLevel++;
+		PrintCppDeclareVariable(Stream);
+		
+		Stream << I2 << " Results;" << endl << endl;
+		Stream << I2 << "/**@todo FILL IN WITH YOUR CODE */" << endl << endl;
+		Stream << I2 << "return(Results);" << endl;
+		Stream << I << "}" << endl << endl;
+		
+		return;
+	}
+
+	void
+	Procedure::PrintXSD(ofstream & /*Stream*/) const
+	{
+		/**@todo*/
+		return;
 	}
 	
 	void
-	Procedure::PrintServer(ofstream & Stream)
+	Procedure::PrintAbnf(ofstream & /*Stream*/) const
 	{
+		/**@todo*/
+		return;
+	}
+	
+	void
+	Procedure::PrintServer(ofstream & Stream) const
+	{
+		/**@todo*/
+		return;
 	}
 	
 }

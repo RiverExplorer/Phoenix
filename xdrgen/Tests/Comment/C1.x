@@ -1,0 +1,4 @@
+/*
+ * Simple block comment.
+ */
+

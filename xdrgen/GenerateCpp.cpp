@@ -1,6 +1,6 @@
 /**
  * Project: Phoenix
- * Time-stamp: <2025-03-25 02:06:30 doug>
+ * Time-stamp: <2025-03-27 18:54:32 doug>
  * 
  * @file GenerateCpp.cpp
  * @author Douglas Mark Royer
@@ -110,7 +110,7 @@ namespace RiverExplorer::xdrgen
 	}
 
 	void
-	PrintCppNamespaceBegin(std::ofstream & Stream)
+	PrintCppNamespaceBegin(std::ofstream & Stream) 
 	{
 		if (Namespace != "") {
 			Stream << std::endl;
@@ -135,6 +135,34 @@ namespace RiverExplorer::xdrgen
 	}
 
 	
+	void
+	PrintCppNamespaceBegin(std::ofstream & Stream, const std::string & Ns)
+	{
+		if (Namespace != "") {
+			IndentLevel++;
+
+			std::string I = Indent();
+			Stream << I << "namespace " << Ns
+						 << std::endl << I << "{" << std::endl;
+			IndentLevel++;
+		}
+
+		return;
+	}
+
+	void
+	PrintCppNamespaceEnd(std::ofstream & Stream, const std::string & Ns)
+	{
+		if (Namespace != "") {
+			IndentLevel--;
+			Stream << Indent() << "} // End namespace "
+						 << Ns << std::endl;
+			IndentLevel--;
+		}
+
+		return;
+	}
+
 	void
 	GenerateSharedHpp(const string & IntoDirectory)
 	{

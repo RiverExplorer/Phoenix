@@ -1,8 +1,8 @@
 /**
  * Project: Phoenix
- * Time-stamp: <2025-03-24 22:20:58 doug>
+ * Time-stamp: <2025-03-27 16:59:38 doug>
  * 
- * @file GenerateStuct.cpp
+ * @file GenerateCppStuct.cpp
  * @author Douglas Mark Royer
  * @date 08-MAR-2025
  * 
@@ -21,8 +21,12 @@ using namespace std;
 namespace RiverExplorer::xdrgen
 {
 
+	extern std::string CppOutputDirectory;
+	
 	Struct::~Struct()
 	{
+		/**EMPTY*/
+		return;
 	}
 	
 	static void
@@ -46,7 +50,7 @@ namespace RiverExplorer::xdrgen
 	}
 	
 	void
-	Struct::PrintCppHeader(ofstream & Stream)
+	Struct::PrintCppHeader(ofstream & Stream) const
 	{
 		Stream << endl;
 
@@ -157,7 +161,23 @@ namespace RiverExplorer::xdrgen
 	}
 
 	void
-	Struct::PrintCppXDR(ofstream & Stream)
+	Struct::PrintCppHeaderXdr(ofstream & Stream) const
+	{
+		PrintCppNamespaceBegin(Stream);
+		Stream << "bool xdr_" << Name
+					 << "(XDR * xdrs, " << Name << " * obj);" << endl;
+		PrintCppNamespaceEnd(Stream);
+		Stream << "extern \"C\" bool xdr_" << Name
+					 << "(XDR * xdrs, " << Name << " * obj) {" << endl
+					 << "\treturn(" << CppNamespace << "::"
+					 << Name << "(xdrs, obj));" << endl
+					 << "}" << endl;
+		
+		return;
+	}
+	
+	void
+	Struct::PrintCppXDR(ofstream & Stream) const
 	{
 		vector<Item*>::const_iterator MIt;
 		StructMember * Member;
@@ -404,22 +424,113 @@ namespace RiverExplorer::xdrgen
 		Stream << I << "}; // End of " << Name << "::Xdr()" << endl;
 		Stream << endl;
 
+		std::string I4 = Indent(IndentLevel + 2);
+		I3 = Indent(IndentLevel + 1);
+		
+		// Now write the xdr_xxx() ...
+		//
+		Stream << I << "bool xdr_" << Name
+					 << "(XDR * xdrs, " << Name << " * objp)" << endl
+					 << I << "{" << endl
+					 << I2 << "bool Results = false;" << endl << endl
+					 << I2 << "if (xdrs != nullptr && objp != nullptr) {" << endl
+					 << I4 << "Results = objp->Xdr(xdrs);" << endl
+					 << I3 << "}" << endl
+					 << I2 << "return(Results);" << endl
+					 << I << "} // End of xdr_" << Name << "()" <<endl;
+
 		PrintCppNamespaceEnd(Stream);
+
 		return;
 	}
 
 	void
-	Struct::PrintCppStubs(ofstream & Stream)
+	Struct::PrintCppStubs(ofstream & /*Stream*/) const
 	{
+		std::vector<Item*>::const_iterator MIt;
+		Item * AnItem;
+		Method * AMethod;
+							
+		std::string StubFileName;
+
+		// Sort by method name, so all overloaded methods with
+		// the same name, go into the same file.
+		//
+		std::multimap<std::string,Method*> SameName;
+		
+		for (Item * MethodItem : Members) {
+			AMethod = dynamic_cast<Method*>(MethodItem);
+			if (AMethod != nullptr) {
+				SameName.insert(std::make_pair(AMethod->Name, AMethod));
+			}
+		}
+
+		std::string LastName;
+		ofstream StubFile;
+		bool IsOpen = false;
+
+		for (const auto & Pair : SameName) {
+			AMethod = Pair.second;
+
+			if (Pair.first != LastName) {
+				if (IsOpen) {
+					// End of file.
+					//
+					if (Namespace != "") {
+						IndentLevel--;
+						StubFile << "} // End namespace "
+									 << NamespaceToCppNamespace()<< std::endl;
+					}
+					StubFile.close();
+				}
+				StubFileName = CppOutputDirectory;
+				StubFileName += "/";
+				StubFileName += InputNoExtension;
+				StubFileName += "_";
+				StubFileName += AMethod->Parent.Name;
+				StubFileName += "_";
+				StubFileName += AMethod->Name;
+				StubFileName += ".cpp";
+				StubFile.open(StubFileName);
+				IsOpen = true;
+
+				StubFile << "/**" << std::endl;
+				GenerateEditThisFile(" * ", StubFile);
+				StubFile << " */" << std::endl << std::endl;
+							
+				StubFile << "#include \""
+							 << InputNoExtension << ".hpp\"" << std::endl;
+				
+				StubFile << "// Get the XDR definitions" << std::endl;
+				StubFile << "#include <rpc/rpc.h>" << std::endl;
+				StubFile << "#include <string>" << std::endl;
+				StubFile << "#include <vector>" << std::endl;
+				StubFile << std::endl;
+
+				if (Namespace != "") {
+					StubFile << std::endl;
+					StubFile << "namespace " << NamespaceToCppNamespace()
+									 << std::endl << "{" << std::endl;
+					IndentLevel++;
+				}
+			}
+			// Print the method.
+			//
+			AMethod->PrintCppStubs(StubFile);
+		}
+
+		return;
 	}
 
 	void
-	Struct::PrintXSD(ofstream & Stream)
+	Struct::PrintXSD(ofstream & /*Stream*/) const
 	{
+		/**@todo*/
+		return;
 	}
 
 	static std::string
-	ConvertFromXdrComment(Comment * C)
+	ConvertFromXdrComment(Comment * C) 
 	{
 		std::string Results = ";";
 		const char * Str = C->Name.c_str();
@@ -462,7 +573,7 @@ namespace RiverExplorer::xdrgen
 	}
 	
 	void
-	Struct::PrintAbnf(ofstream & Stream)
+	Struct::PrintAbnf(ofstream & Stream) const
 	{
 		vector<Item*>::const_iterator MIt;
 		StructMember *	Member;
@@ -579,42 +690,65 @@ namespace RiverExplorer::xdrgen
 	}
 	
 	void
-	Struct::PrintServer(ofstream & Stream)
+	Struct::PrintServer(ofstream & /*Stream*/) const
 	{
+		/**@todo*/
+		return;
 	}
 
 	StructMember::~StructMember()
 	{
+		/*EMPTY*/
+		return;
 	}
 	
 	void
-	StructMember::PrintCppHeader(ofstream & Stream)
+	StructMember::PrintCppHeader(ofstream & /*Stream*/) const
 	{
+		/**@todo*/
+		return;
 	}
 
 	void
-	StructMember::PrintCppXDR(ofstream & Stream)
+	StructMember::PrintCppHeaderXdr(ofstream & /*Stream*/) const
 	{
-	}
-
-	void
-	StructMember::PrintCppStubs(ofstream & Stream)
-	{
-	}
-
-	void
-	StructMember::PrintXSD(ofstream & Stream)
-	{
+		/**@todo*/
+		return;
 	}
 	
 	void
-	StructMember::PrintAbnf(ofstream & Stream)
+	StructMember::PrintCppXDR(ofstream & /*Stream*/) const
 	{
+		/**@todo*/
+		return;
+	}
+
+	void
+	StructMember::PrintCppStubs(ofstream & /*Stream*/) const
+	{
+		/**@todo*/
+		return;
+	}
+
+	void
+	StructMember::PrintXSD(ofstream & /*Stream*/) const
+	{
+		/**@todo*/
+		return;
 	}
 	
 	void
-	StructMember::PrintServer(ofstream & Stream)
+	StructMember::PrintAbnf(ofstream & /*Stream*/) const
 	{
+		/**@todo*/
+		return;
+	}
+	
+	void
+	StructMember::PrintServer(ofstream & /*Stream*/) const
+	{
+		/**@todo*/
+		return;
 	}
 	
 }

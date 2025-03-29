@@ -9,35 +9,36 @@ specs
 	| unionTypeSpec
 	| enumTypeSpec
 	| constantDef
-	| typeDefDef
 	| namespaceDef
 	| comment
 	| passThrough
+	| program
+	| declaration ';'
 	;
-	
-declaration
-		: var
-		| varFixed
-		| varVariable
-		| opaqueFixed
-		| opaqueVariable
-		| string
-		| void
-		| comment
-		;
 
-var							: typeSpecifier '*'? IDENTIFIER ;
-varFixed				: typeSpecifier '*'? IDENTIFIER '[' value ']' ;
-varVariable			: typeSpecifier '*'? IDENTIFIER '<' value? '>' ;
-opaqueFixed			: 'opaque' '*'? IDENTIFIER '[' value ']' ;
-opaqueVariable	: 'opaque' '*'? IDENTIFIER '<' value? '>' ;
-string					: 'string' '*'? IDENTIFIER '<' value? '>' ;
+declaration : typeSpecifier IDENTIFIER
+	| typeSpecifier IDENTIFIER '[' value ']'
+	| typeSpecifier IDENTIFIER '<' value? '>'
+	| 'opaque' IDENTIFIER '[' value ']'
+	| 'opaque' IDENTIFIER '<' value? '>'
+	| 'string' IDENTIFIER '<' value? '>'
+	| typeSpecifier '*' IDENTIFIER
+	| 'void'
+	;
 
-void							: 'void' ;
+dataType : typeSpecifier
+	| typeSpecifier '[' value ']'
+	| typeSpecifier '<' value? '>'
+	| 'opaque' '[' value ']'
+	| 'opaque' '<' value? '>'
+	| 'string' '<' value? '>'
+	| dataType '*'
+	| 'void'
+	;
 
 namespaceDef
-		: 'namespace' IDENTIFIER ( ':' IDENTIFIER )* ';'
-		;
+	: 'namespace' IDENTIFIER ( ':' IDENTIFIER )* ';'
+	;
 
 value
     : constant
@@ -53,28 +54,31 @@ constant
     ;
 
 typeSpecifier
-		: 'char'
-		| 'uint8_t'
-		|	'int8_t'
-		| 'uint16_t'
-		| 'int16_t'
-		| 'uint32_t'
-		| 'int32_t'
-		| 'uint64_t'
-		| 'int64_t'
-    | 'float'
-    | 'double'
-    | 'bool'
-    | 'bool_t'
-		| 'void'
-    | enumTypeSpec
-    | structTypeSpec
-    | unionTypeSpec
-    | IDENTIFIER
-    ;
+	: 'unsigned'? 'int'
+	| 'unsigned'? 'short'
+	| 'unsigned'? 'hyper'
+	| 'unsigned'? 'quadruple'
+	| 'unsigned'? 'char'
+	| 'float'
+	| 'long'? 'double'
+	| 'bool'
+	| 'bool_t'
+	| 'uint8_t'
+	| 'int8_t'
+	| 'uint16_t'
+	| 'int16_t'
+	| 'uint32_t'
+	| 'int32_t'
+	| 'uint64_t'
+	| 'int64_t'
+	| enumTypeSpec
+	| structTypeSpec
+	| unionTypeSpec
+	| IDENTIFIER
+	;
 
 enumTypeSpec
-    : 'enum' IDENTIFIER enumBody ';'
+    : 'enum' enumBody
     ;
 
 enumBody
@@ -82,42 +86,38 @@ enumBody
     ;
 
 structTypeSpec
-    : ('struct'|'class') IDENTIFIER '{' structBody '}' ';'
+    : ('struct'|'class') structBody
     ;
 
 structBody
-    : ((declaration ';') | comment+ | method+ | passThrough+) ((declaration ';') | comment+ | method+ | passThrough+)*
+    : '{'
+	((declaration ';') | comment+ | method+ | passThrough+)
+	((declaration ';') | comment+ | method+ | passThrough+)*
+	'}'
     ;
 
 unionTypeSpec
-    : 'union' IDENTIFIER unionBody ';'
+    : 'union' unionBody
     ;
 
 unionBody
-    : 'switch' '(' declaration ')' '{' caseSpec caseSpec* ('default' ':' declaration ';')? '}'
+    : 'switch' '(' declaration ')' '{'
+	caseSpec
+	caseSpec*
+	('default' ':' declaration ';')?
+	'}'
     ;
 
 caseSpec
-    : (('case' value':' declaration ) | comment+ | passThrough+)
-			(('case' value':' declaration) | comment+ | passThrough+)* ';'
+    : (('case' value':') | comment+ | passThrough+)
+	(('case' value':') | comment+ | passThrough+)*
+	declaration ';'
     ;
 
-typeDefDef
-		: 'typedef' declaration ';'
-		| 'typedef' IDENTIFIER '*'? IDENTIFIER ';'
-		| 'typedef' IDENTIFIER '*'? IDENTIFIER '[' value ']' ';'
-		| 'typedef' IDENTIFIER '*'? IDENTIFIER '<' value? '>' ';'
-		| 'typedef' IDENTIFIER '*'? IDENTIFIER '<' value? '>' ';'
-		| 'typedef' 'struct' IDENTIFIER '*'? IDENTIFIER ';'
-		| 'typedef' 'struct' IDENTIFIER '*'? IDENTIFIER '[' value ']' ';'
-		| 'typedef' 'struct' IDENTIFIER '*'? IDENTIFIER '<' value? '>' ';'
-		| 'typedef' 'struct' IDENTIFIER '*'? IDENTIFIER '<' value? '>' ';'
-		;
-		
 constantDef
     : 'const' IDENTIFIER '=' constant ';'
     ;
-
+		
 typeDef
     : 'typedef' declaration ';'
     | 'enum' IDENTIFIER enumBody ';'
@@ -130,30 +130,34 @@ definition
     | constantDef
     ;
 
-
 comment : CommentOneLine
-				| CommentMultiLine ;
+	| CommentMultiLine ;
 
 CommentOneLine : '//' ~[\r\n]+ ;
 
 CommentMultiLine : '/*' .*? '*/' ;
 
 passThrough : PASS
-					 ;
+	 ;
 
-method: procReturn IDENTIFIER '(' procFirstArg (',' typeSpecifier)* ')' ';'
-			;
-
-procReturn
-			: 'void'
-			| typeSpecifier
-			;
+method: dataType IDENTIFIER '(' dataType IDENTIFIER? (',' dataType IDENTIFIER?)* ')' ';'
+	;
 
 procFirstArg
-			: 'void' ('*' | '&')* IDENTIFIER*
-			| typeSpecifier ('*' | '&')* IDENTIFIER*
-			;
-			
+	: 'void'
+	| dataType IDENTIFIER?
+	;
+
+program : 'program' IDENTIFIER '{' version+ '}' '=' value ';'
+	;
+
+version : 'version' IDENTIFIER '{' versionMethod+ '}' '=' value ';'
+	;
+
+versionMethod: dataType IDENTIFIER
+ '(' ((dataType IDENTIFIER? (',' dataType IDENTIFIER?)*) | 'void') ')' '=' value ';'
+	;							 
+
 // lexer rules
 
 //COMMENT
@@ -161,9 +165,9 @@ procFirstArg
 //    ;
 
 PASS
-		: '%' ~[\n\r]+
-		| '%' [\n\r]+
-		;
+	: '%' ~[\n\r]+
+	| '%' [\n\r]+
+	;
 		
 OCTAL
     : '0' [1-7] ([0-7])*
@@ -182,13 +186,14 @@ IDENTIFIER
     ;
 
 QIDENTIFIERSingle
-		: '\'' [a-zA-Z] ([a-zA-Z0-9_])* '\''
-		;
+	: '\'' [a-zA-Z] ([a-zA-Z0-9_])* '\''
+	;
 
 QIDENTIFIERDouble
-		: '"' [a-zA-Z] ([a-zA-Z0-9_])* '"'
-		;
+	: '"' [a-zA-Z] ([a-zA-Z0-9_])* '"'
+	;
 
 WS
     : [ \t\r\n]+ -> skip
     ;
+

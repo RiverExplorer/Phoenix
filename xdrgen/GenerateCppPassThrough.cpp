@@ -1,8 +1,8 @@
 /**
  * Project: Phoenix
- * Time-stamp: <2025-03-24 22:21:24 doug>
+ * Time-stamp: <2025-03-26 18:53:31 doug>
  * 
- * @file GeneratePassThrough.cpp
+ * @file GenerateCppPassThrough.cpp
  * @author Douglas Mark Royer
  * @date 08-MAR-2025
  * 
@@ -22,11 +22,11 @@ namespace RiverExplorer::xdrgen
 	PassThrough::~PassThrough()
 	{
 		/*EMPTY*/
-
+		return;
 	}
 	
 	void
-	PassThrough::PrintCppHeader(ofstream & Stream)
+	PassThrough::PrintCppHeader(ofstream & Stream) const
 	{
 		Stream << Name << std::endl;
 
@@ -34,28 +34,45 @@ namespace RiverExplorer::xdrgen
 	}
 
 	void
-	PassThrough::PrintCppXDR(ofstream & Stream)
+	PassThrough::PrintCppHeaderXdr(ofstream & /*Stream*/) const
 	{
-	}
-
-	void
-	PassThrough::PrintCppStubs(ofstream & Stream)
-	{
-	}
-
-	void
-	PassThrough::PrintXSD(ofstream & Stream)
-	{
+		/**@todo*/
+		return;
 	}
 	
 	void
-	PassThrough::PrintAbnf(ofstream & Stream)
+	PassThrough::PrintCppXDR(ofstream & /*Stream*/) const
 	{
+		/**@todo*/
+		return;
+	}
+
+	void
+	PassThrough::PrintCppStubs(ofstream & /*Stream*/) const
+	{
+		/**@todo*/
+		return;
+	}
+
+	void
+	PassThrough::PrintXSD(ofstream & /*Stream*/) const
+	{
+		/**@todo*/
+		return;
 	}
 	
 	void
-	PassThrough::PrintServer(ofstream & Stream)
+	PassThrough::PrintAbnf(ofstream & /*Stream*/) const
 	{
+		/**@todo*/
+		return;
+	}
+	
+	void
+	PassThrough::PrintServer(ofstream & /*Stream*/) const
+	{
+		/**@todo*/
+		return;
 	}
 	
 }

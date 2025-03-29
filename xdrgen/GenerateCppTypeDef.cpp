@@ -1,8 +1,8 @@
 /**
  * Project: Phoenix
- * Time-stamp: <2025-03-24 22:20:48 doug>
+ * Time-stamp: <2025-03-26 18:58:30 doug>
  * 
- * @file GenerateTypeDef.cpp
+ * @file GenerateCppTypeDef.cpp
  * @author Douglas Mark Royer
  * @date 08-MAR-2025
  * 
@@ -21,10 +21,12 @@ namespace RiverExplorer::xdrgen
 	
 	TypeDef::~TypeDef()
 	{
+		/*EMPTY*/
+		return;
 	}
 	
 	void
-	TypeDef::PrintCppHeader(ofstream & Stream)
+	TypeDef::PrintCppHeader(ofstream & Stream) const
 	{
 		string I = Indent();
 
@@ -38,28 +40,54 @@ namespace RiverExplorer::xdrgen
 	}
 
 	void
-	TypeDef::PrintCppXDR(ofstream & Stream)
+	TypeDef::PrintCppHeaderXdr(ofstream & Stream) const
 	{
-	}
-
-	void
-	TypeDef::PrintCppStubs(ofstream & Stream)
-	{
-	}
-
-	void
-	TypeDef::PrintXSD(ofstream & Stream)
-	{
-	}
-	
-	void
-	TypeDef::PrintAbnf(ofstream & Stream)
-	{
+		PrintCppNamespaceBegin(Stream);
+		Stream << "bool xdr_" << Name
+					 << "(XDR * xdrs, " << Name << " * obj);" << endl;
+		PrintCppNamespaceEnd(Stream);
+		Stream << "extern \"C\" bool xdr_" << Name
+					 << "(XDR * xdrs, " << Name << " * obj) {" << endl
+					 << "\treturn(" << CppNamespace << "::"
+					 << Name << "(xdrs, obj));" << endl
+					 << "}" << endl;
+		
+		return;
 	}
 	
 	void
-	TypeDef::PrintServer(ofstream & Stream)
+	TypeDef::PrintCppXDR(ofstream & /*Stream*/) const
 	{
+		/**@todo*/
+		return;
+	}
+
+	void
+	TypeDef::PrintCppStubs(ofstream & /*Stream*/) const
+	{
+		/**@todo*/
+		return;
+	}
+
+	void
+	TypeDef::PrintXSD(ofstream & /*Stream*/) const
+	{
+		/**@todo*/
+		return;
+	}
+	
+	void
+	TypeDef::PrintAbnf(ofstream & /*Stream*/) const
+	{
+		/**@todo*/
+		return;
+	}
+	
+	void
+	TypeDef::PrintServer(ofstream & /*Stream*/) const
+	{
+		/**@todo*/
+		return;
 	}
 	
 }

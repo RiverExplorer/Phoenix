@@ -1,8 +1,8 @@
 /**
  * Project: Phoenix
- * Time-stamp: <2025-03-24 22:20:35 doug>
+ * Time-stamp: <2025-03-26 19:01:43 doug>
  * 
- * @file GenerateUnion.cpp
+ * @file GenerateCppUnion.cpp
  * @author Douglas Mark Royer
  * @date 08-MAR-2025
  * 
@@ -39,7 +39,7 @@ namespace RiverExplorer::xdrgen
 	}
 	
 	void
-	Union::PrintCppHeader(ofstream & Stream)
+	Union::PrintCppHeader(ofstream & Stream) const
 	{
 		PrintCppNamespaceBegin(Stream);
 		Stream << endl;
@@ -149,62 +149,109 @@ namespace RiverExplorer::xdrgen
 	}
 	
 	void
-	Union::PrintCppXDR(ofstream & Stream)
+	Union::PrintCppHeaderXdr(ofstream & Stream) const
 	{
-	}
-
-	void
-	Union::PrintCppStubs(ofstream & Stream)
-	{
-	}
-
-	void
-	Union::PrintXSD(ofstream & Stream)
-	{
-	}
-	
-	void
-	Union::PrintAbnf(ofstream & Stream)
-	{
+		PrintCppNamespaceBegin(Stream);
+		Stream << "bool xdr_" << Name
+					 << "(XDR * xdrs, " << Name << " * obj);" << endl;
+		PrintCppNamespaceEnd(Stream);
+		Stream << "extern \"C\" bool xdr_" << Name
+					 << "(XDR * xdrs, " << Name << " * obj) {" << endl
+					 << "\treturn(" << CppNamespace << "::"
+					 << Name << "(xdrs, obj));" << endl
+					 << "}" << endl;
+		
+		return;
 	}
 	
 	void
-	Union::PrintServer(ofstream & Stream)
+	Union::PrintCppXDR(ofstream & /*Stream*/) const
 	{
+		/**@todo*/
+		return;
+	}
+
+	void
+	Union::PrintCppStubs(ofstream & /*Stream*/) const
+	{
+		/**@todo*/
+		return;
+	}
+
+	void
+	Union::PrintXSD(ofstream & /*Stream*/) const
+	{
+		/**@todo*/
+		return;
+	}
+	
+	void
+	Union::PrintAbnf(ofstream & /*Stream*/) const
+	{
+		/**@todo*/
+		return;
+	}
+	
+	void
+	Union::PrintServer(ofstream & /*Stream*/) const
+	{
+		/**@todo*/
+		return;
 	}
 
 	UnionCase::~UnionCase()
 	{
+		/*EMPTY*/
+		return;
 	}
 	
 	void
-	UnionCase::PrintCppHeader(ofstream & Stream)
+	UnionCase::PrintCppHeader(ofstream & /*Stream*/) const
 	{
+		/**@todo*/
+		return;
 	}
 	
 	void
-	UnionCase::PrintCppXDR(ofstream & Stream)
+	UnionCase::PrintCppHeaderXdr(ofstream & /*Stream*/) const
 	{
+		/*EMPTY*/
+		return;
+	}
+	
+	void
+	UnionCase::PrintCppXDR(ofstream & /*Stream*/) const
+	{
+		/**@todo*/
+		return;
 	}
 
 	void
-	UnionCase::PrintCppStubs(ofstream & Stream)
+	UnionCase::PrintCppStubs(ofstream & /*Stream*/) const
 	{
+		/**@todo*/
+		return;
 	}
 
 	void
-	UnionCase::PrintXSD(ofstream & Stream)
+	UnionCase::PrintXSD(ofstream & /*Stream*/) const
 	{
+		/**@todo*/
+		return;
 	}
 	
 	void
-	UnionCase::PrintAbnf(ofstream & Stream)
+	UnionCase::PrintAbnf(ofstream & /*Stream*/) const
 	{
+		/**@todo*/
+		return;
 	}
 	
 	void
-	UnionCase::PrintServer(ofstream & Stream)
+	UnionCase::PrintServer(ofstream & /*Stream*/) const
 	{
+		/**@todo*/
+		return;
 	}
 	
 }
