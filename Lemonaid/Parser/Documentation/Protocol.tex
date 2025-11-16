@@ -1,0 +1,118 @@
+\documentclass[2pt]{book}
+\setcounter{secnumdepth}{3}
+\setcounter{tocdepth}{3}
+\usepackage{graphicx}
+\usepackage{html}
+\usepackage{hyperref}
+\usepackage{lmodern}
+\usepackage{tocloft}
+\usepackage{svg}
+\usepackage{listings}
+\setlength{\cftpartindent}{0em}
+\setlength{\cftchapindent}{0em}
+\setlength{\cftsecindent}{0em}
+\setlength{\cftsubsecindent}{0em}
+\setlength{\cftsubsubsecindent}{0em}
+\graphicspath{{Images/}}
+\author{Doug Royer / RiverExplorer™}
+%\date{13-MAR-2025}
+\title{Phoenix: Server and Client Implementation Design}
+%
+% Define Abstract ..
+%
+\newenvironment{abstract}
+{%
+  \small
+  \begin{center}
+    \bfseries{abstract}
+  \end{center}
+}
+{}
+\lstset{
+  language=C++,
+  basicstyle=\ttfamily,
+  keywordstyle=\color{blue},
+  commentstyle=\color{brown},
+  stringstyle=\color{red},
+  numbers=left,
+  numberstyle=\tiny,
+  stepnumber=1,
+  numbersep=5pt,
+  backgroundcolor=\color{gray!10!white},
+  showspaces=false,
+  showstringspaces=false,
+  showtabs=false,
+  frame=single,
+  tabsize=2,
+  captionpos=b,
+  breaklines=true,
+  breakatwhitespace=false,
+  title=\lstname,
+  escapeinside={\%*}{*)},
+  morekeywords={*,...}
+}
+
+\begin{document}
+\maketitle
+\frontmatter
+\begin{figure}
+  \centering
+  \includegraphics{RiverExplorerLLC-Logo-BLACK-131x50-Transparent.ps.png}
+\end{figure}
+
+\begin{abstract}
+  \includegraphics{UnderConstruction.png}
+  \begin{center}
+    \Huge{\textcolor{red}{\textbf{THIS IS WORK IN PROGRESS}}}
+  \end{center}
+  \begin{center}
+    \underline{\textit{ABSTRACT}}
+  \end{center}
+  Tons of over the wire protocols exists.
+  As part of writing a the lemonaid project, I needed to be
+  able to express a protocol, and to implement it.
+
+  So I wrote a protocol generator that will aid people in
+  generating any over the wire protocol.
+
+  And this is it.
+\end{abstract}
+
+
+\tableofcontents
+
+\mainmatter
+\chapter{Introduction}
+\include{Introduction}
+\chapter{Directives}
+\include{Directives}
+\chapter{Input / Output Model}
+\chapter{Packet Details}
+\chapter{Code Segments}
+\chapter{Bistreams}
+\include{Bitstreams}
+\chapter{BuiltInDataTypes}
+\include{BuiltInDataTypes}
+\input{XdrEncode}
+\input{TlsIOOut}
+\input{TlsIOIn}
+\input{XdrDecode}
+\chapter{Client Implementation}
+\input{ClientImplementation}
+\chapter{Server Implementation}
+\input{ServerImplementation}
+\chapter{Getting the Code, Building, and Testing}
+\input{WhereToGet}
+\input{Building}
+\input{TestCoverage}
+\chapter{Legal}
+\include{LegalMumboJumbo}
+
+\appendix
+\chapter{Sample XDR files}
+\chapter{Sample ABNF files}
+
+\backmatter
+\listoffigures
+\listoftables
+\end{document}

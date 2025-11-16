@@ -1,7 +1,7 @@
 #if defined RPC_HDR || defined RPC_XDR
 %/**
 % * Project: Phoenix
-% * Time-stamp: <2025-03-03 01:51:48 doug>
+% * Time-stamp: <2025-03-24 14:04:58 doug>
 % *
 % * @file FILL-IN
 % * @author Douglas Mark Royer
@@ -13,5 +13,12 @@
 % * or https://opensource.org/licenses/MIT for details.
 % *
 % * RiverExplorer is a trademark of Douglas Mark Royer
+% *
+% * Phoenix is a MIME Transport Protocol (MTP).
+% * Named Phoenix because it is a risen version version of the
+% * Lemonade project if the late 1990's.
+% *
+% * Unless otherwise specified, all of this code is original
+% * code by the author.
 % */
 

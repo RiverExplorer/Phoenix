@@ -1,0 +1,258 @@
+\section{Building Phoenix}
+The entire Phoenix build system is designed to build everything
+on Linux for all platforms using the \textit{make} command.
+
+It uses the GNU compilers on Linux.
+The mingw compilers to cross compile for Windows.
+And the android NDK package to cross compile for Android.
+The build has been tested on the Android based Oculus virtual
+reality headsets.
+
+The build uses the POSIX make command.
+And can build debug, release, and test coverage libraries,
+commands, and test code from the make system.
+
+You can build any of the options below, or '\textbf{make all}
+to build everything.
+
+For each build, it builds 2 libraries and commands.
+First using dynamic shared libraries, or crates them.
+And the second pass builds with a minimum number
+of dynamic libraries, using as many static libraries
+as possible.
+
+The BuildTools directory contains the Makefiles
+that are included to do all of the different builds
+and cross compiling.
+
+You will need to modify the paths to the mingw and
+android NDK paths to match your installation in the
+Makefile.top and Makefile.top.lib files.
+
+You will have to set the ANDROID\_CC, ANDROID\_CXX, ANDROID\_STRIP,
+W64\_CC, W64\_CXX, and W64\_STRIP settings.
+
+On Linux the mingw packages are often loaded using the operating
+systems installation tools (dnf, apt, yum).
+
+The Android NDK packages have to be downloaded using the
+latest google instructions, which seem to change over time.
+I used the NDK r26 version.
+
+\subsection{Build Requirements}
+You will need ... tools aasvg,
+tex for documents ...
+xdr2rfc for spects ...
+g++ ...
+gcov, gcovr, genhtml...
+\subsection{Building For Linux}
+From the top of the GIT repository you downloaded,
+type one of these commands to build for Linux:
+
+\subsubsection{Building debug for Linux}
+Type \textbf{make LinuxDebug}
+
+To build the Linux libraries and commands with symbol
+and debugging information.
+  
+The output will be in BuildTemp/Linux/Debug.
+The static library will be in BuildTemp/Linux/Debug/lib
+and the shared library will be named lib{name}.so.{version}.
+The static library will be named lib{name}.a.
+  
+Any commands built will be in BuildTemp/Linux/Debug/bin
+for dynamic.
+
+And BuildTemp/Linux/Debug/sbin for static programs.
+
+\subsubsection{Building release for Linux}
+Type \textbf{make LinuxRelease}
+
+To build the Linux libraries and commands with the libraries
+and programs compiled with the optimize switch turned on.
+The necessary symbols will be stripped from them to make
+them smaller.
+
+The output will be in BuildTemp/Linux/Release.
+The static library will be in BuildTemp/Linux/Release/lib
+and the shared library will be named lib{name}.so.{version}.
+The static library will be named lib{name}.a.
+  
+Any commands built will be in BuildTemp/Linux/Release/bin
+for dynamic.
+
+And BuildTemp/Linux/Release/sbin for static programs.
+
+\subsubsection{Building test coverage for Linux}
+Type \textbf{make LinuxTcov}
+
+To build the Linux libraries and commands with the libraries
+and programs compiled with the test code and test metric
+collection information built into them.
+See test coverage section \ref{sec:TestCoverage} for more information.
+Debug symbols are included in TCOV builds.
+
+The output will be in BuildTemp/Linux/Tcov.
+The static library will be in BuildTemp/Linux/Tcov/lib
+and the shared library will be named lib{name}.so.{version}.
+The static library will be named lib{name}.a.
+
+Any commands built will be in BuildTemp/Linux/Tcov/bin
+for dynamic.
+
+And BuildTemp/Linux/Tcov/sbin for static programs.
+
+\textbf{When you run a TCOV build file or library, it generates a LOT of  output files}. Be sure to read section \ref{sec:TestCoverage}{Test Coverage}.
+  
+\subsubsection{Building everything for Linux}
+Type \textbf{make Linux}
+
+To build LinuxDebug, LinuxRelease, and LinuxTcov.
+
+\subsection{Building For Windows on Linux}
+  
+From the top of the GIT repository you downloaded,
+type one of these commands to build for Windows, 64-bit:
+
+
+\subsubsection{Building debug for Windows}
+Type \textbf{make W64Debug}
+
+ To build the Windows 64-bit libraries and commands with symbol
+ and debugging information.
+
+ The output will be in BuildTemp/W64/Debug.
+ The static library will be in BuildTemp/W64/Debug/lib
+ and the shared library will be named lib{name}.so.{version}.
+ The static library will be named lib{name}.a.
+  
+ Any commands built will be in BuildTemp/W65/Debug/bin,
+ for dynamic.
+  
+ And BuildTemp/W64/Debug/sbin for static programs.
+
+\subsubsection{Building releaes for Windows}
+Type \textbf{make W64Release}
+
+To build the Windows 64-bit libraries and commands with the libraries
+and programs compiled with the optimize switch turned on.
+The necessary symbols will be stripped from them to make
+them smaller.
+
+The output will be in BuildTemp/W64/Release.
+The static library will be in BuildTemp/W64/Release/lib
+and the shared library will be named lib{name}.so.{version}.
+The static library will be named lib{name}.a.
+  
+Any commands built will be in BuildTemp/W65/Release/bin,
+for dynamic.
+  
+And BuildTemp/W64/Release/sbin for static programs.
+  
+\subsubsection{Building test coverage for Windows}
+Type \textbf{make W64Tcov}
+
+To build the Windows libraries and commands with the libraries
+and programs compiled with the test code and test metric
+collection information built into them.
+See test coverage section \ref{sec:TestCoverage} for more information.
+Debug symbols are included in TCOV builds.
+
+The output will be in BuildTemp/W64/Tcov.
+The static library will be in BuildTemp/W64/Tcov/lib
+and the shared library will be named lib{name}.so.{version}.
+The static library will be named lib{name}.a.
+  
+Any commands built will be in BuildTemp/W64/Tcov/bin
+for dynamic.
+
+And BuildTemp/W64/Tcov/sbin for static programs.
+
+\textbf{When you run a TCOV build file or library, it generates a LOT of  output files}. Be sure to read section \ref{sec:TestCoverage}{ Test Coverage}.
+  
+You have to run the built programs on a Widows device
+with the matching GNU tools.
+  
+\subsubsection{Building everyting for Windows}
+Type \textbf{make W64}
+
+To build W64Debug, W64Release, and W64Tcov.
+
+\subsection{Building For Android on Linux}
+  
+From the top of the GIT repository you downloaded,
+type one of these commands to build for Android, 64-bit:
+You will need the GCC NDK build tools in your path.
+
+\subsubsection{Building debug for Android}
+Type \textbf{make AndroidDebug}
+
+To build the Android 64-bit libraries and commands with symbol
+and debugging information.
+
+The output will be in BuildTemp/Android/Debug.
+The static library will be in BuildTemp/Android/Debug/lib
+and the shared library will be named lib{name}.so.{version}.
+The static library will be named lib{name}.a.
+  
+Any commands built will be in BuildTemp/Android/Debug/bin,
+for dynamic.
+  
+And BuildTemp/Android/Debug/sbin for static programs.
+
+\subsubsection{Building Android for Android}
+Type \textbf{make AndroidRelease}
+
+To build the Android 64-bit libraries and commands with the libraries
+and programs compiled with the optimize switch turned on.
+The necessary symbols will be stripped from them to make
+them smaller.
+
+The output will be in BuildTemp/Android/Release.
+The static library will be in BuildTemp/W64/Release/lib
+and the shared library will be named lib{name}.so.{version}.
+The static library will be named lib{name}.a.
+  
+Any commands built will be in BuildTemp/Android/Release/bin,
+for dynamic.
+  
+And BuildTemp/Android/Release/sbin for static programs.
+  
+\subsubsection{Building Test Coverage for Android}
+Type \textbf{make AndroidTcov}
+
+To build the Android libraries and commands with the libraries
+and programs compiled with the test code and test metric
+collection information built into them.
+See test coverage section \ref{sec:TestCoverage} for more information.
+Debug symbols are included in TCOV builds.
+
+The output will be in BuildTemp/Android/Tcov.
+The static library will be in BuildTemp/Android/Tcov/lib
+and the shared library will be named lib{name}.so.{version}.
+The static library will be named lib{name}.a.
+  
+Any commands built will be in BuildTemp/Android/Tcov/bin
+for dynamic.
+
+And BuildTemp/Android/Tcov/sbin for static programs.
+
+\textbf{When you run a TCOV build file or library, it generates a LOT of  output files}. Be sure to read section \ref{sec:TestCoverage}{ Test Coverage}.
+
+You have to run the built programs on a Android device
+with the matching GNU tools.
+  
+\subsubsection{Building everything for Android}
+Type \textbf{make Android}
+
+To build AndroidDebug, AndroidRelease, and AndroidTcov.
+
+\subsection{Building the Documentation}
+The documentation for RPCGEN++ is built using latex and make4ht.
+You will need those.
+Go to the NewRpcgen/Documentation/LaTex directory
+and type 'make'.
+
+\subsection{Filing Bugs Reports}
+File bug, issues, and questions on github, at:
+\href {https://github.com/RiverExplorer/Phoenix/issues}{Bug and Issue Reports}

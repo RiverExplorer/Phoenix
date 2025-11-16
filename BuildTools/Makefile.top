@@ -1,6 +1,6 @@
 #
 # Project: Phoenix
-# Time-stamp: <2025-03-14 11:48:35 doug>
+# Time-stamp: <2025-03-24 22:10:15 doug>
 #
 # @file FILL-IN
 # @author Douglas Mark Royer
@@ -169,6 +169,7 @@ W64_SOURCES.h		+=
 # RPCGEN input files.
 #
 RPCTEN					= rpcgen
+XDRGEN					= xdrgen
 SOURCES.x				+=
 
 XDR_GENERATED.h		+=	$(SOURCES.x:.x=.h)

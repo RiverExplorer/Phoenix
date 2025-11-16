@@ -1,0 +1,85 @@
+<artwork align="left" type="ascii-art">
+CBOR Binary Bit values:
+
+An ARRAY and it SIZE.
+(Array 0x80, size 8 entries)
+A CBOR array with a value of 8 entries.
++---------------+
+|1|0|0|0|1|0|0|0| (%x88)
++---------------+
+
+Entry 1 the
+FOLDER_OPEN capability. (0x1a)
+A CBOR unisgned int with a value of %x1a.
++---------------+
+|0|0|0|1|1|0|0|0| A uint8_t value follows.
++---------------+
+|0|0|0|1|1|0|1|0| FOLDER_OPEN (%x1a)
++---------------+
+
+Entry 2 the
+FOLDER_LIST capability (0x1c)
+A CBOR unisgned int with a value of %x1c.
++---------------+
+|0|0|0|1|1|0|0|0| A uint8_t value follows.
++---------------+
+|0|0|0|1|1|1|0|0| FOLDER_LIST (%x1c)
++---------------+
+
+Entry 3 the
+FOLDER_METADATA capability (0x18)
+A CBOR unisgned int with a value of %x18.
++---------------+
+|0|0|0|1|1|0|0|0| A uint8_t value follows.
++---------------+
+|0|0|0|1|1|0|0|0| FOLDER_METADATA (%x18)
++---------------+
+
+Entry 4 the
+FOLDER_METADATA_PARAMETERS
+A CBOR unisgned int with a value of %x02.
++---------------+
+|0|0|0|0|0|0|1|0| The Get bit set.
++---------------+
+
+Entry 5 the
+FILE_METADATA capability (0x21)
+A CBOR unisgned int with a value of %x21.
++---------------+
+|0|0|0|1|1|0|0|0| A uint8_t value follows.
++---------------+
+|0|0|1|0|0|0|0|1| FOLDER_METADATA (%x21)
++---------------+
+
+Entry 6 the
+FILE_METADATA_PARAMETERS
+A CBOR unisgned int with a value of %x02.
++---------------+
+|0|0|0|0|0|0|1|0| The Get bit set.
++---------------+
+
+Entry 7 the
+FILE_GET capability (%x24) 
+A CBOR unisgned int with a value of %x21.
++---------------+
+|0|0|0|1|1|0|0|0| A uint8_t value follows.
++---------------+
+|0|0|1|0|0|0|0|1| FOLDER_METADATA (%x21)
++---------------+
+
+Entry 8
+A Vendor specific capability (%x80000002) 
+A CBOR unisgned int.
+The vendor bit is set (the high bit),
+plus the value (%x02) results in (%x80000002).
+The last zero part is because ALL vendor commands
+MUST include the size of any related data,
+even when zero.
++---------------+
+|0|0|0|1|1|0|1|0| A uint32_t value follows.
++---------------+---------------+---------------+---------------+
+|1|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|1|0|
++---------------+---------------+---------------+---------------+
+|0|0|0|0|0|0|0|0| A CBOR unsigned int 0 (size).
++---------------+
+</artwork>

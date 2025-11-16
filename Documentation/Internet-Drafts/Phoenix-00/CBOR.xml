@@ -1,0 +1,757 @@
+<!-- Copyright 2025 RiverExplorer LLC and Douglas Mark Royer -->
+
+<section xmlns:xi="http://www.w3.org/2001/XInclude">
+	<name>ABNF, Notes, and Definitions</name>
+	<section>
+		<name>CBOR TYPE - Meaning - Informative</name>
+		<t>
+			Any specific computer programming language has
+			list of data types it supports.
+			And developers can manage those data types
+			and bundle them into groups of data.
+		</t>
+		<t>
+			There are two very general data types discussed.
+			in this specification.
+		</t>
+		<ul>
+			<li>
+				Application and computer data types.
+				This is called application data types.
+			</li>
+			<li>
+				CBOR over the wire data types.
+				This is called CBOR data types.
+			</li>
+		</ul>
+		<t>
+			A CBOR encoder takes application data and converts
+			it to CBOR data and places them on an output
+			stream.
+		</t>
+		<t>
+			And a CBOR decoder takes the CBOR data from
+			an input stream and	converts them to application data.
+		</t>
+		<t>
+			CBOR is a method of converting application data to and from
+			a standard format.
+		</t>
+		<t>
+			Applications may need to specify the size of data.
+			This is often done with bit size.
+			And these bit sizes are often in multiples of 8-bits at a time.
+		</t>
+		<t>
+			CBOR data types are more flexible.
+			CBOR encoding and decoding is based on data type
+			and data value.
+		</t>
+		<t>
+			An application 64-bit unsigned integer value of 1, is encoded
+			into an 8-bit CBOR unsigned integer.
+			CBOR transfers values, using data types.
+			Typical applications protocols transfer data types, that have values.
+		</t>
+		<t>
+			Application data types are not the same as CBOR data types.
+			In this specification some diagrams and text may represent
+			the data from the applications point of view using
+			application data types.
+			And other diagrams and text from the CBOR encoded point of view
+			using CBOR data types.
+			These will be noted in the text and diagrams.
+		</t>
+		<section>
+			<name>Basic Data types.</name>
+			<t>
+				The UTC value used in this specification is designed
+				to be compatible with time_t on <xref target="POSIX"/>
+				compliant systems.
+				In POSIX systems, time_t is defined as an integer type used for
+				representing time in seconds since the UNIX epoch, which
+				is 00:00:00 UTC on January 1, 1970.
+				And in this specification is 64-bit unsigned integer.
+				xxxxxxxx
+			</t>
+			<t>
+				Arrays are used in a lot of data flows.
+				String are always an array of printable characters.
+				Some data needs to be converted to a from
+				network byte order.
+				Data that does not need to be converted to and
+				from network byte order is called 'opaque' data.
+				A PNG file is an example of opaque data.
+				The PNG data itself is defined so that it is readable
+				with out any additional encoding.
+			</t>
+			<t>
+				In the CBOR Language Specification (CLS), a
+				data type that is an array is fixed in size,
+				or variable in size.
+			</t>
+			<t>
+				A fixed array has its size surrounded by square
+				brackets '[' and ']'.
+			</t>
+			<t>
+				A variable array has its optional size surrounded by angle
+				brackets '&lt;' and '&gt;'.
+			</t>
+			<table>
+				<name>CLC strings and arrays.</name>
+				<thead>
+					<tr>
+						<th>
+							NAME
+						</th>
+						<th>
+							Description:
+						</th>
+						<th>
+							CBOR API /
+							<br/>
+							Data Type
+						</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr>
+						<td>
+							string
+						</td>
+						<td>
+							<ul>
+								<li>
+									A string is always an array.
+								</li>
+								<li>
+									A string is an array of UTF-8 printable characters.
+									With an optional maximum length.
+								</li>
+								<li>
+									A string is an array of printable characters.
+									And each character may be 1, 2, 3, or 4 octets
+									in size.
+									The length specifies the number of printable characters
+									in the string not the size of the array.
+								</li>
+								<li>
+									The octet count (size) of any string, could be the same
+									as the number of characters (length),
+									or the size could be up to 4 times larger.
+									So strings have a size, and a length.
+								</li>
+								<li>
+									The length is the number of characters in the array.
+								</li>
+								<li>
+									The size is the number of octets in the array.
+								</li>
+								<li>
+									The length is always equal to or less than
+									the size.
+								</li>
+							</ul>
+							<t>
+								<br/>
+								// An array of printable characters, unlimited in size.
+								<br/>
+								string MyVariableName&lt;&gt;;
+								<br/>
+								<br/>
+								// An array of printable characters, up to 25 in size.
+								<br/>
+								string MyVariableName2&lt;25&gt;;
+								<br/>
+							</t>
+						</td>
+						<td>
+							cbor_string()
+							<br/>
+							<br/>
+							
+							Major type 3 Text String
+						</td>
+					</tr>
+					<tr>
+						<td>
+							opaque
+						</td>
+						<td>
+							<ul>
+								<li>
+									An opaque array is an array of 8-bit octets.
+									And will not be network byte encoded or decoded.
+								</li>
+								<li>
+									The size and length of an opaque array are
+									always the same value.
+								</li>
+							</ul>
+							<t>
+								<br/>
+								// Always 42 in size.
+								<br/>
+								opaque MyOpaqueData[42];   
+								<br/>
+								<br/>
+								// Up to 42 in size.
+								<br/>
+								opaque MyOpaqueData&lt;42&gt;;
+								<br/>
+								<br/>
+								// Unlimited in size.
+								<br/>
+								opaque MyOpaqueData&lt;&gt;;
+								<br/>
+							</t>
+						</td>
+						<td>
+							cbor_opaque()
+							<br/>
+							<br/>
+							Major Type 2
+						</td>
+					</tr>
+				</tbody>
+			</table>
+			<t>
+				Arrays in CBOR have a "&lt;&gt;" in them to indicate they
+				are variable length arrays.
+				A variable array may have a maximum length.
+				All elements in the list are the same type.
+			</t>
+			<t>
+				Arrays in CBOR have a "[]" in them to indicate they
+				are fixed length arrays.
+				A fixed length array is an array that is always the same size
+				and is not dependent on any run time or calculated values.
+				It is a value that can be compiled into the code.
+				All elements in the list are the same type.
+			</t>
+			<t>
+				An ObjectList is a variable or fixed size array
+				of objects each of which may be a different type.
+			</t>
+			<t>
+				The opaque data type represents data that is not
+				encoded in any way.
+				A PNG file is an example that does not get network byte order
+				translated, it is sent as an opaque blob of unaltered data.
+			</t>
+			<t>
+				A 'string' in CBOR represents a string of printable
+				UTF-8 characters.
+			</t>
+		</section>
+	</section>
+	<section>
+		<name>Number of bits in value</name>
+		<t>
+			For application data types:
+			In this specification terminal values may specify a bit width.
+			Indicating the number of bits in the value.
+			This is the number of bits in the application uses.
+		</t>
+		<t>
+			The application packs bits, sequences of bits into
+			unsigned integer values padding the unused bits
+			to zero.
+			CBOR then treats them as unsigned integer values
+			and encodes and decodes them normally.
+		</t>
+		<t>
+			The application may see the data 3 separate values.
+			Place them into one 32-bit value, and send them
+			to CBOR encoding.
+		</t>
+		<t>
+			This is done by placing a colon (:) after the application data
+			type or variable name, followed by the decimal
+			number of bits.
+			And other application data types have the number of bits
+			in the data type name.
+			Some examples:
+		</t>
+		<dl newline="true">
+			<dt>
+				SomeDataType Length:21
+			</dt>
+			<dd>
+				An example of a variable name, that needs 21-bits
+				in the application.
+			</dd>
+			<dt>
+				uint_t F:5
+			</dt>
+			<dd>
+				An unsigned integer, that has a value that is 5-bits wide.
+				The application does not really care how it is stored.
+				It cares that it needs 5-bits to represent the data.
+			</dd>
+		</dl>
+		<t>
+			In cases where the number of bits an application needs
+			is not a multiple of 8 bits, the next larger application
+			data type will be used.
+			The value will be in the lower bits, and the unused
+			upper bits will be zero.
+		</t>
+		<t>
+			In example <xref target="ABNF-00"/> 'F' is 5-bits wide.
+			Length is 21-bits wide.
+			No application data type is 26 bits wide, so a
+			32-bit values is used, and 6-bits unused
+			bits are set to zero.
+		</t>
+		<t>
+			Depending on how the application implements it:
+		</t>
+		<ul>
+			<li>
+				It could pass Length to be CBOR encoded, as an unsigned integer.
+				Followed by F as an unsigned integer
+				to be CBOR encoded.
+				In this case the application would have to split the
+				32-bit value before sending.
+				And the receiving application would have to reassemble
+				the two unsigned integers back into the one 32-bit unsigned
+				integer.
+			</li>
+			<li>
+				Or it could pass the one 32-bit value as an unsigned
+				integer to CBOR for encoding.
+			</li>
+		</ul>
+		<t>
+			This is one example of why an application needs to
+			specify exactly how the data is to be encoded.
+			While at other times, just cares about the value.
+		</t>
+		<figure anchor="ABNF-00" align="center">
+			<name>Packed Bit Example.</name>
+			<artset>
+				<artwork align="center" type="ascii-art" src="Drawings/ABNF-00.txt"/>
+				<artwork align="center" type="svg" src="Generated/ABNF-00.svg"/>
+			</artset>
+		</figure>
+	</section>
+
+	<section>
+		<name>Common Definitions</name>
+		<t>
+			In some cases the application may need to specify the number
+			of bits for a value.
+			In other cases the application might be able to just use
+			an unsigned integer without regard for its size.
+			However compilers and computer languages often need
+			to know the size, or how much memory to allocate
+			and use to hold variables at compile time.
+		</t>
+		<t>
+			Table <xref target="TypeNamesAndSizes"/> lists
+			the names used in this specification for types
+			and their widths.
+		</t>
+		<table anchor="TypeNamesAndSizes">
+			<name>Phoenix Protocol types</name>
+			<thead>
+				<tr>
+					<th>
+						TYPE
+					</th>
+					<th>
+						Notes
+					</th>
+					<th>
+						CBOR API
+					</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr>
+					<td>
+						int_t
+					</td>
+					<td>
+						<t>
+							Any signed integer without any predefined
+							number of bits.
+						</t>
+					</td>
+					<td>
+						cbor_int_t()
+					</td>
+				</tr>
+				<tr>
+					<td>
+						int8_t
+					</td>
+					<td>
+						<t>
+							An 8-bit signed integer.
+						</t>
+					</td>
+					<td>
+						cbor_int8_t()
+					</td>
+				</tr>
+				<tr>
+					<td>
+						int16_t
+					</td>
+					<td>
+						<t>
+							A 16-bit signed integer.
+						</t>
+					</td>
+					<td>
+						cbor_int16_t()
+					</td>
+				</tr>
+				<tr>
+					<td>
+						int32_t
+					</td>
+					<td>
+						<t>
+							A 32-bit signed integer.
+						</t>
+					</td>
+					<td>
+						cbor_int32_t()
+					</td>
+				</tr>
+				<tr>
+					<td>
+						int64_t
+					</td>
+					<td>
+						<t>
+							A 64-bit signed integer.
+						</t>
+					</td>
+					<td>
+						cbor_int64_t()
+					</td>
+				</tr>
+				<tr>
+					<td>
+						int?_t
+					</td>
+					<td>
+						<t>
+							Where ? is any multiple of 8.
+							A ?-bit signed integer.
+						</t>
+					</td>
+					<td>
+						cbor_int?_t()
+					</td>
+				</tr>
+				<tr>
+					<td>
+						uint_t
+					</td>
+					<td>
+						<t>
+							Any unsigned integer without any predefined
+							number of bits.
+						</t>
+					</td>
+					<td>
+						cbor_uint_t()
+					</td>
+				</tr>
+				<tr>
+					<td>
+						uint8_t
+					</td>
+					<td>
+						<t>
+							An 8-bit unsigned integer.
+						</t>
+					</td>
+					<td>
+						cbor_uint8_t()
+					</td>
+				</tr>
+				<tr>
+					<td>
+						uint16_t
+					</td>
+					<td>
+						<t>
+							A 16-bit unsigned integer.
+						</t>
+					</td>
+					<td>
+						cbor_uint16_t()
+					</td>
+				</tr>
+				<tr>
+					<td>
+						uint32_t
+					</td>
+					<td>
+						<t>
+							A 32-bit unsigned integer.
+						</t>
+					</td>
+					<td>
+						cbor_uint32_t()
+					</td>
+				</tr>
+				<tr>
+					<td>
+						uint64_t
+					</td>
+					<td>
+						<t>
+							A 64-bit unsigned integer.
+						</t>
+					</td>
+					<td>
+						cbor_uint64_t()
+					</td>
+				</tr>
+				<tr>
+					<td>
+						uint?_t
+					</td>
+					<td>
+						<t>
+							Where ? is any multiple of 8.
+							A ?-bit unsigned integer.
+						</t>
+					</td>
+					<td>
+						cbor_uint?_t()
+					</td>
+				</tr>
+				<tr>
+					<td>
+						string
+					</td>
+					<td>
+						<t>
+							A string of UTF-8 characters.
+						</t>
+					</td>
+					<td>
+						cbor_string()
+					</td>
+				</tr>
+				<tr>
+					<td>
+						opaque
+					</td>
+					<td>
+						<t>
+							An array of 8-bit values that will not be
+							CBOR encoded or CBOR decoded when transferring the data
+							over this protocol.
+						</t>
+					</td>
+					<td>
+						cbor_opaque()
+					</td>
+				</tr>
+				<tr>
+					<td>
+						Op
+					</td>
+					<td>
+						An 8-bit unsigned value.
+						When the highest bit is one (1)
+						it is a vendor specific Op.
+						Otherwise, it is set to zero (0)
+						and is not a vendor specific operation.
+					</td>
+					<td>
+						cbor_Op()
+					</td>
+				</tr>
+				<tr>
+					<td>
+						OpSet
+					</td>
+					<td>
+						An 8-bit unsigned value.
+						Signifies the operation will set a value.
+					</td>
+					<td>
+						cbor_OpSet()
+					</td>
+				</tr>
+				<tr>
+					<td>
+						OpGet
+					</td>
+					<td>
+						An 8-bit unsigned value.
+						Signifies the operation will get a value.
+					</td>
+					<td>
+						cbor_OpGet()
+					</td>
+				</tr>
+				<tr>
+					<td>
+						OpUpdate
+					</td>
+					<td>
+						An 8-bit unsigned value.
+						Signifies the operation will update an existing value.
+					</td>
+					<td>
+						cbor_OpUpdate()
+					</td>
+				</tr>
+				<tr>
+					<td>
+						OpDelete
+					</td>
+					<td>
+						An 8-bit unsigned value.
+						Signifies the operation will delete a value.
+					</td>
+					<td>
+						cbor_OpDelete()
+					</td>
+				</tr>
+				<tr>
+					<td>
+						true
+					</td>
+					<td>
+						An 8-bit unsigned value.
+						A value of true.
+					</td>
+					<td>
+						cbor_false()
+					</td>
+				</tr>
+				<tr>
+					<td>
+						false
+					</td>
+					<td>
+						An 8-bit unsigned value.
+						A value of false.
+					</td>
+					<td>
+						cbor_true()
+					</td>
+				</tr>
+				<tr>
+					<td>
+						VENDOR_BIT
+					</td>
+					<td>
+						A 1 bit value, set to 1.
+						It is placed in the highest bit
+						position in the value.
+					</td>
+					<td>
+					</td>
+				</tr>
+			</tbody>
+		</table>
+
+		<section>
+			<name>Common Definitions - CBOR</name>
+			<figure>
+				<name>Common Definitions - CBOR</name>
+				<xi:include href="include/01-ABNF-XDR.xml"/>
+			</figure>
+		</section>
+	</section>
+	
+	<section anchor="Ref">
+		<name>Ref</name>
+		<t>
+			This protocol references strings and other object
+			in existing objects	by octet offset into the object.
+			This is is called a Ref.
+			All references can be referenced by using a total of 8 octets.
+			The Ref does not contain the value, it is a 
+			reference an existing value in an object.
+			A Ref consists of two parts, Offset and length:
+		</t>
+		<table>
+			<name>Ref ABNF/CBOR Mapping</name>
+			<thead>
+				<tr>
+					<th>Name</th>
+					<th>Description</th>
+					<th>CBOR API</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr>
+					<td>Offset</td>
+					<td>
+						The octet count to the start of the value with zero being the
+						first octet in the object.
+					</td>
+					<td>
+						cbor_Offset()
+					</td>
+				</tr>
+				<tr>
+					<td>Length</td>
+					<td>
+						The length in octets of the value.
+					</td>
+					<td>
+						cbor_Length()
+					</td>
+				</tr>
+				<tr>
+					<td>Ref</td>
+					<td>
+						A reference object.
+					</td>
+					<td>
+						cbor_Ref()
+					</td>
+				</tr>
+			</tbody>
+		</table>
+		<t>
+			A Ref over the wire is 8 octets in size.
+		</t>
+		<figure anchor="RefFigure" align="center">
+			<name>Ref Format</name>
+			<artset>
+				<artwork align="center" type="ascii-art" src="Drawings/StringRef-00.txt"/>
+				<artwork align="center" type="svg" src="Generated/StringRef-00.svg"/>
+			</artset>
+		</figure>
+
+		<t>
+			ABNF:
+		</t>
+		<section>
+			<name>Ref ABNF</name>
+			<figure anchor="RefABNF">
+				<name>Ref ABNF</name>
+				<xi:include href="include/02-StringRef-ABNF.xml"/>
+			</figure>
+		</section>
+		<section>
+			<name>Ref CBOR</name>
+			<t>
+				The CBOR definitions are:
+			</t>
+			<figure anchor="RefCBOR">
+				<name>Ref ABNF</name>
+				<xi:include href="include/02-StringRef-XDR.xml"/>
+			</figure>
+		</section>
+	</section>
+	
+</section>
+<!-- [CHECK] The 'Requirements Language' section is optional -->

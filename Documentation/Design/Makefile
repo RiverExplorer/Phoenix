@@ -20,6 +20,9 @@ TARGET = Generated/Phoenix.html Generated.Phoenix.css
 SOURCES.tex = \
 	Phoenix.tex \
 	Introduction.tex \
+	Commands.tex \
+	FileFolderCmd.tex \
+	AdminCmd.tex \
 	PacketDetails.tex \
 	MainThread.tex \
 	OutputThread.tex \

@@ -80,9 +80,9 @@
 		</section>
 		
 		<section>
-			<name>Authentication - MD5 - XDR</name>
+			<name>Authentication - MD5 - CBOR</name>
 			<figure>
-				<name>Authentication - MD5 - XDR</name>
+				<name>Authentication - MD5 - CBOR</name>
 				<xi:include href="include/09-AuthMD5-XDR.xml"/>
 			</figure>
 		</section>

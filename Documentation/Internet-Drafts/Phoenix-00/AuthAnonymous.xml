@@ -79,9 +79,9 @@
 		</section>
 		
 		<section>
-			<name>Authentication - ANONYMOUS - XDR</name>
+			<name>Authentication - ANONYMOUS - CBOR</name>
 			<figure>
-				<name>Authentication - ANONYMOUS - XDR</name>
+				<name>Authentication - ANONYMOUS - CBOR</name>
 				<xi:include href="include/10-AuthAnonymous-XDR.xml"/>
 			</figure>
 		</section>

@@ -1,6 +1,6 @@
 #
 # Project: Phoenix
-# Time-stamp: <2025-03-17 17:04:42 doug>
+# Time-stamp: <2025-03-26 11:33:39 doug>
 #
 # @file FILL-IN
 # @author Douglas Mark Royer
@@ -10,19 +10,6 @@
 #
 # Licensed under the MIT License. See LICENSE file
 # or https://opensource.org/licenses/MIT for details.
-#
-# RiverExplorer is a trademark of Douglas Mark Royer
-#
-
-#
-# Project: Phoenix
-# Time-stamp: <2025-03-03 08:19:18 doug>
-#
-# Copyright (C) 2025 by Douglas Mark Royer (A.K.A. RiverExplorer)
-# Author Douglas Mark Royer
-# @date 3-JAN-20205
-#
-# licensed under CC BY 4.0.
 #
 # RiverExplorer is a trademark of Douglas Mark Royer
 #
@@ -178,6 +165,7 @@ INSTALL.RX			= install -m0555
 # RPCGEN input files.
 #
 RPCGEN					= rpcgen++
+XDRGEN					= xdrgen
 SOURCES.x				+=	
 
 XDR_GENERATED.cpp	+=	$(SOURCES.x:.x=.cpp)

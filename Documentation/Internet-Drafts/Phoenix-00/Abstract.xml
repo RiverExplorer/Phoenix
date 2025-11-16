@@ -2,29 +2,24 @@
 
 <abstract>
 <t>
-	NOTE: This is just getting started, not ready for submission yet.
-</t>
-<t>
-	Email and MIME messages account for one the largest volumes of data on the
-	internet.
+	Email and MIME messages account for one the largest volumes
+	of data on the internet.
 	The transfer of these MIME message has not had a major updated in decades.
 	Part of the reason is that it is very important data and altering it
 	takes a great deal of care and planning.
-</t>
-<t>
 	This application transport can also transfer non-MIME data.
-	It can be used as an XDR transport, or for opaque data (blobs of
-	known or unknown data) transport.
 </t>
 <t>
-	Another major concern is security and authentication.
-	This proposal allows for existing authentication to continue to work.
+	Security and authentication are always a serious issue
+	with protocolls.
+	This proposal allows for legacy authentication mechanisms
+	to work, in some cases unaltered.
 </t>
 <t>
 	This is a MIME message transport that can facilitate
 	the transfer of any kind of MIME message. Including email, calendaring,
 	and text, image, or multimedia MIME messages.
-	It can transfer multipart and simple MIME messages.
+	It can transfer multipart and simple MIME objects..
 </t>
 <t>
 	The POP and IMAP protocols are overly chatty and now that the Internet

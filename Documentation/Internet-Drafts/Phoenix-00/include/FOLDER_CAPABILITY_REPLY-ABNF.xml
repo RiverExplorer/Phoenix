@@ -1,0 +1,20 @@
+<artwork align="left" type="ascii-art">
+FOLDER_CAPABILITY_REPLY = *1FOLDER_CREATE
+                          *1FOLDER_COPY
+                          *1FOLDER_RENAME
+                          *1FOLDER_METATATA
+                          *1FOLDER_MOVE
+                          *1FOLDER_OPEN
+                          *1FOLDER_SHARE
+                          *1FOLDER_LIST
+                          *1FILE_CREATE
+                          *1FILE_COPY
+                          *1FILE_DELETE
+                          *1FILE_RENAME
+                          *1FILE_METADATA
+                          *1FILE_MOVE
+                          *1FILE_SHARE
+                          *1FILE_GET
+                          *1FILE_MODIFY
+                          *VENDOR_FOLDER_CAPABILITY
+</artwork>

@@ -1,0 +1,15 @@
+#!/bin/tcsh -f
+echo "Testing Basic Values"
+
+/bin/rm -rf Created/Basic
+
+/bin/rm -f SET
+
+foreach WHAT ( Basic Comment Complex Const Enum Mehtod PassThrough Procedure Program Struct Typedef Union Version )
+	echo "Making ${WHAT}"
+	echo "setenv ARGS_${WHAT}_XDR  \042--namespace=RiverExplorer:xdrgen:test --input Tests/${WHAT}/\044{NAME}.x --out=Created/${WHAT}/xdr/\044{NAME}_xdr.cpp --lang=CPP -DRPC_HDR -DXDR_HDR --xdr\042" >> SET
+	echo "setenv ARGS_${WHAT}_HEADERS  \042--namespace=RiverExplorer:xdrgen:test --input Tests/${WHAT}/\044{NAME}.x --out=Created/${WHAT}/headers/\044{NAME}.hpp --lang=CPP -DRPC_HDR -DXDR_HDR --headers\042" >> SET
+	echo "setenv ARGS_${WHAT}_ABNF  \042--namespace=RiverExplorer:xdrgen:test --input Tests/${WHAT}/\044{NAME}.x --out=Created/${WHAT}/abnf/\044{NAME}.abnf --lang=CPP -DRPC_HDR -DXDR_HDR --abnf\042" >> SET
+	echo "setenv ARGS_${WHAT}_STUBS  \042--namespace=RiverExplorer:xdrgen:test --input Tests/${WHAT}/\044{NAME}.x --out=Created/${WHAT}/stubs/\044{NAME}.cpp --lang=CPP -DRPC_HDR -DXDR_HDR --stubs\042" >> SET
+	echo "setenv ARGS_${WHAT}_SERVER  \042--namespace=RiverExplorer:xdrgen:test --input Test/${WHAT}/\044{NAME}.x --out=Created/${WHAT}/server/\044{NAME}.cpp --lang=CPP -DRPC_HDR -DXDR_HDR --server\042" >> SET
+end

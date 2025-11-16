@@ -1,0 +1,215 @@
+\section{Protocol Directives}\label{sec:Directives}
+Directives control what kind of code the protocol generator creates.
+
+\begin{itemize}
+  \item Some directives can be set at the global level only.
+  \item Some directives can be set at the global level, and overridden
+    for user specified data sets. Or used with the data set and
+    not set globally.
+  \item Some directives can not be used at the global level and
+    can only be used with data sets.
+\end{itemize}
+
+\subsection{BITSTREAM Directive}\label{sec:dBitstream}
+The [BITSTREAM] directive tells the generator to send
+the data out in bit streams.
+
+See \nameref{sec:Bitstreams} (\ref{sec:Bitstreams}, Page \pageref{sec:Bitstreams}).
+
+The [BITSTREM] directive can be used at the global level.
+When used at the global lever, it applies to the entire protocol.
+
+When [BITSTREM] is not set at the global level,
+and is applied to a scope, data object, or variable,
+then it only applies to that scope, data object, or variable.
+
+\subsection{C++ Directive}\label{sec:dCPP}
+The [C++] directive instructs the generator to
+produce C++ code for what follows.
+
+The [NoC++] directive instructor the generator to not
+produce C++ code for what follows.
+
+Both of the [C++] and [NoC++] directives can be set globally,
+or per data object.
+
+\subsection{C\# Directive}\label{sec:dCSharp}
+The [C\#] directive instructs the generator to
+produce C\# code for what follows.
+
+The [NoC\#] directive instructor the generator to not
+produce C\# code for what follows.
+
+Both of the [C\# and [NoC\#] directives can be set globally,
+or per data object.
+
+\subsection{Default Pack Size}\label{sec:dDefaultPackSize}
+When using [BITSTREM] the [DefaultPackSize=n] directive
+sets the number of bits considered as part of one word.
+When [BITSTREAM=0] is used, then all bits are packed as
+if there is no word boundary.
+
+Example:
+If hardware takes 4-bit words, you could set [DefaultPackSize=4]
+and then:
+
+   int:1 Var1;
+   int:1 Var2;
+
+would be packed into 1 4-bit value.
+
+If [PackLR] was also used, and both Var1 and Var2 was set to '1',
+then bits would be:
+
+   1100
+
+where the left most '1' is Var1's value
+and the right most '1' is Var2's value.
+
+If [PackLR] was also used, and both Var1 and Var2 was set to '1',
+then bits would be:
+
+   0011
+
+where the left most '1' is Var1's value
+and the right most '1' is Var2's value.
+
+\nameref{sec:dPackSize} (\ref{sec:dPackSize}, Page \pageref{sec:dPackSize})
+
+\subsection{Document Directive}\label{sec:dDocument}
+
+\subsection{Generate CBOR Directive}\label{sec:dCBOR}
+The [CBOR] directive informs the generator that the
+data set, or data sets that follow are to be transmitted
+using the CBOR data encoding and data decoding format.
+
+The [NoCBOR] directives informs the generator that
+the data set, or data sets that follow are not to be
+transmitted using the CBOR data encoding and data decoding format.
+
+\subsection{Include Driective}\label{sec:dInclude}
+The [Include] directive includes other files at the point
+where the [Include] directive is located.
+
+Usage example: [Include=FileName.p]
+
+\subsection{Generate JSON Directive}\label{sec:dJSON}
+The [JSON] directive informs the generator that the
+data set, or data sets that follow are to be transmitted
+using the JSON data encoding and data decoding format.
+
+The [NoJSON] directives informs the generator that
+the data set, or data sets that follow are not to be
+transmitted using the JSON data encoding and data decoding format.
+
+\subsection{Generate NATIVE Directive}\label{sec:dNATIVE}
+The [NATIVE] directive informs the generator that the
+data set, or data sets that follow are to be transmitted
+using the no encoding at all.
+The data is sent in host byte order.
+
+The [NoNATIVE] directives informs the generator that
+the data set, or data sets that follow are not to be
+transmitted using the host bye order.
+
+\subsection{Pack Size Directive}\label{sec:dPackSize}
+The [PackSize=n] tells the generator to pack with
+a word size of 'n'.
+
+[PackSize] only applies to the object it is applied to.
+
+\nameref{sec:dDefaultPackSize} (\ref{sec:dDefaultPackSize}, Page \pageref{sec:dDefaultPackSize})
+
+\subsection{Generate REST Directive}\label{sec:dREST}
+The [REST] directive informs the generator that the
+data set, or data sets that follow are to be transmitted
+using the REST data encoding and data decoding format.
+
+The [NoREST] directives informs the generator that
+the data set, or data sets that follow are not to be
+transmitted using the REST data encoding and data decoding format.
+
+\subsection{Namespace Directive}\label{sec:dNamespace}
+A namespace is a way of create a new scope.
+Names and IDs in a namespace are separate from the same
+names and IDs in global, and other namespaces.
+
+[Namespace=games.RiverExplorer] would specify
+that all names and IDs are unique and separate
+from similar names in other name spaces.
+
+\subsection{PackNBO Directive}\label{sec:dPackNBO}
+The [PackNBO] directive tells the generator to generate
+code in Network Byte Order over the wire.
+
+This directive applies to packed data.
+
+\subsection{PackLR Directive}\label{sec:dPackLR}
+This directive applies to packed data.
+
+If set at the global level, it it the default packing.
+If set on an object, then it only applie to the object.
+
+\subsection{PackRL Directive}\label{sec:dPackRL}
+This directive applies to packed data.
+
+If set at the global level, it it the default packing.
+If set on an object, then it only applie to the object.
+
+\subsection{Public Directive}\label{sec:dPublic}
+The [Public] ... todo ...
+
+Also see:
+\begin{itemize}
+  \item \nameref{sec:dProtected} (\ref{sec:dProtected}, Page \pageref{sec:dProtected})
+  \item \nameref{sec:dInternal} (\ref{sec:dInternal}, Page \pageref{sec:dInternal})
+  \item \nameref{sec:dPrivate} (\ref{sec:dPrivate}, Page \pageref{sec:dPrivate})
+\end{itemize}
+
+\subsection{Protected Directive}\label{sec:dProtected}
+The [Protected] ... todo ...
+
+Also see:
+\begin{itemize}
+  \item \nameref{sec:dPublic} (\ref{sec:dPublic}, Page \pageref{sec:dPublic}),
+  \item \nameref{sec:dInternal} (\ref{sec:dInternal}, Page \pageref{sec:dInternal})
+  \item \nameref{sec:dPrivate} (\ref{sec:dPrivate}, Page \pageref{sec:dPrivate})
+\end{itemize}
+
+\subsection{Internal Directive}\label{sec:dInternal}
+The [Internal] ... todo ...
+
+Also see:
+\begin{itemize}
+  \item \nameref{sec:dPublic} (\ref{sec:dPublic}, Page \pageref{sec:dPublic})
+  \item \nameref{sec:dProtected} (\ref{sec:dProtected}, Page \pageref{sec:dProtected})
+  \item \nameref{sec:dPrivate} (\ref{sec:dPrivate}, Page \pageref{sec:dPrivate})
+\end{itemize}
+
+\subsection{Private Directive}\label{sec:dPrivate}
+The [Private] ...todo ...
+
+Also see:
+\begin{itemize}
+  \item \nameref{sec:sec:dPublic} (\ref{sec:dPublic}, Page \pageref{sec:dPublic})
+  \item \nameref{sec:sec:dProtected} (\ref{sec:dProtected}, Page \pageref{sec:dProtected})
+  \item \nameref{sec:sec:dInternal} (\ref{sec:dInternal}, Page \pageref{sec:dInternal})
+\end{itemize}
+
+\subsection{Generate XDR Directive}\label{sec:dXDR}
+The [XDR] directive informs the generator that the
+data set, or data sets that follow are to be transmitted
+using the XDR data encoding and data decoding format.
+
+The [XDR] directives informs the generator that
+the data set, or data sets that follow are not to be
+transmitted using the XDR data encoding and data decoding format.
+
+\subsection{Generate XML Directive}\label{sec:dXML}
+The [XML] directive informs the generator that the
+data set, or data sets that follow are to be transmitted
+using the [XML] data encoding and data decoding format.
+
+The [NoJSON] directives informs the generator that
+the data set, or data sets that follow are not to be
+transmitted using the [XML] data encoding and data decoding format.

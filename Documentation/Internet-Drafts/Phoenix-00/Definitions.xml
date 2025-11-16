@@ -221,18 +221,18 @@
 				See <xref target="RFC8446"/>
 			</t>
 		</dd>
-		<dt>XDR</dt>
+		<dt>CBOR</dt>
 		<dd>
 			<t>
 				RFC-4506 specifies a standard and compatible way to transfer
 				binary information.
-				This protocol uses XDR to transmit a command, its values
+				This protocol uses CBOR to transmit a command, its values
 				and any parameters and replies.
-				The MIME data, the payload, is transported as XDR opaque,
+				The MIME data, the payload, is transported as CBOR opaque,
 				and is unmodified.
 			</t>
 			<t>
-				<em>Note</em>: XDR transmits data in 32-bit chunks.
+				<em>Note</em>: CBOR transmits data in 32-bit chunks.
 				An 8-bit value is transmitted with the lower 8-bits
 				valid and the upper 24 bits set to zero.
 				A 16-bit value is transmitted with the lower 16-bits

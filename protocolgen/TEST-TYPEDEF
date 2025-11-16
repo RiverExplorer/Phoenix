@@ -1,0 +1,24 @@
+#!/bin/tcsh -f
+echo "Testing Typedef"
+
+/bin/rm -rf Created/Typedef
+
+foreach f (  Tests/Typedef/*.x )
+	set F = ${f:t:r}
+
+	echo "./BuildTemp/Linux/Debug/bin/protocolgen --namespace=RiverExplorer:Phoenix --input $f --out=Created/Typedef/xdr/${F}_xdr.cpp --lang=CPP -DRPC_HDR -DXDR_HDR --xdr"
+	./BuildTemp/Linux/Debug/bin/protocolgen --namespace=RiverExplorer:Phoenix --input $f --out=Created/Typedef/xdr/${F}_xdr.cpp --lang=CPP -DRPC_HDR -DXDR_HDR --xdr
+	
+	echo "./BuildTemp/Linux/Debug/bin/protocolgen --namespace=RiverExplorer:Phoenix --input $f --out=Created/Typedef/headers/${F}.hpp --lang=CPP -DRPC_HDR -DXDR_HDR --headers"
+	./BuildTemp/Linux/Debug/bin/protocolgen --namespace=RiverExplorer:Phoenix --input $f --out=Created/Typedef/headers/${F}.hpp --lang=CPP -DRPC_HDR -DXDR_HDR --headers
+		
+	echo "./BuildTemp/Linux/Debug/bin/protocolgen --namespace=RiverExplorer:Phoenix --input $f --out=Created/Typedef/abnf/${F}.abnf --lang=CPP -DRPC_HDR -DXDR_HDR --abnf"
+	./BuildTemp/Linux/Debug/bin/protocolgen --namespace=RiverExplorer:Phoenix --input $f --out=Created/Typedef/abnf/${F}.abnf --lang=CPP -DRPC_HDR -DXDR_HDR --abnf
+
+	echo "./BuildTemp/Linux/Debug/bin/protocolgen --namespace=RiverExplorer:Phoenix --input $f --out=Created/Typedef/stubs/${F}.cpp --lang=CPP -DRPC_HDR -DXDR_HDR --stubs"
+	./BuildTemp/Linux/Debug/bin/protocolgen --namespace=RiverExplorer:Phoenix --input $f --out=Created/Typedef/stubs/${F}.cpp --lang=CPP -DRPC_HDR -DXDR_HDR --stubs
+
+	echo "./BuildTemp/Linux/Debug/bin/protocolgen --namespace=RiverExplorer:Phoenix --input $f --out=Created/Typedef/server/${F}.cpp --lang=CPP -DRPC_HDR -DXDR_HDR --server"
+	./BuildTemp/Linux/Debug/bin/protocolgen --namespace=RiverExplorer:Phoenix --input $f --out=Created/Typedef/server/${F}.cpp --lang=CPP -DRPC_HDR -DXDR_HDR --server
+end
+

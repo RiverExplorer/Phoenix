@@ -1,0 +1,33 @@
+\section{Introduction}
+This is the documentation for the 'Protocol' command.
+It reads user written protocol definition files and
+create compilable code that can transmit and receive
+the data over the Internet.
+
+The protocol definition file is a text file that is editable
+with any text editor.
+
+Inside the definition file are directives and data definitions.
+The directive aid the generation and over the wire format of the
+described data definitions.
+
+The sample implementation generates protocols for NATIVE (no
+byte swaping), CBOR, JSON, REST, XDR, and XML client and servers.
+
+In addition it can generate C++ and C\# code implementing those
+protocol generators.
+
+\textbf{NOTE: It is possible that specific implementations allow
+  each endpoint to act as a client and server.
+  For the purposes of this specification, the client is
+  the one that is originating actions and expects
+  results or replies from the other endpoint}.
+
+This model support both threaded and non threaded
+implementations.
+For non-threaded systems the data is processed serially
+or however the implementation handles both incoming
+and outgoing data.
+The data flow is the same for both threaded and non threaded
+implementations.
+This model is the core of both the client and server.

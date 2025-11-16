@@ -1,267 +1,766 @@
 <!-- Copyright 2025 RiverExplorer LLC and Douglas Mark Royer -->
-
 <section anchor="FOLDERS">
 	<name>File and Folder Commands Summary</name>
-
 	<t>
-		The file operations (FileOp) have protocol names.
-		Here are their protocol names and a breif description.
+		Remote systems have files and folders that are accessible.
+		And have files and folders that are not accessible.
+		This section covers only these files and folders for
+		which the authenticated users has at least read only access
+		to full access and control.
 	</t>
 	<t>
+		Read only files and folders could be historical archives,
+		news, email, calendar, or marketing information.
+		Anything that the owner of the files and folders wants
+		to share and keep unaltered.
+	</t>
+	<t>
+		The file operations (FileOp) here are a descriptive category
+		of several over the wire commands, there is no 'FileOp' command.
 		Implementations are not required to support any or all of these
 		commands.
 	</t>
 	<t>
-		
+		Folders might be nested.
+		That is one folder may contain one or more folders.
+		Each of which may contain folders.
+		Much like a computer folder structure.
+		Only folders and files that are read-only or are read-write
+		are returned in a list to the client.
+	</t>
+	<t>
+		Each file and folder has an ID.
+		A FOLDER_LIST command returns a list of files and folders, each
+		with their ID.
+		Most FileOps use this ID and not the name.
+		These IDs are guaranteed to not change during a session.
+		The server should attempt to preserve IDs across sessions.
 	</t>
 	<table>
 		<name>File and Folder Command List</name>
 		<thead>
 			<tr>
 				<th>Op Name</th>
-				<th>Valule</th>
+				<th>Value in hex</th>
 				<th>Brief Description.
 			</th></tr>
 		</thead>
 		<tbody>
 			<tr>
-				<td>FOLDER_CAPABILITY</td>
-				<td>%x13:32</td>
 				<td>
-					When sent as a command, request the list of
-					folder commands supported.
-					When sent as a reply, includes the list of
-					folder commands supported.
+					FOLDER_CAPABILITY
+					<br/>
+					<xref target="FO_Cap"/>
+				</td>
+				<td>%x13</td>
+				<td>
+					<t>
+						When sent as a command, request the list of
+						folder commands supported.
+					</t>
+					<t>
+						When FOLDER_CAPABILITY is sent as a reply,
+						this includes a CBOR type 4 array of
+						folder commands supported along with
+						any of their optional or mandatory parameters.
+					</t>
+					<t>
+						Only when an administrator changes the users
+						access while a client is active will this
+						list change during a session.
+						The client will be notified of any changes.
+						See <xref target="Notifications">Notifications</xref>.
+					</t>
 				</td>
 			</tr>
 			<tr>
-				<td>FOLDER_CREATE</td>
-				<td>%x14:32</td>
 				<td>
-					Create a new folder.
-					Also the name of the capability for this permission.
+					FOLDER_CREATE
+					<br/>
+					<xref target="FO_Create"/>
+				</td>
+				<td>%x14</td>
+				<td>
+					<t>
+						Create a new folder.
+						The reply will be success and folder ID, or a reason
+						the creation was denied.
+					</t>
+					<t>
+						Also the name of the capability for this permission.
+						This indicates that user has the capability
+						to create folders.
+						It does not guarantee they can create a specific
+						folder or folder hierarchy.
+					</t>
 				</td>
 			</tr>
 			<tr>
-				<td>FOLDER_COPY</td>
-				<td>%x15:32</td>
 				<td>
-					Copy a folder.
-					Also the name of the capability for this permission.
+					FOLDER_COPY
+					<br/>
+					<xref target="FO_Copy"/>
+				</td>
+				<td>%x15</td>
+				<td>
+					<t>
+						Copy a folder.
+						The reply will be success or a reason
+						the copy was denied.
+					</t>
+					<t>
+						Also the name of the capability for this permission.
+						This indicates that user has the capability
+						to copy folders.
+						It does not guarantee they can copy any specific
+						folder to any specific location available to
+						the user.
+					</t>
 				</td>
 			</tr>
 			<tr>
-				<td>FOLDER_DELETE</td>
-				<td>%x16:32</td>
 				<td>
-					Delete a folder.
-					Also the name of the capability for this permission.
+					FOLDER_DELETE
+					<br/>
+					<xref target="FO_Delete"/>					
+				</td>
+				<td>%x16</td>
+				<td>
+					<t>
+						Delete a folder.
+						The reply will be success and new folder ID, or a reason
+						the delete was denied.
+					</t>
+					<t>
+						Also the name of the capability for this permission.
+						This indicates that user has the capability
+						to delete folders.
+						It does not guarantee they can delete all folders
+						for which they have access 
+					</t>
 				</td>
 			</tr>
 			<tr>
-				<td>FOLDER_RENAME</td>
-				<td>%x17:32</td>
 				<td>
-					Rename a folder.
-					Also the name of the capability for this permission.
+					FOLDER_RENAME
+					<br/>
+					<xref target="FO_Rename"/>					
+				</td>
+				<td>%x17</td>
+				<td>
+					<t>
+						Rename a folder.
+						The reply will be success or a reason
+						the rename was denied. The folder ID will not be changed.
+					</t>
+					<t>
+						Also the name of the capability for this permission.
+						This indicates that user has the capability
+						to rename folders.
+						It does not guarantee they can rename any specific
+						folder for which the user has access.
+					</t>
 				</td>
 			</tr>
 			<tr>
-				<td>FOLDER_METADATA</td>
-				<td>%x18:32</td>
 				<td>
-					Get, set, and update information associated with the
-					folder.
-					File meta data is also returned with the FOLDER_OPEN
-					command.
+					FOLDER_METADATA
+					<br/>
+					<xref target="FO_Meta"/>					
+				</td>
+				<td>%x18</td>
+				<td>
+					<t>
+						Get, set, and update information associated with the
+						folder by ID.
+						The reply will be success and metadata permissions,
+						or a reason	the operation was denied.
+						All folders have a meta data object associated
+						with them, and the list may be empty.
+					</t>
+					<t>
+						Some file meta data is also returned with the FOLDER_OPEN
+						command.
+					</t>
+					<t>
+						This is not a CAPABILITY request or reply.
+					</t>
 				</td>
 			</tr>
 			<tr>
-				<td>FOLDER_MOVE</td>
-				<td>%x19:32</td>
 				<td>
-					Move a folder.
-					Also the name of the capability for this permission.
+					FOLDER_MOVE
+					<br/>
+					<xref target="FO_Move"/>					
+				</td>
+				<td>%x19</td>
+				<td>
+					<t>
+						Move a folder.
+						The reply will be success or a reason
+						the move was denied.
+						The folder ID will not be changed.
+					</t>
+					<t>
+						Also the name of the capability for this permission.
+						This indicates that user has the capability
+						to move folders.
+						It does not guarantee they can move any specific
+						folder for which the user has access.
+					</t>
 				</td>
 			</tr>
 			<tr>
-				<td>FOLDER_OPEN</td>
-				<td>%x1a:32</td>
 				<td>
-					Open a folder and get information about the folder
-					and files in the folder.
+					FOLDER_OPEN
+					<br/>
+					<xref target="FO_Open"/>
+				</td>
+				<td>%x1a</td>
+				<td>
+					<t>
+						Open an existing folder and get information about the folder,
+						its ID, and files in the folder.
+						The reply will be success or a reason
+						the open was denied.
+					</t>
+					<t>
+						All users can open for at least read only access
+						any folder they they were provided in a FOLDER_LIST
+						reply.
+						This is not a CAPABILITY reply or command.
+					</t>
 				</td>
 			</tr>
 			<tr>
-				<td>FOLDER_SHARE</td>
-				<td>%x1b:32</td>
 				<td>
-					Share a folder.
-					Also the name of the capability for this permission.
+					FOLDER_SHARE
+					<br/>
+					<xref target="FO_Share"/>
+				</td>
+				<td>%x1b</td>
+				<td>
+					<t>
+						Share a folder.
+						Share to a list or anyone.
+					</t>
+					<t>
+						The reply will be a success or a reason
+						the share was denied.
+					</t>
+					<t>
+						Also the name of the capability for this permission.
+						This indicates that user has the capability
+						to share folders.
+						It does not guarantee they can share any specific
+						folder for which the user has access.
+					</t>
 				</td>
 			</tr>
 			<tr>
-				<td>FOLDER_LIST</td>
-				<td>%x1c:32</td>
 				<td>
-					List folders and files.
-					Also the name of the capability for this permission.
+					FOLDER_LIST
+					<br/>
+					<xref target="FO_List"/>
+				</td>
+				<td>%x1c</td>
+				<td>
+					<t>
+						List folders and optional files available to the user.
+					</t>
+					<t>
+						The command may include zero or more folders ID's.
+						The top most folder has no name, and is an
+						empty string.
+						The top most folder is the default folder name.
+						SEE XREF-TODO.
+					</t>
+					<t>
+						When provided, the reply includes a list of files
+						within the folder.
+						The content of each index entry depends
+						on the type of file.
+						SEE XREF-TODO.
+					</t>
+					<t>
+						All clients may issue a FOLDER_LIST command.
+						The result could be empty.
+						This is not a CAPABILITY command or reply.
+					</t>
+					<t>
+						Only shared folders have their contents altered
+						during a session without the client initiating
+						the changes.
+						The client is notified of shared folder changes to
+						folders and files at runtime that were not initiated
+						by the client.
+						See <xref target="Notifications"/>
+					</t>
 				</td>
 			</tr>
 			
 			<tr>
-				<td>FILE_CREATE</td>
-				<td>%x1d:32</td>
 				<td>
-					Create a new file.
-					Also the name of the capability for this permission.
+					FILE_CREATE
+					<br/>
+					<xref target="FI_Create"/>
+				</td>
+				<td>%x1d</td>
+				<td>
+					<t>
+						Create a new file.
+						The reply will be success and a new file ID, or a reason
+						the create was denied.
+					</t>
+					<t>
+						Also the name of the capability for this permission.
+						This indicates that user has the capability
+						to create files.
+						It does not guarantee they can create any
+						file for which they have folder access.
+					</t>
 				</td>
 			</tr>
 
 			<tr>
-				<td>FILE_COPY</td>
-				<td>%x1e:32</td>
 				<td>
-					Copy a file.
-					Also the name of the capability for this permission.
+					FILE_COPY
+					<br/>
+					<xref target="FI_Copy"/>
+				</td>
+				<td>%x1e</td>
+				<td>
+					<t>
+						Copy a file.
+						The reply will be success and the new file ID, or a reason
+						the copy was denied.
+					</t>
+					<t>
+						Also the name of the capability for this permission.
+						This indicates that user has the capability
+						to copy files.
+						It does not guarantee they can copy any
+						file for which they have folder access.
+					</t>
 				</td>
 			</tr>
 
 			<tr>
-				<td>FILE_DELETE</td>
-				<td>%x1f:32</td>
 				<td>
-					Delete a file.
-					Also the name of the capability for this permission.
+					FILE_DELETE
+					<br/>
+					<xref target="FI_Delete"/>
+				</td>
+				<td>%x1f</td>
+				<td>
+					<t>
+						Delete a file.
+						The reply will be success or a reason
+						the delete was denied.
+					</t>
+					<t>
+						Also the name of the capability for this permission.
+						This indicates that user has the capability
+						to delete files.
+						It does not guarantee they can delete any
+						file for which they have folder access.
+					</t>
 				</td>
 			</tr>
 			<tr>
-				<td>FILE_RENAME</td>
-				<td>%x20:32</td>
 				<td>
-					Rename a file.
-					Also the name of the capability for this permission.
+					FILE_RENAME
+					<br/>
+					<xref target="FI_Rename"/>
+				</td>
+				<td>%x20</td>
+				<td>
+					<t>
+						Rename a file.
+						The reply will be success or a reason
+						the rename was denied.
+						The file ID will not change.
+					</t>
+					<t>
+						Also the name of the capability for this permission.
+						This indicates that user has the capability
+						to rename files.
+						It does not guarantee they can rename any
+						file for which they have folder access.
+					</t>
 				</td>
 			</tr>
 			<tr>
-				<td>FILE_METADATA</td>
-				<td>%x21:32</td>
 				<td>
-					Get, set, and update information associated with the
-					folder.
-					File meta data is also returned with the FOLDER_OPEN
-					command.
+					FILE_METADATA
+					<br/>
+					<xref target="FI_Meta"/>
+				</td>
+				<td>%x21</td>
+				<td>
+					<t>
+						Get, set, and update information associated with the
+						file.
+						The reply will be success or a reason
+						the operation was denied.
+						All files have a meta data object associated
+						with them, and the list may be empty.
+					</t>
+					<t>
+						Some file meta data is also returned with
+						the FOLDER_OPEN	command.
+					</t>
+					<t>
+						This is not a CAPABILITY request or reply.
+						All users have access to the meta data
+						for files they have access to.
+						The list of meta data returned may be restricted
+						depending on the authenticated user.
+					</t>
 				</td>
 			</tr>
 			<tr>
-				<td>FILE_MOVE</td>
-				<td>%x22:32</td>
 				<td>
-					Move a file.
-					Also the name of the capability for this permission.
+					FILE_MOVE
+					<br/>
+					<xref target="FI_Move"/>
+				</td>
+				<td>%x22</td>
+				<td>
+					<t>
+						Move a file.
+						The reply will be success or a reason
+						the move was denied.
+						The file ID will not change.
+					</t>
+					<t>
+						Also the name of the capability for this permission.
+						This indicates that user has the capability
+						to move files.
+						It does not guarantee they can move any
+						file for which they have folder access.
+					</t>
 				</td>
 			</tr>
 			<tr>
-				<td>FILE_SHARE</td>
-				<td>%x23:32</td>
 				<td>
-					Share a file.
-					Also the name of the capability for this permission.
+					FILE_SHARE
+					<br/>
+					<xref target="FI_Share"/>
+				</td>
+				<td>%x23</td>
+				<td>
+					<t>
+						Share a file.
+						The reply will be success or a reason
+						the share was denied.
+					</t>
+					<t>
+						Also the name of the capability for this permission.
+						This indicates that user has the capability
+						to share files.
+						It does not guarantee they can share any
+						file for which they have folder access.
+					</t>
 				</td>
 			</tr>
 			<tr>
-				<td>FILE_GET</td>
-				<td>%x24:32</td>
 				<td>
-					Get a file.
-					Also the name of the capability for this permission.
+					FILE_GET
+					<br/>
+					<xref target="FI_Get"/>
+				</td>
+				<td>%x24</td>
+				<td>
+					<t>
+						Get file contents.
+					</t>
+					<t>
+						All files provided in FOLDER_LIST command
+						are available to the client and may
+						be read only.
+					</t>
+					<t>
+						The reply will be the file contents, with
+						optional index information for MIME objects.
+						Or a reason for the failure.
+					</t>
+					<t>
+						This is not a CAPABILITY request or reply.
+						All users may get the file contents
+						for any file provided to the in the FOLDER_LIST
+						reply.
+					</t>
 				</td>
 			</tr>
 			<tr>
-				<td>FILE_MODIFY</td>
-				<td>%x25:32</td>
 				<td>
-					Modify the contents of an existing file.
-					Also the name of the capability for this permission.
+					FILE_MODIFY
+					<br/>
+					<xref target="FI_Modify"/>
+				</td>
+				<td>%x25</td>
+				<td>
+					<t>
+						Modify the contents of an existing file.
+						The reply will be success or a reason
+						the modify was denied.
+					</t>
+					<t>
+						The reply will be a success with the contents
+						updated, or a reason for the denial.
+					</t>
+					<t>
+						All client may issue FILE_MODIFY commands.
+						The contents of the folder index might
+						have a read only attribute for any file.
+						A user may not modify the contents
+						of read only files.
+					</t>
+					<t>
+						This is not a CAPABILITY request or reply.
+					</t>
 				</td>
 			</tr>
 		</tbody>
 	</table>
 
-	<section>
-		<name>File and Folder - FOLDER_CAPABILITY</name>
+	<section anchor="FO_Cap">
+		<name>Folder - FOLDER_CAPABILITY</name>
+		<t>
+			As part of the successful authentication reply,
+			the server sends the client a list
+			of FileOps allowed by the client.
+			This list includes zero or more folder
+			capabilities the authenticated client
+			is allowed to issue.
+		</t>
+		<t>
+			The only time this list changes is if an administrator
+			alters the authenticated client access while
+			the session is active.
+			The client will be notified of any changes.
+			See <xref target="Notifications">Notifications</xref>.
+			Unless the client receives such a notification,
+			there is no need for the client to reissue
+			a FOLDER_CAPABILITY request.
+		</t>
+
+		<section anchor="FO_Cap_Detail_CMD">
+			<name>FOLDER_CAPABILITY Command (%x13) - Request</name>
+			<t>
+				A FOLDER_CAPABILITY request does not have any
+				parameters.
+				It is a request for all of the folder
+				commands available to the authenticated user
+			</t>
+
+			<section anchor="FO_Cap_Detail_ABNF">
+				<name>FOLDER_CAPABILITY Request ABNF</name>
+				<t>
+					This is transmitted as a CBOR major type 0, unsigned
+					integer	with a hex value of %x13.
+				</t>
+				<xi:include href="include/FOLDER_CAPABILITY_REQUEST-ABNF.xml"/>
+			</section>
+
+			<section anchor="FO_Cap_Detail_Bits">
+				<name>FOLDER_CAPABILITY Request Example</name>
+				<t>
+					A FOLDER_CAPABILITY request
+					has the vendor bit set to zero.
+					This is transmitted as a CBOR major type 0, unsigned
+					integer	with a hex value of %x13.
+					<xref target="FO_Cap_Detail_Bits_Figure"/> is a
+					Phoenix packet payload content
+					value for making a FOLDER_CAPABILITY request.
+					This is in the payload part of a Phoenix packet.
+				</t>
+				<figure anchor="FO_Cap_Detail_Bits_Figure">
+					<name>FOLDER_CAPABILITY over the wire</name>
+					<artset>
+						<artwork align="left" type="ascii-art" src="Drawings/FolderCapability-00.txt"/>
+						<artwork align="left" type="svg" src="Generated/FolderCapability-00.svg"/>
+					</artset>
+				</figure>
+			</section>
+		</section>	
+		<section anchor="FO_Cap_Detail_Reply">
+			<name>FOLDER_CAPABILITY Reply (%x13)</name>
+			<t>
+				The reply is in a Phoenix packet reply
+				payload.
+				The reply is a CBOR major type 4 array.
+				Each element of the array is a FOLDER_CAPABILITY
+				with any optional or mandatory parameters.
+			</t>
+			<t>
+				<xref target="F0_Cap_Detail_Reply_Bits"/>
+				is an example of a session with only read-only access.
+				In this example, the user can open folders,
+				list folders, get the meta data for folders,
+				get the metadata for files, and get files,
+				and one vendor specific capability.
+			</t>
+			<figure anchor="F0_Cap_Detail_Reply_Bits">
+				<xi:include href="Drawings/FolderCapability-Reply-00.txt"/>					
+			</figure>
+			<t>
+				The example FOLDER_CAPABILITY reply
+				in <xref target="F0_Cap_Detail_Reply_Bits"/> contains
+				the folder commands the client may issue:
+			</t>
+			<artwork align="left" type="ascii-art">
+ExampleCapabilityRepy
+        = CBOR_FIXED_SIZE_ARRAY with 8 entries
+          FOLDER_OPEN
+          FOLDER_LIST
+          FOLDER_METADATA FOLDER_METATDATA_PARAMETERS
+          FILE_METADATA FILE_METADATA_PARAMETERS
+          FILE_GET
+          A VENDOR specific command
+			</artwork>
+.so include/FOLDER_CAPABILITY_REPLY-CBOR.xml
+.so include/FOLDER_CAPABILITY_REPLY-CODE.xml
+		</section>
 	</section>
 
-	<section>
+	<section anchor="FO_Create">
 		<name>File and Folder - FOLDER_CREATE</name>
 	</section>
 
-	<section>
+	<section anchor="FO_Copy">
 		<name>File and Folder - FOLDER_COPY</name>
 	</section>
 
-	<section>
+	<section anchor="FO_Delete">
 		<name>File and Folder - FOLDER_DELETE</name>
 	</section>
 
-	<section>
+	<section anchor="FO_Rename">
 		<name>File and Folder - FOLDER_RENAME</name>
 	</section>
 
-	<section>
+	<section anchor="FO_Meta">
 		<name>File and Folder - FOLDER_METADATA</name>
 	</section>
 
-	<section>
+	<section anchor="FO_Move">
 		<name>File and Folder - FOLDER_MOVE</name>
 	</section>
 
-	<section>
+	<section anchor="FO_Open">
 		<name>File and Folder - FOLDER_OPEN</name>
 	</section>
 
-	<section>
+	<section anchor="FO_List">
 		<name>File and Folder - FOLDER_LIST</name>
+		<t>
+			When a client successfully authenticates,
+			part of the success reply is a list of
+			folders the client has access to.
+		</t>
+		<t>
+			All changes to files, folder, or access
+			not performed by the client will
+			cause a notification to be sent to the client.
+			(See <xref target="Notifications">Notifications</xref>)
+		</t>
+		<t>
+			A FOLDER_LIST command returns an unordered array of File
+			and Folder entries (FF entry).
+			Each entry indicates if the item is a file or folder,
+			its name, its ID (FFID), if it is shared with other users,
+			any meta data, and if the user has read-only or read-write	access
+		</t>
+		<t>
+			The meta data has two parts.
+		</t>
+		<ul>
+			<li>
+				Folder and File Meta data associated with the folder or file.
+			</li>
+			<li>
+				User Meta data associated with the folder or file.
+			</li>
+		</ul>
+		<t>
+			Folder and File Meta data contains persistent information about
+			the folder or file.
+			Such as its size, index information, and other persistent
+			information important to the application.
+		</t>
+		<t>
+			User Meta data contains information about if the contents
+			has been viewed and other application specific information
+			unique to each user.
+		</t>
+		<t>
+			The FOLDER_LIST command has optional parameters.
+			The default is to get just the file and folder index (FF).
+		</t>
+		<ul>
+			<li>The client can ask for meta data for folders.</li>
+			<li>The client can ask for meta data for files.</li>
+			<li>The client can ask MIME index information for files.</li>
+		</ul>
+		<section anchor="FF_Entry">
+			<name>A File and Folder (FF) entry</name>
+			<t>
+				<![CDATA[
+				FF = Name FFID Shared:1 RW:1
+
+				string Name<>;
+				uint64_t FFID;
+				bits     Shared:1
+				bits     RW:1
+				]]>
+				
+			</t>
+		</section>
+		<section anchor="FolderListReply">
+			<name>FOLDER_LIST - Reply</name>
+		</section>
 	</section>
 
-	<section>
+	<section anchor="FO_Share">
 		<name>File and Folder - FOLDER_SHARE</name>
 	</section>
 
-	<section>
+	<section anchor="FI_Create">
 		<name>File and Folder - FILE_CREATE</name>
 	</section>
 
-	<section>
+	<section anchor="FI_Copy">
 		<name>File and Folder - FILE_COPY</name>
 	</section>
 
-	<section>
+	<section anchor="FI_Delete">
 		<name>File and Folder - FILE_DELETE</name>
 	</section>
 
-	<section>
+	<section anchor="FI_Rename">
 		<name>File and Folder - FILE_RENAME</name>
 	</section>
 
-	<section>
+	<section anchor="FI_Meta">
 		<name>File and Folder - FILE_METADATA</name>
 	</section>
 
-	<section>
+	<section anchor="FI_Modify">
 		<name>File and Folder - FILE_MOVE</name>
 	</section>
 
-	<section>
+	<section anchor="FI_Move">
+		<name>File and Folder - FILE_MOVE</name>
+	</section>
+
+	<section anchor="FI_Share">
 		<name>File and Folder - FILE_SHARE</name>
 	</section>
 
-	<section>
+	<section anchor="FI_Get">
 		<name>File and Folder - FILE_GET</name>
-	</section>
-
-	<section>
-		<name>File and Folder - FILE_MODIFY</name>
 	</section>
 
 </section>

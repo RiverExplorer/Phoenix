@@ -1,0 +1,75 @@
+\subsection{File and Folder Commands}
+A folder is not necessarily a directory on the server.
+It could be a logical folder in another object.
+It might be a specific email message in a email folder container.
+It could be a specific file in a zip or tar file.
+It could be an entry in a database.
+
+Within the Phoenix protocol a folder is simply a container
+of any kind that can perform one or more of the folder
+and file commands Phoenix supports.
+Not all folders may support all commands.
+
+Examples: Some may be read only.
+Others might not allow them to be renamed.
+
+\subsubsection{FILE\_CREATE}
+Create a new file.
+What is creates is a function of the task the
+server is being asked to do:
+
+Examples of what it could be doing:
+\begin{enumerate}
+\item When it is processing email messages, it could be creating
+  a new email message.
+  When sent to an outbound email server, it sends email.
+  When sent to a user email server, it could be saving a draft.
+\item When it is processing calendar messages, it could be creating
+  a new calendar event, todo, or other calendar object.
+\item It could be creating a new file on a disk.
+\end{enumerate}
+
+See the specific task specifications.
+
+A FILE\_CREATE command includes the ID of the folder
+to create.
+And if applicable, a path to the new file.
+The path separation character is the slash (/) 0x2f UTF-8 character.
+\subsubsection{FILE\_COPY}
+
+\subsubsection{FILE\_DELETE}
+\subsubsection{FILE\_RENAME}
+\subsubsection{FILE\_METADATA}
+\subsubsection{FILE\_MOVE}
+\subsubsection{FILE\_SHARE}
+\subsubsection{FILE\_GET}
+\subsubsection{FILE\_MODIFY}
+\subsubsection{FOLDER\_CAPABILITY}
+\subsubsection{FOLDER\_CREATE}
+Create a new folder.
+What it creates is a function of the task the
+server is being asked to do.
+
+Examples of what it could be doing:
+\begin{enumerate}
+\item When it is processing email messages, it could be creating
+a new email folder.
+\item When it is processing calendar messages, it could be creating
+  a new calendar.
+\item Performing actual disk folder (directory) commands.
+\end{enumerate}
+
+See the specific task specifications.
+
+A FILE\_CREATE command includes the name of the folder
+to create.
+And if applicable, a path.
+The path separation character is the slash (/) 0x2f UTF-8 character.
+\subsubsection{FOLDER\_COPY}
+\subsubsection{FOLDER\_DELETE}
+\subsubsection{FOLDER\_RENAME}
+\subsubsection{FOLDER\_METADATA}
+\subsubsection{FOLDER\_MOVE}
+\subsubsection{FOLDER\_OPEN}
+\subsubsection{FOLDER\_SHARE}
+\subsubsection{FOLDER\_LIST}

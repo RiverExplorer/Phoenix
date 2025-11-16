@@ -1,0 +1,70 @@
+<section anchor="FO_Cap_Reply_CBOR">
+	<name>CBOR</name>
+	<figure anchor="FO_Cap_Reply_CBOR_Figure">
+		<name>CBOR Definition</name>
+		<artwork align="left" type="ascii-art">
+<![CDATA[
+// The FOLDER_METADATA and FILE_METADATA
+// capabilities return the OpPermissions
+// allowed in the session.
+//
+// Four bits, each one set or not set.
+// When the bit is set, the client
+// is allowed to perform the operation
+// on the meta data (or not when not set).
+//
+// NOTE: These are operations on the
+// meta data, not the file or folder data.
+//
+BitMask:4 OpPermission {
+ OpSetBitMask     = 0x01,
+ OpGetBitMask     = 0x02,
+ OpUpdateBitMask  = 0x04,
+ OpDeleteBitMask  = 0x08
+};
+
+// Each entry in FOLDER_CAPABILITY reply is
+// one of these enumerated REPLY values.
+// 
+enum FolderCapabilityReply_e {
+  FOLDER_CREATE_REPLY = FOLDER_CREATE,
+  FOLDER_COPY_REPLY = FOLDER_COPY,
+  FOLDER_RENAME_REPLY = FOLDER_RENAME,
+  FOLDER_METADATA_REPLY = FOLDER_METADATA,
+  FOLDER_MOVE_REPLY = FOLDER_MOVE,
+  FOLDER_OPEN_REPLY = FOLDER_OPEN,
+  FOLDER_SHARE_REPLY = FOLDER_SHARE,
+  FOLDER_LIST_REPLY = FOLDER_LIST,
+  FILE_CREATE_REPLY = FILE_CREATE,
+  FILE_COPY_REPLY = FILE_COPY,
+  FILE_DELETE_REPLY = FILE_DELETE,
+  FILE_RENAME_REPLY = FILE_RENAME,
+  FILE_METADATA_REPLY = FILE_METADATA,
+  FILE_MOVE_REPLY = FILE_MOVE,
+  FILE_SHARE_REPLY = FILE_SHARE,
+  FILE_GET_REPLY = FILE_GET,
+  FILE_MODIFY_REPLY = FILE_MODIFY,
+  VENDOR_FOLDER_REPLY = VENDOR_COMMAND
+};
+
+// In this version, each FOLDER CAPABILITY command REPLY
+// has (1) no additional data (void), (2) or it
+// has meta data permission values (OpPermissions).
+//
+union FolderCapabilityReplyEntry (FolderCapabiltyReply_e Cmd) {
+  OpPermission  Permissions;
+  void;
+};
+
+// The FOLDER_CAPABILITY reply:
+// A variable list of capabilities in the reply.
+// And is sent back as a CBOR major type 4 array.
+//
+struct FolderCapabilityReply
+    FolderCapabilityReplyEntry Capabilities<>;
+};
+
+]]>	
+		</artwork>
+	</figure>
+</section>

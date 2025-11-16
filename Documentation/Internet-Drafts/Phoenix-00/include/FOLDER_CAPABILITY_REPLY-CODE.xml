@@ -1,0 +1,144 @@
+<section anchor="FO_Cap_Reply_Code">
+<name>Code Example</name>
+<sourcecode type="c++">
+<![CDATA[
+/**
+ * Example code to extract the data and process
+ * the FOLDER_CAPABILITY reply.
+ *
+ * @param Session A handle to an authenticated
+ * session to one server.
+ *
+ * @param Packet The Phoenix packet received.
+ */
+ void
+ ProcessFileFolderCapabilityReply(ServerSession & Session,
+                                  PhoenixPacket & Packet)
+ {
+   PhoenixPayload & Payload = Packet.GetPayload();
+
+   // Default to no supported capabilities.
+   //
+   Session->DisableAllCapabilities();
+
+   if (Payload != nullptr && Payload.size() > 0) {
+     Capability                  * OneCapability;
+     Capability::const_iterator    It;
+
+     for (It = Payload.cbegin(); It != Payload.cend(); It++) {
+       OneCapability = *It;
+
+       if (OneCapability->VendorBitIsSet() {
+         Session.AddVendorCapability(OneCapability)
+
+       } else {
+           switch (OneCapability->Name) {
+
+           case FOLDER_CREATE:
+             Session->CanCreateFolders(true);
+             break;
+
+           case FOLDER_COPY:
+             Session->CanCopyFolders(true);
+             break;
+
+           case FOLDER_DELETE:
+             Session->CanDeleteFolders(true);
+             break;
+
+           case FOLDER_RENAME:
+             Session->CanRenameFolders(true);
+             break;
+
+           case FOLDER_METADATA:
+             OpPermissions Allowed = OneCapability->GetOpPermissions());
+
+             if (Allowed & OpSetBitMask) {
+               Session->CanSetFolderMetaData(true);
+             }
+             if (Allowed & OpGetBitMask) {
+               Session->CanGetFolderMetaData(true);
+             }
+             if (Allowed & OpUpdateBitMask) {
+               Session->CanUpdateFolderMetaData(true);
+             }
+             if (Allowed & OpDeleteBitMask) {
+               Session->CanDeleteFolderMetaData(true);
+             }
+             break;
+
+           case FOLDER_MOVE:
+             Session->CanMoveFolders(true);
+             break;
+
+           case FOLDER_OPEN:
+             Session->CanOpenFolders(true);
+             break;
+
+           case FOLDER_SHARE:
+             Session->CanShareFolders(true);
+             break;
+
+           case FOLDER_LIST:
+             Session->CanListFolders(true);
+             break;
+
+           case FILE_CREATE:
+             Session->CanCreateFiles(true);
+             break;
+
+           case FILE_COPY:
+             Session->CanCopyFiles(true);
+             break;
+
+           case FILE_DELETE:
+             Session->CanDeleteFiles(true);
+             break;
+
+           case FILE_RENAME:
+             Session->CanRenameFiles(true);
+             break;
+
+           case FILE_METADATA:
+             OpPermissions Allowed = OneCapability->GetOpPermissions());
+
+             if (Allowed & OpSetBitMask) {
+               Session->CanSetFileMetaData(true);
+             }
+             if (Allowed & OpGetBitMask) {
+               Session->CanGetFileMetaData(true);
+             }
+             if (Allowed & OpUpdateBitMask) {
+               Session->CanUpdateFileMetaData(true);
+             }
+             if (Allowed & OpDeleteBitMask) {
+               Session->CanDeleteFileMetaData(true);
+             }
+             break;
+
+           case FILE_MOVE:
+             Session->CanMoveFiles(true);
+             break;
+
+           case FILE_SHARE:
+             Session->CanShareFiles(true);
+             break;
+
+           case FILE_GET:
+             Session->CanGetFiles(true);
+             break;
+
+           case FILE_MODIFY
+             Session->CanModifyFiles(true);
+             break;
+
+           default:
+             ProcessError("Unknown FOLDER_CAPABILITY reply.");
+             break;
+       }
+     }
+   }
+ }
+]]>
+</sourcecode>
+</section>

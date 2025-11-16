@@ -1,7 +1,9 @@
+namespace RiverExplorer:Phoenix;
+
 #if defined RPC_HDR || defined RPC_XDR
 %/**
 % * Project: Phoenix
-% * Time-stamp: <2025-03-03 01:51:48 doug>
+% * Time-stamp: <2025-03-24 22:08:23 doug>
 % *
 % * @file FileCreate.x
 % * @copyright (C) 2025 by Douglas Mark Royer (A.K.A. RiverExplorer)
@@ -21,10 +23,13 @@
 %#endif
 #endif
 
+typedef uint64_t FileID;
+
 struct FileCreatePayload {
-	int foo;
+	string Name<>;
 };
 
 struct FileCreateReplyPayload {
-	int foo;
+	bool Success;
+	FileID	ID;
 };

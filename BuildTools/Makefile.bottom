@@ -1,7 +1,7 @@
 #
 #
 # Project: Phoenix
-# Time-stamp: <2025-03-14 11:45:37 doug>
+# Time-stamp: <2025-03-24 22:12:48 doug>
 #
 # @file FILL-IN
 # @author Douglas Mark Royer
@@ -347,18 +347,28 @@ clean::
 #
 # XDR
 #
-GeneratedFromXDR/%.c : %.x
-	$(RPCGEN) -c $< | sed 's/~0/(u_int)~0/' | sed 's/bool_t/bool/g' | sed 's/register int32_t \*buf;//' > $@
-	@mkdir -p GeneratedFromXDR
-	cp -u $@ GeneratedFromXDR
-
-GeneratedFromXDR/%.h : %.x
-	$(RPCGEN) -h $< | sed 's/bool_t/bool/g'| sed 's/#include <rpc\/rpc\.h>//' > $@
-	@mkdir -p GeneratedFromXDR
-	cp -u $@ GeneratedFromXDR
+#GeneratedFromXDR/%.c : %.x
+#	$(RPCGEN) -c $< | sed 's/~0/(u_int)~0/' | sed 's/bool_t/bool/g' | sed 's/##register int32_t \*buf;//' > $@
+#	@mkdir -p GeneratedFromXDR
+#	cp -u $@ GeneratedFromXDR
+#
+#GeneratedFromXDR/%.h : %.x
+#	$(RPCGEN) -h $< | sed 's/bool_t/bool/g'| sed 's/#include <rpc\/rpc\.h>//' > $@
+#	@mkdir -p GeneratedFromXDR
+#	cp -u $@ GeneratedFromXDR
+#
+#GeneratedFromXDR/%.cpp : %.x
+#	$(RPCGEN) -c $< | sed 's/bool_t/bool/g'| sed 's/~0/(u_int)~0/' | sed 's/register int32_t \*buf;//' > $@
+#	@mkdir -p GeneratedFromXDR
+#	cp -u $@ GeneratedFromXDR
+#
+#GeneratedFromXDR/%.hpp : %.x
+#	$(RPCGEN) -h $< | sed 's/bool_t/bool/g'| sed 's/#include <rpc\/rpc\.h>//'# > $@
+#	@mkdir -p GeneratedFromXDR
+#	cp -u $@ GeneratedFromXDR
 
 GeneratedFromXDR/%.cpp : %.x
-	$(RPCGEN) -c $< | sed 's/bool_t/bool/g'| sed 's/~0/(u_int)~0/' | sed 's/register int32_t \*buf;//' > $@
+	$(XDRGEN) --xdr $<  > $@
 	@mkdir -p GeneratedFromXDR
 	cp -u $@ GeneratedFromXDR
 

@@ -1,4 +1,6 @@
 \documentclass[2pt]{book}
+\setcounter{secnumdepth}{3}
+\setcounter{tocdepth}{3}
 \usepackage{graphicx}
 \usepackage{html}
 \usepackage{hyperref}
@@ -59,17 +61,13 @@
 \end{figure}
 
 \begin{abstract}
-
   \includegraphics{UnderConstruction.png}
-
   \begin{center}
     \Huge{\textcolor{red}{\textbf{THIS IS WORK IN PROGRESS}}}
   \end{center}
-  
   \begin{center}
     \underline{\textit{ABSTRACT}}
   \end{center}
-  
   Email and MIME messages account for one the largest volumes of data
   on the internet. The transfer of these MIME message has not had a
   major updated in decades.
@@ -98,14 +96,25 @@
   Thunderbird and Outlook plugins are part of the sample implementation.
   A Linux, Windows DLL and .NET, and Android client library are
   part of the sample implementation
-  
+
+  Phoenix is a MIME Transport Protocol (MTP).
+  Named Phoenix because it is a risen version version of the
+  Lemonade project if the late 1990's.
+
+  Unless otherwise specified, all of this code and text is original
+  and writtern by the author.
 \end{abstract}
+
 
 \tableofcontents
 
 \mainmatter
 \chapter{Introduction}
 \include{Introduction}
+\chapter{Commands}
+\include{Commands}
+\chapter{Input / Output Model}
+\include{IOModel}
 \chapter{Packet Details}
 \include{PacketDetails}
 \chapter{Code Segments}

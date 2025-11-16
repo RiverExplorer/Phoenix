@@ -1,18 +1,54 @@
 <artwork type="abnf" name="" align="left" alt=""><![CDATA[
+               ; Any signed integer value
+               ;
+int_t        = ; any positive or negative size or length
+
+               ; An 8-bit signed integer value
+               ;
+int8_t       = -128 to 127
+
+               ; A 16-bit signed integer type
+               ;
+int16_t      = 32,768 to 32,767
+
+               ; A 32-bit signed integer type
+               ;
+int32_t      = 2,147,483,648 to 2,147,483,647
+
+               ; A 64-bit signed integer type
+               ;
+int64_t      = -9,223,372,036,854,775,808
+                 to 9,223,372,036,854,775,807
+
+               ; Any unsigned integer type
+               ;
+uint_t       = ; any positive size or length
+
                ; An 8-bit unsigned integer type
-uint8_t      = %x00-ff:8
-		
+               ;
+uint8_t      = 0-255
+
                ; A 16-bit unsigned integer type
-uint16_t     = %x0000-ffff:16
+               ;
+uint16_t     = 0-65535
 
                ; A 32-bit unsigned integer type
-uint32_t     = %x00000000-ffffffff:32
+               ;
+uint32_t     = 0-4294967295
 
                ; A 64-bit unsigned integer type
-uint64_t     = %x0000000000000000-ffffffffffffffff:64
+               ;
+uint64_t     = 0-18446744073709551615
+
+               ;
+cbor_int_t   = ; Any signed integer up to 64 bits.
+
+               ;
+cbor_uint_t  = ; Any unsigned integer up to 64 bits.
 
                ; The number of octets in the the
-               ;  associated object.
+               ; associated object.
+               ;
 Length       = uint32_t
 
                ; This is a generic array of UTF-8
@@ -37,6 +73,7 @@ string       = Length *UTF8-Char
                ; Like string, except when the length is
                ; 0xffffffff it means the associated value has
                ; been deleted.
+               ;
 stringD      = (0xffffffff:32) / string
 
                ; The UTF8-Char is any valid and complete
@@ -61,64 +98,64 @@ UTC          = uint64_t
 
                ; The number of octets from the beginning of the 
                ; associated object.
+               ;
 Offset       = uint32_t
 
                ; Key and Value. It uses stringD as the value
                ; to enable an indicator that the key part
                ; (string part) has been deleted.
-KeyPair      = string stringD
+               ; nullptr indicates there is no value.
+               ;
+KeyPair      = string (stringD | nullptr)
 
                ; Length is the number of KeyPair that follow.
+               ;
 KeyPairArray = Length 1*KeyPair
 
                ; Setting a value.
+               ;
 OpSet        = %x00:8
 
                ; Getting a value.
+               ;
 OpGet        = %x01:8
 
                ; Updating an existing value.
+               ;
 OpUpdate     = %x02:8
 
                ; Deleting an existing value.
+               ;
 OpDelete     = %x03:8
 
                ; Any one of the the operations.
+               ;
 Op           = OpSet / OpGet / OpUpdate / OpDelete
 
+               ; Boolean true.
+               ;
 true         = %x01:8
 
+               ; Boolean false.
+               ;
 false        = %x00:8
 
+               ;
 enabled      = true   / false  
 
+               ; 8-bits set to zero.
+               ; Used for padding larger data types.
+               ;
 unused8      = %x00:8
 
+               ; 16-bits set to zero.
+               ; Used for padding larger data types.
+               ;
 unused16     = %x00:16
 
-unused24     = %x00:24
-
-               ; When VENDOR_BIT is applicable, it is the highest
-               ; bit in the value, when 1 means it is a vendor
-               ; extension command and not a Phoenix compliant
-               ; command.
-               ; Or it means that a non Phoenix compliant
-               ; object follows.
+               ; 24-bits set to zero.
+               ; Used for padding larger data types.
                ;
-               ; The VENDOR_BIT is a %0x1 shifted to the left most
-               ; position in the value.
-               ; A mask for the VENDOR_BIT with a 32-bit value
-               ; would be %x80000000:32.
-               ; When the VENDOR_BIT is set, the lower value bits
-               ; are vendor specific and out of scope for
-               ; the specification.
-VENDOR_BIT   = %0x01:1
-
-               ; When the 'VENDOR_BIT' is zero, it is a Phoenix
-               ; compliant command, or is a Phoenix compliant
-               ; object that follows.
-               ; When the VENDOR_BIT is not set, the lower bits
-               ; are defined in this specification.
-PHOENIX_BIT  = %0x00:1
+unused24     = %x00:24
 
 ]]></artwork>

@@ -80,7 +80,7 @@
 		</t>
 		
 		<table>
-			<name>SERVER_CONFIGURE - ABNF/XDR Mapping</name>
+			<name>SERVER_CONFIGURE - ABNF/CBOR Mapping</name>
 			<thead>
 				<tr>
 					<th>
@@ -90,7 +90,7 @@
 						Description
 					</th>
 					<th>
-						XDR API
+						CBOR API
 					</th>
 				</tr>
 			</thead>
@@ -104,7 +104,7 @@
 						get, set, update, or be deleted.
 					</td>
 					<td>
-						xdr_Op()
+						cbor_Op()
 					</td>
 				</tr>
 				<tr>
@@ -117,7 +117,7 @@
 						key/pairs per Op.
 					</td>
 					<td>
-						xdr_ConfigSet()
+						cbor_ConfigSet()
 					</td>
 				</tr>
 				<tr>
@@ -130,7 +130,7 @@
 					</td>
 					<td>
 						<t>
-							xdr_ServerConfigure();
+							cbor_ServerConfigure();
 						</t>
 					</td>
 				</tr>
@@ -154,9 +154,9 @@
 		</section>
 
 		<section>
-			<name>SERVER_CONFIGURE - XDR</name>
+			<name>SERVER_CONFIGURE - CBOR</name>
 			<figure>
-				<name>SERVER_CONFIGURE - XDR</name>
+				<name>SERVER_CONFIGURE - CBOR</name>
 				<xi:include href="include/06-01-ServerConfigure-XDR.xml"/>
 			</figure>
 		</section>
@@ -219,9 +219,9 @@
 		</section>
 
 		<section>
-			<name>SERVER_CONFIGURE Reply - XDR</name>
+			<name>SERVER_CONFIGURE Reply - CBOR</name>
 			<figure>
-				<name>SERVER_CONFIGURE - XDR</name>
+				<name>SERVER_CONFIGURE - CBOR</name>
 				<xi:include href="include/06-02-ServerConfigure-XDR.xml"/>
 			</figure>
 		</section>

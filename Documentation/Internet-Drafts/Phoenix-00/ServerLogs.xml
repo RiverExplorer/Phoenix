@@ -74,7 +74,7 @@
 				Description
 			</td>
 			<td>
-				XDR API
+				API
 			</td>
 		</tr>
 	</thead>
@@ -87,7 +87,7 @@
 				Category
 			</td>
 			<td>
-				xdr_Category
+				cbor_Category
 			</td>
 		</tr>
 	</tbody>
@@ -104,7 +104,7 @@ xxx
 </section>
 
 <section>
-	<name>XXXX - XDR</name>
+	<name>XXXX - CBOR</name>
 	<figure>
 		<name>xxxx</name>
 	<artwork type="abnf" name="" align="left" alt=""><![CDATA[

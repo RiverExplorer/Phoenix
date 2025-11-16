@@ -6,7 +6,9 @@ namespace RiverExplorer::Phoenix
 	 */
 	class Iov
 	{
-		/* ... helper methods removed for brevity ... */
+		/*
+		 * Helper methods removed for brevity ...
+		 */
 
 	public:
 		/**

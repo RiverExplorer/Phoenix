@@ -111,7 +111,7 @@
 			using the current client login name, then the client
 			sends the AUTH command and appends as a second
 			command in the same packet, the clients CAPABILITY_PRE command
-			as shown in <xref target="AuthSummary01"/> (B & C).
+			as shown in <xref target="AuthSummary01"/> (B &amp; C).
 			Then the client waits for a server reply at
 			<xref target="AuthSummary01"/> (I):
 		</t>
@@ -138,7 +138,7 @@
 			[<xref target="AuthSummary01"/> (F)]
 			it knows the authentication failed, so the client
 			goes to start a normal authentication
-			process [<xref target="AuthSummary01"/> (K) & (Q)]
+			process [<xref target="AuthSummary01"/> (K) &amp; (Q)]
 		</t>
 		<t>
 			If the received command was a CAPABILITY_POST
@@ -146,7 +146,7 @@
 			the authentication passed and the client
 			is authenticated.
 			And starts any post authentication work.
-			[<xref target="AuthSummary01"/> (J & Y)]
+			[<xref target="AuthSummary01"/> (J &amp; Y)]
 		</t>
 
 	</section>

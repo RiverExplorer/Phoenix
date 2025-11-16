@@ -9,19 +9,15 @@
 	</t>
 	<t>
 		This protocol connects two endpoints over a network and facilitates
-		the secure and authorized transfer of MIME objects.
+		the secure and authorized transfer of MIME and other objects.
 	</t>
 	<t>
-		This is a binary protocol.
+		This is a binary protocol encoded using CBOR streaming.
 		The payload can be anything, text or binary.
 		This protocol was designed to reduce the number of back and forth
 		requests and replies between the client and server.
-		By using XDR as the format for transferring binary control
+		By using CBOR as the format for transferring binary control
 		information it is portable to any computer architecture.
-		<xref target="all-xdr">Complete XDR</xref> has the rpcgen definition for the protocol
-		defined in this specification.
-		And <xref target="all-abnf">Complete ABNF</xref> has the complete ABNF
-		for this protocol.
 	</t>
 	<t>
 		The basic connection starts in one of two modes.
@@ -56,6 +52,8 @@
 		which includes the supported authentication methods.
 		Then the client, using the information from the server starts
 		the authentication process.
+		On a successful authentication, the server sends the client
+		a post authentication capability packet with a new sequence number.
 	</t>
 	<t>
 		If the first packet the server receives is any of the supported
@@ -133,12 +131,12 @@
 			<t>
 				The packet header has one value, the total length
 				of the packet body, and payload sent as an
-				unsigned 32-bit integer	in network byte order.
+				CBOR unsigned integer.
 				The length does not include its own length.
 				It is the total length that follows the length value.
 			</t>
 			<table>
-				<name>Packet Header ABNF/XDR Mapping</name>
+				<name>Packet Header ABNF/CBOR Mapping</name>
 				<thead>
 					<tr>
 						<th>
@@ -148,7 +146,7 @@
 							Description
 						</th>
 						<th>
-							XDR API
+							CBOR API
 						</th>
 					</tr>
 				</thead>
@@ -164,7 +162,7 @@
 							</t>
 						</td>
 						<td>
-							xdr_PacketHeader()
+							cbor_PacketHeader()
 						</td>
 					</tr>
 				</tbody>
@@ -180,12 +178,12 @@
 				</figure>
 			</section>
 			<section>
-				<name>Packet Header XDR</name>
+				<name>Packet Header CBOR</name>
 				<t>
-					XDR Definition:
+					CBOR Definition:
 				</t>
 				<figure>
-					<name>Packet Header XDR</name>
+					<name>Packet Header CBOR</name>
 					<xi:include href="include/03-PacketHeader-XDR.xml"/>
 				</figure>
 			</section>
@@ -211,7 +209,7 @@
 				PacketBody details:
 			</t>
 			<table>
-				<name>Packet Body ABNF/XDR Mapping</name>
+				<name>Packet Body ABNF/CBOR Mapping</name>
 				<thead>
 					<tr>
 						<th>
@@ -224,7 +222,7 @@
 							Description
 						</th>
 						<th>
-							XDR API
+							CBOR API
 						</th>
 					</tr>
 				</thead>
@@ -234,13 +232,13 @@
 							Length
 						</td>
 						<td>
-							A number
+							An unsigned integer
 						</td>
 						<td>
 							The number of CMD objects in this packet.
 						</td>
 						<td>
-							xdr_Length()
+							cbor_Length()
 						</td>
 					</tr>
 					<tr>
@@ -256,6 +254,9 @@
 								This SEQ is an even number when initiated from
 								the client,	and an odd number when initiated
 								from the server.
+							</t>
+							<t>
+								Over the wire it is a CBOR unsigned integer.
 							</t>
 							<t>
 								The first SEQ value sent from the client is zero (0)
@@ -275,7 +276,7 @@
 							</t>
 						</td>
 						<td>
-							xdr_SEQ()
+							cbor_SEQ()
 						</td>
 					</tr>
 					<tr>
@@ -300,18 +301,20 @@
 							<t>
 								<br/>
 								The highest bit in the 32-bit value is
-								a VENDOR_BIT or PHOENIX_BIT.
-								So CMD covers vendor and phoenix commands.
+								the VENDOR_BIT.
+								CMD covers vendor and phoenix commands.
 							</t>
-							<t>
-								-Phoenix CMD range is: %x00000000-7fffffff.
-							</t>
-							<t>
-								-Vendor CMD range is: 80000000-fffffffe.
-							</t>
-							<t>
-								-With %xffffffff reserved.
-							</t>
+							<ul>
+								<li>
+									Phoenix CMD range is: %x00000000-7fffffff.
+								</li>
+								<li>
+									Vendor CMD range is: 80000000-fffffffe.
+								</li>
+								<li>
+									With %xffffffff reserved.
+								</li>
+							</ul>
 							<t>
 								All vendor commands are followed by another
 								32-bit Length value indicating how
@@ -323,7 +326,7 @@
 							</t>
 						</td>
 						<td>
-							xdr_Cmd()
+							cbor_Cmd()
 						</td>
 					</tr>
 					<tr>
@@ -337,12 +340,12 @@
 							<t>
 								The Payload is whatever data follows the command.
 								In some cases it is a blob of opaque data.
-								In other cases it is a structured XDR set of data.
+								In other cases it is a structured CBOR set of data.
 								See the specific CMD for details.
 							</t>
 						</td>
 						<td>
-							xdr_CmdPayload()
+							cbor_CmdPayload()
 						</td>
 					</tr>
 				</tbody>
@@ -368,9 +371,6 @@
 				specific vendor operation.
 				So caution must be used when creating vendor command
 				operation extensions.
-				If the vendor operation can not be performed by
-				client conforming to this specification, then
-				the command must also have the VENDOR_BIT set.
 			</t>
 			<t>
 				In this example the server is sending a CAPABILITY_PRE
@@ -397,13 +397,17 @@
 				Which is AUTH_Vendor_3 in this example.
 			</t>
 			<t>
-				This is an example of a CAPABILITY_PRE being sent
+				<xref target="AuthPreEx1"/>
+				is an example of a CAPABILITY_PRE being sent
 				from the server to the client.
 				A client that is conforming to this specification and
 				does not support any vendor extensions, would ignore the
 				AUTH_Vendor_3	and authenticate with AUTHMD5.
+				NOTE: This is how the application sees the data,
+				this is not the over the wire data as it is not
+				in CBOR format.
 			</t>
-			<figure>
+			<figure anchor="AuthPreEx1">
 				<name>Packet Body Non-Vendor- Diagram</name>
 				<artset>
 					<artwork align="center" type="ascii-art" src="Drawings/Packet-01.txt"/>
@@ -412,7 +416,7 @@
 			</figure>
 			
 			<t>
-				In this example, the server is telling the
+				In example <xref target="P01-01"/>, the server is telling the
 				client that it is using a vendor specific AUTHMD5
 				and a vendor specific AUTH_Vendor_e only.
 			</t>
@@ -456,9 +460,8 @@
 			</t>
 			<t>
 				Multiple commands may be sent in one packet.
-				And PHOENIX and non-vendor (NON-PHOENIX) commands may be sent
-				in one packet body by setting VENDOR_BIT (1)
-				or PHOENIX_BIT (0) in the packet.
+				And PHOENIX and VENDOR commands may be sent
+				in one packet body by setting VENDOR_BIT to (1).
 				This example shows two commands and the start of a third,
 				one that is a PHOENIX command	the other is a vendor command.
 			</t>
@@ -481,12 +484,12 @@
 				</figure>
 			</section>
 			<section>
-				<name>Packet Body XDR</name>
+				<name>Packet Body CBOR</name>
 				<t>
-					XDR Definition:
+					CBOR Definition:
 				</t>
 				<figure>
-					<name>Packet Body XDR</name>
+					<name>Packet Body CBOR</name>
 					<xi:include href="include/04-PacketBody-XDR.xml"/>
 				</figure>
 			</section>

@@ -58,7 +58,7 @@
 			They each have a unique identifier, called an ADMIN CMD.
 		</t>
 		<t>
-			All of their XDR API is: xdr_CMD().
+			All of their CBOR API is: cbor_CMD().
 		</t>
 		<table>
 			<name>Administration Comamnd Payload Operations</name>

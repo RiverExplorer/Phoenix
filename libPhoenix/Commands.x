@@ -1,8 +1,16 @@
+/**
+ * Project: Phoenix
+ * Time-stamp: <2025-03-24 14:05:41 doug>
+ *
+ * All objects that follow this declaration
+ * will be in this namespace.
+ * Pass-through lines (start with '%') will have
+ * to declare their one namespace.
+ */
+namespace RiverExplorer:Phoenix;
+
 #if defined RPC_HDR || defined RPC_XDR
 %/**
-% * Project: Phoenix
-% * Time-stamp: <2025-03-03 08:28:49 doug>
-% *
 % * @file Commands.x
 % * @author Douglas Mark Royer
 % * @date 24-FEB-20205
@@ -13,6 +21,13 @@
 % * or https://opensource.org/licenses/MIT for details.
 % *
 % * RiverExplorer is a trademark of Douglas Mark Royer
+% *
+% * Phoenix is a MIME Transport Protocol (MTP).
+% * Named Phoenix because it is a risen version version of the
+% * Lemonade project if the late 1990's.
+% *
+% * Unless otherwise specified, all of this code is original
+% * code by the author.
 % */
 #endif
 
@@ -27,7 +42,9 @@
  /*
 	* The commands.
 	* An XDR enum is 32-bits in size.
-	* With the VENDOR_BIT set to zero, making it not a vendor command.
+	* The most significant bit is called the VENDOR bit.
+	* When the VENDOR bit is set to '1', then the command is a
+	* vendor specific command and would not be in this list.
 	*/
 enum CMD_e {
 		 AUTHANONYMOUS = 0x26,
@@ -75,38 +92,15 @@ enum CMD_e {
 
 #ifdef RPC_HDR
 %/**
-% * The transport top level is simple.
-% * You can Send() a packet and get a packet back.
-% * Or you send a notification that receives nothing back.
-% * Or you send a broadcast message to all interested participants, with no
-% * reply expected.
-% */
-#endif
-
-#ifdef RPC_HDR
-%/**
 % * @fn RiverExplorer::Phoenix::Register_Cmd
-% * Set the callback for a command.
+% * This registers the code that will handle
+% * A specific command that is received.
+% * All registrants will be called.
+% * The registration callback is stored in an unordered list
+% * and there is no guarantee as to what the order will be
+% * when called.
 % *
-% * @param Cmd The command being registered.
-% *
-% * @param Callback The user supplied callback function.
-% *
-% * @note
-% * It is is recommended that each registered callback be thread safe.
-% */
-%namespace RiverExplorer::Phoenix
-%{
-%extern bool Register_Cmd(CMD_e Cmd, CommandCallback * Callback);
-%}
-#endif
-
-#ifdef RPC_HDR
-%/**
-% * @fn RiverExplorer::Phoenix::Register_Cmd
-% * Set the callback for a command.
-% *
-% * @param Cmd The command being registered.
+% * @param Cmd The command being registered for
 % *
 % * @param Callback The user supplied callback function.
 % *

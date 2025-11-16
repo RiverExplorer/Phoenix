@@ -11,7 +11,6 @@ TITLE		=	draft-royer-phoenix
 VERSION	=	00
 
 SOURCES.xml = \
-	ABNF.xml \
 	Abstract.xml \
 	AdminBinaryValues.xml \
 	AdminSummary.xml \
@@ -23,6 +22,7 @@ SOURCES.xml = \
 	CalendarSummary.xml \
 	CapabilityIndex.xml \
 	CapabilitySummary.xml \
+	CBOR.xml \
 	Commands.xml \
 	Definitions.xml \
 	EMailSummary.xml \
@@ -62,6 +62,8 @@ ARTWORK.src = \
 	AUTHCERT-02.txt \
 	AuthSummary-00.txt \
 	AuthSummary-01.txt \
+	FolderCapability-00.txt \
+	FolderCapability-Reply-00.txt \
 	IndexList-01.txt \
 	IndexList-02.txt \
 	IndexList-03.txt \
@@ -96,8 +98,6 @@ REFERENCES.xml = \
 	References/reference.RFC.9051.xml \
 	References/reference.RFC.2119.xml \
 	References/reference.RFC.8174.xml \
-	References/reference.rpcgen++.xml \
-	References/reference.rpcgendocs.xml \
 	References/reference.RFC.4506.xml \
 	References/reference.RFC.8446.xml
 
@@ -188,8 +188,10 @@ $(TARGET.html): ALL-ABNF.xml ALL-XDR.xml $(ARTWORK.svg) $(TOPDOC.xml) $(REFERENC
 	xml2rfc $(XML2RFC_FLAGS) --html -o $@ $(TOPDOC.xml) $(REMOVE_SVG_WARNING)
 
 $(TOPDOC.xml) : draft-00.xml ALL-ABNF.xml ALL-XDR.xml $(SOURCES.xml) $(REFERENCES.xml) $(INCLUDES) $(ARTWORK.txt) $(ARTWORK.svg)
-	soelim < draft-00.xml | sed '/^\.lf*/d' > temp.xml
+	soelim -r < draft-00.xml > temp.xml
 	xmllint --xinclude --format temp.xml > $@
+
+#	soelim -r < draft-00.xml | sed '/^\.lf*/d' > temp.xml
 
 ALL-ABNF.xml : $(ABNF)
 	echo "<section anchor='all-abnf'>" > $@

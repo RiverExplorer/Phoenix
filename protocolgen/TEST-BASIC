@@ -1,0 +1,24 @@
+#!/bin/tcsh -f
+echo "Testing Basic Values"
+
+/bin/rm -rf Created/Basic
+
+foreach f (  Tests/Basic/*.x )
+	set F = ${f:t:r}
+
+	echo "./BuildTemp/Linux/Debug/bin/protocolgen --namespace=RiverExplorer:Phoenix --input $f --out=Created/Basic/xdr/${F}_xdr.cpp --lang=CPP -DRPC_HDR -DXDR_HDR --xdr"
+	./BuildTemp/Linux/Debug/bin/protocolgen --namespace=RiverExplorer:Phoenix --input $f --out=Created/Basic/xdr/${F}_xdr.c --lang=CPP -DRPC_HDR -DXDR_HDR --xdr
+	
+	echo "./BuildTemp/Linux/Debug/bin/protocolgen --namespace=RiverExplorer:Phoenix --input $f --out=Created/Basic/headers/${F}.hpp --lang=CPP -DRPC_HDR -DXDR_HDR --headers"
+	./BuildTemp/Linux/Debug/bin/protocolgen --namespace=RiverExplorer:Phoenix --input $f --out=Created/Basic/headers/${F}.hpp --lang=CPP -DRPC_HDR -DXDR_HDR --headers
+		
+	echo "./BuildTemp/Linux/Debug/bin/protocolgen --namespace=RiverExplorer:Phoenix --input $f --out=Created/Basic/abnf/${F}.abnf --lang=CPP -DRPC_HDR -DXDR_HDR --abnf"
+	./BuildTemp/Linux/Debug/bin/protocolgen --namespace=RiverExplorer:Phoenix --input $f --out=Created/Basic/abnf/${F}.abnf --lang=CPP -DRPC_HDR -DXDR_HDR --abnf
+
+	echo "./BuildTemp/Linux/Debug/bin/protocolgen --namespace=RiverExplorer:Phoenix --input $f --out=Created/Basic/stubs/${F}.cpp --lang=CPP -DRPC_HDR -DXDR_HDR --stubs"
+	./BuildTemp/Linux/Debug/bin/protocolgen --namespace=RiverExplorer:Phoenix --input $f --out=Created/Basic/stubs/${F}.cpp --lang=CPP -DRPC_HDR -DXDR_HDR --stubs
+
+	echo "./BuildTemp/Linux/Debug/bin/protocolgen --namespace=RiverExplorer:Phoenix --input $f --out=Created/Basic/server/${F}.cpp --lang=CPP -DRPC_HDR -DXDR_HDR --server"
+	./BuildTemp/Linux/Debug/bin/protocolgen --namespace=RiverExplorer:Phoenix --input $f --out=Created/Basic/server/${F}.cpp --lang=CPP -DRPC_HDR -DXDR_HDR --server
+end
+

@@ -55,9 +55,9 @@
 	</section>
 
 	<section>
-		<name>SERVER_KICK_USER - XDR</name>
+		<name>SERVER_KICK_USER - CBOR</name>
 		<figure>
-			<name>SERVER_KICK_USER - XDR</name>
+			<name>SERVER_KICK_USER - CBOR</name>
 			<xi:include href="include/06-03-AdminKick-XDR.xml"/>
 		</figure>
 	</section>

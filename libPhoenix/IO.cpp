@@ -1,14 +1,24 @@
 /**
  * Project: Phoenix
+ * Time-stamp: <2025-03-26 16:38:03 doug>
  *
- * @file IO.cpp
- * @copyright (C) 2025 by Douglas Mark Royer (A.K.A. RiverExplorer)
+ * @file FILL-IN
  * @author Douglas Mark Royer
- * @date 24-FEB-20205
- *
- * licensed under CC BY 4.0.
- *
+ * @date 24-FEB-2025
+ * 
+ * @Copyright(C) 2025 by Douglas Mark Royer (A.K.A. RiverExplorer)
+ * 
+ * Licensed under the MIT License. See LICENSE file
+ * or https://opensource.org/licenses/MIT for details.
+ * 
  * RiverExplorer is a trademark of Douglas Mark Royer
+ *
+ * Phoenix is a MIME Transport Protocol (MTP).
+ * Named Phoenix because it is a risen version version of the
+ * Lemonade project if the late 1990's.
+ *
+ * Unless otherwise specified, all of this code is original
+ * code by the author.
  *
  * -This code takes received packets and dispatches them
  * The any registred function for the command.
@@ -66,7 +76,7 @@ namespace RiverExplorer::Phoenix
 	std::thread IO::_ListenerThread;
 
 	/**
-	 * List of active connections to listen to.
+	 * List of active connections to listen to for incomming data.
 	 */
 	std::map<int,IO::ActiveConnection*> IO::_ActiveConnections;
 
@@ -299,7 +309,10 @@ namespace RiverExplorer::Phoenix
 
 		return;
 	}
-	
+
+	// This is called from the client side to
+	// connect to a Phoenix server.
+	//
 	bool
 	IO::ActiveConnection::Open(const std::string & HostOrIp,
 														 uint16_t Port,

@@ -1,0 +1,300 @@
+\section{Commands Overview}
+Commands are all \ref{code:PacketBody}{ PacketBody} objects.
+
+The command descriptions are broken down into related sections in order
+to simplify the documentation.
+
+The client connects to the server, and then the
+server waits for a AUTHENTICATION command or a PRE
+authentication CAPABILITY command from the client.
+
+There are PRE and POST CAPABILITY commands.
+The PRE CAPABILITY command have to do with establishing
+an authenticated user or client connection.
+The POST authentication CAPABILITY command informs
+the other endpoint what it can do for the other endpoint
+on behalf of this now authenticated user or client.
+
+One or more commands are sent in each PacketBody
+sent between the client and server.
+
+There is no guarantee that any two clients and server
+can authenticate or process any data.
+The Phoenix protocol is an application level MIME transport
+protocol and the two endpoints might not implement the
+same MIME types.
+For example one might do only email, and the other might do
+only RSS feeds.
+Other servers and clients may be capable of multiple tasks.
+
+Commands can be documented commands or vendor commands.
+A vendor may publicly document its extensions, or they
+may elect to keep them proprietary and unavailable to other vendors.
+Vendor commands are allowed because the purpose of this protocol
+is to facilitate the transfer of MIME objects.
+It is not to guarantee every implementation can transfer
+any data to or through any other implementation.
+
+\subsection{Authentication Commands}
+AUTHENTICATION commands is the Authentication, authorization,
+accounting (AAA) process between a client and server.
+
+More than one authentication mechanisms may be required
+by a server.
+For example a server may require AUTHCERT\_TLS and AUTHCERT\_USER
+or perhaps AUTHCERT\_TLS and AUTHMD5.
+
+\subsubsection{New Client and Server Relationship}
+When a client has not had a successful authentication to a
+specific server, it sends its first packet as a PRE authentication
+CAPABILITY packet informing the server of the authentication mechanisms
+it supports.
+The list is prioritized.
+With the most preferred listed first.
+And the least preferred ones later in the list.
+
+Once the server gets this list, it picks the highest
+priority one it supports then then sends the client
+the servers PRE authentication CAPABILITY command listing only
+that authentication mechanism.
+The server may include any other PRE authentication CAPABILITY
+items to the client it may have in that command.
+
+If no common authentication mechanism are satisfactory,
+the server sends the client a BYE
+command and closes the connection.
+
+If the client gets a BYE command, it then knows that it can
+not communicate with this server and also closes its connection.
+
+If the client gets the servers PRE authentication CAPABILITY
+command, it attempts the agreed on authentication process
+using any possible additional CAPABILITY description
+restrictions or conditions provided in the server
+PRE authentication CAPABILITY contents.
+
+When the agreed on authentication mechanism works,
+the server sends its POST authentication CAPABILITY
+list to the client.
+
+When the agreed on authentication mechanism fails,
+the server a PRE authentication CAPABILITY command
+to the client.
+It can be the same as sent before, or modified.
+
+A server may at any time block or temporally block an IP address
+from attempting to start authentication again or too
+quickly after a failure.
+
+\subsubsection{Existing Client and Server Relationship}
+When a client has had a relationship to a specific server
+using a specific authentication mechanism it may bypass
+the PRE authentication CAPABILITY communications and send an
+AUTHENTICATION command when first connecting in order to reduce
+the round trips needed to start processing other commands.
+This is done by sending the AUTHENTICATION mechanism that had
+previously worked with this server as the first command
+in a PacketBody that also includes the clients PRE authentication
+CAPABILITY command.
+The first command is the AUTHENTICATION and the second included
+command is the clients PRE authentication CAPABILITY command.
+When this authentication succeeds, the server sends its POST
+authentication CAPABILITY back to the client as the indicator
+that it worked and the client is authenticated.
+
+If this initial authentication fails, client is not yet authenticated.
+And the server having already received the clients PRE authentication
+CAPABILITY command, picks the highest priority authentication
+mechanism they share and sends the client the servers PRE authentication
+command containing any other CAPABILITY items it may need to share.
+
+Then the authentication continues until success or failure.
+
+When a server, after examining the received client PRE authentication
+CAPABILITY command determines that they do not share any
+common authentication, the server sends the client a BYE
+command and closes the connection.
+The BYE command at this step informs the client that they
+share no common authentication mechanisms and also
+closes the connection.
+
+\subsubsection{AUTHANONYMOUS}
+An anonymous authentication would be allowed on
+servers that do not require a user to login to the system.
+An example could be a \textit{Really Simple Syndication} (RSS)
+feed that provides the latest product release notes available to anyone.
+
+Server administration need to ensure that absolutely anyone
+with network access has permission to connect to an AUTHANONYMOUS
+server.
+
+\subsubsection{AUTHCERT\_TLS}
+TLS authentication is done when the client connects to the
+server.
+
+They each validate the TLS certificate and certificate chain
+of the other.
+
+If they validate, the client is authenticated to the server.
+
+If they do not validate, the client may choose another authentication
+mechanism or disconnect from the server.
+
+A server may disconnect from the client if AUTHCERT\_TLS is required.
+
+\subsubsection{AUTHCERT\_USER}
+AUTHCERT\_USER is a secondary certificate that is used
+after the initial TLS connection.
+
+For example, if the user is travailing, they may have
+a portable certificate tool or software that is used
+to ensure that unknown or unfriendly hardware can not
+view the communications.
+
+The steps are:
+\begin{enumerate}
+\item Establish the TLS connection.
+\item Using the user certificate, encrypt all communication
+  from this point forward.
+  Doubling the encryption process.
+\end{enumerate}
+
+A client that implements AUTHCERT\_USER would need a way
+for a user to connect a device to the client in order
+to allow the data flow to go through the user supplied hardware.
+An example could be a specialty USB device that encrypts the data
+between the network and the client.
+
+\subsubsection{AUTHMD5}
+MD5 authentication is used in many protocols.
+The client, over a TLS connection sends the account name
+and the MD5 hashed password to the server.
+
+\subsubsection{BYE}
+When the client or server receives a BYE command,
+it has been informed that the other endpoint has closed
+or is closing the connection and that no further communications
+can take place on this connection.
+
+\subsection{Capability Commands}
+Capability commands are not a negotiation.
+Each endpoint informs the other endpoint of the type
+of transmissions it can process.
+
+There is no guarantee that any two clients and server
+can process any data.
+The Phoenix protocol is an application level MIME transport
+protocol and the two endpoints might not implement the
+same MIME types.
+For example one might do only email, and the other might do
+only calendar feeds.
+Other servers and clients may be capable of multiple tasks.
+
+\subsubsection{CAPABILITY\_PRE}
+A PRE authentication CAPABILITY is used before
+the endpoints are authenticated and contain minimal
+information.
+
+At a minimum a PRE authentication capability includes
+a prioritized list of authentication mechanisms it supports.
+It also includes a VENDOR\_ID which is used to let each
+endpoint know if they can transfer or perform vendor specific
+data or communications.
+
+\subsubsection{CAPABILITY\_POST}
+A POST authentication CAPABILITY is sent after a successful
+authentication informing the other endpoint of the functions
+that it can perform.
+
+A server may include the VENDOR\_ID value again, if after
+authentication the server determines the client an perform
+actions that are unique between the client and server.
+
+A vendor may publicly document its extensions, or they
+may elect to keep them proprietary and unavailable to other vendors.
+\subsubsection{VENDOR\_ID}
+
+\subsection{Control Commands}
+These are housekeeping command for the Phoenix protocol.
+
+\subsubsection{NOT\_SUPPORTED}
+A NOT\_SUPPORTED command is sent as the reply to a command
+not supported by the receiving endpoint.
+The sequence number of the received command is sent in
+the NOT\_SUPPORTED command to indicate which command
+is not supported.
+
+\subsubsection{PING}
+
+The ping command is only sent when the client implementation has
+determined it has waited too long for a command reply.
+The ping command is only initiated from the client.
+It is not valid for the server to send a ping command to a client.
+
+A ping command must not be sent before a successful authentication.
+
+The ping command MUST NOT be the first command sent to the server.
+It should only be sent when the client implementation determines
+it has waited too long for a reply.
+
+If the server supports the ping command, then a PING capability is
+sent in the CAPABILITY\_POST command.
+
+Sometimes servers are unavailable and can go down.
+A server could be down for maintenance, or in a shutdown mode.
+It might limit the number of simultaneous connections.
+It might be very busy.
+The packets might not be making it to the server because of network
+issues.
+
+When a ping command is received by the server:
+\begin{enumerate}
+\item When the server did not send PING capability in the post
+authentication capability list to the client.
+The server ignores the PING command.
+\item When the connection is not authenticated,
+  The server ignores the PING command.
+\item When the client is authenticated, and when the server is
+  available for processing commands.
+  Then the server replies with a ping reply with the same sequence number.
+\end{enumerate}
+
+If the server is alive and not available, the server will reply with
+a NotSupported command, with its sequence number set to the sequence
+number in the ping command.
+
+If a connected and authenticated client has been waiting for a reply
+or for some other reason needs to determine if the server is still
+available.
+It can send a ping command. If the server is still available, it
+sends a ping reply.
+If it is no longer available for any reason, it sends
+a NotSupported reply.
+
+A client MUST NOT send a ping command if it is waiting the results
+of a previously sent ping command.
+If the server is ignoring PING commands, a reply will never happen.
+
+A client MUST NOT send a ping command more frequently than 90\% of
+the SERVER\_TIMEOUT value that the server sent in the
+CAPABILITY\_POST command.
+
+Servers must give priority to ping commands.
+If possible, reply as soon as it receives the command.
+
+With servers that support PING, clients MUST NOT send any other
+command while waiting for the PING reply.
+
+The server MAY consider too many ping commands as a
+malfunctioning or malicious client and terminate the connection.
+
+Servers that are not threaded or can not reply to simultaneous
+or overlapping commands, MUST NOT include PING in their post
+authentication capability command.
+
+\subsubsection{RESERVED\_CMD}
+The RESERVED\_CMD is a placeholder for future extensions.
+Its value is 0xffffffff.
+
+\input{FileFolderCmd}
+\input{AdminCmd}

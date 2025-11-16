@@ -311,7 +311,7 @@
 			<table>
 				<thead>
 					<tr>
-						<td>Name</td><td>XDR Type</td><td>Description</td>
+						<td>Name</td><td>CBOR Type</td><td>Description</td>
 					</tr>
 				</thead>
 				<tbody>
@@ -347,9 +347,9 @@
 				<xi:include href="include/07-MDNRecord-ABNF.xml"/>
 			</section>
 			<section>
-				<name>MDNRecord - XDR</name>
+				<name>MDNRecord - CBOR</name>
 				<t>
-					XDR:
+					CBOR:
 				</t>
 				<xi:include href="include/07-MDNRecord-ABNF.xml"/>
 				<t>
@@ -360,10 +360,10 @@
 		<section>
 			<name>MDNEntry</name>
 			<table>
-				<name>MDMEntry ABNF/XDR Mapping</name>
+				<name>MDMEntry ABNF/CBOR Mapping</name>
 				<thead>
 					<tr>
-						<td>Name</td><td>XDR Type</td><td>Description</td>
+						<td>Name</td><td>CBOR Type</td><td>Description</td>
 					</tr>
 				</thead>
 				<tbody>
@@ -410,12 +410,12 @@
 				</figure>
 			</section>
 			<section>
-				<name>MDNEntry - XDR</name>
+				<name>MDNEntry - CBOR</name>
 				<t>
-					XDR:
+					CBOR:
 				</t>
 				<figure>
-					<name>MDNEntry - XDR</name>
+					<name>MDNEntry - CBOR</name>
 					<xi:include href="include/08-MDNEntry-XDR.xml"/>
 				</figure>
 			</section>

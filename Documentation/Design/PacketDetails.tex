@@ -34,13 +34,14 @@ _Pointers to \textit{Iov} objects, are what is stored in the
 out queue \textit{OQ}
 and in queue \textit{IQ} shown in figure \ref{fig:IOModel}
 
+
 \subsection{Command Packet}
 Here is a stripped down version of a single \textit{Command} and
 a \textit{PacketBody} object that is sent over the wire.
 The command packet is an over the wire packet, so it is defined in
 the XDR (.x) format:
 
-\lstinputlisting[caption={Iov Source},label={code:Iov}]{Include/PacketBody.x}
+\lstinputlisting[caption={Iov Source},label={code:PacketBody}]{Include/PacketBody.x}
 % For some reason the above command removes the first character of the
 % next word, so I added a '_' it will skip == hack fix.
 _Where \textit{SEQ\_t} is a unsigned 32-bit integer (\textit{uint32\_t}).

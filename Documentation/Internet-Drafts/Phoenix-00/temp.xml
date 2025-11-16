@@ -9,7 +9,7 @@
 <!-- Copyright 2025 RiverExplorer LLC and Douglas Mark Royer -->
 <rfc
   xmlns:xi="http://www.w3.org/2001/XInclude"
-	category="info"
+	category="std"
   docName="draft-royer-phoenix-00"
   ipr="trust200902"
   obsoletes=""
@@ -17,6 +17,8 @@
   submissionType="IETF"
   xml:lang="en"
   version="3"
+	indexInclude="true"
+	tocDepth="6"
 	sortRefs="true">
   <front>
     <title abbrev="Phoenix: Lemonade Risen Again">Phoenix: Lemonade Risen Again</title>
@@ -56,7 +58,7 @@
   <middle> 
     <xi:include href="RequirementsLanguage.xml"/>
     <xi:include href="Introduction.xml"/>
-    <xi:include href="ABNF.xml"/>
+    <xi:include href="CBOR.xml"/>
     <xi:include href="Definitions.xml"/>
 <!-- Copyright 2025 RiverExplorer LLC and Douglas Mark Royer -->
 
@@ -159,19 +161,15 @@
 	</t>
 	<t>
 		This protocol connects two endpoints over a network and facilitates
-		the secure and authorized transfer of MIME objects.
+		the secure and authorized transfer of MIME and other objects.
 	</t>
 	<t>
-		This is a binary protocol.
+		This is a binary protocol encoded using CBOR streaming.
 		The payload can be anything, text or binary.
 		This protocol was designed to reduce the number of back and forth
 		requests and replies between the client and server.
-		By using XDR as the format for transferring binary control
+		By using CBOR as the format for transferring binary control
 		information it is portable to any computer architecture.
-		<xref target="all-xdr">Complete XDR</xref> has the rpcgen definition for the protocol
-		defined in this specification.
-		And <xref target="all-abnf">Complete ABNF</xref> has the complete ABNF
-		for this protocol.
 	</t>
 	<t>
 		The basic connection starts in one of two modes.
@@ -206,6 +204,8 @@
 		which includes the supported authentication methods.
 		Then the client, using the information from the server starts
 		the authentication process.
+		On a successful authentication, the server sends the client
+		a post authentication capability packet with a new sequence number.
 	</t>
 	<t>
 		If the first packet the server receives is any of the supported
@@ -283,12 +283,12 @@
 			<t>
 				The packet header has one value, the total length
 				of the packet body, and payload sent as an
-				unsigned 32-bit integer	in network byte order.
+				CBOR unsigned integer.
 				The length does not include its own length.
 				It is the total length that follows the length value.
 			</t>
 			<table>
-				<name>Packet Header ABNF/XDR Mapping</name>
+				<name>Packet Header ABNF/CBOR Mapping</name>
 				<thead>
 					<tr>
 						<th>
@@ -298,7 +298,7 @@
 							Description
 						</th>
 						<th>
-							XDR API
+							CBOR API
 						</th>
 					</tr>
 				</thead>
@@ -314,7 +314,7 @@
 							</t>
 						</td>
 						<td>
-							xdr_PacketHeader()
+							cbor_PacketHeader()
 						</td>
 					</tr>
 				</tbody>
@@ -330,12 +330,12 @@
 				</figure>
 			</section>
 			<section>
-				<name>Packet Header XDR</name>
+				<name>Packet Header CBOR</name>
 				<t>
-					XDR Definition:
+					CBOR Definition:
 				</t>
 				<figure>
-					<name>Packet Header XDR</name>
+					<name>Packet Header CBOR</name>
 					<xi:include href="include/03-PacketHeader-XDR.xml"/>
 				</figure>
 			</section>
@@ -361,7 +361,7 @@
 				PacketBody details:
 			</t>
 			<table>
-				<name>Packet Body ABNF/XDR Mapping</name>
+				<name>Packet Body ABNF/CBOR Mapping</name>
 				<thead>
 					<tr>
 						<th>
@@ -374,7 +374,7 @@
 							Description
 						</th>
 						<th>
-							XDR API
+							CBOR API
 						</th>
 					</tr>
 				</thead>
@@ -384,13 +384,13 @@
 							Length
 						</td>
 						<td>
-							A number
+							An unsigned integer
 						</td>
 						<td>
 							The number of CMD objects in this packet.
 						</td>
 						<td>
-							xdr_Length()
+							cbor_Length()
 						</td>
 					</tr>
 					<tr>
@@ -406,6 +406,9 @@
 								This SEQ is an even number when initiated from
 								the client,	and an odd number when initiated
 								from the server.
+							</t>
+							<t>
+								Over the wire it is a CBOR unsigned integer.
 							</t>
 							<t>
 								The first SEQ value sent from the client is zero (0)
@@ -425,7 +428,7 @@
 							</t>
 						</td>
 						<td>
-							xdr_SEQ()
+							cbor_SEQ()
 						</td>
 					</tr>
 					<tr>
@@ -450,18 +453,20 @@
 							<t>
 								<br/>
 								The highest bit in the 32-bit value is
-								a VENDOR_BIT or PHOENIX_BIT.
-								So CMD covers vendor and phoenix commands.
+								the VENDOR_BIT.
+								CMD covers vendor and phoenix commands.
 							</t>
-							<t>
-								-Phoenix CMD range is: %x00000000-7fffffff.
-							</t>
-							<t>
-								-Vendor CMD range is: 80000000-fffffffe.
-							</t>
-							<t>
-								-With %xffffffff reserved.
-							</t>
+							<ul>
+								<li>
+									Phoenix CMD range is: %x00000000-7fffffff.
+								</li>
+								<li>
+									Vendor CMD range is: 80000000-fffffffe.
+								</li>
+								<li>
+									With %xffffffff reserved.
+								</li>
+							</ul>
 							<t>
 								All vendor commands are followed by another
 								32-bit Length value indicating how
@@ -473,7 +478,7 @@
 							</t>
 						</td>
 						<td>
-							xdr_Cmd()
+							cbor_Cmd()
 						</td>
 					</tr>
 					<tr>
@@ -487,12 +492,12 @@
 							<t>
 								The Payload is whatever data follows the command.
 								In some cases it is a blob of opaque data.
-								In other cases it is a structured XDR set of data.
+								In other cases it is a structured CBOR set of data.
 								See the specific CMD for details.
 							</t>
 						</td>
 						<td>
-							xdr_CmdPayload()
+							cbor_CmdPayload()
 						</td>
 					</tr>
 				</tbody>
@@ -518,9 +523,6 @@
 				specific vendor operation.
 				So caution must be used when creating vendor command
 				operation extensions.
-				If the vendor operation can not be performed by
-				client conforming to this specification, then
-				the command must also have the VENDOR_BIT set.
 			</t>
 			<t>
 				In this example the server is sending a CAPABILITY_PRE
@@ -547,13 +549,17 @@
 				Which is AUTH_Vendor_3 in this example.
 			</t>
 			<t>
-				This is an example of a CAPABILITY_PRE being sent
+				<xref target="AuthPreEx1"/>
+				is an example of a CAPABILITY_PRE being sent
 				from the server to the client.
 				A client that is conforming to this specification and
 				does not support any vendor extensions, would ignore the
 				AUTH_Vendor_3	and authenticate with AUTHMD5.
+				NOTE: This is how the application sees the data,
+				this is not the over the wire data as it is not
+				in CBOR format.
 			</t>
-			<figure>
+			<figure anchor="AuthPreEx1">
 				<name>Packet Body Non-Vendor- Diagram</name>
 				<artset>
 					<artwork align="center" type="ascii-art" src="Drawings/Packet-01.txt"/>
@@ -562,7 +568,7 @@
 			</figure>
 			
 			<t>
-				In this example, the server is telling the
+				In example <xref target="P01-01"/>, the server is telling the
 				client that it is using a vendor specific AUTHMD5
 				and a vendor specific AUTH_Vendor_e only.
 			</t>
@@ -606,9 +612,8 @@
 			</t>
 			<t>
 				Multiple commands may be sent in one packet.
-				And PHOENIX and non-vendor (NON-PHOENIX) commands may be sent
-				in one packet body by setting VENDOR_BIT (1)
-				or PHOENIX_BIT (0) in the packet.
+				And PHOENIX and VENDOR commands may be sent
+				in one packet body by setting VENDOR_BIT to (1).
 				This example shows two commands and the start of a third,
 				one that is a PHOENIX command	the other is a vendor command.
 			</t>
@@ -631,12 +636,12 @@
 				</figure>
 			</section>
 			<section>
-				<name>Packet Body XDR</name>
+				<name>Packet Body CBOR</name>
 				<t>
-					XDR Definition:
+					CBOR Definition:
 				</t>
 				<figure>
-					<name>Packet Body XDR</name>
+					<name>Packet Body CBOR</name>
 					<xi:include href="include/04-PacketBody-XDR.xml"/>
 				</figure>
 			</section>
@@ -744,7 +749,7 @@
 			They each have a unique identifier, called an ADMIN CMD.
 		</t>
 		<t>
-			All of their XDR API is: xdr_CMD().
+			All of their CBOR API is: cbor_CMD().
 		</t>
 		<table>
 			<name>Administration Comamnd Payload Operations</name>
@@ -1264,7 +1269,7 @@ AUTH Success             |
 			using the current client login name, then the client
 			sends the AUTH command and appends as a second
 			command in the same packet, the clients CAPABILITY_PRE command
-			as shown in <xref target="AuthSummary01"/> (B & C).
+			as shown in <xref target="AuthSummary01"/> (B &amp; C).
 			Then the client waits for a server reply at
 			<xref target="AuthSummary01"/> (I):
 		</t>
@@ -1291,7 +1296,7 @@ AUTH Success             |
 			[<xref target="AuthSummary01"/> (F)]
 			it knows the authentication failed, so the client
 			goes to start a normal authentication
-			process [<xref target="AuthSummary01"/> (K) & (Q)]
+			process [<xref target="AuthSummary01"/> (K) &amp; (Q)]
 		</t>
 		<t>
 			If the received command was a CAPABILITY_POST
@@ -1299,7 +1304,7 @@ AUTH Success             |
 			the authentication passed and the client
 			is authenticated.
 			And starts any post authentication work.
-			[<xref target="AuthSummary01"/> (J & Y)]
+			[<xref target="AuthSummary01"/> (J &amp; Y)]
 		</t>
 
 	</section>
@@ -1493,9 +1498,9 @@ Failed authentication:
 		</section>
 		
 		<section>
-			<name>Authentication - ANONYMOUS - XDR</name>
+			<name>Authentication - ANONYMOUS - CBOR</name>
 			<figure>
-				<name>Authentication - ANONYMOUS - XDR</name>
+				<name>Authentication - ANONYMOUS - CBOR</name>
 				<xi:include href="include/10-AuthAnonymous-XDR.xml"/>
 			</figure>
 		</section>
@@ -1740,9 +1745,9 @@ Failed authentication:
 		</section>
 		
 		<section>
-			<name>Authentication - MD5 - XDR</name>
+			<name>Authentication - MD5 - CBOR</name>
 			<figure>
-				<name>Authentication - MD5 - XDR</name>
+				<name>Authentication - MD5 - CBOR</name>
 				<xi:include href="include/09-AuthMD5-XDR.xml"/>
 			</figure>
 		</section>
@@ -1992,269 +1997,975 @@ Failed authentication:
 </section>
 
 <!-- Copyright 2025 RiverExplorer LLC and Douglas Mark Royer -->
-
 <section anchor="FOLDERS">
 	<name>File and Folder Commands Summary</name>
-
 	<t>
-		The file operations (FileOp) have protocol names.
-		Here are their protocol names and a breif description.
+		Remote systems have files and folders that are accessible.
+		And have files and folders that are not accessible.
+		This section covers only these files and folders for
+		which the authenticated users has at least read only access
+		to full access and control.
 	</t>
 	<t>
+		Read only files and folders could be historical archives,
+		news, email, calendar, or marketing information.
+		Anything that the owner of the files and folders wants
+		to share and keep unaltered.
+	</t>
+	<t>
+		The file operations (FileOp) here are a descriptive category
+		of several over the wire commands, there is no 'FileOp' command.
 		Implementations are not required to support any or all of these
 		commands.
 	</t>
 	<t>
-		
+		Folders might be nested.
+		That is one folder may contain one or more folders.
+		Each of which may contain folders.
+		Much like a computer folder structure.
+		Only folders and files that are read-only or are read-write
+		are returned in a list to the client.
+	</t>
+	<t>
+		Each file and folder has an ID.
+		A FOLDER_LIST command returns a list of files and folders, each
+		with their ID.
+		Most FileOps use this ID and not the name.
+		These IDs are guaranteed to not change during a session.
+		The server should attempt to preserve IDs across sessions.
 	</t>
 	<table>
 		<name>File and Folder Command List</name>
 		<thead>
 			<tr>
 				<th>Op Name</th>
-				<th>Valule</th>
+				<th>Value in hex</th>
 				<th>Brief Description.
 			</th></tr>
 		</thead>
 		<tbody>
 			<tr>
-				<td>FOLDER_CAPABILITY</td>
-				<td>%x13:32</td>
 				<td>
-					When sent as a command, request the list of
-					folder commands supported.
-					When sent as a reply, includes the list of
-					folder commands supported.
+					FOLDER_CAPABILITY
+					<br/>
+					<xref target="FO_Cap"/>
+				</td>
+				<td>%x13</td>
+				<td>
+					<t>
+						When sent as a command, request the list of
+						folder commands supported.
+					</t>
+					<t>
+						When FOLDER_CAPABILITY is sent as a reply,
+						this includes a CBOR type 4 array of
+						folder commands supported along with
+						any of their optional or mandatory parameters.
+					</t>
+					<t>
+						Only when an administrator changes the users
+						access while a client is active will this
+						list change during a session.
+						The client will be notified of any changes.
+						See <xref target="Notifications">Notifications</xref>.
+					</t>
 				</td>
 			</tr>
 			<tr>
-				<td>FOLDER_CREATE</td>
-				<td>%x14:32</td>
 				<td>
-					Create a new folder.
-					Also the name of the capability for this permission.
+					FOLDER_CREATE
+					<br/>
+					<xref target="FO_Create"/>
+				</td>
+				<td>%x14</td>
+				<td>
+					<t>
+						Create a new folder.
+						The reply will be success and folder ID, or a reason
+						the creation was denied.
+					</t>
+					<t>
+						Also the name of the capability for this permission.
+						This indicates that user has the capability
+						to create folders.
+						It does not guarantee they can create a specific
+						folder or folder hierarchy.
+					</t>
 				</td>
 			</tr>
 			<tr>
-				<td>FOLDER_COPY</td>
-				<td>%x15:32</td>
 				<td>
-					Copy a folder.
-					Also the name of the capability for this permission.
+					FOLDER_COPY
+					<br/>
+					<xref target="FO_Copy"/>
+				</td>
+				<td>%x15</td>
+				<td>
+					<t>
+						Copy a folder.
+						The reply will be success or a reason
+						the copy was denied.
+					</t>
+					<t>
+						Also the name of the capability for this permission.
+						This indicates that user has the capability
+						to copy folders.
+						It does not guarantee they can copy any specific
+						folder to any specific location available to
+						the user.
+					</t>
 				</td>
 			</tr>
 			<tr>
-				<td>FOLDER_DELETE</td>
-				<td>%x16:32</td>
 				<td>
-					Delete a folder.
-					Also the name of the capability for this permission.
+					FOLDER_DELETE
+					<br/>
+					<xref target="FO_Delete"/>					
+				</td>
+				<td>%x16</td>
+				<td>
+					<t>
+						Delete a folder.
+						The reply will be success and new folder ID, or a reason
+						the delete was denied.
+					</t>
+					<t>
+						Also the name of the capability for this permission.
+						This indicates that user has the capability
+						to delete folders.
+						It does not guarantee they can delete all folders
+						for which they have access 
+					</t>
 				</td>
 			</tr>
 			<tr>
-				<td>FOLDER_RENAME</td>
-				<td>%x17:32</td>
 				<td>
-					Rename a folder.
-					Also the name of the capability for this permission.
+					FOLDER_RENAME
+					<br/>
+					<xref target="FO_Rename"/>					
+				</td>
+				<td>%x17</td>
+				<td>
+					<t>
+						Rename a folder.
+						The reply will be success or a reason
+						the rename was denied. The folder ID will not be changed.
+					</t>
+					<t>
+						Also the name of the capability for this permission.
+						This indicates that user has the capability
+						to rename folders.
+						It does not guarantee they can rename any specific
+						folder for which the user has access.
+					</t>
 				</td>
 			</tr>
 			<tr>
-				<td>FOLDER_METADATA</td>
-				<td>%x18:32</td>
 				<td>
-					Get, set, and update information associated with the
-					folder.
-					File meta data is also returned with the FOLDER_OPEN
-					command.
+					FOLDER_METADATA
+					<br/>
+					<xref target="FO_Meta"/>					
+				</td>
+				<td>%x18</td>
+				<td>
+					<t>
+						Get, set, and update information associated with the
+						folder by ID.
+						The reply will be success and metadata permissions,
+						or a reason	the operation was denied.
+						All folders have a meta data object associated
+						with them, and the list may be empty.
+					</t>
+					<t>
+						Some file meta data is also returned with the FOLDER_OPEN
+						command.
+					</t>
+					<t>
+						This is not a CAPABILITY request or reply.
+					</t>
 				</td>
 			</tr>
 			<tr>
-				<td>FOLDER_MOVE</td>
-				<td>%x19:32</td>
 				<td>
-					Move a folder.
-					Also the name of the capability for this permission.
+					FOLDER_MOVE
+					<br/>
+					<xref target="FO_Move"/>					
+				</td>
+				<td>%x19</td>
+				<td>
+					<t>
+						Move a folder.
+						The reply will be success or a reason
+						the move was denied.
+						The folder ID will not be changed.
+					</t>
+					<t>
+						Also the name of the capability for this permission.
+						This indicates that user has the capability
+						to move folders.
+						It does not guarantee they can move any specific
+						folder for which the user has access.
+					</t>
 				</td>
 			</tr>
 			<tr>
-				<td>FOLDER_OPEN</td>
-				<td>%x1a:32</td>
 				<td>
-					Open a folder and get information about the folder
-					and files in the folder.
+					FOLDER_OPEN
+					<br/>
+					<xref target="FO_Open"/>
+				</td>
+				<td>%x1a</td>
+				<td>
+					<t>
+						Open an existing folder and get information about the folder,
+						its ID, and files in the folder.
+						The reply will be success or a reason
+						the open was denied.
+					</t>
+					<t>
+						All users can open for at least read only access
+						any folder they they were provided in a FOLDER_LIST
+						reply.
+						This is not a CAPABILITY reply or command.
+					</t>
 				</td>
 			</tr>
 			<tr>
-				<td>FOLDER_SHARE</td>
-				<td>%x1b:32</td>
 				<td>
-					Share a folder.
-					Also the name of the capability for this permission.
+					FOLDER_SHARE
+					<br/>
+					<xref target="FO_Share"/>
+				</td>
+				<td>%x1b</td>
+				<td>
+					<t>
+						Share a folder.
+						Share to a list or anyone.
+					</t>
+					<t>
+						The reply will be a success or a reason
+						the share was denied.
+					</t>
+					<t>
+						Also the name of the capability for this permission.
+						This indicates that user has the capability
+						to share folders.
+						It does not guarantee they can share any specific
+						folder for which the user has access.
+					</t>
 				</td>
 			</tr>
 			<tr>
-				<td>FOLDER_LIST</td>
-				<td>%x1c:32</td>
 				<td>
-					List folders and files.
-					Also the name of the capability for this permission.
+					FOLDER_LIST
+					<br/>
+					<xref target="FO_List"/>
+				</td>
+				<td>%x1c</td>
+				<td>
+					<t>
+						List folders and optional files available to the user.
+					</t>
+					<t>
+						The command may include zero or more folders ID's.
+						The top most folder has no name, and is an
+						empty string.
+						The top most folder is the default folder name.
+						SEE XREF-TODO.
+					</t>
+					<t>
+						When provided, the reply includes a list of files
+						within the folder.
+						The content of each index entry depends
+						on the type of file.
+						SEE XREF-TODO.
+					</t>
+					<t>
+						All clients may issue a FOLDER_LIST command.
+						The result could be empty.
+						This is not a CAPABILITY command or reply.
+					</t>
+					<t>
+						Only shared folders have their contents altered
+						during a session without the client initiating
+						the changes.
+						The client is notified of shared folder changes to
+						folders and files at runtime that were not initiated
+						by the client.
+						See <xref target="Notifications"/>
+					</t>
 				</td>
 			</tr>
 			
 			<tr>
-				<td>FILE_CREATE</td>
-				<td>%x1d:32</td>
 				<td>
-					Create a new file.
-					Also the name of the capability for this permission.
+					FILE_CREATE
+					<br/>
+					<xref target="FI_Create"/>
+				</td>
+				<td>%x1d</td>
+				<td>
+					<t>
+						Create a new file.
+						The reply will be success and a new file ID, or a reason
+						the create was denied.
+					</t>
+					<t>
+						Also the name of the capability for this permission.
+						This indicates that user has the capability
+						to create files.
+						It does not guarantee they can create any
+						file for which they have folder access.
+					</t>
 				</td>
 			</tr>
 
 			<tr>
-				<td>FILE_COPY</td>
-				<td>%x1e:32</td>
 				<td>
-					Copy a file.
-					Also the name of the capability for this permission.
+					FILE_COPY
+					<br/>
+					<xref target="FI_Copy"/>
+				</td>
+				<td>%x1e</td>
+				<td>
+					<t>
+						Copy a file.
+						The reply will be success and the new file ID, or a reason
+						the copy was denied.
+					</t>
+					<t>
+						Also the name of the capability for this permission.
+						This indicates that user has the capability
+						to copy files.
+						It does not guarantee they can copy any
+						file for which they have folder access.
+					</t>
 				</td>
 			</tr>
 
 			<tr>
-				<td>FILE_DELETE</td>
-				<td>%x1f:32</td>
 				<td>
-					Delete a file.
-					Also the name of the capability for this permission.
+					FILE_DELETE
+					<br/>
+					<xref target="FI_Delete"/>
+				</td>
+				<td>%x1f</td>
+				<td>
+					<t>
+						Delete a file.
+						The reply will be success or a reason
+						the delete was denied.
+					</t>
+					<t>
+						Also the name of the capability for this permission.
+						This indicates that user has the capability
+						to delete files.
+						It does not guarantee they can delete any
+						file for which they have folder access.
+					</t>
 				</td>
 			</tr>
 			<tr>
-				<td>FILE_RENAME</td>
-				<td>%x20:32</td>
 				<td>
-					Rename a file.
-					Also the name of the capability for this permission.
+					FILE_RENAME
+					<br/>
+					<xref target="FI_Rename"/>
+				</td>
+				<td>%x20</td>
+				<td>
+					<t>
+						Rename a file.
+						The reply will be success or a reason
+						the rename was denied.
+						The file ID will not change.
+					</t>
+					<t>
+						Also the name of the capability for this permission.
+						This indicates that user has the capability
+						to rename files.
+						It does not guarantee they can rename any
+						file for which they have folder access.
+					</t>
 				</td>
 			</tr>
 			<tr>
-				<td>FILE_METADATA</td>
-				<td>%x21:32</td>
 				<td>
-					Get, set, and update information associated with the
-					folder.
-					File meta data is also returned with the FOLDER_OPEN
-					command.
+					FILE_METADATA
+					<br/>
+					<xref target="FI_Meta"/>
+				</td>
+				<td>%x21</td>
+				<td>
+					<t>
+						Get, set, and update information associated with the
+						file.
+						The reply will be success or a reason
+						the operation was denied.
+						All files have a meta data object associated
+						with them, and the list may be empty.
+					</t>
+					<t>
+						Some file meta data is also returned with
+						the FOLDER_OPEN	command.
+					</t>
+					<t>
+						This is not a CAPABILITY request or reply.
+						All users have access to the meta data
+						for files they have access to.
+						The list of meta data returned may be restricted
+						depending on the authenticated user.
+					</t>
 				</td>
 			</tr>
 			<tr>
-				<td>FILE_MOVE</td>
-				<td>%x22:32</td>
 				<td>
-					Move a file.
-					Also the name of the capability for this permission.
+					FILE_MOVE
+					<br/>
+					<xref target="FI_Move"/>
+				</td>
+				<td>%x22</td>
+				<td>
+					<t>
+						Move a file.
+						The reply will be success or a reason
+						the move was denied.
+						The file ID will not change.
+					</t>
+					<t>
+						Also the name of the capability for this permission.
+						This indicates that user has the capability
+						to move files.
+						It does not guarantee they can move any
+						file for which they have folder access.
+					</t>
 				</td>
 			</tr>
 			<tr>
-				<td>FILE_SHARE</td>
-				<td>%x23:32</td>
 				<td>
-					Share a file.
-					Also the name of the capability for this permission.
+					FILE_SHARE
+					<br/>
+					<xref target="FI_Share"/>
+				</td>
+				<td>%x23</td>
+				<td>
+					<t>
+						Share a file.
+						The reply will be success or a reason
+						the share was denied.
+					</t>
+					<t>
+						Also the name of the capability for this permission.
+						This indicates that user has the capability
+						to share files.
+						It does not guarantee they can share any
+						file for which they have folder access.
+					</t>
 				</td>
 			</tr>
 			<tr>
-				<td>FILE_GET</td>
-				<td>%x24:32</td>
 				<td>
-					Get a file.
-					Also the name of the capability for this permission.
+					FILE_GET
+					<br/>
+					<xref target="FI_Get"/>
+				</td>
+				<td>%x24</td>
+				<td>
+					<t>
+						Get file contents.
+					</t>
+					<t>
+						All files provided in FOLDER_LIST command
+						are available to the client and may
+						be read only.
+					</t>
+					<t>
+						The reply will be the file contents, with
+						optional index information for MIME objects.
+						Or a reason for the failure.
+					</t>
+					<t>
+						This is not a CAPABILITY request or reply.
+						All users may get the file contents
+						for any file provided to the in the FOLDER_LIST
+						reply.
+					</t>
 				</td>
 			</tr>
 			<tr>
-				<td>FILE_MODIFY</td>
-				<td>%x25:32</td>
 				<td>
-					Modify the contents of an existing file.
-					Also the name of the capability for this permission.
+					FILE_MODIFY
+					<br/>
+					<xref target="FI_Modify"/>
+				</td>
+				<td>%x25</td>
+				<td>
+					<t>
+						Modify the contents of an existing file.
+						The reply will be success or a reason
+						the modify was denied.
+					</t>
+					<t>
+						The reply will be a success with the contents
+						updated, or a reason for the denial.
+					</t>
+					<t>
+						All client may issue FILE_MODIFY commands.
+						The contents of the folder index might
+						have a read only attribute for any file.
+						A user may not modify the contents
+						of read only files.
+					</t>
+					<t>
+						This is not a CAPABILITY request or reply.
+					</t>
 				</td>
 			</tr>
 		</tbody>
 	</table>
 
-	<section>
-		<name>File and Folder - FOLDER_CAPABILITY</name>
+	<section anchor="FO_Cap">
+		<name>Folder - FOLDER_CAPABILITY</name>
+		<t>
+			As part of the successful authentication reply,
+			the server sends the client a list
+			of FileOps allowed by the client.
+			This list includes zero or more folder
+			capabilities the authenticated client
+			is allowed to issue.
+		</t>
+		<t>
+			The only time this list changes is if an administrator
+			alters the authenticated client access while
+			the session is active.
+			The client will be notified of any changes.
+			See <xref target="Notifications">Notifications</xref>.
+			Unless the client receives such a notification,
+			there is no need for the client to reissue
+			a FOLDER_CAPABILITY request.
+		</t>
+
+		<section anchor="FO_Cap_Detail_CMD">
+			<name>FOLDER_CAPABILITY Command (%x13) - Request</name>
+			<t>
+				A FOLDER_CAPABILITY request does not have any
+				parameters.
+				It is a request for all of the folder
+				commands available to the authenticated user
+			</t>
+
+			<section anchor="FO_Cap_Detail_ABNF">
+				<name>FOLDER_CAPABILITY Request ABNF</name>
+				<t>
+					This is transmitted as a CBOR major type 0, unsigned
+					integer	with a hex value of %x13.
+				</t>
+				<xi:include href="include/FOLDER_CAPABILITY_REQUEST-ABNF.xml"/>
+			</section>
+
+			<section anchor="FO_Cap_Detail_Bits">
+				<name>FOLDER_CAPABILITY Request Example</name>
+				<t>
+					A FOLDER_CAPABILITY request
+					has the vendor bit set to zero.
+					This is transmitted as a CBOR major type 0, unsigned
+					integer	with a hex value of %x13.
+					<xref target="FO_Cap_Detail_Bits_Figure"/> is a
+					Phoenix packet payload content
+					value for making a FOLDER_CAPABILITY request.
+					This is in the payload part of a Phoenix packet.
+				</t>
+				<figure anchor="FO_Cap_Detail_Bits_Figure">
+					<name>FOLDER_CAPABILITY over the wire</name>
+					<artset>
+						<artwork align="left" type="ascii-art" src="Drawings/FolderCapability-00.txt"/>
+						<artwork align="left" type="svg" src="Generated/FolderCapability-00.svg"/>
+					</artset>
+				</figure>
+			</section>
+		</section>	
+		<section anchor="FO_Cap_Detail_Reply">
+			<name>FOLDER_CAPABILITY Reply (%x13)</name>
+			<t>
+				The reply is in a Phoenix packet reply
+				payload.
+				The reply is a CBOR major type 4 array.
+				Each element of the array is a FOLDER_CAPABILITY
+				with any optional or mandatory parameters.
+			</t>
+			<t>
+				<xref target="F0_Cap_Detail_Reply_Bits"/>
+				is an example of a session with only read-only access.
+				In this example, the user can open folders,
+				list folders, get the meta data for folders,
+				get the metadata for files, and get files,
+				and one vendor specific capability.
+			</t>
+			<figure anchor="F0_Cap_Detail_Reply_Bits">
+				<xi:include href="Drawings/FolderCapability-Reply-00.txt"/>					
+			</figure>
+			<t>
+				The example FOLDER_CAPABILITY reply
+				in <xref target="F0_Cap_Detail_Reply_Bits"/> contains
+				the folder commands the client may issue:
+			</t>
+			<artwork align="left" type="ascii-art">
+ExampleCapabilityRepy
+        = CBOR_FIXED_SIZE_ARRAY with 8 entries
+          FOLDER_OPEN
+          FOLDER_LIST
+          FOLDER_METADATA FOLDER_METATDATA_PARAMETERS
+          FILE_METADATA FILE_METADATA_PARAMETERS
+          FILE_GET
+          A VENDOR specific command
+			</artwork>
+<section anchor="FO_Cap_Reply_CBOR">
+	<name>CBOR</name>
+	<figure anchor="FO_Cap_Reply_CBOR_Figure">
+		<name>CBOR Definition</name>
+		<artwork align="left" type="ascii-art">
+<![CDATA[
+// The FOLDER_METADATA and FILE_METADATA
+// capabilities return the OpPermissions
+// allowed in the session.
+//
+// Four bits, each one set or not set.
+// When the bit is set, the client
+// is allowed to perform the operation
+// on the meta data (or not when not set).
+//
+// NOTE: These are operations on the
+// meta data, not the file or folder data.
+//
+BitMask:4 OpPermission {
+ OpSetBitMask     = 0x01,
+ OpGetBitMask     = 0x02,
+ OpUpdateBitMask  = 0x04,
+ OpDeleteBitMask  = 0x08
+};
+
+// Each entry in FOLDER_CAPABILITY reply is
+// one of these enumerated REPLY values.
+// 
+enum FolderCapabilityReply_e {
+  FOLDER_CREATE_REPLY = FOLDER_CREATE,
+  FOLDER_COPY_REPLY = FOLDER_COPY,
+  FOLDER_RENAME_REPLY = FOLDER_RENAME,
+  FOLDER_METADATA_REPLY = FOLDER_METADATA,
+  FOLDER_MOVE_REPLY = FOLDER_MOVE,
+  FOLDER_OPEN_REPLY = FOLDER_OPEN,
+  FOLDER_SHARE_REPLY = FOLDER_SHARE,
+  FOLDER_LIST_REPLY = FOLDER_LIST,
+  FILE_CREATE_REPLY = FILE_CREATE,
+  FILE_COPY_REPLY = FILE_COPY,
+  FILE_DELETE_REPLY = FILE_DELETE,
+  FILE_RENAME_REPLY = FILE_RENAME,
+  FILE_METADATA_REPLY = FILE_METADATA,
+  FILE_MOVE_REPLY = FILE_MOVE,
+  FILE_SHARE_REPLY = FILE_SHARE,
+  FILE_GET_REPLY = FILE_GET,
+  FILE_MODIFY_REPLY = FILE_MODIFY,
+  VENDOR_FOLDER_REPLY = VENDOR_COMMAND
+};
+
+// In this version, each FOLDER CAPABILITY command REPLY
+// has (1) no additional data (void), (2) or it
+// has meta data permission values (OpPermissions).
+//
+union FolderCapabilityReplyEntry (FolderCapabiltyReply_e Cmd) {
+  OpPermission  Permissions;
+  void;
+};
+
+// The FOLDER_CAPABILITY reply:
+// A variable list of capabilities in the reply.
+// And is sent back as a CBOR major type 4 array.
+//
+struct FolderCapabilityReply
+    FolderCapabilityReplyEntry Capabilities<>;
+};
+
+]]>	
+		</artwork>
+	</figure>
+</section>
+<section anchor="FO_Cap_Reply_Code">
+<name>Code Example</name>
+<sourcecode type="c++">
+<![CDATA[
+/**
+ * Example code to extract the data and process
+ * the FOLDER_CAPABILITY reply.
+ */
+ void
+ ProcessFileFolderCapabilityReply(Session & Session,
+                                  PhoenixPacket & Packet)
+ {
+   PhoenixPayload * Payload = Packet.GetPayload();
+
+   // Default to no supported capabilities.
+   //
+   Session->DisableAllCapabilities();
+
+   if (Payload != nullptr && Payload.size() > 0) {
+     Capability                  * OneCapability;
+     Capability::const_iterator    It;
+
+     for (It = Payload->cbegin(); It != Payload->cend(); It++) {
+       OneCapability = *It;
+
+       if (VendorBitSet(OneCapability) {
+         Session.AddVendorCapability(OneCapability)
+
+       } else {
+           switch (OneCapability->Name) {
+
+           case FOLDER_CREATE:
+             Session->CanCreateFolders(true);
+             break;
+
+           case FOLDER_COPY:
+             Session->CanCopyFolders(true);
+             break;
+
+           case FOLDER_DELETE:
+             Session->CanDeleteFolders(true);
+             break;
+
+           case FOLDER_RENAME:
+             Session->CanRenameFolders(true);
+             break;
+
+           case FOLDER_METADATA:
+             OpPermissions Allowed = OneCapability->GetOpPermissions());
+
+             if (Allowed & OpSetBitMask) {
+               Session->CanSetFolderMetaData(true);
+             }
+             if (Allowed & OpGetBitMask) {
+               Session->CanGetFolderMetaData(true);
+             }
+             if (Allowed & OpUpdateBitMask) {
+               Session->CanUpdateFolderMetaData(true);
+             }
+             if (Allowed & OpDeleteBitMask) {
+               Session->CanDeleteFolderMetaData(true);
+             }
+             break;
+
+           case FOLDER_MOVE:
+             Session->CanMoveFolders(true);
+             break;
+
+           case FOLDER_OPEN:
+             Session->CanOpenFolders(true);
+             break;
+
+           case FOLDER_SHARE:
+             Session->CanShareFolders(true);
+             break;
+
+           case FOLDER_LIST:
+             Session->CanListFolders(true);
+             break;
+
+           case FILE_CREATE:
+             Session->CanCreateFiles(true);
+             break;
+
+           caes FILE_COPY:
+             Session->CanCopyFiles(true);
+             break;
+
+           case FILE_DELETE:
+             Session->CanDeleteFiles(true);
+             break;
+
+           case FILE_RENAME:
+             Session->CanRenameFiles(true);
+             break;
+
+           case FILE_METADATA:
+             OpPermissions Allowed = OneCapability->GetOpPermissions());
+
+             if (Allowed & OpSetBitMask) {
+               Session->CanSetFileMetaData(true);
+             }
+             if (Allowed & OpGetBitMask) {
+               Session->CanGetFileMetaData(true);
+             }
+             if (Allowed & OpUpdateBitMask) {
+               Session->CanUpdateFileMetaData(true);
+             }
+             if (Allowed & OpDeleteBitMask) {
+               Session->CanDeleteFileMetaData(true);
+             }
+             break;
+
+           case FILE_MOVE:
+             Session->CanMoveFiles(true);
+             break;
+
+           case FILE_SHARE:
+             Session->CanShareFiles(true);
+             break;
+
+           case FILE_GET:
+             Session->CanGetFiles(true);
+             break;
+
+           case FILE_MODIFY
+             Session->CanModifyFiles(true);
+             break;
+
+           default:
+             ProcessError("Unknown FOLDER_CAPABILITY reply.");
+             break;
+       }
+     }
+   }
+ }
+]]>
+</sourcecode>
+</section>
+		</section>
 	</section>
 
-	<section>
+	<section anchor="FO_Create">
 		<name>File and Folder - FOLDER_CREATE</name>
 	</section>
 
-	<section>
+	<section anchor="FO_Copy">
 		<name>File and Folder - FOLDER_COPY</name>
 	</section>
 
-	<section>
+	<section anchor="FO_Delete">
 		<name>File and Folder - FOLDER_DELETE</name>
 	</section>
 
-	<section>
+	<section anchor="FO_Rename">
 		<name>File and Folder - FOLDER_RENAME</name>
 	</section>
 
-	<section>
+	<section anchor="FO_Meta">
 		<name>File and Folder - FOLDER_METADATA</name>
 	</section>
 
-	<section>
+	<section anchor="FO_Move">
 		<name>File and Folder - FOLDER_MOVE</name>
 	</section>
 
-	<section>
+	<section anchor="FO_Open">
 		<name>File and Folder - FOLDER_OPEN</name>
 	</section>
 
-	<section>
+	<section anchor="FO_List">
 		<name>File and Folder - FOLDER_LIST</name>
+		<t>
+			When a client successfully authenticates,
+			part of the success reply is a list of
+			folders the client has access to.
+		</t>
+		<t>
+			All changes to files, folder, or access
+			not performed by the client will
+			cause a notification to be sent to the client.
+			(See <xref target="Notifications">Notifications</xref>)
+		</t>
+		<t>
+			A FOLDER_LIST command returns an unordered array of File
+			and Folder entries (FF entry).
+			Each entry indicates if the item is a file or folder,
+			its name, its ID (FFID), if it is shared with other users,
+			any meta data, and if the user has read-only or read-write	access
+		</t>
+		<t>
+			The meta data has two parts.
+		</t>
+		<ul>
+			<li>
+				Folder and File Meta data associated with the folder or file.
+			</li>
+			<li>
+				User Meta data associated with the folder or file.
+			</li>
+		</ul>
+		<t>
+			Folder and File Meta data contains persistent information about
+			the folder or file.
+			Such as its size, index information, and other persistent
+			information important to the application.
+		</t>
+		<t>
+			User Meta data contains information about if the contents
+			has been viewed and other application specific information
+			unique to each user.
+		</t>
+		<t>
+			The FOLDER_LIST command has optional parameters.
+			The default is to get just the file and folder index (FF).
+		</t>
+		<ul>
+			<li>The client can ask for meta data for folders.</li>
+			<li>The client can ask for meta data for files.</li>
+			<li>The client can ask MIME index information for files.</li>
+		</ul>
+		<section anchor="FF_Entry">
+			<name>A File and Folder (FF) entry</name>
+			<t>
+				<![CDATA[
+				FF = Name FFID Shared:1 RW:1
+
+				string Name<>;
+				uint64_t FFID;
+				bits     Shared:1
+				bits     RW:1
+				]]>
+				
+			</t>
+		</section>
+		<section anchor="FolderListReply">
+			<name>FOLDER_LIST - Reply</name>
+		</section>
 	</section>
 
-	<section>
+	<section anchor="FO_Share">
 		<name>File and Folder - FOLDER_SHARE</name>
 	</section>
 
-	<section>
+	<section anchor="FI_Create">
 		<name>File and Folder - FILE_CREATE</name>
 	</section>
 
-	<section>
+	<section anchor="FI_Copy">
 		<name>File and Folder - FILE_COPY</name>
 	</section>
 
-	<section>
+	<section anchor="FI_Delete">
 		<name>File and Folder - FILE_DELETE</name>
 	</section>
 
-	<section>
+	<section anchor="FI_Rename">
 		<name>File and Folder - FILE_RENAME</name>
 	</section>
 
-	<section>
+	<section anchor="FI_Meta">
 		<name>File and Folder - FILE_METADATA</name>
 	</section>
 
-	<section>
+	<section anchor="FI_Modify">
 		<name>File and Folder - FILE_MOVE</name>
 	</section>
 
-	<section>
+	<section anchor="FI_Move">
+		<name>File and Folder - FILE_MOVE</name>
+	</section>
+
+	<section anchor="FI_Share">
 		<name>File and Folder - FILE_SHARE</name>
 	</section>
 
-	<section>
+	<section anchor="FI_Get">
 		<name>File and Folder - FILE_GET</name>
-	</section>
-
-	<section>
-		<name>File and Folder - FILE_MODIFY</name>
 	</section>
 
 </section>
@@ -2469,13 +3180,525 @@ Failed authentication:
 </section>
 
 </section>
-<!--    <xi:include href="Commands.xml"/> -->
-    <xi:include href="Shared.xml"/>
-    <xi:include href="MetaData.xml"/>
+<section>
+	<name>Meta Data with Shared Objects</name>
+	<t>
+		When a server implementation allows shared objects,
+		the meta data returned to the client may be different
+		depending on the authenticated user.
+		Some users may have read only copies, other may be
+		able to delete the object.
+	</t>
+	<t>
+		When a shared object is deleted, it is marked as deleted for
+		only the user that issued the delete.
+	</t>
+	<t>
+		When a shared object is expunged, its access is removed
+		for the user that issued the expunge.
+		After all users have expunged the object, then it is
+		removed by the server.
+	</t>
+	<t>
+		There are two kinds of expunge for shared objects.
+		Forced and Delayed.
+	</t>
+	<t>
+		Server implementations must reject attempts to fetch or view
+		a folder or file or any of its meta data when an expunge has started,
+		and not yet completed.
+	</t>
+	<ul>
+		<li>
+			<t>
+				Forced:
+			</t>
+			<t>
+				A forced expunge can be the result of security policies
+				at the server, site, or administrators discretion.
+				This also is how timed messages are deleted.
+			</t>
+			<t>
+				In order for a shared object that is expunged to not
+				force an immediate re-index for all clients, when
+				the server gets a forced expunge, the server sends
+				an expunge to all clients, where the client MUST immediately make
+				the object not show	to the user and MUST invalidate
+				any file, cached, or memory copy of the data the client
+				has control over.
+				Then when convenient, the client can do a re-index
+				of the folder.
+				When a user is viewing the object when an expunge
+				arrives, the client must inform the user that the data
+				is no longer available and replace the user view of
+				the data with an empty object or move the view to
+				another object.
+			</t>
+			<t>
+				Server implementations must prioritize forced expunge notices
+				to the clients and immediately reject all attempts to read,
+				view, copy, or access meta data.
+			</t>
+		</li>
+		<li>
+			<t>
+				Delayed:
+			</t>
+			<t>
+				The user is informed the MIME object is no longer available.
+				The client implementation may continue to show the object.
+				The client may copy the MIME object, unless tagged as
+				NoCopy.
+			</t>
+			<t>
+				The next time the client does an expunge the object will be
+				expunged from the client.
+			</t>
+			<t>
+				When a client application closes, all delayed expunges
+				MUST occur at exit.
+			</t>
+			<t>
+				When a client applications starts the client MUST check for
+				delayed expunges that have not been processed and expunge them
+				and not	allow the user to see them.
+			</t>
+		</li>
+	</ul>
+</section>
+<section anchor="Notifications">
+	<name>Notifications</name>
+	<t>
+		TODO
+	</t>
+</section>
+<!-- Copyright 2025 RiverExplorer LLC and Douglas Mark Royer -->
+
+<section anchor="META_DATA" xmlns:xi="http://www.w3.org/2001/XInclude">
+	<name>Meta Data</name>
+	<t>
+		In this specification a file and a MIME object are used
+		interchangeably.
+		Meta Data is data that is associated with the MIME object
+		and not contained within the MIME object.
+		Meta Data should never be stored in the MIME object as altering
+		the MIME object would invalidate the index information and
+		can invalidate digital signature and encryption information.
+	</t>
+	<t>
+		Meta Data for the folder and MIME objects is returned in
+		a FOLDER_OPEN, FILE_OPEN, FILE_METADATA, or FOLDER_METADATA command.
+		Meta Data can be set and updated by the client using FILE_METADATA
+		or FOLDER_METADATA commands.
+	</t>
+	<t>
+		Most are 8-bit boolean values that are set to false (%x00) or true (%x01).
+		A value that does not exists is the same as a false.
+	</t>
+	<t>
+		Meta data can be global to the object.
+		That is once tagged (or not tagged) the attribute shows up for all
+		users.
+		Or it can be user specific meta data.
+		User specific meta data does not show up for other users.
+	</t>
+	<t>
+		Many have the same or similar name and meaning as they do
+		in <xref target="RFC9051">IMAP</xref>.
+	</t>
+
+	<section>
+		<name>Meta Data - Answered</name>
+		<t>
+			This Meta Data only applies to files.
+		</t>
+		<t>
+			When true, the object has been replied to by the client.
+			This has the same meaning as \Answered does in IMAP.
+		</t>
+		<t>
+			This value can be set and unset.
+			This is user specific meta data because it
+			also applies to shared folders and files.
+		</t>
+	</section>
+	
+	<section>
+		<name>Meta Data - Attributes</name>
+		<t>
+			This object has been tagged with special attributes.
+			It is a list of strings with matching values.
+		</t>
+		<t>
+			User defined attributes MUST start with "X-".
+			These are not portable between implementations
+			and no attempt should be made to copy these
+			between implementations.
+		</t>
+		<t>
+			Non user defined attributes are described
+			in other sections or specifications.
+		</t>
+		<t>
+			This can be user specific meta data or global meta data.
+			See the specific attribute documentation.
+		</t>
+	</section>
+	
+	<section>
+		<name>Meta Data - Deleted</name>
+		<t>
+			When true, this object has been marked as deleted
+			and has not yet been expunged.
+			This has the same meaning as \Deleted does in IMAP.
+		</t>
+		<t>
+			For shared objects, an expunge removes the
+			user from shared access to the file.
+			And the actual expunge is only processed
+			when all shared users have expunged
+			the object.
+		</t>
+		<t>
+			This value can be set and unset.
+			This is user specific meta data because it
+			also applies to shared folders and files.
+		</t>
+	</section>
+	
+	<section>
+		<name>Meta Data - Draft</name>
+		<t>
+			This Meta Data only applies to files.
+		</t>
+		<t>
+			When true, this object is incomplete and not ready.
+		</t>
+		<t>
+			This has the same meaning as \Draft does in IMAP.
+		</t>
+		<t>
+			This value can be set and unset.
+			This is user specific meta data.
+		</t>
+	</section>
+	
+	<section>
+		<name>Meta Data - Flagged</name>
+		<t>
+			An object has been tagged as important.
+			This is the same as the IMAP \Flagged value. 
+		</t>
+		<t>
+			This value can be set and unset.
+			This is user specific meta data because it
+			also applies to shared folders and files.
+		</t>
+	</section>
+
+	<section>
+		<name>Meta Data - Forwarded</name>
+		<t>
+			This Meta Data only applies to files.
+		</t>
+		<t>
+			This has the same meaning as $Forwarded does in IMAP.
+		</t>
+		<t>
+			This value can be set and unset.
+			This is user specific meta data because it
+			also applies to shared folders and files.
+		</t>
+	</section>
+
+	<section>
+		<name>Meta Data - Hide</name>
+		<t>
+			With NotExpungable objects, the user may wish to not view the object.
+			In these cases the attribute Hide can be set.
+			The attribute does not effect the view of other users.
+		</t>
+		<t>
+			This value can be set and unset.
+			This is user specific meta data because it
+			also applies to shared folders and files.
+		</t>
+	</section>
+	
+	<section>
+		<name>Meta Data - Junk</name>
+		<t>
+			This has the same meaning as $Junk does in IMAP.
+		</t>
+		<t>
+			This value can be set and unset.
+			This is user specific meta data because it
+			also applies to shared folders and files.
+		</t>
+	</section>
+	
+	<section>
+		<name>Meta Data - MDNSent</name>
+		<t>
+			This Meta Data only applies to files.
+		</t>
+		<t>
+			This value can be set and unset.
+			This has the same meaning as $MDNSent does in IMAP.
+		</t>
+		<t>
+			This value can be set and unset.
+			This is user specific meta data because it
+			also applies to shared folders and files.
+		</t>
+	</section>
+
+	<section>
+		<name>Meta Data - NoCopy</name>
+		<t>
+			When true, this MIME object can not be copied.
+		</t>
+		<t>
+			This value can be set and unset by the owner of the file or folder.
+			This value can not be unset by non owners.
+			This is global meta data.
+		</t>
+		<t>
+			User interfaces MUST NOT allow the MIME object to be copied.
+			They MUST disable any copy/paste for the object in the user interface.
+			The user interface may elect to display an indicator to the user that
+			what they are viewing is read only.
+		</t>
+	</section>
+	
+	<section>
+		<name>Meta Data - NotJunk</name>
+		<t>
+			This has the same meaning as $NotJunk does in IMAP.
+		</t>
+		<t>
+			This value can be set and unset.
+			This is user specific meta data because it
+			also applies to shared folders and files.
+		</t>
+	</section>
+	
+	<section>
+		<name>Meta Data - NotExpungable</name>
+		<t>
+			The mime object can not be marked for delete or expunged.
+			It could be because it is an historical record that will never
+			be expunged, or other reason.
+		</t>
+		<t>
+			A client implementation could use the Hide attribute
+			to not show the object to the user.
+		</t>
+		<t>
+			This value can be set and unset by the owner of the file or folder.
+			This value can not be unset by non owners.
+			This is global meta data.
+		</t>
+	</section>
+	
+	<section>
+		<name>Meta Data - Phishing</name>
+		<t>
+			This has the same meaning as $Phishing does in IMAP.
+		</t>
+		<t>
+			This value can be set and unset.
+			This is user specific meta data because it
+			also applies to shared folders and files.
+		</t>
+	</section>
+	
+	<section>
+		<name>Meta Data - ReadOnly</name>
+		<t>
+			The MIME object associated with this attribute
+			can not be altered, deleted, moved, or renamed.
+			It can be copied, unless the NoCopy meta tag
+			is also applied.
+		</t>
+		<t>
+			This value can be set and unset by the owner of the file or folder.
+			This value can not be unset by non owners.
+			This is global meta data.
+		</t>
+		<t>
+			Setting of this to false may fail if the file or folder is
+			stored on read-only media.
+			When the file or folder is stored on read-only media,
+			this MUST BE set to true.
+		</t>
+	</section>
+	
+	<section>
+		<name>Meta Data - Shared</name>
+		<t>
+			The MIME object associated with this attribute
+			is shared and is also often tagged with the ReadOnly
+			meta data tag.
+		</t>
+		<t>
+			This value can not be set and unset by the owner.
+		</t>
+		<t>
+			If copying of the file or folder is allowed, then
+			the shared attribute is removed when copied.
+		</t>
+		<t>
+			This file or folder will only be expunged when all
+			of the users with shared access have deleted and
+			expunged it.
+		</t>
+	</section>
+	
+	<section>
+		<name>Meta Data - Seen</name>
+		<t>
+			This has the same meaning as \Seen does in IMAP.
+		</t>
+		<t>
+			This value can be set and unset.
+			This is user specific meta data because it
+			also applies to shared folders and files.
+		</t>
+	</section>
+	
+	<section>
+		<name>Meta Data - MDNData Attribute</name>
+		<t>
+			This Meta Data Attribute is only visible to the
+			owner of the object for which MDN has been set.
+		</t>
+		<t>
+			This is a list of recipients email address that
+			that are on the distribution list effected by the MDN.
+		</t>
+		<section>
+			<name>MDNRecord</name>
+			<t>
+				The format of an MDNRecord:
+			</t>
+			<table>
+				<thead>
+					<tr>
+						<td>Name</td><td>CBOR Type</td><td>Description</td>
+					</tr>
+				</thead>
+				<tbody>
+					<tr>
+						<td>MDNSent</td><td>uint64_t</td>
+						<td>
+							The UTC timestamp as a 64-bit unsigned integer
+							in network byte order of when the MDN reply was sent.
+						</td>
+					</tr>
+					<tr>
+						<td>MDNListCount</td><td>uint32_t</td>
+						<td>
+							A 32-bit unsigned integer in network byte order
+							indicating how many were on the distribution list
+							for this MDN.
+						</td>
+					</tr>
+				</tbody>
+			</table>
+			<figure anchor="MDNData" align="center">
+				<name>MDNRecord</name>
+				<artset>
+					<artwork align="center" type="ascii-art" src="Drawings/MDN-00.txt"/>
+					<artwork align="center" type="svg" src="Generated/MDN-00.svg"/>
+				</artset>
+			</figure>
+			<section>
+				<name>MDNRecord - ABNF</name>
+				<t>
+					ABNF:
+				</t>
+				<xi:include href="include/07-MDNRecord-ABNF.xml"/>
+			</section>
+			<section>
+				<name>MDNRecord - CBOR</name>
+				<t>
+					CBOR:
+				</t>
+				<xi:include href="include/07-MDNRecord-ABNF.xml"/>
+				<t>
+					Followed by MDNListCount MDNEntry's.
+				</t>
+			</section>
+		</section>
+		<section>
+			<name>MDNEntry</name>
+			<table>
+				<name>MDMEntry ABNF/CBOR Mapping</name>
+				<thead>
+					<tr>
+						<td>Name</td><td>CBOR Type</td><td>Description</td>
+					</tr>
+				</thead>
+				<tbody>
+					<tr>
+						<td>UTC</td><td>uint32_t</td>
+						<td>
+							The UTC timestamp as a 64-bit unsigned integer
+							in network byte order of when the MDN reply was received.
+							Set to zero if not received.
+						</td>
+					</tr>
+					<tr>
+						<td>EMail Length</td><td>uint32_t</td>
+						<td>
+							The number of octets in the email address that follows.
+							Not including any terminating zero.
+						</td>
+					</tr>
+					<tr>
+						<td>EMailAddress</td><td>string</td>
+						<td>
+							A string of the associated
+							email address of the user that has or has not returned
+							the MDN.
+						</td>
+					</tr>
+				</tbody>
+			</table>
+			<figure anchor="MDNRecord" align="center">
+				<name>MDNEntry</name>
+				<artset>
+					<artwork align="center" type="ascii-art" src="Drawings/MDN-01.txt"/>
+					<artwork align="center" type="svg" src="Generated/MDN-01.svg"/>
+				</artset>
+			</figure>
+			<section>
+				<name>MDNEntry ABNF</name>
+				<t>
+					ABNF:
+				</t>
+				<figure>
+					<name>MDNEntry - ABNF</name>
+					<xi:include href="include/08-MDNEntry-ABNF.xml"/>
+				</figure>
+			</section>
+			<section>
+				<name>MDNEntry - CBOR</name>
+				<t>
+					CBOR:
+				</t>
+				<figure>
+					<name>MDNEntry - CBOR</name>
+					<xi:include href="include/08-MDNEntry-XDR.xml"/>
+				</figure>
+			</section>
+		</section>
+	</section>
+</section>
 		<xi:include href="Index.xml"/>
 		<xi:include href="IANA.xml"/>
     <xi:include href="SecurityConsiderations.xml"/>
-    
     <!-- NOTE: The Acknowledgements and Contributors sections are at the end of this template -->
   </middle>
 
@@ -2491,30 +3714,13 @@ Failed authentication:
         <xi:include href="References/reference.RFC.5234.xml"/>
         <xi:include href="References/reference.RFC.8174.xml"/>
         <xi:include href="References/reference.RFC.8446.xml"/>
+        <xi:include href="References/reference.RFC.8949.xml"/>
         <xi:include href="References/reference.RFC.9051.xml"/>
         <xi:include href="References/reference.POSIX.xml"/>
       </references>
  
       <references>
         <name>Informative References</name>
-				<xi:include href="References/reference.rpcgen++.xml"/>
-				<xi:include href="References/reference.rpcgendocs.xml"/>
-<!--
-				<reference anchor="rpcgensource" target="https://github.com/RiverExplorer/Phoenix">
-					<front>
-						<title>rpcgen++ tool - source code</title>
-						<author initials="" surname="Unknown" fullname="Unknown"/>
-						<date year="2025"/>
-						<abstract>
-							<t>
-								rpcgen++ is an updated rpcgen that can generate C++ code.
-								And is available at
-								<eref target="https://github.com/RiverExplorer/Phoenix"/>
-							</t>
-						</abstract>
-					</front>
-					</reference>
--->
 					<reference anchor="PhoenixImplementation" target="https://github.com/RiverExplorer/Phoenix">
 					<front>
 						<title>Phoenix Sample Implementation</title>
