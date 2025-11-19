@@ -62,5 +62,12 @@ protocol simple {
 		uint:32 ui1O4_3 Range(>8,<100) Default(48);
 		uint:64 ui1O4_4 Range(>8,<100) Default(49);
 
+		uint aui1O4<10,20>	Range(>8,<100)	Default(45);
+		uint:8 aui1O4_1<11,21>	Range(>9,<101)	Default(46);
+		uint:16 aui1O4_2<12,22> Range(>10,<102) Default(47);
+		uint:32 aui1O4_3<13,23> Range(>11,<103) Default(48);
+		uint:64 aui1O4_4<14,24> Range(>12,<104) Default(49);
+
+
 	};
 };

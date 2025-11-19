@@ -511,7 +511,12 @@ namespace RiverExplorer::Phoenix::Protocol
 		std::string Results;
 
 		if (S->HasDefault()) {
-			Results = " * With a default value of: ";
+			Results = " *" + EolTabs(TabLevel);
+			if (S->Array == Symbol::NotArray_t) {
+				Results += " * With a default value of: ";
+			} else {
+				Results += " * With each entry in the array, with a default value of: ";
+			}
 			
 			switch (S->Type) {
 
@@ -799,10 +804,14 @@ namespace RiverExplorer::Phoenix::Protocol
 					Header << DeclareVariable(S);
 					Header << EolTabs(TabLevel);
 				}
-
-				while (TabLevel > 0) {
-					Header << EolTabs(--TabLevel) << "}" << endl;
+				if (CurrentNamespace != "") {
+					Header << EolTabs(--TabLevel)
+								 << "} // End namespace "
+								 << CurrentNamespace
+								 << EolTabs(TabLevel);
+					CurrentNamespace = "";
 				}
+
 				Header << "#endif // " << IfDef << EolTabs(TabLevel);
 				Header.close();
 				Results = true;
