@@ -20,6 +20,16 @@ namespace RiverExplorer::Phoenix::Protocol
 	struct Global
 	{
 		/**
+		 * The argc that was provided on the command line.
+		 */
+		static int ProgramArgc;
+		
+		/**
+		 * The argv that was provided on the command line.
+		 */
+		static char * const * ProgramArgv;
+		
+		/**
 		 * -no-predef or -predef.
 		 */
 		static bool SymbolsMustBePredefined;

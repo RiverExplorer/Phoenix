@@ -98,6 +98,9 @@ Usage(int argc, char * const * argv)
 int
 main(const int argc, char * const * argv)
 {
+	Global::ProgramArgc = argc;
+	Global::ProgramArgv = argv;
+	
 	Global::GScope.GenerateCPP = false;
 	Global::GScope.GenerateCSharp = false;
 

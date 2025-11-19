@@ -9,6 +9,9 @@
 
 namespace RiverExplorer::Phoenix::Protocol
 {
+	int							Global::ProgramArgc = 0;
+	char * const *	Global::ProgramArgv = nullptr;
+	
 	std::ofstream Global::Log;
 
 	bool Global::SymbolsMustBePredefined = false;

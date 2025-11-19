@@ -28,6 +28,9 @@ namespace RiverExplorer::Phoenix::Protocol
 
 		ValidRange = nullptr;
 		Default = nullptr;
+		Value = nullptr;
+		Visibility = Public_t;
+		IsConstant = false;
 		
 		return;
 	}
@@ -49,16 +52,39 @@ namespace RiverExplorer::Phoenix::Protocol
 
 		ValidRange = nullptr;
 		Default = nullptr;
-		
+		Value = nullptr;
+		Visibility = Public_t;
+		IsConstant = false;
+
 		return;
 	}
 
+	Symbol::~Symbol()
+	{
+		if (ValidRange != nullptr) {
+			delete ValidRange;
+			ValidRange = nullptr;
+		}
+
+		if (Default != nullptr) {
+			delete Default;
+			Default = nullptr;
+		}
+
+		if (Value != nullptr) {
+			delete Value;
+			Value = nullptr;
+		}
+
+		return;
+	}
+	
 	std::string
-	Symbol::ToString(Symbol_e Type)
+	Symbol::to_string(Symbol_e SType) const
 	{
 		std::string Results = "Unknown";
 
-		switch (Type) {
+		switch (SType) {
 
 		case uint_t:
 			Results = "uint";
@@ -97,7 +123,7 @@ namespace RiverExplorer::Phoenix::Protocol
 	}
 
 	std::string
-	Symbol::ToString(Array_e A)
+	Symbol::to_string(Array_e A) const
 	{
 		std::string Results = "NotArray";
 
@@ -106,6 +132,33 @@ namespace RiverExplorer::Phoenix::Protocol
 				
 		} else if (A == VariableArray_t) {
 			Results = "Variable";
+		}
+
+		return(Results);
+	}
+
+	std::string
+	Symbol::to_string(Visibility_e V) const
+	{
+		std::string Results;
+
+		switch (V) {
+
+		case Public_t:
+			Results = "Public";
+			break;
+			
+		case Protected_t:
+			Results = "Protected";
+			break;
+			
+		case Internal_t:
+			Results = "Internal";
+			break;
+			
+		case Private_t:
+			Results = "Private";
+			break;
 		}
 
 		return(Results);
@@ -126,7 +179,7 @@ namespace RiverExplorer::Phoenix::Protocol
 	std::ostream &
 	operator<<(std::ostream & Out, const Symbol & S)
 	{
-		std::string TheType = S.ToString(S.Type);
+		std::string TheType = S.to_string(S.Type);
 		
 		Out << S.ID << " [Line: " << S.LineNumber << ", ";
 
@@ -149,9 +202,9 @@ namespace RiverExplorer::Phoenix::Protocol
 			} else {
 				Out << ", that is " << S.Bits << " wide";
 			}
-			
+
 		} else {
-			Out << ", A " << S.ToString(S.Array) << ", sized Array";
+			Out << ", A " << S.to_string(S.Array) << ", sized Array";
 
 			if (S.Array == Symbol::FixedArray_t) {
 				Out << ", of " << S.MinSize << " " << TheType;
@@ -167,6 +220,22 @@ namespace RiverExplorer::Phoenix::Protocol
 			}
 		}
 
+		if (S.HasDefault()) {
+			Out << ", With a default value of: " << *S.Default;
+		}
+
+		if (S.HasRange()) {
+
+			Out << ", Low Range: " << S.ValidRange->ComparerLow()
+					<< " ";
+			S.ValidRange->PrintMin(Out);
+			Out << ", High Range: " << S.ValidRange->ComparerHigh()
+					<< " ";
+			S.ValidRange->PrintMax(Out);
+		}
+
+		Out << ", Visibility: " << S.to_string(S.Visibility);
+		
 		Out << "]" << std::endl;
 
 		return(Out);

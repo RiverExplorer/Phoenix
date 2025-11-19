@@ -28,8 +28,10 @@ extern void PrintLine();
 extern RiverExplorer::Phoenix::Protocol::Control CurrentProtocol;
 extern RiverExplorer::Phoenix::Protocol::Scope * CurrentScope;
 extern RiverExplorer::Phoenix::Protocol::Symbol * CurrentSymbol;
+extern RiverExplorer::Phoenix::Protocol::Symbol::Visibility_e CurrentVisibility;
 extern RiverExplorer::Phoenix::Protocol::Range * CurrentRange;
-extern RiverExplorer::Phoenix::Protocol::DefaultValue * CurrentDefaultValue;
+extern RiverExplorer::Phoenix::Protocol::DefaultValueT<uint64_t> * CurrentUintDefaultValue;
+extern RiverExplorer::Phoenix::Protocol::DefaultValueT<int64_t> * CurrentSintDefaultValue;
 
 /*  PACKING */
 extern bool PackingOrderSet;
@@ -92,8 +94,9 @@ extern GenerateNATIVE * Native;
 %token 									SEMI			/* ; */
 %token 									COLON			/* : */
 
-%token <DefaultValue*>	DEFAULT
-%type  <DefaultValue*>	uint_default
+%token 									DEFAULT
+%type  <DefaultValueT<uint64_t>*>	uint_default
+%type  <DefaultValueT<int64_t>*>	sint_default
 
 %token									RANGE
 %token 									LESS_THAN							/* < */
@@ -117,6 +120,7 @@ extern GenerateNATIVE * Native;
 %token									FLOAT
 %token									VOID
 %token									OPAQUE
+%token									CONST
 
 %token									PACKNBO
 %token									PACKLR
@@ -126,6 +130,9 @@ extern GenerateNATIVE * Native;
 %token		<uint64_t>		DEFAULTPACKSIZE
 
 %token		<std::string>	INCLUDE
+
+%token									SERIALIZE
+%token									NO_SERIALIZE
 
 %token									GEN_CBOR
 %token									GEN_CBOR_CLIENT
@@ -168,7 +175,9 @@ extern GenerateNATIVE * Native;
 %token									NO_GEN_XML
 %token									NO_GEN_XML_CLIENT
 %token									NO_GEN_XML_SERVER
-
+%token									XML_NAMSPACE
+%token									XML_ELEMENT_NAME
+%token									XML_ATTRIBUTE_NAME
 %token									NAMESPACE
 
 %token									GEN_CPP_CODE
@@ -483,6 +492,7 @@ packlr :  PACKLR {
 							 Global::Log << "Defalt bit Packing Left to Right.";
 						} else {
 							Global::Log << "Error: Packing order already set at the global level.";
+							YYERROR;
 						}
 						PrintLine();
 					 }
@@ -495,6 +505,7 @@ packrl : PACKRL {
 							 Global::Log << "Defalt bit Packing Right to Left.";
 						} else {
 							Global::Log << "Error: Packing order already set at the global level.";
+							YYERROR;
 						}
 						PrintLine();
 					 }
@@ -507,6 +518,7 @@ packnbo : PACKNBO {
 							 Global::Log << "Defalt bit Packing network byte order.";
 						} else {
 							Global::Log << "Error: Packing order already set at the global level.";
+							YYERROR;
 						}
 						PrintLine();
 					 }
@@ -519,6 +531,7 @@ bitstream : BITSTREAM {
 							 Global::Log << "Default Packing set to none - Bit Stream";
 						} else {
 							Global::Log << "Error: Packing size already set at the global level.";
+							YYERROR;
 						}
 						PrintLine();
 					 }
@@ -532,6 +545,7 @@ defaultpacksize : DEFAULTPACKSIZE COLON DIGITS {
 							 Global::Log << "Deafult Packing set to " << $3 << " bits";
 						} else {
 							Global::Log << "Error: Packing size already set at the global level.";
+							YYERROR;
 						}
 						PrintLine();
 					 }
@@ -544,6 +558,7 @@ packsize : PACKSIZE COLON DIGITS {
 							 Global::Log << "Deafult Packing set to " << $3 << " bits";
 						} else {
 							Global::Log << "Error: Packing size already set at the global level.";
+							YYERROR;
 						}
 						PrintLine();
 					 }
@@ -665,6 +680,30 @@ directive : gen_cbor
 					| dnamespace
 					;
 
+begin_public : VISIBILITY_PUBLIC
+						 {
+								CurrentVisibility = Symbol::Public_t;
+						 }
+						 ;
+						 
+begin_protected : VISIBILITY_PROTECTED
+						 {
+								CurrentVisibility = Symbol::Protected_t;
+						 }
+						 ;
+						 
+begin_internal : VISIBILITY_INTERNAL
+						 {
+								CurrentVisibility = Symbol::Internal_t;
+						 }
+						 ;
+						 
+begin_private : VISIBILITY_PRIVATE
+						 {
+								CurrentVisibility = Symbol::Private_t;
+						 }
+						 ;
+						 
 namespacestring : IDSTRING {
 									BuildingNS = $1;
 									$$ = $1;
@@ -695,7 +734,64 @@ content : simpletype SEMI
 				| classtype SEMI
 				| methodsig SEMI
 				| comments
+				| consttype SEMI
+				| begin_public
+				| begin_protected
+				| begin_internal
+				| begin_private
 				;
+
+consttype : constuint
+					| constsint
+					| constfloat
+					| conststring
+					;
+					
+constuint : CONST UINT IDSTRING EQUAL DIGITS
+           {
+						Global::Log << "CONST UNSIGNED INTEGER: " << $3;
+						PrintLine();
+						CurrentSymbol = new Symbol(Symbol::uint_t, $3);
+						CurrentSymbol->Namespace = CurrentScope->Namespace;
+						SymbolValueT<uint64_t> * NewValue = new SymbolValueT<uint64_t>($5);
+						CurrentSymbol->Value = NewValue;
+						CurrentSymbol->IsConstant = true;
+						CurrentScope->Symbols.Add(CurrentSymbol, LineNumber);
+					 }
+
+					 | CONST UINT COLON DIGITS IDSTRING EQUAL DIGITS
+           {
+						Global::Log << "CONST UNSIGNED " << $4 << "-BIT INTEGER: " << $5;
+						PrintLine();
+						CurrentSymbol = new Symbol(Symbol::uint_t, $4, $5);
+						CurrentSymbol->Namespace = CurrentScope->Namespace;
+						SymbolValueT<uint64_t> * NewValue = new SymbolValueT<uint64_t>($7);
+						CurrentSymbol->Value = NewValue;
+						CurrentSymbol->IsConstant = true;
+						CurrentScope->Symbols.Add(CurrentSymbol, LineNumber);
+					 }
+					;
+
+constsint : CONST SINT IDSTRING EQUAL DIGITS
+					| CONST SINT COLON DIGITS IDSTRING EQUAL DIGITS
+					| CONST SINT IDSTRING EQUAL NDIGITS
+					| CONST SINT COLON DIGITS IDSTRING EQUAL NDIGITS
+					;
+
+constfloat : CONST FLOAT IDSTRING EQUAL DIGITS
+					 | CONST FLOAT COLON DIGITS IDSTRING EQUAL DIGITS
+					 | CONST FLOAT IDSTRING EQUAL NDIGITS
+					 | CONST FLOAT COLON DIGITS IDSTRING EQUAL NDIGITS
+					 | CONST FLOAT IDSTRING EQUAL FDIGITS
+					 | CONST FLOAT COLON DIGITS IDSTRING EQUAL FDIGITS
+					 ;
+
+anystring : DQSTRING
+					| SQSTRING
+					;
+					
+conststring : CONST STRING IDSTRING EQUAL anystring
+						;
 
 simpletype : uinttype
 					 | sinttype
@@ -744,24 +840,113 @@ uinttype : uintsingle
 				 | uintvariablearray
 				 ;
 
-uint_default : LCURLY DEFAULT EQUAL DIGITS RCURLY		/* [DEFAULT=3] */
+uint_default : DEFAULT LPAREN DIGITS RPAREN 		/* DEFAULT(3) */
 						 {
-							CurrentDefaultValue = new DefaultValueT<uint64_t>($4);
-							$$ = CurrentDefaultValue;
+							CurrentUintDefaultValue = new DefaultValueT<uint64_t>($3);
+							$$ = CurrentUintDefaultValue;
 						 }
 
-						 | LCURLY DEFAULT EQUAL IDSTRING	RCURLY /* [DEFAULT=UpperLimitVar] */
+						 | DEFAULT LPAREN IDSTRING	RPAREN /* [DEFAULT=UpperLimitVar] */
 						 {
-							CurrentDefaultValue = new DefaultValueT<std::string>($4);
-							$$ = CurrentDefaultValue;
+						  /** IDSTRING must alredy be defined as a constant. */
+
+							Symbol * Found = SymbolTable::Find(CurrentScope->Namespace, $3);
+							if (Found != nullptr) {
+								 if (Found->IsConstant) {
+								  SymbolValueT<uint64_t> * VarValue = dynamic_cast<SymbolValueT<uint64_t>*>(Found->Value);
+								  CurrentUintDefaultValue = new DefaultValueT<uint64_t>(VarValue->Value);
+									$$ = CurrentUintDefaultValue;
+									CurrentSymbol->Default = CurrentUintDefaultValue;
+								 } else {
+								  Global::Log << "ERROR: Symbol " << $3 << " was found, it must be a constant to be used in a Default\n";
+									YYERROR;
+								 }
+							} else {
+								  Global::Log << "ERROR: Symbol " << $3 << " was not found, it must be alredy defined and be a constant to be used in a Default\n";
+									YYERROR;
+							}
 						 }
 						 ;
 
-uint_range : LCURLY RANGE COLON range_comparison DIGITS COMMA range_comparison DIGITS RCURLY
+uint_range : RANGE LPAREN range_comparison DIGITS COMMA range_comparison DIGITS RPAREN
 					 {
-							CurrentRange = new RangeT<uint64_t>($4, $5, $7, $8);
+							CurrentRange = new RangeT<uint64_t>($3, $4, $6, $7);
 							$$ = CurrentRange;
+							CurrentSymbol->ValidRange = CurrentRange;
 					 }
+
+					 | RANGE LPAREN range_comparison IDSTRING COMMA range_comparison DIGITS RPAREN
+					 {
+						  /** IDSTRING must alredy be defined as a constant. */
+
+							Symbol * Found = SymbolTable::Find(CurrentScope->Namespace, $4);
+							if (Found != nullptr && Found->Value != nullptr && Found->IsConstant) {
+								 	SymbolValueT<uint> * SValue = dynamic_cast<SymbolValueT<uint>*>(Found->Value);
+									CurrentRange = new RangeT<uint64_t>($3, SValue->Value, $6, $7);
+									$$ = CurrentRange;
+									CurrentSymbol->ValidRange = CurrentRange;
+									
+							} else {
+								  Global::Log << "ERROR: Symbol " << $4
+															<< " was not found, or not a constant,"
+															<< " it must be alredy defined and be a constant to be used in a Range\n";
+									YYERROR;
+							}
+					 }
+
+					 | RANGE LPAREN range_comparison DIGITS COMMA range_comparison IDSTRING RPAREN
+					 {
+						  /** IDSTRING must alredy be defined as a constant. */
+
+							Symbol * Found = SymbolTable::Find(CurrentScope->Namespace, $7);
+							if (Found != nullptr && Found->Value != nullptr && Found->IsConstant) {
+								 	SymbolValueT<uint> * SValue = dynamic_cast<SymbolValueT<uint>*>(Found->Value);
+									CurrentRange = new RangeT<uint64_t>($3, $4, $6, SValue->Value);
+									$$ = CurrentRange;
+									CurrentSymbol->ValidRange = CurrentRange;
+									
+							} else {
+								  Global::Log << "ERROR: Symbol " << $7
+															<< " was not found, or not a constant,"
+															<< " it must be alredy defined and be a constant to be used in a Range\n";
+									YYERROR;
+							}
+					 }
+
+					 | RANGE LPAREN range_comparison IDSTRING COMMA range_comparison IDSTRING RPAREN
+					 {
+						  /** IDSTRING must alredy be defined as a constant. */
+
+							SymbolValueT<uint> * SValue4 = nullptr;
+							SymbolValueT<uint> * SValue7 = nullptr;
+							
+							Symbol * Found4 = SymbolTable::Find(CurrentScope->Namespace, $4);
+							if (Found4 != nullptr && Found4->Value != nullptr && Found4->IsConstant) {
+								 	SValue4 = dynamic_cast<SymbolValueT<uint>*>(Found4->Value);
+									
+							} else {
+								  Global::Log << "ERROR: Symbol " << $4
+															<< " was not found, or not a constant,"
+															<< " it must be alredy defined and be a constant to be used in a Range\n";
+									YYERROR;
+							}
+
+							Symbol * Found7 = SymbolTable::Find(CurrentScope->Namespace, $7);
+							if (Found7 != nullptr && Found7->Value != nullptr && Found7->IsConstant) {
+								 	SValue7 = dynamic_cast<SymbolValueT<uint>*>(Found7->Value);
+							} else {
+								  Global::Log << "ERROR: Symbol " << $7
+															<< " was not found, or not a constant,"
+															<< " it must be alredy defined and be a constant to be used in a Range\n";
+									YYERROR;
+							}
+							if (SValue4 != nullptr && SValue7 != nullptr) {
+									CurrentRange = new RangeT<uint64_t>($3, SValue4->Value, $6, SValue7->Value);
+									$$ = CurrentRange;
+									CurrentSymbol->ValidRange = CurrentRange;
+							}
+					 }
+
 					 ;
 
 opt_uint 	 : %empty
@@ -775,8 +960,8 @@ uintsingle : UINT IDSTRING opt_uint
 						PrintLine();
 						CurrentSymbol = new Symbol(Symbol::uint_t, $2);
 						CurrentSymbol->Namespace = CurrentScope->Namespace;
-						CurrentSymbol->Default = CurrentDefaultValue;
-						CurrentDefaultValue = nullptr;
+						CurrentSymbol->Default = CurrentUintDefaultValue;
+						CurrentUintDefaultValue = nullptr;
 
 						CurrentSymbol->ValidRange = CurrentRange;
 						CurrentRange = nullptr;
@@ -784,55 +969,57 @@ uintsingle : UINT IDSTRING opt_uint
 						CurrentScope->Symbols.Add(CurrentSymbol, LineNumber);
 					 }
 					 
-				 	 | UINT COLON DIGITS IDSTRING
+				 	 | UINT COLON DIGITS IDSTRING opt_uint
            {
-						Global::Log << "UNSIGNED " << $3
-						     << "-BIT INTEGER: "
-								 << $4;
+						Global::Log << "UNSIGNED " << $3 << "-BIT INTEGER: " << $4;
 						PrintLine();
-						Symbol * NewOne = new Symbol( Symbol::uint_t, $3, $4);
-						NewOne->Namespace = CurrentScope->Namespace;
-						CurrentScope->Symbols.Add(NewOne, LineNumber);
+						CurrentSymbol = new Symbol( Symbol::uint_t, $3, $4);
+						CurrentSymbol->Namespace = CurrentScope->Namespace;
+						CurrentSymbol->Default = CurrentUintDefaultValue;
+						CurrentUintDefaultValue = nullptr;
+						CurrentSymbol->ValidRange = CurrentRange;
+						CurrentRange = nullptr;
+						CurrentScope->Symbols.Add(CurrentSymbol, LineNumber);
 					 }
 				 	 ;
 
-uintfixedarray : UINT IDSTRING LSQUARE DIGITS RSQUARE
+uintfixedarray : UINT IDSTRING LSQUARE DIGITS RSQUARE opt_uint
            {
 						Global::Log << "Fixed Array of " << $4
 						     << " UNSIGNED INTEGERS: "
 								 << $2;
  						PrintLine();
-						Symbol * NewOne = new Symbol( Symbol::uint_t, $2, Symbol::FixedArray_t, $4);
-						NewOne->Namespace = CurrentScope->Namespace;
-						CurrentScope->Symbols.Add(NewOne, LineNumber);
+						CurrentSymbol = new Symbol( Symbol::uint_t, $2, Symbol::FixedArray_t, $4);
+						CurrentSymbol->Namespace = CurrentScope->Namespace;
+						CurrentScope->Symbols.Add(CurrentSymbol, LineNumber);
 					 }
 					 
-				 	 | UINT COLON DIGITS IDSTRING LSQUARE DIGITS RSQUARE
+				 	 | UINT COLON DIGITS IDSTRING LSQUARE DIGITS RSQUARE opt_uint
            {
 						Global::Log << "Fixed Array of " << $6
 						     << " UNSIGNED " << $3
 								 << "-BIT INTEGERS: "
 								 << $4;
  						PrintLine();
-						Symbol * NewOne = new Symbol( Symbol::uint_t, $3, $4, Symbol::FixedArray_t, $6);
-						NewOne->Namespace = CurrentScope->Namespace;
-						CurrentScope->Symbols.Add(NewOne, LineNumber);
+						CurrentSymbol = new Symbol( Symbol::uint_t, $3, $4, Symbol::FixedArray_t, $6);
+						CurrentSymbol->Namespace = CurrentScope->Namespace;
+						CurrentScope->Symbols.Add(CurrentSymbol, LineNumber);
 					 }
 					 ;
 					 
-uintvariablearray : UINT IDSTRING LESS_THAN DIGITS COMMA DIGITS GREATER_THAN
+uintvariablearray : UINT IDSTRING LESS_THAN DIGITS COMMA DIGITS GREATER_THAN opt_uint
 					 {
 						Global::Log << "Variable Array of " << $4
 						     << " to " << $6
 						     << " UNSIGNED INTEGERS: "
 								 << $2;
  						PrintLine();
-						Symbol * NewOne = new Symbol( Symbol::uint_t, $2, Symbol::VariableArray_t, $4, $6);
-						NewOne->Namespace = CurrentScope->Namespace;
-						CurrentScope->Symbols.Add(NewOne, LineNumber);
+						CurrentSymbol = new Symbol( Symbol::uint_t, $2, Symbol::VariableArray_t, $4, $6);
+						CurrentSymbol->Namespace = CurrentScope->Namespace;
+						CurrentScope->Symbols.Add(CurrentSymbol, LineNumber);
 					 }
 					 
-				 	 | UINT COLON DIGITS IDSTRING LESS_THAN DIGITS COMMA DIGITS GREATER_THAN
+				 	 | UINT COLON DIGITS IDSTRING LESS_THAN DIGITS COMMA DIGITS GREATER_THAN opt_uint
 					 {
 						Global::Log << "Variable Array of " << $6
 						     << " to " << $8 << " "
@@ -840,30 +1027,30 @@ uintvariablearray : UINT IDSTRING LESS_THAN DIGITS COMMA DIGITS GREATER_THAN
 						     << " UNSIGNED INTEGERS: "
 								 << $4;
  						PrintLine();
-						Symbol * NewOne = new Symbol( Symbol::uint_t, $3, $4, Symbol::VariableArray_t, $6, $8);
-						NewOne->Namespace = CurrentScope->Namespace;
-						CurrentScope->Symbols.Add(NewOne, LineNumber);
+						CurrentSymbol = new Symbol( Symbol::uint_t, $3, $4, Symbol::VariableArray_t, $6, $8);
+						CurrentSymbol->Namespace = CurrentScope->Namespace;
+						CurrentScope->Symbols.Add(CurrentSymbol, LineNumber);
 					 }
 					 
-				 	 | UINT IDSTRING LESS_THAN GREATER_THAN
+				 	 | UINT IDSTRING LESS_THAN GREATER_THAN opt_uint
 					 {
 						Global::Log << "Variable Array of zero or more UNSIGNED INTEGERS: "
 								 << $2;
  						PrintLine();
-						Symbol * NewOne = new Symbol( Symbol::uint_t, $2, Symbol::VariableArray_t, 0, 0);
-						NewOne->Namespace = CurrentScope->Namespace;
-						CurrentScope->Symbols.Add(NewOne, LineNumber);
+						CurrentSymbol = new Symbol( Symbol::uint_t, $2, Symbol::VariableArray_t, 0, 0);
+						CurrentSymbol->Namespace = CurrentScope->Namespace;
+						CurrentScope->Symbols.Add(CurrentSymbol, LineNumber);
 					 }
 					 
-				 	 | UINT COLON DIGITS IDSTRING LESS_THAN GREATER_THAN
+				 	 | UINT COLON DIGITS IDSTRING LESS_THAN GREATER_THAN opt_uint
 					 {
 						Global::Log << "Variable Array of zero or more "
 						     << $3 << "-BIT UNSIGNED INTEGERS: "
 								 << $4;
  						PrintLine();
-						Symbol * NewOne = new Symbol( Symbol::uint_t, $3, $4, Symbol::VariableArray_t, 0, 0);
-						NewOne->Namespace = CurrentScope->Namespace;
-						CurrentScope->Symbols.Add(NewOne, LineNumber);
+						CurrentSymbol = new Symbol( Symbol::uint_t, $3, $4, Symbol::VariableArray_t, 0, 0);
+						CurrentSymbol->Namespace = CurrentScope->Namespace;
+						CurrentScope->Symbols.Add(CurrentSymbol, LineNumber);
 					 }
 					 ;
 
@@ -876,9 +1063,9 @@ sintsingle : SINT IDSTRING
            {
 						Global::Log << "SIGNED INTEGER: " << $2;
  						PrintLine();
-						Symbol * NewOne = new Symbol( Symbol::sint_t, $2);
-						NewOne->Namespace = CurrentScope->Namespace;
-						CurrentScope->Symbols.Add(NewOne, LineNumber);
+						CurrentSymbol = new Symbol( Symbol::sint_t, $2);
+						CurrentSymbol->Namespace = CurrentScope->Namespace;
+						CurrentScope->Symbols.Add(CurrentSymbol, LineNumber);
 					 }
 					 
 				 	 | SINT COLON DIGITS IDSTRING
@@ -887,9 +1074,9 @@ sintsingle : SINT IDSTRING
 						     << "-BIT INTEGER: "
 								 << $4;
  						PrintLine();
-						Symbol * NewOne = new Symbol( Symbol::sint_t, $3, $4);
-						NewOne->Namespace = CurrentScope->Namespace;
-						CurrentScope->Symbols.Add(NewOne, LineNumber);
+						CurrentSymbol = new Symbol( Symbol::sint_t, $3, $4);
+						CurrentSymbol->Namespace = CurrentScope->Namespace;
+						CurrentScope->Symbols.Add(CurrentSymbol, LineNumber);
 					 }
 				 	 ;
 
@@ -899,9 +1086,9 @@ sintfixedarray : SINT IDSTRING LSQUARE DIGITS RSQUARE
 						     << " SIGNED INTEGERS: "
 								 << $2;
  						PrintLine();
-						Symbol * NewOne = new Symbol( Symbol::sint_t, $2, Symbol::FixedArray_t, $4);
-						NewOne->Namespace = CurrentScope->Namespace;
-						CurrentScope->Symbols.Add(NewOne, LineNumber);
+						CurrentSymbol = new Symbol( Symbol::sint_t, $2, Symbol::FixedArray_t, $4);
+						CurrentSymbol->Namespace = CurrentScope->Namespace;
+						CurrentScope->Symbols.Add(CurrentSymbol, LineNumber);
 					 }
 					 
 				 	 | SINT COLON DIGITS IDSTRING LSQUARE DIGITS RSQUARE
@@ -911,9 +1098,9 @@ sintfixedarray : SINT IDSTRING LSQUARE DIGITS RSQUARE
 								 << "-BIT INTEGERS: "
 								 << $4;
  						PrintLine();
-						Symbol * NewOne = new Symbol( Symbol::sint_t, $3, $4, Symbol::FixedArray_t, $6);
-						NewOne->Namespace = CurrentScope->Namespace;
-						CurrentScope->Symbols.Add(NewOne, LineNumber);
+						CurrentSymbol = new Symbol( Symbol::sint_t, $3, $4, Symbol::FixedArray_t, $6);
+						CurrentSymbol->Namespace = CurrentScope->Namespace;
+						CurrentScope->Symbols.Add(CurrentSymbol, LineNumber);
 					 }
 					 ;
 					 
@@ -924,9 +1111,9 @@ sintvariablearray : SINT IDSTRING LESS_THAN DIGITS COMMA DIGITS GREATER_THAN
 						     << " SIGNED INTEGERS: "
 								 << $2;
  						PrintLine();
-						Symbol * NewOne = new Symbol( Symbol::sint_t, $2, Symbol::VariableArray_t, $4, $6);
-						NewOne->Namespace = CurrentScope->Namespace;
-						CurrentScope->Symbols.Add(NewOne, LineNumber);
+						CurrentSymbol = new Symbol( Symbol::sint_t, $2, Symbol::VariableArray_t, $4, $6);
+						CurrentSymbol->Namespace = CurrentScope->Namespace;
+						CurrentScope->Symbols.Add(CurrentSymbol, LineNumber);
 					 }
 					 
 				 	 | SINT COLON DIGITS IDSTRING LESS_THAN DIGITS COMMA DIGITS GREATER_THAN
@@ -937,18 +1124,18 @@ sintvariablearray : SINT IDSTRING LESS_THAN DIGITS COMMA DIGITS GREATER_THAN
 						     << " SIGNED INTEGERS: "
 								 << $4;
  						PrintLine();
-						Symbol * NewOne = new Symbol( Symbol::sint_t, $3, $4, Symbol::VariableArray_t, $6, $8);
-						NewOne->Namespace = CurrentScope->Namespace;
-						CurrentScope->Symbols.Add(NewOne, LineNumber);
+						CurrentSymbol = new Symbol( Symbol::sint_t, $3, $4, Symbol::VariableArray_t, $6, $8);
+						CurrentSymbol->Namespace = CurrentScope->Namespace;
+						CurrentScope->Symbols.Add(CurrentSymbol, LineNumber);
 					 }
 					 
 				 	 | SINT IDSTRING LESS_THAN GREATER_THAN
 					 {
 						Global::Log << "Variable Array of zero or more SIGNED INTEGERS: " << $2;
  						PrintLine();
-						Symbol * NewOne = new Symbol( Symbol::sint_t, $2, Symbol::VariableArray_t, 0, 0);
-						NewOne->Namespace = CurrentScope->Namespace;
-						CurrentScope->Symbols.Add(NewOne, LineNumber);
+						CurrentSymbol = new Symbol( Symbol::sint_t, $2, Symbol::VariableArray_t, 0, 0);
+						CurrentSymbol->Namespace = CurrentScope->Namespace;
+						CurrentScope->Symbols.Add(CurrentSymbol, LineNumber);
 					 }
 					 
 				 	 | SINT COLON DIGITS IDSTRING LESS_THAN GREATER_THAN
@@ -957,9 +1144,9 @@ sintvariablearray : SINT IDSTRING LESS_THAN DIGITS COMMA DIGITS GREATER_THAN
 						     << $3 << "-BIT SIGNED INTEGERS: "
 								 << $4;
  						PrintLine();
-						Symbol * NewOne = new Symbol( Symbol::sint_t, $3, $4, Symbol::VariableArray_t, 0, 0);
-						NewOne->Namespace = CurrentScope->Namespace;
-						CurrentScope->Symbols.Add(NewOne, LineNumber);
+						CurrentSymbol = new Symbol( Symbol::sint_t, $3, $4, Symbol::VariableArray_t, 0, 0);
+						CurrentSymbol->Namespace = CurrentScope->Namespace;
+						CurrentScope->Symbols.Add(CurrentSymbol, LineNumber);
 					 }
 					 ;
 
@@ -973,9 +1160,9 @@ opaquefixedarray : OPAQUE IDSTRING LSQUARE DIGITS RSQUARE
 						     << " OPAQUE: "
 								 << $2;
  						PrintLine();
-						Symbol * NewOne = new Symbol( Symbol::opaque_t, $2, Symbol::FixedArray_t, $4);
-						NewOne->Namespace = CurrentScope->Namespace;
-						CurrentScope->Symbols.Add(NewOne, LineNumber);
+						CurrentSymbol = new Symbol( Symbol::opaque_t, $2, Symbol::FixedArray_t, $4);
+						CurrentSymbol->Namespace = CurrentScope->Namespace;
+						CurrentScope->Symbols.Add(CurrentSymbol, LineNumber);
 					 }
 					 ;
 					 
@@ -986,9 +1173,9 @@ opaquevariablearray : OPAQUE IDSTRING LESS_THAN DIGITS COMMA DIGITS GREATER_THAN
 						     << " OPAQUE: "
 								 << $2;
  						PrintLine();
-						Symbol * NewOne = new Symbol( Symbol::opaque_t, $2, Symbol::VariableArray_t, $4, $6);
-						NewOne->Namespace = CurrentScope->Namespace;
-						CurrentScope->Symbols.Add(NewOne, LineNumber);
+						CurrentSymbol = new Symbol( Symbol::opaque_t, $2, Symbol::VariableArray_t, $4, $6);
+						CurrentSymbol->Namespace = CurrentScope->Namespace;
+						CurrentScope->Symbols.Add(CurrentSymbol, LineNumber);
 					 }
 					 
 				 	 | OPAQUE IDSTRING LESS_THAN GREATER_THAN
@@ -996,9 +1183,9 @@ opaquevariablearray : OPAQUE IDSTRING LESS_THAN DIGITS COMMA DIGITS GREATER_THAN
 						Global::Log << "Variable Array of zero or more OPAQUE: "
 								 << $2;
  						PrintLine();
-						Symbol * NewOne = new Symbol( Symbol::opaque_t, $2, Symbol::VariableArray_t, 0, 0);
-						NewOne->Namespace = CurrentScope->Namespace;
-						CurrentScope->Symbols.Add(NewOne, LineNumber);
+						CurrentSymbol = new Symbol( Symbol::opaque_t, $2, Symbol::VariableArray_t, 0, 0);
+						CurrentSymbol->Namespace = CurrentScope->Namespace;
+						CurrentScope->Symbols.Add(CurrentSymbol, LineNumber);
 					 }
 					 ;
 
@@ -1012,9 +1199,9 @@ floatsingle : FLOAT IDSTRING
            {
 						Global::Log << "FLOAT: " << $2;
  						PrintLine();
-						Symbol * NewOne = new Symbol( Symbol::float_t, $2);
-						NewOne->Namespace = CurrentScope->Namespace;
-						CurrentScope->Symbols.Add(NewOne, LineNumber);
+						CurrentSymbol = new Symbol( Symbol::float_t, $2);
+						CurrentSymbol->Namespace = CurrentScope->Namespace;
+						CurrentScope->Symbols.Add(CurrentSymbol, LineNumber);
 					 }
 					 
 				 	 | FLOAT COLON DIGITS IDSTRING
@@ -1023,9 +1210,9 @@ floatsingle : FLOAT IDSTRING
 						     << "-BIT FLOAT: "
 								 << $4;
  						PrintLine();
-						Symbol * NewOne = new Symbol( Symbol::float_t, $3, $4);
-						NewOne->Namespace = CurrentScope->Namespace;
-						CurrentScope->Symbols.Add(NewOne, LineNumber);
+						CurrentSymbol = new Symbol( Symbol::float_t, $3, $4);
+						CurrentSymbol->Namespace = CurrentScope->Namespace;
+						CurrentScope->Symbols.Add(CurrentSymbol, LineNumber);
 					 }
 				 	 ;
 
@@ -1035,9 +1222,9 @@ floatfixedarray : FLOAT IDSTRING LSQUARE DIGITS RSQUARE
 						     << " FLOAT: "
 								 << $2;
  						PrintLine();
-						Symbol * NewOne = new Symbol( Symbol::float_t, $2, Symbol::FixedArray_t, $4);
-						NewOne->Namespace = CurrentScope->Namespace;
-						CurrentScope->Symbols.Add(NewOne, LineNumber);
+						CurrentSymbol = new Symbol( Symbol::float_t, $2, Symbol::FixedArray_t, $4);
+						CurrentSymbol->Namespace = CurrentScope->Namespace;
+						CurrentScope->Symbols.Add(CurrentSymbol, LineNumber);
 					 }
 					 
 				 	 | FLOAT COLON DIGITS IDSTRING LSQUARE DIGITS RSQUARE
@@ -1047,9 +1234,9 @@ floatfixedarray : FLOAT IDSTRING LSQUARE DIGITS RSQUARE
 								 << "-BIT FLOAT: "
 								 << $4;
  						PrintLine();
-						Symbol * NewOne = new Symbol( Symbol::float_t, $3, $4, Symbol::FixedArray_t, $6);
-						NewOne->Namespace = CurrentScope->Namespace;
-						CurrentScope->Symbols.Add(NewOne, LineNumber);
+						CurrentSymbol = new Symbol( Symbol::float_t, $3, $4, Symbol::FixedArray_t, $6);
+						CurrentSymbol->Namespace = CurrentScope->Namespace;
+						CurrentScope->Symbols.Add(CurrentSymbol, LineNumber);
 					 }
 					 ;
 					 
@@ -1060,9 +1247,9 @@ floatvariablearray : FLOAT IDSTRING LESS_THAN DIGITS COMMA DIGITS GREATER_THAN
 						     << " FLOAT: "
 								 << $2;
  						PrintLine();
-						Symbol * NewOne = new Symbol( Symbol::float_t, $2, Symbol::VariableArray_t, $4, $6);
-						NewOne->Namespace = CurrentScope->Namespace;
-						CurrentScope->Symbols.Add(NewOne, LineNumber);
+						CurrentSymbol = new Symbol( Symbol::float_t, $2, Symbol::VariableArray_t, $4, $6);
+						CurrentSymbol->Namespace = CurrentScope->Namespace;
+						CurrentScope->Symbols.Add(CurrentSymbol, LineNumber);
 					 }
 					 
 				 	 | FLOAT COLON DIGITS IDSTRING LESS_THAN DIGITS COMMA DIGITS GREATER_THAN
@@ -1073,18 +1260,18 @@ floatvariablearray : FLOAT IDSTRING LESS_THAN DIGITS COMMA DIGITS GREATER_THAN
 						     << " FLOAT: "
 								 << $4;
  						PrintLine();
-						Symbol * NewOne = new Symbol( Symbol::float_t, $3, $4, Symbol::VariableArray_t, $6, $8);
-						NewOne->Namespace = CurrentScope->Namespace;
-						CurrentScope->Symbols.Add(NewOne, LineNumber);
+						CurrentSymbol = new Symbol( Symbol::float_t, $3, $4, Symbol::VariableArray_t, $6, $8);
+						CurrentSymbol->Namespace = CurrentScope->Namespace;
+						CurrentScope->Symbols.Add(CurrentSymbol, LineNumber);
 					 }
 					 
 				 	 | FLOAT IDSTRING LESS_THAN GREATER_THAN
 					 {
 						Global::Log << "Variable Array of zero or more FLOAT: " << $2;
  						PrintLine();
-						Symbol * NewOne = new Symbol( Symbol::float_t, $2, Symbol::VariableArray_t, 0, 0);
-						NewOne->Namespace = CurrentScope->Namespace;
-						CurrentScope->Symbols.Add(NewOne, LineNumber);
+						CurrentSymbol = new Symbol( Symbol::float_t, $2, Symbol::VariableArray_t, 0, 0);
+						CurrentSymbol->Namespace = CurrentScope->Namespace;
+						CurrentScope->Symbols.Add(CurrentSymbol, LineNumber);
 					 }
 					 
 				 	 | FLOAT COLON DIGITS IDSTRING LESS_THAN GREATER_THAN
@@ -1093,9 +1280,9 @@ floatvariablearray : FLOAT IDSTRING LESS_THAN DIGITS COMMA DIGITS GREATER_THAN
 						     << $3 << "-BIT FLOAT: "
 								 << $4;
  						PrintLine();
-						Symbol * NewOne = new Symbol( Symbol::float_t, $3, $4, Symbol::VariableArray_t, 0, 0);
-						NewOne->Namespace = CurrentScope->Namespace;
-						CurrentScope->Symbols.Add(NewOne, LineNumber);
+						CurrentSymbol = new Symbol( Symbol::float_t, $3, $4, Symbol::VariableArray_t, 0, 0);
+						CurrentSymbol->Namespace = CurrentScope->Namespace;
+						CurrentScope->Symbols.Add(CurrentSymbol, LineNumber);
 					 }
 					 ;
 
@@ -1108,9 +1295,9 @@ stringsingle : STRING IDSTRING
            {
 						Global::Log << "STRING: " << $2;
  						PrintLine();
-						Symbol * NewOne = new Symbol( Symbol::string_t, $2);
-						NewOne->Namespace = CurrentScope->Namespace;
-						CurrentScope->Symbols.Add(NewOne, LineNumber);
+						CurrentSymbol = new Symbol( Symbol::string_t, $2);
+						CurrentSymbol->Namespace = CurrentScope->Namespace;
+						CurrentScope->Symbols.Add(CurrentSymbol, LineNumber);
 					 }
 					 
 				 	 | STRING COLON DIGITS IDSTRING
@@ -1119,9 +1306,9 @@ stringsingle : STRING IDSTRING
 						     << "-BIT STRING: "
 								 << $4;
  						PrintLine();
-						Symbol * NewOne = new Symbol( Symbol::string_t, $3, $4);
-						NewOne->Namespace = CurrentScope->Namespace;
-						CurrentScope->Symbols.Add(NewOne, LineNumber);
+						CurrentSymbol = new Symbol( Symbol::string_t, $3, $4);
+						CurrentSymbol->Namespace = CurrentScope->Namespace;
+						CurrentScope->Symbols.Add(CurrentSymbol, LineNumber);
 					 }
 				 	 ;
 
@@ -1131,9 +1318,9 @@ stringfixedarray : STRING IDSTRING LSQUARE DIGITS RSQUARE
 						     << " STRING: "
 								 << $2;
  						PrintLine();
-						Symbol * NewOne = new Symbol( Symbol::string_t, $2, Symbol::FixedArray_t, $4);
-						NewOne->Namespace = CurrentScope->Namespace;
-						CurrentScope->Symbols.Add(NewOne, LineNumber);
+						CurrentSymbol = new Symbol( Symbol::string_t, $2, Symbol::FixedArray_t, $4);
+						CurrentSymbol->Namespace = CurrentScope->Namespace;
+						CurrentScope->Symbols.Add(CurrentSymbol, LineNumber);
 					 }
 					 
 				 	 | STRING COLON DIGITS IDSTRING LSQUARE DIGITS RSQUARE
@@ -1143,9 +1330,9 @@ stringfixedarray : STRING IDSTRING LSQUARE DIGITS RSQUARE
 								 << "-BIT STRING: "
 								 << $4;
  						PrintLine();
-						Symbol * NewOne = new Symbol( Symbol::string_t, $3, $4, Symbol::FixedArray_t, $6);
-						NewOne->Namespace = CurrentScope->Namespace;
-						CurrentScope->Symbols.Add(NewOne, LineNumber);
+						CurrentSymbol = new Symbol( Symbol::string_t, $3, $4, Symbol::FixedArray_t, $6);
+						CurrentSymbol->Namespace = CurrentScope->Namespace;
+						CurrentScope->Symbols.Add(CurrentSymbol, LineNumber);
 					 }
 					 ;
 					 
@@ -1156,9 +1343,9 @@ stringvariablearray : STRING IDSTRING LESS_THAN DIGITS COMMA DIGITS GREATER_THAN
 						     << " STRING: "
 								 << $2;
  						PrintLine();
-						Symbol * NewOne = new Symbol( Symbol::string_t, $2, Symbol::VariableArray_t, $4, $6);
-						NewOne->Namespace = CurrentScope->Namespace;
-						CurrentScope->Symbols.Add(NewOne, LineNumber);
+						CurrentSymbol = new Symbol( Symbol::string_t, $2, Symbol::VariableArray_t, $4, $6);
+						CurrentSymbol->Namespace = CurrentScope->Namespace;
+						CurrentScope->Symbols.Add(CurrentSymbol, LineNumber);
 					 }
 					 
 				 	 | STRING COLON DIGITS IDSTRING LESS_THAN DIGITS COMMA DIGITS GREATER_THAN
@@ -1169,18 +1356,18 @@ stringvariablearray : STRING IDSTRING LESS_THAN DIGITS COMMA DIGITS GREATER_THAN
 						     << " STRING: "
 								 << $4;
  						PrintLine();
-						Symbol * NewOne = new Symbol( Symbol::string_t, $3, $4, Symbol::VariableArray_t, $6, $8);
-						NewOne->Namespace = CurrentScope->Namespace;
-						CurrentScope->Symbols.Add(NewOne, LineNumber);
+						CurrentSymbol = new Symbol( Symbol::string_t, $3, $4, Symbol::VariableArray_t, $6, $8);
+						CurrentSymbol->Namespace = CurrentScope->Namespace;
+						CurrentScope->Symbols.Add(CurrentSymbol, LineNumber);
 					 }
 					 
 				 	 | STRING IDSTRING LESS_THAN GREATER_THAN
 					 {
 						Global::Log << "Variable Array of zero or more STRING: " << $2;
  						PrintLine();
-						Symbol * NewOne = new Symbol( Symbol::string_t, $2, Symbol::VariableArray_t, 0, 0);
-						NewOne->Namespace = CurrentScope->Namespace;
-						CurrentScope->Symbols.Add(NewOne, LineNumber);
+						CurrentSymbol = new Symbol( Symbol::string_t, $2, Symbol::VariableArray_t, 0, 0);
+						CurrentSymbol->Namespace = CurrentScope->Namespace;
+						CurrentScope->Symbols.Add(CurrentSymbol, LineNumber);
 					 }
 					 
 				 	 | STRING COLON DIGITS IDSTRING LESS_THAN GREATER_THAN
@@ -1189,9 +1376,9 @@ stringvariablearray : STRING IDSTRING LESS_THAN DIGITS COMMA DIGITS GREATER_THAN
 						     << $3 << "-BIT STRING: "
 								 << $4;
  						PrintLine();
-						Symbol * NewOne = new Symbol( Symbol::string_t, $3, $4, Symbol::VariableArray_t, 0, 0);
-						NewOne->Namespace = CurrentScope->Namespace;
-						CurrentScope->Symbols.Add(NewOne, LineNumber);
+						CurrentSymbol = new Symbol( Symbol::string_t, $3, $4, Symbol::VariableArray_t, 0, 0);
+						CurrentSymbol->Namespace = CurrentScope->Namespace;
+						CurrentScope->Symbols.Add(CurrentSymbol, LineNumber);
 					 }
 					 ;
 
@@ -1244,8 +1431,10 @@ paramtype : simpletype
 
 	Scope					*		CurrentScope = nullptr;
 	Symbol				*		CurrentSymbol = nullptr;
+	Symbol::Visibility_e CurrentVisibility = Symbol::Public_t;
 	Range					*		CurrentRange = nullptr;
-	DefaultValue	*		CurrentDefaultValue = nullptr;
+	DefaultValueT<uint64_t>	*		CurrentUintDefaultValue = nullptr;
+	DefaultValueT<int64_t>	*		CurrentSintDefaultValue = nullptr;
 
 	bool					PackingOrderSet = false;
 	bool					PackingSizeSet = false;

@@ -74,28 +74,42 @@ namespace RiverExplorer::Phoenix::Protocol
 		 *
 		 * @return true if the client size code was successfully created.
 		 */
-		virtual bool CreateClientSideCode();
+		virtual bool CreateClientSideCode() const;
 		
 		/**
 		 * Generate server size code.
 		 *
 		 * @return true if the server size code was successfully created.
 		 */
-		virtual bool CreateServerSideCode();
+		virtual bool CreateServerSideCode() const;
 
 		/**
 		 * Declare variable type.
 		 *
 		 * @param S The symbol to create the variable type from.
 		 */
-		virtual bool	DeclareVariablType(Symbol * S);
+		virtual std::string	DeclareVariablType(Symbol * S) const;
 		
 		/**
 		 * Declare variable.
 		 *
 		 * @param S The symbol to create the variable from.
 		 */
-		virtual bool	DeclareVariable(Symbol * S);
+		virtual std::string	DeclareVariable(Symbol * S) const;
+		
+		/**
+		 * Write the default comment.
+		 *
+		 * @param S The symbol.
+		 */
+		virtual std::string DefaultComment(const Symbol * S) const;
+		
+		/**
+		 * Write the range comment.
+		 *
+		 * @param S The symbol.
+		 */
+		virtual std::string RangeComment(const Symbol * S) const;
 		
 		/**
 		 * Generate headers files, or definition, API, ... files
@@ -103,7 +117,7 @@ namespace RiverExplorer::Phoenix::Protocol
 		 * @return true on success.
 		 * Returns false on failure.
 		 */
-		virtual bool	WriteHeaders();
+		virtual bool	WriteHeaders() const;
 
 		/**
 		 * Generate the code files.
@@ -111,7 +125,7 @@ namespace RiverExplorer::Phoenix::Protocol
 		 * @return true on success.
 		 * Returns false on failure.
 		 */
-		virtual bool	WriteCode();
+		virtual bool	WriteCode() const;
 		
 		/**
 		 * Generate any document files.
@@ -122,7 +136,45 @@ namespace RiverExplorer::Phoenix::Protocol
 		 * @return true on success.
 		 * Returns false on failure.
 		 */
-		virtual bool	WriteDocuments();
+		virtual bool	WriteDocuments() const;
+		
+		/**
+		 * Print the data type of the value, as a string.
+		 *
+		 * @param Type The symbol value type.
+		 *
+		 * @param Bits The number of bits defined with the type.
+		 *
+		 * @return The type, as a string.
+		 */
+		virtual std::string		SymbolType(Symbol * S) const;
+
+		/**
+		 * Print a method definition to a string;
+		 *
+		 * @param Symbol The symbol.
+		 *
+		 * @return The method as a string for a header or
+		 * definition file.
+		 */
+		virtual std::string SymbolMethod(Symbol * S) const;
+		 
+		/**
+		 * Print if the array type is fixed, variable,
+		 * Not an array, as a string.
+		 *
+		 * @param A The array type to check.
+		 *
+		 * @return The array type, as a string.
+		 */
+		virtual std::string		to_string(Symbol::Array_e A) const;
+
+		/**
+		 * Print the visibility as a printed string.
+		 *
+		 * @return The visibility as a string.
+		 */
+		virtual std::string		to_string(Symbol::Visibility_e V) const;
 		
 	private:
 		

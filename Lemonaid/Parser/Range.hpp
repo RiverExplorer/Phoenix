@@ -39,6 +39,54 @@ namespace RiverExplorer::Phoenix::Protocol
 			GreaterThan_t,
 		};
 			
+		virtual ~Range() {};
+		
+		std::string ToString(RangeCmp_e C) const
+		{
+			std::string Results;
+			
+			switch (C) {
+
+			case LessThan_t:
+				Results = "<";
+				break;
+				
+			case LessThanOrEqualTo_t:
+				Results = "<=";
+				break;
+				
+			case EqualTo_t:
+				Results = "=";
+				break;
+				
+			case GreaterThanOrEqualTo_t:
+				Results = ">=";
+				break;
+				
+			case GreaterThan_t:
+				Results = ">";
+				break;
+			}
+
+			return(Results);
+		}
+		
+		std::string ComparerLow()
+		{
+			return(ToString(LowCmp));
+		}
+		
+		std::string ComparerHigh()
+		{
+			return(ToString(HighCmp));
+		}
+
+		virtual void PrintMin(std::ostream & Out) const = 0;
+		virtual void PrintMax(std::ostream & Out) const = 0;
+		
+		RangeCmp_e	LowCmp;
+		RangeCmp_e	HighCmp;
+
 	protected:
 		/**
 		 * This object can not be constructed by itself.
@@ -47,7 +95,7 @@ namespace RiverExplorer::Phoenix::Protocol
 		 * Contstruct with RangeT()
 		 */
 		Range() {};
-		virtual ~Range() {};
+
 	};
 	
 	template <typename T>
@@ -59,13 +107,13 @@ namespace RiverExplorer::Phoenix::Protocol
 		/**
 		 * Range - Constructor
 		 */
-		RangeT(RangeCmp_e LowCmp, const T Min,
-					 RangeCmp_e HighCmp, const T Max)
+		RangeT(RangeCmp_e LowCmpValue, const T MinValue,
+					 RangeCmp_e HighCmpValue, const T MaxValue)
 		{
-			_LowCmp = LowCmp;
-			_Min = Min;
-			_HighCmp = HighCmp;
-			_Max = Max;
+			LowCmp = LowCmpValue;
+			Min = MinValue;
+			HighCmp = HighCmpValue;
+			Max = MaxValue;
 
 			return;
 		}
@@ -75,14 +123,6 @@ namespace RiverExplorer::Phoenix::Protocol
 		 */
 		virtual ~RangeT() {};
 
-		T Lowest() const {
-			return(std::numeric_limits<T>::min());
-		}
-		
-		T Highest() const {
-			return(std::numeric_limits<T>::max());
-		}
-		
 		/**
 		 * Test if ToTest is a valid value and
 		 * within range.
@@ -92,68 +132,68 @@ namespace RiverExplorer::Phoenix::Protocol
 			bool Results = false;
 			bool LowOk = false;
 			
-			switch (_LowCmp) {
+			switch (LowCmp) {
 
 			case LessThan_t:
-				if (ToTest < _Min) {
+				if (ToTest < Min) {
 					LowOk = true;
 				}
 				break;
 
 			case LessThanOrEqualTo_t:
-				if (ToTest <= _Min) {
+				if (ToTest <= Min) {
 					LowOk = true;
 				}
 				break;
 
 			case EqualTo_t:
-				if (ToTest == _Min) {
+				if (ToTest == Min) {
 					LowOk = true;
 				}
 				break;
 
 			case GreaterThanOrEqualTo_t:
-				if (ToTest >= _Min) {
+				if (ToTest >= Min) {
 					LowOk = true;
 				}
 				break;
 
 			case GreaterThan_t:
-				if (ToTest > _Min) {
+				if (ToTest > Min) {
 					LowOk = true;
 				}
 			break;
 			}
 
 			if (LowOk) {
-				switch (_HighCmp) {
+				switch (HighCmp) {
 
 				case LessThan_t:
-					if (ToTest < _Max) {
+					if (ToTest < Max) {
 						Results = true;
 					}
 					break;
 
 				case LessThanOrEqualTo_t:
-					if (ToTest <= _Max) {
+					if (ToTest <= Max) {
 						Results = true;
 					}
 					break;
 
 				case EqualTo_t:
-					if (ToTest == _Max) {
+					if (ToTest == Max) {
 						Results = true;
 					}
 					break;
 
 				case GreaterThanOrEqualTo_t:
-					if (ToTest >= _Max) {
+					if (ToTest >= Max) {
 						Results = true;
 					}
 					break;
 
 				case GreaterThan_t:
-				if (ToTest > _Max) {
+				if (ToTest > Max) {
 					Results = true;
 				}
 				break;
@@ -161,13 +201,21 @@ namespace RiverExplorer::Phoenix::Protocol
 			}
 			return(Results);
 		}
+
+		virtual void PrintMin(std::ostream & Out) const override {
+			Out << Min;
+		}
 		
-	protected:
-		RangeCmp_e	_LowCmp;
-		T						_Min;
-		RangeCmp_e	_HighCmp;
-		T						_Max;
+		virtual void PrintMax(std::ostream & Out) const override {
+			Out << Max;
+		}
+		
+		T						Min;
+		T						Max;
 	};
+
+	std::ostream & operator<<(std::ostream & Out,
+														const Range & R);
 	
 }
 

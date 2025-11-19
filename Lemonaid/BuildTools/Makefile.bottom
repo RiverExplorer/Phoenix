@@ -1,7 +1,7 @@
 #
 #
 # Project: Phoenix
-# Time-stamp: <2025-11-13 14:53:48 doug>
+# Time-stamp: <2025-11-19 09:20:47 doug>
 #
 # @file FILL-IN
 # @author Douglas Mark Royer
@@ -381,124 +381,124 @@ GeneratedFromXDR/%.hpp : %.x
 # Linux
 #
 $(BUILD_DIR)/Linux/Release/Static/%.o : %.c
-	$(LINUX_CC) -c $(LINUX_CFLAGS.Release) $(COMMON_CPPFLAGS) $(LINUX_CPPFLAGS) $(LINUX_CPPFLAGS.Release) $< -o $@
+	$(LINUX_CC) -c $< $(LINUX_CFLAGS.Release) $(COMMON_CPPFLAGS) $(LINUX_CPPFLAGS) $(LINUX_CPPFLAGS.Release) -o $@
 
 $(BUILD_DIR)/Linux/Release/Pic/%.o : %.c
-	$(LINUX_CC) -fPIC -c $(LINUX_CFLAGS.Release) $(COMMON_CPPFLAGS) $(LINUX_CPPFLAGS) $(LINUX_CPPFLAGS.Release) $< -o $@
+	$(LINUX_CC) -c $< -fPIC $(LINUX_CFLAGS.Release) $(COMMON_CPPFLAGS) $(LINUX_CPPFLAGS) $(LINUX_CPPFLAGS.Release)-o $@
 
 $(BUILD_DIR)/Linux/Release/Static/%.o : $(BUILD_DIR)/Generated/%.c
-	$(LINUX_CC) -c $(LINUX_CFLAGS.Release) $(COMMON_CPPFLAGS) $(LINUX_CPPFLAGS) $(LINUX_CPPFLAGS.Release) $< -o $@
+	$(LINUX_CC) -c $< $(LINUX_CFLAGS.Release) $(COMMON_CPPFLAGS) $(LINUX_CPPFLAGS) $(LINUX_CPPFLAGS.Release) -o $@
 
 $(BUILD_DIR)/Linux/Release/Pic/%.o : $(BUILD_DIR)/Generated/%.c
-	$(LINUX_CC) -fPIC -c $(LINUX_CFLAGS.Release) $(COMMON_CPPFLAGS) $(LINUX_CPPFLAGS) $(LINUX_CPPFLAGS.Release) $< -o $@
+	$(LINUX_CC) -c $< -fPIC $(LINUX_CFLAGS.Release) $(COMMON_CPPFLAGS) $(LINUX_CPPFLAGS) $(LINUX_CPPFLAGS.Release) -o $@
 
 $(BUILD_DIR)/Linux/Release/Static/%.o : %.c
-	$(LINUX_CC) -c $(LINUX_CFLAGS.Release) $(COMMON_CPPFLAGS) $(LINUX_CPPFLAGS) $(LINUX_CPPFLAGS.Release) $< -o $@
+	$(LINUX_CC) -c $< $(LINUX_CFLAGS.Release) $(COMMON_CPPFLAGS) $(LINUX_CPPFLAGS) $(LINUX_CPPFLAGS.Release) -o $@
 
 $(BUILD_DIR)/Linux/Release/Pic/%.o : %.c
-	$(LINUX_CC) -fPIC -c $(LINUX_CFLAGS.Release) $(COMMON_CPPFLAGS) $(LINUX_CPPFLAGS) $(LINUX_CPPFLAGS.Release) $< -o $@
+	$(LINUX_CC) -c $< -fPIC $(LINUX_CFLAGS.Release) $(COMMON_CPPFLAGS) $(LINUX_CPPFLAGS) $(LINUX_CPPFLAGS.Release) -o $@
 
 $(BUILD_DIR)/Linux/Release/Static/%.o : $(BUILD_DIR)/Generated/%.c
-	$(LINUX_CC) -c $(LINUX_CFLAGS.Release) $(COMMON_CPPFLAGS) $(LINUX_CPPFLAGS) $(LINUX_CPPFLAGS.Release) $< -o $@
+	$(LINUX_CC) -c $< $(LINUX_CFLAGS.Release) $(COMMON_CPPFLAGS) $(LINUX_CPPFLAGS) $(LINUX_CPPFLAGS.Release) -o $@
 
 $(BUILD_DIR)/Linux/Release/Pic/%.o : $(BUILD_DIR)/Generated/%.c
-	$(LINUX_CC) -fPIC -c $(LINUX_CFLAGS.Release) $(COMMON_CPPFLAGS) $(LINUX_CPPFLAGS) $(LINUX_CPPFLAGS.Release) $< -o $@
+	$(LINUX_CC) -c $< -fPIC $(LINUX_CFLAGS.Release) $(COMMON_CPPFLAGS) $(LINUX_CPPFLAGS) $(LINUX_CPPFLAGS.Release) -o $@
 
 $(BUILD_DIR)/Linux/Debug/Static/%.o : %.c
-	$(LINUX_CC) -c $(LINUX_CFLAGS.Debug) $(COMMON_CPPFLAGS) $(LINUX_CPPFLAGS) $(LINUX_CPPFLAGS.Debug) $< -o $@
+	$(LINUX_CC) -c $< $(LINUX_CFLAGS.Debug) $(COMMON_CPPFLAGS) $(LINUX_CPPFLAGS) $(LINUX_CPPFLAGS.Debug) -o $@
 
 $(BUILD_DIR)/Linux/Debug/Pic/%.o : %.c
-	$(LINUX_CC) -fPIC -c $(LINUX_CFLAGS.Debug) $(COMMON_CPPFLAGS) $(LINUX_CPPFLAGS) $(LINUX_CPPFLAGS.Debug) $< -o $@
+	$(LINUX_CC) -c $< -fPIC $(LINUX_CFLAGS.Debug) $(COMMON_CPPFLAGS) $(LINUX_CPPFLAGS) $(LINUX_CPPFLAGS.Debug) -o $@
 
 $(BUILD_DIR)/Linux/Debug/Static/%.o : $(BUILD_DIR)/Generated/%.c
-	$(LINUX_CC) -c $(LINUX_CFLAGS.Debug) $(COMMON_CPPFLAGS) $(LINUX_CPPFLAGS) $(LINUX_CPPFLAGS.Debug) $< -o $@
+	$(LINUX_CC) -c $< $(LINUX_CFLAGS.Debug) $(COMMON_CPPFLAGS) $(LINUX_CPPFLAGS) $(LINUX_CPPFLAGS.Debug) -o $@
 
 $(BUILD_DIR)/Linux/Debug/Pic/%.o : $(BUILD_DIR)/Generated/%.c
-	$(LINUX_CC) -fPIC -c $(LINUX_CFLAGS.Debug) $(COMMON_CPPFLAGS) $(LINUX_CPPFLAGS) $(LINUX_CPPFLAGS.Debug) $< -o $@
+	$(LINUX_CC) -c $< -fPIC $(LINUX_CFLAGS.Debug) $(COMMON_CPPFLAGS) $(LINUX_CPPFLAGS) $(LINUX_CPPFLAGS.Debug) -o $@
 
 $(BUILD_DIR)/Linux/Tcov/Static/%.o : %.c
-	$(LINUX_CC) -c $(LINUX_CFLAGS.Tcov) $(COMMON_CPPFLAGS) $(LINUX_CPPFLAGS) $(LINUX_CPPFLAGS.Tcov) $< -o $@
+	$(LINUX_CC) -c $< $(LINUX_CFLAGS.Tcov) $(COMMON_CPPFLAGS) $(LINUX_CPPFLAGS) $(LINUX_CPPFLAGS.Tcov) -o $@
 
 $(BUILD_DIR)/Linux/Tcov/Pic/%.o : %.c
-	$(LINUX_CC) -fPIC -c $(LINUX_CFLAGS.Tcov) $(COMMON_CPPFLAGS) $(LINUX_CPPFLAGS) $(LINUX_CPPFLAGS.Tcov) $< -o $@
+	$(LINUX_CC) -c $< -fPIC $(LINUX_CFLAGS.Tcov) $(COMMON_CPPFLAGS) $(LINUX_CPPFLAGS) $(LINUX_CPPFLAGS.Tcov) -o $@
 
 $(BUILD_DIR)/Linux/Tcov/Static/%.o : $(BUILD_DIR)/Generated/%.c
-	$(LINUX_CC) -c $(LINUX_CFLAGS.Tcov) $(COMMON_CPPFLAGS) $(LINUX_CPPFLAGS) $(LINUX_CPPFLAGS.Tcov) $< -o $@
+	$(LINUX_CC) -c $< $(LINUX_CFLAGS.Tcov) $(COMMON_CPPFLAGS) $(LINUX_CPPFLAGS) $(LINUX_CPPFLAGS.Tcov) -o $@
 
 $(BUILD_DIR)/Linux/Tcov/Pic/%.o : $(BUILD_DIR)/Generated/%.c
-	$(LINUX_CC) --fPIC c $(LINUX_CFLAGS.Tcov) $(COMMON_CPPFLAGS) $(LINUX_CPPFLAGS) $(LINUX_CPPFLAGS.Tcov) $< -o $@
+	$(LINUX_CC) -c --fPIC c $(LINUX_CFLAGS.Tcov) $(COMMON_CPPFLAGS) $(LINUX_CPPFLAGS) $(LINUX_CPPFLAGS.Tcov) -o $@
 
 $(BUILD_DIR)/Linux/Release/Static/%.o : $(BUILD_DIR)/Linux/Release/%.c
-	$(LINUX_CC) -c $(LINUX_CFLAGS.Release) $(COMMON_CPPFLAGS) $(LINUX_CPPFLAGS) $(LINUX_CPPFLAGS.Release) $< -o $@
+	$(LINUX_CC) -c $< $(LINUX_CFLAGS.Release) $(COMMON_CPPFLAGS) $(LINUX_CPPFLAGS) $(LINUX_CPPFLAGS.Release) -o $@
 
 $(BUILD_DIR)/Linux/Release/Pic/%.o : $(BUILD_DIR)/Linux/Release/%.c
-	$(LINUX_CC) -fPIC -c $(LINUX_CFLAGS.Release) $(COMMON_CPPFLAGS) $(LINUX_CPPFLAGS) $(LINUX_CPPFLAGS.Release) $< -o $@
+	$(LINUX_CC) -c $< -fPIC $(LINUX_CFLAGS.Release) $(COMMON_CPPFLAGS) $(LINUX_CPPFLAGS) $(LINUX_CPPFLAGS.Release) -o $@
 
 $(BUILD_DIR)/Linux/Debug/Static/%.o : $(BUILD_DIR)/Linux/Debug/%.c
-	$(LINUX_CC) -c $(LINUX_CFLAGS.Debug) $(COMMON_CPPFLAGS) $(LINUX_CPPFLAGS) $(LINUX_CPPFLAGS.Debug) $< -o $@
+	$(LINUX_CC) -c $< $(LINUX_CFLAGS.Debug) $(COMMON_CPPFLAGS) $(LINUX_CPPFLAGS) $(LINUX_CPPFLAGS.Debug) -o $@
 
 $(BUILD_DIR)/Linux/Debug/Pic/%.o : $(BUILD_DIR)/Linux/Debug/%.c
-	$(LINUX_CC) -fPIC -c $(LINUX_CFLAGS.Debug) $(COMMON_CPPFLAGS) $(LINUX_CPPFLAGS) $(LINUX_CPPFLAGS.Debug) $< -o $@
+	$(LINUX_CC) -c $< -fPIC $(LINUX_CFLAGS.Debug) $(COMMON_CPPFLAGS) $(LINUX_CPPFLAGS) $(LINUX_CPPFLAGS.Debug) -o $@
 
 $(BUILD_DIR)/Linux/Tcov/Static/%.o : $(BUILD_DIR)/Tcov/Debug/%.c
-	$(LINUX_CC) -c $(LINUX_CFLAGS.Tcov) $(COMMON_CPPFLAGS) $(LINUX_CPPFLAGS) $(LINUX_CPPFLAGS.Tcov) $< -o $@
+	$(LINUX_CC) -c $< $(LINUX_CFLAGS.Tcov) $(COMMON_CPPFLAGS) $(LINUX_CPPFLAGS) $(LINUX_CPPFLAGS.Tcov) -o $@
 
 $(BUILD_DIR)/Linux/Tcov/Pic/%.o : $(BUILD_DIR)/Tcov/Debug/%.c
-	$(LINUX_CC) -fPIC -c $(LINUX_CFLAGS.Tcov) $(COMMON_CPPFLAGS) $(LINUX_CPPFLAGS) $(LINUX_CPPFLAGS.Tcov) $< -o $@
+	$(LINUX_CC) -c $< -fPIC $(LINUX_CFLAGS.Tcov) $(COMMON_CPPFLAGS) $(LINUX_CPPFLAGS) $(LINUX_CPPFLAGS.Tcov) -o $@
 
 $(BUILD_DIR)/Linux/Release/Static/%.o : %.cpp
-	$(LINUX_CXX) -c $(LINUX_CXXFLAGS.Release) $(COMMON_CPPFLAGS) $(LINUX_CPPFLAGS) $(LINUX_CPPFLAGS.Release) $< -o $@
+	$(LINUX_CXX) -c $< $(LINUX_CXXFLAGS.Release) $(COMMON_CPPFLAGS) $(LINUX_CPPFLAGS) $(LINUX_CPPFLAGS.Release) -o $@
 
 $(BUILD_DIR)/Linux/Release/Pic/%.o : %.cpp
-	$(LINUX_CXX) -fPIC -c $(LINUX_CXXFLAGS.Release) $(COMMON_CPPFLAGS) $(LINUX_CPPFLAGS) $(LINUX_CPPFLAGS.Release) $< -o $@
+	$(LINUX_CXX) -c $< -fPIC $(LINUX_CXXFLAGS.Release) $(COMMON_CPPFLAGS) $(LINUX_CPPFLAGS) $(LINUX_CPPFLAGS.Release) -o $@
 
 $(BUILD_DIR)/Linux/Debug/Static/%.o : $(BUILD_DIR)/Generated/%.cpp
-	$(LINUX_CXX) -c $(LINUX_CXXFLAGS.Debug) $(COMMON_CPPFLAGS) $(LINUX_CPPFLAGS) $(LINUX_CPPFLAGS.Debug) $< -o $@
+	$(LINUX_CXX) -c $< $(LINUX_CXXFLAGS.Debug) $(COMMON_CPPFLAGS) $(LINUX_CPPFLAGS) $(LINUX_CPPFLAGS.Debug) -o $@
 
 $(BUILD_DIR)/Linux/Debug/Pic/%.o : $(BUILD_DIR)/Generated/%.cpp
-	$(LINUX_CXX) -fPIC -c $(LINUX_CXXFLAGS.Debug) $(COMMON_CPPFLAGS) $(LINUX_CPPFLAGS) $(LINUX_CPPFLAGS.Debug) $< -o $@
+	$(LINUX_CXX) -c $< -fPIC $(LINUX_CXXFLAGS.Debug) $(COMMON_CPPFLAGS) $(LINUX_CPPFLAGS) $(LINUX_CPPFLAGS.Debug) -o $@
 
 $(BUILD_DIR)/Linux/Debug/Static/%.o : %.cpp
-	$(LINUX_CXX) -c $(LINUX_CXXFLAGS.Debug) $(COMMON_CPPFLAGS) $(LINUX_CPPFLAGS) $(LINUX_CPPFLAGS.Debug) $< -o $@
+	$(LINUX_CXX) -c $< $(LINUX_CXXFLAGS.Debug) $(COMMON_CPPFLAGS) $(LINUX_CPPFLAGS) $(LINUX_CPPFLAGS.Debug) -o $@
 
 $(BUILD_DIR)/Linux/Debug/Pic/%.o : %.cpp
-	$(LINUX_CXX) -fPIC -c $(LINUX_CXXFLAGS.Debug) $(COMMON_CPPFLAGS) $(LINUX_CPPFLAGS) $(LINUX_CPPFLAGS.Debug) $< -o $@
+	$(LINUX_CXX) -c $< -fPIC $(LINUX_CXXFLAGS.Debug) $(COMMON_CPPFLAGS) $(LINUX_CPPFLAGS) $(LINUX_CPPFLAGS.Debug) -o $@
 
 $(BUILD_DIR)/Linux/Debug/Static/%.o : $(BUILD_DIR)/Generated/%.cpp
-	$(LINUX_CXX) -c $(LINUX_CXXFLAGS.Debug) $(COMMON_CPPFLAGS) $(LINUX_CPPFLAGS) $(LINUX_CPPFLAGS.Debug) $< -o $@
+	$(LINUX_CXX) -c $< $(LINUX_CXXFLAGS.Debug) $(COMMON_CPPFLAGS) $(LINUX_CPPFLAGS) $(LINUX_CPPFLAGS.Debug) -o $@
 
 $(BUILD_DIR)/Linux/Debug/Pic/%.o : $(BUILD_DIR)/Generated/%.cpp
-	$(LINUX_CXX) -fPIC -c $(LINUX_CXXFLAGS.Debug) $(COMMON_CPPFLAGS) $(LINUX_CPPFLAGS) $(LINUX_CPPFLAGS.Debug) $< -o $@
+	$(LINUX_CXX) -c $< -fPIC $(LINUX_CXXFLAGS.Debug) $(COMMON_CPPFLAGS) $(LINUX_CPPFLAGS) $(LINUX_CPPFLAGS.Debug) -o $@
 
 $(BUILD_DIR)/Linux/Tcov/Static/%.o : %.cpp
-	$(LINUX_CXX) -c $(LINUX_CXXFLAGS.Tcov) $(COMMON_CPPFLAGS) $(LINUX_CPPFLAGS) $(LINUX_CPPFLAGS.Tcov) $< -o $@
+	$(LINUX_CXX) -c $< $(LINUX_CXXFLAGS.Tcov) $(COMMON_CPPFLAGS) $(LINUX_CPPFLAGS) $(LINUX_CPPFLAGS.Tcov) -o $@
 
 $(BUILD_DIR)/Linux/Tcov/Pic/%.o : %.cpp
-	$(LINUX_CXX) -fPIC -c $(LINUX_CXXFLAGS.Tcov) $(COMMON_CPPFLAGS) $(LINUX_CPPFLAGS) $(LINUX_CPPFLAGS.Tcov) $< -o $@
+	$(LINUX_CXX) -c $< -fPIC $(LINUX_CXXFLAGS.Tcov) $(COMMON_CPPFLAGS) $(LINUX_CPPFLAGS) $(LINUX_CPPFLAGS.Tcov) -o $@
 
 $(BUILD_DIR)/Linux/Tcov/Static/%.o : $(BUILD_DIR)/Generated/%.cpp
-	$(LINUX_CXX) -c $(LINUX_CXXFLAGS.Tcov) $(COMMON_CPPFLAGS) $(LINUX_CPPFLAGS) $(LINUX_CPPFLAGS.Tcov) $< -o $@
+	$(LINUX_CXX) -c $< $(LINUX_CXXFLAGS.Tcov) $(COMMON_CPPFLAGS) $(LINUX_CPPFLAGS) $(LINUX_CPPFLAGS.Tcov) -o $@
 
 $(BUILD_DIR)/Linux/Tcov/Pic/%.o : $(BUILD_DIR)/Generated/%.cpp
-	$(LINUX_CXX) -fPIC -c $(LINUX_CXXFLAGS.Tcov) $(COMMON_CPPFLAGS) $(LINUX_CPPFLAGS) $(LINUX_CPPFLAGS.Tcov) $< -o $@
+	$(LINUX_CXX) -c $< -fPIC $(LINUX_CXXFLAGS.Tcov) $(COMMON_CPPFLAGS) $(LINUX_CPPFLAGS) $(LINUX_CPPFLAGS.Tcov) -o $@
 
 $(BUILD_DIR)/Linux/Release/Static/%.o : $(BUILD_DIR)/Linux/Release/%.cpp
-	$(LINUX_CXX) -c $(LINUX_CXXFLAGS.Release) $(COMMON_CPPFLAGS) $(LINUX_CPPFLAGS) $(LINUX_CPPFLAGS.Release) $< -o $@
+	$(LINUX_CXX) -c $< $(LINUX_CXXFLAGS.Release) $(COMMON_CPPFLAGS) $(LINUX_CPPFLAGS) $(LINUX_CPPFLAGS.Release) -o $@
 
 $(BUILD_DIR)/Linux/Release/Pic/%.o : $(BUILD_DIR)/Linux/Release/%.cpp
-	$(LINUX_CXX) -fPIC -c $(LINUX_CXXFLAGS.Release) $(COMMON_CPPFLAGS) $(LINUX_CPPFLAGS) $(LINUX_CPPFLAGS.Release) $< -o $@
+	$(LINUX_CXX) -c $< -fPIC $(LINUX_CXXFLAGS.Release) $(COMMON_CPPFLAGS) $(LINUX_CPPFLAGS) $(LINUX_CPPFLAGS.Release) -o $@
 
 $(BUILD_DIR)/Linux/Debug/Static/%.o : $(BUILD_DIR)/Linux/Debug/%.cpp
-	$(LINUX_CXX) -c $(LINUX_CXXFLAGS.Debug) $(COMMON_CPPFLAGS) $(LINUX_CPPFLAGS) $(LINUX_CPPFLAGS.Debug) $< -o $@
+	$(LINUX_CXX) -c $< $(LINUX_CXXFLAGS.Debug) $(COMMON_CPPFLAGS) $(LINUX_CPPFLAGS) $(LINUX_CPPFLAGS.Debug) -o $@
 
 $(BUILD_DIR)/Linux/Debug/Pic/%.o : $(BUILD_DIR)/Linux/Debug/%.cpp
-	$(LINUX_CXX) -fPIC -c $(LINUX_CXXFLAGS.Debug) $(COMMON_CPPFLAGS) $(LINUX_CPPFLAGS) $(LINUX_CPPFLAGS.Debug) $< -o $@
+	$(LINUX_CXX) -c -fPIC $(LINUX_CXXFLAGS.Debug) $(COMMON_CPPFLAGS) $(LINUX_CPPFLAGS) $(LINUX_CPPFLAGS.Debug) -o $@
 
 $(BUILD_DIR)/Linux/Tcov/Static/%.o : $(BUILD_DIR)/Linux/Tcov/%.cpp
-	$(LINUX_CXX) -c $(LINUX_CXXFLAGS.Tcov) $(COMMON_CPPFLAGS) $(LINUX_CPPFLAGS) $(LINUX_CPPFLAGS.Tcov) $< -o $@
+	$(LINUX_CXX) -c $< $(LINUX_CXXFLAGS.Tcov) $(COMMON_CPPFLAGS) $(LINUX_CPPFLAGS) $(LINUX_CPPFLAGS.Tcov) -o $@
 
 $(BUILD_DIR)/Linux/Tcov/Pic/%.o : $(BUILD_DIR)/Linux/Tcov/%.cpp
-	$(LINUX_CXX) -fPIC -c $(LINUX_CXXFLAGS.Tcov) $(COMMON_CPPFLAGS) $(LINUX_CPPFLAGS) $(LINUX_CPPFLAGS.Tcov) $< -o $@
+	$(LINUX_CXX) -c $< -fPIC $(LINUX_CXXFLAGS.Tcov) $(COMMON_CPPFLAGS) $(LINUX_CPPFLAGS) $(LINUX_CPPFLAGS.Tcov) -o $@
 
 $(LINUX_OBJECTS.Relase) : $(SOURCES.h) $(SOURCES.hpp)
 $(LINUX_OBJECTS.Debug) : $(SOURCES.h) $(SOURCES.hpp)

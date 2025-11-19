@@ -11,6 +11,8 @@
 
 namespace RiverExplorer::Phoenix::Protocol
 {
+	std::vector<Symbol*>	SymbolTable::_SymbolsOrdered;
+	
 	SymbolTable::SymbolTable(SymbolTable * Parent)
 	{
 		_Parent = Parent;
@@ -33,7 +35,30 @@ namespace RiverExplorer::Phoenix::Protocol
 
 		if (Found == _Symbols.cend()) {
 			_Symbols.insert(std::make_pair(Key, NewSymbol));
+			_SymbolsOrdered.push_back(NewSymbol);
 			Results = true;
+		}
+
+		return(Results);
+	}
+
+	Symbol *
+	SymbolTable::Find(const std::string & Namespace,
+										const std::string & ID)
+	{
+		Symbol	*	Results = nullptr;
+
+		std::vector<Symbol*>::const_iterator it;
+		Symbol * Entry;
+		
+		for (it = _SymbolsOrdered.cbegin(); it != _SymbolsOrdered.cend(); it++) {
+			Entry = *it;
+			if (Entry->ID == ID) {
+				if (Entry->Namespace == Namespace) {
+					Results = Entry;
+					break;
+				}
+			}
 		}
 
 		return(Results);
@@ -71,4 +96,11 @@ namespace RiverExplorer::Phoenix::Protocol
 		
 		return(Out);
 	}
+
+	const std::vector<Symbol*> &
+	SymbolTable::Symbols()
+	{
+		return(_SymbolsOrdered);
+	}
+	
 }

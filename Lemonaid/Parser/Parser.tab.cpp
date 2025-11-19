@@ -42,7 +42,7 @@
 
 
 // Unqualified %code blocks.
-#line 59 "Parser.yy"
+#line 61 "Parser.yy"
 
 #include <iostream>
 #include <cstdlib>
@@ -179,9 +179,8 @@ namespace RiverExplorer { namespace Phoenix { namespace Protocol {
   {
     switch (this->kind ())
     {
-      case symbol_kind::S_DEFAULT: // DEFAULT
       case symbol_kind::S_uint_default: // uint_default
-        value.copy< DefaultValue* > (YY_MOVE (that.value));
+        value.copy< DefaultValueT<uint64_t>* > (YY_MOVE (that.value));
         break;
 
       case symbol_kind::S_uint_range: // uint_range
@@ -245,9 +244,8 @@ namespace RiverExplorer { namespace Phoenix { namespace Protocol {
     super_type::move (s);
     switch (this->kind ())
     {
-      case symbol_kind::S_DEFAULT: // DEFAULT
       case symbol_kind::S_uint_default: // uint_default
-        value.move< DefaultValue* > (YY_MOVE (s.value));
+        value.move< DefaultValueT<uint64_t>* > (YY_MOVE (s.value));
         break;
 
       case symbol_kind::S_uint_range: // uint_range
@@ -381,9 +379,8 @@ namespace RiverExplorer { namespace Phoenix { namespace Protocol {
   {
     switch (that.kind ())
     {
-      case symbol_kind::S_DEFAULT: // DEFAULT
       case symbol_kind::S_uint_default: // uint_default
-        value.YY_MOVE_OR_COPY< DefaultValue* > (YY_MOVE (that.value));
+        value.YY_MOVE_OR_COPY< DefaultValueT<uint64_t>* > (YY_MOVE (that.value));
         break;
 
       case symbol_kind::S_uint_range: // uint_range
@@ -431,9 +428,8 @@ namespace RiverExplorer { namespace Phoenix { namespace Protocol {
   {
     switch (that.kind ())
     {
-      case symbol_kind::S_DEFAULT: // DEFAULT
       case symbol_kind::S_uint_default: // uint_default
-        value.move< DefaultValue* > (YY_MOVE (that.value));
+        value.move< DefaultValueT<uint64_t>* > (YY_MOVE (that.value));
         break;
 
       case symbol_kind::S_uint_range: // uint_range
@@ -481,9 +477,8 @@ namespace RiverExplorer { namespace Phoenix { namespace Protocol {
     state = that.state;
     switch (that.kind ())
     {
-      case symbol_kind::S_DEFAULT: // DEFAULT
       case symbol_kind::S_uint_default: // uint_default
-        value.copy< DefaultValue* > (that.value);
+        value.copy< DefaultValueT<uint64_t>* > (that.value);
         break;
 
       case symbol_kind::S_uint_range: // uint_range
@@ -530,9 +525,8 @@ namespace RiverExplorer { namespace Phoenix { namespace Protocol {
     state = that.state;
     switch (that.kind ())
     {
-      case symbol_kind::S_DEFAULT: // DEFAULT
       case symbol_kind::S_uint_default: // uint_default
-        value.move< DefaultValue* > (that.value);
+        value.move< DefaultValueT<uint64_t>* > (that.value);
         break;
 
       case symbol_kind::S_uint_range: // uint_range
@@ -823,9 +817,8 @@ namespace RiverExplorer { namespace Phoenix { namespace Protocol {
          when using variants.  */
       switch (yyr1_[yyn])
     {
-      case symbol_kind::S_DEFAULT: // DEFAULT
       case symbol_kind::S_uint_default: // uint_default
-        yylhs.value.emplace< DefaultValue* > ();
+        yylhs.value.emplace< DefaultValueT<uint64_t>* > ();
         break;
 
       case symbol_kind::S_uint_range: // uint_range
@@ -879,405 +872,405 @@ namespace RiverExplorer { namespace Phoenix { namespace Protocol {
           switch (yyn)
             {
   case 2: // protocol: init comments protocoldirectives PROTOCOL IDSTRING LCURLY versions RCURLY SEMI
-#line 194 "Parser.yy"
+#line 203 "Parser.yy"
                                                                                           {
 				 Global::Log << "Protocol ID: " << yystack_[4].value.as < std::string > ();
 						PrintLine();
 				 }
-#line 888 "Parser.tab.cpp"
+#line 881 "Parser.tab.cpp"
     break;
 
   case 3: // init: %empty
-#line 200 "Parser.yy"
+#line 209 "Parser.yy"
               {
 		 CurrentScope = CurrentProtocol.GlobalScope;
 		 Global::CurrentScope.push_front(CurrentScope);
 }
-#line 897 "Parser.tab.cpp"
+#line 890 "Parser.tab.cpp"
     break;
 
   case 6: // comment: COMMENT
-#line 210 "Parser.yy"
+#line 219 "Parser.yy"
                                 {
 				/**@todo*/
 				}
-#line 905 "Parser.tab.cpp"
+#line 898 "Parser.tab.cpp"
     break;
 
   case 7: // gen_cbor: GEN_CBOR
-#line 215 "Parser.yy"
+#line 224 "Parser.yy"
                     {
 					  Global::Log <<"Generating CBOR Client and Server protocol and code.";
 						PrintLine();
 						Global::GScope.GenerateCBOR_Client = true;
 						Global::GScope.GenerateCBOR_Server = true;
 						}
-#line 916 "Parser.tab.cpp"
+#line 909 "Parser.tab.cpp"
     break;
 
   case 8: // no_gen_cbor: NO_GEN_CBOR
-#line 223 "Parser.yy"
+#line 232 "Parser.yy"
                            {
 					  Global::Log <<"Not generating CBOR Client and Server protocol and code.";
 						PrintLine();
 						Global::GScope.GenerateCBOR_Client = false;
 						Global::GScope.GenerateCBOR_Server = false;
 					 }
-#line 927 "Parser.tab.cpp"
+#line 920 "Parser.tab.cpp"
     break;
 
   case 9: // gen_cbor_client: GEN_CBOR_CLIENT
-#line 231 "Parser.yy"
+#line 240 "Parser.yy"
                                   {
 					  Global::Log <<"Generating CBOR Client protocol and code.";
 						PrintLine();
 						Global::GScope.GenerateCBOR_Client = true;
 					 }
-#line 937 "Parser.tab.cpp"
+#line 930 "Parser.tab.cpp"
     break;
 
   case 10: // no_gen_cbor_client: NO_GEN_CBOR_CLIENT
-#line 238 "Parser.yy"
+#line 247 "Parser.yy"
                                         {
 					  Global::Log <<"Not generating CBOR Client protocol and code.";
 						PrintLine();
 						Global::GScope.GenerateCBOR_Client = false;
 					 }
-#line 947 "Parser.tab.cpp"
+#line 940 "Parser.tab.cpp"
     break;
 
   case 11: // gen_cbor_server: GEN_CBOR_SERVER
-#line 245 "Parser.yy"
+#line 254 "Parser.yy"
                                   {
 					  Global::Log <<"Generating CBOR Server protocol and code.";
 						PrintLine();
 						Global::GScope.GenerateCBOR_Server = true;
 					 }
-#line 957 "Parser.tab.cpp"
+#line 950 "Parser.tab.cpp"
     break;
 
   case 12: // no_gen_cbor_server: NO_GEN_CBOR_SERVER
-#line 252 "Parser.yy"
+#line 261 "Parser.yy"
                                         {
 					  Global::Log <<"Not generating CBOR Server protocol and code.";
 						PrintLine();
 						Global::GScope.GenerateCBOR_Server = false;
 					 }
-#line 967 "Parser.tab.cpp"
+#line 960 "Parser.tab.cpp"
     break;
 
   case 13: // gen_json: GEN_JSON
-#line 259 "Parser.yy"
+#line 268 "Parser.yy"
                     {
 						Global::Log << "Generating JSON Client and Server protocol and code.";
 						PrintLine();
 						Global::GScope.GenerateJSON_Client = true;
 						Global::GScope.GenerateJSON_Server = true;
 					 }
-#line 978 "Parser.tab.cpp"
+#line 971 "Parser.tab.cpp"
     break;
 
   case 14: // no_gen_json: NO_GEN_JSON
-#line 267 "Parser.yy"
+#line 276 "Parser.yy"
                           {
 						Global::Log << "Not generating JSON Client and Server protocol and code.";
 						PrintLine();
 						Global::GScope.GenerateJSON_Client = false;
 						Global::GScope.GenerateJSON_Server = false;
 					 }
-#line 989 "Parser.tab.cpp"
+#line 982 "Parser.tab.cpp"
     break;
 
   case 15: // gen_json_client: GEN_JSON_CLIENT
-#line 275 "Parser.yy"
+#line 284 "Parser.yy"
                                  {
 						Global::Log << "Generating JSON Client protocol and code.";
 						PrintLine();
 						Global::GScope.GenerateJSON_Client = true;
 					 }
-#line 999 "Parser.tab.cpp"
+#line 992 "Parser.tab.cpp"
     break;
 
   case 16: // no_gen_json_client: NO_GEN_JSON_CLIENT
-#line 282 "Parser.yy"
+#line 291 "Parser.yy"
                                        {
 						Global::Log << "Not generating JSON Client protocol and code.";
 						PrintLine();
 						Global::GScope.GenerateJSON_Client = false;
 					 }
-#line 1009 "Parser.tab.cpp"
+#line 1002 "Parser.tab.cpp"
     break;
 
   case 17: // gen_json_server: GEN_JSON_SERVER
-#line 289 "Parser.yy"
+#line 298 "Parser.yy"
                                  {
 						Global::Log << "Generating JSON Server protocol and code.";
 						PrintLine();
 						Global::GScope.GenerateJSON_Server = true;
 					 }
-#line 1019 "Parser.tab.cpp"
+#line 1012 "Parser.tab.cpp"
     break;
 
   case 18: // no_gen_json_server: NO_GEN_JSON_SERVER
-#line 296 "Parser.yy"
+#line 305 "Parser.yy"
                                        {
 						Global::Log << "Not generating JSON Server protocol and code.";
 						PrintLine();
 						Global::GScope.GenerateJSON_Server = false;
 					 }
-#line 1029 "Parser.tab.cpp"
+#line 1022 "Parser.tab.cpp"
     break;
 
   case 19: // gen_native: GEN_NATIVE
-#line 303 "Parser.yy"
+#line 312 "Parser.yy"
                         {
 					 	Global::Log << "Generating NATIVE Client and Server protocol and code.";
 						PrintLine();
 						Global::GScope.GenerateNATIVE_Client = true;
 						Global::GScope.GenerateNATIVE_Server = true;
 					 }
-#line 1040 "Parser.tab.cpp"
+#line 1033 "Parser.tab.cpp"
     break;
 
   case 20: // no_gen_native: NO_GEN_NATIVE
-#line 311 "Parser.yy"
+#line 320 "Parser.yy"
                               {
 					 	Global::Log << "Not generating NATIVE Client and Server protocol and code.";
 						PrintLine();
 						Global::GScope.GenerateNATIVE_Client = false;
 						Global::GScope.GenerateNATIVE_Server = false;
 					 }
-#line 1051 "Parser.tab.cpp"
+#line 1044 "Parser.tab.cpp"
     break;
 
   case 21: // gen_native_client: GEN_NATIVE_CLIENT
-#line 319 "Parser.yy"
+#line 328 "Parser.yy"
                                      {
 					 	Global::Log << "Generating NATIVE Client protocol and code.";
 						PrintLine();
 						Global::GScope.GenerateNATIVE_Client = true;
 					 }
-#line 1061 "Parser.tab.cpp"
+#line 1054 "Parser.tab.cpp"
     break;
 
   case 22: // no_gen_native_client: NO_GEN_NATIVE_CLIENT
-#line 326 "Parser.yy"
+#line 335 "Parser.yy"
                                             {
 					 	Global::Log << "Not generating NATIVE Client protocol and code.";
 						PrintLine();
 						Global::GScope.GenerateNATIVE_Client = false;
 					 }
-#line 1071 "Parser.tab.cpp"
+#line 1064 "Parser.tab.cpp"
     break;
 
   case 23: // gen_native_server: GEN_NATIVE_SERVER
-#line 333 "Parser.yy"
+#line 342 "Parser.yy"
                                       {
 					 	Global::Log << "Generating NATIVE Server protocol and code.";
 	 						PrintLine();
 						Global::GScope.GenerateNATIVE_Server = true;
 					 }
-#line 1081 "Parser.tab.cpp"
+#line 1074 "Parser.tab.cpp"
     break;
 
   case 24: // no_gen_native_server: NO_GEN_NATIVE_SERVER
-#line 340 "Parser.yy"
+#line 349 "Parser.yy"
                                             {
 						 Global::Log << "Not generating NATIVE Server protocol and code.";
 						 PrintLine();
 						 Global::GScope.GenerateNATIVE_Server = false;
 					 }
-#line 1091 "Parser.tab.cpp"
+#line 1084 "Parser.tab.cpp"
     break;
 
   case 25: // gen_rest: GEN_REST
-#line 347 "Parser.yy"
+#line 356 "Parser.yy"
                     {
 						Global::Log << "Global::Generating REST Client and Server protocol and code.";
 	 						PrintLine();
 						Global::GScope.GenerateREST_Client = true;
 						Global::GScope.GenerateREST_Server = true;
 					 }
-#line 1102 "Parser.tab.cpp"
+#line 1095 "Parser.tab.cpp"
     break;
 
   case 26: // no_gen_rest: NO_GEN_REST
-#line 355 "Parser.yy"
+#line 364 "Parser.yy"
                           {
 						Global::Log << "Global::Not generating REST Client and Server protocol and code.";
 	 						PrintLine();
 						Global::GScope.GenerateREST_Client = false;
 						Global::GScope.GenerateREST_Server = false;
 					 }
-#line 1113 "Parser.tab.cpp"
+#line 1106 "Parser.tab.cpp"
     break;
 
   case 27: // gen_rest_client: GEN_REST_CLIENT
-#line 363 "Parser.yy"
+#line 372 "Parser.yy"
                                   {
 						Global::Log << "Generating REST Client protocol and code.";
 	 						PrintLine();
 						Global::GScope.GenerateREST_Client = true;
 					 }
-#line 1123 "Parser.tab.cpp"
+#line 1116 "Parser.tab.cpp"
     break;
 
   case 28: // no_gen_rest_client: NO_GEN_REST_CLIENT
-#line 370 "Parser.yy"
+#line 379 "Parser.yy"
                                         {
 						Global::Log << "Not generating REST Client protocol and code.";
 	 						PrintLine();
 						Global::GScope.GenerateREST_Client = false;
 					 }
-#line 1133 "Parser.tab.cpp"
+#line 1126 "Parser.tab.cpp"
     break;
 
   case 29: // gen_rest_server: GEN_REST_SERVER
-#line 377 "Parser.yy"
+#line 386 "Parser.yy"
                                   {
 						Global::Log << "Global::Generating REST Server protocol and code.";
 	 						PrintLine();
 						Global::GScope.GenerateREST_Server = true;
 					 }
-#line 1143 "Parser.tab.cpp"
+#line 1136 "Parser.tab.cpp"
     break;
 
   case 30: // no_gen_rest_server: NO_GEN_REST_SERVER
-#line 384 "Parser.yy"
+#line 393 "Parser.yy"
                                         {
 						Global::Log << "Global::Not generating REST Server protocol and code.";
 	 						PrintLine();
 						Global::GScope.GenerateREST_Server = false;
 					 }
-#line 1153 "Parser.tab.cpp"
+#line 1146 "Parser.tab.cpp"
     break;
 
   case 31: // gen_xdr: GEN_XDR
-#line 391 "Parser.yy"
+#line 400 "Parser.yy"
                   {
 						Global::Log << "Global::Generating XDR Client and Server protocol and code.";
 	 						PrintLine();
 						Global::GScope.GenerateXDR_Client = true;
 						Global::GScope.GenerateXDR_Server = true;
 					 }
-#line 1164 "Parser.tab.cpp"
+#line 1157 "Parser.tab.cpp"
     break;
 
   case 32: // no_gen_xdr: NO_GEN_XDR
-#line 399 "Parser.yy"
+#line 408 "Parser.yy"
                         {
 						Global::Log << "Global::Not generating XDR Client and Server protocol and code.";
 	 						PrintLine();
 						Global::GScope.GenerateXDR_Client = false;
 						Global::GScope.GenerateXDR_Server = false;
 					 }
-#line 1175 "Parser.tab.cpp"
+#line 1168 "Parser.tab.cpp"
     break;
 
   case 33: // gen_xdr_client: GEN_XDR_CLIENT
-#line 407 "Parser.yy"
+#line 416 "Parser.yy"
                                 {
 						Global::Log << "Generating XDR Client protocol and code.";
 	 						PrintLine();
 						Global::GScope.GenerateXDR_Client = true;
 					 }
-#line 1185 "Parser.tab.cpp"
+#line 1178 "Parser.tab.cpp"
     break;
 
   case 34: // no_gen_xdr_client: NO_GEN_XDR_CLIENT
-#line 414 "Parser.yy"
+#line 423 "Parser.yy"
                                       {
 						Global::Log << "Not generating XDR Client protocol and code.";
 	 						PrintLine();
 						Global::GScope.GenerateXDR_Client = false;
 					 }
-#line 1195 "Parser.tab.cpp"
+#line 1188 "Parser.tab.cpp"
     break;
 
   case 35: // gen_xdr_server: GEN_XDR_SERVER
-#line 421 "Parser.yy"
+#line 430 "Parser.yy"
                                 {
 						Global::Log << "Generating XDR Server protocol and code.";
 	 						PrintLine();
 						Global::GScope.GenerateXDR_Server = true;
 					 }
-#line 1205 "Parser.tab.cpp"
+#line 1198 "Parser.tab.cpp"
     break;
 
   case 36: // no_gen_xdr_server: NO_GEN_XDR_SERVER
-#line 428 "Parser.yy"
+#line 437 "Parser.yy"
                                       {
 						Global::Log << "Not generating XDR Server protocol and code.";
 	 						PrintLine();
 						Global::GScope.GenerateXDR_Server = false;
 					 }
-#line 1215 "Parser.tab.cpp"
+#line 1208 "Parser.tab.cpp"
     break;
 
   case 37: // gen_xml: GEN_XML
-#line 435 "Parser.yy"
+#line 444 "Parser.yy"
                   {
 						Global::Log << "Generating XML Client and Server protocol and code.";
 	 						PrintLine();
 						Global::GScope.GenerateXML_Client = true;
 						Global::GScope.GenerateXML_Server = true;
 					 }
-#line 1226 "Parser.tab.cpp"
+#line 1219 "Parser.tab.cpp"
     break;
 
   case 38: // no_gen_xml: NO_GEN_XML
-#line 443 "Parser.yy"
+#line 452 "Parser.yy"
                         {
 						Global::Log << "Not generating XML Client and Server protocol and code.";
 	 						PrintLine();
 						Global::GScope.GenerateXML_Client = false;
 						Global::GScope.GenerateXML_Server = false;
 					 }
-#line 1237 "Parser.tab.cpp"
+#line 1230 "Parser.tab.cpp"
     break;
 
   case 39: // gen_xml_client: GEN_XML_CLIENT
-#line 451 "Parser.yy"
+#line 460 "Parser.yy"
                                 {
 						Global::Log << "Generating XML Client protocol and code.";
 	 						PrintLine();
 						Global::GScope.GenerateXML_Client = true;
 					 }
-#line 1247 "Parser.tab.cpp"
+#line 1240 "Parser.tab.cpp"
     break;
 
   case 40: // no_gen_xml_client: NO_GEN_XML_CLIENT
-#line 458 "Parser.yy"
+#line 467 "Parser.yy"
                                       {
 						Global::Log << "Not generating XML Client protocol and code.";
 	 						PrintLine();
 						Global::GScope.GenerateXML_Client = false;
 					 }
-#line 1257 "Parser.tab.cpp"
+#line 1250 "Parser.tab.cpp"
     break;
 
   case 41: // gen_xml_server: GEN_XML_SERVER
-#line 465 "Parser.yy"
+#line 474 "Parser.yy"
                                 {
 						Global::Log << "Generating XML Server protocol and code.";
 	 						PrintLine();
 						Global::GScope.GenerateXML_Server = true;
 					 }
-#line 1267 "Parser.tab.cpp"
+#line 1260 "Parser.tab.cpp"
     break;
 
   case 42: // no_gen_xml_server: NO_GEN_XML_SERVER
-#line 472 "Parser.yy"
+#line 481 "Parser.yy"
                                       {
 						Global::Log << "Not generating XML Server protocol and code.";
 	 						PrintLine();
 						Global::GScope.GenerateXML_Server = false;
 					 }
-#line 1277 "Parser.tab.cpp"
+#line 1270 "Parser.tab.cpp"
     break;
 
   case 43: // packlr: PACKLR
-#line 479 "Parser.yy"
+#line 488 "Parser.yy"
                  {
 						if (!PackingOrderSet) {
 							 Global::GScope.Packing.PackingOrder = Pack::PackLR;
@@ -1285,14 +1278,15 @@ namespace RiverExplorer { namespace Phoenix { namespace Protocol {
 							 Global::Log << "Defalt bit Packing Left to Right.";
 						} else {
 							Global::Log << "Error: Packing order already set at the global level.";
+							YYERROR;
 						}
 						PrintLine();
 					 }
-#line 1292 "Parser.tab.cpp"
+#line 1286 "Parser.tab.cpp"
     break;
 
   case 44: // packrl: PACKRL
-#line 491 "Parser.yy"
+#line 501 "Parser.yy"
                 {
 						if (!PackingOrderSet) {
 							 Global::GScope.Packing.PackingOrder = Pack::PackRL;
@@ -1300,14 +1294,15 @@ namespace RiverExplorer { namespace Phoenix { namespace Protocol {
 							 Global::Log << "Defalt bit Packing Right to Left.";
 						} else {
 							Global::Log << "Error: Packing order already set at the global level.";
+							YYERROR;
 						}
 						PrintLine();
 					 }
-#line 1307 "Parser.tab.cpp"
+#line 1302 "Parser.tab.cpp"
     break;
 
   case 45: // packnbo: PACKNBO
-#line 503 "Parser.yy"
+#line 514 "Parser.yy"
                   {
 						if (!PackingOrderSet) {
 							 Global::GScope.Packing.PackingOrder = Pack::PackNBO;
@@ -1315,14 +1310,15 @@ namespace RiverExplorer { namespace Phoenix { namespace Protocol {
 							 Global::Log << "Defalt bit Packing network byte order.";
 						} else {
 							Global::Log << "Error: Packing order already set at the global level.";
+							YYERROR;
 						}
 						PrintLine();
 					 }
-#line 1322 "Parser.tab.cpp"
+#line 1318 "Parser.tab.cpp"
     break;
 
   case 46: // bitstream: BITSTREAM
-#line 515 "Parser.yy"
+#line 527 "Parser.yy"
                       {
 						if (!PackingSizeSet) {
 							 Global::GScope.Packing.BitStream = true;
@@ -1330,14 +1326,15 @@ namespace RiverExplorer { namespace Phoenix { namespace Protocol {
 							 Global::Log << "Default Packing set to none - Bit Stream";
 						} else {
 							Global::Log << "Error: Packing size already set at the global level.";
+							YYERROR;
 						}
 						PrintLine();
 					 }
-#line 1337 "Parser.tab.cpp"
+#line 1334 "Parser.tab.cpp"
     break;
 
   case 47: // defaultpacksize: DEFAULTPACKSIZE COLON DIGITS
-#line 528 "Parser.yy"
+#line 541 "Parser.yy"
                                                {
 						if (!PackingSizeSet) {
 							 Global::GScope.Packing.PackSize = (uint8_t)yystack_[0].value.as < uint64_t > ();
@@ -1345,14 +1342,15 @@ namespace RiverExplorer { namespace Phoenix { namespace Protocol {
 							 Global::Log << "Deafult Packing set to " << yystack_[0].value.as < uint64_t > () << " bits";
 						} else {
 							Global::Log << "Error: Packing size already set at the global level.";
+							YYERROR;
 						}
 						PrintLine();
 					 }
-#line 1352 "Parser.tab.cpp"
+#line 1350 "Parser.tab.cpp"
     break;
 
   case 48: // packsize: PACKSIZE COLON DIGITS
-#line 540 "Parser.yy"
+#line 554 "Parser.yy"
                                  {
 						if (!PackingSizeSet) {
 							 Global::GScope.Packing.PackSize = (uint8_t)yystack_[0].value.as < uint64_t > ();
@@ -1360,14 +1358,15 @@ namespace RiverExplorer { namespace Phoenix { namespace Protocol {
 							 Global::Log << "Deafult Packing set to " << yystack_[0].value.as < uint64_t > () << " bits";
 						} else {
 							Global::Log << "Error: Packing size already set at the global level.";
+							YYERROR;
 						}
 						PrintLine();
 					 }
-#line 1367 "Parser.tab.cpp"
+#line 1366 "Parser.tab.cpp"
     break;
 
   case 49: // gen_cpp_code: GEN_CPP_CODE
-#line 552 "Parser.yy"
+#line 567 "Parser.yy"
                             {
 					   // We are at the global level.
 						 //
@@ -1375,11 +1374,11 @@ namespace RiverExplorer { namespace Phoenix { namespace Protocol {
 						 Global::Log << "C++ Code generation turned on.";
 						PrintLine();
 					 }
-#line 1379 "Parser.tab.cpp"
+#line 1378 "Parser.tab.cpp"
     break;
 
   case 50: // no_gen_cpp_code: NO_GEN_CPP_CODE
-#line 561 "Parser.yy"
+#line 576 "Parser.yy"
                                   {
 					   // We are at the global level.
 						 //
@@ -1387,11 +1386,11 @@ namespace RiverExplorer { namespace Phoenix { namespace Protocol {
 						 Global::Log << "C++ Code generation turned off.";
 						PrintLine();
 					 }
-#line 1391 "Parser.tab.cpp"
+#line 1390 "Parser.tab.cpp"
     break;
 
   case 51: // gen_csharp_code: GEN_CSHARP_CODE
-#line 570 "Parser.yy"
+#line 585 "Parser.yy"
                                   {
 					   // We are at the global level.
 						 //
@@ -1399,11 +1398,11 @@ namespace RiverExplorer { namespace Phoenix { namespace Protocol {
 						 Global::Log << "C# Code generation turned on.";
 						PrintLine();
 					 }
-#line 1403 "Parser.tab.cpp"
+#line 1402 "Parser.tab.cpp"
     break;
 
   case 52: // no_gen_csharp_code: NO_GEN_CSHARP_CODE
-#line 579 "Parser.yy"
+#line 594 "Parser.yy"
                                         {
 					   // We are at the global level.
 						 //
@@ -1411,314 +1410,475 @@ namespace RiverExplorer { namespace Phoenix { namespace Protocol {
 						 Global::Log << "C# Code generation turned off.";
 						PrintLine();
 					 }
-#line 1415 "Parser.tab.cpp"
+#line 1414 "Parser.tab.cpp"
     break;
 
   case 53: // document: DOCUMENT
-#line 589 "Parser.yy"
+#line 604 "Parser.yy"
                     {
 						 Global::Log << "Start Document";
 						PrintLine();
 					 }
-#line 1424 "Parser.tab.cpp"
+#line 1423 "Parser.tab.cpp"
     break;
 
   case 54: // no_document: NO_DOCUMENT
-#line 595 "Parser.yy"
+#line 610 "Parser.yy"
                           {
 						 Global::Log << "No Document";
 						PrintLine();
 					 }
-#line 1433 "Parser.tab.cpp"
+#line 1432 "Parser.tab.cpp"
     break;
 
   case 55: // dnamespace: NAMESPACE EQUAL namespacestring
-#line 601 "Parser.yy"
+#line 616 "Parser.yy"
                                               {
 					 	 Global::Log << "Namespace: " << yystack_[0].value.as < std::string > ();
 	 						PrintLine();
 						 CurrentScope->Namespace = yystack_[0].value.as < std::string > ();
 					 }
-#line 1443 "Parser.tab.cpp"
+#line 1442 "Parser.tab.cpp"
     break;
 
-  case 109: // namespacestring: IDSTRING
-#line 668 "Parser.yy"
+  case 109: // begin_public: VISIBILITY_PUBLIC
+#line 684 "Parser.yy"
+                                                 {
+								CurrentVisibility = Symbol::Public_t;
+						 }
+#line 1450 "Parser.tab.cpp"
+    break;
+
+  case 110: // begin_protected: VISIBILITY_PROTECTED
+#line 690 "Parser.yy"
+                                                 {
+								CurrentVisibility = Symbol::Protected_t;
+						 }
+#line 1458 "Parser.tab.cpp"
+    break;
+
+  case 111: // begin_internal: VISIBILITY_INTERNAL
+#line 696 "Parser.yy"
+                                                 {
+								CurrentVisibility = Symbol::Internal_t;
+						 }
+#line 1466 "Parser.tab.cpp"
+    break;
+
+  case 112: // begin_private: VISIBILITY_PRIVATE
+#line 702 "Parser.yy"
+                                                 {
+								CurrentVisibility = Symbol::Private_t;
+						 }
+#line 1474 "Parser.tab.cpp"
+    break;
+
+  case 113: // namespacestring: IDSTRING
+#line 707 "Parser.yy"
                            {
 									BuildingNS = yystack_[0].value.as < std::string > ();
 									yylhs.value.as < std::string > () = yystack_[0].value.as < std::string > ();
               	}
-#line 1452 "Parser.tab.cpp"
+#line 1483 "Parser.tab.cpp"
     break;
 
-  case 110: // namespacestring: namespacestring COLON IDSTRING
-#line 672 "Parser.yy"
+  case 114: // namespacestring: namespacestring COLON IDSTRING
+#line 711 "Parser.yy"
                                                                                                        {
 									BuildingNS = yystack_[2].value.as < std::string > () + ":" + yystack_[0].value.as < std::string > ();
 									yylhs.value.as < std::string > () = BuildingNS;
 								}
-#line 1461 "Parser.tab.cpp"
+#line 1492 "Parser.tab.cpp"
     break;
 
-  case 113: // version: VERSION IDSTRING LCURLY contents RCURLY SEMI
-#line 683 "Parser.yy"
+  case 117: // version: VERSION IDSTRING LCURLY contents RCURLY SEMI
+#line 722 "Parser.yy"
                                 {
 					Global::Log << "Protocol Version: " << yystack_[4].value.as < std::string > ();
 						PrintLine();
 				}
-#line 1470 "Parser.tab.cpp"
+#line 1501 "Parser.tab.cpp"
     break;
 
-  case 133: // range_comparison: LESS_THAN
-#line 722 "Parser.yy"
+  case 134: // constuint: CONST UINT IDSTRING EQUAL DIGITS
+#line 751 "Parser.yy"
+           {
+						Global::Log << "CONST UNSIGNED INTEGER: " << yystack_[2].value.as < std::string > ();
+						PrintLine();
+						CurrentSymbol = new Symbol(Symbol::uint_t, yystack_[2].value.as < std::string > ());
+						CurrentSymbol->Namespace = CurrentScope->Namespace;
+						SymbolValueT<uint64_t> * NewValue = new SymbolValueT<uint64_t>(yystack_[0].value.as < uint64_t > ());
+						CurrentSymbol->Value = NewValue;
+						CurrentSymbol->IsConstant = true;
+						CurrentScope->Symbols.Add(CurrentSymbol, LineNumber);
+					 }
+#line 1516 "Parser.tab.cpp"
+    break;
+
+  case 135: // constuint: CONST UINT COLON DIGITS IDSTRING EQUAL DIGITS
+#line 763 "Parser.yy"
+           {
+						Global::Log << "CONST UNSIGNED " << yystack_[3].value.as < uint64_t > () << "-BIT INTEGER: " << yystack_[2].value.as < std::string > ();
+						PrintLine();
+						CurrentSymbol = new Symbol(Symbol::uint_t, yystack_[3].value.as < uint64_t > (), yystack_[2].value.as < std::string > ());
+						CurrentSymbol->Namespace = CurrentScope->Namespace;
+						SymbolValueT<uint64_t> * NewValue = new SymbolValueT<uint64_t>(yystack_[0].value.as < uint64_t > ());
+						CurrentSymbol->Value = NewValue;
+						CurrentSymbol->IsConstant = true;
+						CurrentScope->Symbols.Add(CurrentSymbol, LineNumber);
+					 }
+#line 1531 "Parser.tab.cpp"
+    break;
+
+  case 161: // range_comparison: LESS_THAN
+#line 818 "Parser.yy"
                                                                  {
 									yylhs.value.as < Range::RangeCmp_e > () = Range::LessThan_t;
 								 }
-#line 1478 "Parser.tab.cpp"
+#line 1539 "Parser.tab.cpp"
     break;
 
-  case 134: // range_comparison: LESS_THAN_OR_EQUAL
-#line 727 "Parser.yy"
+  case 162: // range_comparison: LESS_THAN_OR_EQUAL
+#line 823 "Parser.yy"
                                                                  {
 									yylhs.value.as < Range::RangeCmp_e > () = Range::LessThanOrEqualTo_t;
 								 }
-#line 1486 "Parser.tab.cpp"
+#line 1547 "Parser.tab.cpp"
     break;
 
-  case 135: // range_comparison: GREATER_THAN_OR_EQUAL
-#line 732 "Parser.yy"
+  case 163: // range_comparison: GREATER_THAN_OR_EQUAL
+#line 828 "Parser.yy"
                                                                  {
 									yylhs.value.as < Range::RangeCmp_e > () = Range::GreaterThanOrEqualTo_t;
 								 }
-#line 1494 "Parser.tab.cpp"
+#line 1555 "Parser.tab.cpp"
     break;
 
-  case 136: // range_comparison: GREATER_THAN
-#line 737 "Parser.yy"
+  case 164: // range_comparison: GREATER_THAN
+#line 833 "Parser.yy"
                                                                  {
 									yylhs.value.as < Range::RangeCmp_e > () = Range::GreaterThan_t;
 								 }
-#line 1502 "Parser.tab.cpp"
+#line 1563 "Parser.tab.cpp"
     break;
 
-  case 140: // uint_default: LCURLY DEFAULT EQUAL DIGITS RCURLY
-#line 748 "Parser.yy"
+  case 168: // uint_default: DEFAULT LPAREN DIGITS RPAREN
+#line 844 "Parser.yy"
                                                  {
-							CurrentDefaultValue = new DefaultValueT<uint64_t>(yystack_[1].value.as < uint64_t > ());
-							yylhs.value.as < DefaultValue* > () = CurrentDefaultValue;
+							CurrentUintDefaultValue = new DefaultValueT<uint64_t>(yystack_[1].value.as < uint64_t > ());
+							yylhs.value.as < DefaultValueT<uint64_t>* > () = CurrentUintDefaultValue;
 						 }
-#line 1511 "Parser.tab.cpp"
+#line 1572 "Parser.tab.cpp"
     break;
 
-  case 141: // uint_default: LCURLY DEFAULT EQUAL IDSTRING RCURLY
-#line 754 "Parser.yy"
+  case 169: // uint_default: DEFAULT LPAREN IDSTRING RPAREN
+#line 850 "Parser.yy"
                                                  {
-							CurrentDefaultValue = new DefaultValueT<std::string>(yystack_[1].value.as < std::string > ());
-							yylhs.value.as < DefaultValue* > () = CurrentDefaultValue;
+						  /** IDSTRING must alredy be defined as a constant. */
+
+							Symbol * Found = SymbolTable::Find(CurrentScope->Namespace, yystack_[1].value.as < std::string > ());
+							if (Found != nullptr) {
+								 if (Found->IsConstant) {
+								  SymbolValueT<uint64_t> * VarValue = dynamic_cast<SymbolValueT<uint64_t>*>(Found->Value);
+								  CurrentUintDefaultValue = new DefaultValueT<uint64_t>(VarValue->Value);
+									yylhs.value.as < DefaultValueT<uint64_t>* > () = CurrentUintDefaultValue;
+									CurrentSymbol->Default = CurrentUintDefaultValue;
+								 } else {
+								  Global::Log << "ERROR: Symbol " << yystack_[1].value.as < std::string > () << " was found, it must be a constant to be used in a Default\n";
+									YYERROR;
+								 }
+							} else {
+								  Global::Log << "ERROR: Symbol " << yystack_[1].value.as < std::string > () << " was not found, it must be alredy defined and be a constant to be used in a Default\n";
+									YYERROR;
+							}
 						 }
-#line 1520 "Parser.tab.cpp"
+#line 1596 "Parser.tab.cpp"
     break;
 
-  case 142: // uint_range: LCURLY RANGE COLON range_comparison DIGITS COMMA range_comparison DIGITS RCURLY
-#line 761 "Parser.yy"
+  case 170: // uint_range: RANGE LPAREN range_comparison DIGITS COMMA range_comparison DIGITS RPAREN
+#line 872 "Parser.yy"
                                          {
 							CurrentRange = new RangeT<uint64_t>(yystack_[5].value.as < Range::RangeCmp_e > (), yystack_[4].value.as < uint64_t > (), yystack_[2].value.as < Range::RangeCmp_e > (), yystack_[1].value.as < uint64_t > ());
 							yylhs.value.as < Range* > () = CurrentRange;
+							CurrentSymbol->ValidRange = CurrentRange;
 					 }
-#line 1529 "Parser.tab.cpp"
+#line 1606 "Parser.tab.cpp"
     break;
 
-  case 146: // uintsingle: UINT IDSTRING opt_uint
-#line 773 "Parser.yy"
+  case 171: // uint_range: RANGE LPAREN range_comparison IDSTRING COMMA range_comparison DIGITS RPAREN
+#line 879 "Parser.yy"
+                                         {
+						  /** IDSTRING must alredy be defined as a constant. */
+
+							Symbol * Found = SymbolTable::Find(CurrentScope->Namespace, yystack_[4].value.as < std::string > ());
+							if (Found != nullptr && Found->Value != nullptr && Found->IsConstant) {
+								 	SymbolValueT<uint> * SValue = dynamic_cast<SymbolValueT<uint>*>(Found->Value);
+									CurrentRange = new RangeT<uint64_t>(yystack_[5].value.as < Range::RangeCmp_e > (), SValue->Value, yystack_[2].value.as < Range::RangeCmp_e > (), yystack_[1].value.as < uint64_t > ());
+									yylhs.value.as < Range* > () = CurrentRange;
+									CurrentSymbol->ValidRange = CurrentRange;
+									
+							} else {
+								  Global::Log << "ERROR: Symbol " << yystack_[4].value.as < std::string > ()
+															<< " was not found, or not a constant,"
+															<< " it must be alredy defined and be a constant to be used in a Range\n";
+									YYERROR;
+							}
+					 }
+#line 1628 "Parser.tab.cpp"
+    break;
+
+  case 172: // uint_range: RANGE LPAREN range_comparison DIGITS COMMA range_comparison IDSTRING RPAREN
+#line 898 "Parser.yy"
+                                         {
+						  /** IDSTRING must alredy be defined as a constant. */
+
+							Symbol * Found = SymbolTable::Find(CurrentScope->Namespace, yystack_[1].value.as < std::string > ());
+							if (Found != nullptr && Found->Value != nullptr && Found->IsConstant) {
+								 	SymbolValueT<uint> * SValue = dynamic_cast<SymbolValueT<uint>*>(Found->Value);
+									CurrentRange = new RangeT<uint64_t>(yystack_[5].value.as < Range::RangeCmp_e > (), yystack_[4].value.as < uint64_t > (), yystack_[2].value.as < Range::RangeCmp_e > (), SValue->Value);
+									yylhs.value.as < Range* > () = CurrentRange;
+									CurrentSymbol->ValidRange = CurrentRange;
+									
+							} else {
+								  Global::Log << "ERROR: Symbol " << yystack_[1].value.as < std::string > ()
+															<< " was not found, or not a constant,"
+															<< " it must be alredy defined and be a constant to be used in a Range\n";
+									YYERROR;
+							}
+					 }
+#line 1650 "Parser.tab.cpp"
+    break;
+
+  case 173: // uint_range: RANGE LPAREN range_comparison IDSTRING COMMA range_comparison IDSTRING RPAREN
+#line 917 "Parser.yy"
+                                         {
+						  /** IDSTRING must alredy be defined as a constant. */
+
+							SymbolValueT<uint> * SValue4 = nullptr;
+							SymbolValueT<uint> * SValue7 = nullptr;
+							
+							Symbol * Found4 = SymbolTable::Find(CurrentScope->Namespace, yystack_[4].value.as < std::string > ());
+							if (Found4 != nullptr && Found4->Value != nullptr && Found4->IsConstant) {
+								 	SValue4 = dynamic_cast<SymbolValueT<uint>*>(Found4->Value);
+									
+							} else {
+								  Global::Log << "ERROR: Symbol " << yystack_[4].value.as < std::string > ()
+															<< " was not found, or not a constant,"
+															<< " it must be alredy defined and be a constant to be used in a Range\n";
+									YYERROR;
+							}
+
+							Symbol * Found7 = SymbolTable::Find(CurrentScope->Namespace, yystack_[1].value.as < std::string > ());
+							if (Found7 != nullptr && Found7->Value != nullptr && Found7->IsConstant) {
+								 	SValue7 = dynamic_cast<SymbolValueT<uint>*>(Found7->Value);
+							} else {
+								  Global::Log << "ERROR: Symbol " << yystack_[1].value.as < std::string > ()
+															<< " was not found, or not a constant,"
+															<< " it must be alredy defined and be a constant to be used in a Range\n";
+									YYERROR;
+							}
+							if (SValue4 != nullptr && SValue7 != nullptr) {
+									CurrentRange = new RangeT<uint64_t>(yystack_[5].value.as < Range::RangeCmp_e > (), SValue4->Value, yystack_[2].value.as < Range::RangeCmp_e > (), SValue7->Value);
+									yylhs.value.as < Range* > () = CurrentRange;
+									CurrentSymbol->ValidRange = CurrentRange;
+							}
+					 }
+#line 1687 "Parser.tab.cpp"
+    break;
+
+  case 177: // uintsingle: UINT IDSTRING opt_uint
+#line 958 "Parser.yy"
            {
 						Global::Log << "UNSIGNED INTEGER: " << yystack_[1].value.as < std::string > ();
 						PrintLine();
 						CurrentSymbol = new Symbol(Symbol::uint_t, yystack_[1].value.as < std::string > ());
 						CurrentSymbol->Namespace = CurrentScope->Namespace;
-						CurrentSymbol->Default = CurrentDefaultValue;
-						CurrentDefaultValue = nullptr;
+						CurrentSymbol->Default = CurrentUintDefaultValue;
+						CurrentUintDefaultValue = nullptr;
 
 						CurrentSymbol->ValidRange = CurrentRange;
 						CurrentRange = nullptr;
 						
 						CurrentScope->Symbols.Add(CurrentSymbol, LineNumber);
 					 }
-#line 1547 "Parser.tab.cpp"
+#line 1705 "Parser.tab.cpp"
     break;
 
-  case 147: // uintsingle: UINT COLON DIGITS IDSTRING
-#line 788 "Parser.yy"
+  case 178: // uintsingle: UINT COLON DIGITS IDSTRING opt_uint
+#line 973 "Parser.yy"
            {
-						Global::Log << "UNSIGNED " << yystack_[1].value.as < uint64_t > ()
-						     << "-BIT INTEGER: "
-								 << yystack_[0].value.as < std::string > ();
+						Global::Log << "UNSIGNED " << yystack_[2].value.as < uint64_t > () << "-BIT INTEGER: " << yystack_[1].value.as < std::string > ();
 						PrintLine();
-						Symbol * NewOne = new Symbol( Symbol::uint_t, yystack_[1].value.as < uint64_t > (), yystack_[0].value.as < std::string > ());
-						NewOne->Namespace = CurrentScope->Namespace;
-						CurrentScope->Symbols.Add(NewOne, LineNumber);
+						CurrentSymbol = new Symbol( Symbol::uint_t, yystack_[2].value.as < uint64_t > (), yystack_[1].value.as < std::string > ());
+						CurrentSymbol->Namespace = CurrentScope->Namespace;
+						CurrentSymbol->Default = CurrentUintDefaultValue;
+						CurrentUintDefaultValue = nullptr;
+						CurrentSymbol->ValidRange = CurrentRange;
+						CurrentRange = nullptr;
+						CurrentScope->Symbols.Add(CurrentSymbol, LineNumber);
 					 }
-#line 1561 "Parser.tab.cpp"
+#line 1721 "Parser.tab.cpp"
     break;
 
-  case 148: // uintfixedarray: UINT IDSTRING LSQUARE DIGITS RSQUARE
-#line 800 "Parser.yy"
+  case 179: // uintfixedarray: UINT IDSTRING LSQUARE DIGITS RSQUARE opt_uint
+#line 987 "Parser.yy"
            {
-						Global::Log << "Fixed Array of " << yystack_[1].value.as < uint64_t > ()
+						Global::Log << "Fixed Array of " << yystack_[2].value.as < uint64_t > ()
 						     << " UNSIGNED INTEGERS: "
-								 << yystack_[3].value.as < std::string > ();
+								 << yystack_[4].value.as < std::string > ();
  						PrintLine();
-						Symbol * NewOne = new Symbol( Symbol::uint_t, yystack_[3].value.as < std::string > (), Symbol::FixedArray_t, yystack_[1].value.as < uint64_t > ());
-						NewOne->Namespace = CurrentScope->Namespace;
-						CurrentScope->Symbols.Add(NewOne, LineNumber);
+						CurrentSymbol = new Symbol( Symbol::uint_t, yystack_[4].value.as < std::string > (), Symbol::FixedArray_t, yystack_[2].value.as < uint64_t > ());
+						CurrentSymbol->Namespace = CurrentScope->Namespace;
+						CurrentScope->Symbols.Add(CurrentSymbol, LineNumber);
 					 }
-#line 1575 "Parser.tab.cpp"
+#line 1735 "Parser.tab.cpp"
     break;
 
-  case 149: // uintfixedarray: UINT COLON DIGITS IDSTRING LSQUARE DIGITS RSQUARE
-#line 811 "Parser.yy"
+  case 180: // uintfixedarray: UINT COLON DIGITS IDSTRING LSQUARE DIGITS RSQUARE opt_uint
+#line 998 "Parser.yy"
            {
-						Global::Log << "Fixed Array of " << yystack_[1].value.as < uint64_t > ()
-						     << " UNSIGNED " << yystack_[4].value.as < uint64_t > ()
+						Global::Log << "Fixed Array of " << yystack_[2].value.as < uint64_t > ()
+						     << " UNSIGNED " << yystack_[5].value.as < uint64_t > ()
 								 << "-BIT INTEGERS: "
-								 << yystack_[3].value.as < std::string > ();
+								 << yystack_[4].value.as < std::string > ();
  						PrintLine();
-						Symbol * NewOne = new Symbol( Symbol::uint_t, yystack_[4].value.as < uint64_t > (), yystack_[3].value.as < std::string > (), Symbol::FixedArray_t, yystack_[1].value.as < uint64_t > ());
-						NewOne->Namespace = CurrentScope->Namespace;
-						CurrentScope->Symbols.Add(NewOne, LineNumber);
+						CurrentSymbol = new Symbol( Symbol::uint_t, yystack_[5].value.as < uint64_t > (), yystack_[4].value.as < std::string > (), Symbol::FixedArray_t, yystack_[2].value.as < uint64_t > ());
+						CurrentSymbol->Namespace = CurrentScope->Namespace;
+						CurrentScope->Symbols.Add(CurrentSymbol, LineNumber);
 					 }
-#line 1590 "Parser.tab.cpp"
+#line 1750 "Parser.tab.cpp"
     break;
 
-  case 150: // uintvariablearray: UINT IDSTRING LESS_THAN DIGITS COMMA DIGITS GREATER_THAN
-#line 824 "Parser.yy"
+  case 181: // uintvariablearray: UINT IDSTRING LESS_THAN DIGITS COMMA DIGITS GREATER_THAN opt_uint
+#line 1011 "Parser.yy"
                                          {
-						Global::Log << "Variable Array of " << yystack_[3].value.as < uint64_t > ()
-						     << " to " << yystack_[1].value.as < uint64_t > ()
+						Global::Log << "Variable Array of " << yystack_[4].value.as < uint64_t > ()
+						     << " to " << yystack_[2].value.as < uint64_t > ()
 						     << " UNSIGNED INTEGERS: "
-								 << yystack_[5].value.as < std::string > ();
+								 << yystack_[6].value.as < std::string > ();
  						PrintLine();
-						Symbol * NewOne = new Symbol( Symbol::uint_t, yystack_[5].value.as < std::string > (), Symbol::VariableArray_t, yystack_[3].value.as < uint64_t > (), yystack_[1].value.as < uint64_t > ());
-						NewOne->Namespace = CurrentScope->Namespace;
-						CurrentScope->Symbols.Add(NewOne, LineNumber);
+						CurrentSymbol = new Symbol( Symbol::uint_t, yystack_[6].value.as < std::string > (), Symbol::VariableArray_t, yystack_[4].value.as < uint64_t > (), yystack_[2].value.as < uint64_t > ());
+						CurrentSymbol->Namespace = CurrentScope->Namespace;
+						CurrentScope->Symbols.Add(CurrentSymbol, LineNumber);
 					 }
-#line 1605 "Parser.tab.cpp"
+#line 1765 "Parser.tab.cpp"
     break;
 
-  case 151: // uintvariablearray: UINT COLON DIGITS IDSTRING LESS_THAN DIGITS COMMA DIGITS GREATER_THAN
-#line 836 "Parser.yy"
+  case 182: // uintvariablearray: UINT COLON DIGITS IDSTRING LESS_THAN DIGITS COMMA DIGITS GREATER_THAN opt_uint
+#line 1023 "Parser.yy"
                                          {
-						Global::Log << "Variable Array of " << yystack_[3].value.as < uint64_t > ()
-						     << " to " << yystack_[1].value.as < uint64_t > () << " "
-								 << yystack_[6].value.as < uint64_t > () << "-BIT"
+						Global::Log << "Variable Array of " << yystack_[4].value.as < uint64_t > ()
+						     << " to " << yystack_[2].value.as < uint64_t > () << " "
+								 << yystack_[7].value.as < uint64_t > () << "-BIT"
 						     << " UNSIGNED INTEGERS: "
-								 << yystack_[5].value.as < std::string > ();
+								 << yystack_[6].value.as < std::string > ();
  						PrintLine();
-						Symbol * NewOne = new Symbol( Symbol::uint_t, yystack_[6].value.as < uint64_t > (), yystack_[5].value.as < std::string > (), Symbol::VariableArray_t, yystack_[3].value.as < uint64_t > (), yystack_[1].value.as < uint64_t > ());
-						NewOne->Namespace = CurrentScope->Namespace;
-						CurrentScope->Symbols.Add(NewOne, LineNumber);
+						CurrentSymbol = new Symbol( Symbol::uint_t, yystack_[7].value.as < uint64_t > (), yystack_[6].value.as < std::string > (), Symbol::VariableArray_t, yystack_[4].value.as < uint64_t > (), yystack_[2].value.as < uint64_t > ());
+						CurrentSymbol->Namespace = CurrentScope->Namespace;
+						CurrentScope->Symbols.Add(CurrentSymbol, LineNumber);
 					 }
-#line 1621 "Parser.tab.cpp"
+#line 1781 "Parser.tab.cpp"
     break;
 
-  case 152: // uintvariablearray: UINT IDSTRING LESS_THAN GREATER_THAN
-#line 849 "Parser.yy"
+  case 183: // uintvariablearray: UINT IDSTRING LESS_THAN GREATER_THAN opt_uint
+#line 1036 "Parser.yy"
                                          {
 						Global::Log << "Variable Array of zero or more UNSIGNED INTEGERS: "
-								 << yystack_[2].value.as < std::string > ();
+								 << yystack_[3].value.as < std::string > ();
  						PrintLine();
-						Symbol * NewOne = new Symbol( Symbol::uint_t, yystack_[2].value.as < std::string > (), Symbol::VariableArray_t, 0, 0);
-						NewOne->Namespace = CurrentScope->Namespace;
-						CurrentScope->Symbols.Add(NewOne, LineNumber);
+						CurrentSymbol = new Symbol( Symbol::uint_t, yystack_[3].value.as < std::string > (), Symbol::VariableArray_t, 0, 0);
+						CurrentSymbol->Namespace = CurrentScope->Namespace;
+						CurrentScope->Symbols.Add(CurrentSymbol, LineNumber);
 					 }
-#line 1634 "Parser.tab.cpp"
+#line 1794 "Parser.tab.cpp"
     break;
 
-  case 153: // uintvariablearray: UINT COLON DIGITS IDSTRING LESS_THAN GREATER_THAN
-#line 859 "Parser.yy"
+  case 184: // uintvariablearray: UINT COLON DIGITS IDSTRING LESS_THAN GREATER_THAN opt_uint
+#line 1046 "Parser.yy"
                                          {
 						Global::Log << "Variable Array of zero or more "
-						     << yystack_[3].value.as < uint64_t > () << "-BIT UNSIGNED INTEGERS: "
-								 << yystack_[2].value.as < std::string > ();
+						     << yystack_[4].value.as < uint64_t > () << "-BIT UNSIGNED INTEGERS: "
+								 << yystack_[3].value.as < std::string > ();
  						PrintLine();
-						Symbol * NewOne = new Symbol( Symbol::uint_t, yystack_[3].value.as < uint64_t > (), yystack_[2].value.as < std::string > (), Symbol::VariableArray_t, 0, 0);
-						NewOne->Namespace = CurrentScope->Namespace;
-						CurrentScope->Symbols.Add(NewOne, LineNumber);
+						CurrentSymbol = new Symbol( Symbol::uint_t, yystack_[4].value.as < uint64_t > (), yystack_[3].value.as < std::string > (), Symbol::VariableArray_t, 0, 0);
+						CurrentSymbol->Namespace = CurrentScope->Namespace;
+						CurrentScope->Symbols.Add(CurrentSymbol, LineNumber);
 					 }
-#line 1648 "Parser.tab.cpp"
+#line 1808 "Parser.tab.cpp"
     break;
 
-  case 157: // sintsingle: SINT IDSTRING
-#line 876 "Parser.yy"
+  case 188: // sintsingle: SINT IDSTRING
+#line 1063 "Parser.yy"
            {
 						Global::Log << "SIGNED INTEGER: " << yystack_[0].value.as < std::string > ();
  						PrintLine();
-						Symbol * NewOne = new Symbol( Symbol::sint_t, yystack_[0].value.as < std::string > ());
-						NewOne->Namespace = CurrentScope->Namespace;
-						CurrentScope->Symbols.Add(NewOne, LineNumber);
+						CurrentSymbol = new Symbol( Symbol::sint_t, yystack_[0].value.as < std::string > ());
+						CurrentSymbol->Namespace = CurrentScope->Namespace;
+						CurrentScope->Symbols.Add(CurrentSymbol, LineNumber);
 					 }
-#line 1660 "Parser.tab.cpp"
+#line 1820 "Parser.tab.cpp"
     break;
 
-  case 158: // sintsingle: SINT COLON DIGITS IDSTRING
-#line 885 "Parser.yy"
+  case 189: // sintsingle: SINT COLON DIGITS IDSTRING
+#line 1072 "Parser.yy"
            {
 						Global::Log << "SIGNED " << yystack_[1].value.as < uint64_t > ()
 						     << "-BIT INTEGER: "
 								 << yystack_[0].value.as < std::string > ();
  						PrintLine();
-						Symbol * NewOne = new Symbol( Symbol::sint_t, yystack_[1].value.as < uint64_t > (), yystack_[0].value.as < std::string > ());
-						NewOne->Namespace = CurrentScope->Namespace;
-						CurrentScope->Symbols.Add(NewOne, LineNumber);
+						CurrentSymbol = new Symbol( Symbol::sint_t, yystack_[1].value.as < uint64_t > (), yystack_[0].value.as < std::string > ());
+						CurrentSymbol->Namespace = CurrentScope->Namespace;
+						CurrentScope->Symbols.Add(CurrentSymbol, LineNumber);
 					 }
-#line 1674 "Parser.tab.cpp"
+#line 1834 "Parser.tab.cpp"
     break;
 
-  case 159: // sintfixedarray: SINT IDSTRING LSQUARE DIGITS RSQUARE
-#line 897 "Parser.yy"
+  case 190: // sintfixedarray: SINT IDSTRING LSQUARE DIGITS RSQUARE
+#line 1084 "Parser.yy"
            {
 						Global::Log << "Fixed Array of " << yystack_[1].value.as < uint64_t > ()
 						     << " SIGNED INTEGERS: "
 								 << yystack_[3].value.as < std::string > ();
  						PrintLine();
-						Symbol * NewOne = new Symbol( Symbol::sint_t, yystack_[3].value.as < std::string > (), Symbol::FixedArray_t, yystack_[1].value.as < uint64_t > ());
-						NewOne->Namespace = CurrentScope->Namespace;
-						CurrentScope->Symbols.Add(NewOne, LineNumber);
+						CurrentSymbol = new Symbol( Symbol::sint_t, yystack_[3].value.as < std::string > (), Symbol::FixedArray_t, yystack_[1].value.as < uint64_t > ());
+						CurrentSymbol->Namespace = CurrentScope->Namespace;
+						CurrentScope->Symbols.Add(CurrentSymbol, LineNumber);
 					 }
-#line 1688 "Parser.tab.cpp"
+#line 1848 "Parser.tab.cpp"
     break;
 
-  case 160: // sintfixedarray: SINT COLON DIGITS IDSTRING LSQUARE DIGITS RSQUARE
-#line 908 "Parser.yy"
+  case 191: // sintfixedarray: SINT COLON DIGITS IDSTRING LSQUARE DIGITS RSQUARE
+#line 1095 "Parser.yy"
            {
 						Global::Log << "Fixed Array of " << yystack_[1].value.as < uint64_t > ()
 						     << " SIGNED " << yystack_[4].value.as < uint64_t > ()
 								 << "-BIT INTEGERS: "
 								 << yystack_[3].value.as < std::string > ();
  						PrintLine();
-						Symbol * NewOne = new Symbol( Symbol::sint_t, yystack_[4].value.as < uint64_t > (), yystack_[3].value.as < std::string > (), Symbol::FixedArray_t, yystack_[1].value.as < uint64_t > ());
-						NewOne->Namespace = CurrentScope->Namespace;
-						CurrentScope->Symbols.Add(NewOne, LineNumber);
+						CurrentSymbol = new Symbol( Symbol::sint_t, yystack_[4].value.as < uint64_t > (), yystack_[3].value.as < std::string > (), Symbol::FixedArray_t, yystack_[1].value.as < uint64_t > ());
+						CurrentSymbol->Namespace = CurrentScope->Namespace;
+						CurrentScope->Symbols.Add(CurrentSymbol, LineNumber);
 					 }
-#line 1703 "Parser.tab.cpp"
+#line 1863 "Parser.tab.cpp"
     break;
 
-  case 161: // sintvariablearray: SINT IDSTRING LESS_THAN DIGITS COMMA DIGITS GREATER_THAN
-#line 921 "Parser.yy"
+  case 192: // sintvariablearray: SINT IDSTRING LESS_THAN DIGITS COMMA DIGITS GREATER_THAN
+#line 1108 "Parser.yy"
                                          {
 						Global::Log << "Variable Array of " << yystack_[3].value.as < uint64_t > ()
 						     << " to " << yystack_[1].value.as < uint64_t > ()
 						     << " SIGNED INTEGERS: "
 								 << yystack_[5].value.as < std::string > ();
  						PrintLine();
-						Symbol * NewOne = new Symbol( Symbol::sint_t, yystack_[5].value.as < std::string > (), Symbol::VariableArray_t, yystack_[3].value.as < uint64_t > (), yystack_[1].value.as < uint64_t > ());
-						NewOne->Namespace = CurrentScope->Namespace;
-						CurrentScope->Symbols.Add(NewOne, LineNumber);
+						CurrentSymbol = new Symbol( Symbol::sint_t, yystack_[5].value.as < std::string > (), Symbol::VariableArray_t, yystack_[3].value.as < uint64_t > (), yystack_[1].value.as < uint64_t > ());
+						CurrentSymbol->Namespace = CurrentScope->Namespace;
+						CurrentScope->Symbols.Add(CurrentSymbol, LineNumber);
 					 }
-#line 1718 "Parser.tab.cpp"
+#line 1878 "Parser.tab.cpp"
     break;
 
-  case 162: // sintvariablearray: SINT COLON DIGITS IDSTRING LESS_THAN DIGITS COMMA DIGITS GREATER_THAN
-#line 933 "Parser.yy"
+  case 193: // sintvariablearray: SINT COLON DIGITS IDSTRING LESS_THAN DIGITS COMMA DIGITS GREATER_THAN
+#line 1120 "Parser.yy"
                                          {
 						Global::Log << "Variable Array of " << yystack_[3].value.as < uint64_t > ()
 						     << " to " << yystack_[1].value.as < uint64_t > () << " "
@@ -1726,153 +1886,153 @@ namespace RiverExplorer { namespace Phoenix { namespace Protocol {
 						     << " SIGNED INTEGERS: "
 								 << yystack_[5].value.as < std::string > ();
  						PrintLine();
-						Symbol * NewOne = new Symbol( Symbol::sint_t, yystack_[6].value.as < uint64_t > (), yystack_[5].value.as < std::string > (), Symbol::VariableArray_t, yystack_[3].value.as < uint64_t > (), yystack_[1].value.as < uint64_t > ());
-						NewOne->Namespace = CurrentScope->Namespace;
-						CurrentScope->Symbols.Add(NewOne, LineNumber);
+						CurrentSymbol = new Symbol( Symbol::sint_t, yystack_[6].value.as < uint64_t > (), yystack_[5].value.as < std::string > (), Symbol::VariableArray_t, yystack_[3].value.as < uint64_t > (), yystack_[1].value.as < uint64_t > ());
+						CurrentSymbol->Namespace = CurrentScope->Namespace;
+						CurrentScope->Symbols.Add(CurrentSymbol, LineNumber);
 					 }
-#line 1734 "Parser.tab.cpp"
+#line 1894 "Parser.tab.cpp"
     break;
 
-  case 163: // sintvariablearray: SINT IDSTRING LESS_THAN GREATER_THAN
-#line 946 "Parser.yy"
+  case 194: // sintvariablearray: SINT IDSTRING LESS_THAN GREATER_THAN
+#line 1133 "Parser.yy"
                                          {
 						Global::Log << "Variable Array of zero or more SIGNED INTEGERS: " << yystack_[2].value.as < std::string > ();
  						PrintLine();
-						Symbol * NewOne = new Symbol( Symbol::sint_t, yystack_[2].value.as < std::string > (), Symbol::VariableArray_t, 0, 0);
-						NewOne->Namespace = CurrentScope->Namespace;
-						CurrentScope->Symbols.Add(NewOne, LineNumber);
+						CurrentSymbol = new Symbol( Symbol::sint_t, yystack_[2].value.as < std::string > (), Symbol::VariableArray_t, 0, 0);
+						CurrentSymbol->Namespace = CurrentScope->Namespace;
+						CurrentScope->Symbols.Add(CurrentSymbol, LineNumber);
 					 }
-#line 1746 "Parser.tab.cpp"
+#line 1906 "Parser.tab.cpp"
     break;
 
-  case 164: // sintvariablearray: SINT COLON DIGITS IDSTRING LESS_THAN GREATER_THAN
-#line 955 "Parser.yy"
+  case 195: // sintvariablearray: SINT COLON DIGITS IDSTRING LESS_THAN GREATER_THAN
+#line 1142 "Parser.yy"
                                          {
 						Global::Log << "Variable Array of zero or more "
 						     << yystack_[3].value.as < uint64_t > () << "-BIT SIGNED INTEGERS: "
 								 << yystack_[2].value.as < std::string > ();
  						PrintLine();
-						Symbol * NewOne = new Symbol( Symbol::sint_t, yystack_[3].value.as < uint64_t > (), yystack_[2].value.as < std::string > (), Symbol::VariableArray_t, 0, 0);
-						NewOne->Namespace = CurrentScope->Namespace;
-						CurrentScope->Symbols.Add(NewOne, LineNumber);
+						CurrentSymbol = new Symbol( Symbol::sint_t, yystack_[3].value.as < uint64_t > (), yystack_[2].value.as < std::string > (), Symbol::VariableArray_t, 0, 0);
+						CurrentSymbol->Namespace = CurrentScope->Namespace;
+						CurrentScope->Symbols.Add(CurrentSymbol, LineNumber);
 					 }
-#line 1760 "Parser.tab.cpp"
+#line 1920 "Parser.tab.cpp"
     break;
 
-  case 167: // opaquefixedarray: OPAQUE IDSTRING LSQUARE DIGITS RSQUARE
-#line 971 "Parser.yy"
+  case 198: // opaquefixedarray: OPAQUE IDSTRING LSQUARE DIGITS RSQUARE
+#line 1158 "Parser.yy"
            {
 						Global::Log << "Fixed Array of " << yystack_[1].value.as < uint64_t > ()
 						     << " OPAQUE: "
 								 << yystack_[3].value.as < std::string > ();
  						PrintLine();
-						Symbol * NewOne = new Symbol( Symbol::opaque_t, yystack_[3].value.as < std::string > (), Symbol::FixedArray_t, yystack_[1].value.as < uint64_t > ());
-						NewOne->Namespace = CurrentScope->Namespace;
-						CurrentScope->Symbols.Add(NewOne, LineNumber);
+						CurrentSymbol = new Symbol( Symbol::opaque_t, yystack_[3].value.as < std::string > (), Symbol::FixedArray_t, yystack_[1].value.as < uint64_t > ());
+						CurrentSymbol->Namespace = CurrentScope->Namespace;
+						CurrentScope->Symbols.Add(CurrentSymbol, LineNumber);
 					 }
-#line 1774 "Parser.tab.cpp"
+#line 1934 "Parser.tab.cpp"
     break;
 
-  case 168: // opaquevariablearray: OPAQUE IDSTRING LESS_THAN DIGITS COMMA DIGITS GREATER_THAN
-#line 983 "Parser.yy"
+  case 199: // opaquevariablearray: OPAQUE IDSTRING LESS_THAN DIGITS COMMA DIGITS GREATER_THAN
+#line 1170 "Parser.yy"
                                          {
 						Global::Log << "Variable Array of " << yystack_[3].value.as < uint64_t > ()
 						     << " to " << yystack_[1].value.as < uint64_t > ()
 						     << " OPAQUE: "
 								 << yystack_[5].value.as < std::string > ();
  						PrintLine();
-						Symbol * NewOne = new Symbol( Symbol::opaque_t, yystack_[5].value.as < std::string > (), Symbol::VariableArray_t, yystack_[3].value.as < uint64_t > (), yystack_[1].value.as < uint64_t > ());
-						NewOne->Namespace = CurrentScope->Namespace;
-						CurrentScope->Symbols.Add(NewOne, LineNumber);
+						CurrentSymbol = new Symbol( Symbol::opaque_t, yystack_[5].value.as < std::string > (), Symbol::VariableArray_t, yystack_[3].value.as < uint64_t > (), yystack_[1].value.as < uint64_t > ());
+						CurrentSymbol->Namespace = CurrentScope->Namespace;
+						CurrentScope->Symbols.Add(CurrentSymbol, LineNumber);
 					 }
-#line 1789 "Parser.tab.cpp"
+#line 1949 "Parser.tab.cpp"
     break;
 
-  case 169: // opaquevariablearray: OPAQUE IDSTRING LESS_THAN GREATER_THAN
-#line 995 "Parser.yy"
+  case 200: // opaquevariablearray: OPAQUE IDSTRING LESS_THAN GREATER_THAN
+#line 1182 "Parser.yy"
                                          {
 						Global::Log << "Variable Array of zero or more OPAQUE: "
 								 << yystack_[2].value.as < std::string > ();
  						PrintLine();
-						Symbol * NewOne = new Symbol( Symbol::opaque_t, yystack_[2].value.as < std::string > (), Symbol::VariableArray_t, 0, 0);
-						NewOne->Namespace = CurrentScope->Namespace;
-						CurrentScope->Symbols.Add(NewOne, LineNumber);
+						CurrentSymbol = new Symbol( Symbol::opaque_t, yystack_[2].value.as < std::string > (), Symbol::VariableArray_t, 0, 0);
+						CurrentSymbol->Namespace = CurrentScope->Namespace;
+						CurrentScope->Symbols.Add(CurrentSymbol, LineNumber);
 					 }
-#line 1802 "Parser.tab.cpp"
+#line 1962 "Parser.tab.cpp"
     break;
 
-  case 173: // floatsingle: FLOAT IDSTRING
-#line 1012 "Parser.yy"
+  case 204: // floatsingle: FLOAT IDSTRING
+#line 1199 "Parser.yy"
            {
 						Global::Log << "FLOAT: " << yystack_[0].value.as < std::string > ();
  						PrintLine();
-						Symbol * NewOne = new Symbol( Symbol::float_t, yystack_[0].value.as < std::string > ());
-						NewOne->Namespace = CurrentScope->Namespace;
-						CurrentScope->Symbols.Add(NewOne, LineNumber);
+						CurrentSymbol = new Symbol( Symbol::float_t, yystack_[0].value.as < std::string > ());
+						CurrentSymbol->Namespace = CurrentScope->Namespace;
+						CurrentScope->Symbols.Add(CurrentSymbol, LineNumber);
 					 }
-#line 1814 "Parser.tab.cpp"
+#line 1974 "Parser.tab.cpp"
     break;
 
-  case 174: // floatsingle: FLOAT COLON DIGITS IDSTRING
-#line 1021 "Parser.yy"
+  case 205: // floatsingle: FLOAT COLON DIGITS IDSTRING
+#line 1208 "Parser.yy"
            {
 						Global::Log << yystack_[1].value.as < uint64_t > ()
 						     << "-BIT FLOAT: "
 								 << yystack_[0].value.as < std::string > ();
  						PrintLine();
-						Symbol * NewOne = new Symbol( Symbol::float_t, yystack_[1].value.as < uint64_t > (), yystack_[0].value.as < std::string > ());
-						NewOne->Namespace = CurrentScope->Namespace;
-						CurrentScope->Symbols.Add(NewOne, LineNumber);
+						CurrentSymbol = new Symbol( Symbol::float_t, yystack_[1].value.as < uint64_t > (), yystack_[0].value.as < std::string > ());
+						CurrentSymbol->Namespace = CurrentScope->Namespace;
+						CurrentScope->Symbols.Add(CurrentSymbol, LineNumber);
 					 }
-#line 1828 "Parser.tab.cpp"
+#line 1988 "Parser.tab.cpp"
     break;
 
-  case 175: // floatfixedarray: FLOAT IDSTRING LSQUARE DIGITS RSQUARE
-#line 1033 "Parser.yy"
+  case 206: // floatfixedarray: FLOAT IDSTRING LSQUARE DIGITS RSQUARE
+#line 1220 "Parser.yy"
            {
 						Global::Log << "Fixed Array of " << yystack_[1].value.as < uint64_t > ()
 						     << " FLOAT: "
 								 << yystack_[3].value.as < std::string > ();
  						PrintLine();
-						Symbol * NewOne = new Symbol( Symbol::float_t, yystack_[3].value.as < std::string > (), Symbol::FixedArray_t, yystack_[1].value.as < uint64_t > ());
-						NewOne->Namespace = CurrentScope->Namespace;
-						CurrentScope->Symbols.Add(NewOne, LineNumber);
+						CurrentSymbol = new Symbol( Symbol::float_t, yystack_[3].value.as < std::string > (), Symbol::FixedArray_t, yystack_[1].value.as < uint64_t > ());
+						CurrentSymbol->Namespace = CurrentScope->Namespace;
+						CurrentScope->Symbols.Add(CurrentSymbol, LineNumber);
 					 }
-#line 1842 "Parser.tab.cpp"
+#line 2002 "Parser.tab.cpp"
     break;
 
-  case 176: // floatfixedarray: FLOAT COLON DIGITS IDSTRING LSQUARE DIGITS RSQUARE
-#line 1044 "Parser.yy"
+  case 207: // floatfixedarray: FLOAT COLON DIGITS IDSTRING LSQUARE DIGITS RSQUARE
+#line 1231 "Parser.yy"
            {
 						Global::Log << "Fixed Array of " << yystack_[1].value.as < uint64_t > ()
 						     << yystack_[4].value.as < uint64_t > ()
 								 << "-BIT FLOAT: "
 								 << yystack_[3].value.as < std::string > ();
  						PrintLine();
-						Symbol * NewOne = new Symbol( Symbol::float_t, yystack_[4].value.as < uint64_t > (), yystack_[3].value.as < std::string > (), Symbol::FixedArray_t, yystack_[1].value.as < uint64_t > ());
-						NewOne->Namespace = CurrentScope->Namespace;
-						CurrentScope->Symbols.Add(NewOne, LineNumber);
+						CurrentSymbol = new Symbol( Symbol::float_t, yystack_[4].value.as < uint64_t > (), yystack_[3].value.as < std::string > (), Symbol::FixedArray_t, yystack_[1].value.as < uint64_t > ());
+						CurrentSymbol->Namespace = CurrentScope->Namespace;
+						CurrentScope->Symbols.Add(CurrentSymbol, LineNumber);
 					 }
-#line 1857 "Parser.tab.cpp"
+#line 2017 "Parser.tab.cpp"
     break;
 
-  case 177: // floatvariablearray: FLOAT IDSTRING LESS_THAN DIGITS COMMA DIGITS GREATER_THAN
-#line 1057 "Parser.yy"
+  case 208: // floatvariablearray: FLOAT IDSTRING LESS_THAN DIGITS COMMA DIGITS GREATER_THAN
+#line 1244 "Parser.yy"
                                          {
 						Global::Log << "Variable Array of " << yystack_[3].value.as < uint64_t > ()
 						     << " to " << yystack_[1].value.as < uint64_t > ()
 						     << " FLOAT: "
 								 << yystack_[5].value.as < std::string > ();
  						PrintLine();
-						Symbol * NewOne = new Symbol( Symbol::float_t, yystack_[5].value.as < std::string > (), Symbol::VariableArray_t, yystack_[3].value.as < uint64_t > (), yystack_[1].value.as < uint64_t > ());
-						NewOne->Namespace = CurrentScope->Namespace;
-						CurrentScope->Symbols.Add(NewOne, LineNumber);
+						CurrentSymbol = new Symbol( Symbol::float_t, yystack_[5].value.as < std::string > (), Symbol::VariableArray_t, yystack_[3].value.as < uint64_t > (), yystack_[1].value.as < uint64_t > ());
+						CurrentSymbol->Namespace = CurrentScope->Namespace;
+						CurrentScope->Symbols.Add(CurrentSymbol, LineNumber);
 					 }
-#line 1872 "Parser.tab.cpp"
+#line 2032 "Parser.tab.cpp"
     break;
 
-  case 178: // floatvariablearray: FLOAT COLON DIGITS IDSTRING LESS_THAN DIGITS COMMA DIGITS GREATER_THAN
-#line 1069 "Parser.yy"
+  case 209: // floatvariablearray: FLOAT COLON DIGITS IDSTRING LESS_THAN DIGITS COMMA DIGITS GREATER_THAN
+#line 1256 "Parser.yy"
                                          {
 						Global::Log << "Variable Array of " << yystack_[3].value.as < uint64_t > ()
 						     << " to " << yystack_[1].value.as < uint64_t > () << " "
@@ -1880,111 +2040,111 @@ namespace RiverExplorer { namespace Phoenix { namespace Protocol {
 						     << " FLOAT: "
 								 << yystack_[5].value.as < std::string > ();
  						PrintLine();
-						Symbol * NewOne = new Symbol( Symbol::float_t, yystack_[6].value.as < uint64_t > (), yystack_[5].value.as < std::string > (), Symbol::VariableArray_t, yystack_[3].value.as < uint64_t > (), yystack_[1].value.as < uint64_t > ());
-						NewOne->Namespace = CurrentScope->Namespace;
-						CurrentScope->Symbols.Add(NewOne, LineNumber);
+						CurrentSymbol = new Symbol( Symbol::float_t, yystack_[6].value.as < uint64_t > (), yystack_[5].value.as < std::string > (), Symbol::VariableArray_t, yystack_[3].value.as < uint64_t > (), yystack_[1].value.as < uint64_t > ());
+						CurrentSymbol->Namespace = CurrentScope->Namespace;
+						CurrentScope->Symbols.Add(CurrentSymbol, LineNumber);
 					 }
-#line 1888 "Parser.tab.cpp"
+#line 2048 "Parser.tab.cpp"
     break;
 
-  case 179: // floatvariablearray: FLOAT IDSTRING LESS_THAN GREATER_THAN
-#line 1082 "Parser.yy"
+  case 210: // floatvariablearray: FLOAT IDSTRING LESS_THAN GREATER_THAN
+#line 1269 "Parser.yy"
                                          {
 						Global::Log << "Variable Array of zero or more FLOAT: " << yystack_[2].value.as < std::string > ();
  						PrintLine();
-						Symbol * NewOne = new Symbol( Symbol::float_t, yystack_[2].value.as < std::string > (), Symbol::VariableArray_t, 0, 0);
-						NewOne->Namespace = CurrentScope->Namespace;
-						CurrentScope->Symbols.Add(NewOne, LineNumber);
+						CurrentSymbol = new Symbol( Symbol::float_t, yystack_[2].value.as < std::string > (), Symbol::VariableArray_t, 0, 0);
+						CurrentSymbol->Namespace = CurrentScope->Namespace;
+						CurrentScope->Symbols.Add(CurrentSymbol, LineNumber);
 					 }
-#line 1900 "Parser.tab.cpp"
+#line 2060 "Parser.tab.cpp"
     break;
 
-  case 180: // floatvariablearray: FLOAT COLON DIGITS IDSTRING LESS_THAN GREATER_THAN
-#line 1091 "Parser.yy"
+  case 211: // floatvariablearray: FLOAT COLON DIGITS IDSTRING LESS_THAN GREATER_THAN
+#line 1278 "Parser.yy"
                                          {
 						Global::Log << "Variable Array of zero or more "
 						     << yystack_[3].value.as < uint64_t > () << "-BIT FLOAT: "
 								 << yystack_[2].value.as < std::string > ();
  						PrintLine();
-						Symbol * NewOne = new Symbol( Symbol::float_t, yystack_[3].value.as < uint64_t > (), yystack_[2].value.as < std::string > (), Symbol::VariableArray_t, 0, 0);
-						NewOne->Namespace = CurrentScope->Namespace;
-						CurrentScope->Symbols.Add(NewOne, LineNumber);
+						CurrentSymbol = new Symbol( Symbol::float_t, yystack_[3].value.as < uint64_t > (), yystack_[2].value.as < std::string > (), Symbol::VariableArray_t, 0, 0);
+						CurrentSymbol->Namespace = CurrentScope->Namespace;
+						CurrentScope->Symbols.Add(CurrentSymbol, LineNumber);
 					 }
-#line 1914 "Parser.tab.cpp"
+#line 2074 "Parser.tab.cpp"
     break;
 
-  case 184: // stringsingle: STRING IDSTRING
-#line 1108 "Parser.yy"
+  case 215: // stringsingle: STRING IDSTRING
+#line 1295 "Parser.yy"
            {
 						Global::Log << "STRING: " << yystack_[0].value.as < std::string > ();
  						PrintLine();
-						Symbol * NewOne = new Symbol( Symbol::string_t, yystack_[0].value.as < std::string > ());
-						NewOne->Namespace = CurrentScope->Namespace;
-						CurrentScope->Symbols.Add(NewOne, LineNumber);
+						CurrentSymbol = new Symbol( Symbol::string_t, yystack_[0].value.as < std::string > ());
+						CurrentSymbol->Namespace = CurrentScope->Namespace;
+						CurrentScope->Symbols.Add(CurrentSymbol, LineNumber);
 					 }
-#line 1926 "Parser.tab.cpp"
+#line 2086 "Parser.tab.cpp"
     break;
 
-  case 185: // stringsingle: STRING COLON DIGITS IDSTRING
-#line 1117 "Parser.yy"
+  case 216: // stringsingle: STRING COLON DIGITS IDSTRING
+#line 1304 "Parser.yy"
            {
 						Global::Log << yystack_[1].value.as < uint64_t > ()
 						     << "-BIT STRING: "
 								 << yystack_[0].value.as < std::string > ();
  						PrintLine();
-						Symbol * NewOne = new Symbol( Symbol::string_t, yystack_[1].value.as < uint64_t > (), yystack_[0].value.as < std::string > ());
-						NewOne->Namespace = CurrentScope->Namespace;
-						CurrentScope->Symbols.Add(NewOne, LineNumber);
+						CurrentSymbol = new Symbol( Symbol::string_t, yystack_[1].value.as < uint64_t > (), yystack_[0].value.as < std::string > ());
+						CurrentSymbol->Namespace = CurrentScope->Namespace;
+						CurrentScope->Symbols.Add(CurrentSymbol, LineNumber);
 					 }
-#line 1940 "Parser.tab.cpp"
+#line 2100 "Parser.tab.cpp"
     break;
 
-  case 186: // stringfixedarray: STRING IDSTRING LSQUARE DIGITS RSQUARE
-#line 1129 "Parser.yy"
+  case 217: // stringfixedarray: STRING IDSTRING LSQUARE DIGITS RSQUARE
+#line 1316 "Parser.yy"
            {
 						Global::Log << "Fixed Array of " << yystack_[1].value.as < uint64_t > ()
 						     << " STRING: "
 								 << yystack_[3].value.as < std::string > ();
  						PrintLine();
-						Symbol * NewOne = new Symbol( Symbol::string_t, yystack_[3].value.as < std::string > (), Symbol::FixedArray_t, yystack_[1].value.as < uint64_t > ());
-						NewOne->Namespace = CurrentScope->Namespace;
-						CurrentScope->Symbols.Add(NewOne, LineNumber);
+						CurrentSymbol = new Symbol( Symbol::string_t, yystack_[3].value.as < std::string > (), Symbol::FixedArray_t, yystack_[1].value.as < uint64_t > ());
+						CurrentSymbol->Namespace = CurrentScope->Namespace;
+						CurrentScope->Symbols.Add(CurrentSymbol, LineNumber);
 					 }
-#line 1954 "Parser.tab.cpp"
+#line 2114 "Parser.tab.cpp"
     break;
 
-  case 187: // stringfixedarray: STRING COLON DIGITS IDSTRING LSQUARE DIGITS RSQUARE
-#line 1140 "Parser.yy"
+  case 218: // stringfixedarray: STRING COLON DIGITS IDSTRING LSQUARE DIGITS RSQUARE
+#line 1327 "Parser.yy"
            {
 						Global::Log << "Fixed Array of " << yystack_[1].value.as < uint64_t > ()
 						     << yystack_[4].value.as < uint64_t > ()
 								 << "-BIT STRING: "
 								 << yystack_[3].value.as < std::string > ();
  						PrintLine();
-						Symbol * NewOne = new Symbol( Symbol::string_t, yystack_[4].value.as < uint64_t > (), yystack_[3].value.as < std::string > (), Symbol::FixedArray_t, yystack_[1].value.as < uint64_t > ());
-						NewOne->Namespace = CurrentScope->Namespace;
-						CurrentScope->Symbols.Add(NewOne, LineNumber);
+						CurrentSymbol = new Symbol( Symbol::string_t, yystack_[4].value.as < uint64_t > (), yystack_[3].value.as < std::string > (), Symbol::FixedArray_t, yystack_[1].value.as < uint64_t > ());
+						CurrentSymbol->Namespace = CurrentScope->Namespace;
+						CurrentScope->Symbols.Add(CurrentSymbol, LineNumber);
 					 }
-#line 1969 "Parser.tab.cpp"
+#line 2129 "Parser.tab.cpp"
     break;
 
-  case 188: // stringvariablearray: STRING IDSTRING LESS_THAN DIGITS COMMA DIGITS GREATER_THAN
-#line 1153 "Parser.yy"
+  case 219: // stringvariablearray: STRING IDSTRING LESS_THAN DIGITS COMMA DIGITS GREATER_THAN
+#line 1340 "Parser.yy"
                                          {
 						Global::Log << "Variable Array of " << yystack_[3].value.as < uint64_t > ()
 						     << " to " << yystack_[1].value.as < uint64_t > ()
 						     << " STRING: "
 								 << yystack_[5].value.as < std::string > ();
  						PrintLine();
-						Symbol * NewOne = new Symbol( Symbol::string_t, yystack_[5].value.as < std::string > (), Symbol::VariableArray_t, yystack_[3].value.as < uint64_t > (), yystack_[1].value.as < uint64_t > ());
-						NewOne->Namespace = CurrentScope->Namespace;
-						CurrentScope->Symbols.Add(NewOne, LineNumber);
+						CurrentSymbol = new Symbol( Symbol::string_t, yystack_[5].value.as < std::string > (), Symbol::VariableArray_t, yystack_[3].value.as < uint64_t > (), yystack_[1].value.as < uint64_t > ());
+						CurrentSymbol->Namespace = CurrentScope->Namespace;
+						CurrentScope->Symbols.Add(CurrentSymbol, LineNumber);
 					 }
-#line 1984 "Parser.tab.cpp"
+#line 2144 "Parser.tab.cpp"
     break;
 
-  case 189: // stringvariablearray: STRING COLON DIGITS IDSTRING LESS_THAN DIGITS COMMA DIGITS GREATER_THAN
-#line 1165 "Parser.yy"
+  case 220: // stringvariablearray: STRING COLON DIGITS IDSTRING LESS_THAN DIGITS COMMA DIGITS GREATER_THAN
+#line 1352 "Parser.yy"
                                          {
 						Global::Log << "Variable Array of " << yystack_[3].value.as < uint64_t > ()
 						     << " to " << yystack_[1].value.as < uint64_t > () << " "
@@ -1992,51 +2152,51 @@ namespace RiverExplorer { namespace Phoenix { namespace Protocol {
 						     << " STRING: "
 								 << yystack_[5].value.as < std::string > ();
  						PrintLine();
-						Symbol * NewOne = new Symbol( Symbol::string_t, yystack_[6].value.as < uint64_t > (), yystack_[5].value.as < std::string > (), Symbol::VariableArray_t, yystack_[3].value.as < uint64_t > (), yystack_[1].value.as < uint64_t > ());
-						NewOne->Namespace = CurrentScope->Namespace;
-						CurrentScope->Symbols.Add(NewOne, LineNumber);
+						CurrentSymbol = new Symbol( Symbol::string_t, yystack_[6].value.as < uint64_t > (), yystack_[5].value.as < std::string > (), Symbol::VariableArray_t, yystack_[3].value.as < uint64_t > (), yystack_[1].value.as < uint64_t > ());
+						CurrentSymbol->Namespace = CurrentScope->Namespace;
+						CurrentScope->Symbols.Add(CurrentSymbol, LineNumber);
 					 }
-#line 2000 "Parser.tab.cpp"
+#line 2160 "Parser.tab.cpp"
     break;
 
-  case 190: // stringvariablearray: STRING IDSTRING LESS_THAN GREATER_THAN
-#line 1178 "Parser.yy"
+  case 221: // stringvariablearray: STRING IDSTRING LESS_THAN GREATER_THAN
+#line 1365 "Parser.yy"
                                          {
 						Global::Log << "Variable Array of zero or more STRING: " << yystack_[2].value.as < std::string > ();
  						PrintLine();
-						Symbol * NewOne = new Symbol( Symbol::string_t, yystack_[2].value.as < std::string > (), Symbol::VariableArray_t, 0, 0);
-						NewOne->Namespace = CurrentScope->Namespace;
-						CurrentScope->Symbols.Add(NewOne, LineNumber);
+						CurrentSymbol = new Symbol( Symbol::string_t, yystack_[2].value.as < std::string > (), Symbol::VariableArray_t, 0, 0);
+						CurrentSymbol->Namespace = CurrentScope->Namespace;
+						CurrentScope->Symbols.Add(CurrentSymbol, LineNumber);
 					 }
-#line 2012 "Parser.tab.cpp"
+#line 2172 "Parser.tab.cpp"
     break;
 
-  case 191: // stringvariablearray: STRING COLON DIGITS IDSTRING LESS_THAN GREATER_THAN
-#line 1187 "Parser.yy"
+  case 222: // stringvariablearray: STRING COLON DIGITS IDSTRING LESS_THAN GREATER_THAN
+#line 1374 "Parser.yy"
                                          {
 						Global::Log << "Variable Array of zero or more "
 						     << yystack_[3].value.as < uint64_t > () << "-BIT STRING: "
 								 << yystack_[2].value.as < std::string > ();
  						PrintLine();
-						Symbol * NewOne = new Symbol( Symbol::string_t, yystack_[3].value.as < uint64_t > (), yystack_[2].value.as < std::string > (), Symbol::VariableArray_t, 0, 0);
-						NewOne->Namespace = CurrentScope->Namespace;
-						CurrentScope->Symbols.Add(NewOne, LineNumber);
+						CurrentSymbol = new Symbol( Symbol::string_t, yystack_[3].value.as < uint64_t > (), yystack_[2].value.as < std::string > (), Symbol::VariableArray_t, 0, 0);
+						CurrentSymbol->Namespace = CurrentScope->Namespace;
+						CurrentScope->Symbols.Add(CurrentSymbol, LineNumber);
 					 }
-#line 2026 "Parser.tab.cpp"
+#line 2186 "Parser.tab.cpp"
     break;
 
-  case 192: // methodsig: mreturn IDSTRING LPAREN parameters RPAREN
-#line 1199 "Parser.yy"
+  case 223: // methodsig: mreturn IDSTRING LPAREN parameters RPAREN
+#line 1386 "Parser.yy"
                                         {
 						Global::Log << "Method: " << yystack_[3].value.as < std::string > ()
 						     << " Returning: " << yystack_[3].value.as < std::string > (); /**@todo*/
  						PrintLine();
 					}
-#line 2036 "Parser.tab.cpp"
+#line 2196 "Parser.tab.cpp"
     break;
 
 
-#line 2040 "Parser.tab.cpp"
+#line 2200 "Parser.tab.cpp"
 
             default:
               break;
@@ -2388,45 +2548,52 @@ namespace RiverExplorer { namespace Phoenix { namespace Protocol {
   }
 
 
-  const short Parser::yypact_ninf_ = -144;
+  const short Parser::yypact_ninf_ = -244;
 
   const signed char Parser::yytable_ninf_ = -1;
 
   const short
   Parser::yypact_[] =
   {
-    -144,     6,  -144,  -144,    47,  -144,   -35,  -144,    45,  -144,
-    -144,  -144,  -144,    42,    48,  -144,  -144,  -144,  -144,  -144,
-    -144,  -144,  -144,  -144,  -144,  -144,  -144,  -144,  -144,  -144,
-    -144,  -144,  -144,  -144,  -144,  -144,  -144,  -144,  -144,  -144,
-    -144,  -144,  -144,  -144,  -144,  -144,  -144,  -144,  -144,  -144,
-    -144,   115,  -144,  -144,  -144,  -144,  -144,  -144,  -144,  -144,
-    -144,  -144,  -144,  -144,  -144,  -144,  -144,  -144,  -144,  -144,
-    -144,  -144,  -144,  -144,  -144,  -144,  -144,  -144,  -144,  -144,
-    -144,  -144,  -144,  -144,  -144,  -144,  -144,  -144,  -144,  -144,
-    -144,  -144,  -144,  -144,  -144,  -144,  -144,  -144,  -144,  -144,
-    -144,  -144,  -144,  -144,  -144,  -144,  -144,    90,  -144,   -35,
-     129,   163,   170,   133,  -144,   -35,   157,   165,  -144,  -144,
-    -144,   158,  -144,  -144,   151,   172,   173,   120,  -144,  -144,
-     167,   164,  -144,    50,  -144,   175,    86,   176,   127,   128,
-     130,  -144,   177,   178,    44,  -144,   168,   169,   171,  -144,
-    -144,  -144,  -144,  -144,  -144,  -144,  -144,  -144,  -144,  -144,
-    -144,  -144,  -144,  -144,  -144,  -144,  -144,  -144,   174,   182,
-    -144,   135,   186,   183,   136,   188,   137,   190,   138,   191,
-     139,   179,  -144,  -144,  -144,  -144,  -144,   185,   194,    63,
-     192,    65,   196,    64,   193,   195,   197,    99,   198,   200,
-     105,   199,   203,   114,  -144,    84,   201,   202,  -144,   140,
-    -144,    79,  -144,  -144,  -144,   204,   205,  -144,   113,  -144,
-    -144,   141,   207,   208,  -144,   149,   210,   211,  -144,   150,
-     213,   214,  -144,   175,  -144,  -144,    94,  -144,  -144,   206,
-     209,   116,  -144,  -144,  -144,   216,   189,   215,   219,   117,
-    -144,   222,   225,   118,  -144,   227,   228,   119,  -144,   230,
-    -144,  -144,   184,   220,   221,  -144,   217,    58,   144,   223,
-     224,  -144,   218,   226,   229,  -144,   231,   232,   233,  -144,
-     234,  -144,  -144,   235,  -144,   237,   239,  -144,  -144,  -144,
-    -144,   240,  -144,   242,  -144,  -144,   247,  -144,  -144,   248,
-    -144,   236,  -144,  -144,   238,   241,   243,   244,  -144,   144,
-    -144,  -144,  -144,   249,   246,  -144
+    -244,    13,  -244,  -244,     1,  -244,    86,  -244,    -1,  -244,
+    -244,  -244,  -244,     6,    48,  -244,  -244,  -244,  -244,  -244,
+    -244,  -244,  -244,  -244,  -244,  -244,  -244,  -244,  -244,  -244,
+    -244,  -244,  -244,  -244,  -244,  -244,  -244,  -244,  -244,  -244,
+    -244,  -244,  -244,  -244,  -244,  -244,  -244,  -244,  -244,  -244,
+    -244,    37,  -244,  -244,  -244,  -244,  -244,  -244,  -244,  -244,
+    -244,  -244,  -244,  -244,  -244,  -244,  -244,  -244,  -244,  -244,
+    -244,  -244,  -244,  -244,  -244,  -244,  -244,  -244,  -244,  -244,
+    -244,  -244,  -244,  -244,  -244,  -244,  -244,  -244,  -244,  -244,
+    -244,  -244,  -244,  -244,  -244,  -244,  -244,  -244,  -244,  -244,
+    -244,  -244,  -244,  -244,  -244,  -244,  -244,    36,  -244,    86,
+      73,    15,    58,    91,  -244,    86,    55,   119,  -244,  -244,
+    -244,    75,  -244,  -244,   143,   198,   220,    -6,  -244,  -244,
+     193,   211,  -244,    10,  -244,   222,     2,   223,     4,    47,
+      49,  -244,   224,    89,  -244,  -244,  -244,  -244,   225,  -244,
+    -244,  -244,  -244,    -4,  -244,   215,  -244,  -244,  -244,  -244,
+     216,   218,   221,  -244,  -244,  -244,  -244,  -244,  -244,  -244,
+    -244,  -244,  -244,  -244,  -244,  -244,  -244,  -244,  -244,  -244,
+    -244,  -244,   226,   229,  -244,    96,   233,   230,   164,   235,
+     165,   237,   168,   238,   176,   239,   112,   169,   170,   227,
+    -244,  -244,  -244,  -244,  -244,  -244,   236,   241,    -2,   240,
+      74,   245,    12,   196,   243,   247,    34,   246,   248,    43,
+     249,   250,    44,   232,   234,   254,   242,   255,   244,   256,
+    -244,   161,   251,   252,  -244,   177,  -244,    42,  -244,  -244,
+    -244,   257,   253,  -244,   258,   259,  -244,  -244,   181,   260,
+     261,  -244,   185,   263,   264,  -244,   186,   266,   267,  -244,
+     155,   269,   272,   217,   275,   107,   277,   222,  -244,  -244,
+      83,  -244,  -244,   270,   281,    53,  -244,  -244,  -244,   282,
+     196,    88,   187,   283,    54,   196,  -244,   284,   285,    59,
+    -244,   286,   287,    60,  -244,   288,  -244,  -244,  -244,  -244,
+     271,  -244,  -244,   273,  -244,  -244,  -244,   274,  -244,  -244,
+     268,   280,   289,  -244,   196,   276,   290,   291,  -244,  -244,
+    -244,  -244,   197,   292,   293,  -244,   294,   295,   296,  -244,
+     297,   298,   299,  -244,   300,   302,   219,   214,  -244,  -244,
+     304,  -244,  -244,  -244,   301,   305,  -244,   307,   196,  -244,
+    -244,   310,  -244,  -244,   312,  -244,  -244,  -244,  -244,  -244,
+    -244,  -244,   303,   196,   187,   187,   196,   306,   308,   309,
+    -244,   206,   210,  -244,  -244,  -244,   311,   313,   314,   316,
+     196,  -244,  -244,  -244,  -244
   };
 
   const unsigned char
@@ -2444,182 +2611,216 @@ namespace RiverExplorer { namespace Phoenix { namespace Protocol {
       92,    93,    94,    95,    96,    97,    98,    99,   100,   101,
      102,   103,   104,   105,   106,   107,   108,     0,    58,     0,
        0,     0,     0,     0,    56,     0,     0,     0,    48,    47,
-     109,    55,    59,    57,     0,     0,     0,     0,   111,   110,
-       0,     0,   112,     4,     2,     0,     0,     0,     0,     0,
-       0,   194,     0,   120,     4,   114,     0,     0,     0,   121,
-     137,   138,   139,   122,   154,   155,   156,   125,   165,   166,
-     123,   170,   171,   172,   124,   181,   182,   183,     0,     0,
-     132,   184,     0,     0,   143,     0,   157,     0,   173,     0,
-       0,     0,   115,   116,   117,   118,   119,     0,     0,     0,
-       0,     0,     0,     0,   146,     0,     0,     0,     0,     0,
-       0,     0,     0,     0,   113,   195,     0,     0,   190,   185,
-     129,     0,   127,   130,   131,     0,     0,   152,     0,   144,
-     145,   147,     0,     0,   163,   158,     0,     0,   179,   174,
-       0,     0,   169,     0,   198,   199,     0,   196,   186,     0,
-       0,     0,   126,   128,   148,     0,     0,     0,     0,     0,
-     159,     0,     0,     0,   175,     0,     0,     0,   167,     0,
-     192,   197,     0,     0,     0,   191,     0,     0,     0,     0,
-       0,   153,     0,     0,     0,   164,     0,     0,     0,   180,
-       0,   188,   187,     0,   150,     0,     0,   133,   134,   135,
-     136,     0,   149,     0,   161,   160,     0,   177,   176,     0,
-     168,     0,   140,   141,     0,     0,     0,     0,   189,     0,
-     151,   162,   178,     0,     0,   142
+     113,    55,    59,    57,     0,     0,     0,     0,   115,   114,
+       0,     0,   116,     4,     2,     0,     0,     0,     0,     0,
+       0,   225,     0,     0,   109,   110,   111,   112,   124,   126,
+     127,   128,   129,     4,   118,     0,   130,   131,   132,   133,
+       0,     0,     0,   149,   165,   166,   167,   150,   185,   186,
+     187,   153,   196,   197,   151,   201,   202,   203,   152,   212,
+     213,   214,     0,     0,   160,   215,     0,     0,   174,     0,
+     188,     0,   204,     0,     0,     0,     0,     0,     0,     0,
+     119,   125,   120,   121,   122,   123,     0,     0,     0,     0,
+       0,     0,     0,   177,     0,     0,     0,     0,     0,     0,
+       0,     0,     0,     0,     0,     0,     0,     0,     0,     0,
+     117,   226,     0,     0,   221,   216,   157,     0,   155,   158,
+     159,     0,     0,   174,     0,     0,   175,   176,   174,     0,
+       0,   194,   189,     0,     0,   210,   205,     0,     0,   200,
+       0,     0,     0,     0,     0,     0,     0,     0,   229,   230,
+       0,   227,   217,     0,     0,     0,   154,   156,   174,     0,
+     183,     0,     0,     0,     0,   178,   190,     0,     0,     0,
+     206,     0,     0,     0,   198,     0,   146,   147,   148,   134,
+       0,   136,   138,     0,   140,   142,   144,     0,   223,   228,
+       0,     0,     0,   222,   179,     0,     0,     0,   161,   162,
+     163,   164,     0,     0,     0,   174,     0,     0,     0,   195,
+       0,     0,     0,   211,     0,     0,     0,     0,   219,   218,
+       0,   174,   168,   169,     0,     0,   174,     0,   184,   192,
+     191,     0,   208,   207,     0,   199,   135,   137,   139,   141,
+     143,   145,     0,   181,     0,     0,   180,     0,     0,     0,
+     220,     0,     0,   174,   193,   209,     0,     0,     0,     0,
+     182,   170,   172,   171,   173
   };
 
   const short
   Parser::yypgoto_[] =
   {
-    -144,  -144,  -144,   212,  -144,  -144,  -144,  -144,  -144,  -144,
-    -144,  -144,  -144,  -144,  -144,  -144,  -144,  -144,  -144,  -144,
-    -144,  -144,  -144,  -144,  -144,  -144,  -144,  -144,  -144,  -144,
-    -144,  -144,  -144,  -144,  -144,  -144,  -144,  -144,  -144,  -144,
-    -144,  -144,  -144,  -144,  -144,  -144,  -144,  -144,  -144,  -144,
-    -144,  -144,  -144,  -144,  -144,    98,    95,  -144,  -144,    89,
-    -144,    69,  -143,  -144,  -144,    24,  -142,   -55,  -144,  -144,
-    -144,  -144,  -144,  -144,  -144,  -144,  -144,  -144,  -144,  -144,
-    -144,  -144,  -144,  -144,  -144,  -144,  -144,  -144,  -144,  -144,
-     -84,  -144,  -144,    21
+    -244,  -244,  -244,   315,  -244,  -244,  -244,  -244,  -244,  -244,
+    -244,  -244,  -244,  -244,  -244,  -244,  -244,  -244,  -244,  -244,
+    -244,  -244,  -244,  -244,  -244,  -244,  -244,  -244,  -244,  -244,
+    -244,  -244,  -244,  -244,  -244,  -244,  -244,  -244,  -244,  -244,
+    -244,  -244,  -244,  -244,  -244,  -244,  -244,  -244,  -244,  -244,
+    -244,  -244,  -244,  -244,  -244,   151,   146,  -244,  -244,  -244,
+    -244,  -244,  -244,   135,  -244,   110,  -244,  -244,  -244,  -244,
+    -244,  -244,  -199,  -244,  -244,    38,  -177,  -140,  -244,  -244,
+    -244,  -243,  -244,  -244,  -244,  -244,  -244,  -244,  -244,  -244,
+    -244,  -244,  -244,  -244,  -244,  -244,  -244,  -244,  -244,  -244,
+    -203,  -244,  -244,    27
   };
 
   const short
   Parser::yydefgoto_[] =
   {
-       0,     1,     2,   143,     7,    58,    59,    60,    61,    62,
+       0,     1,     2,   148,     7,    58,    59,    60,    61,    62,
       63,    64,    65,    66,    67,    68,    69,    70,    71,    72,
       73,    74,    75,    76,    77,    78,    79,    80,    81,    82,
       83,    84,    85,    86,    87,    88,    89,    90,    91,    92,
       93,    94,    95,    96,    97,    98,    99,   100,   101,   102,
-     103,   104,   105,   106,     8,   107,   108,   121,   127,   128,
-     144,   145,   146,   147,   211,   212,   148,   291,   149,   219,
-     220,   194,   150,   151,   152,   153,   154,   155,   156,   157,
-     158,   159,   160,   161,   162,   163,   164,   165,   166,   167,
-     168,   169,   236,   237
+     103,   104,   105,   106,     8,   107,   108,   149,   150,   151,
+     152,   121,   127,   128,   153,   154,   155,   156,   157,   158,
+     298,   159,   160,   161,   237,   238,   162,   322,   163,   246,
+     247,   213,   164,   165,   166,   167,   168,   169,   170,   171,
+     172,   173,   174,   175,   176,   177,   178,   179,   180,   181,
+     182,   183,   270,   271
   };
 
   const short
   Parser::yytable_[] =
   {
-       9,    10,    11,    12,    13,    14,     3,    15,    16,    17,
-      18,    19,    20,    21,    22,    23,    24,    25,    26,    27,
-      28,    29,    30,    31,    32,    33,    34,    35,    36,    37,
-      38,    39,    40,    41,    42,    43,    44,    45,    46,    47,
-      48,    49,    50,    51,    52,    53,    54,    55,   210,   213,
-     135,   136,    56,    57,   181,     5,   135,   136,   109,   111,
-       6,   285,   234,   235,   286,   112,   207,   216,   210,   213,
-     110,   135,   136,   137,   138,   139,   140,   141,   142,   137,
-     138,   139,   140,   141,   142,   135,   136,   208,   217,   242,
-     233,   136,   171,   234,   235,   138,   139,   140,   141,   142,
-     233,   136,   223,   172,   114,   115,   260,   214,   227,   138,
-     139,   140,   141,   142,   138,   139,   140,   231,   142,   264,
-     270,   274,   278,   224,   138,   139,   140,   214,   142,   228,
-     131,   246,   247,   174,   176,   117,   178,   113,   232,   120,
-     265,   271,   275,   279,   175,   177,   126,   179,   188,   192,
-     196,   199,   202,   240,   248,   189,   193,   197,   200,   203,
-     241,   249,   252,   256,   287,   288,   118,   289,   290,   253,
-     257,   123,   115,   119,   124,   125,   133,   126,   129,   130,
-     134,   170,   173,   180,   183,   184,     5,   185,   187,   190,
-     186,   195,   191,   198,   201,   204,   205,   206,   209,   215,
-     222,   221,   218,   226,   225,   229,   230,   116,   281,   262,
-     122,   267,   263,   182,     4,   238,   132,   239,   244,   266,
-     245,   250,   269,   251,   254,   272,   255,   258,   273,   259,
-     276,   277,   268,   280,   282,   243,   283,   292,   301,   293,
-     295,   284,   294,   304,   296,   305,   298,   302,   299,   303,
-     306,   307,   314,   309,   313,   297,   315,   261,   300,     0,
-     308,     0,     0,     0,     0,   310,     0,   311,   312
+     280,   233,   135,   136,   131,   285,   199,   240,   185,     5,
+     188,   236,   109,     3,     6,   242,   135,   136,   118,   186,
+     126,   189,   234,   111,   110,   137,   138,   139,   140,   141,
+     142,   143,   268,   239,   240,   314,   243,   250,   236,   137,
+     138,   139,   140,   141,   142,   143,   254,   258,   135,   136,
+     114,   115,   276,   190,   269,   192,   312,   324,   251,   113,
+     239,   119,   328,   332,   191,   112,   193,   255,   259,   123,
+     115,   268,   138,   139,   140,   141,   142,   313,   325,   117,
+     135,   136,   348,   329,   333,   144,   145,   146,   147,   267,
+     136,   316,   125,   269,   317,   308,   195,   120,   363,   144,
+     145,   146,   147,   366,   138,   139,   140,   141,   142,   207,
+     304,   305,   306,   138,   139,   140,   208,   142,   224,   196,
+     197,   198,     9,    10,    11,    12,    13,    14,   124,   225,
+     380,    15,    16,    17,    18,    19,    20,    21,    22,    23,
+      24,    25,    26,    27,    28,    29,    30,    31,    32,    33,
+      34,    35,    36,    37,    38,    39,    40,    41,    42,    43,
+      44,    45,    46,    47,    48,    49,    50,   267,   136,   126,
+      51,    52,    53,    54,    55,   226,   228,   211,   215,    56,
+      57,   218,   296,   297,   212,   216,   227,   229,   219,   221,
+     274,   138,   139,   140,   283,   142,   222,   275,   288,   292,
+     344,   284,   133,   345,   129,   289,   293,   318,   319,   376,
+     320,   321,   377,   378,   244,   245,   379,   359,   360,   361,
+     301,   302,   357,   358,   371,   372,   130,   134,   184,   187,
+     194,   201,   202,     5,   203,   206,   209,   204,   214,   210,
+     217,   220,   205,   230,   232,   223,   235,   231,   241,   248,
+     249,   253,   252,   257,   260,   256,   261,   262,   264,   266,
+     116,   122,   132,   200,   263,   272,   265,   273,   279,   281,
+     282,   278,   299,   310,   286,   277,   287,   290,   300,   291,
+     294,   303,   295,   307,   311,   315,   323,   326,   327,   330,
+     331,   334,   338,   335,   339,   336,   337,   309,     0,     0,
+     341,     0,   342,   343,   340,   356,   346,   362,   347,   350,
+     367,   351,   353,   368,   354,   369,   364,     4,   349,     0,
+     365,   352,     0,   381,   355,   382,   383,   370,   384,     0,
+     373,     0,   374,   375
   };
 
   const short
   Parser::yycheck_[] =
   {
-      35,    36,    37,    38,    39,    40,     0,    42,    43,    44,
-      45,    46,    47,    48,    49,    50,    51,    52,    53,    54,
-      55,    56,    57,    58,    59,    60,    61,    62,    63,    64,
-      65,    66,    67,    68,    69,    70,    71,    72,    73,    74,
-      75,    76,    77,    78,    79,    80,    81,    82,   191,   191,
-       6,     7,    87,    88,    10,     8,     6,     7,    13,    17,
-      13,     3,   205,   205,     6,    17,     3,     3,   211,   211,
-      25,     6,     7,    29,    30,    31,    32,    33,    34,    29,
-      30,    31,    32,    33,    34,     6,     7,    24,    24,    10,
-       6,     7,     6,   236,   236,    30,    31,    32,    33,    34,
-       6,     7,     3,    17,    14,    15,    12,   191,     3,    30,
-      31,    32,    33,    34,    30,    31,    32,     3,    34,     3,
-       3,     3,     3,    24,    30,    31,    32,   211,    34,    24,
-      10,    18,    19,     6,     6,     6,     6,    22,    24,     6,
-      24,    24,    24,    24,    17,    17,    26,    17,    13,    13,
-      13,    13,    13,    13,    13,    20,    20,    20,    20,    20,
-      20,    20,    13,    13,    20,    21,     3,    23,    24,    20,
-      20,    14,    15,     3,     9,    17,     9,    26,     6,     6,
-      16,     6,     6,     6,    16,    16,     8,    16,     6,     3,
-      16,     3,     9,     3,     3,    16,    11,     3,     6,     3,
-       3,     6,     9,     3,     6,     6,     3,   109,    24,     3,
-     115,    22,     3,   144,     2,    14,   127,    15,    14,     3,
-      15,    14,     3,    15,    14,     3,    15,    14,     3,    15,
-       3,     3,    17,     3,    14,   211,    15,    14,     3,    15,
-      14,    24,    24,     3,    15,     3,    14,    10,    15,    10,
-       3,     3,     3,    15,   309,    24,    10,   236,    24,    -1,
-      24,    -1,    -1,    -1,    -1,    24,    -1,    24,    24
+     243,     3,     6,     7,    10,   248,    10,   210,     6,     8,
+       6,   210,    13,     0,    13,     3,     6,     7,     3,    17,
+      26,    17,    24,    17,    25,    29,    30,    31,    32,    33,
+      34,    35,   231,   210,   237,   278,    24,     3,   237,    29,
+      30,    31,    32,    33,    34,    35,     3,     3,     6,     7,
+      14,    15,    10,     6,   231,     6,     3,     3,    24,    22,
+     237,     3,     3,     3,    17,    17,    17,    24,    24,    14,
+      15,   270,    30,    31,    32,    33,    34,    24,    24,     6,
+       6,     7,   325,    24,    24,    89,    90,    91,    92,     6,
+       7,     3,    17,   270,     6,    12,     7,     6,   341,    89,
+      90,    91,    92,   346,    30,    31,    32,    33,    34,    13,
+       3,     4,     5,    30,    31,    32,    20,    34,     6,    30,
+      31,    32,    36,    37,    38,    39,    40,    41,     9,    17,
+     373,    45,    46,    47,    48,    49,    50,    51,    52,    53,
+      54,    55,    56,    57,    58,    59,    60,    61,    62,    63,
+      64,    65,    66,    67,    68,    69,    70,    71,    72,    73,
+      74,    75,    76,    77,    78,    79,    80,     6,     7,    26,
+      84,    85,    86,    87,    88,     6,     6,    13,    13,    93,
+      94,    13,    27,    28,    20,    20,    17,    17,    20,    13,
+      13,    30,    31,    32,    13,    34,    20,    20,    13,    13,
+       3,    20,     9,     6,     6,    20,    20,    20,    21,     3,
+      23,    24,     6,     3,    18,    19,     6,     3,     4,     5,
+       3,     4,     3,     4,   364,   365,     6,    16,     6,     6,
+       6,    16,    16,     8,    16,     6,     3,    16,     3,     9,
+       3,     3,    16,    16,     3,     6,     6,    11,     3,     6,
+       3,     3,     6,     3,    22,     6,    22,     3,     3,     3,
+     109,   115,   127,   153,    22,    14,    22,    15,    15,    11,
+      11,    14,     3,     3,    14,   237,    15,    14,     6,    15,
+      14,     6,    15,     6,     3,     3,     3,     3,     3,     3,
+       3,     3,    24,    22,    14,    22,    22,   270,    -1,    -1,
+      24,    -1,    12,    12,    15,     3,    14,     3,    15,    14,
+       3,    15,    14,     3,    15,     3,    15,     2,    24,    -1,
+      15,    24,    -1,    12,    24,    12,    12,    24,    12,    -1,
+      24,    -1,    24,    24
   };
 
   const unsigned char
   Parser::yystos_[] =
   {
-       0,    90,    91,     0,    92,     8,    13,    93,   143,    35,
-      36,    37,    38,    39,    40,    42,    43,    44,    45,    46,
-      47,    48,    49,    50,    51,    52,    53,    54,    55,    56,
-      57,    58,    59,    60,    61,    62,    63,    64,    65,    66,
-      67,    68,    69,    70,    71,    72,    73,    74,    75,    76,
-      77,    78,    79,    80,    81,    82,    87,    88,    94,    95,
-      96,    97,    98,    99,   100,   101,   102,   103,   104,   105,
-     106,   107,   108,   109,   110,   111,   112,   113,   114,   115,
-     116,   117,   118,   119,   120,   121,   122,   123,   124,   125,
-     126,   127,   128,   129,   130,   131,   132,   133,   134,   135,
-     136,   137,   138,   139,   140,   141,   142,   144,   145,    13,
-      25,    17,    17,    22,    14,    15,   144,     6,     3,     3,
-       6,   146,   145,    14,     9,    17,    26,   147,   148,     6,
-       6,    10,   148,     9,    16,     6,     7,    29,    30,    31,
-      32,    33,    34,    92,   149,   150,   151,   152,   155,   157,
-     161,   162,   163,   164,   165,   166,   167,   168,   169,   170,
-     171,   172,   173,   174,   175,   176,   177,   178,   179,   180,
-       6,     6,    17,     6,     6,    17,     6,    17,     6,    17,
-       6,    10,   150,    16,    16,    16,    16,     6,    13,    20,
-       3,     9,    13,    20,   160,     3,    13,    20,     3,    13,
-      20,     3,    13,    20,    16,    11,     3,     3,    24,     6,
-     151,   153,   154,   155,   179,     3,     3,    24,     9,   158,
-     159,     6,     3,     3,    24,     6,     3,     3,    24,     6,
-       3,     3,    24,     6,   151,   155,   181,   182,    14,    15,
-      13,    20,    10,   154,    14,    15,    18,    19,    13,    20,
-      14,    15,    13,    20,    14,    15,    13,    20,    14,    15,
-      12,   182,     3,     3,     3,    24,     3,    22,    17,     3,
-       3,    24,     3,     3,     3,    24,     3,     3,     3,    24,
-       3,    24,    14,    15,    24,     3,     6,    20,    21,    23,
-      24,   156,    14,    15,    24,    14,    15,    24,    14,    15,
-      24,     3,    10,    10,     3,     3,     3,     3,    24,    15,
-      24,    24,    24,   156,     3,    10
+       0,    96,    97,     0,    98,     8,    13,    99,   149,    36,
+      37,    38,    39,    40,    41,    45,    46,    47,    48,    49,
+      50,    51,    52,    53,    54,    55,    56,    57,    58,    59,
+      60,    61,    62,    63,    64,    65,    66,    67,    68,    69,
+      70,    71,    72,    73,    74,    75,    76,    77,    78,    79,
+      80,    84,    85,    86,    87,    88,    93,    94,   100,   101,
+     102,   103,   104,   105,   106,   107,   108,   109,   110,   111,
+     112,   113,   114,   115,   116,   117,   118,   119,   120,   121,
+     122,   123,   124,   125,   126,   127,   128,   129,   130,   131,
+     132,   133,   134,   135,   136,   137,   138,   139,   140,   141,
+     142,   143,   144,   145,   146,   147,   148,   150,   151,    13,
+      25,    17,    17,    22,    14,    15,   150,     6,     3,     3,
+       6,   156,   151,    14,     9,    17,    26,   157,   158,     6,
+       6,    10,   158,     9,    16,     6,     7,    29,    30,    31,
+      32,    33,    34,    35,    89,    90,    91,    92,    98,   152,
+     153,   154,   155,   159,   160,   161,   162,   163,   164,   166,
+     167,   168,   171,   173,   177,   178,   179,   180,   181,   182,
+     183,   184,   185,   186,   187,   188,   189,   190,   191,   192,
+     193,   194,   195,   196,     6,     6,    17,     6,     6,    17,
+       6,    17,     6,    17,     6,     7,    30,    31,    32,    10,
+     160,    16,    16,    16,    16,    16,     6,    13,    20,     3,
+       9,    13,    20,   176,     3,    13,    20,     3,    13,    20,
+       3,    13,    20,     6,     6,    17,     6,    17,     6,    17,
+      16,    11,     3,     3,    24,     6,   167,   169,   170,   171,
+     195,     3,     3,    24,    18,    19,   174,   175,     6,     3,
+       3,    24,     6,     3,     3,    24,     6,     3,     3,    24,
+      22,    22,     3,    22,     3,    22,     3,     6,   167,   171,
+     197,   198,    14,    15,    13,    20,    10,   170,    14,    15,
+     176,    11,    11,    13,    20,   176,    14,    15,    13,    20,
+      14,    15,    13,    20,    14,    15,    27,    28,   165,     3,
+       6,     3,     4,     6,     3,     4,     5,     6,    12,   198,
+       3,     3,     3,    24,   176,     3,     3,     6,    20,    21,
+      23,    24,   172,     3,     3,    24,     3,     3,     3,    24,
+       3,     3,     3,    24,     3,    22,    22,    22,    24,    14,
+      15,    24,    12,    12,     3,     6,    14,    15,   176,    24,
+      14,    15,    24,    14,    15,    24,     3,     3,     4,     3,
+       4,     5,     3,   176,    15,    15,   176,     3,     3,     3,
+      24,   172,   172,    24,    24,    24,     3,     6,     3,     6,
+     176,    12,    12,    12,    12
   };
 
   const unsigned char
   Parser::yyr1_[] =
   {
-       0,    89,    90,    91,    92,    92,    93,    94,    95,    96,
-      97,    98,    99,   100,   101,   102,   103,   104,   105,   106,
-     107,   108,   109,   110,   111,   112,   113,   114,   115,   116,
-     117,   118,   119,   120,   121,   122,   123,   124,   125,   126,
-     127,   128,   129,   130,   131,   132,   133,   134,   135,   136,
-     137,   138,   139,   140,   141,   142,   143,   143,   144,   144,
-     145,   145,   145,   145,   145,   145,   145,   145,   145,   145,
-     145,   145,   145,   145,   145,   145,   145,   145,   145,   145,
-     145,   145,   145,   145,   145,   145,   145,   145,   145,   145,
-     145,   145,   145,   145,   145,   145,   145,   145,   145,   145,
-     145,   145,   145,   145,   145,   145,   145,   145,   145,   146,
-     146,   147,   147,   148,   149,   149,   150,   150,   150,   150,
-     150,   151,   151,   151,   151,   151,   152,   153,   153,   154,
-     154,   154,   155,   156,   156,   156,   156,   157,   157,   157,
-     158,   158,   159,   160,   160,   160,   161,   161,   162,   162,
-     163,   163,   163,   163,   164,   164,   164,   165,   165,   166,
-     166,   167,   167,   167,   167,   168,   168,   169,   170,   170,
-     171,   171,   171,   172,   172,   173,   173,   174,   174,   174,
-     174,   175,   175,   175,   176,   176,   177,   177,   178,   178,
-     178,   178,   179,   180,   180,   181,   181,   181,   182,   182
+       0,    95,    96,    97,    98,    98,    99,   100,   101,   102,
+     103,   104,   105,   106,   107,   108,   109,   110,   111,   112,
+     113,   114,   115,   116,   117,   118,   119,   120,   121,   122,
+     123,   124,   125,   126,   127,   128,   129,   130,   131,   132,
+     133,   134,   135,   136,   137,   138,   139,   140,   141,   142,
+     143,   144,   145,   146,   147,   148,   149,   149,   150,   150,
+     151,   151,   151,   151,   151,   151,   151,   151,   151,   151,
+     151,   151,   151,   151,   151,   151,   151,   151,   151,   151,
+     151,   151,   151,   151,   151,   151,   151,   151,   151,   151,
+     151,   151,   151,   151,   151,   151,   151,   151,   151,   151,
+     151,   151,   151,   151,   151,   151,   151,   151,   151,   152,
+     153,   154,   155,   156,   156,   157,   157,   158,   159,   159,
+     160,   160,   160,   160,   160,   160,   160,   160,   160,   160,
+     161,   161,   161,   161,   162,   162,   163,   163,   163,   163,
+     164,   164,   164,   164,   164,   164,   165,   165,   166,   167,
+     167,   167,   167,   167,   168,   169,   169,   170,   170,   170,
+     171,   172,   172,   172,   172,   173,   173,   173,   174,   174,
+     175,   175,   175,   175,   176,   176,   176,   177,   177,   178,
+     178,   179,   179,   179,   179,   180,   180,   180,   181,   181,
+     182,   182,   183,   183,   183,   183,   184,   184,   185,   186,
+     186,   187,   187,   187,   188,   188,   189,   189,   190,   190,
+     190,   190,   191,   191,   191,   192,   192,   193,   193,   194,
+     194,   194,   194,   195,   196,   196,   197,   197,   197,   198,
+     198
   };
 
   const signed char
@@ -2636,15 +2837,19 @@ namespace RiverExplorer { namespace Phoenix { namespace Protocol {
        1,     1,     1,     1,     1,     1,     1,     1,     1,     1,
        1,     1,     1,     1,     1,     1,     1,     1,     1,     1,
        1,     1,     1,     1,     1,     1,     1,     1,     1,     1,
-       3,     1,     2,     6,     1,     2,     2,     2,     2,     2,
-       1,     1,     1,     1,     1,     1,     5,     1,     2,     1,
-       1,     1,     2,     1,     1,     1,     1,     1,     1,     1,
-       5,     5,     9,     0,     2,     2,     3,     4,     5,     7,
-       7,     9,     4,     6,     1,     1,     1,     2,     4,     5,
-       7,     7,     9,     4,     6,     1,     1,     5,     7,     4,
-       1,     1,     1,     2,     4,     5,     7,     7,     9,     4,
-       6,     1,     1,     1,     2,     4,     5,     7,     7,     9,
-       4,     6,     5,     1,     1,     0,     1,     2,     1,     1
+       1,     1,     1,     1,     3,     1,     2,     6,     1,     2,
+       2,     2,     2,     2,     1,     2,     1,     1,     1,     1,
+       1,     1,     1,     1,     5,     7,     5,     7,     5,     7,
+       5,     7,     5,     7,     5,     7,     1,     1,     5,     1,
+       1,     1,     1,     1,     5,     1,     2,     1,     1,     1,
+       2,     1,     1,     1,     1,     1,     1,     1,     4,     4,
+       8,     8,     8,     8,     0,     2,     2,     3,     5,     6,
+       8,     8,    10,     5,     7,     1,     1,     1,     2,     4,
+       5,     7,     7,     9,     4,     6,     1,     1,     5,     7,
+       4,     1,     1,     1,     2,     4,     5,     7,     7,     9,
+       4,     6,     1,     1,     1,     2,     4,     5,     7,     7,
+       9,     4,     6,     5,     1,     1,     0,     1,     2,     1,
+       1
   };
 
 
@@ -2660,18 +2865,20 @@ namespace RiverExplorer { namespace Phoenix { namespace Protocol {
   "RANGE", "LESS_THAN", "LESS_THAN_OR_EQUAL", "EQUAL",
   "GREATER_THAN_OR_EQUAL", "GREATER_THAN", "PROTOCOL", "VERSION",
   "DQSTRING", "SQSTRING", "CLASS", "UINT", "SINT", "FLOAT", "VOID",
-  "OPAQUE", "PACKNBO", "PACKLR", "PACKRL", "BITSTREAM", "PACKSIZE",
-  "DEFAULTPACKSIZE", "INCLUDE", "GEN_CBOR", "GEN_CBOR_CLIENT",
-  "GEN_CBOR_SERVER", "NO_GEN_CBOR", "NO_GEN_CBOR_CLIENT",
-  "NO_GEN_CBOR_SERVER", "GEN_JSON", "GEN_JSON_CLIENT", "GEN_JSON_SERVER",
-  "NO_GEN_JSON", "NO_GEN_JSON_CLIENT", "NO_GEN_JSON_SERVER", "GEN_NATIVE",
+  "OPAQUE", "CONST", "PACKNBO", "PACKLR", "PACKRL", "BITSTREAM",
+  "PACKSIZE", "DEFAULTPACKSIZE", "INCLUDE", "SERIALIZE", "NO_SERIALIZE",
+  "GEN_CBOR", "GEN_CBOR_CLIENT", "GEN_CBOR_SERVER", "NO_GEN_CBOR",
+  "NO_GEN_CBOR_CLIENT", "NO_GEN_CBOR_SERVER", "GEN_JSON",
+  "GEN_JSON_CLIENT", "GEN_JSON_SERVER", "NO_GEN_JSON",
+  "NO_GEN_JSON_CLIENT", "NO_GEN_JSON_SERVER", "GEN_NATIVE",
   "GEN_NATIVE_CLIENT", "GEN_NATIVE_SERVER", "NO_GEN_NATIVE",
   "NO_GEN_NATIVE_CLIENT", "NO_GEN_NATIVE_SERVER", "GEN_REST",
   "GEN_REST_CLIENT", "GEN_REST_SERVER", "NO_GEN_REST",
   "NO_GEN_REST_CLIENT", "NO_GEN_REST_SERVER", "GEN_XDR", "GEN_XDR_CLIENT",
   "GEN_XDR_SERVER", "NO_GEN_XDR", "NO_GEN_XDR_CLIENT", "NO_GEN_XDR_SERVER",
   "GEN_XML", "GEN_XML_CLIENT", "GEN_XML_SERVER", "NO_GEN_XML",
-  "NO_GEN_XML_CLIENT", "NO_GEN_XML_SERVER", "NAMESPACE", "GEN_CPP_CODE",
+  "NO_GEN_XML_CLIENT", "NO_GEN_XML_SERVER", "XML_NAMSPACE",
+  "XML_ELEMENT_NAME", "XML_ATTRIBUTE_NAME", "NAMESPACE", "GEN_CPP_CODE",
   "NO_GEN_CPP_CODE", "GEN_CSHARP_CODE", "NO_GEN_CSHARP_CODE",
   "VISIBILITY_PUBLIC", "VISIBILITY_PROTECTED", "VISIBILITY_INTERNAL",
   "VISIBILITY_PRIVATE", "DOCUMENT", "NO_DOCUMENT", "$accept", "protocol",
@@ -2689,15 +2896,18 @@ namespace RiverExplorer { namespace Phoenix { namespace Protocol {
   "packrl", "packnbo", "bitstream", "defaultpacksize", "packsize",
   "gen_cpp_code", "no_gen_cpp_code", "gen_csharp_code",
   "no_gen_csharp_code", "document", "no_document", "dnamespace",
-  "protocoldirectives", "pdirectives", "directive", "namespacestring",
-  "versions", "version", "contents", "content", "simpletype", "classdef",
-  "classcontents", "classcontent", "classtype", "range_comparison",
-  "uinttype", "uint_default", "uint_range", "opt_uint", "uintsingle",
-  "uintfixedarray", "uintvariablearray", "sinttype", "sintsingle",
-  "sintfixedarray", "sintvariablearray", "opaquetype", "opaquefixedarray",
-  "opaquevariablearray", "floattype", "floatsingle", "floatfixedarray",
-  "floatvariablearray", "stringtype", "stringsingle", "stringfixedarray",
-  "stringvariablearray", "methodsig", "mreturn", "parameters", "paramtype", YY_NULLPTR
+  "protocoldirectives", "pdirectives", "directive", "begin_public",
+  "begin_protected", "begin_internal", "begin_private", "namespacestring",
+  "versions", "version", "contents", "content", "consttype", "constuint",
+  "constsint", "constfloat", "anystring", "conststring", "simpletype",
+  "classdef", "classcontents", "classcontent", "classtype",
+  "range_comparison", "uinttype", "uint_default", "uint_range", "opt_uint",
+  "uintsingle", "uintfixedarray", "uintvariablearray", "sinttype",
+  "sintsingle", "sintfixedarray", "sintvariablearray", "opaquetype",
+  "opaquefixedarray", "opaquevariablearray", "floattype", "floatsingle",
+  "floatfixedarray", "floatvariablearray", "stringtype", "stringsingle",
+  "stringfixedarray", "stringvariablearray", "methodsig", "mreturn",
+  "parameters", "paramtype", YY_NULLPTR
   };
 #endif
 
@@ -2706,26 +2916,30 @@ namespace RiverExplorer { namespace Phoenix { namespace Protocol {
   const short
   Parser::yyrline_[] =
   {
-       0,   194,   194,   200,   205,   206,   209,   215,   223,   231,
-     238,   245,   252,   259,   267,   275,   282,   289,   296,   303,
-     311,   319,   326,   333,   340,   347,   355,   363,   370,   377,
-     384,   391,   399,   407,   414,   421,   428,   435,   443,   451,
-     458,   465,   472,   479,   491,   503,   515,   528,   540,   552,
-     561,   570,   579,   589,   595,   601,   608,   609,   613,   614,
-     617,   618,   619,   620,   621,   622,   623,   624,   625,   626,
-     627,   628,   629,   630,   631,   632,   633,   634,   635,   636,
-     637,   638,   639,   640,   641,   642,   643,   644,   645,   646,
-     647,   648,   649,   650,   651,   652,   653,   654,   655,   656,
-     657,   658,   659,   660,   661,   662,   663,   664,   665,   668,
-     672,   678,   679,   682,   689,   690,   693,   694,   695,   696,
-     697,   700,   701,   702,   703,   704,   707,   709,   710,   713,
-     714,   715,   718,   721,   726,   731,   736,   742,   743,   744,
-     747,   753,   760,   767,   768,   769,   772,   787,   799,   810,
-     823,   835,   848,   858,   870,   871,   872,   875,   884,   896,
-     907,   920,   932,   945,   954,   966,   967,   970,   982,   994,
-    1006,  1007,  1008,  1011,  1020,  1032,  1043,  1056,  1068,  1081,
-    1090,  1102,  1103,  1104,  1107,  1116,  1128,  1139,  1152,  1164,
-    1177,  1186,  1198,  1206,  1207,  1210,  1211,  1212,  1215,  1216
+       0,   203,   203,   209,   214,   215,   218,   224,   232,   240,
+     247,   254,   261,   268,   276,   284,   291,   298,   305,   312,
+     320,   328,   335,   342,   349,   356,   364,   372,   379,   386,
+     393,   400,   408,   416,   423,   430,   437,   444,   452,   460,
+     467,   474,   481,   488,   501,   514,   527,   541,   554,   567,
+     576,   585,   594,   604,   610,   616,   623,   624,   628,   629,
+     632,   633,   634,   635,   636,   637,   638,   639,   640,   641,
+     642,   643,   644,   645,   646,   647,   648,   649,   650,   651,
+     652,   653,   654,   655,   656,   657,   658,   659,   660,   661,
+     662,   663,   664,   665,   666,   667,   668,   669,   670,   671,
+     672,   673,   674,   675,   676,   677,   678,   679,   680,   683,
+     689,   695,   701,   707,   711,   717,   718,   721,   728,   729,
+     732,   733,   734,   735,   736,   737,   738,   739,   740,   741,
+     744,   745,   746,   747,   750,   762,   775,   776,   777,   778,
+     781,   782,   783,   784,   785,   786,   789,   790,   793,   796,
+     797,   798,   799,   800,   803,   805,   806,   809,   810,   811,
+     814,   817,   822,   827,   832,   838,   839,   840,   843,   849,
+     871,   878,   897,   916,   952,   953,   954,   957,   972,   986,
+     997,  1010,  1022,  1035,  1045,  1057,  1058,  1059,  1062,  1071,
+    1083,  1094,  1107,  1119,  1132,  1141,  1153,  1154,  1157,  1169,
+    1181,  1193,  1194,  1195,  1198,  1207,  1219,  1230,  1243,  1255,
+    1268,  1277,  1289,  1290,  1291,  1294,  1303,  1315,  1326,  1339,
+    1351,  1364,  1373,  1385,  1393,  1394,  1397,  1398,  1399,  1402,
+    1403
   };
 
   void
@@ -2798,10 +3012,10 @@ namespace RiverExplorer { namespace Phoenix { namespace Protocol {
       55,    56,    57,    58,    59,    60,    61,    62,    63,    64,
       65,    66,    67,    68,    69,    70,    71,    72,    73,    74,
       75,    76,    77,    78,    79,    80,    81,    82,    83,    84,
-      85,    86,    87,    88
+      85,    86,    87,    88,    89,    90,    91,    92,    93,    94
     };
     // Last valid token kind.
-    const int code_max = 343;
+    const int code_max = 349;
 
     if (t <= 0)
       return symbol_kind::S_YYEOF;
@@ -2813,9 +3027,9 @@ namespace RiverExplorer { namespace Phoenix { namespace Protocol {
 
 #line 5 "Parser.yy"
 } } } // RiverExplorer::Phoenix::Protocol
-#line 2817 "Parser.tab.cpp"
+#line 3031 "Parser.tab.cpp"
 
-#line 1219 "Parser.yy"
+#line 1406 "Parser.yy"
 
   // A string used to build namespace names.
 	//
@@ -2844,8 +3058,10 @@ namespace RiverExplorer { namespace Phoenix { namespace Protocol {
 
 	Scope					*		CurrentScope = nullptr;
 	Symbol				*		CurrentSymbol = nullptr;
+	Symbol::Visibility_e CurrentVisibility = Symbol::Public_t;
 	Range					*		CurrentRange = nullptr;
-	DefaultValue	*		CurrentDefaultValue = nullptr;
+	DefaultValueT<uint64_t>	*		CurrentUintDefaultValue = nullptr;
+	DefaultValueT<int64_t>	*		CurrentSintDefaultValue = nullptr;
 
 	bool					PackingOrderSet = false;
 	bool					PackingSizeSet = false;

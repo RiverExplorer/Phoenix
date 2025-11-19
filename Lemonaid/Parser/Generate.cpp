@@ -18,7 +18,7 @@ namespace RiverExplorer::Phoenix::Protocol
 {
 
 	bool
-	Generate::_MkDir(std::string & Parent, std::string Child)
+	Generate::_MkDir(std::string & Parent, std::string Child) const
 	{
 		bool Results = true;
 
@@ -36,7 +36,7 @@ namespace RiverExplorer::Phoenix::Protocol
 	}
 
 	std::string
-	Generate::ToIfDef(const std::string & FileName)
+	Generate::ToIfDef(const std::string & FileName) const
 	{
 		std::string Results = FileName;
 
@@ -47,28 +47,26 @@ namespace RiverExplorer::Phoenix::Protocol
 
 		return(Results);
 	}
-	
 
 	std::string
-	Generate::CppNamespace(const Symbol & TargetSymbol)
+	Generate::CppNamespace(const Symbol & S) const
 	{
-		std::string Results;
+		std::string Results = S.Namespace;
 
-		if (TargetSymbol.Namespace.length() > 0) {
-			std::stringstream SS(TargetSymbol.Namespace);
-			std::string Token;
-
-			while (std::getline(SS, Token, ':')) {
-				Results += Token;
-				Results += "::";
-			}
+		size_t Pos = 0;
+		const std::string Find = ":";
+		const std::string With = "::";
+																		
+		while ((Pos = Results.find(Find, Pos)) != std::string::npos) {
+			Results.replace(Pos, 1, With);
+			Pos += 2;
 		}
 
 		return(Results);
 	}
 		 
 	std::string
-	Generate::CSharpNamespace(const Symbol & TargetSymbol)
+	Generate::CSharpNamespace(const Symbol & TargetSymbol) const
 	{
 		std::string Results;
 
@@ -86,9 +84,21 @@ namespace RiverExplorer::Phoenix::Protocol
 	}
 	
 	std::string
-	Generate::Tabs(uint8_t NumberTabs)
+	Generate::Tabs(uint8_t NumberTabs) const
 	{
 		std::string Results;
+		
+		while (NumberTabs-- > 0) {
+			Results += '\t';
+		}
+
+		return(Results);
+	}
+
+	std::string
+	Generate::EolTabs(uint8_t NumberTabs) const
+	{
+		std::string Results = "\n";
 
 		while (NumberTabs-- > 0) {
 			Results += '\t';

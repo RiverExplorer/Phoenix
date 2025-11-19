@@ -49,14 +49,14 @@ namespace RiverExplorer::Phoenix::Protocol
 	}
 
 	bool
-	GenerateCBOR::CreateClientSideCode()
+	GenerateCBOR::CreateClientSideCode() const
 	{
 		/**@todo*/
 		return(false);
 	}
 
 	bool
-	GenerateCBOR::CreateServerSideCode()
+	GenerateCBOR::CreateServerSideCode() const
 	{
 		/**@todo*/
 		return(false);
@@ -212,18 +212,28 @@ namespace RiverExplorer::Phoenix::Protocol
 		return(Results);
 	}
 
-	bool
-	GenerateCBOR::DeclareVariablType(Symbol * S)
+	std::string
+	GenerateCBOR::DeclareVariablType(Symbol * S) const
 	{
-		bool Results = false;
+		std::string Results;
 
 		/**@todo*/
 
 		return(Results);
 	}
 		
+	std::string
+	GenerateCBOR::DeclareVariable(Symbol * S) const
+	{
+		std::string Results;
+
+		/**@todo*/
+
+		return(Results);
+	}
+
 	bool
-	GenerateCBOR::DeclareVariable(Symbol * S)
+	GenerateCBOR::WriteHeaders() const
 	{
 		bool Results = false;
 
@@ -233,27 +243,7 @@ namespace RiverExplorer::Phoenix::Protocol
 	}
 
 	bool
-	GenerateCBOR::WriteHeaders()
-	{
-		bool Results = false;
-
-		/**@todo*/
-
-		return(Results);
-	}
-
-	bool
-	GenerateCBOR::WriteCode()
-	{
-		bool Results = false;
-
-		/**@todo*/
-
-		return(Results);
-	}
-	
-	bool
-	GenerateCBOR::WriteDocuments()
+	GenerateCBOR::WriteCode() const
 	{
 		bool Results = false;
 
@@ -262,4 +252,192 @@ namespace RiverExplorer::Phoenix::Protocol
 		return(Results);
 	}
 	
+	bool
+	GenerateCBOR::WriteDocuments() const
+	{
+		bool Results = false;
+
+		/**@todo*/
+
+		return(Results);
+	}
+	
+	std::string
+	GenerateCBOR::to_string(Symbol::Array_e A) const
+	{
+		std::string Results;
+		
+		switch (A) {
+
+		case Symbol::NotArray_t:
+			Results = "Not an array";
+			break;
+
+		case Symbol::FixedArray_t:
+			Results = "Fixed Array";
+			break;
+
+			
+		case Symbol::VariableArray_t:
+			Results = "Variable Array";
+			break;
+		}
+		
+		return(Results);
+	}
+	
+	std::string
+	GenerateCBOR::to_string(Symbol::Visibility_e V) const
+	{
+		std::string Results;
+		
+		switch (V) {
+
+		case Symbol::Public_t:
+			Results = "public:";
+			break;
+
+		case Symbol::Protected_t:
+			Results = "protected:";
+			break;
+
+		case Symbol::Internal_t:
+			/**
+			 * C++ does not have an 'internal' visibility.
+			 * So we enforce it in the generated code.
+			 */
+			Results = "";
+			break;
+
+		case Symbol::Private_t:
+			Results = "private:";
+			break;
+		}
+
+		return(Results);
+	}
+	
+	std::string
+	GenerateCBOR::SymbolType(Symbol * S) const
+	{
+		std::string Results = "Unknown";
+
+		switch (S->Type) {
+
+		case Symbol::uint_t:
+			if (S->Bits == 0) {
+				Results = "uint64_t";
+				
+			} else if (S->Bits == 1) {
+				Results = "bool";
+
+			} else if (S->Bits <=8) {
+				Results = "uint8_t";
+				
+			} else if (S->Bits <= 16) {
+				Results = "uint16_t";
+
+			} else if (S->Bits <= 32) {
+				Results = "uint64_t";
+
+			} else {
+				Results = "ERROR - up to 64 bits supported!";
+			}
+			break;
+			
+		case Symbol::sint_t:
+			if (S->Bits == 0) {
+				Results = "int64_t";
+				
+			} else if (S->Bits == 1) {
+				Results = "bool";
+
+			} else if (S->Bits <=8) {
+				Results = "int8_t";
+				
+			} else if (S->Bits <= 16) {
+				Results = "int16_t";
+
+			} else if (S->Bits <= 32) {
+				Results = "int64_t";
+
+			} else {
+				Results = "ERROR - up to 64 bits supported!";
+			}
+			break;
+			
+		case Symbol::float_t:
+			if (S->Bits == 0) {
+				Results = "long double";
+
+			} else if (S->Bits <= 32) {
+				Results = "float";
+
+			} else if (S->Bits <= 64) {
+				Results = "double";
+
+			} else {
+				/**
+				 * @todo - check at runtime = length??
+				 */
+				Results = "long double";
+			}
+			break;
+			
+		case Symbol::string_t:
+			Results = "std::string";
+			break;
+			
+		case Symbol::class_t:
+			Results = S->ID;
+			break;
+			
+		case Symbol::void_t:
+			Results = "void";
+			break;
+			
+		case Symbol::method_t:
+			Results = SymbolMethod(S);
+			break;
+
+		case Symbol::opaque_t:
+			/**
+			 * It will be a fixed or variable array.
+			 */
+			Results = "uint8_t";
+			break;		
+		}
+
+		return(Results);
+	}
+	
+	std::string
+	GenerateCBOR::SymbolMethod(Symbol * S) const
+	{
+		std::string Results;
+
+		/** @todo */
+
+		return(Results);
+	}
+	
+	std::string
+	GenerateCBOR::RangeComment(const Symbol * S) const
+	{
+		std::string Results;
+
+		/** @todo */
+
+		return(Results);
+	}
+
+	std::string
+	GenerateCBOR::DefaultComment(const Symbol * S) const
+	{
+		std::string Results;
+
+		/** @todo */
+
+		return(Results);
+	}
 }

@@ -51,8 +51,21 @@ namespace RiverExplorer::Phoenix::Protocol
 		bool Add(Symbol * NewSymbol, int TheLineNumber);
 
 		/**
-		 * Check to see if this scope a symbol
-		 * with the procided ID.
+		 * Check to see if a symbol exists.
+		 * If it does return it.
+		 *
+		 * @param Namespace The namespace to check.
+		 *
+		 * @param IdToCheck The ID to look for.
+		 *
+		 * @return The found symbol, or nullptr
+		 * when not found.
+		 */
+		static Symbol * Find(const std::string & Namespace,
+												 const std::string & IdToCheck);
+		
+		/**
+		 * Check to see if a symbol exists.
 		 *
 		 * @param Namespace The symbols namespace.
 		 * If none, pass in an empty string.
@@ -147,6 +160,11 @@ namespace RiverExplorer::Phoenix::Protocol
 			void CreateTable(const SymbolTable & Table,
 											 uint8_t *& Out, uint32_t & Size);
 		};
+
+		/**
+		 * Get the ordered list of symbols.
+		 */
+		static const std::vector<Symbol*>  & Symbols();
 	private:
 		
 		
@@ -155,7 +173,13 @@ namespace RiverExplorer::Phoenix::Protocol
 		 */
 		std::map<std::string,Symbol*> _Symbols;
 		SymbolTable * _Parent;
-		
+
+		/**
+		 * This is an ordered list of all symbols.
+		 * This is needed because many protocols expect them
+		 * in the order provided in the input file.
+		 */
+		static std::vector<Symbol*>	_SymbolsOrdered;
 	};
 }
 

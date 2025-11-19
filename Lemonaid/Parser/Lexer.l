@@ -250,6 +250,21 @@ DefaultPackSize {
  return(token::DEFAULTPACKSIZE);
 }
 
+public: {
+	return(token::VISIBILITY_PUBLIC);
+}
+protected: {
+	return(token::VISIBILITY_PUBLIC);
+}
+
+internal: {
+	return(token::VISIBILITY_PUBLIC);
+}
+
+private {
+	return(token::VISIBILITY_PUBLIC);
+}
+
 DOCUMENT {
 	return(token::DOCUMENT);
 }
@@ -264,6 +279,10 @@ void {
 
 opaque {
 	return(token::OPAQUE);
+}
+
+const {
+	return(token::CONST);
 }
 
 uint {

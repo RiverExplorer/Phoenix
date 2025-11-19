@@ -47,9 +47,10 @@ SOURCES.cpp = \
 	$(SOURCES.yy.cpp) \
 	$(SOURCES.l.cpp) \
 	Content.cpp \
+	DefaultValue.cpp \
 	Driver.cpp \
-	Generate.cpp \
 	GenerateCBOR.cpp \
+	Generate.cpp \
 	GenerateJSON.cpp \
 	GenerateNATIVE.cpp \
 	GenerateREST.cpp \
@@ -69,9 +70,10 @@ SOURCES.hpp = \
 	$(SOURCES.yy.hpp) \
 	$(SOURCES.l.hpp) \
 	Content.hpp \
+	DefaultValue.hpp \
 	Driver.hpp \
-	Generate.hpp \
 	GenerateCBOR.hpp \
+	Generate.hpp \
 	GenerateJSON.hpp \
 	GenerateNATIVE.hpp \
 	GenerateREST.hpp \
@@ -79,8 +81,8 @@ SOURCES.hpp = \
 	GenerateXML.hpp \
 	Globals.hpp \
 	Pack.hpp \
-	Range.hpp \
 	Protocol.hpp \
+	Range.hpp \
 	RmDirRecursive.hpp \
 	Scanner.hpp \
 	Scope.hpp \

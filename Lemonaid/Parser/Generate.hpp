@@ -89,28 +89,46 @@ namespace RiverExplorer::Phoenix::Protocol
 		 *
 		 * @return true if the client size code was successfully created.
 		 */
-		virtual bool CreateClientSideCode() = 0;
+		virtual bool CreateClientSideCode() const = 0;
 		
 		/**
 		 * Generate server size code.
 		 *
 		 * @return true if the server size code was successfully created.
 		 */
-		virtual bool CreateServerSideCode() = 0;
+		virtual bool CreateServerSideCode() const = 0;
 
 		/**
 		 * Declare variable type.
 		 *
 		 * @param S The symbol to create the variable type from.
+		 *
+		 * @return The variable, appropriate for the current language.
 		 */
-		virtual bool	DeclareVariablType(Symbol * S) = 0;
+		virtual std::string	DeclareVariablType(Symbol * S) const = 0;
 		 
 		/**
 		 * Declare variable.
 		 *
 		 * @param S The symbol to create the variable from.
+		 *
+		 * @return The variable, appropriate for the current language.
 		 */
-		virtual bool	DeclareVariable(Symbol * S) = 0;
+		virtual std::string DeclareVariable(Symbol * S) const = 0;
+
+		/**
+		 * Write the default comment.
+		 *
+		 * @param S The symbol.
+		 */
+		virtual std::string DefaultComment(const Symbol * S) const = 0;
+		
+		/**
+		 * Write the range comment.
+		 *
+		 * @param S The symbol.
+		 */
+		virtual std::string RangeComment(const Symbol * S) const = 0;
 		
 		/**
 		 * Generate headers files, or definition, API, ... files
@@ -118,7 +136,7 @@ namespace RiverExplorer::Phoenix::Protocol
 		 * @return true on success.
 		 * Returns false on failure.
 		 */
-		virtual bool	WriteHeaders() = 0;
+		virtual bool	WriteHeaders() const = 0;
 
 		/**
 		 * Generate the code files.
@@ -126,7 +144,7 @@ namespace RiverExplorer::Phoenix::Protocol
 		 * @return true on success.
 		 * Returns false on failure.
 		 */
-		virtual bool	WriteCode() = 0;
+		virtual bool	WriteCode() const = 0;
 		
 		/**
 		 * Generate any document files.
@@ -134,7 +152,7 @@ namespace RiverExplorer::Phoenix::Protocol
 		 * @return true on success.
 		 * Returns false on failure.
 		 */
-		virtual bool	WriteDocuments() = 0;
+		virtual bool	WriteDocuments() const = 0;
 
 		/**
 		 * First, set _TopDir, _BuildingClientCode, and _BuildingServerCode.
@@ -162,7 +180,7 @@ namespace RiverExplorer::Phoenix::Protocol
 		/**
 		 * Only to be called from _BuildDirs().
 		 */
-		bool _MkDir(std::string & Parent, std::string Child);
+		bool _MkDir(std::string & Parent, std::string Child) const;
 
 		/**
 		 * Turn a file name into part of the #ifndef/#define/#endif
@@ -170,7 +188,7 @@ namespace RiverExplorer::Phoenix::Protocol
 		 *
 		 * @param FileName The file name to use.
 		 */
-		std::string ToIfDef(const std::string & FileName);
+		std::string ToIfDef(const std::string & FileName) const;
 
 		/**
 		 * Get the C++ namespace name for the symbol.
@@ -180,7 +198,7 @@ namespace RiverExplorer::Phoenix::Protocol
 		 * @return The C++ namespace of the symbol.
 		 * An empty string means it is without a namespace.
 		 */
-		std::string CppNamespace(const Symbol & TargetSymbol);
+		std::string CppNamespace(const Symbol & TargetSymbol) const;
 		 
 		/**
 		 * Get the C# namespace name for the symbol.
@@ -190,16 +208,63 @@ namespace RiverExplorer::Phoenix::Protocol
 		 * @return The C# namespace of the symbol.
 		 * An empty string means it is without a namespace.
 		 */
-		std::string CSharpNamespace(const Symbol & TargetSymbol);
+		std::string CSharpNamespace(const Symbol & TargetSymbol) const;
 
 		/**
 		 * Output the specified number of tabs.
 		 *
-		 * @parm NumberTabs The number of tabs (>= 0).
+		 * @param NumberTabs The number of tabs (>= 0).
 		 *
-		 * @retun NumberTabs tab (\t) characters.
+		 * @retun The tabs.
 		 */
-		static std::string Tabs(uint8_t NumberTabs);
+		std::string Tabs(uint8_t NumberTabs) const;
+
+		/**
+		 * Output an end of line, followed by the specified number of tabs.
+		 *
+		 * @param NumberTabs The number of tabs (>= 0).
+		 *
+		 * @retun The end of line and tabs.
+		 */
+		std::string EolTabs(uint8_t NumberTabs) const;
+
+		/**
+		 * Print the data type of the value, as a string.
+		 *
+		 * @param Type The symbol value type.
+		 *
+		 * @param Bits The number of bits defined with the type.
+		 *
+		 * @return The type, as a string.
+		 */
+		virtual std::string		SymbolType(Symbol * S) const = 0;
+
+		/**
+		 * Print a method definition to a string;
+		 *
+		 * @param Symbol The symbol.
+		 *
+		 * @return The method as a string for a header or
+		 * definition file.
+		 */
+		virtual std::string SymbolMethod(Symbol * S) const = 0;
+		 
+		/**
+		 * Print if the array type is fixed, variable,
+		 * Not an array, as a string.
+		 *
+		 * @param A The array type to check.
+		 *
+		 * @return The array type, as a string.
+		 */
+		virtual std::string		to_string(Symbol::Array_e A) const = 0;
+
+		/**
+		 * Print the visibility as a printed string.
+		 *
+		 * @return The visibility as a string.
+		 */
+		virtual std::string		to_string(Symbol::Visibility_e V) const = 0;
 		
 		/**
 		 * When true, build the client side code.

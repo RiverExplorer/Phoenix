@@ -23,7 +23,12 @@ namespace RiverExplorer::Phoenix::Protocol
 	 */
 	class DefaultValue
 	{
+	public:
+		
+		virtual ~DefaultValue() {};
 
+		virtual void Print(std::ostream & /*Out*/) const = 0;
+		
 	protected:
 
 		/**
@@ -33,7 +38,7 @@ namespace RiverExplorer::Phoenix::Protocol
 		 * Contstruct with DefaultValueT()
 		 */
 		DefaultValue() {};
-		virtual ~DefaultValue() {};
+
 	};
 		
 	template <typename T>
@@ -45,10 +50,10 @@ namespace RiverExplorer::Phoenix::Protocol
 		/**
 		 * Default - Constructor
 		 */
-		DefaultValueT(T TheValue)
+		DefaultValueT(T & TheValue)
+			: Value(TheValue)
 		{
 			Value = TheValue;
-
 			return;
 		}
 		
@@ -58,8 +63,17 @@ namespace RiverExplorer::Phoenix::Protocol
 		virtual ~DefaultValueT() {};
 
 		T						Value;
+
+	protected:
+		
+		virtual void Print(std::ostream & Out) const override {
+			Out << Value;
+		}
+
 	};
-	
+
+	std::ostream & operator<<(std::ostream & Out,
+														const DefaultValue & S);
 }
 
 #endif // __RIVEREXPLORER_PHOENIX_PROTOCOL_DEFAULTVALUE_HPP_
