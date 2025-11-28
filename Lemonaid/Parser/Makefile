@@ -49,7 +49,9 @@ SOURCES.cpp = \
 	Content.cpp \
 	DefaultValue.cpp \
 	Driver.cpp \
+	Enum.cpp \
 	GenerateCBOR.cpp \
+	GenerateCPP.cpp \
 	Generate.cpp \
 	GenerateJSON.cpp \
 	GenerateNATIVE.cpp \
@@ -62,6 +64,8 @@ SOURCES.cpp = \
 	Protocol.cpp \
 	RmDirRecursive.cpp \
 	Scope.cpp \
+	Stream.cpp \
+	StreamNATIVE.cpp \
 	Symbol.cpp \
 	SymbolTable.cpp \
 	Version.cpp
@@ -72,7 +76,9 @@ SOURCES.hpp = \
 	Content.hpp \
 	DefaultValue.hpp \
 	Driver.hpp \
+	Enum.hpp \
 	GenerateCBOR.hpp \
+	GenerateCPP.hpp \
 	Generate.hpp \
 	GenerateJSON.hpp \
 	GenerateNATIVE.hpp \
@@ -86,6 +92,8 @@ SOURCES.hpp = \
 	RmDirRecursive.hpp \
 	Scanner.hpp \
 	Scope.hpp \
+	Stream.hpp \
+	StreamNATIVE.hpp \
 	Symbol.hpp \
 	SymbolTable.hpp \
 	Version.hpp

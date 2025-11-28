@@ -25,6 +25,7 @@
 #include "Driver.hpp"
 #include "Parser.tab.hpp"
 
+#include "GenerateCPP.hpp"
 #include "GenerateCBOR.hpp"
 #include "GenerateJSON.hpp"
 #include "GenerateNATIVE.hpp"
@@ -306,13 +307,13 @@ main(const int argc, char * const * argv)
 	if (Global::GScope.GenerateNATIVE_Client
 			|| Global::GScope.GenerateNATIVE_Server) {
 		
-		GenerateNATIVE * Generator = new GenerateNATIVE();
+		GenerateCPP * Generator = new GenerateCPP();
 
 		if (Generator->Create()) {
-			Global::Log << "NATIVE code generated without error." << endl;
+			Global::Log << "C++ code generated without error." << endl;
 
 		} else {
-			Global::Log << "NATIVE code generated with errors." << endl;
+			Global::Log << "C++ code generated with errors." << endl;
 		}
 	}
 	

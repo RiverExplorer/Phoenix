@@ -50,6 +50,10 @@ namespace RiverExplorer::Phoenix::Protocol
 		: public SymbolValue
 	{
 	public:
+		SymbolValueT()
+		{			
+		};
+
 		SymbolValueT(T TheValue)
 			: Value(TheValue)
 		{			
@@ -94,17 +98,105 @@ namespace RiverExplorer::Phoenix::Protocol
 		bool	IsConstant;
 
 		/**
+		 * A mutable variable is a variable that can be modified
+		 * even when the object it is contained in is marked constant.
+		 * For example, it could keep a running total of points or
+		 * health and cache the results in a 'mutable' variable
+		 * that it modifies as things change.
+		 *
+		 * And its containing object could be marked as const
+		 * so others can not tweak the inverntry or health.
+		 *
+		 * In non-const objects, Mutable is ignored as it would
+		 * have no meaning when an object is not-const.
+		 */
+		bool IsMutable;
+		
+		/**
 		 * The basic data types.
 		 */
 		enum Symbol_e {
+
+			/**
+			 * The protocol data.
+			 */
+			protocol_t,
+
+			/**
+			 * The version data.
+			 */
+			version_t,
+			
+			/**
+			 * Boolean type.
+			 */
+			bool_t,
+
+			/**
+			 * Comment.
+			 */
+			comment_t,
+			
+			/**
+			 * The symbol has an unsigned integer data/value.
+			 */
 			uint_t,
+
+			/**
+			 * The symbol has an signed integer data/value.
+			 */
 			sint_t,
+
+			/**
+			 * The symbol has floating point (long double) data/value.
+			 */
 			float_t,
+			
+			/**
+			 * The symbol has string data/value.
+			 */
 			string_t,
+			
+			/**
+			 * The symbol has a blob of opaque data/value.
+			 */
 			opaque_t,
+
+			/**
+			 * An enum type.
+			 */
+			enum_t,
+			
+			/**
+			 * The symbol is a class name.
+			 */
 			class_t,
+			
+			/**
+			 * The symbol has no data.
+			 */
+			
 			void_t,
-			method_t
+			
+			/**
+			 * The symbol is a member function name.
+			 */
+			method_t,
+
+			/**
+			 * The symbol is a const unsigned interger range.
+			 */
+			urange_t,
+			
+			/**
+			 * The symbol is a const signed interger range.
+			 */
+			srange_t,
+
+			/**
+			 * The symbol is a const floating point range.
+			 */
+			frange_t
 		};
 
 		/**
@@ -194,6 +286,29 @@ namespace RiverExplorer::Phoenix::Protocol
 					 uint64_t Min = 0,
 					 uint64_t Max = 0);
 
+		/**
+		 * Constructor.
+		 *
+		 * @param Type The base type of the symbol.
+		 *
+		 * @param Bits The number of bits in the symbol.
+		 *
+		 * @param ArrayType It is or is not an array.
+		 *
+		 * @param Min For a fixed array, the size.
+		 * For a variable array, the minimum size.
+		 *
+		 * @param Min For a fixed array, ignored.
+		 * For a variable array, the maximum size.
+		 *
+		 * @note
+		 * Return values have no Name (ID).
+		 */
+		Symbol(Symbol_e Type,
+					 uint64_t Bits,
+					 Array_e ArrayType = NotArray_t,
+					 uint64_t Min = 0,
+					 uint64_t Max = 0);
 
 		virtual ~Symbol();
 		
@@ -366,9 +481,9 @@ namespace RiverExplorer::Phoenix::Protocol
 		 * The value of the symbol.
 		 */
 		SymbolValue					*	Value;
-
+		
 		friend std::ostream & operator<<(std::ostream & Out, const Symbol & S);
-	};
+	}; // End class Symbol
 
 	std::ostream & operator<<(std::ostream & Out, const Symbol & S);
 }

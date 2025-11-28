@@ -50,7 +50,7 @@ namespace RiverExplorer::Phoenix::Protocol
 		/**
 		 * Default - Constructor
 		 */
-		DefaultValueT(T & TheValue)
+		DefaultValueT(T TheValue)
 			: Value(TheValue)
 		{
 			Value = TheValue;

@@ -60,8 +60,16 @@ Namespace {
   return(token::NAMESPACE);
 }
 
+NamespaceID {
+  return(token::NAMESPACE_ID);
+}
+
 include {
 	return(token::INCLUDE);
+}
+
+FileName {
+	return(token::FILENAME);
 }
 
 C\+\+ {
@@ -285,6 +293,22 @@ const {
 	return(token::CONST);
 }
 
+mutable {
+	return(token::MUTABLE);
+}
+
+bool {
+ return(token::BOOL);
+}
+
+true {
+ return(token::TRUE);
+}
+
+false {
+ return(token::FALSE);
+}
+
 uint {
  return(token::UINT);
 }
@@ -303,6 +327,18 @@ class {
 
 Range {
 	return(token::RANGE);
+}
+
+URange {
+	return(token::URANGE);
+}
+
+SRange {
+	return(token::SRANGE);
+}
+
+FRange {
+	return(token::FRANGE);
 }
 
 Default {
@@ -387,11 +423,12 @@ Default {
 }
 
 [+-]?([0-9]+(\.[0-9]*)?|\.[0-9]+)([eE][+-]?[0-9]+)? {
-	yylval->emplace<long double>(atoi(yytext));
+	yylval->emplace<long double>(std::stold(yytext));
 	return(token::FDIGITS);
 }
 
-"//".*[&\n] {
+"//".*[^\n]* {
+	yylval->emplace<std::string>(yytext + 2);
 	return(token::COMMENT);
 }
 
@@ -451,11 +488,9 @@ Default {
 	return(token::COLON);
 }
 
- /*
-  * [\.] {
-  *	return(token::DOT);
-  *}
-  */
+Function {
+	return(token::FUNCTION);
+}
 
 \n {
 	/** Update the line number */
@@ -470,11 +505,4 @@ Default {
 				return(token::IDSTRING);
 }
 
- /*
- . {
- 	return(token::CHAR);
- }
- */
-
 [ \t]+ ;
-

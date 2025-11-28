@@ -31,6 +31,7 @@ namespace RiverExplorer::Phoenix::Protocol
 		Value = nullptr;
 		Visibility = Public_t;
 		IsConstant = false;
+		IsMutable = false;
 		
 		return;
 	}
@@ -55,10 +56,33 @@ namespace RiverExplorer::Phoenix::Protocol
 		Value = nullptr;
 		Visibility = Public_t;
 		IsConstant = false;
+		IsMutable = false;
 
 		return;
 	}
 
+	Symbol::Symbol(Symbol_e SType,
+								 uint64_t SBits,
+								 Array_e SArrayType,
+								 uint64_t SMin,
+								 uint64_t SMax)
+	{
+		Type = SType;
+		Bits = SBits;
+		ID = "";
+		Array = SArrayType;
+		MinSize = SMin;
+		MaxSize = SMax;
+		HasNoName = false;
+
+		ValidRange = nullptr;
+		Default = nullptr;
+		Value = nullptr;
+		Visibility = Public_t;
+		IsConstant = false;
+		IsMutable = false;
+	}
+	
 	Symbol::~Symbol()
 	{
 		if (ValidRange != nullptr) {
@@ -117,6 +141,19 @@ namespace RiverExplorer::Phoenix::Protocol
 		case opaque_t:
 			Results = "opaque";
 			break;
+
+		case urange_t:
+			Results = "urange";
+			break;
+			
+		case srange_t:
+			Results = "frange";
+			break;
+			
+		case frange_t:
+			Results = "frange";
+			break;
+			
 		}
 
 		return(Results);

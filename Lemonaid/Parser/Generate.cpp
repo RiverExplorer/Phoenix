@@ -89,7 +89,7 @@ namespace RiverExplorer::Phoenix::Protocol
 		std::string Results;
 		
 		while (NumberTabs-- > 0) {
-			Results += '\t';
+			Results += ' ';
 		}
 
 		return(Results);
@@ -101,7 +101,7 @@ namespace RiverExplorer::Phoenix::Protocol
 		std::string Results = "\n";
 
 		while (NumberTabs-- > 0) {
-			Results += '\t';
+			Results += ' ';
 		}
 
 		return(Results);

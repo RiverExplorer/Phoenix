@@ -5,22 +5,42 @@
  *
  * Copyright (C) 2025, RiverExplorer LLC
  */
-#include "GenerateNATIVE.hpp"
+#include "GenerateCPP.hpp"
 #include <sys/stat.h>
 #include <string.h>
 #include <sstream>
 #include <string>
+#include <deque>
 
 using namespace std;
 
 namespace RiverExplorer::Phoenix::Protocol
 {
-	extern uint8_t  TabLevel;
+
+	/**
+	 * The current namespace being processed.
+	 */
+	static std::string	ActiveNamespace;
+	static uint8_t			NamespaceDepth = 1;
+
+	static std::deque<std::string> NamespaceStack;
 	
 	/**
-	 * The current namespace being printed.
+	 * Comments in the protocol definition file
+	 * must proceed the item it is commenting about.
+	 *
+	 * As any comments are accumulated, they are appended
+	 * to this string stream.
+	 *
+	 * Then applied to the next item generated.
 	 */
-	static std::string ActiveNamespace;
+	std::stringstream	StoredComments;
+	
+	/**
+	 * The current indentation level.
+	 */
+	uint8_t TabLevel = 0;
+		
 	
 	const char * const NATIVE_s = "NATIVE";
 
@@ -40,7 +60,7 @@ namespace RiverExplorer::Phoenix::Protocol
 		"\n */\n";
 		
 	bool
-	GenerateNATIVE::Create()
+	GenerateCPP::Create()
 	{
 		bool		Results = false;
 
@@ -64,7 +84,7 @@ namespace RiverExplorer::Phoenix::Protocol
 	}
 
 	bool
-	GenerateNATIVE::Compile()
+	GenerateCPP::Compile()
 	{
 		bool		Results = false;
 
@@ -74,7 +94,7 @@ namespace RiverExplorer::Phoenix::Protocol
 	}
 	
 	bool
-	GenerateNATIVE::CreateOutputTree(bool BuildClient, bool BuildServer)
+	GenerateCPP::CreateOutputTree(bool BuildClient, bool BuildServer)
 	{
 		bool	Results = true;
 
@@ -89,14 +109,14 @@ namespace RiverExplorer::Phoenix::Protocol
 	}
 
 	bool
-	GenerateNATIVE::CreateClientSideCode() const
+	GenerateCPP::CreateClientSideCode() const
 	{
 		/**@todo*/
 		return(false);
 	}
 
 	bool
-	GenerateNATIVE::CreateServerSideCode() const
+	GenerateCPP::CreateServerSideCode() const
 	{
 		/**@todo*/
 		return(false);
@@ -104,7 +124,7 @@ namespace RiverExplorer::Phoenix::Protocol
 
 
 	bool
-	GenerateNATIVE::_BuildCPPDirs()
+	GenerateCPP::_BuildCPPDirs()
 	{
 		bool Results;
 
@@ -178,7 +198,7 @@ namespace RiverExplorer::Phoenix::Protocol
 	}
 	
 	bool
-	GenerateNATIVE::_BuildCSharpDirs()
+	GenerateCPP::_BuildCSharpDirs()
 	{
 		bool Results;
 
@@ -226,7 +246,7 @@ namespace RiverExplorer::Phoenix::Protocol
 	}
 	
 	bool
-	GenerateNATIVE::_BuildDirs()
+	GenerateCPP::_BuildDirs()
 	{
 		bool Results;
 
@@ -281,12 +301,16 @@ namespace RiverExplorer::Phoenix::Protocol
 	}
 
 	std::string
-	GenerateNATIVE::SymbolType(Symbol * S) const
+	GenerateCPP::SymbolType(Symbol * S) const
 	{
 		std::string Results = "Unknown";
 
 		switch (S->Type) {
 
+		case Symbol::comment_t:
+			/*EMPTY*/
+			break;
+			
 		case Symbol::uint_t:
 			if (S->Bits == 0) {
 				Results = "uint64_t";
@@ -397,7 +421,7 @@ namespace RiverExplorer::Phoenix::Protocol
 	}
 	
 	std::string
-	GenerateNATIVE::to_string(Symbol::Array_e A) const
+	GenerateCPP::to_string(Symbol::Array_e A) const
 	{
 		std::string Results;
 		
@@ -421,7 +445,7 @@ namespace RiverExplorer::Phoenix::Protocol
 	}
 	
 	std::string
-	GenerateNATIVE::to_string(Symbol::Visibility_e V) const
+	GenerateCPP::to_string(Symbol::Visibility_e V) const
 	{
 		std::string Results;
 		
@@ -452,15 +476,34 @@ namespace RiverExplorer::Phoenix::Protocol
 	}
 	
 	std::string
-	GenerateNATIVE::DeclareVariablType(Symbol * S) const
+	GenerateCPP::DeclareVariablType(Symbol * S) const
 	{
-		std::string Results = SymbolType(S);
+		std::stringstream R;
+		std::string Results;
 
+		std::string SType = SymbolType(S);
+		
+		if (S->IsConstant) {
+			R << "const ";
+		}
+		
+		if (S->Array == Symbol::VariableArray_t) {
+			R << "std::vector<" << SType << "> ";
+
+		} else {
+			R << SType;
+
+			if (S->Array == Symbol::FixedArray_t) {
+				R << "[" << S->MinSize << "] ";
+			}
+		}
+		
+		Results = R.str();
 		return(Results);
 	}
 
 	std::string
-	GenerateNATIVE::RangeComment(const Symbol * S) const
+	GenerateCPP::RangeComment(const Symbol * S) const
 	{
 		std::stringstream R;
 		
@@ -637,7 +680,7 @@ namespace RiverExplorer::Phoenix::Protocol
 	}
 	
 	std::string
-	GenerateNATIVE::DefaultComment(const Symbol * S) const
+	GenerateCPP::DefaultComment(const Symbol * S) const
 	{
 		std::stringstream R;
 		std::string Results;
@@ -653,6 +696,10 @@ namespace RiverExplorer::Phoenix::Protocol
 			
 			switch (S->Type) {
 
+			case Symbol::comment_t:
+				/*EMPTY*/
+				break;
+				
 			case Symbol::uint_t:
 				{
 					DefaultValueT<uint64_t> * Default
@@ -760,37 +807,44 @@ namespace RiverExplorer::Phoenix::Protocol
 	}
 	
 	std::string
-	GenerateNATIVE::DeclareVariable(Symbol * S) const
+	GenerateCPP::DeclareVariable(Symbol * S) const
 	{
 		std::string Results;
 
 		std::stringstream Code;
 		std::stringstream Comment;
 
-		Comment << EolTabs(TabLevel)
-						<< "/**" << EolTabs(TabLevel)
-						<< " * Declared in: " << S->InputFileName
-						<< ", at line: " << S->LineNumber << EolTabs(TabLevel)
-						<< DefaultComment(S)
-						<< RangeComment(S)
-						<< " *" << EolTabs(TabLevel);
+		if (S->Type != Symbol::comment_t) {
+			Comment << "/**" << EolTabs(TabLevel)
+							<< " * Declared in: " << S->InputFileName
+							<< ", at line: " << S->LineNumber << EolTabs(TabLevel)
+							<< DefaultComment(S)
+							<< RangeComment(S)
+							<< " *" << EolTabs(TabLevel);
+		}
 		
 		if (S->IsConstant
 				&& S->Type != Symbol::urange_t
 				&& S->Type != Symbol::srange_t
 				&& S->Type != Symbol::frange_t) {
-				
-			Comment << " * '" << S->ID
-							<< "' is declared as constant with a value of: ";
+
+			if (S->Type == Symbol::method_t) {
+				Comment << " * '" << S->ID
+								<< "' is a const method."
+								<< EolTabs(TabLevel);
+			} else {
+				Comment << " * '" << S->ID
+								<< "' is declared as constant with a value of: ";
+			}
 
 			switch (S->Type) {
 
 			case Symbol::uint_t:
-				{
+				{	
 					SymbolValueT<uint64_t> * UintValue
 						= dynamic_cast<SymbolValueT<uint64_t>*>(S->Value);
 
-					Comment << std::to_string(UintValue->Value)
+				Comment << std::to_string(UintValue->Value)
 									<< EolTabs(TabLevel);
 				}
 				break;
@@ -844,9 +898,11 @@ namespace RiverExplorer::Phoenix::Protocol
 								<< " number of "
 								<< SymbolType(S)
 								<< " entries."
-								<< EolTabs(TabLevel)
+								<< StoredComments.str()
 								<< " */"
 								<< EolTabs(TabLevel);
+				StoredComments.str("");
+				StoredComments.clear();
 					
 			} else {
 				Comment << " * A variable length array, " 
@@ -857,9 +913,11 @@ namespace RiverExplorer::Phoenix::Protocol
 								<< " "
 								<< SymbolType(S)
 								<< " entries."
-								<< EolTabs(TabLevel)
+								<< StoredComments.str()
 								<< " */"
 								<< EolTabs(TabLevel);
+				StoredComments.str("");
+				StoredComments.clear();
 			}
 			Code << "extern ";
 
@@ -873,10 +931,22 @@ namespace RiverExplorer::Phoenix::Protocol
 
 		} else {
 			if (S->Array != Symbol::FixedArray_t) {
-				Comment << " */" << EolTabs(TabLevel);
+				if (S->Type != Symbol::comment_t) {
+					Comment << StoredComments.str()
+									<< " */" << EolTabs(TabLevel);
+					StoredComments.str("");
+					StoredComments.clear();
+				}
 			}
-			Code << "extern ";
-			if (S->IsConstant) {
+			if (S->Type != Symbol::comment_t
+					&& S->Type != Symbol::protocol_t
+					&& S->Type != Symbol::version_t) {
+				Code << "extern ";
+			}
+
+			// Methods have their 'const' after the parameters.
+			//
+			if (S->IsConstant && S->Type != Symbol::method_t) {
 				Code << "const ";
 			}
 
@@ -896,10 +966,88 @@ namespace RiverExplorer::Phoenix::Protocol
 
 			case Symbol::method_t:
 				{
+					Code << SymbolType(S->MethodReturnType)
+							 << " " << SymbolType(S)
+							 << " "
+							 << S->ID
+							 << "(";
 
-				Code << "xx" << SymbolType(S)
-						 << " "
-						 << S->ID;
+					if (S->MethodParameters != nullptr) {
+						std::vector<Symbol*>::const_iterator PIt;
+						Symbol * P;
+						bool OnePrinted = false;
+						
+						for (PIt = S->MethodParameters->cbegin()
+									 ; PIt != S->MethodParameters->cend()
+									 ; PIt++) {
+							P = *PIt;
+							if (OnePrinted) {
+								Code << ", ";
+							}
+							Code << SymbolType(P)
+									 << " "
+									 << P->ID;
+							OnePrinted = true;
+						}
+					}
+					Code << ")";
+					if (S->IsConstant) {
+						Code << " const";
+					}
+				}
+				break;
+
+			case Symbol::comment_t:
+				{
+					SymbolValueT<std::string> * StrValue
+						= dynamic_cast<SymbolValueT<std::string>*>(S->Value);
+
+					if (StrValue->Value.length() > 0) {
+						StoredComments << " *" << StrValue->Value
+													 << EolTabs(TabLevel);
+					}
+				}
+				break;
+
+			case Symbol::protocol_t:
+				ActiveNamespace += "::";
+				ActiveNamespace += S->ID;
+
+				Code << "namespace " << S->ID << " {";
+				NamespaceDepth++;
+				NamespaceStack.push_front(ActiveNamespace);
+				
+				if (StoredComments.str().length() > 0) {
+					StoredComments << "/**"
+												 << StoredComments.str()
+												 << EolTabs(TabLevel);
+					StoredComments.str("");
+					StoredComments.clear();
+				}
+				Comment << "// Begin namespace "
+								<< ActiveNamespace
+								<< EolTabs(TabLevel);
+				TabLevel++;
+				break;
+				
+			case Symbol::version_t:
+				ActiveNamespace += "::";
+				ActiveNamespace += S->ID;
+				NamespaceStack.push_front(ActiveNamespace);
+
+				StoredComments << "// Begin namespace "
+											 << ActiveNamespace
+											 << EolTabs(TabLevel);
+				
+				Code << "namespace " << S->ID << " {";
+				NamespaceDepth++;
+				
+				if (StoredComments.str().length() > 0) {
+					Comment << StoredComments.str()
+									<< EolTabs(TabLevel);
+					
+					StoredComments.str("");
+					StoredComments.clear();
 				}
 				break;
 				
@@ -913,7 +1061,11 @@ namespace RiverExplorer::Phoenix::Protocol
 		switch (S->Array) {
 
 		case Symbol::NotArray_t:
-			Code << ";" << EolTabs(TabLevel);
+			if (S->Type != Symbol::comment_t
+					&& S->Type != Symbol::protocol_t
+					&& S->Type != Symbol::version_t) {
+				Code << ";" << EolTabs(TabLevel);
+			}
 			break;
 
 		case Symbol::FixedArray_t:
@@ -945,7 +1097,7 @@ namespace RiverExplorer::Phoenix::Protocol
 	}
 
 	bool
-	GenerateNATIVE::WriteHeaders() const
+	GenerateCPP::WriteHeaders() const
 	{
 		bool Results = false;
 
@@ -1002,37 +1154,46 @@ namespace RiverExplorer::Phoenix::Protocol
 							 << "#include <cstdint>" << EolTabs(TabLevel)
 							 << EolTabs(TabLevel);
 				//
+
+				ActiveNamespace = Global::GScope.Namespace;
+				if (ActiveNamespace.length() > 0) {
+					Header << "namespace " << ActiveNamespace << " {"
+								 << EolTabs(++TabLevel);
+					NamespaceStack.push_front(ActiveNamespace);
+				}
+				
 				const std::vector<Symbol*> & AllSymbols = SymbolTable::Symbols();
 				
 				std::vector<Symbol*>::const_iterator SIt;
 				Symbol * S;
+				std::string SNamespace;
 
-				for (SIt = AllSymbols.cbegin(); SIt != AllSymbols.cend(); SIt++) {
+				for (SIt = AllSymbols.cbegin()
+							 ; SIt != AllSymbols.cend()
+							 ; SIt++) {
+					
 					S = *SIt;
 
-					if (S->Namespace != ActiveNamespace) {
-						if (ActiveNamespace != "") {
-							Header << "} // End "
-										 << ActiveNamespace
-										 << EolTabs(--TabLevel);
-						}
-						ActiveNamespace = S->Namespace;
-						Header << "namespace "
-									 << CppNamespace(*S)
-									 << " {"
+					if (ActiveNamespace.length() == 0) {
+						ActiveNamespace = CppNamespace(*S);
+						Header << "namespace " << ActiveNamespace << " {"
 									 << EolTabs(++TabLevel);
+						NamespaceStack.push_front(ActiveNamespace);
 					}
-
 					Header << DeclareVariable(S);
 					Header << EolTabs(TabLevel);
 				}
-				if (ActiveNamespace != "") {
-					Header << EolTabs(--TabLevel)
+				// End of symbols, end the file.
+				//
+				while (NamespaceDepth-- > 0) {
+					Header << EolTabs(TabLevel)
 								 << "} // End namespace "
-								 << ActiveNamespace
+								 << NamespaceStack.front()
 								 << EolTabs(TabLevel);
-					ActiveNamespace = "";
+					--TabLevel;
+					NamespaceStack.pop_front();
 				}
+				ActiveNamespace = "";
 
 				Header << "#endif // " << IfDef << EolTabs(TabLevel);
 				Header.close();
@@ -1044,7 +1205,7 @@ namespace RiverExplorer::Phoenix::Protocol
 	}
 
 	bool
-	GenerateNATIVE::WriteCode() const
+	GenerateCPP::WriteCode() const
 	{
 		bool Results = false;
 
@@ -1054,7 +1215,7 @@ namespace RiverExplorer::Phoenix::Protocol
 	}
 	
 	bool
-	GenerateNATIVE::WriteDocuments() const
+	GenerateCPP::WriteDocuments() const
 	{
 		bool Results = false;
 
@@ -1064,7 +1225,7 @@ namespace RiverExplorer::Phoenix::Protocol
 	}
 
 	std::string
-	GenerateNATIVE::SymbolMethod(Symbol * S) const
+	GenerateCPP::SymbolMethod(Symbol * S) const
 	{
 		std::string Results;
 

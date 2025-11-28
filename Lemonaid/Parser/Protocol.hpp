@@ -13,6 +13,7 @@
 #include "Pack.hpp"
 #include "SymbolTable.hpp"
 #include "Version.hpp"
+#include "Enum.hpp"
 
 #include <vector>
 

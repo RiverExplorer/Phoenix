@@ -166,7 +166,11 @@ namespace RiverExplorer::Phoenix::Protocol
 		 */
 		static const std::vector<Symbol*>  & Symbols();
 	private:
-		
+
+		/**
+		 * Our symbol name mangler.
+		 */
+		std::string _Mangle(Symbol * S);
 		
 		/**
 		 * The KEY is a colon then the ID appended to the namespace.

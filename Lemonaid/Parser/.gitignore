@@ -6,3 +6,4 @@ position.hh
 stack.hh
 BuildTemp
 Parser.tab.cpp
+Lexer.yy.cpp
